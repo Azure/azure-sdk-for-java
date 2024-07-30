@@ -1,14 +1,21 @@
 ## Release History
 
-### 1.0.0-beta.7 (Unreleased)
+### 1.0.0-beta.8 (Unreleased)
 
 #### Features Added
+* Added support for `injectionRate` for `FaultInjectionServerErrorResult` - See [PR 40213](https://github.com/Azure/azure-sdk-for-java/pull/40213)
+* Added support for `FaultInjectionServerErrorType.PARTITION_IS_GONE` - See [PR 40738(https://github.com/Azure/azure-sdk-for-java/pull/40738)
 
 #### Breaking Changes
 
 #### Bugs Fixed
 
 #### Other Changes
+
+### 1.0.0-beta.7 (2024-05-03)
+
+#### Bugs Fixed
+* Fixed an issue where `FaultInjectionRule` can not apply on partition level when using `Gateway` Mode and non-session consistency - See [40005](https://github.com/Azure/azure-sdk-for-java/pull/40005)
 
 ### 1.0.0-beta.6 (2023-10-24)
 #### Features Added

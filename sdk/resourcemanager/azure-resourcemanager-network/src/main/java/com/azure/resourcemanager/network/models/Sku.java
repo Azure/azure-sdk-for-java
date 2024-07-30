@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class Sku {
     /*
-     * The name of this Bastion Host.
+     * The name of the sku of this Bastion Host.
      */
     @JsonProperty(value = "name")
     private BastionHostSkuName name;
@@ -25,7 +25,7 @@ public final class Sku {
     }
 
     /**
-     * Get the name property: The name of this Bastion Host.
+     * Get the name property: The name of the sku of this Bastion Host.
      * 
      * @return the name value.
      */
@@ -34,7 +34,7 @@ public final class Sku {
     }
 
     /**
-     * Set the name property: The name of this Bastion Host.
+     * Set the name property: The name of the sku of this Bastion Host.
      * 
      * @param name the name value to set.
      * @return the Sku object itself.

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class ImagesListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/imageExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/imageExamples/
      * Image_ListByResourceGroup.json
      */
     /**
@@ -20,7 +20,10 @@ public final class ImagesListByResourceGroupSamples {
      */
     public static void
         listAllVirtualMachineImagesInAResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getImages().listByResourceGroup("myResourceGroup",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getImages()
+            .listByResourceGroup("myResourceGroup", com.azure.core.util.Context.NONE);
     }
 }

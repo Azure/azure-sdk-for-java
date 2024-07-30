@@ -9,7 +9,9 @@ import com.azure.resourcemanager.resources.models.ProviderResourceType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of resource types of a resource provider. */
+/**
+ * List of resource types of a resource provider.
+ */
 @Fluent
 public final class ProviderResourceTypeListResultInner {
     /*
@@ -24,13 +26,15 @@ public final class ProviderResourceTypeListResultInner {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ProviderResourceTypeListResultInner class. */
+    /**
+     * Creates an instance of ProviderResourceTypeListResultInner class.
+     */
     public ProviderResourceTypeListResultInner() {
     }
 
     /**
      * Get the value property: An array of resource types.
-     *
+     * 
      * @return the value value.
      */
     public List<ProviderResourceType> value() {
@@ -39,7 +43,7 @@ public final class ProviderResourceTypeListResultInner {
 
     /**
      * Set the value property: An array of resource types.
-     *
+     * 
      * @param value the value value to set.
      * @return the ProviderResourceTypeListResultInner object itself.
      */
@@ -50,7 +54,7 @@ public final class ProviderResourceTypeListResultInner {
 
     /**
      * Get the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ProviderResourceTypeListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

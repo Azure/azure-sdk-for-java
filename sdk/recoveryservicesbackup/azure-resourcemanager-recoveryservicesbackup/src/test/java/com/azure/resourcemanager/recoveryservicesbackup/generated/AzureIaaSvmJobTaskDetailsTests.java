@@ -14,33 +14,36 @@ public final class AzureIaaSvmJobTaskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureIaaSvmJobTaskDetails model = BinaryData.fromString(
-            "{\"taskId\":\"ao\",\"startTime\":\"2021-04-11T13:34:37Z\",\"endTime\":\"2021-08-18T10:11:41Z\",\"instanceId\":\"yyysfgdotcubi\",\"duration\":\"PT116H49M43S\",\"status\":\"pwoqo\",\"progressPercentage\":43.39468504241455,\"taskExecutionDetails\":\"ekni\"}")
+            "{\"taskId\":\"lyoupfgfbkju\",\"startTime\":\"2021-04-30T06:19:59Z\",\"endTime\":\"2021-05-02T14:41:51Z\",\"instanceId\":\"fminsgowzf\",\"duration\":\"PT64H45M57S\",\"status\":\"t\",\"progressPercentage\":21.873740552777832,\"taskExecutionDetails\":\"bqactxtgzukx\"}")
             .toObject(AzureIaaSvmJobTaskDetails.class);
-        Assertions.assertEquals("ao", model.taskId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-11T13:34:37Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-18T10:11:41Z"), model.endTime());
-        Assertions.assertEquals("yyysfgdotcubi", model.instanceId());
-        Assertions.assertEquals(Duration.parse("PT116H49M43S"), model.duration());
-        Assertions.assertEquals("pwoqo", model.status());
-        Assertions.assertEquals(43.39468504241455D, model.progressPercentage());
-        Assertions.assertEquals("ekni", model.taskExecutionDetails());
+        Assertions.assertEquals("lyoupfgfbkju", model.taskId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-30T06:19:59Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-02T14:41:51Z"), model.endTime());
+        Assertions.assertEquals("fminsgowzf", model.instanceId());
+        Assertions.assertEquals(Duration.parse("PT64H45M57S"), model.duration());
+        Assertions.assertEquals("t", model.status());
+        Assertions.assertEquals(21.873740552777832D, model.progressPercentage());
+        Assertions.assertEquals("bqactxtgzukx", model.taskExecutionDetails());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureIaaSvmJobTaskDetails model = new AzureIaaSvmJobTaskDetails().withTaskId("ao")
-            .withStartTime(OffsetDateTime.parse("2021-04-11T13:34:37Z"))
-            .withEndTime(OffsetDateTime.parse("2021-08-18T10:11:41Z")).withInstanceId("yyysfgdotcubi")
-            .withDuration(Duration.parse("PT116H49M43S")).withStatus("pwoqo").withProgressPercentage(43.39468504241455D)
-            .withTaskExecutionDetails("ekni");
+        AzureIaaSvmJobTaskDetails model = new AzureIaaSvmJobTaskDetails().withTaskId("lyoupfgfbkju")
+            .withStartTime(OffsetDateTime.parse("2021-04-30T06:19:59Z"))
+            .withEndTime(OffsetDateTime.parse("2021-05-02T14:41:51Z"))
+            .withInstanceId("fminsgowzf")
+            .withDuration(Duration.parse("PT64H45M57S"))
+            .withStatus("t")
+            .withProgressPercentage(21.873740552777832D)
+            .withTaskExecutionDetails("bqactxtgzukx");
         model = BinaryData.fromObject(model).toObject(AzureIaaSvmJobTaskDetails.class);
-        Assertions.assertEquals("ao", model.taskId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-11T13:34:37Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-18T10:11:41Z"), model.endTime());
-        Assertions.assertEquals("yyysfgdotcubi", model.instanceId());
-        Assertions.assertEquals(Duration.parse("PT116H49M43S"), model.duration());
-        Assertions.assertEquals("pwoqo", model.status());
-        Assertions.assertEquals(43.39468504241455D, model.progressPercentage());
-        Assertions.assertEquals("ekni", model.taskExecutionDetails());
+        Assertions.assertEquals("lyoupfgfbkju", model.taskId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-30T06:19:59Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-02T14:41:51Z"), model.endTime());
+        Assertions.assertEquals("fminsgowzf", model.instanceId());
+        Assertions.assertEquals(Duration.parse("PT64H45M57S"), model.duration());
+        Assertions.assertEquals("t", model.status());
+        Assertions.assertEquals(21.873740552777832D, model.progressPercentage());
+        Assertions.assertEquals("bqactxtgzukx", model.taskExecutionDetails());
     }
 }

@@ -15,9 +15,7 @@ import java.time.Duration;
  */
 public final class NamespaceTopicEventSubscriptionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
-     * NamespaceTopicEventSubscriptions_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/NamespaceTopicEventSubscriptions_CreateOrUpdate.json
      */
     /**
      * Sample code: NamespaceTopicEventSubscriptions_CreateOrUpdate.
@@ -26,11 +24,14 @@ public final class NamespaceTopicEventSubscriptionsCreateOrUpdateSamples {
      */
     public static void
         namespaceTopicEventSubscriptionsCreateOrUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.namespaceTopicEventSubscriptions().define("examplenamespacetopicEventSub2")
+        manager.namespaceTopicEventSubscriptions()
+            .define("examplenamespacetopicEventSub2")
             .withExistingTopic("examplerg", "examplenamespace2", "examplenamespacetopic2")
             .withDeliveryConfiguration(new DeliveryConfiguration().withDeliveryMode(DeliveryMode.QUEUE)
-                .withQueue(new QueueInfo().withReceiveLockDurationInSeconds(60).withMaxDeliveryCount(4)
+                .withQueue(new QueueInfo().withReceiveLockDurationInSeconds(60)
+                    .withMaxDeliveryCount(4)
                     .withEventTimeToLive(Duration.parse("P1D"))))
-            .withEventDeliverySchema(DeliverySchema.CLOUD_EVENT_SCHEMA_V1_0).create();
+            .withEventDeliverySchema(DeliverySchema.CLOUD_EVENT_SCHEMA_V1_0)
+            .create();
     }
 }

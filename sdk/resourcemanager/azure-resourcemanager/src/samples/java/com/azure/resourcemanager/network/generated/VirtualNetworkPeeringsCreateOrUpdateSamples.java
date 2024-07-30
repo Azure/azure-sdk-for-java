@@ -7,14 +7,67 @@ package com.azure.resourcemanager.network.generated;
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkPeeringInner;
 import com.azure.resourcemanager.network.models.SyncRemoteAddressSpace;
+import java.util.Arrays;
 
 /**
  * Samples for VirtualNetworkPeerings CreateOrUpdate.
  */
 public final class VirtualNetworkPeeringsCreateOrUpdateSamples {
     /*
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * VirtualNetworkSubnetPeeringSync.json
+     */
+    /**
+     * Sample code: Sync subnet Peering.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void syncSubnetPeering(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworkPeerings()
+            .createOrUpdate("peerTest", "vnet1", "peer", new VirtualNetworkPeeringInner()
+                .withAllowVirtualNetworkAccess(true)
+                .withAllowForwardedTraffic(true)
+                .withAllowGatewayTransit(false)
+                .withUseRemoteGateways(false)
+                .withRemoteVirtualNetwork(new SubResource().withId(
+                    "/subscriptions/subid/resourceGroups/peerTest/providers/Microsoft.Network/virtualNetworks/vnet2"))
+                .withPeerCompleteVnets(false)
+                .withEnableOnlyIPv6Peering(false), SyncRemoteAddressSpace.TRUE, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * VirtualNetworkV6SubnetPeeringCreate.json
+     */
+    /**
+     * Sample code: Create V6 Subnet peering.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createV6SubnetPeering(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworkPeerings()
+            .createOrUpdate("peerTest", "vnet1", "peer", new VirtualNetworkPeeringInner()
+                .withAllowVirtualNetworkAccess(true)
+                .withAllowForwardedTraffic(true)
+                .withAllowGatewayTransit(false)
+                .withUseRemoteGateways(false)
+                .withRemoteVirtualNetwork(new SubResource().withId(
+                    "/subscriptions/subid/resourceGroups/peerTest/providers/Microsoft.Network/virtualNetworks/vnet2"))
+                .withPeerCompleteVnets(false)
+                .withEnableOnlyIPv6Peering(true)
+                .withLocalSubnetNames(Arrays.asList("Subnet1", "Subnet4"))
+                .withRemoteSubnetNames(Arrays.asList("Subnet2")), null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkPeeringSync.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualNetworkPeeringSync.
      * json
      */
     /**
@@ -23,18 +76,23 @@ public final class VirtualNetworkPeeringsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void syncPeering(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualNetworkPeerings().createOrUpdate("peerTest", "vnet1",
-            "peer",
-            new VirtualNetworkPeeringInner().withAllowVirtualNetworkAccess(true).withAllowForwardedTraffic(true)
-                .withAllowGatewayTransit(false).withUseRemoteGateways(false)
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworkPeerings()
+            .createOrUpdate("peerTest", "vnet1", "peer", new VirtualNetworkPeeringInner()
+                .withAllowVirtualNetworkAccess(true)
+                .withAllowForwardedTraffic(true)
+                .withAllowGatewayTransit(false)
+                .withUseRemoteGateways(false)
                 .withRemoteVirtualNetwork(new SubResource().withId(
                     "/subscriptions/subid/resourceGroups/peerTest/providers/Microsoft.Network/virtualNetworks/vnet2")),
-            SyncRemoteAddressSpace.TRUE, com.azure.core.util.Context.NONE);
+                SyncRemoteAddressSpace.TRUE, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkPeeringCreate.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualNetworkPeeringCreate.
      * json
      */
     /**
@@ -43,17 +101,22 @@ public final class VirtualNetworkPeeringsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createPeering(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualNetworkPeerings().createOrUpdate("peerTest", "vnet1",
-            "peer",
-            new VirtualNetworkPeeringInner().withAllowVirtualNetworkAccess(true).withAllowForwardedTraffic(true)
-                .withAllowGatewayTransit(false).withUseRemoteGateways(false)
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworkPeerings()
+            .createOrUpdate("peerTest", "vnet1", "peer", new VirtualNetworkPeeringInner()
+                .withAllowVirtualNetworkAccess(true)
+                .withAllowForwardedTraffic(true)
+                .withAllowGatewayTransit(false)
+                .withUseRemoteGateways(false)
                 .withRemoteVirtualNetwork(new SubResource().withId(
                     "/subscriptions/subid/resourceGroups/peerTest/providers/Microsoft.Network/virtualNetworks/vnet2")),
-            null, com.azure.core.util.Context.NONE);
+                null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * VirtualNetworkPeeringCreateWithRemoteVirtualNetworkEncryption.json
      */
     /**
@@ -63,12 +126,69 @@ public final class VirtualNetworkPeeringsCreateOrUpdateSamples {
      */
     public static void
         createPeeringWithRemoteVirtualNetworkEncryption(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualNetworkPeerings().createOrUpdate("peerTest", "vnet1",
-            "peer",
-            new VirtualNetworkPeeringInner().withAllowVirtualNetworkAccess(true).withAllowForwardedTraffic(true)
-                .withAllowGatewayTransit(false).withUseRemoteGateways(false)
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworkPeerings()
+            .createOrUpdate("peerTest", "vnet1", "peer", new VirtualNetworkPeeringInner()
+                .withAllowVirtualNetworkAccess(true)
+                .withAllowForwardedTraffic(true)
+                .withAllowGatewayTransit(false)
+                .withUseRemoteGateways(false)
                 .withRemoteVirtualNetwork(new SubResource().withId(
                     "/subscriptions/subid/resourceGroups/peerTest/providers/Microsoft.Network/virtualNetworks/vnet2")),
-            null, com.azure.core.util.Context.NONE);
+                null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * VirtualNetworkSubnetPeeringCreate.json
+     */
+    /**
+     * Sample code: Create subnet peering.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createSubnetPeering(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworkPeerings()
+            .createOrUpdate("peerTest", "vnet1", "peer", new VirtualNetworkPeeringInner()
+                .withAllowVirtualNetworkAccess(true)
+                .withAllowForwardedTraffic(true)
+                .withAllowGatewayTransit(false)
+                .withUseRemoteGateways(false)
+                .withRemoteVirtualNetwork(new SubResource().withId(
+                    "/subscriptions/subid/resourceGroups/peerTest/providers/Microsoft.Network/virtualNetworks/vnet2"))
+                .withPeerCompleteVnets(false)
+                .withEnableOnlyIPv6Peering(false)
+                .withLocalSubnetNames(Arrays.asList("Subnet1", "Subnet4"))
+                .withRemoteSubnetNames(Arrays.asList("Subnet2")), null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * VirtualNetworkV6SubnetPeeringSync.json
+     */
+    /**
+     * Sample code: Sync V6 Subnet Peering.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void syncV6SubnetPeering(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworkPeerings()
+            .createOrUpdate("peerTest", "vnet1", "peer", new VirtualNetworkPeeringInner()
+                .withAllowVirtualNetworkAccess(true)
+                .withAllowForwardedTraffic(true)
+                .withAllowGatewayTransit(false)
+                .withUseRemoteGateways(false)
+                .withRemoteVirtualNetwork(new SubResource().withId(
+                    "/subscriptions/subid/resourceGroups/peerTest/providers/Microsoft.Network/virtualNetworks/vnet2"))
+                .withPeerCompleteVnets(false)
+                .withEnableOnlyIPv6Peering(true), SyncRemoteAddressSpace.TRUE, com.azure.core.util.Context.NONE);
     }
 }

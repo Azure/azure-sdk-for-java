@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Trino user plugins spec. */
+/**
+ * Trino user plugins spec.
+ */
 @Fluent
 public final class TrinoUserPlugins {
     /*
@@ -17,13 +19,15 @@ public final class TrinoUserPlugins {
     @JsonProperty(value = "plugins")
     private List<TrinoUserPlugin> plugins;
 
-    /** Creates an instance of TrinoUserPlugins class. */
+    /**
+     * Creates an instance of TrinoUserPlugins class.
+     */
     public TrinoUserPlugins() {
     }
 
     /**
      * Get the plugins property: Trino user plugins.
-     *
+     * 
      * @return the plugins value.
      */
     public List<TrinoUserPlugin> plugins() {
@@ -32,7 +36,7 @@ public final class TrinoUserPlugins {
 
     /**
      * Set the plugins property: Trino user plugins.
-     *
+     * 
      * @param plugins the plugins value to set.
      * @return the TrinoUserPlugins object itself.
      */
@@ -43,7 +47,7 @@ public final class TrinoUserPlugins {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

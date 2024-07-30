@@ -346,8 +346,8 @@ public final class ServerForUpdate {
     }
 
     /**
-     * Get the replica property: Replica properties of a server. These Replica properties are required to be passed
-     * only in case you want to Promote a server.
+     * Get the replica property: Replica properties of a server. These Replica properties are required to be passed only
+     * in case you want to Promote a server.
      * 
      * @return the replica value.
      */
@@ -356,8 +356,8 @@ public final class ServerForUpdate {
     }
 
     /**
-     * Set the replica property: Replica properties of a server. These Replica properties are required to be passed
-     * only in case you want to Promote a server.
+     * Set the replica property: Replica properties of a server. These Replica properties are required to be passed only
+     * in case you want to Promote a server.
      * 
      * @param replica the replica value to set.
      * @return the ServerForUpdate object itself.

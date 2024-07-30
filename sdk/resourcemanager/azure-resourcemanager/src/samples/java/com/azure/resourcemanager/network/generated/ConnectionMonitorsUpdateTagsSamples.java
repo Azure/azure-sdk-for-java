@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class ConnectionMonitorsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * NetworkWatcherConnectionMonitorUpdateTags.json
      */
     /**
@@ -22,8 +22,12 @@ public final class ConnectionMonitorsUpdateTagsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateConnectionMonitorTags(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getConnectionMonitors().updateTagsWithResponse("rg1", "nw1", "cm1",
-            new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")), com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getConnectionMonitors()
+            .updateTagsWithResponse("rg1", "nw1", "cm1",
+                new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

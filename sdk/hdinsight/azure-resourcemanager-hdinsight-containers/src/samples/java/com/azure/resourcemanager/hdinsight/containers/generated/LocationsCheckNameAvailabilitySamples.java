@@ -6,25 +6,25 @@ package com.azure.resourcemanager.hdinsight.containers.generated;
 
 import com.azure.resourcemanager.hdinsight.containers.models.NameAvailabilityParameters;
 
-/** Samples for Locations CheckNameAvailability. */
+/**
+ * Samples for Locations CheckNameAvailability.
+ */
 public final class LocationsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-06-01-preview/examples/LocationsNameAvailability.json
+     * x-ms-original-file:
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/
+     * LocationsNameAvailability.json
      */
     /**
      * Sample code: LocationsNameAvailability.
-     *
+     * 
      * @param manager Entry point to HDInsightContainersManager.
      */
-    public static void locationsNameAvailability(
-        com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager manager) {
-        manager
-            .locations()
-            .checkNameAvailabilityWithResponse(
-                "southeastasia",
-                new NameAvailabilityParameters()
-                    .withName("contosemember1")
-                    .withType("Microsoft.HDInsight/clusterPools/clusters"),
+    public static void
+        locationsNameAvailability(com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager manager) {
+        manager.locations()
+            .checkNameAvailabilityWithResponse("southeastasia", new NameAvailabilityParameters()
+                .withName("contosemember1").withType("Microsoft.HDInsight/clusterPools/clusters"),
                 com.azure.core.util.Context.NONE);
     }
 }

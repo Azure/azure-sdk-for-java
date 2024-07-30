@@ -5,7 +5,6 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -56,7 +55,6 @@ public final class SpeechGenerationResponseFormat extends ExpandableStringEnum<S
      * @return the corresponding SpeechGenerationResponseFormat.
      */
     @Generated
-    @JsonCreator
     public static SpeechGenerationResponseFormat fromString(String name) {
         return fromString(name, SpeechGenerationResponseFormat.class);
     }
@@ -70,4 +68,18 @@ public final class SpeechGenerationResponseFormat extends ExpandableStringEnum<S
     public static Collection<SpeechGenerationResponseFormat> values() {
         return values(SpeechGenerationResponseFormat.class);
     }
+
+    /**
+     * Use uncompressed WAV as the audio output format, suitable for low-latency applications to avoid decoding
+     * overhead.
+     */
+    @Generated
+    public static final SpeechGenerationResponseFormat WAV = fromString("wav");
+
+    /**
+     * Use uncompressed PCM as the audio output format, which is similar to WAV but contains raw samples in 24kHz
+     * (16-bit signed, low-endian), without the header.
+     */
+    @Generated
+    public static final SpeechGenerationResponseFormat PCM = fromString("pcm");
 }

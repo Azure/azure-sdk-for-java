@@ -8,21 +8,29 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LatencyScorecardAggregationInterval. */
+/**
+ * Defines values for LatencyScorecardAggregationInterval.
+ */
 public final class LatencyScorecardAggregationInterval
     extends ExpandableStringEnum<LatencyScorecardAggregationInterval> {
-    /** Static value Daily for LatencyScorecardAggregationInterval. */
+    /**
+     * Static value Daily for LatencyScorecardAggregationInterval.
+     */
     public static final LatencyScorecardAggregationInterval DAILY = fromString("Daily");
 
-    /** Static value Weekly for LatencyScorecardAggregationInterval. */
+    /**
+     * Static value Weekly for LatencyScorecardAggregationInterval.
+     */
     public static final LatencyScorecardAggregationInterval WEEKLY = fromString("Weekly");
 
-    /** Static value Monthly for LatencyScorecardAggregationInterval. */
+    /**
+     * Static value Monthly for LatencyScorecardAggregationInterval.
+     */
     public static final LatencyScorecardAggregationInterval MONTHLY = fromString("Monthly");
 
     /**
      * Creates a new instance of LatencyScorecardAggregationInterval value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -31,7 +39,7 @@ public final class LatencyScorecardAggregationInterval
 
     /**
      * Creates or finds a LatencyScorecardAggregationInterval from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LatencyScorecardAggregationInterval.
      */
@@ -42,7 +50,7 @@ public final class LatencyScorecardAggregationInterval
 
     /**
      * Gets known LatencyScorecardAggregationInterval values.
-     *
+     * 
      * @return known LatencyScorecardAggregationInterval values.
      */
     public static Collection<LatencyScorecardAggregationInterval> values() {

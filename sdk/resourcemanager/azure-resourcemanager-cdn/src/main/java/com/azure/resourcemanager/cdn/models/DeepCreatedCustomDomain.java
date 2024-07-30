@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.fluent.models.DeepCreatedCustomDomainProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Custom domains created on the CDN endpoint. */
+/**
+ * Custom domains created on the CDN endpoint.
+ */
 @Fluent
 public final class DeepCreatedCustomDomain {
     /*
@@ -24,13 +26,15 @@ public final class DeepCreatedCustomDomain {
     @JsonProperty(value = "properties")
     private DeepCreatedCustomDomainProperties innerProperties;
 
-    /** Creates an instance of DeepCreatedCustomDomain class. */
+    /**
+     * Creates an instance of DeepCreatedCustomDomain class.
+     */
     public DeepCreatedCustomDomain() {
     }
 
     /**
      * Get the name property: Custom domain name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -39,7 +43,7 @@ public final class DeepCreatedCustomDomain {
 
     /**
      * Set the name property: Custom domain name.
-     *
+     * 
      * @param name the name value to set.
      * @return the DeepCreatedCustomDomain object itself.
      */
@@ -50,7 +54,7 @@ public final class DeepCreatedCustomDomain {
 
     /**
      * Get the innerProperties property: Properties of the custom domain created on the CDN endpoint.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DeepCreatedCustomDomainProperties innerProperties() {
@@ -59,7 +63,7 @@ public final class DeepCreatedCustomDomain {
 
     /**
      * Get the hostname property: The host name of the custom domain. Must be a domain name.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -68,7 +72,7 @@ public final class DeepCreatedCustomDomain {
 
     /**
      * Set the hostname property: The host name of the custom domain. Must be a domain name.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the DeepCreatedCustomDomain object itself.
      */
@@ -84,7 +88,7 @@ public final class DeepCreatedCustomDomain {
      * Get the validationData property: Special validation or data may be required when delivering CDN to some regions
      * due to local compliance reasons. E.g. ICP license number of a custom domain is required to deliver content in
      * China.
-     *
+     * 
      * @return the validationData value.
      */
     public String validationData() {
@@ -95,7 +99,7 @@ public final class DeepCreatedCustomDomain {
      * Set the validationData property: Special validation or data may be required when delivering CDN to some regions
      * due to local compliance reasons. E.g. ICP license number of a custom domain is required to deliver content in
      * China.
-     *
+     * 
      * @param validationData the validationData value to set.
      * @return the DeepCreatedCustomDomain object itself.
      */
@@ -109,14 +113,13 @@ public final class DeepCreatedCustomDomain {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model DeepCreatedCustomDomain"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model DeepCreatedCustomDomain"));
         }
         if (innerProperties() != null) {
             innerProperties().validate();

@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** SIM name and properties. */
+/**
+ * SIM name and properties.
+ */
 @Fluent
 public final class SimNameAndProperties {
     /*
@@ -26,13 +28,15 @@ public final class SimNameAndProperties {
     @JsonProperty(value = "properties", required = true)
     private SimPropertiesFormat innerProperties = new SimPropertiesFormat();
 
-    /** Creates an instance of SimNameAndProperties class. */
+    /**
+     * Creates an instance of SimNameAndProperties class.
+     */
     public SimNameAndProperties() {
     }
 
     /**
      * Get the name property: The name of the SIM.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -41,7 +45,7 @@ public final class SimNameAndProperties {
 
     /**
      * Set the name property: The name of the SIM.
-     *
+     * 
      * @param name the name value to set.
      * @return the SimNameAndProperties object itself.
      */
@@ -52,7 +56,7 @@ public final class SimNameAndProperties {
 
     /**
      * Get the innerProperties property: SIM Properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SimPropertiesFormat innerProperties() {
@@ -61,7 +65,7 @@ public final class SimNameAndProperties {
 
     /**
      * Get the authenticationKey property: The Ki value for the SIM.
-     *
+     * 
      * @return the authenticationKey value.
      */
     public String authenticationKey() {
@@ -70,7 +74,7 @@ public final class SimNameAndProperties {
 
     /**
      * Set the authenticationKey property: The Ki value for the SIM.
-     *
+     * 
      * @param authenticationKey the authenticationKey value to set.
      * @return the SimNameAndProperties object itself.
      */
@@ -84,7 +88,7 @@ public final class SimNameAndProperties {
 
     /**
      * Get the operatorKeyCode property: The Opc value for the SIM.
-     *
+     * 
      * @return the operatorKeyCode value.
      */
     public String operatorKeyCode() {
@@ -93,7 +97,7 @@ public final class SimNameAndProperties {
 
     /**
      * Set the operatorKeyCode property: The Opc value for the SIM.
-     *
+     * 
      * @param operatorKeyCode the operatorKeyCode value to set.
      * @return the SimNameAndProperties object itself.
      */
@@ -107,7 +111,7 @@ public final class SimNameAndProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the SIM resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -116,7 +120,7 @@ public final class SimNameAndProperties {
 
     /**
      * Get the simState property: The state of the SIM resource.
-     *
+     * 
      * @return the simState value.
      */
     public SimState simState() {
@@ -125,7 +129,7 @@ public final class SimNameAndProperties {
 
     /**
      * Get the siteProvisioningState property: A dictionary of sites to the provisioning state of this SIM on that site.
-     *
+     * 
      * @return the siteProvisioningState value.
      */
     public Map<String, SiteProvisioningState> siteProvisioningState() {
@@ -135,7 +139,7 @@ public final class SimNameAndProperties {
     /**
      * Get the internationalMobileSubscriberIdentity property: The international mobile subscriber identity (IMSI) for
      * the SIM.
-     *
+     * 
      * @return the internationalMobileSubscriberIdentity value.
      */
     public String internationalMobileSubscriberIdentity() {
@@ -145,12 +149,12 @@ public final class SimNameAndProperties {
     /**
      * Set the internationalMobileSubscriberIdentity property: The international mobile subscriber identity (IMSI) for
      * the SIM.
-     *
+     * 
      * @param internationalMobileSubscriberIdentity the internationalMobileSubscriberIdentity value to set.
      * @return the SimNameAndProperties object itself.
      */
-    public SimNameAndProperties withInternationalMobileSubscriberIdentity(
-        String internationalMobileSubscriberIdentity) {
+    public SimNameAndProperties
+        withInternationalMobileSubscriberIdentity(String internationalMobileSubscriberIdentity) {
         if (this.innerProperties() == null) {
             this.innerProperties = new SimPropertiesFormat();
         }
@@ -160,7 +164,7 @@ public final class SimNameAndProperties {
 
     /**
      * Get the integratedCircuitCardIdentifier property: The integrated circuit card ID (ICCID) for the SIM.
-     *
+     * 
      * @return the integratedCircuitCardIdentifier value.
      */
     public String integratedCircuitCardIdentifier() {
@@ -169,7 +173,7 @@ public final class SimNameAndProperties {
 
     /**
      * Set the integratedCircuitCardIdentifier property: The integrated circuit card ID (ICCID) for the SIM.
-     *
+     * 
      * @param integratedCircuitCardIdentifier the integratedCircuitCardIdentifier value to set.
      * @return the SimNameAndProperties object itself.
      */
@@ -185,7 +189,7 @@ public final class SimNameAndProperties {
      * Get the deviceType property: An optional free-form text field that can be used to record the device type this SIM
      * is associated with, for example 'Video camera'. The Azure portal allows SIMs to be grouped and filtered based on
      * this value.
-     *
+     * 
      * @return the deviceType value.
      */
     public String deviceType() {
@@ -196,7 +200,7 @@ public final class SimNameAndProperties {
      * Set the deviceType property: An optional free-form text field that can be used to record the device type this SIM
      * is associated with, for example 'Video camera'. The Azure portal allows SIMs to be grouped and filtered based on
      * this value.
-     *
+     * 
      * @param deviceType the deviceType value to set.
      * @return the SimNameAndProperties object itself.
      */
@@ -211,7 +215,7 @@ public final class SimNameAndProperties {
     /**
      * Get the simPolicy property: The SIM policy used by this SIM. The SIM policy must be in the same location as the
      * SIM.
-     *
+     * 
      * @return the simPolicy value.
      */
     public SimPolicyResourceId simPolicy() {
@@ -221,7 +225,7 @@ public final class SimNameAndProperties {
     /**
      * Set the simPolicy property: The SIM policy used by this SIM. The SIM policy must be in the same location as the
      * SIM.
-     *
+     * 
      * @param simPolicy the simPolicy value to set.
      * @return the SimNameAndProperties object itself.
      */
@@ -236,7 +240,7 @@ public final class SimNameAndProperties {
     /**
      * Get the staticIpConfiguration property: A list of static IP addresses assigned to this SIM. Each address is
      * assigned at a defined network scope, made up of {attached data network, slice}.
-     *
+     * 
      * @return the staticIpConfiguration value.
      */
     public List<SimStaticIpProperties> staticIpConfiguration() {
@@ -246,7 +250,7 @@ public final class SimNameAndProperties {
     /**
      * Set the staticIpConfiguration property: A list of static IP addresses assigned to this SIM. Each address is
      * assigned at a defined network scope, made up of {attached data network, slice}.
-     *
+     * 
      * @param staticIpConfiguration the staticIpConfiguration value to set.
      * @return the SimNameAndProperties object itself.
      */
@@ -260,7 +264,7 @@ public final class SimNameAndProperties {
 
     /**
      * Get the vendorName property: The name of the SIM vendor who provided this SIM, if any.
-     *
+     * 
      * @return the vendorName value.
      */
     public String vendorName() {
@@ -270,7 +274,7 @@ public final class SimNameAndProperties {
     /**
      * Get the vendorKeyFingerprint property: The public key fingerprint of the SIM vendor who provided this SIM, if
      * any.
-     *
+     * 
      * @return the vendorKeyFingerprint value.
      */
     public String vendorKeyFingerprint() {
@@ -279,20 +283,18 @@ public final class SimNameAndProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model SimNameAndProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model SimNameAndProperties"));
         }
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model SimNameAndProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model SimNameAndProperties"));
         } else {
             innerProperties().validate();
         }

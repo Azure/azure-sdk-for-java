@@ -5,28 +5,42 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The base definition of a secret type.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = SecretBase.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = SecretBase.class, visible = true)
 @JsonTypeName("SecretBase")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "SecureString", value = SecureString.class),
     @JsonSubTypes.Type(name = "AzureKeyVaultSecret", value = AzureKeyVaultSecretReference.class) })
 @Immutable
 public class SecretBase {
+    /*
+     * Type of the secret.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "SecretBase";
+
     /**
      * Creates an instance of SecretBase class.
      */
     public SecretBase() {
+    }
+
+    /**
+     * Get the type property: Type of the secret.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**

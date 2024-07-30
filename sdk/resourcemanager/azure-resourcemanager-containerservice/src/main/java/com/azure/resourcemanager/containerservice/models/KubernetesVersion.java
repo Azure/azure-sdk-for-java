@@ -27,6 +27,12 @@ public final class KubernetesVersion {
     private KubernetesVersionCapabilities capabilities;
 
     /*
+     * Whether this version is default.
+     */
+    @JsonProperty(value = "isDefault")
+    private Boolean isDefault;
+
+    /*
      * Whether this version is in preview mode.
      */
     @JsonProperty(value = "isPreview")
@@ -82,6 +88,26 @@ public final class KubernetesVersion {
      */
     public KubernetesVersion withCapabilities(KubernetesVersionCapabilities capabilities) {
         this.capabilities = capabilities;
+        return this;
+    }
+
+    /**
+     * Get the isDefault property: Whether this version is default.
+     * 
+     * @return the isDefault value.
+     */
+    public Boolean isDefault() {
+        return this.isDefault;
+    }
+
+    /**
+     * Set the isDefault property: Whether this version is default.
+     * 
+     * @param isDefault the isDefault value to set.
+     * @return the KubernetesVersion object itself.
+     */
+    public KubernetesVersion withIsDefault(Boolean isDefault) {
+        this.isDefault = isDefault;
         return this;
     }
 

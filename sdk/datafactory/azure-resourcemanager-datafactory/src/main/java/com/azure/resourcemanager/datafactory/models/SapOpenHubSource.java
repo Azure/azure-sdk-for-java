@@ -6,16 +6,24 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity source for SAP Business Warehouse Open Hub Destination source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = SapOpenHubSource.class, visible = true)
 @JsonTypeName("SapOpenHubSource")
 @Fluent
 public final class SapOpenHubSource extends TabularSource {
+    /*
+     * Copy source type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "SapOpenHubSource";
+
     /*
      * Whether to exclude the records of the last request. The default value is true. Type: boolean (or Expression with
      * resultType boolean).
@@ -48,6 +56,16 @@ public final class SapOpenHubSource extends TabularSource {
      * Creates an instance of SapOpenHubSource class.
      */
     public SapOpenHubSource() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -119,8 +137,8 @@ public final class SapOpenHubSource extends TabularSource {
     }
 
     /**
-     * Get the sapDataColumnDelimiter property: The single character that will be used as delimiter passed to SAP RFC
-     * as well as splitting the output data retrieved. Type: string (or Expression with resultType string).
+     * Get the sapDataColumnDelimiter property: The single character that will be used as delimiter passed to SAP RFC as
+     * well as splitting the output data retrieved. Type: string (or Expression with resultType string).
      * 
      * @return the sapDataColumnDelimiter value.
      */
@@ -129,8 +147,8 @@ public final class SapOpenHubSource extends TabularSource {
     }
 
     /**
-     * Set the sapDataColumnDelimiter property: The single character that will be used as delimiter passed to SAP RFC
-     * as well as splitting the output data retrieved. Type: string (or Expression with resultType string).
+     * Set the sapDataColumnDelimiter property: The single character that will be used as delimiter passed to SAP RFC as
+     * well as splitting the output data retrieved. Type: string (or Expression with resultType string).
      * 
      * @param sapDataColumnDelimiter the sapDataColumnDelimiter value to set.
      * @return the SapOpenHubSource object itself.

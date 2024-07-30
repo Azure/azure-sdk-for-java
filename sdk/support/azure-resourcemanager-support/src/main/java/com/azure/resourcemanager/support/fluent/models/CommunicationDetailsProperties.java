@@ -11,7 +11,9 @@ import com.azure.resourcemanager.support.models.CommunicationType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Describes the properties of a communication resource. */
+/**
+ * Describes the properties of a communication resource.
+ */
 @Fluent
 public final class CommunicationDetailsProperties {
     /*
@@ -50,13 +52,15 @@ public final class CommunicationDetailsProperties {
     @JsonProperty(value = "createdDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdDate;
 
-    /** Creates an instance of CommunicationDetailsProperties class. */
+    /**
+     * Creates an instance of CommunicationDetailsProperties class.
+     */
     public CommunicationDetailsProperties() {
     }
 
     /**
      * Get the communicationType property: Communication type.
-     *
+     * 
      * @return the communicationType value.
      */
     public CommunicationType communicationType() {
@@ -65,7 +69,7 @@ public final class CommunicationDetailsProperties {
 
     /**
      * Get the communicationDirection property: Direction of communication.
-     *
+     * 
      * @return the communicationDirection value.
      */
     public CommunicationDirection communicationDirection() {
@@ -74,7 +78,7 @@ public final class CommunicationDetailsProperties {
 
     /**
      * Get the sender property: Email address of the sender. This property is required if called by a service principal.
-     *
+     * 
      * @return the sender value.
      */
     public String sender() {
@@ -83,7 +87,7 @@ public final class CommunicationDetailsProperties {
 
     /**
      * Set the sender property: Email address of the sender. This property is required if called by a service principal.
-     *
+     * 
      * @param sender the sender value to set.
      * @return the CommunicationDetailsProperties object itself.
      */
@@ -94,7 +98,7 @@ public final class CommunicationDetailsProperties {
 
     /**
      * Get the subject property: Subject of the communication.
-     *
+     * 
      * @return the subject value.
      */
     public String subject() {
@@ -103,7 +107,7 @@ public final class CommunicationDetailsProperties {
 
     /**
      * Set the subject property: Subject of the communication.
-     *
+     * 
      * @param subject the subject value to set.
      * @return the CommunicationDetailsProperties object itself.
      */
@@ -114,7 +118,7 @@ public final class CommunicationDetailsProperties {
 
     /**
      * Get the body property: Body of the communication.
-     *
+     * 
      * @return the body value.
      */
     public String body() {
@@ -123,7 +127,7 @@ public final class CommunicationDetailsProperties {
 
     /**
      * Set the body property: Body of the communication.
-     *
+     * 
      * @param body the body value to set.
      * @return the CommunicationDetailsProperties object itself.
      */
@@ -134,7 +138,7 @@ public final class CommunicationDetailsProperties {
 
     /**
      * Get the createdDate property: Time in UTC (ISO 8601 format) when the communication was created.
-     *
+     * 
      * @return the createdDate value.
      */
     public OffsetDateTime createdDate() {
@@ -143,21 +147,19 @@ public final class CommunicationDetailsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (subject() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property subject in model CommunicationDetailsProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property subject in model CommunicationDetailsProperties"));
         }
         if (body() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property body in model CommunicationDetailsProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property body in model CommunicationDetailsProperties"));
         }
     }
 

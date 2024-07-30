@@ -5,28 +5,29 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Content filtering results for a single prompt in the request.
  */
 @Immutable
-public final class ContentFilterResultsForPrompt {
+public final class ContentFilterResultsForPrompt implements JsonSerializable<ContentFilterResultsForPrompt> {
 
     /*
      * The index of this prompt in the set of prompt results
      */
     @Generated
-    @JsonProperty(value = "prompt_index")
-    private int promptIndex;
+    private final int promptIndex;
 
     /*
      * Content filtering results for this prompt
      */
     @Generated
-    @JsonProperty(value = "content_filter_results")
-    private ContentFilterResultDetailsForPrompt contentFilterResults;
+    private final ContentFilterResultDetailsForPrompt contentFilterResults;
 
     /**
      * Get the promptIndex property: The index of this prompt in the set of prompt results.
@@ -55,10 +56,49 @@ public final class ContentFilterResultsForPrompt {
      * @param contentFilterResults the contentFilterResults value to set.
      */
     @Generated
-    @JsonCreator
-    private ContentFilterResultsForPrompt(@JsonProperty(value = "prompt_index") int promptIndex,
-        @JsonProperty(value = "content_filter_results") ContentFilterResultDetailsForPrompt contentFilterResults) {
+    private ContentFilterResultsForPrompt(int promptIndex, ContentFilterResultDetailsForPrompt contentFilterResults) {
         this.promptIndex = promptIndex;
         this.contentFilterResults = contentFilterResults;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("prompt_index", this.promptIndex);
+        jsonWriter.writeJsonField("content_filter_results", this.contentFilterResults);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContentFilterResultsForPrompt from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContentFilterResultsForPrompt if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ContentFilterResultsForPrompt.
+     */
+    @Generated
+    public static ContentFilterResultsForPrompt fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            int promptIndex = 0;
+            ContentFilterResultDetailsForPrompt contentFilterResults = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("prompt_index".equals(fieldName)) {
+                    promptIndex = reader.getInt();
+                } else if ("content_filter_results".equals(fieldName)) {
+                    contentFilterResults = ContentFilterResultDetailsForPrompt.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new ContentFilterResultsForPrompt(promptIndex, contentFilterResults);
+        });
     }
 }

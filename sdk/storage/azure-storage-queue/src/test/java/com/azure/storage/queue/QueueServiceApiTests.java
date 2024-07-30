@@ -7,6 +7,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.queue.models.QueueAnalyticsLogging;
 import com.azure.storage.queue.models.QueueAudience;
 import com.azure.storage.queue.models.QueueErrorCode;
@@ -230,7 +232,7 @@ public class QueueServiceApiTests extends QueueTestBase {
 
     @Test
     public void defaultAudience() {
-        QueueServiceClient aadService = getOAuthServiceClientBuilder(primaryQueueServiceClient.getQueueServiceUrl())
+        QueueServiceClient aadService = getOAuthServiceClientBuilder()
             .audience(null) // should default to "https://storage.azure.com/"
             .buildClient();
 
@@ -239,21 +241,25 @@ public class QueueServiceApiTests extends QueueTestBase {
 
     @Test
     public void storageAccountAudience() {
-        QueueServiceClient aadService = getOAuthServiceClientBuilder(primaryQueueServiceClient.getQueueServiceUrl())
+        QueueServiceClient aadService = getOAuthServiceClientBuilder()
             .audience(QueueAudience.createQueueServiceAccountAudience(primaryQueueServiceClient.getAccountName()))
             .buildClient();
 
         assertNotNull(aadService.getProperties());
     }
 
+    @RequiredServiceVersion(clazz = QueueServiceVersion.class, min = "2024-08-04")
+    @LiveOnly
     @Test
-    public void audienceError() {
-        QueueServiceClient aadService = getOAuthServiceClientBuilder(primaryQueueServiceClient.getQueueServiceUrl())
+    /* This test tests if the bearer challenge is working properly. A bad audience is passed in, the service returns
+    the default audience, and the request gets retried with this default audience, making the call function as expected.
+     */
+    public void audienceErrorBearerChallengeRetry() {
+        QueueServiceClient aadService = getOAuthServiceClientBuilder()
             .audience(QueueAudience.createQueueServiceAccountAudience("badaudience"))
             .buildClient();
 
-        QueueStorageException e = assertThrows(QueueStorageException.class, aadService::getProperties);
-        assertEquals(QueueErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
+        assertNotNull(aadService.getProperties());
     }
 
     @Test
@@ -261,7 +267,7 @@ public class QueueServiceApiTests extends QueueTestBase {
         String url = String.format("https://%s.queue.core.windows.net/", primaryQueueServiceClient.getAccountName());
         QueueAudience audience = QueueAudience.fromString(url);
 
-        QueueServiceClient aadService = getOAuthServiceClientBuilder(primaryQueueServiceClient.getQueueServiceUrl())
+        QueueServiceClient aadService = getOAuthServiceClientBuilder()
             .audience(audience)
             .buildClient();
 

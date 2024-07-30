@@ -6,20 +6,22 @@ package com.azure.resourcemanager.sphere.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sphere.models.ProductUpdate;
+import com.azure.resourcemanager.sphere.models.ProductUpdateProperties;
 import org.junit.jupiter.api.Assertions;
 
 public final class ProductUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProductUpdate model =
-            BinaryData.fromString("{\"properties\":{\"description\":\"by\"}}").toObject(ProductUpdate.class);
-        Assertions.assertEquals("by", model.description());
+        ProductUpdate model
+            = BinaryData.fromString("{\"properties\":{\"description\":\"ovplw\"}}").toObject(ProductUpdate.class);
+        Assertions.assertEquals("ovplw", model.properties().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProductUpdate model = new ProductUpdate().withDescription("by");
+        ProductUpdate model
+            = new ProductUpdate().withProperties(new ProductUpdateProperties().withDescription("ovplw"));
         model = BinaryData.fromObject(model).toObject(ProductUpdate.class);
-        Assertions.assertEquals("by", model.description());
+        Assertions.assertEquals("ovplw", model.properties().description());
     }
 }

@@ -67,8 +67,9 @@ public final class VirtualNetworkBgpCommunities {
      */
     public void validate() {
         if (virtualNetworkCommunity() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property virtualNetworkCommunity in model VirtualNetworkBgpCommunities"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property virtualNetworkCommunity in model VirtualNetworkBgpCommunities"));
         }
     }
 

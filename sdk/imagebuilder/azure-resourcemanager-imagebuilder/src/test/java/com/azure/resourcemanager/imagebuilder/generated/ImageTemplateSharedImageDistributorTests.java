@@ -18,41 +18,43 @@ public final class ImageTemplateSharedImageDistributorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImageTemplateSharedImageDistributor model = BinaryData.fromString(
-            "{\"type\":\"SharedImage\",\"galleryImageId\":\"wburvjxxjnspydpt\",\"replicationRegions\":[\"nkoukn\",\"udwtiukbl\",\"ngkpocipazy\"],\"excludeFromLatest\":true,\"storageAccountType\":\"Premium_LRS\",\"targetRegions\":[{\"name\":\"jnpiucgyg\",\"replicaCount\":1701243846,\"storageAccountType\":\"Premium_LRS\"}],\"versioning\":{\"scheme\":\"DistributeVersioner\"},\"runOutputName\":\"yp\",\"artifactTags\":{\"zcdrqjsdpydnfyhx\":\"p\",\"ifsjttgzfbishcb\":\"eoejzic\",\"alpbuxwgipwhon\":\"hajdeyeamdpha\",\"kix\":\"wkgshwa\"}}")
+            "{\"type\":\"SharedImage\",\"galleryImageId\":\"qnwvlrya\",\"replicationRegions\":[\"heun\",\"mqhgyxzkonocuk\",\"klyaxuconu\"],\"excludeFromLatest\":false,\"storageAccountType\":\"Standard_ZRS\",\"targetRegions\":[{\"name\":\"ypewrmjmwvvjekt\",\"replicaCount\":2107215650,\"storageAccountType\":\"Standard_ZRS\"}],\"versioning\":{\"scheme\":\"DistributeVersioner\"},\"runOutputName\":\"wlrsffrzpwv\",\"artifactTags\":{\"biqylihkaet\":\"q\",\"fcivfsnkym\":\"kt\",\"jf\":\"ctq\",\"fuwutttxf\":\"ebrjcxe\"}}")
             .toObject(ImageTemplateSharedImageDistributor.class);
-        Assertions.assertEquals("yp", model.runOutputName());
-        Assertions.assertEquals("p", model.artifactTags().get("zcdrqjsdpydnfyhx"));
-        Assertions.assertEquals("wburvjxxjnspydpt", model.galleryImageId());
-        Assertions.assertEquals("nkoukn", model.replicationRegions().get(0));
-        Assertions.assertEquals(true, model.excludeFromLatest());
-        Assertions.assertEquals(SharedImageStorageAccountType.PREMIUM_LRS, model.storageAccountType());
-        Assertions.assertEquals("jnpiucgyg", model.targetRegions().get(0).name());
-        Assertions.assertEquals(1701243846, model.targetRegions().get(0).replicaCount());
-        Assertions.assertEquals(SharedImageStorageAccountType.PREMIUM_LRS,
+        Assertions.assertEquals("wlrsffrzpwv", model.runOutputName());
+        Assertions.assertEquals("q", model.artifactTags().get("biqylihkaet"));
+        Assertions.assertEquals("qnwvlrya", model.galleryImageId());
+        Assertions.assertEquals("heun", model.replicationRegions().get(0));
+        Assertions.assertEquals(false, model.excludeFromLatest());
+        Assertions.assertEquals(SharedImageStorageAccountType.STANDARD_ZRS, model.storageAccountType());
+        Assertions.assertEquals("ypewrmjmwvvjekt", model.targetRegions().get(0).name());
+        Assertions.assertEquals(2107215650, model.targetRegions().get(0).replicaCount());
+        Assertions.assertEquals(SharedImageStorageAccountType.STANDARD_ZRS,
             model.targetRegions().get(0).storageAccountType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageTemplateSharedImageDistributor model = new ImageTemplateSharedImageDistributor().withRunOutputName("yp")
-            .withArtifactTags(mapOf("zcdrqjsdpydnfyhx", "p", "ifsjttgzfbishcb", "eoejzic", "alpbuxwgipwhon",
-                "hajdeyeamdpha", "kix", "wkgshwa"))
-            .withGalleryImageId("wburvjxxjnspydpt")
-            .withReplicationRegions(Arrays.asList("nkoukn", "udwtiukbl", "ngkpocipazy")).withExcludeFromLatest(true)
-            .withStorageAccountType(SharedImageStorageAccountType.PREMIUM_LRS)
-            .withTargetRegions(Arrays.asList(new TargetRegion().withName("jnpiucgyg").withReplicaCount(1701243846)
-                .withStorageAccountType(SharedImageStorageAccountType.PREMIUM_LRS)))
-            .withVersioning(new DistributeVersioner());
+        ImageTemplateSharedImageDistributor model
+            = new ImageTemplateSharedImageDistributor().withRunOutputName("wlrsffrzpwv")
+                .withArtifactTags(mapOf("biqylihkaet", "q", "fcivfsnkym", "kt", "jf", "ctq", "fuwutttxf", "ebrjcxe"))
+                .withGalleryImageId("qnwvlrya")
+                .withReplicationRegions(Arrays.asList("heun", "mqhgyxzkonocuk", "klyaxuconu"))
+                .withExcludeFromLatest(false)
+                .withStorageAccountType(SharedImageStorageAccountType.STANDARD_ZRS)
+                .withTargetRegions(Arrays.asList(new TargetRegion().withName("ypewrmjmwvvjekt")
+                    .withReplicaCount(2107215650)
+                    .withStorageAccountType(SharedImageStorageAccountType.STANDARD_ZRS)))
+                .withVersioning(new DistributeVersioner());
         model = BinaryData.fromObject(model).toObject(ImageTemplateSharedImageDistributor.class);
-        Assertions.assertEquals("yp", model.runOutputName());
-        Assertions.assertEquals("p", model.artifactTags().get("zcdrqjsdpydnfyhx"));
-        Assertions.assertEquals("wburvjxxjnspydpt", model.galleryImageId());
-        Assertions.assertEquals("nkoukn", model.replicationRegions().get(0));
-        Assertions.assertEquals(true, model.excludeFromLatest());
-        Assertions.assertEquals(SharedImageStorageAccountType.PREMIUM_LRS, model.storageAccountType());
-        Assertions.assertEquals("jnpiucgyg", model.targetRegions().get(0).name());
-        Assertions.assertEquals(1701243846, model.targetRegions().get(0).replicaCount());
-        Assertions.assertEquals(SharedImageStorageAccountType.PREMIUM_LRS,
+        Assertions.assertEquals("wlrsffrzpwv", model.runOutputName());
+        Assertions.assertEquals("q", model.artifactTags().get("biqylihkaet"));
+        Assertions.assertEquals("qnwvlrya", model.galleryImageId());
+        Assertions.assertEquals("heun", model.replicationRegions().get(0));
+        Assertions.assertEquals(false, model.excludeFromLatest());
+        Assertions.assertEquals(SharedImageStorageAccountType.STANDARD_ZRS, model.storageAccountType());
+        Assertions.assertEquals("ypewrmjmwvvjekt", model.targetRegions().get(0).name());
+        Assertions.assertEquals(2107215650, model.targetRegions().get(0).replicaCount());
+        Assertions.assertEquals(SharedImageStorageAccountType.STANDARD_ZRS,
             model.targetRegions().get(0).storageAccountType());
     }
 

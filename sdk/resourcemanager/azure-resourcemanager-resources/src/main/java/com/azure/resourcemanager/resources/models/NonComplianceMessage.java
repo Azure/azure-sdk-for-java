@@ -15,28 +15,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class NonComplianceMessage {
     /*
-     * A message that describes why a resource is non-compliant with the policy. This is shown in 'deny' error messages
-     * and on resource's non-compliant compliance results.
+     * A message that describes why a resource is non-compliant with the policy. This is shown in 'deny' error messages and on resource's non-compliant compliance results.
      */
     @JsonProperty(value = "message", required = true)
     private String message;
 
     /*
-     * The policy definition reference ID within a policy set definition the message is intended for. This is only
-     * applicable if the policy assignment assigns a policy set definition. If this is not provided the message applies
-     * to all policies assigned by this policy assignment.
+     * The policy definition reference ID within a policy set definition the message is intended for. This is only applicable if the policy assignment assigns a policy set definition. If this is not provided the message applies to all policies assigned by this policy assignment.
      */
     @JsonProperty(value = "policyDefinitionReferenceId")
     private String policyDefinitionReferenceId;
 
-    /** Creates an instance of NonComplianceMessage class. */
+    /**
+     * Creates an instance of NonComplianceMessage class.
+     */
     public NonComplianceMessage() {
     }
 
     /**
      * Get the message property: A message that describes why a resource is non-compliant with the policy. This is shown
      * in 'deny' error messages and on resource's non-compliant compliance results.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -46,7 +45,7 @@ public final class NonComplianceMessage {
     /**
      * Set the message property: A message that describes why a resource is non-compliant with the policy. This is shown
      * in 'deny' error messages and on resource's non-compliant compliance results.
-     *
+     * 
      * @param message the message value to set.
      * @return the NonComplianceMessage object itself.
      */
@@ -59,7 +58,7 @@ public final class NonComplianceMessage {
      * Get the policyDefinitionReferenceId property: The policy definition reference ID within a policy set definition
      * the message is intended for. This is only applicable if the policy assignment assigns a policy set definition. If
      * this is not provided the message applies to all policies assigned by this policy assignment.
-     *
+     * 
      * @return the policyDefinitionReferenceId value.
      */
     public String policyDefinitionReferenceId() {
@@ -70,7 +69,7 @@ public final class NonComplianceMessage {
      * Set the policyDefinitionReferenceId property: The policy definition reference ID within a policy set definition
      * the message is intended for. This is only applicable if the policy assignment assigns a policy set definition. If
      * this is not provided the message applies to all policies assigned by this policy assignment.
-     *
+     * 
      * @param policyDefinitionReferenceId the policyDefinitionReferenceId value to set.
      * @return the NonComplianceMessage object itself.
      */
@@ -81,14 +80,13 @@ public final class NonComplianceMessage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (message() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property message in model NonComplianceMessage"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property message in model NonComplianceMessage"));
         }
     }
 

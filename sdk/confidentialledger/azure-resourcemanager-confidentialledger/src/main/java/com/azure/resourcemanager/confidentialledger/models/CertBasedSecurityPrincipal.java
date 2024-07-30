@@ -7,7 +7,9 @@ package com.azure.resourcemanager.confidentialledger.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Cert based security principal with Ledger RoleName. */
+/**
+ * Cert based security principal with Ledger RoleName.
+ */
 @Fluent
 public final class CertBasedSecurityPrincipal {
     /*
@@ -22,13 +24,15 @@ public final class CertBasedSecurityPrincipal {
     @JsonProperty(value = "ledgerRoleName")
     private LedgerRoleName ledgerRoleName;
 
-    /** Creates an instance of CertBasedSecurityPrincipal class. */
+    /**
+     * Creates an instance of CertBasedSecurityPrincipal class.
+     */
     public CertBasedSecurityPrincipal() {
     }
 
     /**
      * Get the cert property: Public key of the user cert (.pem or .cer).
-     *
+     * 
      * @return the cert value.
      */
     public String cert() {
@@ -37,7 +41,7 @@ public final class CertBasedSecurityPrincipal {
 
     /**
      * Set the cert property: Public key of the user cert (.pem or .cer).
-     *
+     * 
      * @param cert the cert value to set.
      * @return the CertBasedSecurityPrincipal object itself.
      */
@@ -48,7 +52,7 @@ public final class CertBasedSecurityPrincipal {
 
     /**
      * Get the ledgerRoleName property: LedgerRole associated with the Security Principal of Ledger.
-     *
+     * 
      * @return the ledgerRoleName value.
      */
     public LedgerRoleName ledgerRoleName() {
@@ -57,7 +61,7 @@ public final class CertBasedSecurityPrincipal {
 
     /**
      * Set the ledgerRoleName property: LedgerRole associated with the Security Principal of Ledger.
-     *
+     * 
      * @param ledgerRoleName the ledgerRoleName value to set.
      * @return the CertBasedSecurityPrincipal object itself.
      */
@@ -68,7 +72,7 @@ public final class CertBasedSecurityPrincipal {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

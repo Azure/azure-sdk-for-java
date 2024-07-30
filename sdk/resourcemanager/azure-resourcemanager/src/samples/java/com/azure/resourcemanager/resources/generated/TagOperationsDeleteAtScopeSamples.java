@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-/** Samples for TagOperations DeleteAtScope. */
+/**
+ * Samples for TagOperations DeleteAtScope.
+ */
 public final class TagOperationsDeleteAtScopeSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/DeleteTagsResource.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/DeleteTagsResource.json
      */
     /**
      * Sample code: Update tags on a resource.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateTagsOnAResource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .genericResources()
+        azure.genericResources()
             .manager()
             .serviceClient()
             .getTagOperations()
@@ -26,16 +27,15 @@ public final class TagOperationsDeleteAtScopeSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/DeleteTagsSubscription.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/DeleteTagsSubscription.json
      */
     /**
      * Sample code: Update tags on a subscription.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateTagsOnASubscription(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .genericResources()
+        azure.genericResources()
             .manager()
             .serviceClient()
             .getTagOperations()

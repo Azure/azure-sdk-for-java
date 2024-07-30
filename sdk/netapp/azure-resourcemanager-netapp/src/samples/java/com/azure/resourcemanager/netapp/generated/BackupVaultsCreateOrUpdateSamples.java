@@ -10,8 +10,7 @@ package com.azure.resourcemanager.netapp.generated;
 public final class BackupVaultsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/BackupVaults_Create.
-     * json
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/BackupVaults_Create.json
      */
     /**
      * Sample code: BackupVault_CreateOrUpdate.
@@ -19,7 +18,10 @@ public final class BackupVaultsCreateOrUpdateSamples {
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void backupVaultCreateOrUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.backupVaults().define("backupVault1").withRegion("eastus").withExistingNetAppAccount("myRG", "account1")
+        manager.backupVaults()
+            .define("backupVault1")
+            .withRegion("eastus")
+            .withExistingNetAppAccount("myRG", "account1")
             .create();
     }
 }

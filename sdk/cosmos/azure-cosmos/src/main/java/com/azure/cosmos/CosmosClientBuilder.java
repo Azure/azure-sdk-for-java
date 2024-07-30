@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.EndpointTrait;
@@ -15,10 +16,12 @@ import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.time.StopWatch;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.routing.LocationHelper;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
@@ -32,6 +35,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -39,6 +43,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 import static com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Helper class to build {@link CosmosAsyncClient} and {@link CosmosClient}
@@ -143,6 +148,9 @@ public class CosmosClientBuilder implements
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
     private SessionRetryOptions sessionRetryOptions;
     private Supplier<CosmosExcludedRegions> cosmosExcludedRegionsSupplier;
+    private final List<CosmosOperationPolicy> requestPolicies;
+    private CosmosItemSerializer defaultCustomSerializer;
+    private boolean isRegionScopedSessionCapturingEnabled = false;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -155,6 +163,7 @@ public class CosmosClientBuilder implements
         this.throttlingRetryOptions = new ThrottlingRetryOptions();
         this.clientTelemetryConfig = new CosmosClientTelemetryConfig();
         this.resetNonIdempotentWriteRetryPolicy();
+        this.requestPolicies = new LinkedList<>();
     }
 
     CosmosClientBuilder metadataCaches(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot) {
@@ -167,6 +176,58 @@ public class CosmosClientBuilder implements
     }
 
     /**
+     * Sets a {@code boolean} flag to reduce the frequency of retries when the client
+     * strives to meet Session Consistency guarantees for operations
+     * that can be scoped to a single logical partition. Read your writes for a given logical partition
+     * should see higher stickiness to regions where the logical partition was written to prior or saw requests in
+     * thus reducing unnecessary cross-region retries. Reduction of retries would reduce CPU utilization spikes on VMs
+     * where the client is deployed along with latency savings through reduction of cross-region calls.
+     *
+     * <p>
+     *     DISCLAIMER: Setting the {@link CosmosClientBuilder#isRegionScopedSessionCapturingEnabled} flag to {@code true}
+     *     will impact all operations executed through this instance of the client provided that
+     *     both the operation and the account support multi-region writes.
+     * </p>
+     * <p>
+     *     Setting {@link CosmosClientBuilder#isRegionScopedSessionCapturingEnabled} flag to {@code true} can be space intensive, so
+     *     ensure to maintain a singleton instance of {@link CosmosClient} or {@link CosmosAsyncClient}.
+     * </p>
+     *
+     * Operations supported:
+     * <ul>
+     *     <li>Read</li>
+     *     <li>Create</li>
+     *     <li>Upsert</li>
+     *     <li>Delete</li>
+     *     <li>Replace</li>
+     *     <li>Batch</li>
+     *     <li>Patch</li>
+     *     <li>Query when scoped to a single logical partition by specifying {@code PartitionKey} with {@link com.azure.cosmos.models.CosmosQueryRequestOptions}</li>
+     *     <li>Change feed when scoped to a single logical partition by using {@code FeedRange.forLogicalPartition()} with {@link com.azure.cosmos.models.CosmosChangeFeedRequestOptions}</li>
+     * </ul>
+     *
+     * <p>
+     *     NOTE: Bulk operations are not supported.
+     * </p>
+     *
+     * @param isRegionScopedSessionCapturingEnabled A {@code boolean} flag
+     * @return current {@link CosmosClientBuilder}
+     * */
+    CosmosClientBuilder regionScopedSessionCapturingEnabled(boolean isRegionScopedSessionCapturingEnabled) {
+        this.isRegionScopedSessionCapturingEnabled = isRegionScopedSessionCapturingEnabled;
+        return this;
+    }
+
+    /**
+     * Gets the {@code boolean} flag {@link CosmosClientBuilder#isRegionScopedSessionCapturingEnabled}
+     *
+     * @return isRegionScopedSessionCapturingEnabled A {@code boolean} flag
+     * */
+    boolean isRegionScopedSessionCapturingEnabled() {
+        return this.isRegionScopedSessionCapturingEnabled;
+    }
+
+    /**
      * Sets an apiType for the builder.
      * @param apiType
      * @return current cosmosClientBuilder
@@ -174,6 +235,23 @@ public class CosmosClientBuilder implements
     CosmosClientBuilder setApiType(ApiType apiType){
         this.apiType = apiType;
         return this;
+    }
+
+    /**
+     * Adds a policy for modifying request options dynamically. The last policy defined aimed towards
+     * the same operation type will be the one ultimately applied.
+     *
+     * @param policy the policy to add
+     * @return current cosmosClientBuilder
+     */
+    public CosmosClientBuilder addOperationPolicy(CosmosOperationPolicy policy) {
+        checkNotNull(policy, "Argument 'policy' must not be null.");
+        this.requestPolicies.add(policy);
+        return this;
+    }
+
+    List<CosmosOperationPolicy> getOperationPolicies() {
+        return UnmodifiableList.unmodifiableList(this.requestPolicies);
     }
 
     /**
@@ -729,26 +807,16 @@ public class CosmosClientBuilder implements
      * to be carefully reviewed and tests - which is wht retries for patch can only be enabled on request options
      * - any CosmosClient wide configuration will be ignored.
      * <br/>
-     * Bulk/Delete by PK/Transactional Batch/Stroed Procedure execution: No automatic retries are supported.
-     * @param nonIdempotentWriteRetriesEnabled  a flag indicating whether the SDK should enable automatic retries for
-     * an operation when idempotency can't be guaranteed because for the previous attempt a request has been sent
-     * on the network.
-     * @param useTrackingIdPropertyForCreateAndReplace a flag indicating whether write operations can use the
-     * trackingId system property '/_trackingId' to allow identification of conflicts and pre-condition failures due
-     * to retries. If enabled, each document being created or replaced will have an additional '/_trackingId' property
-     * for which the value will be updated by the SDK. If it is not desired to add this new json property (for example
-     * due to the RU-increase based on the payload size or because it causes documents to exceed the max payload size
-     * upper limit), the usage of this system property can be disabled by setting this parameter to false. This means
-     * there could be a higher level of 409/312 due to retries - and applications would need to handle them gracefully
-     * on their own.
+     * Bulk/Delete by PK/Transactional Batch/Stored Procedure execution: No automatic retries are supported.
+     * @param options the options controlling whether non-idempotent write operations should be retried and whether
+     * trackingIds can be used.
      * @return the CosmosItemRequestOptions
      */
-    CosmosClientBuilder setNonIdempotentWriteRetryPolicy(
-        boolean nonIdempotentWriteRetriesEnabled,
-        boolean useTrackingIdPropertyForCreateAndReplace) {
+    public CosmosClientBuilder nonIdempotentWriteRetryOptions(NonIdempotentWriteRetryOptions options) {
+        checkNotNull(options, "Argument 'options' must not be null.");
 
-        if (nonIdempotentWriteRetriesEnabled) {
-            if (useTrackingIdPropertyForCreateAndReplace) {
+        if (options.isEnabled()) {
+            if (options.isTrackingIdUsed()) {
                 this.writeRetryPolicy = WriteRetryPolicy.WITH_TRACKING_ID;
             } else {
                 this.writeRetryPolicy = WriteRetryPolicy.WITH_RETRIES;
@@ -756,6 +824,7 @@ public class CosmosClientBuilder implements
         } else {
             this.writeRetryPolicy = WriteRetryPolicy.DISABLED;
         }
+
         return this;
     }
 
@@ -780,6 +849,20 @@ public class CosmosClientBuilder implements
             }
         }
         this.writeRetryPolicy = WriteRetryPolicy.DISABLED;
+    }
+
+    void resetSessionCapturingType() {
+        String sessionCapturingType = Configs.getSessionCapturingType();
+
+        if (!StringUtils.isEmpty(sessionCapturingType)) {
+            if (sessionCapturingType.equalsIgnoreCase("REGION_SCOPED")) {
+                logger.info("Session capturing type is set to REGION_SCOPED");
+                this.isRegionScopedSessionCapturingEnabled = true;
+            } else {
+                logger.info("Session capturing type is set to {} which is not a known session capturing type.", sessionCapturingType);
+                this.isRegionScopedSessionCapturingEnabled = false;
+            }
+        }
     }
 
     /**
@@ -1063,6 +1146,23 @@ public class CosmosClientBuilder implements
     }
 
     /**
+     * Sets a custom serializer that should be used for conversion between POJOs and Json payload stored in the
+     * Cosmos DB service. The custom serializer can also be specified in request options. If defined here and
+     * in request options the serializer defined in request options will be used.
+     * @param customItemSerializer the custom serializer to be used for item payload transformations
+     * @return current CosmosClientBuilder
+     */
+    public CosmosClientBuilder customItemSerializer(CosmosItemSerializer customItemSerializer) {
+        this.defaultCustomSerializer = customItemSerializer;
+
+        return this;
+    }
+
+    CosmosItemSerializer getCustomItemSerializer() {
+        return this.defaultCustomSerializer;
+    }
+
+    /**
      * Builds a cosmos async client with the provided properties
      *
      * @return CosmosAsyncClient
@@ -1079,9 +1179,11 @@ public class CosmosClientBuilder implements
     CosmosAsyncClient buildAsyncClient(boolean logStartupInfo) {
         StopWatch stopwatch = new StopWatch();
         stopwatch.start();
+        this.resetSessionCapturingType();
         validateConfig();
         buildConnectionPolicy();
         CosmosAsyncClient cosmosAsyncClient = new CosmosAsyncClient(this);
+
         if (proactiveContainerInitConfig != null) {
             cosmosAsyncClient.recordOpenConnectionsAndInitCachesStarted(proactiveContainerInitConfig.getCosmosContainerIdentities());
 
@@ -1112,9 +1214,11 @@ public class CosmosClientBuilder implements
     public CosmosClient buildClient() {
         StopWatch stopwatch = new StopWatch();
         stopwatch.start();
+        this.resetSessionCapturingType();
         validateConfig();
         buildConnectionPolicy();
         CosmosClient cosmosClient = new CosmosClient(this);
+
         if (proactiveContainerInitConfig != null) {
 
             cosmosClient.recordOpenConnectionsAndInitCachesStarted(proactiveContainerInitConfig.getCosmosContainerIdentities());
@@ -1218,7 +1322,7 @@ public class CosmosClientBuilder implements
     private void logStartupInfo(StopWatch stopwatch, CosmosAsyncClient client) {
         stopwatch.stop();
 
-        if (logger.isInfoEnabled()) {
+        if (logger.isWarnEnabled()) {
             long time = stopwatch.getTime();
             String diagnosticsCfg = "";
             String tracingCfg = "";
@@ -1235,11 +1339,14 @@ public class CosmosClientBuilder implements
             logger.warn("Cosmos Client with (Correlation) ID [{}] started up in [{}] ms with the following " +
                     "configuration: serviceEndpoint [{}], preferredRegions [{}], excludedRegions [{}], connectionPolicy [{}], " +
                     "consistencyLevel [{}], contentResponseOnWriteEnabled [{}], sessionCapturingOverride [{}], " +
-                    "connectionSharingAcrossClients [{}], clientTelemetryEnabled [{}], proactiveContainerInit [{}], diagnostics [{}], tracing [{}]",
+                    "connectionSharingAcrossClients [{}], clientTelemetryEnabled [{}], proactiveContainerInit [{}], " +
+                    "diagnostics [{}], tracing [{}], nativeTransport [{}] fastClientOpen [{}] isRegionScopedSessionCapturingEnabled [{}]",
                 client.getContextClient().getClientCorrelationId(), time, getEndpoint(), getPreferredRegions(), getExcludedRegions(),
                 getConnectionPolicy(), getConsistencyLevel(), isContentResponseOnWriteEnabled(),
                 isSessionCapturingOverrideEnabled(), isConnectionSharingAcrossClientsEnabled(),
-                isClientTelemetryEnabled(), getProactiveContainerInitConfig(), diagnosticsCfg, tracingCfg);
+                isClientTelemetryEnabled(), getProactiveContainerInitConfig(), diagnosticsCfg,
+                tracingCfg, io.netty.channel.epoll.Epoll.isAvailable(),
+                io.netty.channel.epoll.Epoll.isTcpFastOpenClientSideAvailable(), isRegionScopedSessionCapturingEnabled());
         }
     }
 
@@ -1294,6 +1401,21 @@ public class CosmosClientBuilder implements
                 @Override
                 public String getEndpoint(CosmosClientBuilder builder) {
                     return builder.getEndpoint();
+                }
+
+                @Override
+                public CosmosItemSerializer getDefaultCustomSerializer(CosmosClientBuilder builder) {
+                    return builder.getCustomItemSerializer();
+                }
+
+                @Override
+                public void setRegionScopedSessionCapturingEnabled(CosmosClientBuilder builder, boolean isRegionScopedSessionCapturingEnabled) {
+                    builder.regionScopedSessionCapturingEnabled(isRegionScopedSessionCapturingEnabled);
+                }
+
+                @Override
+                public boolean getRegionScopedSessionCapturingEnabled(CosmosClientBuilder builder) {
+                    return builder.isRegionScopedSessionCapturingEnabled();
                 }
             });
     }

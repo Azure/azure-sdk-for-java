@@ -13,28 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ChatTranscriptDetailsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ChatTranscriptDetailsProperties model =
-            BinaryData
-                .fromString(
-                    "{\"messages\":[{\"communicationDirection\":\"outbound\",\"sender\":\"rvnaenqpeh\",\"body\":\"ndoygmifthnzdnd\",\"createdDate\":\"2021-07-04T07:51:31Z\"},{\"communicationDirection\":\"inbound\",\"sender\":\"igynduhavhqlk\",\"body\":\"humaqolbgyc\",\"createdDate\":\"2021-09-15T15:38:14Z\"},{\"communicationDirection\":\"outbound\",\"sender\":\"ccymvaolpsslql\",\"body\":\"mmdnbbglzps\",\"createdDate\":\"2021-11-30T08:30:44Z\"},{\"communicationDirection\":\"outbound\",\"sender\":\"yhz\",\"body\":\"xssadbzmnvdf\",\"createdDate\":\"2021-12-08T00:49:45Z\"}],\"startTime\":\"2021-04-20T15:16:33Z\"}")
-                .toObject(ChatTranscriptDetailsProperties.class);
-        Assertions.assertEquals("rvnaenqpeh", model.messages().get(0).sender());
-        Assertions.assertEquals("ndoygmifthnzdnd", model.messages().get(0).body());
+        ChatTranscriptDetailsProperties model = BinaryData.fromString(
+            "{\"messages\":[{\"communicationDirection\":\"outbound\",\"sender\":\"uhavhql\",\"body\":\"humaqolbgyc\",\"createdDate\":\"2021-09-15T15:38:14Z\"},{\"communicationDirection\":\"outbound\",\"sender\":\"ccymvaolpsslql\",\"body\":\"mdnbbglzpswiy\",\"createdDate\":\"2021-07-14T12:06:58Z\"},{\"communicationDirection\":\"outbound\",\"sender\":\"dxssadbzm\",\"body\":\"dfznudaodv\",\"createdDate\":\"2021-05-29T13:49:41Z\"},{\"communicationDirection\":\"outbound\",\"sender\":\"ylpstdbhhxsrzdz\",\"body\":\"erscdntne\",\"createdDate\":\"2021-04-19T04:18:41Z\"}],\"startTime\":\"2021-05-10T05:26:40Z\"}")
+            .toObject(ChatTranscriptDetailsProperties.class);
+        Assertions.assertEquals("uhavhql", model.messages().get(0).sender());
+        Assertions.assertEquals("humaqolbgyc", model.messages().get(0).body());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ChatTranscriptDetailsProperties model =
-            new ChatTranscriptDetailsProperties()
-                .withMessages(
-                    Arrays
-                        .asList(
-                            new MessageProperties().withSender("rvnaenqpeh").withBody("ndoygmifthnzdnd"),
-                            new MessageProperties().withSender("igynduhavhqlk").withBody("humaqolbgyc"),
-                            new MessageProperties().withSender("ccymvaolpsslql").withBody("mmdnbbglzps"),
-                            new MessageProperties().withSender("yhz").withBody("xssadbzmnvdf")));
+        ChatTranscriptDetailsProperties model = new ChatTranscriptDetailsProperties()
+            .withMessages(Arrays.asList(new MessageProperties().withSender("uhavhql").withBody("humaqolbgyc"),
+                new MessageProperties().withSender("ccymvaolpsslql").withBody("mdnbbglzpswiy"),
+                new MessageProperties().withSender("dxssadbzm").withBody("dfznudaodv"),
+                new MessageProperties().withSender("ylpstdbhhxsrzdz").withBody("erscdntne")));
         model = BinaryData.fromObject(model).toObject(ChatTranscriptDetailsProperties.class);
-        Assertions.assertEquals("rvnaenqpeh", model.messages().get(0).sender());
-        Assertions.assertEquals("ndoygmifthnzdnd", model.messages().get(0).body());
+        Assertions.assertEquals("uhavhql", model.messages().get(0).sender());
+        Assertions.assertEquals("humaqolbgyc", model.messages().get(0).body());
     }
 }

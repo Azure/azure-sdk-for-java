@@ -31,13 +31,15 @@ public final class CheckResourceNameResultInner {
     @JsonProperty(value = "status")
     private ResourceNameStatus status;
 
-    /** Creates an instance of CheckResourceNameResultInner class. */
+    /**
+     * Creates an instance of CheckResourceNameResultInner class.
+     */
     public CheckResourceNameResultInner() {
     }
 
     /**
      * Get the name property: Name of Resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -46,7 +48,7 @@ public final class CheckResourceNameResultInner {
 
     /**
      * Set the name property: Name of Resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the CheckResourceNameResultInner object itself.
      */
@@ -57,7 +59,7 @@ public final class CheckResourceNameResultInner {
 
     /**
      * Get the type property: Type of Resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -66,7 +68,7 @@ public final class CheckResourceNameResultInner {
 
     /**
      * Set the type property: Type of Resource.
-     *
+     * 
      * @param type the type value to set.
      * @return the CheckResourceNameResultInner object itself.
      */
@@ -77,7 +79,7 @@ public final class CheckResourceNameResultInner {
 
     /**
      * Get the status property: Is the resource name Allowed or Reserved.
-     *
+     * 
      * @return the status value.
      */
     public ResourceNameStatus status() {
@@ -86,7 +88,7 @@ public final class CheckResourceNameResultInner {
 
     /**
      * Set the status property: Is the resource name Allowed or Reserved.
-     *
+     * 
      * @param status the status value to set.
      * @return the CheckResourceNameResultInner object itself.
      */
@@ -97,7 +99,7 @@ public final class CheckResourceNameResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

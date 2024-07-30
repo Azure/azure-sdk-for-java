@@ -6,74 +6,43 @@ package com.azure.resourcemanager.mobilenetwork.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mobilenetwork.MobileNetworkManager;
 import com.azure.resourcemanager.mobilenetwork.models.PacketCapture;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PacketCapturesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":\"Stopped\",\"reason\":\"srlzknmzlan\",\"captureStartTime\":\"2021-05-03T02:08:16Z\",\"networkInterfaces\":[\"vnphc\",\"zqtpjhmq\"],\"bytesToCapturePerPacket\":623266900390465958,\"totalBytesPerSession\":4724246192491470595,\"timeLimitInSeconds\":574931701,\"outputFiles\":[\"xsmlz\"]},\"id\":\"zdtxetlgyd\",\"name\":\"hqvlnnpxybafiqg\",\"type\":\"aarbgjekg\"}";
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":\"Stopped\",\"reason\":\"owolbaui\",\"captureStartTime\":\"2021-04-01T11:02:42Z\",\"networkInterfaces\":[\"nszonwpngaj\"],\"bytesToCapturePerPacket\":6898929909926119274,\"totalBytesPerSession\":3652679001065312018,\"timeLimitInSeconds\":1472417276,\"outputFiles\":[\"jfjmyccxlzh\",\"oxovnekhenlusf\",\"rd\",\"jxtxrdc\"]},\"id\":\"jvidttge\",\"name\":\"uslvyjtcvuwkasi\",\"type\":\"iesfuug\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MobileNetworkManager manager = MobileNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PacketCapture response = manager.packetCaptures()
+            .define("vhqjwtrhtgvg")
+            .withExistingPacketCoreControlPlane("tjklntikyjuzk", "bqzolxr")
+            .withNetworkInterfaces(Arrays.asList("yjaf", "tlhguynuchl", "mltx"))
+            .withBytesToCapturePerPacket(4026171526314677739L)
+            .withTotalBytesPerSession(4255131406127462111L)
+            .withTimeLimitInSeconds(1986885457)
+            .create();
 
-        MobileNetworkManager manager =
-            MobileNetworkManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PacketCapture response =
-            manager
-                .packetCaptures()
-                .define("herngb")
-                .withExistingPacketCoreControlPlane("taboidvmf", "hppubowsepdfgkmt")
-                .withNetworkInterfaces(Arrays.asList("sh", "phwpnulaiywzej"))
-                .withBytesToCapturePerPacket(2237489036169813862L)
-                .withTotalBytesPerSession(3858468610675521337L)
-                .withTimeLimitInSeconds(1142499440)
-                .create();
-
-        Assertions.assertEquals("nszonwpngaj", response.networkInterfaces().get(0));
-        Assertions.assertEquals(6898929909926119274L, response.bytesToCapturePerPacket());
-        Assertions.assertEquals(3652679001065312018L, response.totalBytesPerSession());
-        Assertions.assertEquals(1472417276, response.timeLimitInSeconds());
+        Assertions.assertEquals("vnphc", response.networkInterfaces().get(0));
+        Assertions.assertEquals(623266900390465958L, response.bytesToCapturePerPacket());
+        Assertions.assertEquals(4724246192491470595L, response.totalBytesPerSession());
+        Assertions.assertEquals(574931701, response.timeLimitInSeconds());
     }
 }

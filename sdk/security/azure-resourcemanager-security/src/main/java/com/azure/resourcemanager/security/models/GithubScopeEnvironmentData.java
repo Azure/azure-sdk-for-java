@@ -5,20 +5,43 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The github scope connector's environment data.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "environmentType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "environmentType",
+    defaultImpl = GithubScopeEnvironmentData.class,
+    visible = true)
 @JsonTypeName("GithubScope")
 @Immutable
 public final class GithubScopeEnvironmentData extends EnvironmentData {
+    /*
+     * The type of the environment data.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "environmentType", required = true)
+    private EnvironmentType environmentType = EnvironmentType.GITHUB_SCOPE;
+
     /**
      * Creates an instance of GithubScopeEnvironmentData class.
      */
     public GithubScopeEnvironmentData() {
+    }
+
+    /**
+     * Get the environmentType property: The type of the environment data.
+     * 
+     * @return the environmentType value.
+     */
+    @Override
+    public EnvironmentType environmentType() {
+        return this.environmentType;
     }
 
     /**

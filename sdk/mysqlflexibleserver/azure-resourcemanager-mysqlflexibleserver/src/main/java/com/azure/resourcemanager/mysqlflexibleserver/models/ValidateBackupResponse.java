@@ -6,19 +6,21 @@ package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.ValidateBackupResponseInner;
 
-/** An immutable client-side representation of ValidateBackupResponse. */
+/**
+ * An immutable client-side representation of ValidateBackupResponse.
+ */
 public interface ValidateBackupResponse {
     /**
      * Gets the numberOfContainers property: Estimated no of storage containers required for resource data to be backed
      * up.
-     *
+     * 
      * @return the numberOfContainers value.
      */
     Integer numberOfContainers();
 
     /**
      * Gets the inner com.azure.resourcemanager.mysqlflexibleserver.fluent.models.ValidateBackupResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     ValidateBackupResponseInner innerModel();

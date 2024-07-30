@@ -6,7 +6,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-identity</artifactId>
-  <version>1.12.0-beta.2</version><!-- {x-version-update;com.azure:azure-identity;current} -->
+  <version>1.14.0-beta.1</version><!-- {x-version-update;com.azure:azure-identity;current} -->
 
   <name>Microsoft Azure client library for Identity</name>
   <description>This module contains client library for Microsoft Azure Identity.</description>
@@ -18,8 +18,6 @@
     <javaModulesSurefireArgLine>
       --add-opens java.xml/jdk.xml.internal=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <javadoc.sourcepath>${basedir}/src/main/java:${basedir}/../../core/azure-core/src/main/java</javadoc.sourcepath>
-    <javadoc.excludePackageNames>com.azure.core.*</javadoc.excludePackageNames>
   </properties>
 
   <parent>
@@ -33,12 +31,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.47.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.50.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.14.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.15.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -48,17 +46,17 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>msal4j</artifactId>
-      <version>1.14.3</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
+      <version>1.16.1</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>msal4j-persistence-extension</artifactId>
-      <version>1.2.0</version> <!-- {x-version-update;com.microsoft.azure:msal4j-persistence-extension;external_dependency} -->
+      <version>1.3.0</version> <!-- {x-version-update;com.microsoft.azure:msal4j-persistence-extension;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.24.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.26.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -87,14 +85,14 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.34</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.38</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- for file lock tests, ideally should be removed in the future -->
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
-      <version>2.10</version> <!-- {x-version-update;com.google.code.gson:gson;external_dependency} -->
+      <version>2.10.1</version> <!-- {x-version-update;com.google.code.gson:gson;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -106,13 +104,13 @@
     <dependency>
       <groupId>io.lettuce</groupId>
       <artifactId>lettuce-core</artifactId>
-      <version>6.3.1.RELEASE</version> <!-- {x-version-update;io.lettuce:lettuce-core;external_dependency} -->
+      <version>6.3.2.RELEASE</version> <!-- {x-version-update;io.lettuce:lettuce-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.redisson</groupId>
       <artifactId>redisson</artifactId>
-      <version>3.27.0</version> <!-- {x-version-update;org.redisson:redisson;external_dependency} -->
+      <version>3.27.2</version> <!-- {x-version-update;org.redisson:redisson;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -132,13 +130,13 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.14.8</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.14.12</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.14.8</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.14.12</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -148,13 +146,13 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:msal4j:[1.14.3]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
-                <include>com.microsoft.azure:msal4j-persistence-extension:[1.2.0]</include> <!-- {x-include-update;com.microsoft.azure:msal4j-persistence-extension;external_dependency} -->
+                <include>com.microsoft.azure:msal4j:[1.16.1]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
+                <include>com.microsoft.azure:msal4j-persistence-extension:[1.3.0]</include> <!-- {x-include-update;com.microsoft.azure:msal4j-persistence-extension;external_dependency} -->
                 <include>net.java.dev.jna:jna-platform:[5.6.0]</include> <!-- {x-include-update;net.java.dev.jna:jna-platform;external_dependency} -->
                 <include>org.linguafranca.pwdb:KeePassJava2:[2.1.4]</include> <!-- {x-include-update;org.linguafranca.pwdb:KeePassJava2;external_dependency} -->
               </includes>
@@ -175,7 +173,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.3.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
+        <version>3.5.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>compile-samples-source</id>

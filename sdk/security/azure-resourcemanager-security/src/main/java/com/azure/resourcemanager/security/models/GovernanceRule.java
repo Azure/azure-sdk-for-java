@@ -122,8 +122,8 @@ public interface GovernanceRule {
     Boolean includeMemberScopes();
 
     /**
-     * Gets the ownerSource property: The owner source for the governance rule - e.g. Manually by user@contoso.com - see
-     * example.
+     * Gets the ownerSource property: The owner source for the governance rule - e.g. Manually by user&#064;contoso.com
+     * - see example.
      * 
      * @return the ownerSource value.
      */
@@ -368,10 +368,10 @@ public interface GovernanceRule {
         interface WithOwnerSource {
             /**
              * Specifies the ownerSource property: The owner source for the governance rule - e.g. Manually by
-             * user@contoso.com - see example.
+             * user&#064;contoso.com - see example.
              * 
-             * @param ownerSource The owner source for the governance rule - e.g. Manually by user@contoso.com - see
-             * example.
+             * @param ownerSource The owner source for the governance rule - e.g. Manually by user&#064;contoso.com -
+             * see example.
              * @return the next definition stage.
              */
             WithCreate withOwnerSource(GovernanceRuleOwnerSource ownerSource);
@@ -599,10 +599,10 @@ public interface GovernanceRule {
         interface WithOwnerSource {
             /**
              * Specifies the ownerSource property: The owner source for the governance rule - e.g. Manually by
-             * user@contoso.com - see example.
+             * user&#064;contoso.com - see example.
              * 
-             * @param ownerSource The owner source for the governance rule - e.g. Manually by user@contoso.com - see
-             * example.
+             * @param ownerSource The owner source for the governance rule - e.g. Manually by user&#064;contoso.com -
+             * see example.
              * @return the next definition stage.
              */
             Update withOwnerSource(GovernanceRuleOwnerSource ownerSource);

@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Defines the Timeseries. */
+/**
+ * Defines the Timeseries.
+ */
 @Fluent
 public final class TimeseriesInner extends Resource {
     /*
@@ -22,27 +24,33 @@ public final class TimeseriesInner extends Resource {
     @JsonProperty(value = "properties")
     private TimeseriesProperties innerProperties;
 
-    /** Creates an instance of TimeseriesInner class. */
+    /**
+     * Creates an instance of TimeseriesInner class.
+     */
     public TimeseriesInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of a Timeseries.
-     *
+     * 
      * @return the innerProperties value.
      */
     private TimeseriesProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TimeseriesInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TimeseriesInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -51,7 +59,7 @@ public final class TimeseriesInner extends Resource {
 
     /**
      * Get the endpoint property: The endpoint associated with the Timeseries data point.
-     *
+     * 
      * @return the endpoint value.
      */
     public String endpoint() {
@@ -60,7 +68,7 @@ public final class TimeseriesInner extends Resource {
 
     /**
      * Set the endpoint property: The endpoint associated with the Timeseries data point.
-     *
+     * 
      * @param endpoint the endpoint value to set.
      * @return the TimeseriesInner object itself.
      */
@@ -74,7 +82,7 @@ public final class TimeseriesInner extends Resource {
 
     /**
      * Get the startDateTimeUtc property: The start DateTime of the Timeseries in UTC.
-     *
+     * 
      * @return the startDateTimeUtc value.
      */
     public String startDateTimeUtc() {
@@ -83,7 +91,7 @@ public final class TimeseriesInner extends Resource {
 
     /**
      * Set the startDateTimeUtc property: The start DateTime of the Timeseries in UTC.
-     *
+     * 
      * @param startDateTimeUtc the startDateTimeUtc value to set.
      * @return the TimeseriesInner object itself.
      */
@@ -97,7 +105,7 @@ public final class TimeseriesInner extends Resource {
 
     /**
      * Get the endDateTimeUtc property: The end DateTime of the Timeseries in UTC.
-     *
+     * 
      * @return the endDateTimeUtc value.
      */
     public String endDateTimeUtc() {
@@ -106,7 +114,7 @@ public final class TimeseriesInner extends Resource {
 
     /**
      * Set the endDateTimeUtc property: The end DateTime of the Timeseries in UTC.
-     *
+     * 
      * @param endDateTimeUtc the endDateTimeUtc value to set.
      * @return the TimeseriesInner object itself.
      */
@@ -120,7 +128,7 @@ public final class TimeseriesInner extends Resource {
 
     /**
      * Get the aggregationInterval property: The aggregation interval of the Timeseries.
-     *
+     * 
      * @return the aggregationInterval value.
      */
     public AggregationInterval aggregationInterval() {
@@ -129,7 +137,7 @@ public final class TimeseriesInner extends Resource {
 
     /**
      * Set the aggregationInterval property: The aggregation interval of the Timeseries.
-     *
+     * 
      * @param aggregationInterval the aggregationInterval value to set.
      * @return the TimeseriesInner object itself.
      */
@@ -143,7 +151,7 @@ public final class TimeseriesInner extends Resource {
 
     /**
      * Get the timeseriesType property: The type of Timeseries.
-     *
+     * 
      * @return the timeseriesType value.
      */
     public TimeseriesType timeseriesType() {
@@ -152,7 +160,7 @@ public final class TimeseriesInner extends Resource {
 
     /**
      * Set the timeseriesType property: The type of Timeseries.
-     *
+     * 
      * @param timeseriesType the timeseriesType value to set.
      * @return the TimeseriesInner object itself.
      */
@@ -167,7 +175,7 @@ public final class TimeseriesInner extends Resource {
     /**
      * Get the country property: The country associated with the Timeseries. Values are country ISO codes as specified
      * here- https://www.iso.org/iso-3166-country-codes.html.
-     *
+     * 
      * @return the country value.
      */
     public String country() {
@@ -177,7 +185,7 @@ public final class TimeseriesInner extends Resource {
     /**
      * Set the country property: The country associated with the Timeseries. Values are country ISO codes as specified
      * here- https://www.iso.org/iso-3166-country-codes.html.
-     *
+     * 
      * @param country the country value to set.
      * @return the TimeseriesInner object itself.
      */
@@ -191,7 +199,7 @@ public final class TimeseriesInner extends Resource {
 
     /**
      * Get the timeseriesData property: The set of data points for the timeseries.
-     *
+     * 
      * @return the timeseriesData value.
      */
     public List<TimeseriesDataPoint> timeseriesData() {
@@ -200,7 +208,7 @@ public final class TimeseriesInner extends Resource {
 
     /**
      * Set the timeseriesData property: The set of data points for the timeseries.
-     *
+     * 
      * @param timeseriesData the timeseriesData value to set.
      * @return the TimeseriesInner object itself.
      */
@@ -214,7 +222,7 @@ public final class TimeseriesInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

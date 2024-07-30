@@ -11,8 +11,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -26,16 +26,22 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.selfhelp.fluent.HelpRP;
 import com.azure.resourcemanager.selfhelp.implementation.CheckNameAvailabilitiesImpl;
 import com.azure.resourcemanager.selfhelp.implementation.DiagnosticsImpl;
+import com.azure.resourcemanager.selfhelp.implementation.DiscoverySolutionNlpsImpl;
 import com.azure.resourcemanager.selfhelp.implementation.DiscoverySolutionsImpl;
 import com.azure.resourcemanager.selfhelp.implementation.HelpRPBuilder;
 import com.azure.resourcemanager.selfhelp.implementation.OperationsImpl;
+import com.azure.resourcemanager.selfhelp.implementation.SimplifiedSolutionsImpl;
 import com.azure.resourcemanager.selfhelp.implementation.SolutionOperationsImpl;
+import com.azure.resourcemanager.selfhelp.implementation.SolutionSelfHelpsImpl;
 import com.azure.resourcemanager.selfhelp.implementation.TroubleshootersImpl;
 import com.azure.resourcemanager.selfhelp.models.CheckNameAvailabilities;
 import com.azure.resourcemanager.selfhelp.models.Diagnostics;
+import com.azure.resourcemanager.selfhelp.models.DiscoverySolutionNlps;
 import com.azure.resourcemanager.selfhelp.models.DiscoverySolutions;
 import com.azure.resourcemanager.selfhelp.models.Operations;
+import com.azure.resourcemanager.selfhelp.models.SimplifiedSolutions;
 import com.azure.resourcemanager.selfhelp.models.SolutionOperations;
+import com.azure.resourcemanager.selfhelp.models.SolutionSelfHelps;
 import com.azure.resourcemanager.selfhelp.models.Troubleshooters;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -59,16 +65,23 @@ public final class SelfHelpManager {
 
     private SolutionOperations solutionOperations;
 
+    private SimplifiedSolutions simplifiedSolutions;
+
     private Troubleshooters troubleshooters;
+
+    private SolutionSelfHelps solutionSelfHelps;
+
+    private DiscoverySolutionNlps discoverySolutionNlps;
 
     private final HelpRP clientObject;
 
     private SelfHelpManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject
-            = new HelpRPBuilder().pipeline(httpPipeline).endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .defaultPollInterval(defaultPollInterval).buildClient();
+        this.clientObject = new HelpRPBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
@@ -219,12 +232,19 @@ public final class SelfHelpManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder.append("azsdk-java").append("-").append("com.azure.resourcemanager.selfhelp").append("/")
-                .append("1.1.0-beta.2");
+            userAgentBuilder.append("azsdk-java")
+                .append("-")
+                .append("com.azure.resourcemanager.selfhelp")
+                .append("/")
+                .append("1.1.0-beta.5");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder.append(" (").append(Configuration.getGlobalConfiguration().get("java.version"))
-                    .append("; ").append(Configuration.getGlobalConfiguration().get("os.name")).append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.version")).append("; auto-generated)");
+                userAgentBuilder.append(" (")
+                    .append(Configuration.getGlobalConfiguration().get("java.version"))
+                    .append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.name"))
+                    .append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.version"))
+                    .append("; auto-generated)");
             } else {
                 userAgentBuilder.append(" (auto-generated)");
             }
@@ -243,18 +263,21 @@ public final class SelfHelpManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies.addAll(this.policies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
                 .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY).collect(Collectors.toList()));
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
-                .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new SelfHelpManager(httpPipeline, profile, defaultPollInterval);
         }
     }
@@ -321,6 +344,18 @@ public final class SelfHelpManager {
     }
 
     /**
+     * Gets the resource collection API of SimplifiedSolutions. It manages SimplifiedSolutionsResource.
+     * 
+     * @return Resource collection API of SimplifiedSolutions.
+     */
+    public SimplifiedSolutions simplifiedSolutions() {
+        if (this.simplifiedSolutions == null) {
+            this.simplifiedSolutions = new SimplifiedSolutionsImpl(clientObject.getSimplifiedSolutions(), this);
+        }
+        return simplifiedSolutions;
+    }
+
+    /**
      * Gets the resource collection API of Troubleshooters. It manages TroubleshooterResource.
      * 
      * @return Resource collection API of Troubleshooters.
@@ -330,6 +365,30 @@ public final class SelfHelpManager {
             this.troubleshooters = new TroubleshootersImpl(clientObject.getTroubleshooters(), this);
         }
         return troubleshooters;
+    }
+
+    /**
+     * Gets the resource collection API of SolutionSelfHelps.
+     * 
+     * @return Resource collection API of SolutionSelfHelps.
+     */
+    public SolutionSelfHelps solutionSelfHelps() {
+        if (this.solutionSelfHelps == null) {
+            this.solutionSelfHelps = new SolutionSelfHelpsImpl(clientObject.getSolutionSelfHelps(), this);
+        }
+        return solutionSelfHelps;
+    }
+
+    /**
+     * Gets the resource collection API of DiscoverySolutionNlps.
+     * 
+     * @return Resource collection API of DiscoverySolutionNlps.
+     */
+    public DiscoverySolutionNlps discoverySolutionNlps() {
+        if (this.discoverySolutionNlps == null) {
+            this.discoverySolutionNlps = new DiscoverySolutionNlpsImpl(clientObject.getDiscoverySolutionNlps(), this);
+        }
+        return discoverySolutionNlps;
     }
 
     /**

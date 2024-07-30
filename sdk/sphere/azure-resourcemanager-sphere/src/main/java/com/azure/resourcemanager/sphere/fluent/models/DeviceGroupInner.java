@@ -6,176 +6,70 @@ package com.azure.resourcemanager.sphere.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.resourcemanager.sphere.models.AllowCrashDumpCollection;
-import com.azure.resourcemanager.sphere.models.OSFeedType;
-import com.azure.resourcemanager.sphere.models.ProvisioningState;
-import com.azure.resourcemanager.sphere.models.RegionalDataBoundary;
-import com.azure.resourcemanager.sphere.models.UpdatePolicy;
+import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.sphere.models.DeviceGroupProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An device group resource belonging to a product resource. */
+/**
+ * An device group resource belonging to a product resource.
+ */
 @Fluent
 public final class DeviceGroupInner extends ProxyResource {
     /*
      * The resource-specific properties for this resource.
      */
     @JsonProperty(value = "properties")
-    private DeviceGroupProperties innerProperties;
+    private DeviceGroupProperties properties;
 
-    /** Creates an instance of DeviceGroupInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Creates an instance of DeviceGroupInner class.
+     */
     public DeviceGroupInner() {
     }
 
     /**
-     * Get the innerProperties property: The resource-specific properties for this resource.
-     *
-     * @return the innerProperties value.
+     * Get the properties property: The resource-specific properties for this resource.
+     * 
+     * @return the properties value.
      */
-    private DeviceGroupProperties innerProperties() {
-        return this.innerProperties;
+    public DeviceGroupProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Get the description property: Description of the device group.
-     *
-     * @return the description value.
-     */
-    public String description() {
-        return this.innerProperties() == null ? null : this.innerProperties().description();
-    }
-
-    /**
-     * Set the description property: Description of the device group.
-     *
-     * @param description the description value to set.
+     * Set the properties property: The resource-specific properties for this resource.
+     * 
+     * @param properties the properties value to set.
      * @return the DeviceGroupInner object itself.
      */
-    public DeviceGroupInner withDescription(String description) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DeviceGroupProperties();
-        }
-        this.innerProperties().withDescription(description);
+    public DeviceGroupInner withProperties(DeviceGroupProperties properties) {
+        this.properties = properties;
         return this;
     }
 
     /**
-     * Get the osFeedType property: Operating system feed type of the device group.
-     *
-     * @return the osFeedType value.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    public OSFeedType osFeedType() {
-        return this.innerProperties() == null ? null : this.innerProperties().osFeedType();
-    }
-
-    /**
-     * Set the osFeedType property: Operating system feed type of the device group.
-     *
-     * @param osFeedType the osFeedType value to set.
-     * @return the DeviceGroupInner object itself.
-     */
-    public DeviceGroupInner withOsFeedType(OSFeedType osFeedType) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DeviceGroupProperties();
-        }
-        this.innerProperties().withOsFeedType(osFeedType);
-        return this;
-    }
-
-    /**
-     * Get the updatePolicy property: Update policy of the device group.
-     *
-     * @return the updatePolicy value.
-     */
-    public UpdatePolicy updatePolicy() {
-        return this.innerProperties() == null ? null : this.innerProperties().updatePolicy();
-    }
-
-    /**
-     * Set the updatePolicy property: Update policy of the device group.
-     *
-     * @param updatePolicy the updatePolicy value to set.
-     * @return the DeviceGroupInner object itself.
-     */
-    public DeviceGroupInner withUpdatePolicy(UpdatePolicy updatePolicy) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DeviceGroupProperties();
-        }
-        this.innerProperties().withUpdatePolicy(updatePolicy);
-        return this;
-    }
-
-    /**
-     * Get the allowCrashDumpsCollection property: Flag to define if the user allows for crash dump collection.
-     *
-     * @return the allowCrashDumpsCollection value.
-     */
-    public AllowCrashDumpCollection allowCrashDumpsCollection() {
-        return this.innerProperties() == null ? null : this.innerProperties().allowCrashDumpsCollection();
-    }
-
-    /**
-     * Set the allowCrashDumpsCollection property: Flag to define if the user allows for crash dump collection.
-     *
-     * @param allowCrashDumpsCollection the allowCrashDumpsCollection value to set.
-     * @return the DeviceGroupInner object itself.
-     */
-    public DeviceGroupInner withAllowCrashDumpsCollection(AllowCrashDumpCollection allowCrashDumpsCollection) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DeviceGroupProperties();
-        }
-        this.innerProperties().withAllowCrashDumpsCollection(allowCrashDumpsCollection);
-        return this;
-    }
-
-    /**
-     * Get the regionalDataBoundary property: Regional data boundary for the device group.
-     *
-     * @return the regionalDataBoundary value.
-     */
-    public RegionalDataBoundary regionalDataBoundary() {
-        return this.innerProperties() == null ? null : this.innerProperties().regionalDataBoundary();
-    }
-
-    /**
-     * Set the regionalDataBoundary property: Regional data boundary for the device group.
-     *
-     * @param regionalDataBoundary the regionalDataBoundary value to set.
-     * @return the DeviceGroupInner object itself.
-     */
-    public DeviceGroupInner withRegionalDataBoundary(RegionalDataBoundary regionalDataBoundary) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DeviceGroupProperties();
-        }
-        this.innerProperties().withRegionalDataBoundary(regionalDataBoundary);
-        return this;
-    }
-
-    /**
-     * Get the hasDeployment property: Deployment status for the device group.
-     *
-     * @return the hasDeployment value.
-     */
-    public Boolean hasDeployment() {
-        return this.innerProperties() == null ? null : this.innerProperties().hasDeployment();
-    }
-
-    /**
-     * Get the provisioningState property: The status of the last operation.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

@@ -7,16 +7,28 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Request parameters for tiering cost info for policy.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "objectType",
+    defaultImpl = FetchTieringCostSavingsInfoForPolicyRequest.class,
+    visible = true)
 @JsonTypeName("FetchTieringCostSavingsInfoForPolicyRequest")
 @Fluent
 public final class FetchTieringCostSavingsInfoForPolicyRequest extends FetchTieringCostInfoRequest {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "objectType", required = true)
+    private String objectType = "FetchTieringCostSavingsInfoForPolicyRequest";
+
     /*
      * Name of the backup policy for which the cost savings information is requested
      */
@@ -27,6 +39,17 @@ public final class FetchTieringCostSavingsInfoForPolicyRequest extends FetchTier
      * Creates an instance of FetchTieringCostSavingsInfoForPolicyRequest class.
      */
     public FetchTieringCostSavingsInfoForPolicyRequest() {
+    }
+
+    /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
     }
 
     /**
@@ -76,8 +99,9 @@ public final class FetchTieringCostSavingsInfoForPolicyRequest extends FetchTier
     public void validate() {
         super.validate();
         if (policyName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property policyName in model FetchTieringCostSavingsInfoForPolicyRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property policyName in model FetchTieringCostSavingsInfoForPolicyRequest"));
         }
     }
 

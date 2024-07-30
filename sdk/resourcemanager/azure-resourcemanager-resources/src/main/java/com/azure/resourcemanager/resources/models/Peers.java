@@ -7,7 +7,9 @@ package com.azure.resourcemanager.resources.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information about shared availability zone. */
+/**
+ * Information about shared availability zone.
+ */
 @Immutable
 public final class Peers {
     /*
@@ -22,13 +24,15 @@ public final class Peers {
     @JsonProperty(value = "availabilityZone", access = JsonProperty.Access.WRITE_ONLY)
     private String availabilityZone;
 
-    /** Creates an instance of Peers class. */
+    /**
+     * Creates an instance of Peers class.
+     */
     public Peers() {
     }
 
     /**
      * Get the subscriptionId property: The subscription ID.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -37,7 +41,7 @@ public final class Peers {
 
     /**
      * Get the availabilityZone property: The availabilityZone.
-     *
+     * 
      * @return the availabilityZone value.
      */
     public String availabilityZone() {
@@ -46,7 +50,7 @@ public final class Peers {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

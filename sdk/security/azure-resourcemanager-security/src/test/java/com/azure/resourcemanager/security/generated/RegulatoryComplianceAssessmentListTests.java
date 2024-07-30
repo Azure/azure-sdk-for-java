@@ -15,7 +15,7 @@ public final class RegulatoryComplianceAssessmentListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegulatoryComplianceAssessmentList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"description\":\"vdrhvoo\",\"assessmentType\":\"otbobzdopcj\",\"assessmentDetailsLink\":\"nhdldwmgxcx\",\"state\":\"Unsupported\",\"passedResources\":1846533498,\"failedResources\":1563532793,\"skippedResources\":1639158996,\"unsupportedResources\":1717050688},\"id\":\"grpkhjwniyqs\",\"name\":\"uicpd\",\"type\":\"gk\"},{\"properties\":{\"description\":\"vmbmp\",\"assessmentType\":\"modfvuefywsbpfvm\",\"assessmentDetailsLink\":\"hrfou\",\"state\":\"Failed\",\"passedResources\":938616277,\"failedResources\":988727085,\"skippedResources\":1662588727,\"unsupportedResources\":1209208693},\"id\":\"zvqtmnubexkp\",\"name\":\"ksmond\",\"type\":\"mquxvypo\"},{\"properties\":{\"description\":\"opkwhojv\",\"assessmentType\":\"jqg\",\"assessmentDetailsLink\":\"smocmbq\",\"state\":\"Failed\",\"passedResources\":941314557,\"failedResources\":1181340997,\"skippedResources\":2143349080,\"unsupportedResources\":109668081},\"id\":\"vhelxprglyatdd\",\"name\":\"kcbcue\",\"type\":\"rjxgciqib\"}],\"nextLink\":\"osx\"}")
+            "{\"value\":[{\"properties\":{\"description\":\"cugicjoox\",\"assessmentType\":\"ebwpucwwfvo\",\"assessmentDetailsLink\":\"vmeueci\",\"state\":\"Unsupported\",\"passedResources\":343837467,\"failedResources\":1240635196,\"skippedResources\":1339093969,\"unsupportedResources\":745513484},\"id\":\"rw\",\"name\":\"ueiotwmcdyt\",\"type\":\"x\"}],\"nextLink\":\"txnrjaw\"}")
             .toObject(RegulatoryComplianceAssessmentList.class);
         Assertions.assertEquals(State.UNSUPPORTED, model.value().get(0).state());
     }
@@ -23,9 +23,7 @@ public final class RegulatoryComplianceAssessmentListTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RegulatoryComplianceAssessmentList model = new RegulatoryComplianceAssessmentList()
-            .withValue(Arrays.asList(new RegulatoryComplianceAssessmentInner().withState(State.UNSUPPORTED),
-                new RegulatoryComplianceAssessmentInner().withState(State.FAILED),
-                new RegulatoryComplianceAssessmentInner().withState(State.FAILED)));
+            .withValue(Arrays.asList(new RegulatoryComplianceAssessmentInner().withState(State.UNSUPPORTED)));
         model = BinaryData.fromObject(model).toObject(RegulatoryComplianceAssessmentList.class);
         Assertions.assertEquals(State.UNSUPPORTED, model.value().get(0).state());
     }

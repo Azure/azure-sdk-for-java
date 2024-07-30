@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Packet capture session properties. */
+/**
+ * Packet capture session properties.
+ */
 @Fluent
 public final class PacketCapturePropertiesFormat {
     /*
@@ -45,8 +47,7 @@ public final class PacketCapturePropertiesFormat {
     private List<String> networkInterfaces;
 
     /*
-     * Number of bytes captured per packet, the remaining bytes are truncated. The default "0" means the entire packet
-     * is captured.
+     * Number of bytes captured per packet, the remaining bytes are truncated. The default "0" means the entire packet is captured.
      */
     @JsonProperty(value = "bytesToCapturePerPacket")
     private Long bytesToCapturePerPacket;
@@ -69,13 +70,15 @@ public final class PacketCapturePropertiesFormat {
     @JsonProperty(value = "outputFiles", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> outputFiles;
 
-    /** Creates an instance of PacketCapturePropertiesFormat class. */
+    /**
+     * Creates an instance of PacketCapturePropertiesFormat class.
+     */
     public PacketCapturePropertiesFormat() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the packet capture session resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -84,7 +87,7 @@ public final class PacketCapturePropertiesFormat {
 
     /**
      * Get the status property: The status of the packet capture session.
-     *
+     * 
      * @return the status value.
      */
     public PacketCaptureStatus status() {
@@ -93,7 +96,7 @@ public final class PacketCapturePropertiesFormat {
 
     /**
      * Get the reason property: The reason the current packet capture session state.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -102,7 +105,7 @@ public final class PacketCapturePropertiesFormat {
 
     /**
      * Get the captureStartTime property: The start time of the packet capture session.
-     *
+     * 
      * @return the captureStartTime value.
      */
     public OffsetDateTime captureStartTime() {
@@ -111,7 +114,7 @@ public final class PacketCapturePropertiesFormat {
 
     /**
      * Get the networkInterfaces property: List of network interfaces to capture on.
-     *
+     * 
      * @return the networkInterfaces value.
      */
     public List<String> networkInterfaces() {
@@ -120,7 +123,7 @@ public final class PacketCapturePropertiesFormat {
 
     /**
      * Set the networkInterfaces property: List of network interfaces to capture on.
-     *
+     * 
      * @param networkInterfaces the networkInterfaces value to set.
      * @return the PacketCapturePropertiesFormat object itself.
      */
@@ -132,7 +135,7 @@ public final class PacketCapturePropertiesFormat {
     /**
      * Get the bytesToCapturePerPacket property: Number of bytes captured per packet, the remaining bytes are truncated.
      * The default "0" means the entire packet is captured.
-     *
+     * 
      * @return the bytesToCapturePerPacket value.
      */
     public Long bytesToCapturePerPacket() {
@@ -142,7 +145,7 @@ public final class PacketCapturePropertiesFormat {
     /**
      * Set the bytesToCapturePerPacket property: Number of bytes captured per packet, the remaining bytes are truncated.
      * The default "0" means the entire packet is captured.
-     *
+     * 
      * @param bytesToCapturePerPacket the bytesToCapturePerPacket value to set.
      * @return the PacketCapturePropertiesFormat object itself.
      */
@@ -153,7 +156,7 @@ public final class PacketCapturePropertiesFormat {
 
     /**
      * Get the totalBytesPerSession property: Maximum size of the capture output.
-     *
+     * 
      * @return the totalBytesPerSession value.
      */
     public Long totalBytesPerSession() {
@@ -162,7 +165,7 @@ public final class PacketCapturePropertiesFormat {
 
     /**
      * Set the totalBytesPerSession property: Maximum size of the capture output.
-     *
+     * 
      * @param totalBytesPerSession the totalBytesPerSession value to set.
      * @return the PacketCapturePropertiesFormat object itself.
      */
@@ -173,7 +176,7 @@ public final class PacketCapturePropertiesFormat {
 
     /**
      * Get the timeLimitInSeconds property: Maximum duration of the capture session in seconds.
-     *
+     * 
      * @return the timeLimitInSeconds value.
      */
     public Integer timeLimitInSeconds() {
@@ -182,7 +185,7 @@ public final class PacketCapturePropertiesFormat {
 
     /**
      * Set the timeLimitInSeconds property: Maximum duration of the capture session in seconds.
-     *
+     * 
      * @param timeLimitInSeconds the timeLimitInSeconds value to set.
      * @return the PacketCapturePropertiesFormat object itself.
      */
@@ -193,7 +196,7 @@ public final class PacketCapturePropertiesFormat {
 
     /**
      * Get the outputFiles property: The list of output files of a packet capture session.
-     *
+     * 
      * @return the outputFiles value.
      */
     public List<String> outputFiles() {
@@ -202,7 +205,7 @@ public final class PacketCapturePropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -11,9 +11,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.CheckNameAvaila
  */
 public final class CheckNameAvailabilityWithLocationExecuteSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/
-     * CheckNameAvailabilityLocationBased.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/CheckNameAvailabilityLocationBased.json
      */
     /**
      * Sample code: NameAvailability.
@@ -21,8 +19,8 @@ public final class CheckNameAvailabilityWithLocationExecuteSamples {
      * @param manager Entry point to PostgreSqlManager.
      */
     public static void nameAvailability(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        manager.checkNameAvailabilityWithLocations().executeWithResponse("westus",
-            new CheckNameAvailabilityRequest().withName("name1").withType("Microsoft.DBforPostgreSQL/flexibleServers"),
-            com.azure.core.util.Context.NONE);
+        manager.checkNameAvailabilityWithLocations()
+            .executeWithResponse("westus", new CheckNameAvailabilityRequest().withName("name1")
+                .withType("Microsoft.DBforPostgreSQL/flexibleServers"), com.azure.core.util.Context.NONE);
     }
 }

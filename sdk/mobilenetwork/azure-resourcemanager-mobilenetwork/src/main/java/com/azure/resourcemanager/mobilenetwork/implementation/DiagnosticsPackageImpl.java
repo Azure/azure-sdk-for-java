@@ -15,8 +15,7 @@ public final class DiagnosticsPackageImpl implements DiagnosticsPackage {
 
     private final com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager;
 
-    DiagnosticsPackageImpl(
-        DiagnosticsPackageInner innerObject,
+    DiagnosticsPackageImpl(DiagnosticsPackageInner innerObject,
         com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

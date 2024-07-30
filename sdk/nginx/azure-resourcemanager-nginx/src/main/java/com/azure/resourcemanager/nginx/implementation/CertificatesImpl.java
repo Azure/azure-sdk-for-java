@@ -58,27 +58,27 @@ public final class CertificatesImpl implements Certificates {
 
     public PagedIterable<NginxCertificate> list(String resourceGroupName, String deploymentName) {
         PagedIterable<NginxCertificateInner> inner = this.serviceClient().list(resourceGroupName, deploymentName);
-        return Utils.mapPage(inner, inner1 -> new NginxCertificateImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NginxCertificateImpl(inner1, this.manager()));
     }
 
     public PagedIterable<NginxCertificate> list(String resourceGroupName, String deploymentName, Context context) {
         PagedIterable<NginxCertificateInner> inner
             = this.serviceClient().list(resourceGroupName, deploymentName, context);
-        return Utils.mapPage(inner, inner1 -> new NginxCertificateImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NginxCertificateImpl(inner1, this.manager()));
     }
 
     public NginxCertificate getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String deploymentName = Utils.getValueFromIdByName(id, "nginxDeployments");
+        String deploymentName = ResourceManagerUtils.getValueFromIdByName(id, "nginxDeployments");
         if (deploymentName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'nginxDeployments'.", id)));
         }
-        String certificateName = Utils.getValueFromIdByName(id, "certificates");
+        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
         if (certificateName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
@@ -87,17 +87,17 @@ public final class CertificatesImpl implements Certificates {
     }
 
     public Response<NginxCertificate> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String deploymentName = Utils.getValueFromIdByName(id, "nginxDeployments");
+        String deploymentName = ResourceManagerUtils.getValueFromIdByName(id, "nginxDeployments");
         if (deploymentName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'nginxDeployments'.", id)));
         }
-        String certificateName = Utils.getValueFromIdByName(id, "certificates");
+        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
         if (certificateName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
@@ -106,17 +106,17 @@ public final class CertificatesImpl implements Certificates {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String deploymentName = Utils.getValueFromIdByName(id, "nginxDeployments");
+        String deploymentName = ResourceManagerUtils.getValueFromIdByName(id, "nginxDeployments");
         if (deploymentName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'nginxDeployments'.", id)));
         }
-        String certificateName = Utils.getValueFromIdByName(id, "certificates");
+        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
         if (certificateName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
@@ -125,17 +125,17 @@ public final class CertificatesImpl implements Certificates {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String deploymentName = Utils.getValueFromIdByName(id, "nginxDeployments");
+        String deploymentName = ResourceManagerUtils.getValueFromIdByName(id, "nginxDeployments");
         if (deploymentName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'nginxDeployments'.", id)));
         }
-        String certificateName = Utils.getValueFromIdByName(id, "certificates");
+        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
         if (certificateName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));

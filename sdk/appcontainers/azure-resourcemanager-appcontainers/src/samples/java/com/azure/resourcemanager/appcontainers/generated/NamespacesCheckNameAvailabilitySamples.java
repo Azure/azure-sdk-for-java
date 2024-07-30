@@ -6,44 +6,41 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.resourcemanager.appcontainers.models.CheckNameAvailabilityRequest;
 
-/** Samples for Namespaces CheckNameAvailability. */
+/**
+ * Samples for Namespaces CheckNameAvailability.
+ */
 public final class NamespacesCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/Certificates_CheckNameAvailability.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
+     * Certificates_CheckNameAvailability.json
      */
     /**
      * Sample code: Certificates_CheckNameAvailability.
-     *
+     * 
      * @param manager Entry point to ContainerAppsApiManager.
      */
-    public static void certificatesCheckNameAvailability(
-        com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager
-            .namespaces()
-            .checkNameAvailabilityWithResponse(
-                "examplerg",
-                "testcontainerenv",
-                new CheckNameAvailabilityRequest()
-                    .withName("testcertificatename")
+    public static void
+        certificatesCheckNameAvailability(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
+        manager.namespaces()
+            .checkNameAvailabilityWithResponse("examplerg", "testcontainerenv",
+                new CheckNameAvailabilityRequest().withName("testcertificatename")
                     .withType("Microsoft.App/managedEnvironments/certificates"),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/ContainerApps_CheckNameAvailability.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
+     * ContainerApps_CheckNameAvailability.json
      */
     /**
      * Sample code: ContainerApps_CheckNameAvailability.
-     *
+     * 
      * @param manager Entry point to ContainerAppsApiManager.
      */
-    public static void containerAppsCheckNameAvailability(
-        com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager
-            .namespaces()
-            .checkNameAvailabilityWithResponse(
-                "examplerg",
-                "testcontainerenv",
+    public static void
+        containerAppsCheckNameAvailability(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
+        manager.namespaces()
+            .checkNameAvailabilityWithResponse("examplerg", "testcontainerenv",
                 new CheckNameAvailabilityRequest().withName("testcappname").withType("Microsoft.App/containerApps"),
                 com.azure.core.util.Context.NONE);
     }

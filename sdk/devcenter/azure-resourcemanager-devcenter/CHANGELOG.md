@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.7 (Unreleased)
+## 1.0.0-beta.8 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,176 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.7 (2024-04-23)
+
+- Azure Resource Manager DevCenter client library for Java. This package contains Microsoft Azure SDK for DevCenter Management SDK. DevCenter Management API. Package tag package-2024-02. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.CustomizationTasks` was removed
+
+* `models.CustomizationTaskInputType` was removed
+
+* `models.CatalogDevBoxDefinitions` was removed
+
+* `models.CustomizationTaskListResult` was removed
+
+* `models.CustomizationTask` was removed
+
+* `models.CustomizationTaskInput` was removed
+
+#### `models.Catalog$DefinitionStages` was modified
+
+* `withExistingDevcenter(java.lang.String,java.lang.String)` was removed in stage 1
+
+#### `models.ScheduleUpdate` was modified
+
+* `withTags(java.util.Map)` was removed
+* `withLocation(java.lang.String)` was removed
+
+#### `models.Catalog$Definition` was modified
+
+* `withExistingDevcenter(java.lang.String,java.lang.String)` was removed
+
+#### `DevCenterManager` was modified
+
+* `catalogDevBoxDefinitions()` was removed
+* `customizationTasks()` was removed
+
+#### `models.Catalogs` was modified
+
+* `deleteById(java.lang.String)` was removed
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `getById(java.lang.String)` was removed
+* `define(java.lang.String)` was removed
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+* `models.CatalogItemSyncEnableStatus` was added
+
+* `models.CheckScopedNameAvailabilities` was added
+
+* `models.CheckScopedNameAvailabilityRequest` was added
+
+* `models.ProjectCatalogSettings` was added
+
+* `models.ProjectCatalogEnvironmentDefinitions` was added
+
+* `models.ProjectCatalogs` was added
+
+* `models.DevCenterProjectCatalogSettings` was added
+
+* `models.OperationStatusesGetHeaders` was added
+
+* `models.OperationStatusesGetResponse` was added
+
+* `models.CatalogItemType` was added
+
+#### `models.SyncStats` was modified
+
+* `withSyncedCatalogItemTypes(java.util.List)` was added
+* `syncedCatalogItemTypes()` was added
+
+#### `models.DevCenter$Update` was modified
+
+* `withProjectCatalogSettings(models.DevCenterProjectCatalogSettings)` was added
+
+#### `models.DevCenter` was modified
+
+* `projectCatalogSettings()` was added
+
+#### `models.DevCenterUpdate` was modified
+
+* `withProjectCatalogSettings(models.DevCenterProjectCatalogSettings)` was added
+* `projectCatalogSettings()` was added
+
+#### `models.Project$Definition` was modified
+
+* `withCatalogSettings(models.ProjectCatalogSettings)` was added
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.ProjectEnvironmentTypeUpdate` was modified
+
+* `withDisplayName(java.lang.String)` was added
+* `displayName()` was added
+
+#### `models.Catalog` was modified
+
+* `tags()` was added
+
+#### `models.DevCenter$Definition` was modified
+
+* `withProjectCatalogSettings(models.DevCenterProjectCatalogSettings)` was added
+
+#### `models.Schedule$Definition` was modified
+
+* `withRegion(com.azure.core.management.Region)` was added
+* `withRegion(java.lang.String)` was added
+* `withTags(java.util.Map)` was added
+
+#### `models.Schedule` was modified
+
+* `tags()` was added
+* `regionName()` was added
+* `location()` was added
+* `region()` was added
+
+#### `models.Project$Update` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+* `withCatalogSettings(models.ProjectCatalogSettings)` was added
+
+#### `models.OperationStatusResult` was modified
+
+* `resourceId()` was added
+
+#### `models.ScheduleUpdate` was modified
+
+* `tags()` was added
+* `location()` was added
+
+#### `models.Project` was modified
+
+* `identity()` was added
+* `catalogSettings()` was added
+
+#### `models.Catalog$Definition` was modified
+
+* `withExistingProject(java.lang.String,java.lang.String)` was added
+* `withTags(java.util.Map)` was added
+
+#### `models.ProjectUpdate` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+* `identity()` was added
+* `withCatalogSettings(models.ProjectCatalogSettings)` was added
+* `catalogSettings()` was added
+
+#### `models.EnvironmentDefinitions` was modified
+
+* `listByProjectCatalog(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getByProjectCatalog(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `getByProjectCatalogWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `listByProjectCatalog(java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `models.ProjectEnvironmentType$Update` was modified
+
+* `withDisplayName(java.lang.String)` was added
+
+#### `DevCenterManager` was modified
+
+* `checkScopedNameAvailabilities()` was added
+* `projectCatalogs()` was added
+* `projectCatalogEnvironmentDefinitions()` was added
+
+#### `models.Catalogs` was modified
+
+* `update(java.lang.String,java.lang.String,java.lang.String,models.CatalogUpdate,com.azure.core.util.Context)` was added
+* `update(java.lang.String,java.lang.String,java.lang.String,models.CatalogUpdate)` was added
+* `createOrUpdate(java.lang.String,java.lang.String,java.lang.String,fluent.models.CatalogInner,com.azure.core.util.Context)` was added
+* `createOrUpdate(java.lang.String,java.lang.String,java.lang.String,fluent.models.CatalogInner)` was added
 
 ## 1.0.0-beta.6 (2023-10-23)
 

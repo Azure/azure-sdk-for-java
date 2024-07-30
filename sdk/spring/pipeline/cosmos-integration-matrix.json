@@ -1,14 +1,21 @@
 {
+  "displayNames": {
+
+  },
   "matrix": {
     "Cosmos": {
       "Session_Integration": {
         "ArmTemplateParameters": "@{ defaultConsistencyLevel = 'Session' }",
         "ProfileFlag": "-P integration-test-azure",
         "Pool": "env:LINUXPOOL",
-        "OSVmImage": "MMSUbuntu2004"
+        "OSVmImage": "env:LINUXVMIMAGE",
+        "AdditionalArgs": "-Dargline=-DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true"
       }
     },
     "TestFromSource": true,
-    "JavaTestVersion": ["1.8", "1.11", "1.17", "1.21"]
+    "JavaTestVersion": ["1.17", "1.21"],
+    "SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION": [
+
+    ]
   }
 }

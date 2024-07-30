@@ -8,18 +8,26 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.UntilActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
- * This activity executes inner activities until the specified boolean expression results to true or timeout is
- * reached, whichever is earlier.
+ * This activity executes inner activities until the specified boolean expression results to true or timeout is reached,
+ * whichever is earlier.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = UntilActivity.class, visible = true)
 @JsonTypeName("Until")
 @Fluent
 public final class UntilActivity extends ControlActivity {
+    /*
+     * Type of activity.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "Until";
+
     /*
      * Until activity properties.
      */
@@ -30,6 +38,16 @@ public final class UntilActivity extends ControlActivity {
      * Creates an instance of UntilActivity class.
      */
     public UntilActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -121,8 +139,8 @@ public final class UntilActivity extends ControlActivity {
     }
 
     /**
-     * Get the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it
-     * takes the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
+     * Get the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it takes
+     * the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
      * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      * 
      * @return the timeout value.
@@ -132,8 +150,8 @@ public final class UntilActivity extends ControlActivity {
     }
 
     /**
-     * Set the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it
-     * takes the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
+     * Set the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it takes
+     * the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
      * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      * 
      * @param timeout the timeout value to set.
@@ -179,8 +197,9 @@ public final class UntilActivity extends ControlActivity {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property innerTypeProperties in model UntilActivity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model UntilActivity"));
         } else {
             innerTypeProperties().validate();
         }

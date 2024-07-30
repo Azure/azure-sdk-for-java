@@ -81,8 +81,9 @@ public final class ManagedRuleGroupOverride {
      */
     public void validate() {
         if (ruleGroupName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property ruleGroupName in model ManagedRuleGroupOverride"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property ruleGroupName in model ManagedRuleGroupOverride"));
         }
         if (rules() != null) {
             rules().forEach(e -> e.validate());

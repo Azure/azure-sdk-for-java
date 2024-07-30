@@ -6,16 +6,24 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity Dynamics CRM source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = DynamicsCrmSource.class, visible = true)
 @JsonTypeName("DynamicsCrmSource")
 @Fluent
 public final class DynamicsCrmSource extends CopySource {
+    /*
+     * Copy source type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "DynamicsCrmSource";
+
     /*
      * FetchXML is a proprietary query language that is used in Microsoft Dynamics CRM (online & on-premises). Type:
      * string (or Expression with resultType string).
@@ -34,6 +42,16 @@ public final class DynamicsCrmSource extends CopySource {
      * Creates an instance of DynamicsCrmSource class.
      */
     public DynamicsCrmSource() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,10 +16,21 @@ import java.util.Map;
 /**
  * IaaS VM workload-specific backup policy.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "backupManagementType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "backupManagementType",
+    defaultImpl = AzureIaaSvmProtectionPolicy.class,
+    visible = true)
 @JsonTypeName("AzureIaasVM")
 @Fluent
 public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "backupManagementType", required = true)
+    private String backupManagementType = "AzureIaasVM";
+
     /*
      * The instantRPDetails property.
      */
@@ -64,10 +76,27 @@ public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
     @JsonProperty(value = "policyType")
     private IaasvmPolicyType policyType;
 
+    /*
+     * The snapshotConsistencyType property.
+     */
+    @JsonProperty(value = "snapshotConsistencyType")
+    private IaasVMSnapshotConsistencyType snapshotConsistencyType;
+
     /**
      * Creates an instance of AzureIaaSvmProtectionPolicy class.
      */
     public AzureIaaSvmProtectionPolicy() {
+    }
+
+    /**
+     * Get the backupManagementType property: This property will be used as the discriminator for deciding the specific
+     * types in the polymorphic chain of types.
+     * 
+     * @return the backupManagementType value.
+     */
+    @Override
+    public String backupManagementType() {
+        return this.backupManagementType;
     }
 
     /**
@@ -211,6 +240,27 @@ public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
      */
     public AzureIaaSvmProtectionPolicy withPolicyType(IaasvmPolicyType policyType) {
         this.policyType = policyType;
+        return this;
+    }
+
+    /**
+     * Get the snapshotConsistencyType property: The snapshotConsistencyType property.
+     * 
+     * @return the snapshotConsistencyType value.
+     */
+    public IaasVMSnapshotConsistencyType snapshotConsistencyType() {
+        return this.snapshotConsistencyType;
+    }
+
+    /**
+     * Set the snapshotConsistencyType property: The snapshotConsistencyType property.
+     * 
+     * @param snapshotConsistencyType the snapshotConsistencyType value to set.
+     * @return the AzureIaaSvmProtectionPolicy object itself.
+     */
+    public AzureIaaSvmProtectionPolicy
+        withSnapshotConsistencyType(IaasVMSnapshotConsistencyType snapshotConsistencyType) {
+        this.snapshotConsistencyType = snapshotConsistencyType;
         return this;
     }
 

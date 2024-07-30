@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-/** Samples for PacketCaptures Stop. */
+/**
+ * Samples for PacketCaptures Stop.
+ */
 public final class PacketCapturesStopSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCaptureStop.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCaptureStop.json
      */
     /**
      * Sample code: Stop packet capture session.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void stopPacketCaptureSession(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {

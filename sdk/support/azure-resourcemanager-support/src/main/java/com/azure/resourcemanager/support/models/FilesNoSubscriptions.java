@@ -9,11 +9,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.support.fluent.models.FileDetailsInner;
 
-/** Resource collection API of FilesNoSubscriptions. */
+/**
+ * Resource collection API of FilesNoSubscriptions.
+ */
 public interface FilesNoSubscriptions {
     /**
      * Lists all the Files information under a workspace for an Azure subscription.
-     *
+     * 
      * @param fileWorkspaceName File Workspace Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -24,7 +26,7 @@ public interface FilesNoSubscriptions {
 
     /**
      * Lists all the Files information under a workspace for an Azure subscription.
-     *
+     * 
      * @param fileWorkspaceName File Workspace Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -36,7 +38,7 @@ public interface FilesNoSubscriptions {
 
     /**
      * Returns details of a specific file in a work space.
-     *
+     * 
      * @param fileWorkspaceName File Workspace Name.
      * @param fileName File Name.
      * @param context The context to associate with this operation.
@@ -49,7 +51,7 @@ public interface FilesNoSubscriptions {
 
     /**
      * Returns details of a specific file in a work space.
-     *
+     * 
      * @param fileWorkspaceName File Workspace Name.
      * @param fileName File Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -61,7 +63,7 @@ public interface FilesNoSubscriptions {
 
     /**
      * Creates a new file under a workspace.
-     *
+     * 
      * @param fileWorkspaceName File workspace name.
      * @param fileName File name.
      * @param createFileParameters Create file object.
@@ -71,12 +73,12 @@ public interface FilesNoSubscriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that represents File Details resource along with {@link Response}.
      */
-    Response<FileDetails> createWithResponse(
-        String fileWorkspaceName, String fileName, FileDetailsInner createFileParameters, Context context);
+    Response<FileDetails> createWithResponse(String fileWorkspaceName, String fileName,
+        FileDetailsInner createFileParameters, Context context);
 
     /**
      * Creates a new file under a workspace.
-     *
+     * 
      * @param fileWorkspaceName File workspace name.
      * @param fileName File name.
      * @param createFileParameters Create file object.
@@ -89,7 +91,7 @@ public interface FilesNoSubscriptions {
 
     /**
      * This API allows you to upload content to a file.
-     *
+     * 
      * @param fileWorkspaceName File WorkspaceName.
      * @param fileName File Name.
      * @param uploadFile UploadFile object.
@@ -99,12 +101,12 @@ public interface FilesNoSubscriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> uploadWithResponse(
-        String fileWorkspaceName, String fileName, UploadFile uploadFile, Context context);
+    Response<Void> uploadWithResponse(String fileWorkspaceName, String fileName, UploadFile uploadFile,
+        Context context);
 
     /**
      * This API allows you to upload content to a file.
-     *
+     * 
      * @param fileWorkspaceName File WorkspaceName.
      * @param fileName File Name.
      * @param uploadFile UploadFile object.

@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Certificate status values. */
+/**
+ * Certificate status values.
+ */
 public final class CertificateStatus extends ExpandableStringEnum<CertificateStatus> {
-    /** Static value Active for CertificateStatus. */
+    /**
+     * Static value Active for CertificateStatus.
+     */
     public static final CertificateStatus ACTIVE = fromString("Active");
 
-    /** Static value Inactive for CertificateStatus. */
+    /**
+     * Static value Inactive for CertificateStatus.
+     */
     public static final CertificateStatus INACTIVE = fromString("Inactive");
 
-    /** Static value Expired for CertificateStatus. */
+    /**
+     * Static value Expired for CertificateStatus.
+     */
     public static final CertificateStatus EXPIRED = fromString("Expired");
 
-    /** Static value Revoked for CertificateStatus. */
+    /**
+     * Static value Revoked for CertificateStatus.
+     */
     public static final CertificateStatus REVOKED = fromString("Revoked");
 
     /**
      * Creates a new instance of CertificateStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class CertificateStatus extends ExpandableStringEnum<CertificateSta
 
     /**
      * Creates or finds a CertificateStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CertificateStatus.
      */
@@ -44,7 +54,7 @@ public final class CertificateStatus extends ExpandableStringEnum<CertificateSta
 
     /**
      * Gets known CertificateStatus values.
-     *
+     * 
      * @return known CertificateStatus values.
      */
     public static Collection<CertificateStatus> values() {

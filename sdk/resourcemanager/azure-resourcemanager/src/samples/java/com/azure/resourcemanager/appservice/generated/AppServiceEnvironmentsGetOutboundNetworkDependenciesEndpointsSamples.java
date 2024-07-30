@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
-     * GetOutboundNetworkDependenciesEndpoints.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetOutboundNetworkDependenciesEndpoints.json
      */
     /**
      * Sample code: Get the network endpoints of all outbound dependencies of an App Service Environment.
@@ -19,7 +18,11 @@ public final class AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpoints
      */
     public static void getTheNetworkEndpointsOfAllOutboundDependenciesOfAnAppServiceEnvironment(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getAppServiceEnvironments().getOutboundNetworkDependenciesEndpoints(
-            "Sample-WestUSResourceGroup", "SampleAse", com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getAppServiceEnvironments()
+            .getOutboundNetworkDependenciesEndpoints("Sample-WestUSResourceGroup", "SampleAse",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -88,7 +88,7 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
         CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties, cosmosItemRequestOptions);
 
         CosmosItemResponse<InternalObjectNode> readResponse1 = container.readItem(properties.getId(),
-                                                                                    new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
+                                                                                    new PartitionKey(properties.get("mypk")),
                                                                                     cosmosItemRequestOptions,
                                                                                     InternalObjectNode.class);
         //  Read item should have full response irrespective of the flag - contentResponseOnWriteEnabled
@@ -107,7 +107,7 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
         }
 
         CosmosItemResponse<InternalObjectNode> readResponse1 = container.readItem(properties.getId(),
-            new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
+            new PartitionKey(properties.get("mypk")),
             cosmosItemRequestOptions,
             InternalObjectNode.class);
         //  Read item should have full response irrespective of the flag - contentResponseOnWriteEnabled
@@ -126,13 +126,13 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
 
         validateMinimalItemResponse(properties, itemResponse, true);
         String newPropValue = UUID.randomUUID().toString();
-        BridgeInternal.setProperty(properties, "newProp", newPropValue);
+        properties.set("newProp", newPropValue, CosmosItemSerializer.DEFAULT_SERIALIZER);
         ModelBridgeInternal.setPartitionKey(cosmosItemRequestOptions,
-            new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")));
+            new PartitionKey(properties.get("mypk")));
         // replace document
         CosmosItemResponse<InternalObjectNode> replace = container.replaceItem(properties,
             properties.getId(),
-            new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
+            new PartitionKey(properties.get("mypk")),
             cosmosItemRequestOptions);
         validateMinimalItemResponse(properties, replace, true);
     }
@@ -148,13 +148,13 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
 
         validateItemResponse(properties, itemResponse);
         String newPropValue = UUID.randomUUID().toString();
-        BridgeInternal.setProperty(properties, "newProp", newPropValue);
+        properties.set("newProp", newPropValue, CosmosItemSerializer.DEFAULT_SERIALIZER);
         ModelBridgeInternal.setPartitionKey(cosmosItemRequestOptions,
-            new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")));
+            new PartitionKey(properties.get("mypk")));
         // replace document
         CosmosItemResponse<InternalObjectNode> replace = container.replaceItem(properties,
             properties.getId(),
-            new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
+            new PartitionKey(properties.get("mypk")),
             cosmosItemRequestOptions);
         validateItemResponse(properties, replace);
     }
@@ -166,7 +166,7 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
 
         CosmosItemResponse<?> deleteResponse = container.deleteItem(properties.getId(),
-                                                                    new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
+                                                                    new PartitionKey(properties.get("mypk")),
                                                                     options);
         assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
         validateMinimalItemResponse(properties, deleteResponse, false);
@@ -182,7 +182,7 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
         }
 
         CosmosItemResponse<?> deleteResponse = container.deleteItem(properties.getId(),
-            new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
+            new PartitionKey(properties.get("mypk")),
             cosmosItemRequestOptions);
         assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
         validateMinimalItemResponse(properties, deleteResponse, false);

@@ -10,14 +10,14 @@ import com.azure.resourcemanager.datafactory.fluent.models.MicrosoftAccessTableD
 public final class MicrosoftAccessTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MicrosoftAccessTableDatasetTypeProperties model = BinaryData.fromString("{\"tableName\":\"datatmsgkwedwl\"}")
+        MicrosoftAccessTableDatasetTypeProperties model = BinaryData.fromString("{\"tableName\":\"datae\"}")
             .toObject(MicrosoftAccessTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MicrosoftAccessTableDatasetTypeProperties model
-            = new MicrosoftAccessTableDatasetTypeProperties().withTableName("datatmsgkwedwl");
+            = new MicrosoftAccessTableDatasetTypeProperties().withTableName("datae");
         model = BinaryData.fromObject(model).toObject(MicrosoftAccessTableDatasetTypeProperties.class);
     }
 }

@@ -5,27 +5,25 @@
 package com.azure.resourcemanager.hdinsight.containers.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.hdinsight.containers.fluent.models.TrinoDebugConfig;
+import com.azure.resourcemanager.hdinsight.containers.models.TrinoDebugConfig;
 import org.junit.jupiter.api.Assertions;
 
 public final class TrinoDebugConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TrinoDebugConfig model =
-            BinaryData
-                .fromString("{\"enable\":true,\"port\":741975656,\"suspend\":true}")
-                .toObject(TrinoDebugConfig.class);
+        TrinoDebugConfig model = BinaryData.fromString("{\"enable\":true,\"port\":726916833,\"suspend\":true}")
+            .toObject(TrinoDebugConfig.class);
         Assertions.assertEquals(true, model.enable());
-        Assertions.assertEquals(741975656, model.port());
+        Assertions.assertEquals(726916833, model.port());
         Assertions.assertEquals(true, model.suspend());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrinoDebugConfig model = new TrinoDebugConfig().withEnable(true).withPort(741975656).withSuspend(true);
+        TrinoDebugConfig model = new TrinoDebugConfig().withEnable(true).withPort(726916833).withSuspend(true);
         model = BinaryData.fromObject(model).toObject(TrinoDebugConfig.class);
         Assertions.assertEquals(true, model.enable());
-        Assertions.assertEquals(741975656, model.port());
+        Assertions.assertEquals(726916833, model.port());
         Assertions.assertEquals(true, model.suspend());
     }
 }

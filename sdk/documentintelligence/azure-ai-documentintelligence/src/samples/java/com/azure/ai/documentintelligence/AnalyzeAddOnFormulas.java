@@ -41,7 +41,7 @@ public class AnalyzeAddOnFormulas {
         File document = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
             + "sample-forms/addOns/formulas.pdf");
 
-        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutResultPoller =
+        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeLayoutResultPoller =
             client.beginAnalyzeDocument("prebuilt-layout", null,
                 null,
                 null,
@@ -50,7 +50,7 @@ public class AnalyzeAddOnFormulas {
                 null,
                 new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
 
-        AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult().getAnalyzeResult();
+        AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 
         List<DocumentPage> pages = analyzeLayoutResult.getPages();
         for (int i = 0; i < pages.size(); i++) {

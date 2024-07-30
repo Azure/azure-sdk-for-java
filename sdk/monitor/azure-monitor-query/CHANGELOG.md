@@ -1,17 +1,68 @@
 # Release History
 
-## 1.3.0-beta.3 (Unreleased)
+## 1.5.0 (2024-07-22)
 
 ### Features Added
 
-### Breaking Changes
+- Added sovereign cloud support for `MetricsClient` and `MetricsAsyncClient`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
+- Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
+
+## 1.4.0 (2024-06-10)
+
+### Other Changes
+
+- Migrating `azure-monitor-query` to stream-style serialization.
+
+#### Dependency Updates
+
+- Added `azure-json` dependency to support JSON serialization and deserialization.
+- Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
+- Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
+
+## 1.3.2 (2024-05-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
+- Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
+
+## 1.3.1 (2024-04-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
+
+
+## 1.3.0 (2024-03-26)
+
+### Features Added
+
+- Added `MetricsClient` and `MetricsAsyncClient` to support querying metrics for multiple resources in a single request.
 
 ### Bugs Fixed
 
 - Fixed the issue with `MetricsQueryClient` and `MetricsQueryAsyncClient` where the `listMetricDefinitions` method was returning 
 `MetricsDefinition` objects with null values for `supportedAggregationTypes`.[(#36698)](https://github.com/Azure/azure-sdk-for-java/issues/36698)
 
+## 1.2.10 (2024-03-20)
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
+- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
 
 ## 1.2.9 (2024-02-20)
 

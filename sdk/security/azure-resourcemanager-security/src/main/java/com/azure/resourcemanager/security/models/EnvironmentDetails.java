@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class EnvironmentDetails {
     /*
-     * The native resource id of the resource (in case of Azure - the resource Id, in case of MC - the native resource
-     * id)
+     * The native resource id of the resource (in case of Azure - the resource Id, in case of MC - the native resource id)
      */
     @JsonProperty(value = "nativeResourceId")
     private String nativeResourceId;
@@ -26,8 +25,7 @@ public final class EnvironmentDetails {
     private String environmentHierarchyId;
 
     /*
-     * The organizational hierarchy id of the connector (in case of Azure - the subscription Id, in case of MC - the
-     * organizational hierarchyId id)
+     * The organizational hierarchy id of the connector (in case of Azure - the subscription Id, in case of MC - the organizational hierarchyId id)
      */
     @JsonProperty(value = "organizationalHierarchyId")
     private String organizationalHierarchyId;
@@ -51,8 +49,8 @@ public final class EnvironmentDetails {
     }
 
     /**
-     * Get the nativeResourceId property: The native resource id of the resource (in case of Azure - the resource Id,
-     * in case of MC - the native resource id).
+     * Get the nativeResourceId property: The native resource id of the resource (in case of Azure - the resource Id, in
+     * case of MC - the native resource id).
      * 
      * @return the nativeResourceId value.
      */
@@ -61,8 +59,8 @@ public final class EnvironmentDetails {
     }
 
     /**
-     * Set the nativeResourceId property: The native resource id of the resource (in case of Azure - the resource Id,
-     * in case of MC - the native resource id).
+     * Set the nativeResourceId property: The native resource id of the resource (in case of Azure - the resource Id, in
+     * case of MC - the native resource id).
      * 
      * @param nativeResourceId the nativeResourceId value to set.
      * @return the EnvironmentDetails object itself.

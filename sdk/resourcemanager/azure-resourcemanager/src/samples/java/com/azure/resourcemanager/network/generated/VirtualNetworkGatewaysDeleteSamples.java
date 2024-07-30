@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class VirtualNetworkGatewaysDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkGatewayDelete.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualNetworkGatewayDelete.
      * json
      */
     /**
@@ -19,7 +19,10 @@ public final class VirtualNetworkGatewaysDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteVirtualNetworkGateway(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualNetworkGateways().delete("rg1", "vpngw",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworkGateways()
+            .delete("rg1", "vpngw", com.azure.core.util.Context.NONE);
     }
 }

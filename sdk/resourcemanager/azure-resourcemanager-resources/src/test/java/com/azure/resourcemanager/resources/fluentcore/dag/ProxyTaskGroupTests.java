@@ -3,6 +3,8 @@
 
 package com.azure.resourcemanager.resources.fluentcore.dag;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -19,6 +21,7 @@ import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 
 public class ProxyTaskGroupTests {
+    private static final ClientLogger LOGGER = new ClientLogger(ProxyTaskGroupTests.class);
 
     @Test
     public void testSampleTaskGroupSanity() {
@@ -539,7 +542,7 @@ public class ProxyTaskGroupTests {
 
 
         group1.invokeAsync(group1.newInvocationContext())
-                .subscribe(indexable -> System.out.println(indexable.key()));
+                .subscribe(indexable -> LOGGER.log(LogLevel.VERBOSE, indexable::key));
     }
 
     @Test

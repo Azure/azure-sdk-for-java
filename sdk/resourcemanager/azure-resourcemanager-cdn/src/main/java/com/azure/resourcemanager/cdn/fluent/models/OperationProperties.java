@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cdn.models.ServiceSpecification;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of operation, include metric specifications. */
+/**
+ * Properties of operation, include metric specifications.
+ */
 @Fluent
 public final class OperationProperties {
     /*
@@ -17,13 +19,15 @@ public final class OperationProperties {
     @JsonProperty(value = "serviceSpecification")
     private ServiceSpecification serviceSpecification;
 
-    /** Creates an instance of OperationProperties class. */
+    /**
+     * Creates an instance of OperationProperties class.
+     */
     public OperationProperties() {
     }
 
     /**
      * Get the serviceSpecification property: One property of operation, include metric specifications.
-     *
+     * 
      * @return the serviceSpecification value.
      */
     public ServiceSpecification serviceSpecification() {
@@ -32,7 +36,7 @@ public final class OperationProperties {
 
     /**
      * Set the serviceSpecification property: One property of operation, include metric specifications.
-     *
+     * 
      * @param serviceSpecification the serviceSpecification value to set.
      * @return the OperationProperties object itself.
      */
@@ -43,7 +47,7 @@ public final class OperationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

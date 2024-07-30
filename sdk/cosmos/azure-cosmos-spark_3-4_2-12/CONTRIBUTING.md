@@ -2,7 +2,7 @@
 This instruction is guideline for building and code contribution.
 
 ## Prequisites
-- JDK 11 and above
+- JDK 8 and above
 - [Maven](https://maven.apache.org/) 3.0 and above
 
 ## Build from source
@@ -10,7 +10,7 @@ To build the project, run maven commands.
 
 ```bash
 git clone https://github.com/Azure/azure-sdk-for-java.git 
-cd sdk/cosmos/azure-cosmos-spark_3-4_2.12
+cd sdk/cosmos/azure-cosmos-spark_3-4_2-12
 mvn clean install
 ```
 

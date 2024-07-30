@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,75 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.3.0 (2024-05-20)
+
+- Azure Resource Manager RecoveryServices client library for Java. This package contains Microsoft Azure SDK for RecoveryServices Management SDK. Recovery Services Client. Package tag package-2024-04. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.Vaults` was modified
+
+* `com.azure.core.http.rest.Response deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+* `deleteByResourceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+* `models.BcdrSecurityLevel` was added
+
+* `models.EnhancedSecurityState` was added
+
+#### `models.VaultPropertiesRedundancySettings` was modified
+
+* `withStandardTierStorageRedundancy(models.StandardTierStorageRedundancy)` was added
+* `withCrossRegionRestore(models.CrossRegionRestore)` was added
+
+#### `models.AzureMonitorAlertSettings` was modified
+
+* `alertsForAllReplicationIssues()` was added
+* `withAlertsForAllReplicationIssues(models.AlertsState)` was added
+* `alertsForAllFailoverIssues()` was added
+* `withAlertsForAllFailoverIssues(models.AlertsState)` was added
+
+#### `models.ClassicAlertSettings` was modified
+
+* `emailNotificationsForSiteRecovery()` was added
+* `withEmailNotificationsForSiteRecovery(models.AlertsState)` was added
+
+#### `models.ResourceCertificateDetails` was modified
+
+* `authType()` was added
+
+#### `models.SoftDeleteSettings` was modified
+
+* `withEnhancedSecurityState(models.EnhancedSecurityState)` was added
+* `enhancedSecurityState()` was added
+
+#### `models.Vault$Definition` was modified
+
+* `withXMsAuthorizationAuxiliary(java.lang.String)` was added
+
+#### `models.Vaults` was modified
+
+* `delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.ResourceCertificateAndAadDetails` was modified
+
+* `authType()` was added
+
+#### `models.Vault$Update` was modified
+
+* `withXMsAuthorizationAuxiliary(java.lang.String)` was added
+
+#### `models.ResourceCertificateAndAcsDetails` was modified
+
+* `authType()` was added
+
+#### `models.VaultProperties` was modified
+
+* `bcdrSecurityLevel()` was added
+* `withResourceGuardOperationRequests(java.util.List)` was added
+* `resourceGuardOperationRequests()` was added
 
 ## 1.2.0 (2023-08-22)
 

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
@@ -14,11 +15,7 @@ import java.time.OffsetDateTime;
 /**
  * Defines workload agnostic properties for a job.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "jobType",
-    defaultImpl = Job.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "jobType", defaultImpl = Job.class, visible = true)
 @JsonTypeName("Job")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AzureIaaSVMJob", value = AzureIaaSvmJob.class),
@@ -30,6 +27,13 @@ import java.time.OffsetDateTime;
     @JsonSubTypes.Type(name = "VaultJob", value = VaultJob.class) })
 @Fluent
 public class Job {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "jobType", required = true)
+    private String jobType;
+
     /*
      * Friendly name of the entity on which the current job is executing.
      */
@@ -76,6 +80,17 @@ public class Job {
      * Creates an instance of Job class.
      */
     public Job() {
+        this.jobType = "Job";
+    }
+
+    /**
+     * Get the jobType property: This property will be used as the discriminator for deciding the specific types in the
+     * polymorphic chain of types.
+     * 
+     * @return the jobType value.
+     */
+    public String jobType() {
+        return this.jobType;
     }
 
     /**

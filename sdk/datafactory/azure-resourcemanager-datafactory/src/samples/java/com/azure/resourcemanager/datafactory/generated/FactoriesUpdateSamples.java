@@ -22,8 +22,10 @@ public final class FactoriesUpdateSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void factoriesUpdate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        Factory resource = manager.factories().getByResourceGroupWithResponse("exampleResourceGroup",
-            "exampleFactoryName", null, com.azure.core.util.Context.NONE).getValue();
+        Factory resource = manager.factories()
+            .getByResourceGroupWithResponse("exampleResourceGroup", "exampleFactoryName", null,
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("exampleTag", "exampleValue")).apply();
     }
 

@@ -11,9 +11,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.AzureVMResourceFe
  */
 public final class FeatureSupportValidateSamples {
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * AzureIaasVm/BackupFeature_Validate.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/AzureIaasVm/BackupFeature_Validate.json
      */
     /**
      * Sample code: Check Azure Vm Backup Feature Support.
@@ -22,8 +20,9 @@ public final class FeatureSupportValidateSamples {
      */
     public static void checkAzureVmBackupFeatureSupport(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.featureSupports().validateWithResponse("southeastasia",
-            new AzureVMResourceFeatureSupportRequest().withVmSize("Basic_A0").withVmSku("Premium"),
-            com.azure.core.util.Context.NONE);
+        manager.featureSupports()
+            .validateWithResponse("southeastasia",
+                new AzureVMResourceFeatureSupportRequest().withVmSize("Basic_A0").withVmSku("Premium"),
+                com.azure.core.util.Context.NONE);
     }
 }

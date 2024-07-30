@@ -5,32 +5,109 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * An abstract representation of a chat message as provided in a request.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "role",
-    defaultImpl = ChatRequestMessage.class)
-@JsonTypeName("ChatRequestMessage")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "system", value = ChatRequestSystemMessage.class),
-    @JsonSubTypes.Type(name = "user", value = ChatRequestUserMessage.class),
-    @JsonSubTypes.Type(name = "assistant", value = ChatRequestAssistantMessage.class),
-    @JsonSubTypes.Type(name = "tool", value = ChatRequestToolMessage.class),
-    @JsonSubTypes.Type(name = "function", value = ChatRequestFunctionMessage.class) })
 @Immutable
-public class ChatRequestMessage {
+public class ChatRequestMessage implements JsonSerializable<ChatRequestMessage> {
 
     /**
      * Creates an instance of ChatRequestMessage class.
      */
     @Generated
     public ChatRequestMessage() {
+    }
+
+    /*
+     * The chat role associated with this message.
+     */
+    @Generated
+    private ChatRole role = ChatRole.fromString("ChatRequestMessage");
+
+    /**
+     * Get the role property: The chat role associated with this message.
+     *
+     * @return the role value.
+     */
+    @Generated
+    public ChatRole getRole() {
+        return this.role;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChatRequestMessage from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChatRequestMessage if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ChatRequestMessage.
+     */
+    @Generated
+    public static ChatRequestMessage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                // Prepare for reading
+                readerToUse.nextToken();
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("role".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("system".equals(discriminatorValue)) {
+                    return ChatRequestSystemMessage.fromJson(readerToUse.reset());
+                } else if ("user".equals(discriminatorValue)) {
+                    return ChatRequestUserMessage.fromJson(readerToUse.reset());
+                } else if ("assistant".equals(discriminatorValue)) {
+                    return ChatRequestAssistantMessage.fromJson(readerToUse.reset());
+                } else if ("tool".equals(discriminatorValue)) {
+                    return ChatRequestToolMessage.fromJson(readerToUse.reset());
+                } else if ("function".equals(discriminatorValue)) {
+                    return ChatRequestFunctionMessage.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    @Generated
+    static ChatRequestMessage fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChatRequestMessage deserializedChatRequestMessage = new ChatRequestMessage();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("role".equals(fieldName)) {
+                    deserializedChatRequestMessage.role = ChatRole.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedChatRequestMessage;
+        });
     }
 }

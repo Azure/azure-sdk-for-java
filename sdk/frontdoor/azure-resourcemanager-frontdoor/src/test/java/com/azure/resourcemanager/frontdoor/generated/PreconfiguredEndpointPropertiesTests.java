@@ -12,29 +12,25 @@ import org.junit.jupiter.api.Assertions;
 public final class PreconfiguredEndpointPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PreconfiguredEndpointProperties model =
-            BinaryData
-                .fromString(
-                    "{\"description\":\"rncsdtclu\",\"endpoint\":\"ypbsfgytguslfead\",\"endpointType\":\"AFD\",\"backend\":\"ukyhejhzis\"}")
-                .toObject(PreconfiguredEndpointProperties.class);
-        Assertions.assertEquals("rncsdtclu", model.description());
-        Assertions.assertEquals("ypbsfgytguslfead", model.endpoint());
-        Assertions.assertEquals(EndpointType.AFD, model.endpointType());
-        Assertions.assertEquals("ukyhejhzis", model.backend());
+        PreconfiguredEndpointProperties model = BinaryData.fromString(
+            "{\"description\":\"cluqovekqvgqo\",\"endpoint\":\"ifzmpjwyivqi\",\"endpointType\":\"AzureRegion\",\"backend\":\"vhrfsphuagrt\"}")
+            .toObject(PreconfiguredEndpointProperties.class);
+        Assertions.assertEquals("cluqovekqvgqo", model.description());
+        Assertions.assertEquals("ifzmpjwyivqi", model.endpoint());
+        Assertions.assertEquals(EndpointType.AZURE_REGION, model.endpointType());
+        Assertions.assertEquals("vhrfsphuagrt", model.backend());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PreconfiguredEndpointProperties model =
-            new PreconfiguredEndpointProperties()
-                .withDescription("rncsdtclu")
-                .withEndpoint("ypbsfgytguslfead")
-                .withEndpointType(EndpointType.AFD)
-                .withBackend("ukyhejhzis");
+        PreconfiguredEndpointProperties model = new PreconfiguredEndpointProperties().withDescription("cluqovekqvgqo")
+            .withEndpoint("ifzmpjwyivqi")
+            .withEndpointType(EndpointType.AZURE_REGION)
+            .withBackend("vhrfsphuagrt");
         model = BinaryData.fromObject(model).toObject(PreconfiguredEndpointProperties.class);
-        Assertions.assertEquals("rncsdtclu", model.description());
-        Assertions.assertEquals("ypbsfgytguslfead", model.endpoint());
-        Assertions.assertEquals(EndpointType.AFD, model.endpointType());
-        Assertions.assertEquals("ukyhejhzis", model.backend());
+        Assertions.assertEquals("cluqovekqvgqo", model.description());
+        Assertions.assertEquals("ifzmpjwyivqi", model.endpoint());
+        Assertions.assertEquals(EndpointType.AZURE_REGION, model.endpointType());
+        Assertions.assertEquals("vhrfsphuagrt", model.backend());
     }
 }

@@ -26,9 +26,9 @@ import com.azure.health.insights.radiologyinsights.models.Encounter;
 import com.azure.health.insights.radiologyinsights.models.EncounterClass;
 import com.azure.health.insights.radiologyinsights.models.FhirR4CodeableConcept;
 import com.azure.health.insights.radiologyinsights.models.FhirR4Coding;
-import com.azure.health.insights.radiologyinsights.models.FhirR4Extendible;
 import com.azure.health.insights.radiologyinsights.models.FindingOptions;
 import com.azure.health.insights.radiologyinsights.models.FollowupRecommendationOptions;
+import com.azure.health.insights.radiologyinsights.models.OrderedProcedure;
 import com.azure.health.insights.radiologyinsights.models.PatientDetails;
 import com.azure.health.insights.radiologyinsights.models.PatientDocument;
 import com.azure.health.insights.radiologyinsights.models.PatientRecord;
@@ -45,7 +45,7 @@ import com.azure.health.insights.radiologyinsights.models.TimePeriod;
  */
 
 class RadiologyInsightsClientTestBase extends TestProxyTestBase {
-    
+
     private static final String FAKE_API_KEY = "fakeKeyPlaceholder";
 
     void testRadiologyInsightsgWithResponse(Consumer<RadiologyInsightsData> testRunner) {
@@ -67,6 +67,10 @@ class RadiologyInsightsClientTestBase extends TestProxyTestBase {
             interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
                 .setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent", "repeatability-request-id"))));
         }
+        if (!interceptorManager.isLiveMode()) {
+            // Remove `operation-location` sanitizers from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK2030");
+        }
         return builder;
     }
 
@@ -77,7 +81,7 @@ class RadiologyInsightsClientTestBase extends TestProxyTestBase {
         radiologyInsightsData.setConfiguration(modelConfiguration);
         return radiologyInsightsData;
     }
-    
+
     private static List<PatientRecord> createPatientRecords() {
         List<PatientRecord> patientRecords = new ArrayList<>();
         // Patients
@@ -87,7 +91,7 @@ class RadiologyInsightsClientTestBase extends TestProxyTestBase {
         patientDetails.setSex(PatientSex.FEMALE);
 
         patientDetails.setBirthDate(LocalDate.of(1959, 11, 11));
-        
+
         patientRecord.setInfo(patientDetails);
 
         Encounter encounter = new Encounter("encounterid1");
@@ -117,7 +121,7 @@ class RadiologyInsightsClientTestBase extends TestProxyTestBase {
         patientDocument.setSpecialtyType(SpecialtyType.RADIOLOGY);
 
         DocumentAdministrativeMetadata adminMetadata = new DocumentAdministrativeMetadata();
-        FhirR4Extendible orderedProcedure = new FhirR4Extendible();
+        OrderedProcedure orderedProcedure = new OrderedProcedure();
 
         FhirR4CodeableConcept procedureCode = new FhirR4CodeableConcept();
         FhirR4Coding procedureCoding = new FhirR4Coding();
@@ -144,12 +148,12 @@ class RadiologyInsightsClientTestBase extends TestProxyTestBase {
         patientRecords.add(patientRecord);
         return patientRecords;
     }
-    
+
     private static PatientDocument getPatientDocument() {
         DocumentContent documentContent = new DocumentContent(DocumentContentSourceType.INLINE, "Findings: There is a total hip prosthesis.");
         return new PatientDocument(DocumentType.NOTE, "docid1", documentContent);
     }
-   
+
     private static RadiologyInsightsModelConfiguration createRadiologyInsightsModelConfig() {
         RadiologyInsightsModelConfiguration configuration = new RadiologyInsightsModelConfiguration();
         RadiologyInsightsInferenceOptions inferenceOptions = getRadiologyInsightsInferenceOptions();
@@ -160,7 +164,7 @@ class RadiologyInsightsClientTestBase extends TestProxyTestBase {
         configuration.setIncludeEvidence(true);
         return configuration;
     }
-    
+
     private static RadiologyInsightsInferenceOptions getRadiologyInsightsInferenceOptions() {
         RadiologyInsightsInferenceOptions inferenceOptions = new RadiologyInsightsInferenceOptions();
         FollowupRecommendationOptions followupOptions = new FollowupRecommendationOptions();

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ZoneMapping model. */
+/**
+ * The ZoneMapping model.
+ */
 @Fluent
 public final class ZoneMapping {
     /*
@@ -23,13 +25,15 @@ public final class ZoneMapping {
     @JsonProperty(value = "zones")
     private List<String> zones;
 
-    /** Creates an instance of ZoneMapping class. */
+    /**
+     * Creates an instance of ZoneMapping class.
+     */
     public ZoneMapping() {
     }
 
     /**
      * Get the location property: The location of the zone mapping.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -38,7 +42,7 @@ public final class ZoneMapping {
 
     /**
      * Set the location property: The location of the zone mapping.
-     *
+     * 
      * @param location the location value to set.
      * @return the ZoneMapping object itself.
      */
@@ -49,7 +53,7 @@ public final class ZoneMapping {
 
     /**
      * Get the zones property: The zones property.
-     *
+     * 
      * @return the zones value.
      */
     public List<String> zones() {
@@ -58,7 +62,7 @@ public final class ZoneMapping {
 
     /**
      * Set the zones property: The zones property.
-     *
+     * 
      * @param zones the zones value to set.
      * @return the ZoneMapping object itself.
      */
@@ -69,7 +73,7 @@ public final class ZoneMapping {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

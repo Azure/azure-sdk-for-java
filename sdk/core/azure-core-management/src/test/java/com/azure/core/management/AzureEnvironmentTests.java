@@ -25,6 +25,7 @@ public class AzureEnvironmentTests {
             env.getUrlByEndpoint(AzureEnvironment.Endpoint.RESOURCE_MANAGER));
         Assertions.assertEquals("https://graph.microsoft.com/",
             env.getUrlByEndpoint(AzureEnvironment.Endpoint.MICROSOFT_GRAPH));
+        Assertions.assertEquals(".core.windows.net", env.getUrlByEndpoint(AzureEnvironment.Endpoint.STORAGE));
         Assertions.assertEquals(".vault.azure.net", env.getUrlByEndpoint(AzureEnvironment.Endpoint.KEYVAULT));
         Assertions.assertEquals("https://management.core.windows.net/",
             env.getUrlByEndpoint(AzureEnvironment.Endpoint.MANAGEMENT));

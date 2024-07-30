@@ -17,7 +17,7 @@ import com.azure.resourcemanager.network.models.PfsGroup;
  */
 public final class VirtualNetworkGatewaysSetVpnclientIpsecParametersSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * VirtualNetworkGatewaySetVpnClientIpsecParameters.json
      */
     /**
@@ -27,12 +27,19 @@ public final class VirtualNetworkGatewaysSetVpnclientIpsecParametersSamples {
      */
     public static void
         setVirtualNetworkGatewayVpnClientIpsecParameters(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualNetworkGateways().setVpnclientIpsecParameters("rg1",
-            "vpngw",
-            new VpnClientIPsecParametersInner().withSaLifeTimeSeconds(86473).withSaDataSizeKilobytes(429497)
-                .withIpsecEncryption(IpsecEncryption.AES256).withIpsecIntegrity(IpsecIntegrity.SHA256)
-                .withIkeEncryption(IkeEncryption.AES256).withIkeIntegrity(IkeIntegrity.SHA384)
-                .withDhGroup(DhGroup.DHGROUP2).withPfsGroup(PfsGroup.PFS2),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworkGateways()
+            .setVpnclientIpsecParameters("rg1", "vpngw",
+                new VpnClientIPsecParametersInner().withSaLifeTimeSeconds(86473)
+                    .withSaDataSizeKilobytes(429497)
+                    .withIpsecEncryption(IpsecEncryption.AES256)
+                    .withIpsecIntegrity(IpsecIntegrity.SHA256)
+                    .withIkeEncryption(IkeEncryption.AES256)
+                    .withIkeIntegrity(IkeIntegrity.SHA384)
+                    .withDhGroup(DhGroup.DHGROUP2)
+                    .withPfsGroup(PfsGroup.PFS2),
+                com.azure.core.util.Context.NONE);
     }
 }

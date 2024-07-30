@@ -7,6 +7,7 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.datafactory.fluent.models.SalesforceServiceCloudV2ObjectDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,10 +16,21 @@ import java.util.Map;
 /**
  * The Salesforce Service Cloud V2 object dataset.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = SalesforceServiceCloudV2ObjectDataset.class,
+    visible = true)
 @JsonTypeName("SalesforceServiceCloudV2Object")
 @Fluent
 public final class SalesforceServiceCloudV2ObjectDataset extends Dataset {
+    /*
+     * Type of dataset.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "SalesforceServiceCloudV2Object";
+
     /*
      * Salesforce Service Cloud V2 object dataset properties.
      */
@@ -29,6 +41,16 @@ public final class SalesforceServiceCloudV2ObjectDataset extends Dataset {
      * Creates an instance of SalesforceServiceCloudV2ObjectDataset class.
      */
     public SalesforceServiceCloudV2ObjectDataset() {
+    }
+
+    /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -104,8 +126,8 @@ public final class SalesforceServiceCloudV2ObjectDataset extends Dataset {
     }
 
     /**
-     * Get the objectApiName property: The Salesforce Service Cloud V2 object API name. Type: string (or Expression
-     * with resultType string).
+     * Get the objectApiName property: The Salesforce Service Cloud V2 object API name. Type: string (or Expression with
+     * resultType string).
      * 
      * @return the objectApiName value.
      */
@@ -114,8 +136,8 @@ public final class SalesforceServiceCloudV2ObjectDataset extends Dataset {
     }
 
     /**
-     * Set the objectApiName property: The Salesforce Service Cloud V2 object API name. Type: string (or Expression
-     * with resultType string).
+     * Set the objectApiName property: The Salesforce Service Cloud V2 object API name. Type: string (or Expression with
+     * resultType string).
      * 
      * @param objectApiName the objectApiName value to set.
      * @return the SalesforceServiceCloudV2ObjectDataset object itself.

@@ -11,16 +11,19 @@ public final class MicrosoftAccessSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MicrosoftAccessSink model = BinaryData.fromString(
-            "{\"type\":\"MicrosoftAccessSink\",\"preCopyScript\":\"datailyxpqxnlifhjym\",\"writeBatchSize\":\"datajliivyatyzwy\",\"writeBatchTimeout\":\"dataaycjphozymcypdbu\",\"sinkRetryCount\":\"datanktlzngidgwsc\",\"sinkRetryWait\":\"datamhgzapcgdk\",\"maxConcurrentConnections\":\"dataa\",\"disableMetricsCollection\":\"datacpohlfvsb\",\"\":{\"bjbbyoud\":\"datag\",\"mcumuomdlspsb\":\"datatdlkucxtyufsouh\"}}")
+            "{\"type\":\"MicrosoftAccessSink\",\"preCopyScript\":\"datayipjzgmxqaupy\",\"writeBatchSize\":\"datagoyp\",\"writeBatchTimeout\":\"dataooyyfysn\",\"sinkRetryCount\":\"datajnl\",\"sinkRetryWait\":\"datacmhonojese\",\"maxConcurrentConnections\":\"dataxel\",\"disableMetricsCollection\":\"dataxwmpziy\",\"\":{\"wpcutzlvx\":\"datajswedkfofyfwpu\",\"vddwgozr\":\"dataolvedzrjkrpor\",\"dyhcwcgvyuuse\":\"dataglkmgcxmkrldfo\"}}")
             .toObject(MicrosoftAccessSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MicrosoftAccessSink model = new MicrosoftAccessSink().withWriteBatchSize("datajliivyatyzwy")
-            .withWriteBatchTimeout("dataaycjphozymcypdbu").withSinkRetryCount("datanktlzngidgwsc")
-            .withSinkRetryWait("datamhgzapcgdk").withMaxConcurrentConnections("dataa")
-            .withDisableMetricsCollection("datacpohlfvsb").withPreCopyScript("datailyxpqxnlifhjym");
+        MicrosoftAccessSink model = new MicrosoftAccessSink().withWriteBatchSize("datagoyp")
+            .withWriteBatchTimeout("dataooyyfysn")
+            .withSinkRetryCount("datajnl")
+            .withSinkRetryWait("datacmhonojese")
+            .withMaxConcurrentConnections("dataxel")
+            .withDisableMetricsCollection("dataxwmpziy")
+            .withPreCopyScript("datayipjzgmxqaupy");
         model = BinaryData.fromObject(model).toObject(MicrosoftAccessSink.class);
     }
 }

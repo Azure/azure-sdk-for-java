@@ -31,7 +31,7 @@ public final class LocationsListSupportedCloudServiceSkusMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"name\":\"cpqjlihhyu\",\"familyName\":\"skasdvlmfwdgzxu\",\"capabilities\":[{\"name\":\"pamrsr\",\"value\":\"zvxurisjnhny\"}]}]}";
+            = "{\"value\":[{\"name\":\"tizzronasxif\",\"familyName\":\"zq\",\"capabilities\":[{\"name\":\"tw\",\"value\":\"gogczhonnxkrlgny\"},{\"name\":\"ossxk\",\"value\":\"thrrgh\"},{\"name\":\"bdhqxvcxgf\",\"value\":\"dsofbshrns\"}],\"batchSupportEndOfLife\":\"2021-07-30T15:10:49Z\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -48,8 +48,8 @@ public final class LocationsListSupportedCloudServiceSkusMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SupportedSku> response = manager.locations().listSupportedCloudServiceSkus("tymoxoftp",
-            1701654181, "iwyczuh", com.azure.core.util.Context.NONE);
+        PagedIterable<SupportedSku> response = manager.locations().listSupportedCloudServiceSkus("qnrojlpijnkrxfrd",
+            1333681706, "c", com.azure.core.util.Context.NONE);
 
     }
 }

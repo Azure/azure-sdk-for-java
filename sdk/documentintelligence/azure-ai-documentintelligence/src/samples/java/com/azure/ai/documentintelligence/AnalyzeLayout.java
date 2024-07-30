@@ -36,7 +36,7 @@ public class AnalyzeLayout {
         File selectionMarkDocument = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
             + "sample-forms/forms/selectionMarkForm.pdf");
 
-        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutResultPoller =
+        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeLayoutResultPoller =
             client.beginAnalyzeDocument("prebuilt-layout", null,
                 null,
                 null,
@@ -45,7 +45,7 @@ public class AnalyzeLayout {
                 null,
                 new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(selectionMarkDocument.toPath())));
 
-        AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult().getAnalyzeResult();
+        AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 
         // pages
         analyzeLayoutResult.getPages().forEach(documentPage -> {

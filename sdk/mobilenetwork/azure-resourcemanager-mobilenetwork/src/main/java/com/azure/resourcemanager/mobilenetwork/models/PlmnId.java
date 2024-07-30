@@ -8,9 +8,13 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Public land mobile network (PLMN) ID. */
+/**
+ * Public land mobile network (PLMN) ID. This is made up of the mobile country code and mobile network code, as defined
+ * in https://www.itu.int/rec/T-REC-E.212. The values 001-01 and 001-001 can be used for testing and the values 999-99
+ * and 999-999 can be used on internal private networks.
+ */
 @Fluent
-public final class PlmnId {
+public class PlmnId {
     /*
      * Mobile country code (MCC).
      */
@@ -23,13 +27,15 @@ public final class PlmnId {
     @JsonProperty(value = "mnc", required = true)
     private String mnc;
 
-    /** Creates an instance of PlmnId class. */
+    /**
+     * Creates an instance of PlmnId class.
+     */
     public PlmnId() {
     }
 
     /**
      * Get the mcc property: Mobile country code (MCC).
-     *
+     * 
      * @return the mcc value.
      */
     public String mcc() {
@@ -38,7 +44,7 @@ public final class PlmnId {
 
     /**
      * Set the mcc property: Mobile country code (MCC).
-     *
+     * 
      * @param mcc the mcc value to set.
      * @return the PlmnId object itself.
      */
@@ -49,7 +55,7 @@ public final class PlmnId {
 
     /**
      * Get the mnc property: Mobile network code (MNC).
-     *
+     * 
      * @return the mnc value.
      */
     public String mnc() {
@@ -58,7 +64,7 @@ public final class PlmnId {
 
     /**
      * Set the mnc property: Mobile network code (MNC).
-     *
+     * 
      * @param mnc the mnc value to set.
      * @return the PlmnId object itself.
      */
@@ -69,17 +75,15 @@ public final class PlmnId {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (mcc() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property mcc in model PlmnId"));
+            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property mcc in model PlmnId"));
         }
         if (mnc() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property mnc in model PlmnId"));
+            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property mnc in model PlmnId"));
         }
     }
 

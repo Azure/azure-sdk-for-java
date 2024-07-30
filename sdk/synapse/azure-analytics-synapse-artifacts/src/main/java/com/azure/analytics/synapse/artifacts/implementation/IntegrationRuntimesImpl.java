@@ -50,8 +50,8 @@ public final class IntegrationRuntimesImpl {
     }
 
     /**
-     * The interface defining all the services for ArtifactsClientIntegrationRuntimes to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for ArtifactsClientIntegrationRuntimes to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientInteg")

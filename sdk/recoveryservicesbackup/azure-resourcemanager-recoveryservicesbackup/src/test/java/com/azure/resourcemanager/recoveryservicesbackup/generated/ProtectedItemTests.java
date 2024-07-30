@@ -36,13 +36,20 @@ public final class ProtectedItemTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProtectedItem model = new ProtectedItem().withContainerName("xjmflbvv").withSourceResourceId("hrk")
-            .withPolicyId("iwwzjuqk").withLastRecoveryPoint(OffsetDateTime.parse("2021-05-03T11:30:29Z"))
-            .withBackupSetName("jiwkuofoskghsau").withCreateMode(CreateMode.INVALID)
+        ProtectedItem model = new ProtectedItem().withContainerName("xjmflbvv")
+            .withSourceResourceId("hrk")
+            .withPolicyId("iwwzjuqk")
+            .withLastRecoveryPoint(OffsetDateTime.parse("2021-05-03T11:30:29Z"))
+            .withBackupSetName("jiwkuofoskghsau")
+            .withCreateMode(CreateMode.INVALID)
             .withDeferredDeleteTimeInUtc(OffsetDateTime.parse("2021-01-11T01:27:45Z"))
-            .withIsScheduledForDeferredDelete(true).withDeferredDeleteTimeRemaining("eduugi")
-            .withIsDeferredDeleteScheduleUpcoming(true).withIsRehydrate(true)
-            .withResourceGuardOperationRequests(Arrays.asList("y")).withIsArchiveEnabled(true).withPolicyName("e")
+            .withIsScheduledForDeferredDelete(true)
+            .withDeferredDeleteTimeRemaining("eduugi")
+            .withIsDeferredDeleteScheduleUpcoming(true)
+            .withIsRehydrate(true)
+            .withResourceGuardOperationRequests(Arrays.asList("y"))
+            .withIsArchiveEnabled(true)
+            .withPolicyName("e")
             .withSoftDeleteRetentionPeriod(981492544);
         model = BinaryData.fromObject(model).toObject(ProtectedItem.class);
         Assertions.assertEquals("xjmflbvv", model.containerName());

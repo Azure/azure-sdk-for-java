@@ -147,12 +147,12 @@ public final class UsageInner {
      */
     public void validate() {
         if (unit() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property unit in model UsageInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property unit in model UsageInner"));
         }
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model UsageInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model UsageInner"));
         } else {
             name().validate();
         }

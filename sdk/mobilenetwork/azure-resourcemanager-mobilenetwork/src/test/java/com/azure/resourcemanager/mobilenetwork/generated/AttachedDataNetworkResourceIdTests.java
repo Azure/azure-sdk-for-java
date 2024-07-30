@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class AttachedDataNetworkResourceIdTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AttachedDataNetworkResourceId model =
-            BinaryData.fromString("{\"id\":\"imwkslircizj\"}").toObject(AttachedDataNetworkResourceId.class);
-        Assertions.assertEquals("imwkslircizj", model.id());
+        AttachedDataNetworkResourceId model
+            = BinaryData.fromString("{\"id\":\"qioxi\"}").toObject(AttachedDataNetworkResourceId.class);
+        Assertions.assertEquals("qioxi", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AttachedDataNetworkResourceId model = new AttachedDataNetworkResourceId().withId("imwkslircizj");
+        AttachedDataNetworkResourceId model = new AttachedDataNetworkResourceId().withId("qioxi");
         model = BinaryData.fromObject(model).toObject(AttachedDataNetworkResourceId.class);
-        Assertions.assertEquals("imwkslircizj", model.id());
+        Assertions.assertEquals("qioxi", model.id());
     }
 }

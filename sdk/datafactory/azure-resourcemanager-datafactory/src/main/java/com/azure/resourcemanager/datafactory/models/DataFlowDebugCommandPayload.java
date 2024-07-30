@@ -131,8 +131,9 @@ public final class DataFlowDebugCommandPayload {
      */
     public void validate() {
         if (streamName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property streamName in model DataFlowDebugCommandPayload"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property streamName in model DataFlowDebugCommandPayload"));
         }
     }
 

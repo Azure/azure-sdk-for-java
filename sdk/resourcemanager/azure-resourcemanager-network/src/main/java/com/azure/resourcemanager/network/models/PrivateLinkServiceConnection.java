@@ -136,8 +136,8 @@ public final class PrivateLinkServiceConnection extends SubResource {
     }
 
     /**
-     * Get the groupIds property: The ID(s) of the group(s) obtained from the remote resource that this private
-     * endpoint should connect to.
+     * Get the groupIds property: The ID(s) of the group(s) obtained from the remote resource that this private endpoint
+     * should connect to.
      * 
      * @return the groupIds value.
      */
@@ -146,8 +146,8 @@ public final class PrivateLinkServiceConnection extends SubResource {
     }
 
     /**
-     * Set the groupIds property: The ID(s) of the group(s) obtained from the remote resource that this private
-     * endpoint should connect to.
+     * Set the groupIds property: The ID(s) of the group(s) obtained from the remote resource that this private endpoint
+     * should connect to.
      * 
      * @param groupIds the groupIds value to set.
      * @return the PrivateLinkServiceConnection object itself.

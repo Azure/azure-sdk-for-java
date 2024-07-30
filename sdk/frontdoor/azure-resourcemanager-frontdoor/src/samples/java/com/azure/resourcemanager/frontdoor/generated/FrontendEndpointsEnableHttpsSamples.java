@@ -10,31 +10,26 @@ import com.azure.resourcemanager.frontdoor.models.FrontDoorTlsProtocolType;
 import com.azure.resourcemanager.frontdoor.models.KeyVaultCertificateSourceParametersVault;
 import com.azure.resourcemanager.frontdoor.models.MinimumTlsVersion;
 
-/** Samples for FrontendEndpoints EnableHttps. */
+/**
+ * Samples for FrontendEndpoints EnableHttps.
+ */
 public final class FrontendEndpointsEnableHttpsSamples {
     /*
      * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorEnableHttps.json
      */
     /**
      * Sample code: FrontendEndpoints_EnableHttps.
-     *
+     * 
      * @param manager Entry point to FrontDoorManager.
      */
     public static void frontendEndpointsEnableHttps(com.azure.resourcemanager.frontdoor.FrontDoorManager manager) {
-        manager
-            .frontendEndpoints()
-            .enableHttps(
-                "rg1",
-                "frontDoor1",
-                "frontendEndpoint1",
-                new CustomHttpsConfiguration()
-                    .withCertificateSource(FrontDoorCertificateSource.AZURE_KEY_VAULT)
+        manager.frontendEndpoints()
+            .enableHttps("rg1", "frontDoor1", "frontendEndpoint1",
+                new CustomHttpsConfiguration().withCertificateSource(FrontDoorCertificateSource.AZURE_KEY_VAULT)
                     .withProtocolType(FrontDoorTlsProtocolType.SERVER_NAME_INDICATION)
                     .withMinimumTlsVersion(MinimumTlsVersion.ONE_ZERO)
-                    .withVault(
-                        new KeyVaultCertificateSourceParametersVault()
-                            .withId(
-                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.KeyVault/vaults/vault1"))
+                    .withVault(new KeyVaultCertificateSourceParametersVault()
+                        .withId("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.KeyVault/vaults/vault1"))
                     .withSecretName("fakeTokenPlaceholder")
                     .withSecretVersion("fakeTokenPlaceholder"),
                 com.azure.core.util.Context.NONE);

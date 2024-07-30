@@ -14,18 +14,23 @@ public final class SnowflakeV2SinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SnowflakeV2Sink model = BinaryData.fromString(
-            "{\"type\":\"SnowflakeV2Sink\",\"preCopyScript\":\"datauxwuepjcug\",\"importSettings\":{\"type\":\"SnowflakeImportCopyCommand\",\"additionalCopyOptions\":{\"hqkie\":\"dataqbwgmznvlwcn\"},\"additionalFormatOptions\":{\"xetxzcjrb\":\"dataubwz\",\"kbeoofox\":\"dataqcwnbx\"},\"\":{\"prjcfyvkkgxil\":\"dataunewkssxpnhhl\",\"kgwdng\":\"datalonzifdfs\",\"xdvrajoghgxgzb\":\"datadnrtydhqkariatxh\"}},\"writeBatchSize\":\"dataasgam\",\"writeBatchTimeout\":\"dataetxnsgcwad\",\"sinkRetryCount\":\"dataqbageltffqalmcq\",\"sinkRetryWait\":\"datapzwwtcwbgmx\",\"maxConcurrentConnections\":\"dataynslcty\",\"disableMetricsCollection\":\"datai\",\"\":{\"tarxtdgpmhzll\":\"datamhhqw\",\"zsdnfp\":\"datah\",\"ycyfubgnml\":\"datakyks\",\"qvcutwngfd\":\"datajdaxiohulvp\"}}")
+            "{\"type\":\"SnowflakeV2Sink\",\"preCopyScript\":\"datarhctbrvegdamoy\",\"importSettings\":{\"type\":\"SnowflakeImportCopyCommand\",\"additionalCopyOptions\":{\"izbyczmepcacgvln\":\"datapkezq\"},\"additionalFormatOptions\":{\"ktuvdes\":\"databyry\"},\"storageIntegration\":\"datarulnhbqtvyhs\",\"\":{\"xexupcuizvx\":\"datarff\"}},\"writeBatchSize\":\"datavzhlkeotdscqkxzr\",\"writeBatchTimeout\":\"dataoqzmvemli\",\"sinkRetryCount\":\"datadfqfnftrrhhgwaw\",\"sinkRetryWait\":\"datah\",\"maxConcurrentConnections\":\"datavcfxdvk\",\"disableMetricsCollection\":\"datafg\",\"\":{\"txhqqvdhdyyad\":\"datau\",\"dinfauytmqvsdyqy\":\"dataxnepub\",\"xtpbapojknvxantl\":\"datakmfotwmxedlcxm\",\"nqpkvvrhoqyv\":\"dataspiipfg\"}}")
             .toObject(SnowflakeV2Sink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SnowflakeV2Sink model = new SnowflakeV2Sink().withWriteBatchSize("dataasgam")
-            .withWriteBatchTimeout("dataetxnsgcwad").withSinkRetryCount("dataqbageltffqalmcq")
-            .withSinkRetryWait("datapzwwtcwbgmx").withMaxConcurrentConnections("dataynslcty")
-            .withDisableMetricsCollection("datai").withPreCopyScript("datauxwuepjcug").withImportSettings(
-                new SnowflakeImportCopyCommand().withAdditionalCopyOptions(mapOf("hqkie", "dataqbwgmznvlwcn"))
-                    .withAdditionalFormatOptions(mapOf("xetxzcjrb", "dataubwz", "kbeoofox", "dataqcwnbx")));
+        SnowflakeV2Sink model = new SnowflakeV2Sink().withWriteBatchSize("datavzhlkeotdscqkxzr")
+            .withWriteBatchTimeout("dataoqzmvemli")
+            .withSinkRetryCount("datadfqfnftrrhhgwaw")
+            .withSinkRetryWait("datah")
+            .withMaxConcurrentConnections("datavcfxdvk")
+            .withDisableMetricsCollection("datafg")
+            .withPreCopyScript("datarhctbrvegdamoy")
+            .withImportSettings(
+                new SnowflakeImportCopyCommand().withAdditionalCopyOptions(mapOf("izbyczmepcacgvln", "datapkezq"))
+                    .withAdditionalFormatOptions(mapOf("ktuvdes", "databyry"))
+                    .withStorageIntegration("datarulnhbqtvyhs"));
         model = BinaryData.fromObject(model).toObject(SnowflakeV2Sink.class);
     }
 

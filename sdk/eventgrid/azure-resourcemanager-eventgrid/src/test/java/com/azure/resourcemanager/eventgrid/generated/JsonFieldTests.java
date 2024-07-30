@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class JsonFieldTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JsonField model = BinaryData.fromString("{\"sourceField\":\"wci\"}").toObject(JsonField.class);
-        Assertions.assertEquals("wci", model.sourceField());
+        JsonField model = BinaryData.fromString("{\"sourceField\":\"rsqftib\"}").toObject(JsonField.class);
+        Assertions.assertEquals("rsqftib", model.sourceField());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JsonField model = new JsonField().withSourceField("wci");
+        JsonField model = new JsonField().withSourceField("rsqftib");
         model = BinaryData.fromObject(model).toObject(JsonField.class);
-        Assertions.assertEquals("wci", model.sourceField());
+        Assertions.assertEquals("rsqftib", model.sourceField());
     }
 }

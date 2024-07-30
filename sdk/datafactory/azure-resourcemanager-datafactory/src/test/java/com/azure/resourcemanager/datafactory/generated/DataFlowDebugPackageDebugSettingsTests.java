@@ -26,13 +26,17 @@ public final class DataFlowDebugPackageDebugSettingsTests {
     public void testSerialize() throws Exception {
         DataFlowDebugPackageDebugSettings model = new DataFlowDebugPackageDebugSettings()
             .withSourceSettings(Arrays.asList(
-                new DataFlowSourceSetting().withSourceName("cnqmxqpsw").withRowLimit(2027239261)
+                new DataFlowSourceSetting().withSourceName("cnqmxqpsw")
+                    .withRowLimit(2027239261)
                     .withAdditionalProperties(mapOf()),
-                new DataFlowSourceSetting().withSourceName("qkzszuwiwtglxxh").withRowLimit(1438070602)
+                new DataFlowSourceSetting().withSourceName("qkzszuwiwtglxxh")
+                    .withRowLimit(1438070602)
                     .withAdditionalProperties(mapOf()),
-                new DataFlowSourceSetting().withSourceName("ousxauzlwvsgmw").withRowLimit(414245170)
+                new DataFlowSourceSetting().withSourceName("ousxauzlwvsgmw")
+                    .withRowLimit(414245170)
                     .withAdditionalProperties(mapOf())))
-            .withParameters(mapOf("dkvgfabuiyjibuzp", "dataclxyn")).withDatasetParameters("dataugneikn");
+            .withParameters(mapOf("dkvgfabuiyjibuzp", "dataclxyn"))
+            .withDatasetParameters("dataugneikn");
         model = BinaryData.fromObject(model).toObject(DataFlowDebugPackageDebugSettings.class);
         Assertions.assertEquals("cnqmxqpsw", model.sourceSettings().get(0).sourceName());
         Assertions.assertEquals(2027239261, model.sourceSettings().get(0).rowLimit());

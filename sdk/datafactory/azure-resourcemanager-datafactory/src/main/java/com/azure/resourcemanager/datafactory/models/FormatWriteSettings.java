@@ -8,20 +8,18 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * Format write settings.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = FormatWriteSettings.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = FormatWriteSettings.class, visible = true)
 @JsonTypeName("FormatWriteSettings")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AvroWriteSettings", value = AvroWriteSettings.class),
@@ -32,6 +30,13 @@ import java.util.Map;
 @Fluent
 public class FormatWriteSettings {
     /*
+     * The write setting type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "FormatWriteSettings";
+
+    /*
      * Format write settings.
      */
     @JsonIgnore
@@ -41,6 +46,15 @@ public class FormatWriteSettings {
      * Creates an instance of FormatWriteSettings class.
      */
     public FormatWriteSettings() {
+    }
+
+    /**
+     * Get the type property: The write setting type.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -67,7 +81,7 @@ public class FormatWriteSettings {
     @JsonAnySetter
     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }

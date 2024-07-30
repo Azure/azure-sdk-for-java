@@ -7,6 +7,7 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -14,11 +15,7 @@ import java.util.List;
 /**
  * Azure Data Factory nested object which contains a flow with data movements and transformations.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = DataFlow.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = DataFlow.class, visible = true)
 @JsonTypeName("DataFlow")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "MappingDataFlow", value = MappingDataFlow.class),
@@ -26,6 +23,13 @@ import java.util.List;
     @JsonSubTypes.Type(name = "WranglingDataFlow", value = WranglingDataFlow.class) })
 @Fluent
 public class DataFlow {
+    /*
+     * Type of data flow.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "DataFlow";
+
     /*
      * The description of the data flow.
      */
@@ -48,6 +52,15 @@ public class DataFlow {
      * Creates an instance of DataFlow class.
      */
     public DataFlow() {
+    }
+
+    /**
+     * Get the type property: Type of data flow.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**

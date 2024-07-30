@@ -8,24 +8,26 @@ import com.azure.resourcemanager.hybridcompute.models.HybridComputePrivateLinkSc
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for PrivateLinkScopes UpdateTags. */
+/**
+ * Samples for PrivateLinkScopes UpdateTags.
+ */
 public final class PrivateLinkScopesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-06-20-preview/examples/privateLinkScope/PrivateLinkScopes_UpdateTagsOnly.json
+     * x-ms-original-file:
+     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-05-20-preview/examples/
+     * privateLinkScope/PrivateLinkScopes_UpdateTagsOnly.json
      */
     /**
      * Sample code: PrivateLinkScopeUpdateTagsOnly.
-     *
+     * 
      * @param manager Entry point to HybridComputeManager.
      */
-    public static void privateLinkScopeUpdateTagsOnly(
-        com.azure.resourcemanager.hybridcompute.HybridComputeManager manager) {
-        HybridComputePrivateLinkScope resource =
-            manager
-                .privateLinkScopes()
-                .getByResourceGroupWithResponse(
-                    "my-resource-group", "my-privatelinkscope", com.azure.core.util.Context.NONE)
-                .getValue();
+    public static void
+        privateLinkScopeUpdateTagsOnly(com.azure.resourcemanager.hybridcompute.HybridComputeManager manager) {
+        HybridComputePrivateLinkScope resource = manager.privateLinkScopes()
+            .getByResourceGroupWithResponse("my-resource-group", "my-privatelinkscope",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("Tag1", "Value1", "Tag2", "Value2")).apply();
     }
 

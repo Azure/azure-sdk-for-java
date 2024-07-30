@@ -79,7 +79,7 @@ public class SinkRecordTransformer {
             return;
         }
         Map<String, Object> recordMap = (Map<String, Object>) recordValue;
-        recordMap.put(AbstractIdStrategyConfig.ID, this.idStrategy.generateId(sinkRecord));
+        recordMap.put("id", this.idStrategy.generateId(sinkRecord));
     }
 
     private IdStrategy createIdStrategy(CosmosSinkTaskConfig sinkTaskConfig) {

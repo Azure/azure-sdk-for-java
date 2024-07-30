@@ -7,15 +7,16 @@ package com.azure.resourcemanager.confidentialledger.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.confidentialledger.fluent.models.ManagedCcfInner;
 
-/** Resource collection API of ManagedCcfs. */
+/**
+ * Resource collection API of ManagedCcfs.
+ */
 public interface ManagedCcfs {
     /**
      * Retrieves information about a Managed CCF resource.
-     *
-     * <p>Retrieves the properties of a Managed CCF app.
-     *
+     * 
+     * Retrieves the properties of a Managed CCF app.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appName Name of the Managed CCF.
      * @param context The context to associate with this operation.
@@ -28,9 +29,9 @@ public interface ManagedCcfs {
 
     /**
      * Retrieves information about a Managed CCF resource.
-     *
-     * <p>Retrieves the properties of a Managed CCF app.
-     *
+     * 
+     * Retrieves the properties of a Managed CCF app.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appName Name of the Managed CCF.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,9 +43,9 @@ public interface ManagedCcfs {
 
     /**
      * Deletes a Managed CCF resource.
-     *
-     * <p>Deletes an existing Managed CCF.
-     *
+     * 
+     * Deletes an existing Managed CCF.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appName Name of the Managed CCF.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,9 +56,9 @@ public interface ManagedCcfs {
 
     /**
      * Deletes a Managed CCF resource.
-     *
-     * <p>Deletes an existing Managed CCF.
-     *
+     * 
+     * Deletes an existing Managed CCF.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appName Name of the Managed CCF.
      * @param context The context to associate with this operation.
@@ -68,53 +69,24 @@ public interface ManagedCcfs {
     void delete(String resourceGroupName, String appName, Context context);
 
     /**
-     * Update Managed CCF properties
-     *
-     * <p>Updates properties of Managed CCF.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param appName Name of the Managed CCF.
-     * @param managedCcf Request body for Updating Managed CCF App.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void update(String resourceGroupName, String appName, ManagedCcfInner managedCcf);
-
-    /**
-     * Update Managed CCF properties
-     *
-     * <p>Updates properties of Managed CCF.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param appName Name of the Managed CCF.
-     * @param managedCcf Request body for Updating Managed CCF App.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void update(String resourceGroupName, String appName, ManagedCcfInner managedCcf, Context context);
-
-    /**
      * Retrieves information about all Managed CCF resources under the given subscription and resource group
-     *
-     * <p>Retrieves the properties of all Managed CCF apps.
-     *
+     * 
+     * Retrieves the properties of all Managed CCF apps.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Managed CCF and a possible link for next set as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     PagedIterable<ManagedCcf> listByResourceGroup(String resourceGroupName);
 
     /**
      * Retrieves information about all Managed CCF resources under the given subscription and resource group
-     *
-     * <p>Retrieves the properties of all Managed CCF apps.
-     *
+     * 
+     * Retrieves the properties of all Managed CCF apps.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter The filter to apply on the list operation. eg. $filter=ledgerType eq 'Public'.
      * @param context The context to associate with this operation.
@@ -122,42 +94,106 @@ public interface ManagedCcfs {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Managed CCF and a possible link for next set as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     PagedIterable<ManagedCcf> listByResourceGroup(String resourceGroupName, String filter, Context context);
 
     /**
      * Retrieves information about all Managed CCF resources under the given subscription
-     *
-     * <p>Retrieves the properties of all Managed CCF.
-     *
+     * 
+     * Retrieves the properties of all Managed CCF.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Managed CCF and a possible link for next set as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     PagedIterable<ManagedCcf> list();
 
     /**
      * Retrieves information about all Managed CCF resources under the given subscription
-     *
-     * <p>Retrieves the properties of all Managed CCF.
-     *
+     * 
+     * Retrieves the properties of all Managed CCF.
+     * 
      * @param filter The filter to apply on the list operation. eg. $filter=ledgerType eq 'Public'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Managed CCF and a possible link for next set as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     PagedIterable<ManagedCcf> list(String filter, Context context);
 
     /**
+     * Performs the backup operation on a Managed CCF Resource.
+     * 
+     * Backs up a Managed CCF Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param appName Name of the Managed CCF.
+     * @param managedCcf Managed CCF Backup Request Body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return object representing the backup response of a Managed CCF Resource.
+     */
+    ManagedCcfBackupResponse backup(String resourceGroupName, String appName, ManagedCcfBackup managedCcf);
+
+    /**
+     * Performs the backup operation on a Managed CCF Resource.
+     * 
+     * Backs up a Managed CCF Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param appName Name of the Managed CCF.
+     * @param managedCcf Managed CCF Backup Request Body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return object representing the backup response of a Managed CCF Resource.
+     */
+    ManagedCcfBackupResponse backup(String resourceGroupName, String appName, ManagedCcfBackup managedCcf,
+        Context context);
+
+    /**
+     * Performs the restore operation to spin up a newly restored Managed CCF Resource.
+     * 
+     * Restores a Managed CCF Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param appName Name of the Managed CCF.
+     * @param managedCcf Managed CCF Restore Request Body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return object representing the restore response of a Managed CCF Resource.
+     */
+    ManagedCcfRestoreResponse restore(String resourceGroupName, String appName, ManagedCcfRestore managedCcf);
+
+    /**
+     * Performs the restore operation to spin up a newly restored Managed CCF Resource.
+     * 
+     * Restores a Managed CCF Resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param appName Name of the Managed CCF.
+     * @param managedCcf Managed CCF Restore Request Body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return object representing the restore response of a Managed CCF Resource.
+     */
+    ManagedCcfRestoreResponse restore(String resourceGroupName, String appName, ManagedCcfRestore managedCcf,
+        Context context);
+
+    /**
      * Retrieves information about a Managed CCF resource.
-     *
-     * <p>Retrieves the properties of a Managed CCF app.
-     *
+     * 
+     * Retrieves the properties of a Managed CCF app.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -168,9 +204,9 @@ public interface ManagedCcfs {
 
     /**
      * Retrieves information about a Managed CCF resource.
-     *
-     * <p>Retrieves the properties of a Managed CCF app.
-     *
+     * 
+     * Retrieves the properties of a Managed CCF app.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -182,9 +218,9 @@ public interface ManagedCcfs {
 
     /**
      * Deletes a Managed CCF resource.
-     *
-     * <p>Deletes an existing Managed CCF.
-     *
+     * 
+     * Deletes an existing Managed CCF.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -194,9 +230,9 @@ public interface ManagedCcfs {
 
     /**
      * Deletes a Managed CCF resource.
-     *
-     * <p>Deletes an existing Managed CCF.
-     *
+     * 
+     * Deletes an existing Managed CCF.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -207,7 +243,7 @@ public interface ManagedCcfs {
 
     /**
      * Begins definition for a new ManagedCcf resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ManagedCcf definition.
      */

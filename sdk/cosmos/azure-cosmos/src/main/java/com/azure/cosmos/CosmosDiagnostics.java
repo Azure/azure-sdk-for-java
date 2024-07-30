@@ -6,9 +6,12 @@ import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.util.Beta;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -91,6 +94,7 @@ public final class CosmosDiagnostics {
      * Returns the associated CosmosDiagnosticsContext or null if not associated with any context yet.
      * @return the associated CosmosDiagnosticsContext or null if not associated with any context yet.
      */
+    @JsonIgnore
     public CosmosDiagnosticsContext getDiagnosticsContext() {
         return this.diagnosticsContext;
     }
@@ -322,6 +326,14 @@ public final class CosmosDiagnostics {
         return this;
     }
 
+    String getFirstContactedRegion() {
+        return this.clientSideRequestStatistics.getFirstContactedRegion();
+    }
+
+    URI getFirstContactedLocationEndpoint() {
+        return this.clientSideRequestStatistics.getFirstContactedLocationEndpoint();
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -463,6 +475,43 @@ public final class CosmosDiagnostics {
                     }
 
                     cosmosDiagnostics.setDiagnosticsContext(ctx);
+                }
+
+                @Override
+                public URI getFirstContactedLocationEndpoint(CosmosDiagnostics cosmosDiagnostics) {
+
+                    if (cosmosDiagnostics == null) {
+                        return null;
+                    }
+
+                    return cosmosDiagnostics.getFirstContactedLocationEndpoint();
+                }
+
+                @Override
+                public void mergeMetadataDiagnosticContext(CosmosDiagnostics cosmosDiagnostics, MetadataDiagnosticsContext otherMetadataDiagnosticsContext) {
+
+                    if (cosmosDiagnostics == null) {
+                        return;
+                    }
+
+                    ClientSideRequestStatistics clientSideRequestStatistics = cosmosDiagnostics.clientSideRequestStatistics;
+
+                    if (clientSideRequestStatistics != null) {
+                        clientSideRequestStatistics.mergeMetadataDiagnosticsContext(otherMetadataDiagnosticsContext);
+                    }
+                }
+
+                @Override
+                public void mergeSerializationDiagnosticContext(CosmosDiagnostics cosmosDiagnostics, SerializationDiagnosticsContext otherSerializationDiagnosticsContext) {
+                    if (cosmosDiagnostics == null) {
+                        return;
+                    }
+
+                    ClientSideRequestStatistics clientSideRequestStatistics = cosmosDiagnostics.clientSideRequestStatistics;
+
+                    if (clientSideRequestStatistics != null) {
+                        clientSideRequestStatistics.mergeSerializationDiagnosticsContext(otherSerializationDiagnosticsContext);
+                    }
                 }
             });
     }

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.frontdoor.fluent.models.ManagedRuleSetDefinitio
 public final class ManagedRuleSetDefinitionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedRuleSetDefinitionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"c\",\"ruleSetId\":\"newmdwzjeiachbo\",\"ruleSetType\":\"flnrosfqpteehzz\",\"ruleSetVersion\":\"pyqr\",\"ruleGroups\":[{\"ruleGroupName\":\"npvswjdkirso\",\"description\":\"qxhcrmn\",\"rules\":[]}]}")
-                .toObject(ManagedRuleSetDefinitionProperties.class);
+        ManagedRuleSetDefinitionProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"cspkwlhzdobpxjmf\",\"ruleSetId\":\"vvnchrkcc\",\"ruleSetType\":\"wzjuqk\",\"ruleSetVersion\":\"sa\",\"ruleGroups\":[{\"ruleGroupName\":\"uo\",\"description\":\"skghsauuimj\",\"rules\":[{\"ruleId\":\"eduugi\",\"defaultState\":\"Enabled\",\"defaultAction\":\"Block\",\"description\":\"byao\"},{\"ruleId\":\"e\",\"defaultState\":\"Enabled\",\"defaultAction\":\"Allow\",\"description\":\"clhocohsl\"},{\"ruleId\":\"vleggzfbuhfmvfax\",\"defaultState\":\"Enabled\",\"defaultAction\":\"Allow\",\"description\":\"th\"},{\"ruleId\":\"m\",\"defaultState\":\"Disabled\",\"defaultAction\":\"Block\",\"description\":\"xmzsbbzogg\"}]},{\"ruleGroupName\":\"rxwburv\",\"description\":\"xjnspy\",\"rules\":[{\"ruleId\":\"oenkouknvudwti\",\"defaultState\":\"Enabled\",\"defaultAction\":\"Redirect\",\"description\":\"gkpocipazyxoe\"}]},{\"ruleGroupName\":\"kgjn\",\"description\":\"ucgygevqz\",\"rules\":[{\"ruleId\":\"mrbpizcdrqj\",\"defaultState\":\"Disabled\",\"defaultAction\":\"Allow\",\"description\":\"fyhxde\"}]},{\"ruleGroupName\":\"jzicwifsjt\",\"description\":\"zfbishcbkhaj\",\"rules\":[{\"ruleId\":\"a\",\"defaultState\":\"Disabled\",\"defaultAction\":\"Redirect\",\"description\":\"alpbuxwgipwhon\"},{\"ruleId\":\"kgshwa\",\"defaultState\":\"Enabled\",\"defaultAction\":\"Block\",\"description\":\"injep\"},{\"ruleId\":\"tmryw\",\"defaultState\":\"Enabled\",\"defaultAction\":\"Log\",\"description\":\"tiyqzrnkcqv\"},{\"ruleId\":\"lwh\",\"defaultState\":\"Enabled\",\"defaultAction\":\"Allow\",\"description\":\"hoqqnwvlr\"}]}]}")
+            .toObject(ManagedRuleSetDefinitionProperties.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -32,8 +32,9 @@ public final class TriggerListResponseTests {
                     .withProperties(new Trigger().withDescription("nifmzzsdymbrnysu")
                         .withAnnotations(Arrays.asList("datafwgckhocxvdfffw"))
                         .withAdditionalProperties(mapOf("type", "Trigger", "runtimeState", "Stopped"))),
-                new TriggerResourceInner().withId("isofieypefojyqd").withProperties(
-                    new Trigger().withDescription("ukiscvwmzhw").withAnnotations(Arrays.asList("dataxvxilcbtg"))
+                new TriggerResourceInner().withId("isofieypefojyqd")
+                    .withProperties(new Trigger().withDescription("ukiscvwmzhw")
+                        .withAnnotations(Arrays.asList("dataxvxilcbtg"))
                         .withAdditionalProperties(mapOf("type", "Trigger", "runtimeState", "Disabled")))))
             .withNextLink("u");
         model = BinaryData.fromObject(model).toObject(TriggerListResponse.class);

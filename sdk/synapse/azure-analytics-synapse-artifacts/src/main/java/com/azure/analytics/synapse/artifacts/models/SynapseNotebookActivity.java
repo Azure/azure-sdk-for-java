@@ -5,90 +5,88 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Execute Synapse notebook activity.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("SynapseNotebook")
-@JsonFlatten
 @Fluent
 public class SynapseNotebookActivity extends ExecutionActivity {
     /*
+     * Type of activity.
+     */
+    private String type = "SynapseNotebook";
+
+    /*
      * Synapse notebook reference.
      */
-    @JsonProperty(value = "typeProperties.notebook", required = true)
     private SynapseNotebookReference notebook;
 
     /*
      * The name of the big data pool which will be used to execute the notebook.
      */
-    @JsonProperty(value = "typeProperties.sparkPool")
     private BigDataPoolParametrizationReference sparkPool;
 
     /*
      * Notebook parameters.
      */
-    @JsonProperty(value = "typeProperties.parameters")
     private Map<String, NotebookParameter> parameters;
 
     /*
-     * Number of core and memory to be used for executors allocated in the specified Spark pool for the session, which
-     * will be used for overriding 'executorCores' and 'executorMemory' of the notebook you provide. Type: string (or
-     * Expression with resultType string).
+     * Number of core and memory to be used for executors allocated in the specified Spark pool for the session, which will be used for overriding 'executorCores' and 'executorMemory' of the notebook you provide. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.executorSize")
     private Object executorSize;
 
     /*
      * Spark configuration properties, which will override the 'conf' of the notebook you provide.
      */
-    @JsonProperty(value = "typeProperties.conf")
     private Object conf;
 
     /*
-     * Number of core and memory to be used for driver allocated in the specified Spark pool for the session, which
-     * will be used for overriding 'driverCores' and 'driverMemory' of the notebook you provide. Type: string (or
-     * Expression with resultType string).
+     * Number of core and memory to be used for driver allocated in the specified Spark pool for the session, which will be used for overriding 'driverCores' and 'driverMemory' of the notebook you provide. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.driverSize")
     private Object driverSize;
 
     /*
-     * Number of executors to launch for this session, which will override the 'numExecutors' of the notebook you
-     * provide. Type: integer (or Expression with resultType integer).
+     * Number of executors to launch for this session, which will override the 'numExecutors' of the notebook you provide. Type: integer (or Expression with resultType integer).
      */
-    @JsonProperty(value = "typeProperties.numExecutors")
     private Object numExecutors;
 
     /*
      * The type of the spark config.
      */
-    @JsonProperty(value = "typeProperties.configurationType")
     private ConfigurationType configurationType;
 
     /*
      * The spark configuration of the spark job.
      */
-    @JsonProperty(value = "typeProperties.targetSparkConfiguration")
     private SparkConfigurationParametrizationReference targetSparkConfiguration;
 
     /*
      * Spark configuration property.
      */
-    @JsonProperty(value = "typeProperties.sparkConfig")
     private Map<String, Object> sparkConfig;
 
     /**
      * Creates an instance of SynapseNotebookActivity class.
      */
     public SynapseNotebookActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -374,5 +372,143 @@ public class SynapseNotebookActivity extends ExecutionActivity {
     public SynapseNotebookActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeStringField("state", getState() == null ? null : getState().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            getOnInactiveMarkAs() == null ? null : getOnInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", getDependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", getUserProperties(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
+        jsonWriter.writeJsonField("policy", getPolicy());
+        jsonWriter.writeStringField("type", this.type);
+        if (notebook != null
+            || sparkPool != null
+            || parameters != null
+            || executorSize != null
+            || conf != null
+            || driverSize != null
+            || numExecutors != null
+            || configurationType != null
+            || targetSparkConfiguration != null
+            || sparkConfig != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeJsonField("notebook", this.notebook);
+            jsonWriter.writeJsonField("sparkPool", this.sparkPool);
+            jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+            jsonWriter.writeUntypedField("executorSize", this.executorSize);
+            jsonWriter.writeUntypedField("conf", this.conf);
+            jsonWriter.writeUntypedField("driverSize", this.driverSize);
+            jsonWriter.writeUntypedField("numExecutors", this.numExecutors);
+            jsonWriter.writeStringField("configurationType",
+                this.configurationType == null ? null : this.configurationType.toString());
+            jsonWriter.writeJsonField("targetSparkConfiguration", this.targetSparkConfiguration);
+            jsonWriter.writeMapField("sparkConfig", this.sparkConfig,
+                (writer, element) -> writer.writeUntyped(element));
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SynapseNotebookActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SynapseNotebookActivity if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SynapseNotebookActivity.
+     */
+    public static SynapseNotebookActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SynapseNotebookActivity deserializedSynapseNotebookActivity = new SynapseNotebookActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSynapseNotebookActivity.setName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedSynapseNotebookActivity.setDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedSynapseNotebookActivity.setState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedSynapseNotebookActivity
+                        .setOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedSynapseNotebookActivity.setDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedSynapseNotebookActivity.setUserProperties(userProperties);
+                } else if ("linkedServiceName".equals(fieldName)) {
+                    deserializedSynapseNotebookActivity.setLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("policy".equals(fieldName)) {
+                    deserializedSynapseNotebookActivity.setPolicy(ActivityPolicy.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedSynapseNotebookActivity.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("notebook".equals(fieldName)) {
+                            deserializedSynapseNotebookActivity.notebook = SynapseNotebookReference.fromJson(reader);
+                        } else if ("sparkPool".equals(fieldName)) {
+                            deserializedSynapseNotebookActivity.sparkPool
+                                = BigDataPoolParametrizationReference.fromJson(reader);
+                        } else if ("parameters".equals(fieldName)) {
+                            Map<String, NotebookParameter> parameters
+                                = reader.readMap(reader1 -> NotebookParameter.fromJson(reader1));
+                            deserializedSynapseNotebookActivity.parameters = parameters;
+                        } else if ("executorSize".equals(fieldName)) {
+                            deserializedSynapseNotebookActivity.executorSize = reader.readUntyped();
+                        } else if ("conf".equals(fieldName)) {
+                            deserializedSynapseNotebookActivity.conf = reader.readUntyped();
+                        } else if ("driverSize".equals(fieldName)) {
+                            deserializedSynapseNotebookActivity.driverSize = reader.readUntyped();
+                        } else if ("numExecutors".equals(fieldName)) {
+                            deserializedSynapseNotebookActivity.numExecutors = reader.readUntyped();
+                        } else if ("configurationType".equals(fieldName)) {
+                            deserializedSynapseNotebookActivity.configurationType
+                                = ConfigurationType.fromString(reader.getString());
+                        } else if ("targetSparkConfiguration".equals(fieldName)) {
+                            deserializedSynapseNotebookActivity.targetSparkConfiguration
+                                = SparkConfigurationParametrizationReference.fromJson(reader);
+                        } else if ("sparkConfig".equals(fieldName)) {
+                            Map<String, Object> sparkConfig = reader.readMap(reader1 -> reader1.readUntyped());
+                            deserializedSynapseNotebookActivity.sparkConfig = sparkConfig;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSynapseNotebookActivity.setAdditionalProperties(additionalProperties);
+
+            return deserializedSynapseNotebookActivity;
+        });
     }
 }

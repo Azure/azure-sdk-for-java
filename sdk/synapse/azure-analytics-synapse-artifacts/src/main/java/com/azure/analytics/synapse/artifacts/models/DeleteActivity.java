@@ -5,62 +5,68 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Delete activity.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Delete")
-@JsonFlatten
 @Fluent
 public class DeleteActivity extends ExecutionActivity {
     /*
-     * If true, files or sub-folders under current folder path will be deleted recursively. Default is false. Type:
-     * boolean (or Expression with resultType boolean).
+     * Type of activity.
      */
-    @JsonProperty(value = "typeProperties.recursive")
+    private String type = "Delete";
+
+    /*
+     * If true, files or sub-folders under current folder path will be deleted recursively. Default is false. Type: boolean (or Expression with resultType boolean).
+     */
     private Object recursive;
 
     /*
      * The max concurrent connections to connect data source at the same time.
      */
-    @JsonProperty(value = "typeProperties.maxConcurrentConnections")
     private Integer maxConcurrentConnections;
 
     /*
-     * Whether to record detailed logs of delete-activity execution. Default value is false. Type: boolean (or
-     * Expression with resultType boolean).
+     * Whether to record detailed logs of delete-activity execution. Default value is false. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "typeProperties.enableLogging")
     private Object enableLogging;
 
     /*
      * Log storage settings customer need to provide when enableLogging is true.
      */
-    @JsonProperty(value = "typeProperties.logStorageSettings")
     private LogStorageSettings logStorageSettings;
 
     /*
      * Delete activity dataset reference.
      */
-    @JsonProperty(value = "typeProperties.dataset", required = true)
     private DatasetReference dataset;
 
     /*
      * Delete activity store settings.
      */
-    @JsonProperty(value = "typeProperties.storeSettings")
     private StoreReadSettings storeSettings;
 
     /**
      * Creates an instance of DeleteActivity class.
      */
     public DeleteActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -259,5 +265,120 @@ public class DeleteActivity extends ExecutionActivity {
     public DeleteActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeStringField("state", getState() == null ? null : getState().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            getOnInactiveMarkAs() == null ? null : getOnInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", getDependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", getUserProperties(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
+        jsonWriter.writeJsonField("policy", getPolicy());
+        jsonWriter.writeStringField("type", this.type);
+        if (recursive != null
+            || maxConcurrentConnections != null
+            || enableLogging != null
+            || logStorageSettings != null
+            || dataset != null
+            || storeSettings != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("recursive", this.recursive);
+            jsonWriter.writeNumberField("maxConcurrentConnections", this.maxConcurrentConnections);
+            jsonWriter.writeUntypedField("enableLogging", this.enableLogging);
+            jsonWriter.writeJsonField("logStorageSettings", this.logStorageSettings);
+            jsonWriter.writeJsonField("dataset", this.dataset);
+            jsonWriter.writeJsonField("storeSettings", this.storeSettings);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeleteActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeleteActivity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DeleteActivity.
+     */
+    public static DeleteActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeleteActivity deserializedDeleteActivity = new DeleteActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDeleteActivity.setName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedDeleteActivity.setDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedDeleteActivity.setState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedDeleteActivity
+                        .setOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedDeleteActivity.setDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedDeleteActivity.setUserProperties(userProperties);
+                } else if ("linkedServiceName".equals(fieldName)) {
+                    deserializedDeleteActivity.setLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("policy".equals(fieldName)) {
+                    deserializedDeleteActivity.setPolicy(ActivityPolicy.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedDeleteActivity.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("recursive".equals(fieldName)) {
+                            deserializedDeleteActivity.recursive = reader.readUntyped();
+                        } else if ("maxConcurrentConnections".equals(fieldName)) {
+                            deserializedDeleteActivity.maxConcurrentConnections
+                                = reader.getNullable(JsonReader::getInt);
+                        } else if ("enableLogging".equals(fieldName)) {
+                            deserializedDeleteActivity.enableLogging = reader.readUntyped();
+                        } else if ("logStorageSettings".equals(fieldName)) {
+                            deserializedDeleteActivity.logStorageSettings = LogStorageSettings.fromJson(reader);
+                        } else if ("dataset".equals(fieldName)) {
+                            deserializedDeleteActivity.dataset = DatasetReference.fromJson(reader);
+                        } else if ("storeSettings".equals(fieldName)) {
+                            deserializedDeleteActivity.storeSettings = StoreReadSettings.fromJson(reader);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedDeleteActivity.setAdditionalProperties(additionalProperties);
+
+            return deserializedDeleteActivity;
+        });
     }
 }

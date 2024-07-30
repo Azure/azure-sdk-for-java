@@ -51,8 +51,7 @@ public final class AzureDatabricksDeltaLakeDatasetTypeProperties {
     }
 
     /**
-     * Get the database property: The database name of delta table. Type: string (or Expression with resultType
-     * string).
+     * Get the database property: The database name of delta table. Type: string (or Expression with resultType string).
      * 
      * @return the database value.
      */
@@ -61,8 +60,7 @@ public final class AzureDatabricksDeltaLakeDatasetTypeProperties {
     }
 
     /**
-     * Set the database property: The database name of delta table. Type: string (or Expression with resultType
-     * string).
+     * Set the database property: The database name of delta table. Type: string (or Expression with resultType string).
      * 
      * @param database the database value to set.
      * @return the AzureDatabricksDeltaLakeDatasetTypeProperties object itself.

@@ -75,8 +75,8 @@ public final class ProtectionIntentsImpl implements ProtectionIntents {
 
     public Response<Void> deleteWithResponse(String vaultName, String resourceGroupName, String fabricName,
         String intentObjectName, Context context) {
-        return this.serviceClient().deleteWithResponse(vaultName, resourceGroupName, fabricName, intentObjectName,
-            context);
+        return this.serviceClient()
+            .deleteWithResponse(vaultName, resourceGroupName, fabricName, intentObjectName, context);
     }
 
     public void delete(String vaultName, String resourceGroupName, String fabricName, String intentObjectName) {

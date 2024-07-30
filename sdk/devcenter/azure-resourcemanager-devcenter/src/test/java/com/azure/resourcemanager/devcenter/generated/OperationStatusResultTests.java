@@ -13,212 +13,168 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationStatusResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationStatusResult model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"areqna\",\"name\":\"qugjhkycube\",\"status\":\"dgssofwqmzqal\",\"percentComplete\":84.3162,\"startTime\":\"2020-12-26T09:57:41Z\",\"endTime\":\"2021-01-22T20:56:52Z\",\"operations\":[{\"id\":\"cqqudf\",\"name\":\"yxbaaabjyvayf\",\"status\":\"imrzrtuzqog\",\"percentComplete\":55.5755,\"startTime\":\"2021-05-31T22:00:59Z\",\"endTime\":\"2021-10-08T20:33:25Z\",\"operations\":[{\"id\":\"nw\",\"name\":\"wzsyyceuzs\",\"status\":\"i\",\"percentComplete\":9.643782,\"startTime\":\"2021-11-18T11:14:43Z\",\"endTime\":\"2021-08-08T12:59:01Z\",\"operations\":[{\"status\":\"rthzvaytdwkqbrqu\"},{\"status\":\"paxh\"},{\"status\":\"xiilivpdtiirqt\"},{\"status\":\"qoaxoruzfgs\"}]},{\"id\":\"fxrxxle\",\"name\":\"ramxjezwlwnw\",\"status\":\"uqlcvydy\",\"percentComplete\":41.27754,\"startTime\":\"2021-12-04T00:03:51Z\",\"endTime\":\"2021-10-15T00:40:10Z\",\"operations\":[{\"status\":\"kniod\"},{\"status\":\"oo\"}]}]},{\"id\":\"ujhemmsbvdkcrodt\",\"name\":\"nfwjlfltkacjvefk\",\"status\":\"lfoakg\",\"percentComplete\":64.69317,\"startTime\":\"2021-11-21T09:22:46Z\",\"endTime\":\"2021-05-07T07:09:12Z\",\"operations\":[{\"id\":\"pqblylsyxkqjnsj\",\"name\":\"vti\",\"status\":\"gxsds\",\"percentComplete\":0.14469028,\"startTime\":\"2021-02-03T17:01:28Z\",\"endTime\":\"2021-06-09T02:50:50Z\",\"operations\":[{\"status\":\"f\"},{\"status\":\"beyvpnqicvinvkjj\"},{\"status\":\"dxrbuukzcle\"},{\"status\":\"yhmlwpaztzp\"}]},{\"id\":\"cckwyfzqwhxxbu\",\"name\":\"a\",\"status\":\"zfeqztppri\",\"percentComplete\":98.75883,\"startTime\":\"2020-12-22T04:16:08Z\",\"endTime\":\"2021-08-09T00:51:03Z\",\"operations\":[{\"status\":\"olmncwsobqwcs\"},{\"status\":\"bnwdcfh\"},{\"status\":\"cqdpfuv\"}]},{\"id\":\"bjj\",\"name\":\"nvxbvt\",\"status\":\"udutnco\",\"percentComplete\":4.0814104,\"startTime\":\"2021-08-01T05:22:31Z\",\"endTime\":\"2021-10-06T09:07:18Z\",\"operations\":[{\"status\":\"ofudflvkgju\"},{\"status\":\"gdknnqv\"},{\"status\":\"aznqntoru\"},{\"status\":\"sgsahmkycgr\"}]},{\"id\":\"juetaebur\",\"name\":\"dmovsm\",\"status\":\"l\",\"percentComplete\":10.534328,\"startTime\":\"2021-07-14T09:12:45Z\",\"endTime\":\"2021-06-22T12:18:54Z\",\"operations\":[{\"status\":\"kif\"},{\"status\":\"vtpuqujmqlgk\"}]}]},{\"id\":\"doaon\",\"name\":\"jcntuj\",\"status\":\"tcje\",\"percentComplete\":88.47363,\"startTime\":\"2021-11-20T10:54Z\",\"endTime\":\"2021-06-19T23:54:32Z\",\"operations\":[{\"id\":\"jvdcpzfoqouic\",\"name\":\"xarzgszufoxciq\",\"status\":\"p\",\"percentComplete\":47.235363,\"startTime\":\"2021-12-10T00:14:44Z\",\"endTime\":\"2021-11-18T04:50:58Z\",\"operations\":[{\"status\":\"hkh\"},{\"status\":\"zxkhnzbonlwnto\"}]},{\"id\":\"kdwbwhkszz\",\"name\":\"rvexztvb\",\"status\":\"qgsfraoyzkoow\",\"percentComplete\":83.122345,\"startTime\":\"2021-11-23T22:05:35Z\",\"endTime\":\"2021-08-19T07:22:38Z\",\"operations\":[{\"status\":\"q\"},{\"status\":\"ldsyuuximerqfob\"}]}]}]}")
-                .toObject(OperationStatusResult.class);
-        Assertions.assertEquals("areqna", model.id());
-        Assertions.assertEquals("qugjhkycube", model.name());
-        Assertions.assertEquals("dgssofwqmzqal", model.status());
-        Assertions.assertEquals(84.3162F, model.percentComplete());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-26T09:57:41Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-22T20:56:52Z"), model.endTime());
-        Assertions.assertEquals("cqqudf", model.operations().get(0).id());
-        Assertions.assertEquals("yxbaaabjyvayf", model.operations().get(0).name());
-        Assertions.assertEquals("imrzrtuzqog", model.operations().get(0).status());
-        Assertions.assertEquals(55.5755F, model.operations().get(0).percentComplete());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-31T22:00:59Z"), model.operations().get(0).startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-08T20:33:25Z"), model.operations().get(0).endTime());
-        Assertions.assertEquals("nw", model.operations().get(0).operations().get(0).id());
-        Assertions.assertEquals("wzsyyceuzs", model.operations().get(0).operations().get(0).name());
-        Assertions.assertEquals("i", model.operations().get(0).operations().get(0).status());
-        Assertions.assertEquals(9.643782F, model.operations().get(0).operations().get(0).percentComplete());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-11-18T11:14:43Z"),
-                model.operations().get(0).operations().get(0).startTime());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-08-08T12:59:01Z"), model.operations().get(0).operations().get(0).endTime());
-        Assertions
-            .assertEquals(
-                "rthzvaytdwkqbrqu", model.operations().get(0).operations().get(0).operations().get(0).status());
+        OperationStatusResult model = BinaryData.fromString(
+            "{\"id\":\"gg\",\"resourceId\":\"sb\",\"name\":\"ovvtgseinqfiu\",\"status\":\"x\",\"percentComplete\":68.516174,\"startTime\":\"2021-05-31T07:01:39Z\",\"endTime\":\"2021-03-12T06:20:37Z\",\"operations\":[{\"id\":\"ttwqmsni\",\"resourceId\":\"cdm\",\"name\":\"r\",\"status\":\"jlpijnkrx\",\"percentComplete\":64.470695,\"startTime\":\"2021-08-19T01:34:13Z\",\"endTime\":\"2021-01-09T04:43:14Z\",\"operations\":[{\"id\":\"zzronasx\",\"resourceId\":\"tozqyzhftwesgo\",\"name\":\"zhonnxkrlgnyhmo\",\"status\":\"sxkkg\",\"percentComplete\":99.30511,\"startTime\":\"2021-04-03T23:15:39Z\",\"endTime\":\"2021-07-14T05:25:31Z\",\"operations\":[{\"status\":\"dhqxvcx\"},{\"status\":\"frpdsofbshrns\"},{\"status\":\"buswdvzyy\"}]},{\"id\":\"nu\",\"resourceId\":\"jsrtk\",\"name\":\"wnopqgikyzirtx\",\"status\":\"yuxzejntpsewgi\",\"percentComplete\":5.1279726,\"startTime\":\"2021-03-06T20:05:06Z\",\"endTime\":\"2021-10-31T01:38:06Z\",\"operations\":[{\"status\":\"xtqmieoxor\"},{\"status\":\"gufhyaomtbg\"},{\"status\":\"havgrvk\"}]},{\"id\":\"vjzhpjbib\",\"resourceId\":\"mfxumvfcluyovw\",\"name\":\"bkfezzxscyhwzdgi\",\"status\":\"ujb\",\"percentComplete\":46.423805,\"startTime\":\"2021-02-14T17:43:30Z\",\"endTime\":\"2021-12-01T21:22:39Z\",\"operations\":[{\"status\":\"dcqvpn\"},{\"status\":\"yujviylwdshfssn\"},{\"status\":\"bgye\"}]}]},{\"id\":\"sgaojfmwncot\",\"resourceId\":\"fhir\",\"name\":\"ymoxoftpipiwyczu\",\"status\":\"xacpqjli\",\"percentComplete\":49.662262,\"startTime\":\"2021-03-23T23:20:42Z\",\"endTime\":\"2021-01-11T22:34:27Z\",\"operations\":[{\"id\":\"dvlmfwdgzxul\",\"resourceId\":\"vpa\",\"name\":\"sreuzvxurisjnh\",\"status\":\"ytxifqjzgxmrh\",\"percentComplete\":8.54001,\"startTime\":\"2021-09-19T19:58:44Z\",\"endTime\":\"2021-07-03T12:52:54Z\",\"operations\":[{\"status\":\"trgjupauutpwoqh\"}]},{\"id\":\"jqgwzp\",\"resourceId\":\"qntcypsxjvfoimwk\",\"name\":\"ircizjxvy\",\"status\":\"fceacvlhvygd\",\"percentComplete\":1.020509,\"startTime\":\"2021-02-08T02:04:14Z\",\"endTime\":\"2021-02-22T08:30:01Z\",\"operations\":[{\"status\":\"awjs\"},{\"status\":\"biwkojgcyzt\"},{\"status\":\"fmznba\"},{\"status\":\"qphchqnrnrpxehuw\"}]}]},{\"id\":\"gaifmvik\",\"resourceId\":\"ydv\",\"name\":\"bejdznxcv\",\"status\":\"srhnjivo\",\"percentComplete\":96.95902,\"startTime\":\"2021-03-07T07:40:39Z\",\"endTime\":\"2021-09-15T23:45:01Z\",\"operations\":[{\"id\":\"emjdftul\",\"resourceId\":\"tduceamt\",\"name\":\"zuo\",\"status\":\"ejwcwwqiok\",\"percentComplete\":8.696121,\"startTime\":\"2021-04-14T11:00:49Z\",\"endTime\":\"2021-08-22T03:58:36Z\",\"operations\":[{\"status\":\"vpkjpr\"}]},{\"id\":\"cfzq\",\"resourceId\":\"yxgtczh\",\"name\":\"dbsdshm\",\"status\":\"xmaehvbbxu\",\"percentComplete\":56.19762,\"startTime\":\"2021-06-29T01:43:25Z\",\"endTime\":\"2021-08-11T19:12:35Z\",\"operations\":[{\"status\":\"baxk\"},{\"status\":\"xywr\"}]},{\"id\":\"yklyhpluodpvruud\",\"resourceId\":\"zibt\",\"name\":\"stgktst\",\"status\":\"dxeclzedqbcvh\",\"percentComplete\":1.2831509,\"startTime\":\"2021-07-17T21:14:55Z\",\"endTime\":\"2021-02-01T15:52:58Z\",\"operations\":[{\"status\":\"dlwwqfbumlkxt\"}]},{\"id\":\"fsmlmbtxhwgfw\",\"resourceId\":\"tawc\",\"name\":\"zbrhubskhudyg\",\"status\":\"ookk\",\"percentComplete\":70.261795,\"startTime\":\"2021-07-12T13:05:01Z\",\"endTime\":\"2021-03-17T22:00:43Z\",\"operations\":[{\"status\":\"fmluiqtqzfavyvn\"},{\"status\":\"qybaryeua\"},{\"status\":\"jkqa\"}]}]}]}")
+            .toObject(OperationStatusResult.class);
+        Assertions.assertEquals("gg", model.id());
+        Assertions.assertEquals("ovvtgseinqfiu", model.name());
+        Assertions.assertEquals("x", model.status());
+        Assertions.assertEquals(68.516174F, model.percentComplete());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-31T07:01:39Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-12T06:20:37Z"), model.endTime());
+        Assertions.assertEquals("ttwqmsni", model.operations().get(0).id());
+        Assertions.assertEquals("r", model.operations().get(0).name());
+        Assertions.assertEquals("jlpijnkrx", model.operations().get(0).status());
+        Assertions.assertEquals(64.470695F, model.operations().get(0).percentComplete());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-19T01:34:13Z"), model.operations().get(0).startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-09T04:43:14Z"), model.operations().get(0).endTime());
+        Assertions.assertEquals("zzronasx", model.operations().get(0).operations().get(0).id());
+        Assertions.assertEquals("zhonnxkrlgnyhmo", model.operations().get(0).operations().get(0).name());
+        Assertions.assertEquals("sxkkg", model.operations().get(0).operations().get(0).status());
+        Assertions.assertEquals(99.30511F, model.operations().get(0).operations().get(0).percentComplete());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-03T23:15:39Z"),
+            model.operations().get(0).operations().get(0).startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-14T05:25:31Z"),
+            model.operations().get(0).operations().get(0).endTime());
+        Assertions.assertEquals("dhqxvcx", model.operations().get(0).operations().get(0).operations().get(0).status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationStatusResult model =
-            new OperationStatusResult()
-                .withId("areqna")
-                .withName("qugjhkycube")
-                .withStatus("dgssofwqmzqal")
-                .withPercentComplete(84.3162F)
-                .withStartTime(OffsetDateTime.parse("2020-12-26T09:57:41Z"))
-                .withEndTime(OffsetDateTime.parse("2021-01-22T20:56:52Z"))
-                .withOperations(
-                    Arrays
-                        .asList(
-                            new OperationStatusResult()
-                                .withId("cqqudf")
-                                .withName("yxbaaabjyvayf")
-                                .withStatus("imrzrtuzqog")
-                                .withPercentComplete(55.5755F)
-                                .withStartTime(OffsetDateTime.parse("2021-05-31T22:00:59Z"))
-                                .withEndTime(OffsetDateTime.parse("2021-10-08T20:33:25Z"))
-                                .withOperations(
-                                    Arrays
-                                        .asList(
-                                            new OperationStatusResult()
-                                                .withId("nw")
-                                                .withName("wzsyyceuzs")
-                                                .withStatus("i")
-                                                .withPercentComplete(9.643782F)
-                                                .withStartTime(OffsetDateTime.parse("2021-11-18T11:14:43Z"))
-                                                .withEndTime(OffsetDateTime.parse("2021-08-08T12:59:01Z"))
-                                                .withOperations(
-                                                    Arrays
-                                                        .asList(
-                                                            new OperationStatusResult().withStatus("rthzvaytdwkqbrqu"),
-                                                            new OperationStatusResult().withStatus("paxh"),
-                                                            new OperationStatusResult().withStatus("xiilivpdtiirqt"),
-                                                            new OperationStatusResult().withStatus("qoaxoruzfgs"))),
-                                            new OperationStatusResult()
-                                                .withId("fxrxxle")
-                                                .withName("ramxjezwlwnw")
-                                                .withStatus("uqlcvydy")
-                                                .withPercentComplete(41.27754F)
-                                                .withStartTime(OffsetDateTime.parse("2021-12-04T00:03:51Z"))
-                                                .withEndTime(OffsetDateTime.parse("2021-10-15T00:40:10Z"))
-                                                .withOperations(
-                                                    Arrays
-                                                        .asList(
-                                                            new OperationStatusResult().withStatus("kniod"),
-                                                            new OperationStatusResult().withStatus("oo"))))),
-                            new OperationStatusResult()
-                                .withId("ujhemmsbvdkcrodt")
-                                .withName("nfwjlfltkacjvefk")
-                                .withStatus("lfoakg")
-                                .withPercentComplete(64.69317F)
-                                .withStartTime(OffsetDateTime.parse("2021-11-21T09:22:46Z"))
-                                .withEndTime(OffsetDateTime.parse("2021-05-07T07:09:12Z"))
-                                .withOperations(
-                                    Arrays
-                                        .asList(
-                                            new OperationStatusResult()
-                                                .withId("pqblylsyxkqjnsj")
-                                                .withName("vti")
-                                                .withStatus("gxsds")
-                                                .withPercentComplete(0.14469028F)
-                                                .withStartTime(OffsetDateTime.parse("2021-02-03T17:01:28Z"))
-                                                .withEndTime(OffsetDateTime.parse("2021-06-09T02:50:50Z"))
-                                                .withOperations(
-                                                    Arrays
-                                                        .asList(
-                                                            new OperationStatusResult().withStatus("f"),
-                                                            new OperationStatusResult().withStatus("beyvpnqicvinvkjj"),
-                                                            new OperationStatusResult().withStatus("dxrbuukzcle"),
-                                                            new OperationStatusResult().withStatus("yhmlwpaztzp"))),
-                                            new OperationStatusResult()
-                                                .withId("cckwyfzqwhxxbu")
-                                                .withName("a")
-                                                .withStatus("zfeqztppri")
-                                                .withPercentComplete(98.75883F)
-                                                .withStartTime(OffsetDateTime.parse("2020-12-22T04:16:08Z"))
-                                                .withEndTime(OffsetDateTime.parse("2021-08-09T00:51:03Z"))
-                                                .withOperations(
-                                                    Arrays
-                                                        .asList(
-                                                            new OperationStatusResult().withStatus("olmncwsobqwcs"),
-                                                            new OperationStatusResult().withStatus("bnwdcfh"),
-                                                            new OperationStatusResult().withStatus("cqdpfuv"))),
-                                            new OperationStatusResult()
-                                                .withId("bjj")
-                                                .withName("nvxbvt")
-                                                .withStatus("udutnco")
-                                                .withPercentComplete(4.0814104F)
-                                                .withStartTime(OffsetDateTime.parse("2021-08-01T05:22:31Z"))
-                                                .withEndTime(OffsetDateTime.parse("2021-10-06T09:07:18Z"))
-                                                .withOperations(
-                                                    Arrays
-                                                        .asList(
-                                                            new OperationStatusResult().withStatus("ofudflvkgju"),
-                                                            new OperationStatusResult().withStatus("gdknnqv"),
-                                                            new OperationStatusResult().withStatus("aznqntoru"),
-                                                            new OperationStatusResult().withStatus("sgsahmkycgr"))),
-                                            new OperationStatusResult()
-                                                .withId("juetaebur")
-                                                .withName("dmovsm")
-                                                .withStatus("l")
-                                                .withPercentComplete(10.534328F)
-                                                .withStartTime(OffsetDateTime.parse("2021-07-14T09:12:45Z"))
-                                                .withEndTime(OffsetDateTime.parse("2021-06-22T12:18:54Z"))
-                                                .withOperations(
-                                                    Arrays
-                                                        .asList(
-                                                            new OperationStatusResult().withStatus("kif"),
-                                                            new OperationStatusResult().withStatus("vtpuqujmqlgk"))))),
-                            new OperationStatusResult()
-                                .withId("doaon")
-                                .withName("jcntuj")
-                                .withStatus("tcje")
-                                .withPercentComplete(88.47363F)
-                                .withStartTime(OffsetDateTime.parse("2021-11-20T10:54Z"))
-                                .withEndTime(OffsetDateTime.parse("2021-06-19T23:54:32Z"))
-                                .withOperations(
-                                    Arrays
-                                        .asList(
-                                            new OperationStatusResult()
-                                                .withId("jvdcpzfoqouic")
-                                                .withName("xarzgszufoxciq")
-                                                .withStatus("p")
-                                                .withPercentComplete(47.235363F)
-                                                .withStartTime(OffsetDateTime.parse("2021-12-10T00:14:44Z"))
-                                                .withEndTime(OffsetDateTime.parse("2021-11-18T04:50:58Z"))
-                                                .withOperations(
-                                                    Arrays
-                                                        .asList(
-                                                            new OperationStatusResult().withStatus("hkh"),
-                                                            new OperationStatusResult().withStatus("zxkhnzbonlwnto"))),
-                                            new OperationStatusResult()
-                                                .withId("kdwbwhkszz")
-                                                .withName("rvexztvb")
-                                                .withStatus("qgsfraoyzkoow")
-                                                .withPercentComplete(83.122345F)
-                                                .withStartTime(OffsetDateTime.parse("2021-11-23T22:05:35Z"))
-                                                .withEndTime(OffsetDateTime.parse("2021-08-19T07:22:38Z"))
-                                                .withOperations(
-                                                    Arrays
-                                                        .asList(
-                                                            new OperationStatusResult().withStatus("q"),
-                                                            new OperationStatusResult()
-                                                                .withStatus("ldsyuuximerqfob")))))));
+        OperationStatusResult model
+            = new OperationStatusResult().withId("gg")
+                .withName("ovvtgseinqfiu")
+                .withStatus("x")
+                .withPercentComplete(68.516174F)
+                .withStartTime(OffsetDateTime.parse("2021-05-31T07:01:39Z"))
+                .withEndTime(OffsetDateTime.parse("2021-03-12T06:20:37Z"))
+                .withOperations(Arrays
+                    .asList(
+                        new OperationStatusResult()
+                            .withId("ttwqmsni")
+                            .withName("r")
+                            .withStatus("jlpijnkrx")
+                            .withPercentComplete(64.470695F)
+                            .withStartTime(OffsetDateTime.parse("2021-08-19T01:34:13Z"))
+                            .withEndTime(OffsetDateTime.parse("2021-01-09T04:43:14Z"))
+                            .withOperations(Arrays.asList(
+                                new OperationStatusResult().withId("zzronasx")
+                                    .withName("zhonnxkrlgnyhmo")
+                                    .withStatus("sxkkg")
+                                    .withPercentComplete(99.30511F)
+                                    .withStartTime(OffsetDateTime.parse("2021-04-03T23:15:39Z"))
+                                    .withEndTime(OffsetDateTime.parse("2021-07-14T05:25:31Z"))
+                                    .withOperations(Arrays.asList(new OperationStatusResult().withStatus("dhqxvcx"),
+                                        new OperationStatusResult().withStatus("frpdsofbshrns"),
+                                        new OperationStatusResult().withStatus("buswdvzyy"))),
+                                new OperationStatusResult().withId("nu")
+                                    .withName("wnopqgikyzirtx")
+                                    .withStatus("yuxzejntpsewgi")
+                                    .withPercentComplete(5.1279726F)
+                                    .withStartTime(OffsetDateTime.parse("2021-03-06T20:05:06Z"))
+                                    .withEndTime(OffsetDateTime.parse("2021-10-31T01:38:06Z"))
+                                    .withOperations(Arrays.asList(new OperationStatusResult().withStatus("xtqmieoxor"),
+                                        new OperationStatusResult().withStatus("gufhyaomtbg"),
+                                        new OperationStatusResult().withStatus("havgrvk"))),
+                                new OperationStatusResult().withId("vjzhpjbib")
+                                    .withName("bkfezzxscyhwzdgi")
+                                    .withStatus("ujb")
+                                    .withPercentComplete(46.423805F)
+                                    .withStartTime(OffsetDateTime.parse("2021-02-14T17:43:30Z"))
+                                    .withEndTime(OffsetDateTime.parse("2021-12-01T21:22:39Z"))
+                                    .withOperations(Arrays.asList(new OperationStatusResult().withStatus("dcqvpn"),
+                                        new OperationStatusResult().withStatus("yujviylwdshfssn"),
+                                        new OperationStatusResult().withStatus("bgye"))))),
+                        new OperationStatusResult().withId("sgaojfmwncot")
+                            .withName("ymoxoftpipiwyczu")
+                            .withStatus("xacpqjli")
+                            .withPercentComplete(49.662262F)
+                            .withStartTime(OffsetDateTime.parse("2021-03-23T23:20:42Z"))
+                            .withEndTime(OffsetDateTime.parse("2021-01-11T22:34:27Z"))
+                            .withOperations(
+                                Arrays.asList(
+                                    new OperationStatusResult().withId("dvlmfwdgzxul")
+                                        .withName("sreuzvxurisjnh")
+                                        .withStatus("ytxifqjzgxmrh")
+                                        .withPercentComplete(8.54001F)
+                                        .withStartTime(OffsetDateTime.parse("2021-09-19T19:58:44Z"))
+                                        .withEndTime(OffsetDateTime.parse("2021-07-03T12:52:54Z"))
+                                        .withOperations(
+                                            Arrays.asList(new OperationStatusResult().withStatus("trgjupauutpwoqh"))),
+                                    new OperationStatusResult()
+                                        .withId("jqgwzp")
+                                        .withName("ircizjxvy")
+                                        .withStatus("fceacvlhvygd")
+                                        .withPercentComplete(1.020509F)
+                                        .withStartTime(OffsetDateTime.parse("2021-02-08T02:04:14Z"))
+                                        .withEndTime(OffsetDateTime.parse("2021-02-22T08:30:01Z"))
+                                        .withOperations(
+                                            Arrays.asList(new OperationStatusResult().withStatus("awjs"),
+                                                new OperationStatusResult().withStatus("biwkojgcyzt"),
+                                                new OperationStatusResult().withStatus("fmznba"),
+                                                new OperationStatusResult().withStatus("qphchqnrnrpxehuw"))))),
+                        new OperationStatusResult().withId("gaifmvik")
+                            .withName("bejdznxcv")
+                            .withStatus("srhnjivo")
+                            .withPercentComplete(96.95902F)
+                            .withStartTime(OffsetDateTime.parse("2021-03-07T07:40:39Z"))
+                            .withEndTime(OffsetDateTime.parse("2021-09-15T23:45:01Z"))
+                            .withOperations(Arrays.asList(new OperationStatusResult()
+                                .withId("emjdftul")
+                                .withName("zuo")
+                                .withStatus("ejwcwwqiok")
+                                .withPercentComplete(8.696121F)
+                                .withStartTime(OffsetDateTime.parse("2021-04-14T11:00:49Z"))
+                                .withEndTime(OffsetDateTime.parse("2021-08-22T03:58:36Z"))
+                                .withOperations(Arrays.asList(new OperationStatusResult().withStatus("vpkjpr"))),
+                                new OperationStatusResult().withId("cfzq")
+                                    .withName("dbsdshm")
+                                    .withStatus("xmaehvbbxu")
+                                    .withPercentComplete(56.19762F)
+                                    .withStartTime(OffsetDateTime.parse("2021-06-29T01:43:25Z"))
+                                    .withEndTime(OffsetDateTime.parse("2021-08-11T19:12:35Z"))
+                                    .withOperations(Arrays.asList(new OperationStatusResult().withStatus("baxk"),
+                                        new OperationStatusResult().withStatus("xywr"))),
+                                new OperationStatusResult()
+                                    .withId("yklyhpluodpvruud")
+                                    .withName("stgktst")
+                                    .withStatus("dxeclzedqbcvh")
+                                    .withPercentComplete(1.2831509F)
+                                    .withStartTime(OffsetDateTime.parse("2021-07-17T21:14:55Z"))
+                                    .withEndTime(OffsetDateTime.parse("2021-02-01T15:52:58Z"))
+                                    .withOperations(
+                                        Arrays.asList(new OperationStatusResult().withStatus("dlwwqfbumlkxt"))),
+                                new OperationStatusResult().withId("fsmlmbtxhwgfw")
+                                    .withName("zbrhubskhudyg")
+                                    .withStatus("ookk")
+                                    .withPercentComplete(70.261795F)
+                                    .withStartTime(OffsetDateTime.parse("2021-07-12T13:05:01Z"))
+                                    .withEndTime(OffsetDateTime.parse("2021-03-17T22:00:43Z"))
+                                    .withOperations(
+                                        Arrays.asList(new OperationStatusResult().withStatus("fmluiqtqzfavyvn"),
+                                            new OperationStatusResult().withStatus("qybaryeua"),
+                                            new OperationStatusResult().withStatus("jkqa")))))));
         model = BinaryData.fromObject(model).toObject(OperationStatusResult.class);
-        Assertions.assertEquals("areqna", model.id());
-        Assertions.assertEquals("qugjhkycube", model.name());
-        Assertions.assertEquals("dgssofwqmzqal", model.status());
-        Assertions.assertEquals(84.3162F, model.percentComplete());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-26T09:57:41Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-22T20:56:52Z"), model.endTime());
-        Assertions.assertEquals("cqqudf", model.operations().get(0).id());
-        Assertions.assertEquals("yxbaaabjyvayf", model.operations().get(0).name());
-        Assertions.assertEquals("imrzrtuzqog", model.operations().get(0).status());
-        Assertions.assertEquals(55.5755F, model.operations().get(0).percentComplete());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-31T22:00:59Z"), model.operations().get(0).startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-08T20:33:25Z"), model.operations().get(0).endTime());
-        Assertions.assertEquals("nw", model.operations().get(0).operations().get(0).id());
-        Assertions.assertEquals("wzsyyceuzs", model.operations().get(0).operations().get(0).name());
-        Assertions.assertEquals("i", model.operations().get(0).operations().get(0).status());
-        Assertions.assertEquals(9.643782F, model.operations().get(0).operations().get(0).percentComplete());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-11-18T11:14:43Z"),
-                model.operations().get(0).operations().get(0).startTime());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-08-08T12:59:01Z"), model.operations().get(0).operations().get(0).endTime());
-        Assertions
-            .assertEquals(
-                "rthzvaytdwkqbrqu", model.operations().get(0).operations().get(0).operations().get(0).status());
+        Assertions.assertEquals("gg", model.id());
+        Assertions.assertEquals("ovvtgseinqfiu", model.name());
+        Assertions.assertEquals("x", model.status());
+        Assertions.assertEquals(68.516174F, model.percentComplete());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-31T07:01:39Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-12T06:20:37Z"), model.endTime());
+        Assertions.assertEquals("ttwqmsni", model.operations().get(0).id());
+        Assertions.assertEquals("r", model.operations().get(0).name());
+        Assertions.assertEquals("jlpijnkrx", model.operations().get(0).status());
+        Assertions.assertEquals(64.470695F, model.operations().get(0).percentComplete());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-19T01:34:13Z"), model.operations().get(0).startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-09T04:43:14Z"), model.operations().get(0).endTime());
+        Assertions.assertEquals("zzronasx", model.operations().get(0).operations().get(0).id());
+        Assertions.assertEquals("zhonnxkrlgnyhmo", model.operations().get(0).operations().get(0).name());
+        Assertions.assertEquals("sxkkg", model.operations().get(0).operations().get(0).status());
+        Assertions.assertEquals(99.30511F, model.operations().get(0).operations().get(0).percentComplete());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-03T23:15:39Z"),
+            model.operations().get(0).operations().get(0).startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-14T05:25:31Z"),
+            model.operations().get(0).operations().get(0).endTime());
+        Assertions.assertEquals("dhqxvcx", model.operations().get(0).operations().get(0).operations().get(0).status());
     }
 }

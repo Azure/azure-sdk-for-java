@@ -6,16 +6,24 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity SQL server sink.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = SqlServerSink.class, visible = true)
 @JsonTypeName("SqlServerSink")
 @Fluent
 public final class SqlServerSink extends CopySink {
+    /*
+     * Copy sink type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "SqlServerSink";
+
     /*
      * SQL writer stored procedure name. Type: string (or Expression with resultType string).
      */
@@ -78,8 +86,18 @@ public final class SqlServerSink extends CopySink {
     }
 
     /**
-     * Get the sqlWriterStoredProcedureName property: SQL writer stored procedure name. Type: string (or Expression
-     * with resultType string).
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the sqlWriterStoredProcedureName property: SQL writer stored procedure name. Type: string (or Expression with
+     * resultType string).
      * 
      * @return the sqlWriterStoredProcedureName value.
      */
@@ -88,8 +106,8 @@ public final class SqlServerSink extends CopySink {
     }
 
     /**
-     * Set the sqlWriterStoredProcedureName property: SQL writer stored procedure name. Type: string (or Expression
-     * with resultType string).
+     * Set the sqlWriterStoredProcedureName property: SQL writer stored procedure name. Type: string (or Expression with
+     * resultType string).
      * 
      * @param sqlWriterStoredProcedureName the sqlWriterStoredProcedureName value to set.
      * @return the SqlServerSink object itself.

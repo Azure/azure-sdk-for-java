@@ -192,11 +192,12 @@ public final class ActivityRunsQueryByPipelineRunSamples {
      */
     public static void
         activityRunsQueryByPipelineRun(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.activityRuns().queryByPipelineRunWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "2f7fdb90-5df1-4b8e-ac2f-064cfa58202b",
-            new RunFilterParameters().withLastUpdatedAfter(OffsetDateTime.parse("2018-06-16T00:36:44.3345758Z"))
-                .withLastUpdatedBefore(OffsetDateTime.parse("2018-06-16T00:49:48.3686473Z")),
-            com.azure.core.util.Context.NONE);
+        manager.activityRuns()
+            .queryByPipelineRunWithResponse("exampleResourceGroup", "exampleFactoryName",
+                "2f7fdb90-5df1-4b8e-ac2f-064cfa58202b",
+                new RunFilterParameters().withLastUpdatedAfter(OffsetDateTime.parse("2018-06-16T00:36:44.3345758Z"))
+                    .withLastUpdatedBefore(OffsetDateTime.parse("2018-06-16T00:49:48.3686473Z")),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -224,13 +225,16 @@ public final class ChangeDataCaptureCreateOrUpdateSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void changeDataCaptureCreate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.changeDataCaptures().define("exampleChangeDataCapture")
+        manager.changeDataCaptures()
+            .define("exampleChangeDataCapture")
             .withExistingFactory("exampleResourceGroup", "exampleFactoryName")
             .withSourceConnectionsInfo((List<MapperSourceConnectionsInfo>) null)
-            .withTargetConnectionsInfo((List<MapperTargetConnectionsInfo>) null).withPolicy((MapperPolicy) null)
+            .withTargetConnectionsInfo((List<MapperTargetConnectionsInfo>) null)
+            .withPolicy((MapperPolicy) null)
             .withDescription(
                 "Sample demo change data capture to transfer data from delimited (csv) to Azure SQL Database with automapped and non-automapped mappings.")
-            .withAllowVNetOverride(false).create();
+            .withAllowVNetOverride(false)
+            .create();
     }
 
     /*
@@ -243,11 +247,16 @@ public final class ChangeDataCaptureCreateOrUpdateSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void changeDataCaptureUpdate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        ChangeDataCaptureResource resource = manager.changeDataCaptures().getWithResponse("exampleResourceGroup",
-            "exampleFactoryName", "exampleChangeDataCapture", null, com.azure.core.util.Context.NONE).getValue();
-        resource.update().withDescription(
-            "Sample demo change data capture to transfer data from delimited (csv) to Azure SQL Database. Updating table mappings.")
-            .withAllowVNetOverride(false).withStatus("Stopped").apply();
+        ChangeDataCaptureResource resource = manager.changeDataCaptures()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleChangeDataCapture", null,
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withDescription(
+                "Sample demo change data capture to transfer data from delimited (csv) to Azure SQL Database. Updating table mappings.")
+            .withAllowVNetOverride(false)
+            .withStatus("Stopped")
+            .apply();
     }
 }
 ```
@@ -269,8 +278,9 @@ public final class ChangeDataCaptureDeleteSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void changeDataCaptureDelete(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.changeDataCaptures().deleteWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleChangeDataCapture", com.azure.core.util.Context.NONE);
+        manager.changeDataCaptures()
+            .deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleChangeDataCapture",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -293,8 +303,9 @@ public final class ChangeDataCaptureGetSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void changeDataCaptureGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.changeDataCaptures().getWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleChangeDataCapture", null, com.azure.core.util.Context.NONE);
+        manager.changeDataCaptures()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleChangeDataCapture", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -317,8 +328,8 @@ public final class ChangeDataCaptureListByFactorySamples {
      */
     public static void
         changeDataCaptureListByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.changeDataCaptures().listByFactory("exampleResourceGroup", "exampleFactoryName",
-            com.azure.core.util.Context.NONE);
+        manager.changeDataCaptures()
+            .listByFactory("exampleResourceGroup", "exampleFactoryName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -340,8 +351,9 @@ public final class ChangeDataCaptureStartSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void changeDataCaptureStart(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.changeDataCaptures().startWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleChangeDataCapture", com.azure.core.util.Context.NONE);
+        manager.changeDataCaptures()
+            .startWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleChangeDataCapture",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -363,8 +375,9 @@ public final class ChangeDataCaptureStatusSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void changeDataCaptureStart(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.changeDataCaptures().statusWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleChangeDataCapture", com.azure.core.util.Context.NONE);
+        manager.changeDataCaptures()
+            .statusWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleChangeDataCapture",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -386,8 +399,9 @@ public final class ChangeDataCaptureStopSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void changeDataCaptureStop(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.changeDataCaptures().stopWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleChangeDataCapture", com.azure.core.util.Context.NONE);
+        manager.changeDataCaptures()
+            .stopWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleChangeDataCapture",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -412,7 +426,8 @@ public final class CredentialOperationsCreateOrUpdateSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void credentialsCreate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.credentialOperations().define("exampleCredential")
+        manager.credentialOperations()
+            .define("exampleCredential")
             .withExistingFactory("exampleResourceGroup", "exampleFactoryName")
             .withProperties(new ManagedIdentityCredential().withResourceId(
                 "/subscriptions/12345678-1234-1234-1234-12345678abc/resourcegroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleUami"))
@@ -439,8 +454,9 @@ public final class CredentialOperationsDeleteSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void credentialsDelete(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.credentialOperations().deleteWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleCredential", com.azure.core.util.Context.NONE);
+        manager.credentialOperations()
+            .deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleCredential",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -462,8 +478,9 @@ public final class CredentialOperationsGetSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void credentialsGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.credentialOperations().getWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleCredential", null, com.azure.core.util.Context.NONE);
+        manager.credentialOperations()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleCredential", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -485,8 +502,8 @@ public final class CredentialOperationsListByFactorySamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void credentialsListByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.credentialOperations().listByFactory("exampleResourceGroup", "exampleFactoryName",
-            com.azure.core.util.Context.NONE);
+        manager.credentialOperations()
+            .listByFactory("exampleResourceGroup", "exampleFactoryName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -529,13 +546,17 @@ public final class DataFlowDebugSessionAddDataFlowSamples {
      */
     public static void dataFlowDebugSessionAddDataFlow(com.azure.resourcemanager.datafactory.DataFactoryManager manager)
         throws IOException {
-        manager.dataFlowDebugSessions().addDataFlowWithResponse("exampleResourceGroup", "exampleFactoryName",
-            new DataFlowDebugPackage().withSessionId("f06ed247-9d07-49b2-b05e-2cb4a2fc871e")
-                .withDataFlow(new DataFlowDebugResource().withName("dataflow1").withProperties(new MappingDataFlow()
-                    .withSources(Arrays.asList(new DataFlowSource().withName("source1")
-                        .withDataset(new DatasetReference().withReferenceName("DelimitedText2"))))
-                    .withSinks(Arrays.asList()).withTransformations(Arrays.asList()).withScript(
-                        "\n\nsource(output(\n\t\tColumn_1 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1")))
+        manager.dataFlowDebugSessions()
+            .addDataFlowWithResponse("exampleResourceGroup", "exampleFactoryName", new DataFlowDebugPackage()
+                .withSessionId("f06ed247-9d07-49b2-b05e-2cb4a2fc871e")
+                .withDataFlow(new DataFlowDebugResource().withName("dataflow1")
+                    .withProperties(new MappingDataFlow()
+                        .withSources(Arrays.asList(new DataFlowSource().withName("source1")
+                            .withDataset(new DatasetReference().withReferenceName("DelimitedText2"))))
+                        .withSinks(Arrays.asList())
+                        .withTransformations(Arrays.asList())
+                        .withScript(
+                            "\n\nsource(output(\n\t\tColumn_1 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1")))
                 .withDatasets(Arrays.asList(new DatasetDebugResource().withName("dataset1")
                     .withProperties(new DelimitedTextDataset()
                         .withSchema(SerializerFactory.createDefaultManagementSerializerAdapter()
@@ -544,7 +565,10 @@ public final class DataFlowDebugSessionAddDataFlowSamples {
                         .withAnnotations(Arrays.asList())
                         .withLocation(new AzureBlobStorageLocation().withFileName("Ansiencoding.csv")
                             .withContainer("dataflow-sample-data"))
-                        .withColumnDelimiter(",").withQuoteChar("\"").withEscapeChar("\\").withFirstRowAsHeader(true))))
+                        .withColumnDelimiter(",")
+                        .withQuoteChar("\"")
+                        .withEscapeChar("\\")
+                        .withFirstRowAsHeader(true))))
                 .withLinkedServices(Arrays.asList(new LinkedServiceDebugResource().withName("linkedService1")
                     .withProperties(new AzureBlobStorageLinkedService().withAnnotations(Arrays.asList())
                         .withConnectionString(
@@ -552,16 +576,17 @@ public final class DataFlowDebugSessionAddDataFlowSamples {
                         .withEncryptedCredential("fakeTokenPlaceholder"))))
                 .withDebugSettings(new DataFlowDebugPackageDebugSettings()
                     .withSourceSettings(Arrays.asList(
-                        new DataFlowSourceSetting().withSourceName("source1").withRowLimit(1000)
+                        new DataFlowSourceSetting().withSourceName("source1")
+                            .withRowLimit(1000)
                             .withAdditionalProperties(mapOf()),
-                        new DataFlowSourceSetting()
-                            .withSourceName("source2").withRowLimit(222).withAdditionalProperties(mapOf())))
+                        new DataFlowSourceSetting().withSourceName("source2")
+                            .withRowLimit(222)
+                            .withAdditionalProperties(mapOf())))
                     .withParameters(mapOf("sourcePath", "Toy"))
-                    .withDatasetParameters(SerializerFactory.createDefaultManagementSerializerAdapter().deserialize(
-                        "{\"Movies\":{\"path\":\"abc\"},\"Output\":{\"time\":\"def\"}}", Object.class,
-                        SerializerEncoding.JSON)))
-                .withAdditionalProperties(mapOf()),
-            com.azure.core.util.Context.NONE);
+                    .withDatasetParameters(SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize("{\"Movies\":{\"path\":\"abc\"},\"Output\":{\"time\":\"def\"}}", Object.class,
+                            SerializerEncoding.JSON)))
+                .withAdditionalProperties(mapOf()), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available
@@ -611,7 +636,9 @@ public final class DataFlowDebugSessionCreateSamples {
                         .withProperties(new ManagedIntegrationRuntime()
                             .withComputeProperties(new IntegrationRuntimeComputeProperties().withLocation("AutoResolve")
                                 .withDataFlowProperties(new IntegrationRuntimeDataFlowProperties()
-                                    .withComputeType(DataFlowComputeType.GENERAL).withCoreCount(48).withTimeToLive(10)
+                                    .withComputeType(DataFlowComputeType.GENERAL)
+                                    .withCoreCount(48)
+                                    .withTimeToLive(10)
                                     .withAdditionalProperties(mapOf()))
                                 .withAdditionalProperties(mapOf())))),
                 com.azure.core.util.Context.NONE);
@@ -650,9 +677,10 @@ public final class DataFlowDebugSessionDeleteSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void dataFlowDebugSessionDelete(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.dataFlowDebugSessions().deleteWithResponse("exampleResourceGroup", "exampleFactoryName",
-            new DeleteDataFlowDebugSessionRequest().withSessionId("91fb57e0-8292-47be-89ff-c8f2d2bb2a7e"),
-            com.azure.core.util.Context.NONE);
+        manager.dataFlowDebugSessions()
+            .deleteWithResponse("exampleResourceGroup", "exampleFactoryName",
+                new DeleteDataFlowDebugSessionRequest().withSessionId("91fb57e0-8292-47be-89ff-c8f2d2bb2a7e"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -679,11 +707,12 @@ public final class DataFlowDebugSessionExecuteCommandSamples {
      */
     public static void
         dataFlowDebugSessionExecuteCommand(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.dataFlowDebugSessions().executeCommand("exampleResourceGroup", "exampleFactoryName",
-            new DataFlowDebugCommandRequest().withSessionId("f06ed247-9d07-49b2-b05e-2cb4a2fc871e")
-                .withCommand(DataFlowDebugCommandType.EXECUTE_PREVIEW_QUERY)
-                .withCommandPayload(new DataFlowDebugCommandPayload().withStreamName("source1").withRowLimits(100)),
-            com.azure.core.util.Context.NONE);
+        manager.dataFlowDebugSessions()
+            .executeCommand("exampleResourceGroup", "exampleFactoryName",
+                new DataFlowDebugCommandRequest().withSessionId("f06ed247-9d07-49b2-b05e-2cb4a2fc871e")
+                    .withCommand(DataFlowDebugCommandType.EXECUTE_PREVIEW_QUERY)
+                    .withCommandPayload(new DataFlowDebugCommandPayload().withStreamName("source1").withRowLimits(100)),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -706,8 +735,8 @@ public final class DataFlowDebugSessionQueryByFactorySamples {
      */
     public static void
         dataFlowDebugSessionQueryByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.dataFlowDebugSessions().queryByFactory("exampleResourceGroup", "exampleFactoryName",
-            com.azure.core.util.Context.NONE);
+        manager.dataFlowDebugSessions()
+            .queryByFactory("exampleResourceGroup", "exampleFactoryName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -736,7 +765,9 @@ public final class DataFlowsCreateOrUpdateSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void dataFlowsCreate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.dataFlows().define("exampleDataFlow").withExistingFactory("exampleResourceGroup", "exampleFactoryName")
+        manager.dataFlows()
+            .define("exampleDataFlow")
+            .withExistingFactory("exampleResourceGroup", "exampleFactoryName")
             .withProperties(new MappingDataFlow().withDescription(
                 "Sample demo data flow to convert currencies showing usage of union, derive and conditional split transformation.")
                 .withSources(Arrays.asList(
@@ -773,31 +804,34 @@ public final class DataFlowsCreateOrUpdateSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void dataFlowsUpdate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        DataFlowResource resource = manager.dataFlows().getWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleDataFlow", null, com.azure.core.util.Context.NONE).getValue();
-        resource.update().withProperties(new MappingDataFlow().withDescription(
-            "Sample demo data flow to convert currencies showing usage of union, derive and conditional split transformation.")
-            .withSources(Arrays.asList(
-                new DataFlowSource().withName("USDCurrency")
-                    .withDataset(new DatasetReference().withReferenceName("CurrencyDatasetUSD")),
-                new DataFlowSource().withName("CADSource")
-                    .withDataset(new DatasetReference().withReferenceName("CurrencyDatasetCAD"))))
-            .withSinks(Arrays.asList(
-                new DataFlowSink().withName("USDSink")
-                    .withDataset(new DatasetReference().withReferenceName("USDOutput")),
-                new DataFlowSink().withName("CADSink")
-                    .withDataset(new DatasetReference().withReferenceName("CADOutput"))))
-            .withScriptLines(Arrays.asList("source(output(", "PreviousConversionRate as double,", "Country as string,",
-                "DateTime1 as string,", "CurrentConversionRate as double", "),", "allowSchemaDrift: false,",
-                "validateSchema: false) ~> USDCurrency", "source(output(", "PreviousConversionRate as double,",
-                "Country as string,", "DateTime1 as string,", "CurrentConversionRate as double", "),",
-                "allowSchemaDrift: true,", "validateSchema: false) ~> CADSource",
-                "USDCurrency, CADSource union(byName: true)~> Union",
-                "Union derive(NewCurrencyRate = round(CurrentConversionRate*1.25)) ~> NewCurrencyColumn",
-                "NewCurrencyColumn split(Country == 'USD',",
-                "Country == 'CAD',disjoint: false) ~> ConditionalSplit1@(USD, CAD)",
-                "ConditionalSplit1@USD sink(saveMode:'overwrite' ) ~> USDSink",
-                "ConditionalSplit1@CAD sink(saveMode:'overwrite' ) ~> CADSink")))
+        DataFlowResource resource = manager.dataFlows()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleDataFlow", null,
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new MappingDataFlow().withDescription(
+                "Sample demo data flow to convert currencies showing usage of union, derive and conditional split transformation.")
+                .withSources(Arrays.asList(
+                    new DataFlowSource().withName("USDCurrency")
+                        .withDataset(new DatasetReference().withReferenceName("CurrencyDatasetUSD")),
+                    new DataFlowSource().withName("CADSource")
+                        .withDataset(new DatasetReference().withReferenceName("CurrencyDatasetCAD"))))
+                .withSinks(Arrays.asList(
+                    new DataFlowSink().withName("USDSink")
+                        .withDataset(new DatasetReference().withReferenceName("USDOutput")),
+                    new DataFlowSink().withName("CADSink")
+                        .withDataset(new DatasetReference().withReferenceName("CADOutput"))))
+                .withScriptLines(Arrays.asList("source(output(", "PreviousConversionRate as double,",
+                    "Country as string,", "DateTime1 as string,", "CurrentConversionRate as double", "),",
+                    "allowSchemaDrift: false,", "validateSchema: false) ~> USDCurrency", "source(output(",
+                    "PreviousConversionRate as double,", "Country as string,", "DateTime1 as string,",
+                    "CurrentConversionRate as double", "),", "allowSchemaDrift: true,",
+                    "validateSchema: false) ~> CADSource", "USDCurrency, CADSource union(byName: true)~> Union",
+                    "Union derive(NewCurrencyRate = round(CurrentConversionRate*1.25)) ~> NewCurrencyColumn",
+                    "NewCurrencyColumn split(Country == 'USD',",
+                    "Country == 'CAD',disjoint: false) ~> ConditionalSplit1@(USD, CAD)",
+                    "ConditionalSplit1@USD sink(saveMode:'overwrite' ) ~> USDSink",
+                    "ConditionalSplit1@CAD sink(saveMode:'overwrite' ) ~> CADSink")))
             .apply();
     }
 }
@@ -820,8 +854,9 @@ public final class DataFlowsDeleteSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void dataFlowsDelete(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.dataFlows().deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleDataFlow",
-            com.azure.core.util.Context.NONE);
+        manager.dataFlows()
+            .deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleDataFlow",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -843,8 +878,9 @@ public final class DataFlowsGetSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void dataFlowsGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.dataFlows().getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleDataFlow", null,
-            com.azure.core.util.Context.NONE);
+        manager.dataFlows()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleDataFlow", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -866,8 +902,8 @@ public final class DataFlowsListByFactorySamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void dataFlowsListByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.dataFlows().listByFactory("exampleResourceGroup", "exampleFactoryName",
-            com.azure.core.util.Context.NONE);
+        manager.dataFlows()
+            .listByFactory("exampleResourceGroup", "exampleFactoryName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -902,17 +938,19 @@ public final class DatasetsCreateOrUpdateSamples {
      */
     public static void datasetsCreate(com.azure.resourcemanager.datafactory.DataFactoryManager manager)
         throws IOException {
-        manager.datasets().define("exampleDataset").withExistingFactory("exampleResourceGroup", "exampleFactoryName")
+        manager.datasets()
+            .define("exampleDataset")
+            .withExistingFactory("exampleResourceGroup", "exampleFactoryName")
             .withProperties(new AzureBlobDataset()
                 .withLinkedServiceName(new LinkedServiceReference().withReferenceName("exampleLinkedService"))
                 .withParameters(mapOf("MyFileName", new ParameterSpecification().withType(ParameterType.STRING),
                     "MyFolderPath", new ParameterSpecification().withType(ParameterType.STRING)))
-                .withFolderPath(SerializerFactory.createDefaultManagementSerializerAdapter().deserialize(
-                    "{\"type\":\"Expression\",\"value\":\"@dataset().MyFolderPath\"}", Object.class,
-                    SerializerEncoding.JSON))
-                .withFileName(SerializerFactory.createDefaultManagementSerializerAdapter().deserialize(
-                    "{\"type\":\"Expression\",\"value\":\"@dataset().MyFileName\"}", Object.class,
-                    SerializerEncoding.JSON))
+                .withFolderPath(SerializerFactory.createDefaultManagementSerializerAdapter()
+                    .deserialize("{\"type\":\"Expression\",\"value\":\"@dataset().MyFolderPath\"}", Object.class,
+                        SerializerEncoding.JSON))
+                .withFileName(SerializerFactory.createDefaultManagementSerializerAdapter()
+                    .deserialize("{\"type\":\"Expression\",\"value\":\"@dataset().MyFileName\"}", Object.class,
+                        SerializerEncoding.JSON))
                 .withFormat(new TextFormat()))
             .create();
     }
@@ -928,18 +966,23 @@ public final class DatasetsCreateOrUpdateSamples {
      */
     public static void datasetsUpdate(com.azure.resourcemanager.datafactory.DataFactoryManager manager)
         throws IOException {
-        DatasetResource resource = manager.datasets().getWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleDataset", null, com.azure.core.util.Context.NONE).getValue();
-        resource.update().withProperties(new AzureBlobDataset().withDescription("Example description")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("exampleLinkedService"))
-            .withParameters(mapOf("MyFileName", new ParameterSpecification().withType(ParameterType.STRING),
-                "MyFolderPath", new ParameterSpecification().withType(ParameterType.STRING)))
-            .withFolderPath(SerializerFactory.createDefaultManagementSerializerAdapter().deserialize(
-                "{\"type\":\"Expression\",\"value\":\"@dataset().MyFolderPath\"}", Object.class,
-                SerializerEncoding.JSON))
-            .withFileName(SerializerFactory.createDefaultManagementSerializerAdapter().deserialize(
-                "{\"type\":\"Expression\",\"value\":\"@dataset().MyFileName\"}", Object.class, SerializerEncoding.JSON))
-            .withFormat(new TextFormat())).apply();
+        DatasetResource resource = manager.datasets()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleDataset", null,
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new AzureBlobDataset().withDescription("Example description")
+                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("exampleLinkedService"))
+                .withParameters(mapOf("MyFileName", new ParameterSpecification().withType(ParameterType.STRING),
+                    "MyFolderPath", new ParameterSpecification().withType(ParameterType.STRING)))
+                .withFolderPath(SerializerFactory.createDefaultManagementSerializerAdapter()
+                    .deserialize("{\"type\":\"Expression\",\"value\":\"@dataset().MyFolderPath\"}", Object.class,
+                        SerializerEncoding.JSON))
+                .withFileName(SerializerFactory.createDefaultManagementSerializerAdapter()
+                    .deserialize("{\"type\":\"Expression\",\"value\":\"@dataset().MyFileName\"}", Object.class,
+                        SerializerEncoding.JSON))
+                .withFormat(new TextFormat()))
+            .apply();
     }
 
     // Use "Map.of" if available
@@ -973,8 +1016,9 @@ public final class DatasetsDeleteSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void datasetsDelete(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.datasets().deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleDataset",
-            com.azure.core.util.Context.NONE);
+        manager.datasets()
+            .deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleDataset",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -996,8 +1040,9 @@ public final class DatasetsGetSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void datasetsGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.datasets().getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleDataset", null,
-            com.azure.core.util.Context.NONE);
+        manager.datasets()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleDataset", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1019,8 +1064,8 @@ public final class DatasetsListByFactorySamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void datasetsListByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.datasets().listByFactory("exampleResourceGroup", "exampleFactoryName",
-            com.azure.core.util.Context.NONE);
+        manager.datasets()
+            .listByFactory("exampleResourceGroup", "exampleFactoryName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1045,9 +1090,11 @@ public final class ExposureControlGetFeatureValueSamples {
      */
     public static void
         exposureControlGetFeatureValue(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.exposureControls().getFeatureValueWithResponse("WestEurope",
-            new ExposureControlRequest().withFeatureName("ADFIntegrationRuntimeSharingRbac").withFeatureType("Feature"),
-            com.azure.core.util.Context.NONE);
+        manager.exposureControls()
+            .getFeatureValueWithResponse("WestEurope",
+                new ExposureControlRequest().withFeatureName("ADFIntegrationRuntimeSharingRbac")
+                    .withFeatureType("Feature"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1072,9 +1119,11 @@ public final class ExposureControlGetFeatureValueByFactorySamples {
      */
     public static void
         exposureControlGetFeatureValueByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.exposureControls().getFeatureValueByFactoryWithResponse("exampleResourceGroup", "exampleFactoryName",
-            new ExposureControlRequest().withFeatureName("ADFIntegrationRuntimeSharingRbac").withFeatureType("Feature"),
-            com.azure.core.util.Context.NONE);
+        manager.exposureControls()
+            .getFeatureValueByFactoryWithResponse("exampleResourceGroup", "exampleFactoryName",
+                new ExposureControlRequest().withFeatureName("ADFIntegrationRuntimeSharingRbac")
+                    .withFeatureType("Feature"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1101,12 +1150,13 @@ public final class ExposureControlQueryFeatureValuesByFactorySamples {
      */
     public static void
         exposureControlQueryFeatureValuesByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.exposureControls().queryFeatureValuesByFactoryWithResponse("exampleResourceGroup", "exampleFactoryName",
-            new ExposureControlBatchRequest().withExposureControlRequests(Arrays.asList(
-                new ExposureControlRequest().withFeatureName("ADFIntegrationRuntimeSharingRbac")
-                    .withFeatureType("Feature"),
-                new ExposureControlRequest().withFeatureName("ADFSampleFeature").withFeatureType("Feature"))),
-            com.azure.core.util.Context.NONE);
+        manager.exposureControls()
+            .queryFeatureValuesByFactoryWithResponse("exampleResourceGroup", "exampleFactoryName",
+                new ExposureControlBatchRequest().withExposureControlRequests(Arrays.asList(
+                    new ExposureControlRequest().withFeatureName("ADFIntegrationRuntimeSharingRbac")
+                        .withFeatureType("Feature"),
+                    new ExposureControlRequest().withFeatureName("ADFSampleFeature").withFeatureType("Feature"))),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1131,12 +1181,17 @@ public final class FactoriesConfigureFactoryRepoSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void factoriesConfigureFactoryRepo(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.factories().configureFactoryRepoWithResponse("East US", new FactoryRepoUpdate().withFactoryResourceId(
-            "/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.DataFactory/factories/exampleFactoryName")
-            .withRepoConfiguration(new FactoryVstsConfiguration().withAccountName("ADF").withRepositoryName("repo")
-                .withCollaborationBranch("master").withRootFolder("/").withLastCommitId("").withProjectName("project")
-                .withTenantId("")),
-            com.azure.core.util.Context.NONE);
+        manager.factories()
+            .configureFactoryRepoWithResponse("East US", new FactoryRepoUpdate().withFactoryResourceId(
+                "/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.DataFactory/factories/exampleFactoryName")
+                .withRepoConfiguration(new FactoryVstsConfiguration().withAccountName("ADF")
+                    .withRepositoryName("repo")
+                    .withCollaborationBranch("master")
+                    .withRootFolder("/")
+                    .withLastCommitId("")
+                    .withProjectName("project")
+                    .withTenantId("")),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1158,8 +1213,11 @@ public final class FactoriesCreateOrUpdateSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void factoriesCreateOrUpdate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.factories().define("exampleFactoryName").withRegion("East US")
-            .withExistingResourceGroup("exampleResourceGroup").create();
+        manager.factories()
+            .define("exampleFactoryName")
+            .withRegion("East US")
+            .withExistingResourceGroup("exampleResourceGroup")
+            .create();
     }
 }
 ```
@@ -1181,8 +1239,9 @@ public final class FactoriesDeleteSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void factoriesDelete(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.factories().deleteByResourceGroupWithResponse("exampleResourceGroup", "exampleFactoryName",
-            com.azure.core.util.Context.NONE);
+        manager.factories()
+            .deleteByResourceGroupWithResponse("exampleResourceGroup", "exampleFactoryName",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1204,8 +1263,9 @@ public final class FactoriesGetByResourceGroupSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void factoriesGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.factories().getByResourceGroupWithResponse("exampleResourceGroup", "exampleFactoryName", null,
-            com.azure.core.util.Context.NONE);
+        manager.factories()
+            .getByResourceGroupWithResponse("exampleResourceGroup", "exampleFactoryName", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1229,10 +1289,14 @@ public final class FactoriesGetDataPlaneAccessSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void factoriesGetDataPlaneAccess(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.factories().getDataPlaneAccessWithResponse("exampleResourceGroup", "exampleFactoryName",
-            new UserAccessPolicy().withPermissions("r").withAccessResourcePath("").withProfileName("DefaultProfile")
-                .withStartTime("2018-11-10T02:46:20.2659347Z").withExpireTime("2018-11-10T09:46:20.2659347Z"),
-            com.azure.core.util.Context.NONE);
+        manager.factories()
+            .getDataPlaneAccessWithResponse("exampleResourceGroup", "exampleFactoryName",
+                new UserAccessPolicy().withPermissions("r")
+                    .withAccessResourcePath("")
+                    .withProfileName("DefaultProfile")
+                    .withStartTime("2018-11-10T02:46:20.2659347Z")
+                    .withExpireTime("2018-11-10T09:46:20.2659347Z"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1256,10 +1320,12 @@ public final class FactoriesGetGitHubAccessTokenSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void factoriesGetGitHubAccessToken(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.factories().getGitHubAccessTokenWithResponse("exampleResourceGroup", "exampleFactoryName",
-            new GitHubAccessTokenRequest().withGitHubAccessCode("fakeTokenPlaceholder").withGitHubClientId("some")
-                .withGitHubAccessTokenBaseUrl("fakeTokenPlaceholder"),
-            com.azure.core.util.Context.NONE);
+        manager.factories()
+            .getGitHubAccessTokenWithResponse("exampleResourceGroup", "exampleFactoryName",
+                new GitHubAccessTokenRequest().withGitHubAccessCode("fakeTokenPlaceholder")
+                    .withGitHubClientId("some")
+                    .withGitHubAccessTokenBaseUrl("fakeTokenPlaceholder"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1329,8 +1395,10 @@ public final class FactoriesUpdateSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void factoriesUpdate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        Factory resource = manager.factories().getByResourceGroupWithResponse("exampleResourceGroup",
-            "exampleFactoryName", null, com.azure.core.util.Context.NONE).getValue();
+        Factory resource = manager.factories()
+            .getByResourceGroupWithResponse("exampleResourceGroup", "exampleFactoryName", null,
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("exampleTag", "exampleValue")).apply();
     }
 
@@ -1369,8 +1437,11 @@ public final class GlobalParametersCreateOrUpdateSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void globalParametersCreate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.globalParameters().define("default").withExistingFactory("exampleResourceGroup", "exampleFactoryName")
-            .withProperties((Map<String, GlobalParameterSpecification>) null).create();
+        manager.globalParameters()
+            .define("default")
+            .withExistingFactory("exampleResourceGroup", "exampleFactoryName")
+            .withProperties((Map<String, GlobalParameterSpecification>) null)
+            .create();
     }
 
     /*
@@ -1408,8 +1479,9 @@ public final class GlobalParametersDeleteSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void globalParametersDelete(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.globalParameters().deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "default",
-            com.azure.core.util.Context.NONE);
+        manager.globalParameters()
+            .deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "default",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1432,8 +1504,8 @@ public final class GlobalParametersGetSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void globalParametersGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.globalParameters().getWithResponse("exampleResourceGroup", "exampleFactoryName", "default",
-            com.azure.core.util.Context.NONE);
+        manager.globalParameters()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "default", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1455,8 +1527,8 @@ public final class GlobalParametersListByFactorySamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void globalParametersListByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.globalParameters().listByFactory("exampleResourceGroup", "exampleFactoryName",
-            com.azure.core.util.Context.NONE);
+        manager.globalParameters()
+            .listByFactory("exampleResourceGroup", "exampleFactoryName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1479,8 +1551,9 @@ public final class IntegrationRuntimeNodesDeleteSamples {
      */
     public static void
         integrationRuntimesNodesDelete(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimeNodes().deleteWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleIntegrationRuntime", "Node_1", com.azure.core.util.Context.NONE);
+        manager.integrationRuntimeNodes()
+            .deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime", "Node_1",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1502,8 +1575,9 @@ public final class IntegrationRuntimeNodesGetSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void integrationRuntimeNodesGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimeNodes().getWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleIntegrationRuntime", "Node_1", com.azure.core.util.Context.NONE);
+        manager.integrationRuntimeNodes()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime", "Node_1",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1526,8 +1600,9 @@ public final class IntegrationRuntimeNodesGetIpAddressSamples {
      */
     public static void
         integrationRuntimeNodesGetIpAddress(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimeNodes().getIpAddressWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleIntegrationRuntime", "Node_1", com.azure.core.util.Context.NONE);
+        manager.integrationRuntimeNodes()
+            .getIpAddressWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime",
+                "Node_1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1551,9 +1626,9 @@ public final class IntegrationRuntimeNodesUpdateSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void integrationRuntimeNodesUpdate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimeNodes().updateWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleIntegrationRuntime", "Node_1", new UpdateIntegrationRuntimeNodeRequest().withConcurrentJobsLimit(2),
-            com.azure.core.util.Context.NONE);
+        manager.integrationRuntimeNodes()
+            .updateWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime", "Node_1",
+                new UpdateIntegrationRuntimeNodeRequest().withConcurrentJobsLimit(2), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1578,9 +1653,9 @@ public final class IntegrationRuntimeObjectMetadataGetSamples {
      */
     public static void
         integrationRuntimeObjectMetadataGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimeObjectMetadatas().getWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "testactivityv2", new GetSsisObjectMetadataRequest().withMetadataPath("ssisFolders"),
-            com.azure.core.util.Context.NONE);
+        manager.integrationRuntimeObjectMetadatas()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "testactivityv2",
+                new GetSsisObjectMetadataRequest().withMetadataPath("ssisFolders"), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1603,8 +1678,8 @@ public final class IntegrationRuntimeObjectMetadataRefreshSamples {
      */
     public static void
         integrationRuntimeObjectMetadataRefresh(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimeObjectMetadatas().refresh("exampleResourceGroup", "exampleFactoryName",
-            "testactivityv2", com.azure.core.util.Context.NONE);
+        manager.integrationRuntimeObjectMetadatas()
+            .refresh("exampleResourceGroup", "exampleFactoryName", "testactivityv2", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1629,12 +1704,14 @@ public final class IntegrationRuntimesCreateLinkedIntegrationRuntimeSamples {
      */
     public static void integrationRuntimesCreateLinkedIntegrationRuntime(
         com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimes().createLinkedIntegrationRuntimeWithResponse("exampleResourceGroup",
-            "exampleFactoryName", "exampleIntegrationRuntime",
-            new CreateLinkedIntegrationRuntimeRequest().withName("bfa92911-9fb6-4fbe-8f23-beae87bc1c83")
-                .withSubscriptionId("061774c7-4b5a-4159-a55b-365581830283")
-                .withDataFactoryName("e9955d6d-56ea-4be3-841c-52a12c1a9981").withDataFactoryLocation("West US"),
-            com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes()
+            .createLinkedIntegrationRuntimeWithResponse("exampleResourceGroup", "exampleFactoryName",
+                "exampleIntegrationRuntime",
+                new CreateLinkedIntegrationRuntimeRequest().withName("bfa92911-9fb6-4fbe-8f23-beae87bc1c83")
+                    .withSubscriptionId("061774c7-4b5a-4159-a55b-365581830283")
+                    .withDataFactoryName("e9955d6d-56ea-4be3-841c-52a12c1a9981")
+                    .withDataFactoryLocation("West US"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1658,7 +1735,8 @@ public final class IntegrationRuntimesCreateOrUpdateSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void integrationRuntimesCreate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimes().define("exampleIntegrationRuntime")
+        manager.integrationRuntimes()
+            .define("exampleIntegrationRuntime")
             .withExistingFactory("exampleResourceGroup", "exampleFactoryName")
             .withProperties(new SelfHostedIntegrationRuntime().withDescription("A selfhosted integration runtime"))
             .create();
@@ -1683,8 +1761,9 @@ public final class IntegrationRuntimesDeleteSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void integrationRuntimesDelete(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimes().deleteWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleIntegrationRuntime", com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes()
+            .deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1706,8 +1785,9 @@ public final class IntegrationRuntimesGetSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void integrationRuntimesGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimes().getWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleIntegrationRuntime", null, com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1730,8 +1810,9 @@ public final class IntegrationRuntimesGetConnectionInfoSamples {
      */
     public static void
         integrationRuntimesGetConnectionInfo(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimes().getConnectionInfoWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleIntegrationRuntime", com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes()
+            .getConnectionInfoWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1754,8 +1835,9 @@ public final class IntegrationRuntimesGetMonitoringDataSamples {
      */
     public static void
         integrationRuntimesGetMonitoringData(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimes().getMonitoringDataWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleIntegrationRuntime", com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes()
+            .getMonitoringDataWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1777,8 +1859,9 @@ public final class IntegrationRuntimesGetStatusSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void integrationRuntimesGetStatus(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimes().getStatusWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleIntegrationRuntime", com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes()
+            .getStatusWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1801,8 +1884,9 @@ public final class IntegrationRuntimesListAuthKeysSamples {
      */
     public static void
         integrationRuntimesListAuthKeys(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimes().listAuthKeysWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleIntegrationRuntime", com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes()
+            .listAuthKeysWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1825,8 +1909,8 @@ public final class IntegrationRuntimesListByFactorySamples {
      */
     public static void
         integrationRuntimesListByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimes().listByFactory("exampleResourceGroup", "exampleFactoryName",
-            com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes()
+            .listByFactory("exampleResourceGroup", "exampleFactoryName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1849,8 +1933,9 @@ public final class IntegrationRuntimesListOutboundNetworkDependenciesEndpointsSa
      */
     public static void integrationRuntimesOutboundNetworkDependenciesEndpoints(
         com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimes().listOutboundNetworkDependenciesEndpointsWithResponse("exampleResourceGroup",
-            "exampleFactoryName", "exampleIntegrationRuntime", com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes()
+            .listOutboundNetworkDependenciesEndpointsWithResponse("exampleResourceGroup", "exampleFactoryName",
+                "exampleIntegrationRuntime", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1876,10 +1961,10 @@ public final class IntegrationRuntimesRegenerateAuthKeySamples {
      */
     public static void
         integrationRuntimesRegenerateAuthKey(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimes().regenerateAuthKeyWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleIntegrationRuntime",
-            new IntegrationRuntimeRegenerateKeyParameters().withKeyName(IntegrationRuntimeAuthKeyName.AUTH_KEY2),
-            com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes()
+            .regenerateAuthKeyWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime",
+                new IntegrationRuntimeRegenerateKeyParameters().withKeyName(IntegrationRuntimeAuthKeyName.AUTH_KEY2),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1903,10 +1988,10 @@ public final class IntegrationRuntimesRemoveLinksSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void integrationRuntimesUpgrade(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimes().removeLinksWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleIntegrationRuntime",
-            new LinkedIntegrationRuntimeRequest().withLinkedFactoryName("exampleFactoryName-linked"),
-            com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes()
+            .removeLinksWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime",
+                new LinkedIntegrationRuntimeRequest().withLinkedFactoryName("exampleFactoryName-linked"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1928,8 +2013,9 @@ public final class IntegrationRuntimesStartSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void integrationRuntimesStart(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimes().start("exampleResourceGroup", "exampleFactoryName",
-            "exampleManagedIntegrationRuntime", com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes()
+            .start("exampleResourceGroup", "exampleFactoryName", "exampleManagedIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1951,8 +2037,9 @@ public final class IntegrationRuntimesStopSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void integrationRuntimesStop(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimes().stop("exampleResourceGroup", "exampleFactoryName",
-            "exampleManagedIntegrationRuntime", com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes()
+            .stop("exampleResourceGroup", "exampleFactoryName", "exampleManagedIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1975,8 +2062,9 @@ public final class IntegrationRuntimesSyncCredentialsSamples {
      */
     public static void
         integrationRuntimesSyncCredentials(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimes().syncCredentialsWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleIntegrationRuntime", com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes()
+            .syncCredentialsWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2001,8 +2089,10 @@ public final class IntegrationRuntimesUpdateSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void integrationRuntimesUpdate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        IntegrationRuntimeResource resource = manager.integrationRuntimes().getWithResponse("exampleResourceGroup",
-            "exampleFactoryName", "exampleIntegrationRuntime", null, com.azure.core.util.Context.NONE).getValue();
+        IntegrationRuntimeResource resource = manager.integrationRuntimes()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime", null,
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withAutoUpdate(IntegrationRuntimeAutoUpdate.OFF).withUpdateDelayOffset("\"PT3H\"").apply();
     }
 }
@@ -2025,8 +2115,9 @@ public final class IntegrationRuntimesUpgradeSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void integrationRuntimesUpgrade(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimes().upgradeWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleIntegrationRuntime", com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes()
+            .upgradeWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2056,10 +2147,12 @@ public final class LinkedServicesCreateOrUpdateSamples {
      */
     public static void linkedServicesCreate(com.azure.resourcemanager.datafactory.DataFactoryManager manager)
         throws IOException {
-        manager.linkedServices().define("exampleLinkedService")
+        manager.linkedServices()
+            .define("exampleLinkedService")
             .withExistingFactory("exampleResourceGroup", "exampleFactoryName")
-            .withProperties(new AzureStorageLinkedService()
-                .withConnectionString(SerializerFactory.createDefaultManagementSerializerAdapter().deserialize(
+            .withProperties(new AzureStorageLinkedService().withConnectionString(SerializerFactory
+                .createDefaultManagementSerializerAdapter()
+                .deserialize(
                     "{\"type\":\"SecureString\",\"value\":\"DefaultEndpointsProtocol=https;AccountName=examplestorageaccount;AccountKey=<storage key>\"}",
                     Object.class, SerializerEncoding.JSON)))
             .create();
@@ -2077,12 +2170,16 @@ public final class LinkedServicesCreateOrUpdateSamples {
      */
     public static void linkedServicesUpdate(com.azure.resourcemanager.datafactory.DataFactoryManager manager)
         throws IOException {
-        LinkedServiceResource resource = manager.linkedServices().getWithResponse("exampleResourceGroup",
-            "exampleFactoryName", "exampleLinkedService", null, com.azure.core.util.Context.NONE).getValue();
-        resource.update().withProperties(new AzureStorageLinkedService().withDescription("Example description")
-            .withConnectionString(SerializerFactory.createDefaultManagementSerializerAdapter().deserialize(
-                "{\"type\":\"SecureString\",\"value\":\"DefaultEndpointsProtocol=https;AccountName=examplestorageaccount;AccountKey=<storage key>\"}",
-                Object.class, SerializerEncoding.JSON)))
+        LinkedServiceResource resource = manager.linkedServices()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleLinkedService", null,
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new AzureStorageLinkedService().withDescription("Example description")
+                .withConnectionString(SerializerFactory.createDefaultManagementSerializerAdapter()
+                    .deserialize(
+                        "{\"type\":\"SecureString\",\"value\":\"DefaultEndpointsProtocol=https;AccountName=examplestorageaccount;AccountKey=<storage key>\"}",
+                        Object.class, SerializerEncoding.JSON)))
             .apply();
     }
 }
@@ -2106,8 +2203,9 @@ public final class LinkedServicesDeleteSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void linkedServicesDelete(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.linkedServices().deleteWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleLinkedService", com.azure.core.util.Context.NONE);
+        manager.linkedServices()
+            .deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleLinkedService",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2130,8 +2228,9 @@ public final class LinkedServicesGetSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void linkedServicesGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.linkedServices().getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleLinkedService",
-            null, com.azure.core.util.Context.NONE);
+        manager.linkedServices()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleLinkedService", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2153,8 +2252,8 @@ public final class LinkedServicesListByFactorySamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void linkedServicesListByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.linkedServices().listByFactory("exampleResourceGroup", "exampleFactoryName",
-            com.azure.core.util.Context.NONE);
+        manager.linkedServices()
+            .listByFactory("exampleResourceGroup", "exampleFactoryName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2181,10 +2280,12 @@ public final class ManagedPrivateEndpointsCreateOrUpdateSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void managedVirtualNetworksCreate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.managedPrivateEndpoints().define("exampleManagedPrivateEndpointName")
+        manager.managedPrivateEndpoints()
+            .define("exampleManagedPrivateEndpointName")
             .withExistingManagedVirtualNetwork("exampleResourceGroup", "exampleFactoryName",
                 "exampleManagedVirtualNetworkName")
-            .withProperties(new ManagedPrivateEndpoint().withFqdns(Arrays.asList()).withGroupId("blob")
+            .withProperties(new ManagedPrivateEndpoint().withFqdns(Arrays.asList())
+                .withGroupId("blob")
                 .withPrivateLinkResourceId(
                     "/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.Storage/storageAccounts/exampleBlobStorage")
                 .withAdditionalProperties(mapOf()))
@@ -2222,8 +2323,9 @@ public final class ManagedPrivateEndpointsDeleteSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void managedVirtualNetworksDelete(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.managedPrivateEndpoints().deleteWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleManagedVirtualNetworkName", "exampleManagedPrivateEndpointName", com.azure.core.util.Context.NONE);
+        manager.managedPrivateEndpoints()
+            .deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleManagedVirtualNetworkName",
+                "exampleManagedPrivateEndpointName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2245,9 +2347,9 @@ public final class ManagedPrivateEndpointsGetSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void managedPrivateEndpointsGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.managedPrivateEndpoints().getWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleManagedVirtualNetworkName", "exampleManagedPrivateEndpointName", null,
-            com.azure.core.util.Context.NONE);
+        manager.managedPrivateEndpoints()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleManagedVirtualNetworkName",
+                "exampleManagedPrivateEndpointName", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2270,8 +2372,9 @@ public final class ManagedPrivateEndpointsListByFactorySamples {
      */
     public static void
         managedPrivateEndpointsListByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.managedPrivateEndpoints().listByFactory("exampleResourceGroup", "exampleFactoryName",
-            "exampleManagedVirtualNetworkName", com.azure.core.util.Context.NONE);
+        manager.managedPrivateEndpoints()
+            .listByFactory("exampleResourceGroup", "exampleFactoryName", "exampleManagedVirtualNetworkName",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2297,9 +2400,11 @@ public final class ManagedVirtualNetworksCreateOrUpdateSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void managedVirtualNetworksCreate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.managedVirtualNetworks().define("exampleManagedVirtualNetworkName")
+        manager.managedVirtualNetworks()
+            .define("exampleManagedVirtualNetworkName")
             .withExistingFactory("exampleResourceGroup", "exampleFactoryName")
-            .withProperties(new ManagedVirtualNetwork().withAdditionalProperties(mapOf())).create();
+            .withProperties(new ManagedVirtualNetwork().withAdditionalProperties(mapOf()))
+            .create();
     }
 
     // Use "Map.of" if available
@@ -2333,8 +2438,9 @@ public final class ManagedVirtualNetworksGetSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void managedVirtualNetworksGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.managedVirtualNetworks().getWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleManagedVirtualNetworkName", null, com.azure.core.util.Context.NONE);
+        manager.managedVirtualNetworks()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleManagedVirtualNetworkName", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2357,8 +2463,8 @@ public final class ManagedVirtualNetworksListByFactorySamples {
      */
     public static void
         managedVirtualNetworksListByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.managedVirtualNetworks().listByFactory("exampleResourceGroup", "exampleFactoryName",
-            com.azure.core.util.Context.NONE);
+        manager.managedVirtualNetworks()
+            .listByFactory("exampleResourceGroup", "exampleFactoryName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2403,8 +2509,9 @@ public final class PipelineRunsCancelSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void pipelineRunsCancel(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.pipelineRuns().cancelWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "16ac5348-ff82-4f95-a80d-638c1d47b721", null, com.azure.core.util.Context.NONE);
+        manager.pipelineRuns()
+            .cancelWithResponse("exampleResourceGroup", "exampleFactoryName", "16ac5348-ff82-4f95-a80d-638c1d47b721",
+                null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2426,8 +2533,9 @@ public final class PipelineRunsGetSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void pipelineRunsGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.pipelineRuns().getWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "2f7fdb90-5df1-4b8e-ac2f-064cfa58202b", com.azure.core.util.Context.NONE);
+        manager.pipelineRuns()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "2f7fdb90-5df1-4b8e-ac2f-064cfa58202b",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2456,12 +2564,14 @@ public final class PipelineRunsQueryByFactorySamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void pipelineRunsQueryByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.pipelineRuns().queryByFactoryWithResponse("exampleResourceGroup", "exampleFactoryName",
-            new RunFilterParameters().withLastUpdatedAfter(OffsetDateTime.parse("2018-06-16T00:36:44.3345758Z"))
-                .withLastUpdatedBefore(OffsetDateTime.parse("2018-06-16T00:49:48.3686473Z"))
-                .withFilters(Arrays.asList(new RunQueryFilter().withOperand(RunQueryFilterOperand.PIPELINE_NAME)
-                    .withOperator(RunQueryFilterOperator.EQUALS).withValues(Arrays.asList("examplePipeline")))),
-            com.azure.core.util.Context.NONE);
+        manager.pipelineRuns()
+            .queryByFactoryWithResponse("exampleResourceGroup", "exampleFactoryName",
+                new RunFilterParameters().withLastUpdatedAfter(OffsetDateTime.parse("2018-06-16T00:36:44.3345758Z"))
+                    .withLastUpdatedBefore(OffsetDateTime.parse("2018-06-16T00:49:48.3686473Z"))
+                    .withFilters(Arrays.asList(new RunQueryFilter().withOperand(RunQueryFilterOperand.PIPELINE_NAME)
+                        .withOperator(RunQueryFilterOperator.EQUALS)
+                        .withValues(Arrays.asList("examplePipeline")))),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2504,27 +2614,32 @@ public final class PipelinesCreateOrUpdateSamples {
      */
     public static void pipelinesCreate(com.azure.resourcemanager.datafactory.DataFactoryManager manager)
         throws IOException {
-        manager.pipelines().define("examplePipeline").withExistingFactory("exampleResourceGroup", "exampleFactoryName")
+        manager.pipelines()
+            .define("examplePipeline")
+            .withExistingFactory("exampleResourceGroup", "exampleFactoryName")
             .withActivities(Arrays.asList(new ForEachActivity().withName("ExampleForeachActivity")
                 .withIsSequential(true)
                 .withItems(new Expression().withValue("@pipeline().parameters.OutputBlobNameList"))
                 .withActivities(Arrays.asList(new CopyActivity().withName("ExampleCopyActivity")
-                    .withInputs(Arrays.asList(new DatasetReference().withReferenceName("exampleDataset").withParameters(
-                        mapOf("MyFileName", "examplecontainer.csv", "MyFolderPath", "examplecontainer"))))
+                    .withInputs(Arrays.asList(new DatasetReference().withReferenceName("exampleDataset")
+                        .withParameters(
+                            mapOf("MyFileName", "examplecontainer.csv", "MyFolderPath", "examplecontainer"))))
                     .withOutputs(Arrays.asList(new DatasetReference().withReferenceName("exampleDataset")
                         .withParameters(mapOf("MyFileName",
-                            SerializerFactory.createDefaultManagementSerializerAdapter().deserialize(
-                                "{\"type\":\"Expression\",\"value\":\"@item()\"}", Object.class,
-                                SerializerEncoding.JSON),
+                            SerializerFactory.createDefaultManagementSerializerAdapter()
+                                .deserialize("{\"type\":\"Expression\",\"value\":\"@item()\"}", Object.class,
+                                    SerializerEncoding.JSON),
                             "MyFolderPath", "examplecontainer"))))
-                    .withSource(new BlobSource()).withSink(new BlobSink()).withDataIntegrationUnits(32)))))
+                    .withSource(new BlobSource())
+                    .withSink(new BlobSink())
+                    .withDataIntegrationUnits(32)))))
             .withParameters(mapOf("JobId", new ParameterSpecification().withType(ParameterType.STRING),
                 "OutputBlobNameList", new ParameterSpecification().withType(ParameterType.ARRAY)))
             .withVariables(mapOf("TestVariableArray", new VariableSpecification().withType(VariableType.ARRAY)))
             .withRunDimensions(mapOf("JobId",
-                SerializerFactory.createDefaultManagementSerializerAdapter().deserialize(
-                    "{\"type\":\"Expression\",\"value\":\"@pipeline().parameters.JobId\"}", Object.class,
-                    SerializerEncoding.JSON)))
+                SerializerFactory.createDefaultManagementSerializerAdapter()
+                    .deserialize("{\"type\":\"Expression\",\"value\":\"@pipeline().parameters.JobId\"}", Object.class,
+                        SerializerEncoding.JSON)))
             .withPolicy(new PipelinePolicy()
                 .withElapsedTimeMetric(new PipelineElapsedTimeMetricPolicy().withDuration("0.00:10:00")))
             .create();
@@ -2541,20 +2656,28 @@ public final class PipelinesCreateOrUpdateSamples {
      */
     public static void pipelinesUpdate(com.azure.resourcemanager.datafactory.DataFactoryManager manager)
         throws IOException {
-        PipelineResource resource = manager.pipelines().getWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "examplePipeline", null, com.azure.core.util.Context.NONE).getValue();
-        resource.update().withDescription("Example description").withActivities(Arrays.asList(new ForEachActivity()
-            .withName("ExampleForeachActivity").withIsSequential(true)
-            .withItems(new Expression().withValue("@pipeline().parameters.OutputBlobNameList"))
-            .withActivities(Arrays.asList(new CopyActivity().withName("ExampleCopyActivity")
-                .withInputs(Arrays.asList(new DatasetReference().withReferenceName("exampleDataset")
-                    .withParameters(mapOf("MyFileName", "examplecontainer.csv", "MyFolderPath", "examplecontainer"))))
-                .withOutputs(Arrays.asList(new DatasetReference().withReferenceName("exampleDataset")
-                    .withParameters(mapOf("MyFileName",
-                        SerializerFactory.createDefaultManagementSerializerAdapter().deserialize(
-                            "{\"type\":\"Expression\",\"value\":\"@item()\"}", Object.class, SerializerEncoding.JSON),
-                        "MyFolderPath", "examplecontainer"))))
-                .withSource(new BlobSource()).withSink(new BlobSink()).withDataIntegrationUnits(32)))))
+        PipelineResource resource = manager.pipelines()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "examplePipeline", null,
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withDescription("Example description")
+            .withActivities(Arrays.asList(new ForEachActivity().withName("ExampleForeachActivity")
+                .withIsSequential(true)
+                .withItems(new Expression().withValue("@pipeline().parameters.OutputBlobNameList"))
+                .withActivities(Arrays.asList(new CopyActivity().withName("ExampleCopyActivity")
+                    .withInputs(Arrays.asList(new DatasetReference().withReferenceName("exampleDataset")
+                        .withParameters(
+                            mapOf("MyFileName", "examplecontainer.csv", "MyFolderPath", "examplecontainer"))))
+                    .withOutputs(Arrays.asList(new DatasetReference().withReferenceName("exampleDataset")
+                        .withParameters(mapOf("MyFileName",
+                            SerializerFactory.createDefaultManagementSerializerAdapter()
+                                .deserialize("{\"type\":\"Expression\",\"value\":\"@item()\"}", Object.class,
+                                    SerializerEncoding.JSON),
+                            "MyFolderPath", "examplecontainer"))))
+                    .withSource(new BlobSource())
+                    .withSink(new BlobSink())
+                    .withDataIntegrationUnits(32)))))
             .withParameters(mapOf("OutputBlobNameList", new ParameterSpecification().withType(ParameterType.ARRAY)))
             .withPolicy(new PipelinePolicy()
                 .withElapsedTimeMetric(new PipelineElapsedTimeMetricPolicy().withDuration("0.00:10:00")))
@@ -2600,11 +2723,13 @@ public final class PipelinesCreateRunSamples {
      */
     public static void pipelinesCreateRun(com.azure.resourcemanager.datafactory.DataFactoryManager manager)
         throws IOException {
-        manager.pipelines().createRunWithResponse("exampleResourceGroup", "exampleFactoryName", "examplePipeline", null,
-            null, null, null,
-            mapOf("OutputBlobNameList", SerializerFactory.createDefaultManagementSerializerAdapter()
-                .deserialize("[\"exampleoutput.csv\"]", Object.class, SerializerEncoding.JSON)),
-            com.azure.core.util.Context.NONE);
+        manager.pipelines()
+            .createRunWithResponse("exampleResourceGroup", "exampleFactoryName", "examplePipeline", null, null, null,
+                null,
+                mapOf("OutputBlobNameList",
+                    SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize("[\"exampleoutput.csv\"]", Object.class, SerializerEncoding.JSON)),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available
@@ -2638,8 +2763,9 @@ public final class PipelinesDeleteSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void pipelinesDelete(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.pipelines().deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "examplePipeline",
-            com.azure.core.util.Context.NONE);
+        manager.pipelines()
+            .deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "examplePipeline",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2661,8 +2787,9 @@ public final class PipelinesGetSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void pipelinesGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.pipelines().getWithResponse("exampleResourceGroup", "exampleFactoryName", "examplePipeline", null,
-            com.azure.core.util.Context.NONE);
+        manager.pipelines()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "examplePipeline", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2684,8 +2811,8 @@ public final class PipelinesListByFactorySamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void pipelinesListByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.pipelines().listByFactory("exampleResourceGroup", "exampleFactoryName",
-            com.azure.core.util.Context.NONE);
+        manager.pipelines()
+            .listByFactory("exampleResourceGroup", "exampleFactoryName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2708,8 +2835,8 @@ public final class PrivateEndPointConnectionsListByFactorySamples {
      */
     public static void
         privateEndPointConnectionsListByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.privateEndPointConnections().listByFactory("exampleResourceGroup", "exampleFactoryName",
-            com.azure.core.util.Context.NONE);
+        manager.privateEndPointConnections()
+            .listByFactory("exampleResourceGroup", "exampleFactoryName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2736,11 +2863,13 @@ public final class PrivateEndpointConnectionOperationCreateOrUpdateSamples {
      */
     public static void approvesOrRejectsAPrivateEndpointConnectionForAFactory(
         com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.privateEndpointConnectionOperations().define("connection")
+        manager.privateEndpointConnectionOperations()
+            .define("connection")
             .withExistingFactory("exampleResourceGroup", "exampleFactoryName")
             .withProperties(new PrivateLinkConnectionApprovalRequest()
                 .withPrivateLinkServiceConnectionState(new PrivateLinkConnectionState().withStatus("Approved")
-                    .withDescription("Approved by admin.").withActionsRequired(""))
+                    .withDescription("Approved by admin.")
+                    .withActionsRequired(""))
                 .withPrivateEndpoint(new PrivateEndpoint().withId(
                     "/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.DataFactory/factories/exampleFactoryName/privateEndpoints/myPrivateEndpoint")))
             .create();
@@ -2766,8 +2895,9 @@ public final class PrivateEndpointConnectionOperationDeleteSamples {
      */
     public static void deleteAPrivateEndpointConnectionForADatafactory(
         com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.privateEndpointConnectionOperations().deleteWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "connection", com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnectionOperations()
+            .deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "connection",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2790,8 +2920,9 @@ public final class PrivateEndpointConnectionOperationGetSamples {
      */
     public static void
         getAPrivateEndpointConnectionForADatafactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.privateEndpointConnectionOperations().getWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "connection", null, com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnectionOperations()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "connection", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2814,8 +2945,8 @@ public final class PrivateLinkResourcesGetSamples {
      */
     public static void
         getPrivateLinkResourcesOfASite(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.privateLinkResources().getWithResponse("exampleResourceGroup", "exampleFactoryName",
-            com.azure.core.util.Context.NONE);
+        manager.privateLinkResources()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2838,8 +2969,9 @@ public final class TriggerRunsCancelSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void triggersCancel(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.triggerRuns().cancelWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleTrigger",
-            "2f7fdb90-5df1-4b8e-ac2f-064cfa58202b", com.azure.core.util.Context.NONE);
+        manager.triggerRuns()
+            .cancelWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleTrigger",
+                "2f7fdb90-5df1-4b8e-ac2f-064cfa58202b", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2868,12 +3000,14 @@ public final class TriggerRunsQueryByFactorySamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void triggerRunsQueryByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.triggerRuns().queryByFactoryWithResponse("exampleResourceGroup", "exampleFactoryName",
-            new RunFilterParameters().withLastUpdatedAfter(OffsetDateTime.parse("2018-06-16T00:36:44.3345758Z"))
-                .withLastUpdatedBefore(OffsetDateTime.parse("2018-06-16T00:49:48.3686473Z"))
-                .withFilters(Arrays.asList(new RunQueryFilter().withOperand(RunQueryFilterOperand.TRIGGER_NAME)
-                    .withOperator(RunQueryFilterOperator.EQUALS).withValues(Arrays.asList("exampleTrigger")))),
-            com.azure.core.util.Context.NONE);
+        manager.triggerRuns()
+            .queryByFactoryWithResponse("exampleResourceGroup", "exampleFactoryName",
+                new RunFilterParameters().withLastUpdatedAfter(OffsetDateTime.parse("2018-06-16T00:36:44.3345758Z"))
+                    .withLastUpdatedBefore(OffsetDateTime.parse("2018-06-16T00:49:48.3686473Z"))
+                    .withFilters(Arrays.asList(new RunQueryFilter().withOperand(RunQueryFilterOperand.TRIGGER_NAME)
+                        .withOperator(RunQueryFilterOperator.EQUALS)
+                        .withValues(Arrays.asList("exampleTrigger")))),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2896,8 +3030,9 @@ public final class TriggerRunsRerunSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void triggersRerun(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.triggerRuns().rerunWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleTrigger",
-            "2f7fdb90-5df1-4b8e-ac2f-064cfa58202b", com.azure.core.util.Context.NONE);
+        manager.triggerRuns()
+            .rerunWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleTrigger",
+                "2f7fdb90-5df1-4b8e-ac2f-064cfa58202b", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2934,9 +3069,8 @@ public final class TriggersCreateOrUpdateSamples {
      */
     public static void triggersCreate(com.azure.resourcemanager.datafactory.DataFactoryManager manager)
         throws IOException {
-        manager
-            .triggers().define(
-                "exampleTrigger")
+        manager.triggers()
+            .define("exampleTrigger")
             .withExistingFactory("exampleResourceGroup", "exampleFactoryName")
             .withProperties(new ScheduleTrigger()
                 .withPipelines(Arrays.asList(new TriggerPipelineReference()
@@ -2945,8 +3079,10 @@ public final class TriggersCreateOrUpdateSamples {
                         SerializerFactory.createDefaultManagementSerializerAdapter()
                             .deserialize("[\"exampleoutput.csv\"]", Object.class, SerializerEncoding.JSON)))))
                 .withRecurrence(new ScheduleTriggerRecurrence().withFrequency(RecurrenceFrequency.MINUTE)
-                    .withInterval(4).withStartTime(OffsetDateTime.parse("2018-06-16T00:39:13.8441801Z"))
-                    .withEndTime(OffsetDateTime.parse("2018-06-16T00:55:13.8441801Z")).withTimeZone("UTC")
+                    .withInterval(4)
+                    .withStartTime(OffsetDateTime.parse("2018-06-16T00:39:13.8441801Z"))
+                    .withEndTime(OffsetDateTime.parse("2018-06-16T00:55:13.8441801Z"))
+                    .withTimeZone("UTC")
                     .withAdditionalProperties(mapOf())))
             .create();
     }
@@ -2962,8 +3098,10 @@ public final class TriggersCreateOrUpdateSamples {
      */
     public static void triggersUpdate(com.azure.resourcemanager.datafactory.DataFactoryManager manager)
         throws IOException {
-        TriggerResource resource = manager.triggers().getWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleTrigger", null, com.azure.core.util.Context.NONE).getValue();
+        TriggerResource resource = manager.triggers()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleTrigger", null,
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update()
             .withProperties(new ScheduleTrigger().withDescription("Example description")
                 .withPipelines(Arrays.asList(new TriggerPipelineReference()
@@ -2972,8 +3110,10 @@ public final class TriggersCreateOrUpdateSamples {
                         SerializerFactory.createDefaultManagementSerializerAdapter()
                             .deserialize("[\"exampleoutput.csv\"]", Object.class, SerializerEncoding.JSON)))))
                 .withRecurrence(new ScheduleTriggerRecurrence().withFrequency(RecurrenceFrequency.MINUTE)
-                    .withInterval(4).withStartTime(OffsetDateTime.parse("2018-06-16T00:39:14.905167Z"))
-                    .withEndTime(OffsetDateTime.parse("2018-06-16T00:55:14.905167Z")).withTimeZone("UTC")
+                    .withInterval(4)
+                    .withStartTime(OffsetDateTime.parse("2018-06-16T00:39:14.905167Z"))
+                    .withEndTime(OffsetDateTime.parse("2018-06-16T00:55:14.905167Z"))
+                    .withTimeZone("UTC")
                     .withAdditionalProperties(mapOf())))
             .apply();
     }
@@ -3009,8 +3149,9 @@ public final class TriggersDeleteSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void triggersDelete(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.triggers().deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleTrigger",
-            com.azure.core.util.Context.NONE);
+        manager.triggers()
+            .deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleTrigger",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3032,8 +3173,9 @@ public final class TriggersGetSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void triggersGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.triggers().getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleTrigger", null,
-            com.azure.core.util.Context.NONE);
+        manager.triggers()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleTrigger", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3056,8 +3198,9 @@ public final class TriggersGetEventSubscriptionStatusSamples {
      */
     public static void
         triggersGetEventSubscriptionStatus(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.triggers().getEventSubscriptionStatusWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleTrigger", com.azure.core.util.Context.NONE);
+        manager.triggers()
+            .getEventSubscriptionStatusWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleTrigger",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3079,8 +3222,8 @@ public final class TriggersListByFactorySamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void triggersListByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.triggers().listByFactory("exampleResourceGroup", "exampleFactoryName",
-            com.azure.core.util.Context.NONE);
+        manager.triggers()
+            .listByFactory("exampleResourceGroup", "exampleFactoryName", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3104,8 +3247,10 @@ public final class TriggersQueryByFactorySamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void triggersQueryByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.triggers().queryByFactoryWithResponse("exampleResourceGroup", "exampleFactoryName",
-            new TriggerFilterParameters().withParentTriggerName("exampleTrigger"), com.azure.core.util.Context.NONE);
+        manager.triggers()
+            .queryByFactoryWithResponse("exampleResourceGroup", "exampleFactoryName",
+                new TriggerFilterParameters().withParentTriggerName("exampleTrigger"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3127,8 +3272,8 @@ public final class TriggersStartSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void triggersStart(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.triggers().start("exampleResourceGroup", "exampleFactoryName", "exampleTrigger",
-            com.azure.core.util.Context.NONE);
+        manager.triggers()
+            .start("exampleResourceGroup", "exampleFactoryName", "exampleTrigger", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3150,8 +3295,8 @@ public final class TriggersStopSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void triggersStop(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.triggers().stop("exampleResourceGroup", "exampleFactoryName", "exampleTrigger",
-            com.azure.core.util.Context.NONE);
+        manager.triggers()
+            .stop("exampleResourceGroup", "exampleFactoryName", "exampleTrigger", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3173,8 +3318,9 @@ public final class TriggersSubscribeToEventsSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void triggersSubscribeToEvents(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.triggers().subscribeToEvents("exampleResourceGroup", "exampleFactoryName", "exampleTrigger",
-            com.azure.core.util.Context.NONE);
+        manager.triggers()
+            .subscribeToEvents("exampleResourceGroup", "exampleFactoryName", "exampleTrigger",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3196,8 +3342,9 @@ public final class TriggersUnsubscribeFromEventsSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void triggersUnsubscribeFromEvents(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.triggers().unsubscribeFromEvents("exampleResourceGroup", "exampleFactoryName", "exampleTrigger",
-            com.azure.core.util.Context.NONE);
+        manager.triggers()
+            .unsubscribeFromEvents("exampleResourceGroup", "exampleFactoryName", "exampleTrigger",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```

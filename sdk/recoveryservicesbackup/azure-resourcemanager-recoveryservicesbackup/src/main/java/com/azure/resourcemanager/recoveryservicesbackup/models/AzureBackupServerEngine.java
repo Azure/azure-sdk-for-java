@@ -5,20 +5,43 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Backup engine type when Azure Backup Server is used to manage the backups.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "backupEngineType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "backupEngineType",
+    defaultImpl = AzureBackupServerEngine.class,
+    visible = true)
 @JsonTypeName("AzureBackupServerEngine")
 @Fluent
 public final class AzureBackupServerEngine extends BackupEngineBase {
+    /*
+     * Type of the backup engine.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "backupEngineType", required = true)
+    private BackupEngineType backupEngineType = BackupEngineType.AZURE_BACKUP_SERVER_ENGINE;
+
     /**
      * Creates an instance of AzureBackupServerEngine class.
      */
     public AzureBackupServerEngine() {
+    }
+
+    /**
+     * Get the backupEngineType property: Type of the backup engine.
+     * 
+     * @return the backupEngineType value.
+     */
+    @Override
+    public BackupEngineType backupEngineType() {
+        return this.backupEngineType;
     }
 
     /**

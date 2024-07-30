@@ -206,8 +206,7 @@ public final class IoTSecuritySolutionModelInner extends ProxyResource {
     }
 
     /**
-     * Get the disabledDataSources property: Disabled data sources. Disabling these data sources compromises the
-     * system.
+     * Get the disabledDataSources property: Disabled data sources. Disabling these data sources compromises the system.
      * 
      * @return the disabledDataSources value.
      */
@@ -216,8 +215,7 @@ public final class IoTSecuritySolutionModelInner extends ProxyResource {
     }
 
     /**
-     * Set the disabledDataSources property: Disabled data sources. Disabling these data sources compromises the
-     * system.
+     * Set the disabledDataSources property: Disabled data sources. Disabling these data sources compromises the system.
      * 
      * @param disabledDataSources the disabledDataSources value to set.
      * @return the IoTSecuritySolutionModelInner object itself.
@@ -277,8 +275,8 @@ public final class IoTSecuritySolutionModelInner extends ProxyResource {
     }
 
     /**
-     * Get the autoDiscoveredResources property: List of resources that were automatically discovered as relevant to
-     * the security solution.
+     * Get the autoDiscoveredResources property: List of resources that were automatically discovered as relevant to the
+     * security solution.
      * 
      * @return the autoDiscoveredResources value.
      */

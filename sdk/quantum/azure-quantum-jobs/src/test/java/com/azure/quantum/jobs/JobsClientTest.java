@@ -5,6 +5,7 @@ package com.azure.quantum.jobs;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.quantum.jobs.models.BlobDetails;
 import com.azure.quantum.jobs.models.JobDetails;
 import com.azure.storage.blob.BlobClient;
@@ -24,8 +25,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@LiveOnly
 public class JobsClientTest extends QuantumClientTestBase {
-
+    // LiveOnly because "SAS URL and tokens cannot be stored in recordings."
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private JobsClient jobsClient;
     private StorageClient storageClient;

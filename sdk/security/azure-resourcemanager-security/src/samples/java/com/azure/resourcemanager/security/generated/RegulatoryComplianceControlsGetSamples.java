@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class RegulatoryComplianceControlsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/
-     * RegulatoryCompliance/getRegulatoryComplianceControl_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/RegulatoryCompliance/getRegulatoryComplianceControl_example.json
      */
     /**
      * Sample code: Get selected regulatory compliance control details and state.

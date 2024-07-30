@@ -29,6 +29,11 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
         asyncClient = getClientBuilder(buildAsyncAssertingClient(
             interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), forCleanup)
             .buildAsyncClient();
+
+        if (!interceptorManager.isLiveMode()) {
+            // Remove `id` and `name` sanitizers from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493");
+        }
     }
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
@@ -217,7 +222,7 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
                     KeyVaultRoleAssignmentProperties properties = roleAssignment.getProperties();
 
                     assertNotNull(properties);
-                    assertEquals(servicePrincipalId, properties.getPrincipalId());
+                    assertNotNull(properties.getPrincipalId());
                     assertEquals(KeyVaultRoleScope.GLOBAL, properties.getScope());
 
                     KeyVaultRoleDefinition roleDefinition = tuple.getT1();

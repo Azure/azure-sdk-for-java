@@ -5,30 +5,37 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** ESU key. */
+/**
+ * ESU key.
+ */
 @Fluent
-public final class EsuKey {
+public final class EsuKey implements JsonSerializable<EsuKey> {
     /*
      * SKU number.
      */
-    @JsonProperty(value = "sku")
     private String sku;
 
     /*
-     * The current status of the license profile key.
+     * The current status of the license profile key. Represented by the same integer value that is presented on the
+     * machine itself when querying the license key status.
      */
-    @JsonProperty(value = "licenseStatus")
-    private String licenseStatus;
+    private Integer licenseStatus;
 
-    /** Creates an instance of EsuKey class. */
+    /**
+     * Creates an instance of EsuKey class.
+     */
     public EsuKey() {
     }
 
     /**
      * Get the sku property: SKU number.
-     *
+     * 
      * @return the sku value.
      */
     public String sku() {
@@ -37,7 +44,7 @@ public final class EsuKey {
 
     /**
      * Set the sku property: SKU number.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the EsuKey object itself.
      */
@@ -47,30 +54,71 @@ public final class EsuKey {
     }
 
     /**
-     * Get the licenseStatus property: The current status of the license profile key.
-     *
+     * Get the licenseStatus property: The current status of the license profile key. Represented by the same integer
+     * value that is presented on the machine itself when querying the license key status.
+     * 
      * @return the licenseStatus value.
      */
-    public String licenseStatus() {
+    public Integer licenseStatus() {
         return this.licenseStatus;
     }
 
     /**
-     * Set the licenseStatus property: The current status of the license profile key.
-     *
+     * Set the licenseStatus property: The current status of the license profile key. Represented by the same integer
+     * value that is presented on the machine itself when querying the license key status.
+     * 
      * @param licenseStatus the licenseStatus value to set.
      * @return the EsuKey object itself.
      */
-    public EsuKey withLicenseStatus(String licenseStatus) {
+    public EsuKey withLicenseStatus(Integer licenseStatus) {
         this.licenseStatus = licenseStatus;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sku", this.sku);
+        jsonWriter.writeNumberField("licenseStatus", this.licenseStatus);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EsuKey from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EsuKey if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the EsuKey.
+     */
+    public static EsuKey fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EsuKey deserializedEsuKey = new EsuKey();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sku".equals(fieldName)) {
+                    deserializedEsuKey.sku = reader.getString();
+                } else if ("licenseStatus".equals(fieldName)) {
+                    deserializedEsuKey.licenseStatus = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEsuKey;
+        });
     }
 }

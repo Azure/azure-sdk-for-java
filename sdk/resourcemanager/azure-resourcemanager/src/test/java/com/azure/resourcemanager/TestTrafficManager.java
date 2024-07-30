@@ -3,6 +3,8 @@
 
 package com.azure.resourcemanager;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.PublicIpAddresses;
 import com.azure.core.management.Region;
@@ -19,6 +21,7 @@ import org.junit.jupiter.api.Assertions;
 
 /** Test of traffic manager management. */
 public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, TrafficManagerProfiles> {
+    private static final ClientLogger LOGGER = new ClientLogger(TestTrafficManager.class);
 
     private final PublicIpAddresses publicIpAddresses;
 
@@ -405,6 +408,6 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
                     .append(endpoint.routingWeight());
             }
         }
-        System.out.println(info.toString());
+        LOGGER.log(LogLevel.VERBOSE, info::toString);
     }
 }

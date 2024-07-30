@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.appcontainers.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Container App's Job execution name. */
+/**
+ * Container App's Job execution name.
+ */
 @Fluent
-public final class JobExecutionBaseInner {
+public final class JobExecutionBaseInner implements JsonSerializable<JobExecutionBaseInner> {
     /*
      * Job execution name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Job execution Id.
      */
-    @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of JobExecutionBaseInner class. */
+    /**
+     * Creates an instance of JobExecutionBaseInner class.
+     */
     public JobExecutionBaseInner() {
     }
 
     /**
      * Get the name property: Job execution name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +43,7 @@ public final class JobExecutionBaseInner {
 
     /**
      * Set the name property: Job execution name.
-     *
+     * 
      * @param name the name value to set.
      * @return the JobExecutionBaseInner object itself.
      */
@@ -48,7 +54,7 @@ public final class JobExecutionBaseInner {
 
     /**
      * Get the id property: Job execution Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -57,7 +63,7 @@ public final class JobExecutionBaseInner {
 
     /**
      * Set the id property: Job execution Id.
-     *
+     * 
      * @param id the id value to set.
      * @return the JobExecutionBaseInner object itself.
      */
@@ -68,9 +74,48 @@ public final class JobExecutionBaseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobExecutionBaseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobExecutionBaseInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobExecutionBaseInner.
+     */
+    public static JobExecutionBaseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobExecutionBaseInner deserializedJobExecutionBaseInner = new JobExecutionBaseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedJobExecutionBaseInner.name = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedJobExecutionBaseInner.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobExecutionBaseInner;
+        });
     }
 }

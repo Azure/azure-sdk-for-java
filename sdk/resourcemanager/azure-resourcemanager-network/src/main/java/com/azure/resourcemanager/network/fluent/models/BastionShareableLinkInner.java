@@ -99,8 +99,8 @@ public final class BastionShareableLinkInner {
      */
     public void validate() {
         if (vm() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property vm in model BastionShareableLinkInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property vm in model BastionShareableLinkInner"));
         } else {
             vm().validate();
         }

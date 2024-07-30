@@ -5,8 +5,12 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.BinaryData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -14,27 +18,24 @@ import java.util.Map;
  * The details used when creating a new run of an assistant thread.
  */
 @Fluent
-public final class CreateRunOptions {
+public final class CreateRunOptions implements JsonSerializable<CreateRunOptions> {
 
     /*
      * The ID of the assistant that should run the thread.
      */
     @Generated
-    @JsonProperty(value = "assistant_id")
-    private String assistantId;
+    private final String assistantId;
 
     /*
      * The overridden model name that the assistant should use to run the thread.
      */
     @Generated
-    @JsonProperty(value = "model")
     private String model;
 
     /*
      * The overridden system instructions that the assistant should use to run the thread.
      */
     @Generated
-    @JsonProperty(value = "instructions")
     private String instructions;
 
     /*
@@ -43,14 +44,12 @@ public final class CreateRunOptions {
      * on a per-run basis without overriding other instructions.
      */
     @Generated
-    @JsonProperty(value = "additional_instructions")
     private String additionalInstructions;
 
     /*
      * The overridden list of enabled tools that the assistant should use to run the thread.
      */
     @Generated
-    @JsonProperty(value = "tools")
     private List<ToolDefinition> tools;
 
     /*
@@ -59,7 +58,6 @@ public final class CreateRunOptions {
      * characters in length.
      */
     @Generated
-    @JsonProperty(value = "metadata")
     private Map<String, String> metadata;
 
     /**
@@ -119,8 +117,8 @@ public final class CreateRunOptions {
     }
 
     /**
-     * Get the additionalInstructions property: Additional instructions to append at the end of the instructions for
-     * the run. This is useful for modifying the behavior
+     * Get the additionalInstructions property: Additional instructions to append at the end of the instructions for the
+     * run. This is useful for modifying the behavior
      * on a per-run basis without overriding other instructions.
      *
      * @return the additionalInstructions value.
@@ -184,14 +182,13 @@ public final class CreateRunOptions {
      * @param assistantId the assistantId value to set.
      */
     @Generated
-    @JsonCreator
-    public CreateRunOptions(@JsonProperty(value = "assistant_id") String assistantId) {
+    public CreateRunOptions(String assistantId) {
         this.assistantId = assistantId;
     }
 
     /**
-     * Set the additionalInstructions property: Additional instructions to append at the end of the instructions for
-     * the run. This is useful for modifying the behavior
+     * Set the additionalInstructions property: Additional instructions to append at the end of the instructions for the
+     * run. This is useful for modifying the behavior
      * on a per-run basis without overriding other instructions.
      *
      * @param additionalInstructions the additionalInstructions value to set.
@@ -200,6 +197,425 @@ public final class CreateRunOptions {
     @Generated
     public CreateRunOptions setAdditionalInstructions(String additionalInstructions) {
         this.additionalInstructions = additionalInstructions;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("assistant_id", this.assistantId);
+        jsonWriter.writeStringField("model", this.model);
+        jsonWriter.writeStringField("instructions", this.instructions);
+        jsonWriter.writeStringField("additional_instructions", this.additionalInstructions);
+        jsonWriter.writeArrayField("additional_messages", this.additionalMessages,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("stream", this.stream);
+        jsonWriter.writeNumberField("temperature", this.temperature);
+        jsonWriter.writeNumberField("top_p", this.topP);
+        jsonWriter.writeNumberField("max_prompt_tokens", this.maxPromptTokens);
+        jsonWriter.writeNumberField("max_completion_tokens", this.maxCompletionTokens);
+        jsonWriter.writeJsonField("truncation_strategy", this.truncationStrategy);
+        if (this.toolChoice != null) {
+            jsonWriter.writeUntypedField("tool_choice", this.toolChoice.toObject(Object.class));
+        }
+        if (this.responseFormat != null) {
+            jsonWriter.writeUntypedField("response_format", this.responseFormat.toObject(Object.class));
+        }
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreateRunOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreateRunOptions if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CreateRunOptions.
+     */
+    @Generated
+    public static CreateRunOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String assistantId = null;
+            String model = null;
+            String instructions = null;
+            String additionalInstructions = null;
+            List<ThreadMessage> additionalMessages = null;
+            List<ToolDefinition> tools = null;
+            Boolean stream = null;
+            Double temperature = null;
+            Double topP = null;
+            Integer maxPromptTokens = null;
+            Integer maxCompletionTokens = null;
+            TruncationObject truncationStrategy = null;
+            BinaryData toolChoice = null;
+            BinaryData responseFormat = null;
+            Map<String, String> metadata = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("assistant_id".equals(fieldName)) {
+                    assistantId = reader.getString();
+                } else if ("model".equals(fieldName)) {
+                    model = reader.getString();
+                } else if ("instructions".equals(fieldName)) {
+                    instructions = reader.getString();
+                } else if ("additional_instructions".equals(fieldName)) {
+                    additionalInstructions = reader.getString();
+                } else if ("additional_messages".equals(fieldName)) {
+                    additionalMessages = reader.readArray(reader1 -> ThreadMessage.fromJson(reader1));
+                } else if ("tools".equals(fieldName)) {
+                    tools = reader.readArray(reader1 -> ToolDefinition.fromJson(reader1));
+                } else if ("stream".equals(fieldName)) {
+                    stream = reader.getNullable(JsonReader::getBoolean);
+                } else if ("temperature".equals(fieldName)) {
+                    temperature = reader.getNullable(JsonReader::getDouble);
+                } else if ("top_p".equals(fieldName)) {
+                    topP = reader.getNullable(JsonReader::getDouble);
+                } else if ("max_prompt_tokens".equals(fieldName)) {
+                    maxPromptTokens = reader.getNullable(JsonReader::getInt);
+                } else if ("max_completion_tokens".equals(fieldName)) {
+                    maxCompletionTokens = reader.getNullable(JsonReader::getInt);
+                } else if ("truncation_strategy".equals(fieldName)) {
+                    truncationStrategy = TruncationObject.fromJson(reader);
+                } else if ("tool_choice".equals(fieldName)) {
+                    toolChoice
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                } else if ("response_format".equals(fieldName)) {
+                    responseFormat
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                } else if ("metadata".equals(fieldName)) {
+                    metadata = reader.readMap(reader1 -> reader1.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            CreateRunOptions deserializedCreateRunOptions = new CreateRunOptions(assistantId);
+            deserializedCreateRunOptions.model = model;
+            deserializedCreateRunOptions.instructions = instructions;
+            deserializedCreateRunOptions.additionalInstructions = additionalInstructions;
+            deserializedCreateRunOptions.additionalMessages = additionalMessages;
+            deserializedCreateRunOptions.tools = tools;
+            deserializedCreateRunOptions.stream = stream;
+            deserializedCreateRunOptions.temperature = temperature;
+            deserializedCreateRunOptions.topP = topP;
+            deserializedCreateRunOptions.maxPromptTokens = maxPromptTokens;
+            deserializedCreateRunOptions.maxCompletionTokens = maxCompletionTokens;
+            deserializedCreateRunOptions.truncationStrategy = truncationStrategy;
+            deserializedCreateRunOptions.toolChoice = toolChoice;
+            deserializedCreateRunOptions.responseFormat = responseFormat;
+            deserializedCreateRunOptions.metadata = metadata;
+            return deserializedCreateRunOptions;
+        });
+    }
+
+    /*
+     * If `true`, returns a stream of events that happen during the Run as server-sent events,
+     * terminating when the Run enters a terminal state with a `data: [DONE]` message.
+     */
+    @Generated
+    private Boolean stream;
+
+    /**
+     * Get the stream property: If `true`, returns a stream of events that happen during the Run as server-sent events,
+     * terminating when the Run enters a terminal state with a `data: [DONE]` message.
+     *
+     * @return the stream value.
+     */
+    Boolean isStream() {
+        return this.stream;
+    }
+
+    /**
+     * Set the stream property: If `true`, returns a stream of events that happen during the Run as server-sent events,
+     * terminating when the Run enters a terminal state with a `data: [DONE]` message.
+     *
+     * @param stream the stream value to set.
+     * @return the CreateRunOptions object itself.
+     */
+    CreateRunOptions setStream(Boolean stream) {
+        this.stream = stream;
+        return this;
+    }
+
+    /*
+     * Adds additional messages to the thread before creating the run.
+     */
+    @Generated
+    private List<ThreadMessage> additionalMessages;
+
+    /*
+     * What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output
+     * more random, while lower values like 0.2 will make it more focused and deterministic.
+     */
+    @Generated
+    private Double temperature;
+
+    /*
+     * An alternative to sampling with temperature, called nucleus sampling, where the model
+     * considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens
+     * comprising the top 10% probability mass are considered.
+     * 
+     * We generally recommend altering this or temperature but not both.
+     */
+    @Generated
+    private Double topP;
+
+    /*
+     * The maximum number of prompt tokens that may be used over the course of the run. The run will make a best effort
+     * to use only
+     * the number of prompt tokens specified, across multiple turns of the run. If the run exceeds the number of prompt
+     * tokens specified,
+     * the run will end with status `incomplete`. See `incomplete_details` for more info.
+     */
+    @Generated
+    private Integer maxPromptTokens;
+
+    /*
+     * The maximum number of completion tokens that may be used over the course of the run. The run will make a best
+     * effort
+     * to use only the number of completion tokens specified, across multiple turns of the run. If the run exceeds the
+     * number of
+     * completion tokens specified, the run will end with status `incomplete`. See `incomplete_details` for more info.
+     */
+    @Generated
+    private Integer maxCompletionTokens;
+
+    /*
+     * The strategy to use for dropping messages as the context windows moves forward.
+     */
+    @Generated
+    private TruncationObject truncationStrategy;
+
+    /*
+     * Controls whether or not and which tool is called by the model.
+     */
+    @Generated
+    private BinaryData toolChoice;
+
+    /*
+     * Specifies the format that the model must output.
+     */
+    @Generated
+    private BinaryData responseFormat;
+
+    /**
+     * Get the additionalMessages property: Adds additional messages to the thread before creating the run.
+     *
+     * @return the additionalMessages value.
+     */
+    @Generated
+    public List<ThreadMessage> getAdditionalMessages() {
+        return this.additionalMessages;
+    }
+
+    /**
+     * Set the additionalMessages property: Adds additional messages to the thread before creating the run.
+     *
+     * @param additionalMessages the additionalMessages value to set.
+     * @return the CreateRunOptions object itself.
+     */
+    @Generated
+    public CreateRunOptions setAdditionalMessages(List<ThreadMessage> additionalMessages) {
+        this.additionalMessages = additionalMessages;
+        return this;
+    }
+
+    /**
+     * Get the temperature property: What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make
+     * the output
+     * more random, while lower values like 0.2 will make it more focused and deterministic.
+     *
+     * @return the temperature value.
+     */
+    @Generated
+    public Double getTemperature() {
+        return this.temperature;
+    }
+
+    /**
+     * Set the temperature property: What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make
+     * the output
+     * more random, while lower values like 0.2 will make it more focused and deterministic.
+     *
+     * @param temperature the temperature value to set.
+     * @return the CreateRunOptions object itself.
+     */
+    @Generated
+    public CreateRunOptions setTemperature(Double temperature) {
+        this.temperature = temperature;
+        return this;
+    }
+
+    /**
+     * Get the topP property: An alternative to sampling with temperature, called nucleus sampling, where the model
+     * considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens
+     * comprising the top 10% probability mass are considered.
+     *
+     * We generally recommend altering this or temperature but not both.
+     *
+     * @return the topP value.
+     */
+    @Generated
+    public Double getTopP() {
+        return this.topP;
+    }
+
+    /**
+     * Set the topP property: An alternative to sampling with temperature, called nucleus sampling, where the model
+     * considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens
+     * comprising the top 10% probability mass are considered.
+     *
+     * We generally recommend altering this or temperature but not both.
+     *
+     * @param topP the topP value to set.
+     * @return the CreateRunOptions object itself.
+     */
+    @Generated
+    public CreateRunOptions setTopP(Double topP) {
+        this.topP = topP;
+        return this;
+    }
+
+    /**
+     * Get the maxPromptTokens property: The maximum number of prompt tokens that may be used over the course of the
+     * run. The run will make a best effort to use only
+     * the number of prompt tokens specified, across multiple turns of the run. If the run exceeds the number of prompt
+     * tokens specified,
+     * the run will end with status `incomplete`. See `incomplete_details` for more info.
+     *
+     * @return the maxPromptTokens value.
+     */
+    @Generated
+    public Integer getMaxPromptTokens() {
+        return this.maxPromptTokens;
+    }
+
+    /**
+     * Set the maxPromptTokens property: The maximum number of prompt tokens that may be used over the course of the
+     * run. The run will make a best effort to use only
+     * the number of prompt tokens specified, across multiple turns of the run. If the run exceeds the number of prompt
+     * tokens specified,
+     * the run will end with status `incomplete`. See `incomplete_details` for more info.
+     *
+     * @param maxPromptTokens the maxPromptTokens value to set.
+     * @return the CreateRunOptions object itself.
+     */
+    @Generated
+    public CreateRunOptions setMaxPromptTokens(Integer maxPromptTokens) {
+        this.maxPromptTokens = maxPromptTokens;
+        return this;
+    }
+
+    /**
+     * Get the maxCompletionTokens property: The maximum number of completion tokens that may be used over the course of
+     * the run. The run will make a best effort
+     * to use only the number of completion tokens specified, across multiple turns of the run. If the run exceeds the
+     * number of
+     * completion tokens specified, the run will end with status `incomplete`. See `incomplete_details` for more info.
+     *
+     * @return the maxCompletionTokens value.
+     */
+    @Generated
+    public Integer getMaxCompletionTokens() {
+        return this.maxCompletionTokens;
+    }
+
+    /**
+     * Set the maxCompletionTokens property: The maximum number of completion tokens that may be used over the course of
+     * the run. The run will make a best effort
+     * to use only the number of completion tokens specified, across multiple turns of the run. If the run exceeds the
+     * number of
+     * completion tokens specified, the run will end with status `incomplete`. See `incomplete_details` for more info.
+     *
+     * @param maxCompletionTokens the maxCompletionTokens value to set.
+     * @return the CreateRunOptions object itself.
+     */
+    @Generated
+    public CreateRunOptions setMaxCompletionTokens(Integer maxCompletionTokens) {
+        this.maxCompletionTokens = maxCompletionTokens;
+        return this;
+    }
+
+    /**
+     * Get the truncationStrategy property: The strategy to use for dropping messages as the context windows moves
+     * forward.
+     *
+     * @return the truncationStrategy value.
+     */
+    @Generated
+    public TruncationObject getTruncationStrategy() {
+        return this.truncationStrategy;
+    }
+
+    /**
+     * Set the truncationStrategy property: The strategy to use for dropping messages as the context windows moves
+     * forward.
+     *
+     * @param truncationStrategy the truncationStrategy value to set.
+     * @return the CreateRunOptions object itself.
+     */
+    @Generated
+    public CreateRunOptions setTruncationStrategy(TruncationObject truncationStrategy) {
+        this.truncationStrategy = truncationStrategy;
+        return this;
+    }
+
+    /**
+     * Get the toolChoice property: Controls whether or not and which tool is called by the model.
+     *
+     * @return the toolChoice value.
+     */
+    public AssistantsApiToolChoiceOption getToolChoice() {
+        return AssistantsApiToolChoiceOption.fromBinaryData(this.toolChoice);
+    }
+
+    /**
+     * Set the toolChoice property: Controls whether or not and which tool is called by the model.
+     *
+     * @param toolChoice the toolChoice value to set.
+     * @return the CreateRunOptions object itself.
+     */
+    public CreateRunOptions setToolChoice(AssistantsApiToolChoiceOption toolChoice) {
+        if (toolChoice.getMode() != null) {
+            this.toolChoice = BinaryData.fromObject(toolChoice.getMode());
+        } else if (toolChoice.getToolChoice() != null) {
+            this.toolChoice = BinaryData.fromObject(toolChoice.getToolChoice());
+        } else {
+            this.toolChoice = null;
+        }
+        return this;
+    }
+
+    /**
+     * Get the responseFormat property: Specifies the format that the model must output.
+     *
+     * @return the responseFormat value.
+     */
+    public AssistantsApiResponseFormatOption getResponseFormat() {
+        return AssistantsApiResponseFormatOption.fromBinaryData(this.responseFormat);
+    }
+
+    /**
+     * Set the responseFormat property: Specifies the format that the model must output.
+     *
+     * @param responseFormat the responseFormat value to set.
+     * @return the CreateRunOptions object itself.
+     */
+    public CreateRunOptions setResponseFormat(AssistantsApiResponseFormatOption responseFormat) {
+        if (responseFormat.getFormat() != null) {
+            this.responseFormat = BinaryData.fromObject(responseFormat.getFormat());
+        } else if (responseFormat.getMode() != null) {
+            this.responseFormat = BinaryData.fromObject(responseFormat.getMode());
+        } else {
+            this.responseFormat = null;
+        }
         return this;
     }
 }

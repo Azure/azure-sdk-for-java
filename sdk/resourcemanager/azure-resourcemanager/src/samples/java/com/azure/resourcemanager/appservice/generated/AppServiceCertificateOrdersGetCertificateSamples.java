@@ -9,9 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class AppServiceCertificateOrdersGetCertificateSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-01-01/examples/
-     * GetAppServiceCertificate.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-12-01/examples/GetAppServiceCertificate.json
      */
     /**
      * Sample code: Get App Service Certificate.
@@ -19,7 +17,11 @@ public final class AppServiceCertificateOrdersGetCertificateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAppServiceCertificate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getAppServiceCertificateOrders().getCertificateWithResponse(
-            "testrg123", "SampleCertificateOrderName", "SampleCertName1", com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getAppServiceCertificateOrders()
+            .getCertificateWithResponse("testrg123", "SampleCertificateOrderName", "SampleCertName1",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -3,7 +3,9 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
 import com.azure.messaging.eventhubs.models.ErrorContext;
@@ -14,10 +16,10 @@ import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
+import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -43,6 +45,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
+import static com.azure.messaging.eventhubs.TestUtils.getMessage;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -67,6 +70,7 @@ import static org.mockito.Mockito.when;
  * Unit tests for {@link PartitionBasedLoadBalancer}.
  */
 public class PartitionBasedLoadBalancerTest {
+    private static final MessageSerializer MESSAGE_SERIALIZER = new EventHubMessageSerializer();
     private static final ClientLogger LOGGER = new ClientLogger(PartitionBasedLoadBalancerTest.class);
     private static final String PARTITION_1 = "1";
     private static final String PARTITION_2 = "2";
@@ -109,8 +113,7 @@ public class PartitionBasedLoadBalancerTest {
     private final EventProcessorClientOptions processorOptions = new EventProcessorClientOptions();
 
     @BeforeEach
-    public void setup(TestInfo testInfo) {
-        System.out.println("Running " + testInfo.getDisplayName());
+    public void setup() {
         toClose = new ArrayList<>();
         mockCloseable = MockitoAnnotations.openMocks(this);
 
@@ -119,7 +122,7 @@ public class PartitionBasedLoadBalancerTest {
         eventDataList = new ArrayList<>();
         IntStream.range(0, 25)
             .forEach(index -> {
-                final EventData eventData = TestUtils.getEventData(contents, (long) index, (long) index, enqueuedTime);
+                final EventData eventData = getEventData(contents, (long) index, (long) index, enqueuedTime);
                 eventDataList.add(eventData);
             });
 
@@ -142,7 +145,7 @@ public class PartitionBasedLoadBalancerTest {
             try {
                 closeable.close();
             } catch (IOException error) {
-                error.printStackTrace();
+                LOGGER.log(LogLevel.VERBOSE, () -> "Error closing resource.", error);
             }
         }
 
@@ -844,5 +847,13 @@ public class PartitionBasedLoadBalancerTest {
             EVENT_HUB_NAME, CONSUMER_GROUP_NAME, owner, TimeUnit.SECONDS.toSeconds(5), partitionPumpManager,
             ec -> {
             }, loadBalancingStrategy);
+    }
+
+    /**
+     * Creates an EventData with the received properties set.
+     */
+    private EventData getEventData(byte[] contents, Long sequenceNumber, Long offsetNumber, Date enqueuedTime) {
+        final Message message = getMessage(contents, "messageId", sequenceNumber, offsetNumber, enqueuedTime);
+        return MESSAGE_SERIALIZER.deserialize(message, EventData.class);
     }
 }

@@ -14,29 +14,26 @@ import org.junit.jupiter.api.Assertions;
 public final class CacheConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CacheConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"queryParameterStripDirective\":\"StripOnly\",\"queryParameters\":\"xhojuj\",\"dynamicCompression\":\"Disabled\",\"cacheDuration\":\"PT46H54M10S\"}")
-                .toObject(CacheConfiguration.class);
-        Assertions.assertEquals(FrontDoorQuery.STRIP_ONLY, model.queryParameterStripDirective());
-        Assertions.assertEquals("xhojuj", model.queryParameters());
+        CacheConfiguration model = BinaryData.fromString(
+            "{\"queryParameterStripDirective\":\"StripAllExcept\",\"queryParameters\":\"bccxjmonfdgn\",\"dynamicCompression\":\"Disabled\",\"cacheDuration\":\"PT18H22M42S\"}")
+            .toObject(CacheConfiguration.class);
+        Assertions.assertEquals(FrontDoorQuery.STRIP_ALL_EXCEPT, model.queryParameterStripDirective());
+        Assertions.assertEquals("bccxjmonfdgn", model.queryParameters());
         Assertions.assertEquals(DynamicCompressionEnabled.DISABLED, model.dynamicCompression());
-        Assertions.assertEquals(Duration.parse("PT46H54M10S"), model.cacheDuration());
+        Assertions.assertEquals(Duration.parse("PT18H22M42S"), model.cacheDuration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CacheConfiguration model =
-            new CacheConfiguration()
-                .withQueryParameterStripDirective(FrontDoorQuery.STRIP_ONLY)
-                .withQueryParameters("xhojuj")
+        CacheConfiguration model
+            = new CacheConfiguration().withQueryParameterStripDirective(FrontDoorQuery.STRIP_ALL_EXCEPT)
+                .withQueryParameters("bccxjmonfdgn")
                 .withDynamicCompression(DynamicCompressionEnabled.DISABLED)
-                .withCacheDuration(Duration.parse("PT46H54M10S"));
+                .withCacheDuration(Duration.parse("PT18H22M42S"));
         model = BinaryData.fromObject(model).toObject(CacheConfiguration.class);
-        Assertions.assertEquals(FrontDoorQuery.STRIP_ONLY, model.queryParameterStripDirective());
-        Assertions.assertEquals("xhojuj", model.queryParameters());
+        Assertions.assertEquals(FrontDoorQuery.STRIP_ALL_EXCEPT, model.queryParameterStripDirective());
+        Assertions.assertEquals("bccxjmonfdgn", model.queryParameters());
         Assertions.assertEquals(DynamicCompressionEnabled.DISABLED, model.dynamicCompression());
-        Assertions.assertEquals(Duration.parse("PT46H54M10S"), model.cacheDuration());
+        Assertions.assertEquals(Duration.parse("PT18H22M42S"), model.cacheDuration());
     }
 }

@@ -42,8 +42,8 @@ public final class VngClientConnectionConfigurationProperties {
     }
 
     /**
-     * Get the vpnClientAddressPool property: The reference to the address space resource which represents Address
-     * space for P2S VpnClient.
+     * Get the vpnClientAddressPool property: The reference to the address space resource which represents Address space
+     * for P2S VpnClient.
      * 
      * @return the vpnClientAddressPool value.
      */
@@ -52,8 +52,8 @@ public final class VngClientConnectionConfigurationProperties {
     }
 
     /**
-     * Set the vpnClientAddressPool property: The reference to the address space resource which represents Address
-     * space for P2S VpnClient.
+     * Set the vpnClientAddressPool property: The reference to the address space resource which represents Address space
+     * for P2S VpnClient.
      * 
      * @param vpnClientAddressPool the vpnClientAddressPool value to set.
      * @return the VngClientConnectionConfigurationProperties object itself.
@@ -100,14 +100,16 @@ public final class VngClientConnectionConfigurationProperties {
      */
     public void validate() {
         if (vpnClientAddressPool() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property vpnClientAddressPool in model VngClientConnectionConfigurationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property vpnClientAddressPool in model VngClientConnectionConfigurationProperties"));
         } else {
             vpnClientAddressPool().validate();
         }
         if (virtualNetworkGatewayPolicyGroups() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property virtualNetworkGatewayPolicyGroups in model VngClientConnectionConfigurationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property virtualNetworkGatewayPolicyGroups in model VngClientConnectionConfigurationProperties"));
         }
     }
 

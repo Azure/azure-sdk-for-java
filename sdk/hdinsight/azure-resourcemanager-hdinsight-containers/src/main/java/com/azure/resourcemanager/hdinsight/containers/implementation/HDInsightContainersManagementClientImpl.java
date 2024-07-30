@@ -24,7 +24,9 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.hdinsight.containers.fluent.AvailableClusterPoolVersionsClient;
 import com.azure.resourcemanager.hdinsight.containers.fluent.AvailableClusterVersionsClient;
+import com.azure.resourcemanager.hdinsight.containers.fluent.ClusterAvailableUpgradesClient;
 import com.azure.resourcemanager.hdinsight.containers.fluent.ClusterJobsClient;
+import com.azure.resourcemanager.hdinsight.containers.fluent.ClusterPoolAvailableUpgradesClient;
 import com.azure.resourcemanager.hdinsight.containers.fluent.ClusterPoolsClient;
 import com.azure.resourcemanager.hdinsight.containers.fluent.ClustersClient;
 import com.azure.resourcemanager.hdinsight.containers.fluent.HDInsightContainersManagementClient;
@@ -39,159 +41,215 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the HDInsightContainersManagementClientImpl type. */
+/**
+ * Initializes a new instance of the HDInsightContainersManagementClientImpl type.
+ */
 @ServiceClient(builder = HDInsightContainersManagementClientBuilder.class)
 public final class HDInsightContainersManagementClientImpl implements HDInsightContainersManagementClient {
-    /** The ID of the target subscription. The value must be an UUID. */
+    /**
+     * The ID of the target subscription. The value must be an UUID.
+     */
     private final String subscriptionId;
 
     /**
      * Gets The ID of the target subscription. The value must be an UUID.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The ClusterPoolsClient object to access its operations. */
+    /**
+     * The ClusterPoolsClient object to access its operations.
+     */
     private final ClusterPoolsClient clusterPools;
 
     /**
      * Gets the ClusterPoolsClient object to access its operations.
-     *
+     * 
      * @return the ClusterPoolsClient object.
      */
     public ClusterPoolsClient getClusterPools() {
         return this.clusterPools;
     }
 
-    /** The ClustersClient object to access its operations. */
+    /**
+     * The ClusterPoolAvailableUpgradesClient object to access its operations.
+     */
+    private final ClusterPoolAvailableUpgradesClient clusterPoolAvailableUpgrades;
+
+    /**
+     * Gets the ClusterPoolAvailableUpgradesClient object to access its operations.
+     * 
+     * @return the ClusterPoolAvailableUpgradesClient object.
+     */
+    public ClusterPoolAvailableUpgradesClient getClusterPoolAvailableUpgrades() {
+        return this.clusterPoolAvailableUpgrades;
+    }
+
+    /**
+     * The ClustersClient object to access its operations.
+     */
     private final ClustersClient clusters;
 
     /**
      * Gets the ClustersClient object to access its operations.
-     *
+     * 
      * @return the ClustersClient object.
      */
     public ClustersClient getClusters() {
         return this.clusters;
     }
 
-    /** The ClusterJobsClient object to access its operations. */
+    /**
+     * The ClusterAvailableUpgradesClient object to access its operations.
+     */
+    private final ClusterAvailableUpgradesClient clusterAvailableUpgrades;
+
+    /**
+     * Gets the ClusterAvailableUpgradesClient object to access its operations.
+     * 
+     * @return the ClusterAvailableUpgradesClient object.
+     */
+    public ClusterAvailableUpgradesClient getClusterAvailableUpgrades() {
+        return this.clusterAvailableUpgrades;
+    }
+
+    /**
+     * The ClusterJobsClient object to access its operations.
+     */
     private final ClusterJobsClient clusterJobs;
 
     /**
      * Gets the ClusterJobsClient object to access its operations.
-     *
+     * 
      * @return the ClusterJobsClient object.
      */
     public ClusterJobsClient getClusterJobs() {
         return this.clusterJobs;
     }
 
-    /** The LocationsClient object to access its operations. */
+    /**
+     * The LocationsClient object to access its operations.
+     */
     private final LocationsClient locations;
 
     /**
      * Gets the LocationsClient object to access its operations.
-     *
+     * 
      * @return the LocationsClient object.
      */
     public LocationsClient getLocations() {
         return this.locations;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The AvailableClusterPoolVersionsClient object to access its operations. */
+    /**
+     * The AvailableClusterPoolVersionsClient object to access its operations.
+     */
     private final AvailableClusterPoolVersionsClient availableClusterPoolVersions;
 
     /**
      * Gets the AvailableClusterPoolVersionsClient object to access its operations.
-     *
+     * 
      * @return the AvailableClusterPoolVersionsClient object.
      */
     public AvailableClusterPoolVersionsClient getAvailableClusterPoolVersions() {
         return this.availableClusterPoolVersions;
     }
 
-    /** The AvailableClusterVersionsClient object to access its operations. */
+    /**
+     * The AvailableClusterVersionsClient object to access its operations.
+     */
     private final AvailableClusterVersionsClient availableClusterVersions;
 
     /**
      * Gets the AvailableClusterVersionsClient object to access its operations.
-     *
+     * 
      * @return the AvailableClusterVersionsClient object.
      */
     public AvailableClusterVersionsClient getAvailableClusterVersions() {
@@ -200,7 +258,7 @@ public final class HDInsightContainersManagementClientImpl implements HDInsightC
 
     /**
      * Initializes an instance of HDInsightContainersManagementClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -208,21 +266,18 @@ public final class HDInsightContainersManagementClientImpl implements HDInsightC
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
-    HDInsightContainersManagementClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    HDInsightContainersManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-06-01-preview";
+        this.apiVersion = "2023-11-01-preview";
         this.clusterPools = new ClusterPoolsClientImpl(this);
+        this.clusterPoolAvailableUpgrades = new ClusterPoolAvailableUpgradesClientImpl(this);
         this.clusters = new ClustersClientImpl(this);
+        this.clusterAvailableUpgrades = new ClusterAvailableUpgradesClientImpl(this);
         this.clusterJobs = new ClusterJobsClientImpl(this);
         this.locations = new LocationsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
@@ -232,7 +287,7 @@ public final class HDInsightContainersManagementClientImpl implements HDInsightC
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -241,7 +296,7 @@ public final class HDInsightContainersManagementClientImpl implements HDInsightC
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -251,7 +306,7 @@ public final class HDInsightContainersManagementClientImpl implements HDInsightC
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -261,26 +316,15 @@ public final class HDInsightContainersManagementClientImpl implements HDInsightC
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -293,19 +337,16 @@ public final class HDInsightContainersManagementClientImpl implements HDInsightC
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter().deserialize(errorBody, ManagementError.class,
+                            SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }

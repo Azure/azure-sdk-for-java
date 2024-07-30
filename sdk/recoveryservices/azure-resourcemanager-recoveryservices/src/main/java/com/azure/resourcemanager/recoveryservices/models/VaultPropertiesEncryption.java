@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservices.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Customer Managed Key details of the resource. */
+/**
+ * Customer Managed Key details of the resource.
+ */
 @Fluent
 public final class VaultPropertiesEncryption {
     /*
@@ -28,13 +30,15 @@ public final class VaultPropertiesEncryption {
     @JsonProperty(value = "infrastructureEncryption")
     private InfrastructureEncryptionState infrastructureEncryption;
 
-    /** Creates an instance of VaultPropertiesEncryption class. */
+    /**
+     * Creates an instance of VaultPropertiesEncryption class.
+     */
     public VaultPropertiesEncryption() {
     }
 
     /**
      * Get the keyVaultProperties property: The properties of the Key Vault which hosts CMK.
-     *
+     * 
      * @return the keyVaultProperties value.
      */
     public CmkKeyVaultProperties keyVaultProperties() {
@@ -43,7 +47,7 @@ public final class VaultPropertiesEncryption {
 
     /**
      * Set the keyVaultProperties property: The properties of the Key Vault which hosts CMK.
-     *
+     * 
      * @param keyVaultProperties the keyVaultProperties value to set.
      * @return the VaultPropertiesEncryption object itself.
      */
@@ -54,7 +58,7 @@ public final class VaultPropertiesEncryption {
 
     /**
      * Get the kekIdentity property: The details of the identity used for CMK.
-     *
+     * 
      * @return the kekIdentity value.
      */
     public CmkKekIdentity kekIdentity() {
@@ -63,7 +67,7 @@ public final class VaultPropertiesEncryption {
 
     /**
      * Set the kekIdentity property: The details of the identity used for CMK.
-     *
+     * 
      * @param kekIdentity the kekIdentity value to set.
      * @return the VaultPropertiesEncryption object itself.
      */
@@ -74,7 +78,7 @@ public final class VaultPropertiesEncryption {
 
     /**
      * Get the infrastructureEncryption property: Enabling/Disabling the Double Encryption state.
-     *
+     * 
      * @return the infrastructureEncryption value.
      */
     public InfrastructureEncryptionState infrastructureEncryption() {
@@ -83,19 +87,19 @@ public final class VaultPropertiesEncryption {
 
     /**
      * Set the infrastructureEncryption property: Enabling/Disabling the Double Encryption state.
-     *
+     * 
      * @param infrastructureEncryption the infrastructureEncryption value to set.
      * @return the VaultPropertiesEncryption object itself.
      */
-    public VaultPropertiesEncryption withInfrastructureEncryption(
-        InfrastructureEncryptionState infrastructureEncryption) {
+    public VaultPropertiesEncryption
+        withInfrastructureEncryption(InfrastructureEncryptionState infrastructureEncryption) {
         this.infrastructureEncryption = infrastructureEncryption;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

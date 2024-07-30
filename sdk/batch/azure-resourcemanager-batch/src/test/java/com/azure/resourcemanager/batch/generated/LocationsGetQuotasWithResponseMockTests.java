@@ -29,7 +29,7 @@ public final class LocationsGetQuotasWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"accountQuota\":284143566}";
+        String responseStr = "{\"accountQuota\":709721668}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -47,7 +47,7 @@ public final class LocationsGetQuotasWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         BatchLocationQuota response
-            = manager.locations().getQuotasWithResponse("fo", com.azure.core.util.Context.NONE).getValue();
+            = manager.locations().getQuotasWithResponse("wiithtywub", com.azure.core.util.Context.NONE).getValue();
 
     }
 }

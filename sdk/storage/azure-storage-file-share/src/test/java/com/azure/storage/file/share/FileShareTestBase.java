@@ -4,7 +4,6 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.client.traits.HttpTrait;
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
@@ -19,7 +18,6 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import com.azure.storage.common.test.shared.TestAccount;
@@ -39,10 +37,8 @@ import com.azure.storage.file.share.specialized.ShareLeaseClientBuilder;
 
 import java.net.URL;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -98,7 +94,8 @@ public class FileShareTestBase extends TestProxyTestBase {
                 "x-ms-file-rename-source", "x-ms-source-if-unmodified-since", "x-ms-source-lease-id",
                 "x-ms-encryption-key-sha256"))
             .setQueryOrderingIgnored(true)
-            .setIgnoredQueryParameters(Arrays.asList("sv"))));
+            .setIgnoredQueryParameters(Arrays.asList("sv"))
+            .setExcludedHeaders(Collections.singletonList("x-ms-meta-testmetadata"))));
 
         ShareServiceClientBuilder builder = getServiceClientBuilder(ENVIRONMENT.getPrimaryAccount());
         primaryFileServiceClient = builder.buildClient();
@@ -314,7 +311,7 @@ public class FileShareTestBase extends TestProxyTestBase {
 
         instrument(builder);
 
-        return setOauthCredentials(builder).buildClient();
+        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildClient();
     }
 
     protected ShareServiceClient getOAuthServiceClientSharedKey(ShareServiceClientBuilder builder) {
@@ -325,7 +322,7 @@ public class FileShareTestBase extends TestProxyTestBase {
 
         instrument(builder);
 
-        return builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential()).buildClient();
+        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildClient();
     }
 
     protected ShareServiceAsyncClient getOAuthServiceAsyncClient(ShareServiceClientBuilder builder) {
@@ -336,7 +333,7 @@ public class FileShareTestBase extends TestProxyTestBase {
 
         instrument(builder);
 
-        return setOauthCredentials(builder).buildAsyncClient();
+        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildAsyncClient();
     }
 
     protected ShareServiceAsyncClient getOAuthServiceClientAsyncSharedKey(ShareServiceClientBuilder builder) {
@@ -348,16 +345,6 @@ public class FileShareTestBase extends TestProxyTestBase {
         instrument(builder);
 
         return builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential()).buildAsyncClient();
-    }
-
-    protected ShareServiceClientBuilder setOauthCredentials(ShareServiceClientBuilder builder) {
-        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
-            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-            return builder.credential(new EnvironmentCredentialBuilder().build());
-        } else {
-            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
-            return builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential());
-        }
     }
 
     protected ShareClient getOAuthShareClient(ShareClientBuilder builder) {
@@ -372,18 +359,7 @@ public class FileShareTestBase extends TestProxyTestBase {
 
         instrument(builder);
 
-        return setOauthCredentials(builder);
-    }
-
-
-    protected ShareClientBuilder setOauthCredentials(ShareClientBuilder builder) {
-        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
-            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-            return builder.credential(new EnvironmentCredentialBuilder().build());
-        } else {
-            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
-            return builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential());
-        }
+        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));
     }
 
     protected <T extends HttpTrait<T>, E extends Enum<E>> T instrument(T builder) {
@@ -467,14 +443,13 @@ public class FileShareTestBase extends TestProxyTestBase {
         return null;
     }
 
-    protected static String getAuthToken() {
+    protected String getAuthToken() {
         if (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) {
             // we just need some string to satisfy SDK for playback mode. Recording framework handles this fine.
             return "recordingBearerToken";
         }
-        List<String> scopes = new ArrayList<>();
-        scopes.add("https://storage.azure.com/.default");
-        return new EnvironmentCredentialBuilder().build().getToken(new TokenRequestContext().setScopes(scopes)).map(AccessToken::getToken).block();
+        return StorageCommonTestUtils.getTokenCredential(interceptorManager).getTokenSync(new TokenRequestContext()
+                .setScopes(Collections.singletonList("https://storage.azure.com/.default"))).getToken();
     }
 
     protected HttpPipelinePolicy getPerCallVersionPolicy() {

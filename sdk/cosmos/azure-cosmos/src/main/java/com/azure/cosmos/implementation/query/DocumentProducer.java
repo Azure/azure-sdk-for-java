@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.ObservableHelper;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -18,6 +19,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
+import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.query.metrics.FetchExecutionRangeAccumulator;
@@ -48,6 +50,7 @@ import java.util.stream.Collectors;
  * This is meant to be internally used only by our sdk.
  */
 class DocumentProducer<T> {
+
     private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptionsAccessor =
         ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
 
@@ -141,14 +144,18 @@ class DocumentProducer<T> {
             executeFeedOperationCore = (clientRetryPolicyFactory, request) -> {
             DocumentClientRetryPolicy finalRetryPolicy = clientRetryPolicyFactory.get();
             return ObservableHelper.inlineIfPossibleAsObs(
-                () -> {
-                    if(finalRetryPolicy != null) {
-                        finalRetryPolicy.onBeforeSendRequest(request);
-                    }
+                () -> Mono
+                    .just(request)
+                    .flatMap(req -> client.populateFeedRangeHeader(req))
+                    .flatMap(req -> client.addPartitionLevelUnavailableRegionsOnRequest(req, cosmosQueryRequestOptions))
+                    .flatMap(req -> {
 
-                    ++retries;
-                    return executeRequestFunc.apply(request);
-                }, finalRetryPolicy);
+                        if(finalRetryPolicy != null) {
+                            finalRetryPolicy.onBeforeSendRequest(req);
+                        }
+                        ++retries;
+                        return executeRequestFunc.apply(req);
+                    }), finalRetryPolicy);
         };
 
         this.correlatedActivityId = correlatedActivityId;
@@ -174,7 +181,8 @@ class DocumentProducer<T> {
                     return null;
                 },
                 request,
-                executeFeedOperationCore);
+                executeFeedOperationCore,
+                collectionLink);
         };
 
         this.lastResponseContinuationToken = initialContinuationToken;
@@ -198,7 +206,9 @@ class DocumentProducer<T> {
                         pageSize,
                         Paginator.getPreFetchCount(cosmosQueryRequestOptions, top, pageSize),
                         qryOptionsAccessor.getImpl(cosmosQueryRequestOptions).getOperationContextAndListenerTuple(),
-                        qryOptionsAccessor.getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions)
+                        qryOptionsAccessor.getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions),
+                    client.getGlobalEndpointManager(),
+                    client.getGlobalPartitionEndpointManagerForCircuitBreaker()
                 )
                 .map(rsp -> {
                     this.lastResponseContinuationToken = rsp.getContinuationToken();
@@ -229,7 +239,7 @@ class DocumentProducer<T> {
             }
 
             // we are dealing with Split
-            logger.info(
+            logger.debug(
                 "DocumentProducer handling a partition gone in [{}], detail:[{}], Context: {}",
                 feedRange,
                 dce,
@@ -267,7 +277,7 @@ class DocumentProducer<T> {
                                         + " last continuation token is [{}]. - Context: {}",
                                     feedRange,
                                     partitionKeyRangesValueHolder.v.stream()
-                                        .map(ModelBridgeInternal::toJsonFromJsonSerializable)
+                                        .map(JsonSerializable::toJson)
                                         .collect(Collectors.joining(", ")),
                                     lastResponseContinuationToken,
                                     this.operationContextTextProvider.get());

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.containerservicefleet.models.UpdateGroupStatus;
 public final class UpdateGroupStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateGroupStatus model =
-            BinaryData
-                .fromString(
-                    "{\"status\":{\"startTime\":\"2021-07-28T01:41:30Z\",\"completedTime\":\"2021-02-08T16:35:38Z\",\"state\":\"NotStarted\"},\"name\":\"alpbuxwgipwhon\",\"members\":[{\"status\":{\"startTime\":\"2021-09-21T08:55:02Z\",\"completedTime\":\"2021-05-17T00:15:40Z\",\"state\":\"Completed\"},\"name\":\"zbinjeputtm\",\"clusterResourceId\":\"wnuzoqftiyqzrnkc\",\"operationId\":\"yx\",\"message\":\"hzls\"},{\"status\":{\"startTime\":\"2021-12-09T22:32:32Z\",\"completedTime\":\"2021-07-18T20:53:58Z\",\"state\":\"Completed\"},\"name\":\"lryav\",\"clusterResourceId\":\"heun\",\"operationId\":\"qhgyxzkonocukok\",\"message\":\"axuconuq\"}]}")
-                .toObject(UpdateGroupStatus.class);
+        UpdateGroupStatus model = BinaryData.fromString(
+            "{\"status\":{\"startTime\":\"2021-04-23T12:45:15Z\",\"completedTime\":\"2021-10-28T21:12:04Z\",\"state\":\"NotStarted\"},\"name\":\"xw\",\"members\":[{\"status\":{\"startTime\":\"2021-08-16T19:25:13Z\",\"completedTime\":\"2021-04-24T13:32:45Z\",\"state\":\"NotStarted\"},\"name\":\"hwankixzbinjepu\",\"clusterResourceId\":\"mryw\",\"operationId\":\"zoqftiyqzrnkcqvy\",\"message\":\"whzlsicohoq\"},{\"status\":{\"startTime\":\"2021-02-06T08:55:50Z\",\"completedTime\":\"2021-05-07T17:01:09Z\",\"state\":\"Stopping\"},\"name\":\"hheunmmqhgyx\",\"clusterResourceId\":\"onocukok\",\"operationId\":\"axuconuq\",\"message\":\"fkbey\"},{\"status\":{\"startTime\":\"2021-10-05T00:39Z\",\"completedTime\":\"2021-07-13T21:41:56Z\",\"state\":\"Failed\"},\"name\":\"jektcxsenh\",\"clusterResourceId\":\"rsffrzpwvlqdqgbi\",\"operationId\":\"lihkaetcktvfc\",\"message\":\"fsnkymuctq\"}]}")
+            .toObject(UpdateGroupStatus.class);
     }
 
     @org.junit.jupiter.api.Test

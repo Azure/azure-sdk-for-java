@@ -5,7 +5,10 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Transformation for data flow sink.
@@ -15,13 +18,11 @@ public final class DataFlowSink extends Transformation {
     /*
      * Schema linked service reference.
      */
-    @JsonProperty(value = "schemaLinkedService")
     private LinkedServiceReference schemaLinkedService;
 
     /*
      * Rejected data linked service reference.
      */
-    @JsonProperty(value = "rejectedDataLinkedService")
     private LinkedServiceReference rejectedDataLinkedService;
 
     /**
@@ -113,5 +114,60 @@ public final class DataFlowSink extends Transformation {
     public DataFlowSink setFlowlet(DataFlowReference flowlet) {
         super.setFlowlet(flowlet);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeJsonField("dataset", getDataset());
+        jsonWriter.writeJsonField("linkedService", getLinkedService());
+        jsonWriter.writeJsonField("flowlet", getFlowlet());
+        jsonWriter.writeJsonField("schemaLinkedService", this.schemaLinkedService);
+        jsonWriter.writeJsonField("rejectedDataLinkedService", this.rejectedDataLinkedService);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataFlowSink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataFlowSink if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataFlowSink.
+     */
+    public static DataFlowSink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataFlowSink deserializedDataFlowSink = new DataFlowSink();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDataFlowSink.setName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedDataFlowSink.setDescription(reader.getString());
+                } else if ("dataset".equals(fieldName)) {
+                    deserializedDataFlowSink.setDataset(DatasetReference.fromJson(reader));
+                } else if ("linkedService".equals(fieldName)) {
+                    deserializedDataFlowSink.setLinkedService(LinkedServiceReference.fromJson(reader));
+                } else if ("flowlet".equals(fieldName)) {
+                    deserializedDataFlowSink.setFlowlet(DataFlowReference.fromJson(reader));
+                } else if ("schemaLinkedService".equals(fieldName)) {
+                    deserializedDataFlowSink.schemaLinkedService = LinkedServiceReference.fromJson(reader);
+                } else if ("rejectedDataLinkedService".equals(fieldName)) {
+                    deserializedDataFlowSink.rejectedDataLinkedService = LinkedServiceReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataFlowSink;
+        });
     }
 }

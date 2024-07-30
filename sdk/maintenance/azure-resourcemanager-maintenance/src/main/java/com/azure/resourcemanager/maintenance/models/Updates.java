@@ -7,13 +7,15 @@ package com.azure.resourcemanager.maintenance.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Updates. */
+/**
+ * Resource collection API of Updates.
+ */
 public interface Updates {
     /**
      * Get Updates to resource
-     *
-     * <p>Get updates to resources.
-     *
+     * 
+     * Get updates to resources.
+     * 
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
      * @param resourceParentType Resource parent type.
@@ -25,19 +27,14 @@ public interface Updates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return updates to resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Update> listParent(
-        String resourceGroupName,
-        String providerName,
-        String resourceParentType,
-        String resourceParentName,
-        String resourceType,
-        String resourceName);
+    PagedIterable<Update> listParent(String resourceGroupName, String providerName, String resourceParentType,
+        String resourceParentName, String resourceType, String resourceName);
 
     /**
      * Get Updates to resource
-     *
-     * <p>Get updates to resources.
-     *
+     * 
+     * Get updates to resources.
+     * 
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
      * @param resourceParentType Resource parent type.
@@ -50,20 +47,14 @@ public interface Updates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return updates to resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Update> listParent(
-        String resourceGroupName,
-        String providerName,
-        String resourceParentType,
-        String resourceParentName,
-        String resourceType,
-        String resourceName,
-        Context context);
+    PagedIterable<Update> listParent(String resourceGroupName, String providerName, String resourceParentType,
+        String resourceParentName, String resourceType, String resourceName, Context context);
 
     /**
      * Get Updates to resource
-     *
-     * <p>Get updates to resources.
-     *
+     * 
+     * Get updates to resources.
+     * 
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
      * @param resourceType Resource type.
@@ -77,9 +68,9 @@ public interface Updates {
 
     /**
      * Get Updates to resource
-     *
-     * <p>Get updates to resources.
-     *
+     * 
+     * Get updates to resources.
+     * 
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
      * @param resourceType Resource type.
@@ -90,6 +81,6 @@ public interface Updates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return updates to resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Update> list(
-        String resourceGroupName, String providerName, String resourceType, String resourceName, Context context);
+    PagedIterable<Update> list(String resourceGroupName, String providerName, String resourceType, String resourceName,
+        Context context);
 }

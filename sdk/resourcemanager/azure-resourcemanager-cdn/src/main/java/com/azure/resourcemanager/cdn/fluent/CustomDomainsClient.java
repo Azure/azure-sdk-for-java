@@ -20,11 +20,13 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CustomDomainsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CustomDomainsClient.
+ */
 public interface CustomDomainsClient {
     /**
      * Lists all of the existing custom domains within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -38,7 +40,7 @@ public interface CustomDomainsClient {
 
     /**
      * Lists all of the existing custom domains within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -52,7 +54,7 @@ public interface CustomDomainsClient {
 
     /**
      * Lists all of the existing custom domains within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -63,12 +65,12 @@ public interface CustomDomainsClient {
      * @return result of the request to list custom domains as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CustomDomainInner> listByEndpoint(
-        String resourceGroupName, String profileName, String endpointName, Context context);
+    PagedIterable<CustomDomainInner> listByEndpoint(String resourceGroupName, String profileName, String endpointName,
+        Context context);
 
     /**
      * Gets an existing custom domain within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -77,15 +79,15 @@ public interface CustomDomainsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing custom domain within an endpoint along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CustomDomainInner>> getWithResponseAsync(
-        String resourceGroupName, String profileName, String endpointName, String customDomainName);
+    Mono<Response<CustomDomainInner>> getWithResponseAsync(String resourceGroupName, String profileName,
+        String endpointName, String customDomainName);
 
     /**
      * Gets an existing custom domain within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -96,12 +98,12 @@ public interface CustomDomainsClient {
      * @return an existing custom domain within an endpoint on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CustomDomainInner> getAsync(
-        String resourceGroupName, String profileName, String endpointName, String customDomainName);
+    Mono<CustomDomainInner> getAsync(String resourceGroupName, String profileName, String endpointName,
+        String customDomainName);
 
     /**
      * Gets an existing custom domain within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -113,12 +115,12 @@ public interface CustomDomainsClient {
      * @return an existing custom domain within an endpoint along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CustomDomainInner> getWithResponse(
-        String resourceGroupName, String profileName, String endpointName, String customDomainName, Context context);
+    Response<CustomDomainInner> getWithResponse(String resourceGroupName, String profileName, String endpointName,
+        String customDomainName, Context context);
 
     /**
      * Gets an existing custom domain within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -133,7 +135,7 @@ public interface CustomDomainsClient {
 
     /**
      * Creates a new custom domain within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -143,19 +145,15 @@ public interface CustomDomainsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.g along with {@link Response} on successful completion of {@link Mono}.
+     * e.g along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String customDomainName,
-        CustomDomainParameters customDomainProperties);
+    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String profileName,
+        String endpointName, String customDomainName, CustomDomainParameters customDomainProperties);
 
     /**
      * Creates a new custom domain within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -165,19 +163,16 @@ public interface CustomDomainsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of friendly domain name mapping to the endpoint hostname that the
-     *     customer provides for branding purposes, e.g.
+     * customer provides for branding purposes, e.g.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<CustomDomainInner>, CustomDomainInner> beginCreateAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String customDomainName,
+    PollerFlux<PollResult<CustomDomainInner>, CustomDomainInner> beginCreateAsync(String resourceGroupName,
+        String profileName, String endpointName, String customDomainName,
         CustomDomainParameters customDomainProperties);
 
     /**
      * Creates a new custom domain within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -187,19 +182,16 @@ public interface CustomDomainsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of friendly domain name mapping to the endpoint hostname that the
-     *     customer provides for branding purposes, e.g.
+     * customer provides for branding purposes, e.g.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginCreate(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String customDomainName,
+    SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginCreate(String resourceGroupName,
+        String profileName, String endpointName, String customDomainName,
         CustomDomainParameters customDomainProperties);
 
     /**
      * Creates a new custom domain within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -210,20 +202,16 @@ public interface CustomDomainsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of friendly domain name mapping to the endpoint hostname that the
-     *     customer provides for branding purposes, e.g.
+     * customer provides for branding purposes, e.g.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginCreate(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String customDomainName,
-        CustomDomainParameters customDomainProperties,
+    SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginCreate(String resourceGroupName,
+        String profileName, String endpointName, String customDomainName, CustomDomainParameters customDomainProperties,
         Context context);
 
     /**
      * Creates a new custom domain within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -233,19 +221,15 @@ public interface CustomDomainsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.g on successful completion of {@link Mono}.
+     * e.g on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CustomDomainInner> createAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String customDomainName,
-        CustomDomainParameters customDomainProperties);
+    Mono<CustomDomainInner> createAsync(String resourceGroupName, String profileName, String endpointName,
+        String customDomainName, CustomDomainParameters customDomainProperties);
 
     /**
      * Creates a new custom domain within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -255,19 +239,15 @@ public interface CustomDomainsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.g.
+     * e.g.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomDomainInner create(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String customDomainName,
+    CustomDomainInner create(String resourceGroupName, String profileName, String endpointName, String customDomainName,
         CustomDomainParameters customDomainProperties);
 
     /**
      * Creates a new custom domain within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -278,20 +258,15 @@ public interface CustomDomainsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.g.
+     * e.g.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomDomainInner create(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String customDomainName,
-        CustomDomainParameters customDomainProperties,
-        Context context);
+    CustomDomainInner create(String resourceGroupName, String profileName, String endpointName, String customDomainName,
+        CustomDomainParameters customDomainProperties, Context context);
 
     /**
      * Deletes an existing custom domain within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -302,12 +277,12 @@ public interface CustomDomainsClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String profileName, String endpointName, String customDomainName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String profileName,
+        String endpointName, String customDomainName);
 
     /**
      * Deletes an existing custom domain within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -318,12 +293,12 @@ public interface CustomDomainsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<CustomDomainInner>, CustomDomainInner> beginDeleteAsync(
-        String resourceGroupName, String profileName, String endpointName, String customDomainName);
+    PollerFlux<PollResult<CustomDomainInner>, CustomDomainInner> beginDeleteAsync(String resourceGroupName,
+        String profileName, String endpointName, String customDomainName);
 
     /**
      * Deletes an existing custom domain within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -334,12 +309,12 @@ public interface CustomDomainsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginDelete(
-        String resourceGroupName, String profileName, String endpointName, String customDomainName);
+    SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginDelete(String resourceGroupName,
+        String profileName, String endpointName, String customDomainName);
 
     /**
      * Deletes an existing custom domain within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -351,12 +326,12 @@ public interface CustomDomainsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginDelete(
-        String resourceGroupName, String profileName, String endpointName, String customDomainName, Context context);
+    SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginDelete(String resourceGroupName,
+        String profileName, String endpointName, String customDomainName, Context context);
 
     /**
      * Deletes an existing custom domain within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -367,12 +342,12 @@ public interface CustomDomainsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CustomDomainInner> deleteAsync(
-        String resourceGroupName, String profileName, String endpointName, String customDomainName);
+    Mono<CustomDomainInner> deleteAsync(String resourceGroupName, String profileName, String endpointName,
+        String customDomainName);
 
     /**
      * Deletes an existing custom domain within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -383,12 +358,12 @@ public interface CustomDomainsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomDomainInner delete(
-        String resourceGroupName, String profileName, String endpointName, String customDomainName);
+    CustomDomainInner delete(String resourceGroupName, String profileName, String endpointName,
+        String customDomainName);
 
     /**
      * Deletes an existing custom domain within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -400,265 +375,12 @@ public interface CustomDomainsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomDomainInner delete(
-        String resourceGroupName, String profileName, String endpointName, String customDomainName, Context context);
-
-    /**
-     * Disable https delivery of the custom domain.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.g along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> disableCustomHttpsWithResponseAsync(
-        String resourceGroupName, String profileName, String endpointName, String customDomainName);
-
-    /**
-     * Disable https delivery of the custom domain.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of friendly domain name mapping to the endpoint hostname that the
-     *     customer provides for branding purposes, e.g.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<CustomDomainInner>, CustomDomainInner> beginDisableCustomHttpsAsync(
-        String resourceGroupName, String profileName, String endpointName, String customDomainName);
-
-    /**
-     * Disable https delivery of the custom domain.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of friendly domain name mapping to the endpoint hostname that the
-     *     customer provides for branding purposes, e.g.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginDisableCustomHttps(
-        String resourceGroupName, String profileName, String endpointName, String customDomainName);
-
-    /**
-     * Disable https delivery of the custom domain.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of friendly domain name mapping to the endpoint hostname that the
-     *     customer provides for branding purposes, e.g.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginDisableCustomHttps(
-        String resourceGroupName, String profileName, String endpointName, String customDomainName, Context context);
-
-    /**
-     * Disable https delivery of the custom domain.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.g on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CustomDomainInner> disableCustomHttpsAsync(
-        String resourceGroupName, String profileName, String endpointName, String customDomainName);
-
-    /**
-     * Disable https delivery of the custom domain.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.g.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomDomainInner disableCustomHttps(
-        String resourceGroupName, String profileName, String endpointName, String customDomainName);
-
-    /**
-     * Disable https delivery of the custom domain.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.g.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomDomainInner disableCustomHttps(
-        String resourceGroupName, String profileName, String endpointName, String customDomainName, Context context);
-
-    /**
-     * Enable https delivery of the custom domain.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @param customDomainHttpsParameters The configuration specifying how to enable HTTPS for the custom domain - using
-     *     CDN managed certificate or user's own certificate. If not specified, enabling ssl uses CDN managed
-     *     certificate by default.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.g along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> enableCustomHttpsWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String customDomainName,
-        CustomDomainHttpsParameters customDomainHttpsParameters);
-
-    /**
-     * Enable https delivery of the custom domain.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @param customDomainHttpsParameters The configuration specifying how to enable HTTPS for the custom domain - using
-     *     CDN managed certificate or user's own certificate. If not specified, enabling ssl uses CDN managed
-     *     certificate by default.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of friendly domain name mapping to the endpoint hostname that the
-     *     customer provides for branding purposes, e.g.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<CustomDomainInner>, CustomDomainInner> beginEnableCustomHttpsAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String customDomainName,
-        CustomDomainHttpsParameters customDomainHttpsParameters);
-
-    /**
-     * Enable https delivery of the custom domain.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of friendly domain name mapping to the endpoint hostname that the
-     *     customer provides for branding purposes, e.g.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<CustomDomainInner>, CustomDomainInner> beginEnableCustomHttpsAsync(
-        String resourceGroupName, String profileName, String endpointName, String customDomainName);
-
-    /**
-     * Enable https delivery of the custom domain.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of friendly domain name mapping to the endpoint hostname that the
-     *     customer provides for branding purposes, e.g.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginEnableCustomHttps(
-        String resourceGroupName, String profileName, String endpointName, String customDomainName);
-
-    /**
-     * Enable https delivery of the custom domain.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @param customDomainHttpsParameters The configuration specifying how to enable HTTPS for the custom domain - using
-     *     CDN managed certificate or user's own certificate. If not specified, enabling ssl uses CDN managed
-     *     certificate by default.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of friendly domain name mapping to the endpoint hostname that the
-     *     customer provides for branding purposes, e.g.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginEnableCustomHttps(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String customDomainName,
-        CustomDomainHttpsParameters customDomainHttpsParameters,
+    CustomDomainInner delete(String resourceGroupName, String profileName, String endpointName, String customDomainName,
         Context context);
 
     /**
-     * Enable https delivery of the custom domain.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @param customDomainHttpsParameters The configuration specifying how to enable HTTPS for the custom domain - using
-     *     CDN managed certificate or user's own certificate. If not specified, enabling ssl uses CDN managed
-     *     certificate by default.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.g on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CustomDomainInner> enableCustomHttpsAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String customDomainName,
-        CustomDomainHttpsParameters customDomainHttpsParameters);
-
-    /**
-     * Enable https delivery of the custom domain.
-     *
+     * Disable https delivery of the custom domain.
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -667,15 +389,67 @@ public interface CustomDomainsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.g on successful completion of {@link Mono}.
+     * e.g along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CustomDomainInner> enableCustomHttpsAsync(
-        String resourceGroupName, String profileName, String endpointName, String customDomainName);
+    Mono<Response<Flux<ByteBuffer>>> disableCustomHttpsWithResponseAsync(String resourceGroupName, String profileName,
+        String endpointName, String customDomainName);
 
     /**
-     * Enable https delivery of the custom domain.
-     *
+     * Disable https delivery of the custom domain.
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of friendly domain name mapping to the endpoint hostname that the
+     * customer provides for branding purposes, e.g.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<CustomDomainInner>, CustomDomainInner> beginDisableCustomHttpsAsync(String resourceGroupName,
+        String profileName, String endpointName, String customDomainName);
+
+    /**
+     * Disable https delivery of the custom domain.
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of friendly domain name mapping to the endpoint hostname that the
+     * customer provides for branding purposes, e.g.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginDisableCustomHttps(String resourceGroupName,
+        String profileName, String endpointName, String customDomainName);
+
+    /**
+     * Disable https delivery of the custom domain.
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of friendly domain name mapping to the endpoint hostname that the
+     * customer provides for branding purposes, e.g.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginDisableCustomHttps(String resourceGroupName,
+        String profileName, String endpointName, String customDomainName, Context context);
+
+    /**
+     * Disable https delivery of the custom domain.
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -684,35 +458,216 @@ public interface CustomDomainsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.g.
+     * e.g on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomDomainInner enableCustomHttps(
-        String resourceGroupName, String profileName, String endpointName, String customDomainName);
+    Mono<CustomDomainInner> disableCustomHttpsAsync(String resourceGroupName, String profileName, String endpointName,
+        String customDomainName);
 
     /**
-     * Enable https delivery of the custom domain.
-     *
+     * Disable https delivery of the custom domain.
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param customDomainName Name of the custom domain within an endpoint.
-     * @param customDomainHttpsParameters The configuration specifying how to enable HTTPS for the custom domain - using
-     *     CDN managed certificate or user's own certificate. If not specified, enabling ssl uses CDN managed
-     *     certificate by default.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
+     * e.g.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CustomDomainInner disableCustomHttps(String resourceGroupName, String profileName, String endpointName,
+        String customDomainName);
+
+    /**
+     * Disable https delivery of the custom domain.
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.g.
+     * e.g.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomDomainInner enableCustomHttps(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String customDomainName,
-        CustomDomainHttpsParameters customDomainHttpsParameters,
-        Context context);
+    CustomDomainInner disableCustomHttps(String resourceGroupName, String profileName, String endpointName,
+        String customDomainName, Context context);
+
+    /**
+     * Enable https delivery of the custom domain.
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
+     * @param customDomainHttpsParameters The configuration specifying how to enable HTTPS for the custom domain - using
+     * CDN managed certificate or user's own certificate. If not specified, enabling ssl uses CDN managed certificate by
+     * default.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
+     * e.g along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> enableCustomHttpsWithResponseAsync(String resourceGroupName, String profileName,
+        String endpointName, String customDomainName, CustomDomainHttpsParameters customDomainHttpsParameters);
+
+    /**
+     * Enable https delivery of the custom domain.
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
+     * @param customDomainHttpsParameters The configuration specifying how to enable HTTPS for the custom domain - using
+     * CDN managed certificate or user's own certificate. If not specified, enabling ssl uses CDN managed certificate by
+     * default.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of friendly domain name mapping to the endpoint hostname that the
+     * customer provides for branding purposes, e.g.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<CustomDomainInner>, CustomDomainInner> beginEnableCustomHttpsAsync(String resourceGroupName,
+        String profileName, String endpointName, String customDomainName,
+        CustomDomainHttpsParameters customDomainHttpsParameters);
+
+    /**
+     * Enable https delivery of the custom domain.
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of friendly domain name mapping to the endpoint hostname that the
+     * customer provides for branding purposes, e.g.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<CustomDomainInner>, CustomDomainInner> beginEnableCustomHttpsAsync(String resourceGroupName,
+        String profileName, String endpointName, String customDomainName);
+
+    /**
+     * Enable https delivery of the custom domain.
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of friendly domain name mapping to the endpoint hostname that the
+     * customer provides for branding purposes, e.g.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginEnableCustomHttps(String resourceGroupName,
+        String profileName, String endpointName, String customDomainName);
+
+    /**
+     * Enable https delivery of the custom domain.
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
+     * @param customDomainHttpsParameters The configuration specifying how to enable HTTPS for the custom domain - using
+     * CDN managed certificate or user's own certificate. If not specified, enabling ssl uses CDN managed certificate by
+     * default.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of friendly domain name mapping to the endpoint hostname that the
+     * customer provides for branding purposes, e.g.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginEnableCustomHttps(String resourceGroupName,
+        String profileName, String endpointName, String customDomainName,
+        CustomDomainHttpsParameters customDomainHttpsParameters, Context context);
+
+    /**
+     * Enable https delivery of the custom domain.
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
+     * @param customDomainHttpsParameters The configuration specifying how to enable HTTPS for the custom domain - using
+     * CDN managed certificate or user's own certificate. If not specified, enabling ssl uses CDN managed certificate by
+     * default.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
+     * e.g on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<CustomDomainInner> enableCustomHttpsAsync(String resourceGroupName, String profileName, String endpointName,
+        String customDomainName, CustomDomainHttpsParameters customDomainHttpsParameters);
+
+    /**
+     * Enable https delivery of the custom domain.
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
+     * e.g on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<CustomDomainInner> enableCustomHttpsAsync(String resourceGroupName, String profileName, String endpointName,
+        String customDomainName);
+
+    /**
+     * Enable https delivery of the custom domain.
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
+     * e.g.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CustomDomainInner enableCustomHttps(String resourceGroupName, String profileName, String endpointName,
+        String customDomainName);
+
+    /**
+     * Enable https delivery of the custom domain.
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
+     * @param customDomainHttpsParameters The configuration specifying how to enable HTTPS for the custom domain - using
+     * CDN managed certificate or user's own certificate. If not specified, enabling ssl uses CDN managed certificate by
+     * default.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
+     * e.g.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CustomDomainInner enableCustomHttps(String resourceGroupName, String profileName, String endpointName,
+        String customDomainName, CustomDomainHttpsParameters customDomainHttpsParameters, Context context);
 }

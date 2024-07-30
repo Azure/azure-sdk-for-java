@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class NetworkSecurityGroupsListSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkSecurityGroupListAll.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkSecurityGroupListAll.
      * json
      */
     /**

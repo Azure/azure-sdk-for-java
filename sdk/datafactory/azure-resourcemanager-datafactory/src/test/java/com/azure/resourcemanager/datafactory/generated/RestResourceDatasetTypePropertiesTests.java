@@ -13,17 +13,20 @@ public final class RestResourceDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestResourceDatasetTypeProperties model = BinaryData.fromString(
-            "{\"relativeUrl\":\"dataklgerxactsawv\",\"requestMethod\":\"dataimpthj\",\"requestBody\":\"dataplzmslubnk\",\"additionalHeaders\":{\"lfswarmybwmro\":\"datauysjhvrr\",\"cbfnxiajuv\":\"datageysyqnipehfw\"},\"paginationRules\":{\"zguaxfhvjixgofqd\":\"datafjisosfzlnraxnf\",\"jmi\":\"dataw\",\"ntlydprpensbmzj\":\"datauvrqpbxdoicqp\",\"hbfexmizz\":\"dataitukoy\"}}")
+            "{\"relativeUrl\":\"datayxxhwrlqom\",\"requestMethod\":\"datasyilpzzbrwnrzoz\",\"requestBody\":\"dataagysokl\",\"additionalHeaders\":{\"bvrrbnh\":\"datas\",\"bhujcydyl\":\"datal\",\"izsyq\":\"datamxvps\",\"llcbrva\":\"datag\"},\"paginationRules\":{\"jjrnogykugdlavsa\":\"datalkyhtrrqwfyybpt\",\"fkbzbfbxjblajy\":\"datagthkslgeu\",\"dj\":\"datadnbycsbtoisa\",\"zxgnywxu\":\"dataofsv\"}}")
             .toObject(RestResourceDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RestResourceDatasetTypeProperties model = new RestResourceDatasetTypeProperties()
-            .withRelativeUrl("dataklgerxactsawv").withRequestMethod("dataimpthj").withRequestBody("dataplzmslubnk")
-            .withAdditionalHeaders(mapOf("lfswarmybwmro", "datauysjhvrr", "cbfnxiajuv", "datageysyqnipehfw"))
-            .withPaginationRules(mapOf("zguaxfhvjixgofqd", "datafjisosfzlnraxnf", "jmi", "dataw", "ntlydprpensbmzj",
-                "datauvrqpbxdoicqp", "hbfexmizz", "dataitukoy"));
+        RestResourceDatasetTypeProperties model
+            = new RestResourceDatasetTypeProperties().withRelativeUrl("datayxxhwrlqom")
+                .withRequestMethod("datasyilpzzbrwnrzoz")
+                .withRequestBody("dataagysokl")
+                .withAdditionalHeaders(
+                    mapOf("bvrrbnh", "datas", "bhujcydyl", "datal", "izsyq", "datamxvps", "llcbrva", "datag"))
+                .withPaginationRules(mapOf("jjrnogykugdlavsa", "datalkyhtrrqwfyybpt", "fkbzbfbxjblajy", "datagthkslgeu",
+                    "dj", "datadnbycsbtoisa", "zxgnywxu", "dataofsv"));
         model = BinaryData.fromObject(model).toObject(RestResourceDatasetTypeProperties.class);
     }
 

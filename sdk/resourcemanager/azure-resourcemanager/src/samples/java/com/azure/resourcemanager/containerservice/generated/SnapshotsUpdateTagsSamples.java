@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerservice.generated;
 
 import com.azure.resourcemanager.containerservice.models.TagsObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,18 +15,22 @@ import java.util.Map;
 public final class SnapshotsUpdateTagsSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-01-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
      * SnapshotsUpdateTags.json
      */
     /**
      * Sample code: Update Snapshot Tags.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateSnapshotTags(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.kubernetesClusters().manager().serviceClient().getSnapshots().updateTagsWithResponse("rg1", "snapshot1",
-            new TagsObject().withTags(mapOf("key2", "fakeTokenPlaceholder", "key3", "fakeTokenPlaceholder")),
-            com.azure.core.util.Context.NONE);
+        azure.kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getSnapshots()
+            .updateTagsWithResponse("rg1", "snapshot1",
+                new TagsObject().withTags(mapOf("key2", "fakeTokenPlaceholder", "key3", "fakeTokenPlaceholder")),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

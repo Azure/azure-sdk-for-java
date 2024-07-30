@@ -6,66 +6,35 @@ package com.azure.resourcemanager.hybridcompute.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcompute.HybridComputeManager;
 import com.azure.resourcemanager.hybridcompute.models.PrivateLinkScopeValidationDetails;
 import com.azure.resourcemanager.hybridcompute.models.PublicNetworkAccessType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PrivateLinkScopesGetValidationDetailsForMachineWithResponseMockTests {
     @Test
     public void testGetValidationDetailsForMachineWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"id\":\"xihspnxwq\",\"publicNetworkAccess\":\"Enabled\",\"connectionDetails\":[{\"id\":\"waklsbsbqq\",\"privateIpAddress\":\"gwwrxaomzis\",\"linkIdentifier\":\"rrczezkhhltnj\",\"groupId\":\"hqo\",\"memberName\":\"jqoyueayfbpcm\"},{\"id\":\"lbyrru\",\"privateIpAddress\":\"thwmgnmbsc\",\"linkIdentifier\":\"xigdhxiidlope\",\"groupId\":\"wdpyq\",\"memberName\":\"bxubmdna\"},{\"id\":\"bqwremjela\",\"privateIpAddress\":\"cigeleohdbvqvw\",\"linkIdentifier\":\"jopwbeonrlkwz\",\"groupId\":\"ybxc\",\"memberName\":\"kxcpt\"},{\"id\":\"qfyiaseqchkr\",\"privateIpAddress\":\"zrazisgyk\",\"linkIdentifier\":\"emv\",\"groupId\":\"bwzohmnrxxbs\",\"memberName\":\"klinhmdptysprq\"}]}";
 
-        String responseStr =
-            "{\"id\":\"qtferrqwexjkmf\",\"publicNetworkAccess\":\"Disabled\",\"connectionDetails\":[{\"id\":\"gqqnobpudcda\",\"privateIpAddress\":\"qwpwyawbzasqbuc\",\"linkIdentifier\":\"gkyexaoguy\",\"groupId\":\"p\",\"memberName\":\"sdaultxij\"},{\"id\":\"mfqwa\",\"privateIpAddress\":\"nqnm\",\"linkIdentifier\":\"ngz\",\"groupId\":\"qxtbjwgnyf\",\"memberName\":\"fzsvtuikzh\"},{\"id\":\"qglcfhmlrqryxynq\",\"privateIpAddress\":\"rd\",\"linkIdentifier\":\"ovw\",\"groupId\":\"nptgoeiybba\",\"memberName\":\"fhvfsl\"},{\"id\":\"ntjlr\",\"privateIpAddress\":\"jkskyr\",\"linkIdentifier\":\"ovzidsx\",\"groupId\":\"abzmifrygznmmaxr\",\"memberName\":\"kzobgopxlhsln\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        HybridComputeManager manager = HybridComputeManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PrivateLinkScopeValidationDetails response = manager.privateLinkScopes()
+            .getValidationDetailsForMachineWithResponse("vctafsrb", "rblmli", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        HybridComputeManager manager =
-            HybridComputeManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PrivateLinkScopeValidationDetails response =
-            manager
-                .privateLinkScopes()
-                .getValidationDetailsForMachineWithResponse("ewjwiuubw", "fqsfa", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals(PublicNetworkAccessType.DISABLED, response.publicNetworkAccess());
+        Assertions.assertEquals(PublicNetworkAccessType.ENABLED, response.publicNetworkAccess());
     }
 }

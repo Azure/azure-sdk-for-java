@@ -13,22 +13,24 @@ public final class SqlDataDirectoryMappingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlDataDirectoryMapping model = BinaryData.fromString(
-            "{\"mappingType\":\"Log\",\"sourceLogicalName\":\"ijjumfq\",\"sourcePath\":\"z\",\"targetPath\":\"qnmcjngzqdqx\"}")
+            "{\"mappingType\":\"Log\",\"sourceLogicalName\":\"mik\",\"sourcePath\":\"tbzbkiwbuqnyophz\",\"targetPath\":\"l\"}")
             .toObject(SqlDataDirectoryMapping.class);
         Assertions.assertEquals(SqlDataDirectoryType.LOG, model.mappingType());
-        Assertions.assertEquals("ijjumfq", model.sourceLogicalName());
-        Assertions.assertEquals("z", model.sourcePath());
-        Assertions.assertEquals("qnmcjngzqdqx", model.targetPath());
+        Assertions.assertEquals("mik", model.sourceLogicalName());
+        Assertions.assertEquals("tbzbkiwbuqnyophz", model.sourcePath());
+        Assertions.assertEquals("l", model.targetPath());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SqlDataDirectoryMapping model = new SqlDataDirectoryMapping().withMappingType(SqlDataDirectoryType.LOG)
-            .withSourceLogicalName("ijjumfq").withSourcePath("z").withTargetPath("qnmcjngzqdqx");
+            .withSourceLogicalName("mik")
+            .withSourcePath("tbzbkiwbuqnyophz")
+            .withTargetPath("l");
         model = BinaryData.fromObject(model).toObject(SqlDataDirectoryMapping.class);
         Assertions.assertEquals(SqlDataDirectoryType.LOG, model.mappingType());
-        Assertions.assertEquals("ijjumfq", model.sourceLogicalName());
-        Assertions.assertEquals("z", model.sourcePath());
-        Assertions.assertEquals("qnmcjngzqdqx", model.targetPath());
+        Assertions.assertEquals("mik", model.sourceLogicalName());
+        Assertions.assertEquals("tbzbkiwbuqnyophz", model.sourcePath());
+        Assertions.assertEquals("l", model.targetPath());
     }
 }

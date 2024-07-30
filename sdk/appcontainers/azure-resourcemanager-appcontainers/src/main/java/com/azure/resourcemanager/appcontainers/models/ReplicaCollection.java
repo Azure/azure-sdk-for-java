@@ -7,18 +7,20 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.resourcemanager.appcontainers.fluent.models.ReplicaCollectionInner;
 import java.util.List;
 
-/** An immutable client-side representation of ReplicaCollection. */
+/**
+ * An immutable client-side representation of ReplicaCollection.
+ */
 public interface ReplicaCollection {
     /**
      * Gets the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     List<Replica> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.appcontainers.fluent.models.ReplicaCollectionInner object.
-     *
+     * 
      * @return the inner object.
      */
     ReplicaCollectionInner innerModel();

@@ -5,15 +5,20 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Parameters to use when configuring Azure OpenAI On Your Data chat extensions when using Azure Cosmos DB for
  * MongoDB vCore. The supported authentication type is ConnectionString.
  */
 @Fluent
-public final class AzureCosmosDBChatExtensionParameters {
+public final class AzureCosmosDBChatExtensionParameters
+    implements JsonSerializable<AzureCosmosDBChatExtensionParameters> {
 
     /*
      * The authentication method to use when accessing the defined data source.
@@ -24,21 +29,18 @@ public final class AzureCosmosDBChatExtensionParameters {
      * authentication.
      */
     @Generated
-    @JsonProperty(value = "authentication")
     private OnYourDataAuthenticationOptions authentication;
 
     /*
      * The configured top number of documents to feature for the configured query.
      */
     @Generated
-    @JsonProperty(value = "top_n_documents")
     private Integer topNDocuments;
 
     /*
      * Whether queries should be restricted to use of indexed data.
      */
     @Generated
-    @JsonProperty(value = "in_scope")
     private Boolean inScope;
 
     /*
@@ -46,7 +48,6 @@ public final class AzureCosmosDBChatExtensionParameters {
      * precision but lower recall of the answer.
      */
     @Generated
-    @JsonProperty(value = "strictness")
     private Integer strictness;
 
     /*
@@ -55,43 +56,37 @@ public final class AzureCosmosDBChatExtensionParameters {
      * limit for it, and it counts against the overall token limit.
      */
     @Generated
-    @JsonProperty(value = "role_information")
     private String roleInformation;
 
     /*
      * The MongoDB vCore database name to use with Azure Cosmos DB.
      */
     @Generated
-    @JsonProperty(value = "database_name")
-    private String databaseName;
+    private final String databaseName;
 
     /*
      * The name of the Azure Cosmos DB resource container.
      */
     @Generated
-    @JsonProperty(value = "container_name")
-    private String containerName;
+    private final String containerName;
 
     /*
      * The MongoDB vCore index name to use with Azure Cosmos DB.
      */
     @Generated
-    @JsonProperty(value = "index_name")
-    private String indexName;
+    private final String indexName;
 
     /*
      * Customized field mapping behavior to use when interacting with the search index.
      */
     @Generated
-    @JsonProperty(value = "fields_mapping")
-    private AzureCosmosDBFieldMappingOptions fieldsMapping;
+    private final AzureCosmosDBFieldMappingOptions fieldsMapping;
 
     /*
      * The embedding dependency for vector search.
      */
     @Generated
-    @JsonProperty(value = "embedding_dependency")
-    private OnYourDataVectorizationSource embeddingDependency;
+    private final OnYourDataVectorizationSource embeddingDependency;
 
     /**
      * Get the authentication property: The authentication method to use when accessing the defined data source.
@@ -279,16 +274,207 @@ public final class AzureCosmosDBChatExtensionParameters {
      * @param embeddingDependency the embeddingDependency value to set.
      */
     @Generated
-    @JsonCreator
-    public AzureCosmosDBChatExtensionParameters(@JsonProperty(value = "database_name") String databaseName,
-        @JsonProperty(value = "container_name") String containerName,
-        @JsonProperty(value = "index_name") String indexName,
-        @JsonProperty(value = "fields_mapping") AzureCosmosDBFieldMappingOptions fieldsMapping,
-        @JsonProperty(value = "embedding_dependency") OnYourDataVectorizationSource embeddingDependency) {
+    public AzureCosmosDBChatExtensionParameters(String databaseName, String containerName, String indexName,
+        AzureCosmosDBFieldMappingOptions fieldsMapping, OnYourDataVectorizationSource embeddingDependency) {
         this.databaseName = databaseName;
         this.containerName = containerName;
         this.indexName = indexName;
         this.fieldsMapping = fieldsMapping;
         this.embeddingDependency = embeddingDependency;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("database_name", this.databaseName);
+        jsonWriter.writeStringField("container_name", this.containerName);
+        jsonWriter.writeStringField("index_name", this.indexName);
+        jsonWriter.writeJsonField("fields_mapping", this.fieldsMapping);
+        jsonWriter.writeJsonField("embedding_dependency", this.embeddingDependency);
+        jsonWriter.writeJsonField("authentication", this.authentication);
+        jsonWriter.writeNumberField("top_n_documents", this.topNDocuments);
+        jsonWriter.writeBooleanField("in_scope", this.inScope);
+        jsonWriter.writeNumberField("strictness", this.strictness);
+        jsonWriter.writeStringField("role_information", this.roleInformation);
+        jsonWriter.writeNumberField("max_search_queries", this.maxSearchQueries);
+        jsonWriter.writeBooleanField("allow_partial_result", this.allowPartialResult);
+        jsonWriter.writeArrayField("include_contexts", this.includeContexts,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureCosmosDBChatExtensionParameters from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureCosmosDBChatExtensionParameters if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureCosmosDBChatExtensionParameters.
+     */
+    @Generated
+    public static AzureCosmosDBChatExtensionParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String databaseName = null;
+            String containerName = null;
+            String indexName = null;
+            AzureCosmosDBFieldMappingOptions fieldsMapping = null;
+            OnYourDataVectorizationSource embeddingDependency = null;
+            OnYourDataAuthenticationOptions authentication = null;
+            Integer topNDocuments = null;
+            Boolean inScope = null;
+            Integer strictness = null;
+            String roleInformation = null;
+            Integer maxSearchQueries = null;
+            Boolean allowPartialResult = null;
+            List<OnYourDataContextProperty> includeContexts = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("database_name".equals(fieldName)) {
+                    databaseName = reader.getString();
+                } else if ("container_name".equals(fieldName)) {
+                    containerName = reader.getString();
+                } else if ("index_name".equals(fieldName)) {
+                    indexName = reader.getString();
+                } else if ("fields_mapping".equals(fieldName)) {
+                    fieldsMapping = AzureCosmosDBFieldMappingOptions.fromJson(reader);
+                } else if ("embedding_dependency".equals(fieldName)) {
+                    embeddingDependency = OnYourDataVectorizationSource.fromJson(reader);
+                } else if ("authentication".equals(fieldName)) {
+                    authentication = OnYourDataAuthenticationOptions.fromJson(reader);
+                } else if ("top_n_documents".equals(fieldName)) {
+                    topNDocuments = reader.getNullable(JsonReader::getInt);
+                } else if ("in_scope".equals(fieldName)) {
+                    inScope = reader.getNullable(JsonReader::getBoolean);
+                } else if ("strictness".equals(fieldName)) {
+                    strictness = reader.getNullable(JsonReader::getInt);
+                } else if ("role_information".equals(fieldName)) {
+                    roleInformation = reader.getString();
+                } else if ("max_search_queries".equals(fieldName)) {
+                    maxSearchQueries = reader.getNullable(JsonReader::getInt);
+                } else if ("allow_partial_result".equals(fieldName)) {
+                    allowPartialResult = reader.getNullable(JsonReader::getBoolean);
+                } else if ("include_contexts".equals(fieldName)) {
+                    includeContexts
+                        = reader.readArray(reader1 -> OnYourDataContextProperty.fromString(reader1.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            AzureCosmosDBChatExtensionParameters deserializedAzureCosmosDBChatExtensionParameters
+                = new AzureCosmosDBChatExtensionParameters(databaseName, containerName, indexName, fieldsMapping,
+                    embeddingDependency);
+            deserializedAzureCosmosDBChatExtensionParameters.authentication = authentication;
+            deserializedAzureCosmosDBChatExtensionParameters.topNDocuments = topNDocuments;
+            deserializedAzureCosmosDBChatExtensionParameters.inScope = inScope;
+            deserializedAzureCosmosDBChatExtensionParameters.strictness = strictness;
+            deserializedAzureCosmosDBChatExtensionParameters.roleInformation = roleInformation;
+            deserializedAzureCosmosDBChatExtensionParameters.maxSearchQueries = maxSearchQueries;
+            deserializedAzureCosmosDBChatExtensionParameters.allowPartialResult = allowPartialResult;
+            deserializedAzureCosmosDBChatExtensionParameters.includeContexts = includeContexts;
+            return deserializedAzureCosmosDBChatExtensionParameters;
+        });
+    }
+
+    /*
+     * The max number of rewritten queries should be send to search provider for one user message. If not specified,
+     * the system will decide the number of queries to send.
+     */
+    @Generated
+    private Integer maxSearchQueries;
+
+    /*
+     * If specified as true, the system will allow partial search results to be used and the request fails if all the
+     * queries fail.
+     * If not specified, or specified as false, the request will fail if any search query fails.
+     */
+    @Generated
+    private Boolean allowPartialResult;
+
+    /*
+     * The included properties of the output context. If not specified, the default value is `citations` and `intent`.
+     */
+    @Generated
+    private List<OnYourDataContextProperty> includeContexts;
+
+    /**
+     * Get the maxSearchQueries property: The max number of rewritten queries should be send to search provider for one
+     * user message. If not specified,
+     * the system will decide the number of queries to send.
+     *
+     * @return the maxSearchQueries value.
+     */
+    @Generated
+    public Integer getMaxSearchQueries() {
+        return this.maxSearchQueries;
+    }
+
+    /**
+     * Set the maxSearchQueries property: The max number of rewritten queries should be send to search provider for one
+     * user message. If not specified,
+     * the system will decide the number of queries to send.
+     *
+     * @param maxSearchQueries the maxSearchQueries value to set.
+     * @return the AzureCosmosDBChatExtensionParameters object itself.
+     */
+    @Generated
+    public AzureCosmosDBChatExtensionParameters setMaxSearchQueries(Integer maxSearchQueries) {
+        this.maxSearchQueries = maxSearchQueries;
+        return this;
+    }
+
+    /**
+     * Get the allowPartialResult property: If specified as true, the system will allow partial search results to be
+     * used and the request fails if all the queries fail.
+     * If not specified, or specified as false, the request will fail if any search query fails.
+     *
+     * @return the allowPartialResult value.
+     */
+    @Generated
+    public Boolean isAllowPartialResult() {
+        return this.allowPartialResult;
+    }
+
+    /**
+     * Set the allowPartialResult property: If specified as true, the system will allow partial search results to be
+     * used and the request fails if all the queries fail.
+     * If not specified, or specified as false, the request will fail if any search query fails.
+     *
+     * @param allowPartialResult the allowPartialResult value to set.
+     * @return the AzureCosmosDBChatExtensionParameters object itself.
+     */
+    @Generated
+    public AzureCosmosDBChatExtensionParameters setAllowPartialResult(Boolean allowPartialResult) {
+        this.allowPartialResult = allowPartialResult;
+        return this;
+    }
+
+    /**
+     * Get the includeContexts property: The included properties of the output context. If not specified, the default
+     * value is `citations` and `intent`.
+     *
+     * @return the includeContexts value.
+     */
+    @Generated
+    public List<OnYourDataContextProperty> getIncludeContexts() {
+        return this.includeContexts;
+    }
+
+    /**
+     * Set the includeContexts property: The included properties of the output context. If not specified, the default
+     * value is `citations` and `intent`.
+     *
+     * @param includeContexts the includeContexts value to set.
+     * @return the AzureCosmosDBChatExtensionParameters object itself.
+     */
+    @Generated
+    public AzureCosmosDBChatExtensionParameters setIncludeContexts(List<OnYourDataContextProperty> includeContexts) {
+        this.includeContexts = includeContexts;
+        return this;
     }
 }

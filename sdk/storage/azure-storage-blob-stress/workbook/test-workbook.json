@@ -1,0 +1,286 @@
+{
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 1,
+      "content": {
+        "json": "## Storage for Java stress testing\n\nEnter the test runId - it matches Storage resource name and is a suffix in AppInsights role name."
+      },
+      "name": "text - 2"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "parameters": [
+          {
+            "id": "ab5bb927-f8a4-4491-8621-d300820d2ff3",
+            "version": "KqlParameterItem/1.0",
+            "name": "timeRange",
+            "label": "Time Range",
+            "type": 4,
+            "typeSettings": {
+              "selectableValues": [
+                {
+                  "durationMs": 900000
+                },
+                {
+                  "durationMs": 1800000
+                },
+                {
+                  "durationMs": 3600000
+                },
+                {
+                  "durationMs": 14400000
+                },
+                {
+                  "durationMs": 43200000
+                },
+                {
+                  "durationMs": 86400000
+                },
+                {
+                  "durationMs": 172800000
+                },
+                {
+                  "durationMs": 259200000
+                },
+                {
+                  "durationMs": 604800000
+                }
+              ],
+              "allowCustom": true
+            },
+            "value": {
+              "durationMs": 172800000
+            }
+          },
+          {
+            "id": "1b563bbe-70e0-48e6-ae33-d71d97ab8332",
+            "version": "KqlParameterItem/1.0",
+            "name": "runId",
+            "type": 2,
+            "isRequired": true,
+            "query": "dependencies \r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-storage\" and name == \"before run\"\r\n| extend runId = tostring(split(cloud_RoleName, \"-\")[-1])\r\n| summarize start=min(timestamp) by runId, cloud_RoleInstance \r\n| order by start desc\r\n| project runId, pod=cloud_RoleInstance",
+            "typeSettings": {
+              "additionalResourceOptions": [],
+              "showDefault": false
+            },
+            "queryType": 0,
+            "resourceType": "microsoft.insights/components",
+            "value": null
+          }
+        ],
+        "style": "pills",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "30",
+      "name": "parameters - 2",
+      "styleSettings": {
+        "maxWidth": "30"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let runs = customMetrics \r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-storage\" \r\n| extend runId = tostring(split(cloud_RoleName, \"-\")[-1])\r\n| summarize start=min(timestamp), end=max(timestamp) by runId\r\n| project start, duration= end-start, runId;\r\nlet runSpans = dependencies\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-storage\"  and name == \"before run\"\r\n| extend runId = tostring(split(cloud_RoleName, \"-\")[-1])\r\n| extend packageVersion=coalesce(customDimensions[\"storagePackageVersion\"], \"null\")\r\n| extend scenarioName=tostring(split(coalesce(customDimensions[\"scenarioName\"], \"null\"), \".\")[-1])\r\n| extend sync=coalesce(customDimensions[\"sync\"], \"null\")\r\n| extend concurrency=coalesce(customDimensions[\"concurrency\"], \"null\")\r\n| extend payloadSize=coalesce(customDimensions[\"payloadSize\"], \"null\")\r\n| extend pod=tostring(customDimensions[\"hostname\"]);\r\nruns \r\n| join kind = innerunique runSpans on runId\r\n| project runId, start, duration, scenarioName, concurrency, payloadSize, sync, pod, packageVersion\r\n",
+        "size": 0,
+        "title": "Runs in {timeRange:label}",
+        "noDataMessageStyle": 5,
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "gridSettings": {
+          "sortBy": [
+            {
+              "itemKey": "start",
+              "sortOrder": 2
+            }
+          ]
+        },
+        "sortBy": [
+          {
+            "itemKey": "start",
+            "sortOrder": 2
+          }
+        ]
+      },
+      "customWidth": "70",
+      "name": "query - 8",
+      "styleSettings": {
+        "maxWidth": "100"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let runId = \"{runId}\";\r\nlet runDuration = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName endswith runId\r\n| where name == \"test.run.duration\"\r\n| extend errorType = tostring(customDimensions[\"error.type\"]);\r\nlet testSpans = dependencies\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName endswith runId;\r\nlet errors = runDuration\r\n| summarize error_by_type=toint(sum(valueCount)) by errorType\r\n| summarize test_errors=make_bag(bag_pack(errorType, error_by_type))\r\n| evaluate narrow();\r\nlet runCounter = runDuration\r\n| summarize successful_runs=sumif(valueCount, errorType == \"\"), failed_runs=sumif(valueCount, errorType != \"\")\r\n| evaluate narrow();\r\nlet actualDuration = testSpans \r\n| where name == \"after run\"\r\n| summarize actual_test_duration_in_sec = max(toreal(customDimensions[\"durationMs\"])/1000) by cloud_RoleInstance\r\n| evaluate narrow();\r\nlet avgThroughput = runDuration\r\n| summarize throughputPerMin=sum(valueCount) by bin(timestamp, 1m) // in case AppInsights ingestion drops something\r\n| summarize avg_throughtput_per_sec=round(avg(throughputPerMin/60), 2)\r\n| evaluate narrow();\r\nlet parameters = testSpans \r\n| where name == \"before run\" \r\n| project parameters=bag_remove_keys(customDimensions, dynamic(['duration', 'sample.in', 'name',  'jreVendor']))\r\n| evaluate narrow();\r\nparameters \r\n| union runCounter, actualDuration, errors, avgThroughput\r\n| project Property = Column, Value\r\n",
+        "size": 0,
+        "title": "Test summary",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "gridSettings": {
+          "sortBy": [
+            {
+              "itemKey": "Property",
+              "sortOrder": 1
+            }
+          ]
+        },
+        "sortBy": [
+          {
+            "itemKey": "Property",
+            "sortOrder": 1
+          }
+        ]
+      },
+      "name": "query - 11"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where name == \"test.run.duration\" and cloud_RoleName startswith \"java-storage\" and cloud_RoleName endswith \"{runId}\"\r\n| where customDimensions[\"error.type\"] == \"\"\r\n| summarize successful_runs=sum(valueCount) by bin(timestamp, 1m)\r\n| render timechart",
+        "size": 0,
+        "aggregation": 3,
+        "title": "Download rate (per minute)",
+        "noDataMessageStyle": 5,
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "30",
+      "name": "query - 3",
+      "styleSettings": {
+        "maxWidth": "30",
+        "showBorder": true
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where name == \"test.run.duration\"\r\n| where cloud_RoleName startswith \"java-storage\" and cloud_RoleName endswith \"{runId}\"\r\n| where customDimensions[\"error.type\"] == \"\"\r\n| summarize avg_duration = avg(valueSum/valueCount) * 1000 by bin(timestamp, 1m)\r\n| render timechart",
+        "size": 0,
+        "aggregation": 3,
+        "title": "Duration (ms), average per minute, successful only",
+        "noDataMessageStyle": 5,
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "30",
+      "name": "query - 5",
+      "styleSettings": {
+        "maxWidth": "30"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-storage\" and cloud_RoleName endswith \"{runId}\"\r\n| where name == \"test.run.duration\"\r\n| extend status = tostring(customDimensions[\"error.type\"])\r\n| where status != \"\"\r\n| summarize test_errors = sum(valueCount) by status, bin(timestamp, 1m)\r\n| render timechart",
+        "size": 0,
+        "aggregation": 3,
+        "title": "Error rate  (per minute)",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "30",
+      "name": "query - 10",
+      "styleSettings": {
+        "maxWidth": "30"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-storage\" and cloud_RoleName endswith \"{runId}\"\r\n| where name == \"process.runtime.jvm.memory.usage\" and customDimensions[\"type\"]==\"heap\"\r\n| summarize heap_memory_used=sum(valueSum/valueCount) by bin(timestamp, 1m)\r\n| render timechart",
+        "size": 0,
+        "aggregation": 2,
+        "title": "Heap memory used (MB)",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "30",
+      "name": "query - 8",
+      "styleSettings": {
+        "maxWidth": "30"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-storage\" and cloud_RoleName endswith \"{runId}\"\r\n| where name == \"process.runtime.jvm.cpu.utilization\"\r\n| summarize cpu_time_percent=avg(value) * 100 by bin(timestamp, 1m)\r\n| render timechart\r\n",
+        "size": 0,
+        "aggregation": 3,
+        "title": "CPU %",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "30",
+      "name": "query - 9",
+      "styleSettings": {
+        "maxWidth": "30"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-storage\" and cloud_RoleName endswith \"{runId}\"\r\n| where name == \"process.runtime.jvm.threads.count\"\r\n| summarize max_thread_count=max(valueMax) by bin(timestamp, 1m)\r\n| render timechart\r\n",
+        "size": 0,
+        "aggregation": 3,
+        "title": "Thread count",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "15",
+      "name": "query - 8",
+      "styleSettings": {
+        "maxWidth": "15"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-storage\" and cloud_RoleName endswith \"{runId}\"\r\n| where name == \"process.runtime.jvm.gc.duration\" \r\n| extend gc_type=tostring(customDimensions[\"gc\"])\r\n| summarize gc_percentage=sum(valueSum) / 60 * 100 by gc_type, bin(timestamp, 1m)\r\n| render timechart\r\n",
+        "size": 0,
+        "aggregation": 3,
+        "title": "% of time spent in GC",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "15",
+      "name": "query - 9",
+      "styleSettings": {
+        "maxWidth": "15"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let runId = \"{runId}\";\r\nlet role_name=strcat(\"java-storage\", runId);\r\nlet downloads=dependencies \r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName == role_name and (name == \"run\" or name == \"runAsync\")\r\n| project timestamp, duration, name, traceId=operation_Id, status=tostring(customDimensions[\"error.type\"]), success;\r\nlet faultInjections=traces \r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName == role_name\r\n| where message startswith \"{\\\"az.sdk.message\"\r\n| project timestamp, logger=customDimensions[\"LoggerName\"], level=customDimensions[\"LoggingLevel\"], thread=customDimensions[\"ThreadName\"], azSdkContext=parse_json(message)\r\n| where azSdkContext[\"az.sdk.message\"] == \"HTTP request\"\r\n| extend fault = coalesce(azSdkContext[\"x-ms-faultinjector-response-option\"], \"none\")\r\n| extend traceId=tostring(split(azSdkContext[\"traceparent\"], \"-\")[1])\r\n| project fault, traceId;\r\ndownloads \r\n| join kind=leftouter faultInjections on traceId\r\n| where success == False\r\n| summarize faults = make_list(fault) by timestamp, status, duration, traceId\r\n",
+        "size": 0,
+        "title": "Examples of failed operations (survived after sampling)",
+        "noDataMessage": "so empty",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "sortBy": []
+      },
+      "customWidth": "100",
+      "name": "query - 9",
+      "styleSettings": {
+        "maxWidth": "100"
+      }
+    }
+  ],
+  "fallbackResourceIds": [
+    "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-stress-cluster-pg/providers/Microsoft.Insights/components/stress-pg-ai-s7b6dif73rup6"
+  ],
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}

@@ -29,10 +29,15 @@ public final class EventTypeInfoTests {
     public void testSerialize() throws Exception {
         EventTypeInfo model = new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
             .withInlineEventTypes(mapOf("eltmrldhugjzzdat",
-                new InlineEventProperties().withDescription("jitcjczdzevn").withDisplayName("krwpdap")
-                    .withDocumentationUrl("sbdkvwr").withDataSchemaUrl("feusnhut"),
-                "ftyxolniw", new InlineEventProperties().withDescription("hocdgeab").withDisplayName("phut")
-                    .withDocumentationUrl("ndv").withDataSchemaUrl("ozwyiftyhxhuro")));
+                new InlineEventProperties().withDescription("jitcjczdzevn")
+                    .withDisplayName("krwpdap")
+                    .withDocumentationUrl("sbdkvwr")
+                    .withDataSchemaUrl("feusnhut"),
+                "ftyxolniw",
+                new InlineEventProperties().withDescription("hocdgeab")
+                    .withDisplayName("phut")
+                    .withDocumentationUrl("ndv")
+                    .withDataSchemaUrl("ozwyiftyhxhuro")));
         model = BinaryData.fromObject(model).toObject(EventTypeInfo.class);
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.kind());
         Assertions.assertEquals("jitcjczdzevn", model.inlineEventTypes().get("eltmrldhugjzzdat").description());

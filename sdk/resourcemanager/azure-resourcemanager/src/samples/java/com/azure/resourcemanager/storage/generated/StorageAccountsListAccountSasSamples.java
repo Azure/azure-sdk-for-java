@@ -11,27 +11,27 @@ import com.azure.resourcemanager.storage.models.Services;
 import com.azure.resourcemanager.storage.models.SignedResourceTypes;
 import java.time.OffsetDateTime;
 
-/** Samples for StorageAccounts ListAccountSas. */
+/**
+ * Samples for StorageAccounts ListAccountSas.
+ */
 public final class StorageAccountsListAccountSasSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountListAccountSAS.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/StorageAccountListAccountSAS.
+     * json
      */
     /**
      * Sample code: StorageAccountListAccountSAS.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void storageAccountListAccountSAS(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getStorageAccounts()
-            .listAccountSasWithResponse(
-                "res7985",
-                "sto8588",
-                new AccountSasParameters()
-                    .withServices(Services.B)
+            .listAccountSasWithResponse("res7985", "sto8588",
+                new AccountSasParameters().withServices(Services.B)
                     .withResourceTypes(SignedResourceTypes.S)
                     .withPermissions(Permissions.R)
                     .withProtocols(HttpProtocol.HTTPS_HTTP)

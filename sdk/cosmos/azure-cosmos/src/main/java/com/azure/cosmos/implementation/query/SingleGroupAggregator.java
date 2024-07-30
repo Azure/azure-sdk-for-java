@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.Resource;
@@ -109,7 +110,7 @@ public abstract class SingleGroupAggregator {
                 }
                 // This is for value queries.Need to append value property for scalar values (non key value pairs)
                 // to make them a key value pair document as our impl is based on Document.
-                document.set(Constants.Properties.VALUE, result);
+                document.set(Constants.Properties.VALUE, result, CosmosItemSerializer.DEFAULT_SERIALIZER);
             }
             return document;
         }
@@ -177,7 +178,7 @@ public abstract class SingleGroupAggregator {
             for (String alias : this.orderedAliases) {
                 AggregateValue aggregateValue = this.aliasToValue.get(alias);
                 if (aggregateValue.getResult() != null) {
-                    aggregateDocument.set(alias, aggregateValue.getResult());
+                    aggregateDocument.set(alias, aggregateValue.getResult(), CosmosItemSerializer.DEFAULT_SERIALIZER);
                 }
             }
             return aggregateDocument;

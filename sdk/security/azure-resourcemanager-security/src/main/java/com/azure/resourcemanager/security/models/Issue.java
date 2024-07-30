@@ -29,8 +29,7 @@ public final class Issue {
     private String issueName;
 
     /*
-     * The affected security values that MDC offers that will be affected by the issue, for example: recommendations,
-     * alerts, etc
+     * The affected security values that MDC offers that will be affected by the issue, for example: recommendations, alerts, etc
      */
     @JsonProperty(value = "securityValues")
     private List<String> securityValues;
@@ -107,8 +106,8 @@ public final class Issue {
     }
 
     /**
-     * Get the securityValues property: The affected security values that MDC offers that will be affected by the
-     * issue, for example: recommendations, alerts, etc.
+     * Get the securityValues property: The affected security values that MDC offers that will be affected by the issue,
+     * for example: recommendations, alerts, etc.
      * 
      * @return the securityValues value.
      */
@@ -117,8 +116,8 @@ public final class Issue {
     }
 
     /**
-     * Set the securityValues property: The affected security values that MDC offers that will be affected by the
-     * issue, for example: recommendations, alerts, etc.
+     * Set the securityValues property: The affected security values that MDC offers that will be affected by the issue,
+     * for example: recommendations, alerts, etc.
      * 
      * @param securityValues the securityValues value to set.
      * @return the Issue object itself.
@@ -219,8 +218,8 @@ public final class Issue {
      */
     public void validate() {
         if (issueKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property issueKey in model Issue"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property issueKey in model Issue"));
         }
     }
 

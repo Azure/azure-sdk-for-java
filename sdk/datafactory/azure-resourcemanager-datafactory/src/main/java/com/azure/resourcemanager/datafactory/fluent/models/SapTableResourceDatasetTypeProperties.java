@@ -52,8 +52,9 @@ public final class SapTableResourceDatasetTypeProperties {
      */
     public void validate() {
         if (tableName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property tableName in model SapTableResourceDatasetTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property tableName in model SapTableResourceDatasetTypeProperties"));
         }
     }
 

@@ -6,42 +6,41 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Content and layout elements extracted from a page from the input.
  */
 @Immutable
-public final class DocumentPage {
+public final class DocumentPage implements JsonSerializable<DocumentPage> {
     /*
      * 1-based page number in the input document.
      */
     @Generated
-    @JsonProperty(value = "pageNumber")
-    private int pageNumber;
+    private final int pageNumber;
 
     /*
      * The general orientation of the content in clockwise direction, measured in
      * degrees between (-180, 180].
      */
     @Generated
-    @JsonProperty(value = "angle")
     private Double angle;
 
     /*
      * The width of the image/PDF in pixels/inches, respectively.
      */
     @Generated
-    @JsonProperty(value = "width")
     private Double width;
 
     /*
      * The height of the image/PDF in pixels/inches, respectively.
      */
     @Generated
-    @JsonProperty(value = "height")
     private Double height;
 
     /*
@@ -49,28 +48,24 @@ public final class DocumentPage {
      * unit is "pixel". For PDF, the unit is "inch".
      */
     @Generated
-    @JsonProperty(value = "unit")
     private LengthUnit unit;
 
     /*
      * Location of the page in the reading order concatenated content.
      */
     @Generated
-    @JsonProperty(value = "spans")
-    private List<DocumentSpan> spans;
+    private final List<DocumentSpan> spans;
 
     /*
      * Extracted words from the page.
      */
     @Generated
-    @JsonProperty(value = "words")
     private List<DocumentWord> words;
 
     /*
      * Extracted selection marks from the page.
      */
     @Generated
-    @JsonProperty(value = "selectionMarks")
     private List<DocumentSelectionMark> selectionMarks;
 
     /*
@@ -78,21 +73,18 @@ public final class DocumentPage {
      * elements.
      */
     @Generated
-    @JsonProperty(value = "lines")
     private List<DocumentLine> lines;
 
     /*
      * Extracted barcodes from the page.
      */
     @Generated
-    @JsonProperty(value = "barcodes")
     private List<DocumentBarcode> barcodes;
 
     /*
      * Extracted formulas from the page.
      */
     @Generated
-    @JsonProperty(value = "formulas")
     private List<DocumentFormula> formulas;
 
     /**
@@ -102,9 +94,7 @@ public final class DocumentPage {
      * @param spans the spans value to set.
      */
     @Generated
-    @JsonCreator
-    private DocumentPage(@JsonProperty(value = "pageNumber") int pageNumber,
-        @JsonProperty(value = "spans") List<DocumentSpan> spans) {
+    private DocumentPage(int pageNumber, List<DocumentSpan> spans) {
         this.pageNumber = pageNumber;
         this.spans = spans;
     }
@@ -220,5 +210,95 @@ public final class DocumentPage {
     @Generated
     public List<DocumentFormula> getFormulas() {
         return this.formulas;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("pageNumber", this.pageNumber);
+        jsonWriter.writeArrayField("spans", this.spans, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("angle", this.angle);
+        jsonWriter.writeNumberField("width", this.width);
+        jsonWriter.writeNumberField("height", this.height);
+        jsonWriter.writeStringField("unit", this.unit == null ? null : this.unit.toString());
+        jsonWriter.writeArrayField("words", this.words, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("selectionMarks", this.selectionMarks,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("lines", this.lines, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("barcodes", this.barcodes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("formulas", this.formulas, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DocumentPage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DocumentPage if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DocumentPage.
+     */
+    @Generated
+    public static DocumentPage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            int pageNumber = 0;
+            List<DocumentSpan> spans = null;
+            Double angle = null;
+            Double width = null;
+            Double height = null;
+            LengthUnit unit = null;
+            List<DocumentWord> words = null;
+            List<DocumentSelectionMark> selectionMarks = null;
+            List<DocumentLine> lines = null;
+            List<DocumentBarcode> barcodes = null;
+            List<DocumentFormula> formulas = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("pageNumber".equals(fieldName)) {
+                    pageNumber = reader.getInt();
+                } else if ("spans".equals(fieldName)) {
+                    spans = reader.readArray(reader1 -> DocumentSpan.fromJson(reader1));
+                } else if ("angle".equals(fieldName)) {
+                    angle = reader.getNullable(JsonReader::getDouble);
+                } else if ("width".equals(fieldName)) {
+                    width = reader.getNullable(JsonReader::getDouble);
+                } else if ("height".equals(fieldName)) {
+                    height = reader.getNullable(JsonReader::getDouble);
+                } else if ("unit".equals(fieldName)) {
+                    unit = LengthUnit.fromString(reader.getString());
+                } else if ("words".equals(fieldName)) {
+                    words = reader.readArray(reader1 -> DocumentWord.fromJson(reader1));
+                } else if ("selectionMarks".equals(fieldName)) {
+                    selectionMarks = reader.readArray(reader1 -> DocumentSelectionMark.fromJson(reader1));
+                } else if ("lines".equals(fieldName)) {
+                    lines = reader.readArray(reader1 -> DocumentLine.fromJson(reader1));
+                } else if ("barcodes".equals(fieldName)) {
+                    barcodes = reader.readArray(reader1 -> DocumentBarcode.fromJson(reader1));
+                } else if ("formulas".equals(fieldName)) {
+                    formulas = reader.readArray(reader1 -> DocumentFormula.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            DocumentPage deserializedDocumentPage = new DocumentPage(pageNumber, spans);
+            deserializedDocumentPage.angle = angle;
+            deserializedDocumentPage.width = width;
+            deserializedDocumentPage.height = height;
+            deserializedDocumentPage.unit = unit;
+            deserializedDocumentPage.words = words;
+            deserializedDocumentPage.selectionMarks = selectionMarks;
+            deserializedDocumentPage.lines = lines;
+            deserializedDocumentPage.barcodes = barcodes;
+            deserializedDocumentPage.formulas = formulas;
+
+            return deserializedDocumentPage;
+        });
     }
 }

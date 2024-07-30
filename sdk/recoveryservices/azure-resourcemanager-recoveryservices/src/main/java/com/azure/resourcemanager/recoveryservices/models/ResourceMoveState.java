@@ -8,41 +8,63 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The State of the Resource after the move operation. */
+/**
+ * The State of the Resource after the move operation.
+ */
 public final class ResourceMoveState extends ExpandableStringEnum<ResourceMoveState> {
-    /** Static value Unknown for ResourceMoveState. */
+    /**
+     * Static value Unknown for ResourceMoveState.
+     */
     public static final ResourceMoveState UNKNOWN = fromString("Unknown");
 
-    /** Static value InProgress for ResourceMoveState. */
+    /**
+     * Static value InProgress for ResourceMoveState.
+     */
     public static final ResourceMoveState IN_PROGRESS = fromString("InProgress");
 
-    /** Static value PrepareFailed for ResourceMoveState. */
+    /**
+     * Static value PrepareFailed for ResourceMoveState.
+     */
     public static final ResourceMoveState PREPARE_FAILED = fromString("PrepareFailed");
 
-    /** Static value CommitFailed for ResourceMoveState. */
+    /**
+     * Static value CommitFailed for ResourceMoveState.
+     */
     public static final ResourceMoveState COMMIT_FAILED = fromString("CommitFailed");
 
-    /** Static value PrepareTimedout for ResourceMoveState. */
+    /**
+     * Static value PrepareTimedout for ResourceMoveState.
+     */
     public static final ResourceMoveState PREPARE_TIMEDOUT = fromString("PrepareTimedout");
 
-    /** Static value CommitTimedout for ResourceMoveState. */
+    /**
+     * Static value CommitTimedout for ResourceMoveState.
+     */
     public static final ResourceMoveState COMMIT_TIMEDOUT = fromString("CommitTimedout");
 
-    /** Static value MoveSucceeded for ResourceMoveState. */
+    /**
+     * Static value MoveSucceeded for ResourceMoveState.
+     */
     public static final ResourceMoveState MOVE_SUCCEEDED = fromString("MoveSucceeded");
 
-    /** Static value Failure for ResourceMoveState. */
+    /**
+     * Static value Failure for ResourceMoveState.
+     */
     public static final ResourceMoveState FAILURE = fromString("Failure");
 
-    /** Static value CriticalFailure for ResourceMoveState. */
+    /**
+     * Static value CriticalFailure for ResourceMoveState.
+     */
     public static final ResourceMoveState CRITICAL_FAILURE = fromString("CriticalFailure");
 
-    /** Static value PartialSuccess for ResourceMoveState. */
+    /**
+     * Static value PartialSuccess for ResourceMoveState.
+     */
     public static final ResourceMoveState PARTIAL_SUCCESS = fromString("PartialSuccess");
 
     /**
      * Creates a new instance of ResourceMoveState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -51,7 +73,7 @@ public final class ResourceMoveState extends ExpandableStringEnum<ResourceMoveSt
 
     /**
      * Creates or finds a ResourceMoveState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ResourceMoveState.
      */
@@ -62,7 +84,7 @@ public final class ResourceMoveState extends ExpandableStringEnum<ResourceMoveSt
 
     /**
      * Gets known ResourceMoveState values.
-     *
+     * 
      * @return known ResourceMoveState values.
      */
     public static Collection<ResourceMoveState> values() {

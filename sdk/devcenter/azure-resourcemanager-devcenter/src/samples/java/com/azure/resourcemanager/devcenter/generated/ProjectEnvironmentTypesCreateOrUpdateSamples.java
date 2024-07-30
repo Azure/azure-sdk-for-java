@@ -14,40 +14,35 @@ import com.azure.resourcemanager.devcenter.models.UserRoleAssignmentValue;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ProjectEnvironmentTypes CreateOrUpdate. */
+/**
+ * Samples for ProjectEnvironmentTypes CreateOrUpdate.
+ */
 public final class ProjectEnvironmentTypesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2023-10-01-preview/examples/ProjectEnvironmentTypes_Put.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/ProjectEnvironmentTypes_Put.json
      */
     /**
      * Sample code: ProjectEnvironmentTypes_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DevCenterManager.
      */
-    public static void projectEnvironmentTypesCreateOrUpdate(
-        com.azure.resourcemanager.devcenter.DevCenterManager manager) {
-        manager
-            .projectEnvironmentTypes()
+    public static void
+        projectEnvironmentTypesCreateOrUpdate(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
+        manager.projectEnvironmentTypes()
             .define("DevTest")
             .withExistingProject("rg1", "ContosoProj")
             .withTags(mapOf("CostCenter", "RnD"))
-            .withIdentity(
-                new ManagedServiceIdentity()
-                    .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf(
-                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/identityGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testidentity1",
-                            new UserAssignedIdentity())))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/identityGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testidentity1",
+                    new UserAssignedIdentity())))
             .withDeploymentTargetId("/subscriptions/00000000-0000-0000-0000-000000000000")
             .withStatus(EnvironmentTypeEnableStatus.ENABLED)
-            .withCreatorRoleAssignment(
-                new ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment()
-                    .withRoles(mapOf("4cbf0b6c-e750-441c-98a7-10da8387e4d6", new EnvironmentRole())))
-            .withUserRoleAssignments(
-                mapOf(
-                    "e45e3m7c-176e-416a-b466-0c5ec8298f8a",
-                    new UserRoleAssignmentValue()
-                        .withRoles(mapOf("4cbf0b6c-e750-441c-98a7-10da8387e4d6", new EnvironmentRole()))))
+            .withCreatorRoleAssignment(new ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment()
+                .withRoles(mapOf("4cbf0b6c-e750-441c-98a7-10da8387e4d6", new EnvironmentRole())))
+            .withUserRoleAssignments(mapOf("e45e3m7c-176e-416a-b466-0c5ec8298f8a",
+                new UserRoleAssignmentValue()
+                    .withRoles(mapOf("4cbf0b6c-e750-441c-98a7-10da8387e4d6", new EnvironmentRole()))))
             .create();
     }
 

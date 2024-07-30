@@ -82,8 +82,8 @@ public final class AzureMySqlLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -92,8 +92,8 @@ public final class AzureMySqlLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureMySqlLinkedServiceTypeProperties object itself.
@@ -110,8 +110,9 @@ public final class AzureMySqlLinkedServiceTypeProperties {
      */
     public void validate() {
         if (connectionString() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property connectionString in model AzureMySqlLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property connectionString in model AzureMySqlLinkedServiceTypeProperties"));
         }
         if (password() != null) {
             password().validate();

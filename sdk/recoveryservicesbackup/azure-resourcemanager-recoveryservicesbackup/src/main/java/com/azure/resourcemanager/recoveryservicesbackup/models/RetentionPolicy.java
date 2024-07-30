@@ -5,7 +5,9 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -14,19 +16,37 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "retentionPolicyType",
-    defaultImpl = RetentionPolicy.class)
+    defaultImpl = RetentionPolicy.class,
+    visible = true)
 @JsonTypeName("RetentionPolicy")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "LongTermRetentionPolicy", value = LongTermRetentionPolicy.class),
     @JsonSubTypes.Type(name = "SimpleRetentionPolicy", value = SimpleRetentionPolicy.class) })
 @Immutable
 public class RetentionPolicy {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "retentionPolicyType", required = true)
+    private String retentionPolicyType;
+
     /**
      * Creates an instance of RetentionPolicy class.
      */
     public RetentionPolicy() {
+        this.retentionPolicyType = "RetentionPolicy";
+    }
+
+    /**
+     * Get the retentionPolicyType property: This property will be used as the discriminator for deciding the specific
+     * types in the polymorphic chain of types.
+     * 
+     * @return the retentionPolicyType value.
+     */
+    public String retentionPolicyType() {
+        return this.retentionPolicyType;
     }
 
     /**

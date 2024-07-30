@@ -3,18 +3,30 @@
 package com.azure.storage.common.test.shared;
 
 import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
+import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
+import com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.vertx.VertxAsyncHttpClientProvider;
 import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.test.utils.TestUtils;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.ServiceVersion;
+import com.azure.identity.AzureCliCredentialBuilder;
+import com.azure.identity.AzureDeveloperCliCredentialBuilder;
+import com.azure.identity.AzurePipelinesCredential;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.ChainedTokenCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.storage.common.implementation.Constants;
-import okhttp3.ConnectionPool;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -31,7 +43,6 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 import java.util.zip.CRC32;
 
@@ -42,10 +53,27 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public final class StorageCommonTestUtils {
     public static final TestEnvironment ENVIRONMENT = TestEnvironment.getInstance();
-    private static final HttpClient NETTY_HTTP_CLIENT = new NettyAsyncHttpClientBuilder().build();
-    private static final HttpClient OK_HTTP_CLIENT = new OkHttpAsyncHttpClientBuilder()
-        .connectionPool(new ConnectionPool(50, 5, TimeUnit.MINUTES))
-        .build();
+    private static final HttpClient NETTY_HTTP_CLIENT = new NettyAsyncHttpClientProvider().createInstance();
+    private static final HttpClient OK_HTTP_CLIENT = new OkHttpAsyncClientProvider().createInstance();
+    private static final HttpClient VERTX_HTTP_CLIENT = new VertxAsyncHttpClientProvider().createInstance();
+    private static final HttpClient JDK_HTTP_HTTP_CLIENT;
+
+    static {
+        HttpClient jdkHttpHttpClient;
+        try {
+            jdkHttpHttpClient = createJdkHttpClient();
+        } catch (LinkageError | ReflectiveOperationException e) {
+            jdkHttpHttpClient = null;
+        }
+
+        JDK_HTTP_HTTP_CLIENT = jdkHttpHttpClient;
+    }
+
+    @SuppressWarnings("deprecation")
+    private static HttpClient createJdkHttpClient() throws ReflectiveOperationException {
+        Class<?> clazz = Class.forName("com.azure.core.http.jdk.httpclient.JdkHttpClientProvider");
+        return  (HttpClient) clazz.getDeclaredMethod("createInstance").invoke(clazz.newInstance());
+    }
 
     /**
      * Gets the CRC32 for the given string.
@@ -72,6 +100,10 @@ public final class StorageCommonTestUtils {
                     return NETTY_HTTP_CLIENT;
                 case OK_HTTP:
                     return OK_HTTP_CLIENT;
+                case VERTX:
+                    return VERTX_HTTP_CLIENT;
+                case JDK_HTTP:
+                    return JDK_HTTP_HTTP_CLIENT;
                 default:
                     throw new IllegalArgumentException("Unknown http client type: " + ENVIRONMENT.getHttpClientType());
             }
@@ -266,6 +298,51 @@ public final class StorageCommonTestUtils {
             return file;
         } catch (IOException e) {
             throw new UncheckedIOException(e);
+        }
+    }
+
+    /**
+     * Gets token credentials for a test.
+     *
+     * @param interceptorManager The interceptor manager to use.
+     * @return The TokenCredential to use.
+     */
+    public static TokenCredential getTokenCredential(InterceptorManager interceptorManager) {
+        if (interceptorManager.isPlaybackMode()) {
+            return new MockTokenCredential();
+        } else if (interceptorManager.isRecordMode()){
+            return new DefaultAzureCredentialBuilder().build();
+        } else { //live
+            Configuration config = Configuration.getGlobalConfiguration();
+
+            ChainedTokenCredentialBuilder builder = new ChainedTokenCredentialBuilder()
+                .addLast(new EnvironmentCredentialBuilder().build())
+                .addLast(new AzureCliCredentialBuilder().build())
+                .addLast(new AzureDeveloperCliCredentialBuilder().build());
+
+            String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+            String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
+            String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
+            String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
+
+            if (!CoreUtils.isNullOrEmpty(serviceConnectionId)
+                && !CoreUtils.isNullOrEmpty(clientId)
+                && !CoreUtils.isNullOrEmpty(tenantId)
+                && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
+
+                AzurePipelinesCredential pipelinesCredential = new AzurePipelinesCredentialBuilder()
+                    .systemAccessToken(systemAccessToken)
+                    .clientId(clientId)
+                    .tenantId(tenantId)
+                    .serviceConnectionId(serviceConnectionId)
+                    .build();
+
+                builder.addLast(request -> pipelinesCredential.getToken(request).subscribeOn(Schedulers.boundedElastic()));
+            }
+
+            builder.addLast(new AzurePowerShellCredentialBuilder().build());
+
+            return builder.build();
         }
     }
 }

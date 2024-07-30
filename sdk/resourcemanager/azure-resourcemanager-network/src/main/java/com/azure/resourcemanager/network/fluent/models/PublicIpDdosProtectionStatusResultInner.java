@@ -104,8 +104,8 @@ public final class PublicIpDdosProtectionStatusResultInner {
     }
 
     /**
-     * Get the ddosProtectionPlanId property: DDoS protection plan Resource Id of a if IP address is protected through
-     * a plan.
+     * Get the ddosProtectionPlanId property: DDoS protection plan Resource Id of a if IP address is protected through a
+     * plan.
      * 
      * @return the ddosProtectionPlanId value.
      */
@@ -114,8 +114,8 @@ public final class PublicIpDdosProtectionStatusResultInner {
     }
 
     /**
-     * Set the ddosProtectionPlanId property: DDoS protection plan Resource Id of a if IP address is protected through
-     * a plan.
+     * Set the ddosProtectionPlanId property: DDoS protection plan Resource Id of a if IP address is protected through a
+     * plan.
      * 
      * @param ddosProtectionPlanId the ddosProtectionPlanId value to set.
      * @return the PublicIpDdosProtectionStatusResultInner object itself.

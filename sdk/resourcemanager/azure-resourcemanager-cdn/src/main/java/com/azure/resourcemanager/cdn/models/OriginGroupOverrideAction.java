@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Defines the origin group override action for the delivery rule. */
+/**
+ * Defines the origin group override action for the delivery rule.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "name")
 @JsonTypeName("OriginGroupOverride")
 @Fluent
@@ -21,13 +23,15 @@ public final class OriginGroupOverrideAction extends DeliveryRuleAction {
     @JsonProperty(value = "parameters", required = true)
     private OriginGroupOverrideActionParameters parameters;
 
-    /** Creates an instance of OriginGroupOverrideAction class. */
+    /**
+     * Creates an instance of OriginGroupOverrideAction class.
+     */
     public OriginGroupOverrideAction() {
     }
 
     /**
      * Get the parameters property: Defines the parameters for the action.
-     *
+     * 
      * @return the parameters value.
      */
     public OriginGroupOverrideActionParameters parameters() {
@@ -36,7 +40,7 @@ public final class OriginGroupOverrideAction extends DeliveryRuleAction {
 
     /**
      * Set the parameters property: Defines the parameters for the action.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the OriginGroupOverrideAction object itself.
      */
@@ -47,17 +51,15 @@ public final class OriginGroupOverrideAction extends DeliveryRuleAction {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (parameters() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property parameters in model OriginGroupOverrideAction"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property parameters in model OriginGroupOverrideAction"));
         } else {
             parameters().validate();
         }

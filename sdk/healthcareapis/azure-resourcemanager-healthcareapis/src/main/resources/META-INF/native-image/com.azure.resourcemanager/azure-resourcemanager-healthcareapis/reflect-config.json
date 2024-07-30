@@ -209,6 +209,11 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.healthcareapis.models.StorageConfiguration",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.healthcareapis.models.ServiceManagedIdentity",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -300,6 +305,16 @@
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.healthcareapis.models.FhirServiceAuthenticationConfiguration",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.healthcareapis.models.SmartIdentityProviderConfiguration",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.healthcareapis.models.SmartIdentityProviderApplication",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -420,6 +435,11 @@
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.healthcareapis.models.FhirServiceKind",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.healthcareapis.models.SmartDataActions",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true

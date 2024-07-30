@@ -113,12 +113,14 @@ public final class CosmosDbMongoDbApiLinkedServiceTypeProperties {
      */
     public void validate() {
         if (connectionString() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property connectionString in model CosmosDbMongoDbApiLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property connectionString in model CosmosDbMongoDbApiLinkedServiceTypeProperties"));
         }
         if (database() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property database in model CosmosDbMongoDbApiLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property database in model CosmosDbMongoDbApiLinkedServiceTypeProperties"));
         }
     }
 

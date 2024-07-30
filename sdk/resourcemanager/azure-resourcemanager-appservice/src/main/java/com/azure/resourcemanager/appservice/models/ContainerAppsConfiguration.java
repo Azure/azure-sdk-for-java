@@ -19,38 +19,31 @@ public final class ContainerAppsConfiguration {
     private String daprAIInstrumentationKey;
 
     /*
-     * IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. It must not overlap
-     * with any other Subnet IP ranges.
+     * IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. It must not overlap with any other Subnet IP ranges.
      */
     @JsonProperty(value = "platformReservedCidr")
     private String platformReservedCidr;
 
     /*
-     * An IP address from the IP range defined by platformReservedCidr that will be reserved for the internal DNS
-     * server
+     * An IP address from the IP range defined by platformReservedCidr that will be reserved for the internal DNS server
      */
     @JsonProperty(value = "platformReservedDnsIP")
     private String platformReservedDnsIp;
 
     /*
-     * Resource ID of a subnet for control plane infrastructure components. This subnet must be in the same VNET as the
-     * subnet defined in appSubnetResourceId. Must not overlap with the IP range defined in platformReservedCidr, if
-     * defined.
+     * Resource ID of a subnet for control plane infrastructure components. This subnet must be in the same VNET as the subnet defined in appSubnetResourceId. Must not overlap with the IP range defined in platformReservedCidr, if defined.
      */
     @JsonProperty(value = "controlPlaneSubnetResourceId")
     private String controlPlaneSubnetResourceId;
 
     /*
-     * Resource ID of a subnet for control plane infrastructure components. This subnet must be in the same VNET as the
-     * subnet defined in appSubnetResourceId. Must not overlap with the IP range defined in platformReservedCidr, if
-     * defined.
+     * Resource ID of a subnet for control plane infrastructure components. This subnet must be in the same VNET as the subnet defined in appSubnetResourceId. Must not overlap with the IP range defined in platformReservedCidr, if defined.
      */
     @JsonProperty(value = "appSubnetResourceId")
     private String appSubnetResourceId;
 
     /*
-     * CIDR notation IP range assigned to the Docker bridge network. It must not overlap with any Subnet IP ranges or
-     * the IP range defined in platformReservedCidr, if defined.
+     * CIDR notation IP range assigned to the Docker bridge network. It must not overlap with any Subnet IP ranges or the IP range defined in platformReservedCidr, if defined.
      */
     @JsonProperty(value = "dockerBridgeCidr")
     private String dockerBridgeCidr;
@@ -106,8 +99,8 @@ public final class ContainerAppsConfiguration {
     }
 
     /**
-     * Get the platformReservedDnsIp property: An IP address from the IP range defined by platformReservedCidr that
-     * will be reserved for the internal DNS server.
+     * Get the platformReservedDnsIp property: An IP address from the IP range defined by platformReservedCidr that will
+     * be reserved for the internal DNS server.
      * 
      * @return the platformReservedDnsIp value.
      */
@@ -116,8 +109,8 @@ public final class ContainerAppsConfiguration {
     }
 
     /**
-     * Set the platformReservedDnsIp property: An IP address from the IP range defined by platformReservedCidr that
-     * will be reserved for the internal DNS server.
+     * Set the platformReservedDnsIp property: An IP address from the IP range defined by platformReservedCidr that will
+     * be reserved for the internal DNS server.
      * 
      * @param platformReservedDnsIp the platformReservedDnsIp value to set.
      * @return the ContainerAppsConfiguration object itself.

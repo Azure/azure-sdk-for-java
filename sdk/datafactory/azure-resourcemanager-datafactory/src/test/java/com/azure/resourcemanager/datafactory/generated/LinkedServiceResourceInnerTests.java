@@ -39,7 +39,8 @@ public final class LinkedServiceResourceInnerTests {
                     "qzeqqkdltfzxm",
                     new ParameterSpecification().withType(ParameterType.SECURE_STRING)
                         .withDefaultValue("datanzmnsikvm")))
-                .withAnnotations(Arrays.asList("datahgure")).withAdditionalProperties(mapOf("type", "LinkedService")));
+                .withAnnotations(Arrays.asList("datahgure"))
+                .withAdditionalProperties(mapOf("type", "LinkedService")));
         model = BinaryData.fromObject(model).toObject(LinkedServiceResourceInner.class);
         Assertions.assertEquals("pgcjefuzmuvp", model.id());
         Assertions.assertEquals("vfiwjmygtdss", model.properties().connectVia().referenceName());

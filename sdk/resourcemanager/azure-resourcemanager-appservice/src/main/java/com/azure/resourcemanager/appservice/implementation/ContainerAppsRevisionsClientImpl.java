@@ -57,8 +57,8 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
     }
 
     /**
-     * The interface defining all the services for WebSiteManagementClientContainerAppsRevisions to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for WebSiteManagementClientContainerAppsRevisions to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")

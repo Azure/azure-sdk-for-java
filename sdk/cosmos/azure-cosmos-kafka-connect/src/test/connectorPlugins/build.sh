@@ -6,7 +6,7 @@ mkdir src/test/connectorPlugins/connectors
 
 echo "Rebuilding Cosmos DB connectors..."
 mvn clean package -DskipTests=true -Dmaven.javadoc.skip=true
-cp target/*-jar-with-dependencies.jar src/test/connectorPlugins/connectors
+find target/ . -name 'azure-cosmos-kafka-connect-*.jar' ! -name 'azure-cosmos-kafka-connect-*-sources.jar' -exec cp {} src/test/connectorPlugins/connectors \;
 cd src/test/connectorPlugins
 
 echo "Adding custom Insert UUID SMT"

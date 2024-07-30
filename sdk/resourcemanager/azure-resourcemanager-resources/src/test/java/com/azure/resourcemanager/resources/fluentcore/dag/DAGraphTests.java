@@ -15,7 +15,7 @@ import java.util.Set;
 public class DAGraphTests {
     @Test
     public void testDAGraphGetNext() {
-        /**
+        /*
          *   |-------->[D]------>[B]-----------[A]
          *   |                   ^              ^
          *   |                   |              |
@@ -85,7 +85,7 @@ public class DAGraphTests {
 
     @Test
     public void testGraphDependency() {
-        /**
+        /*
          *   |-------->[D]------>[B]---------->[A]
          *   |                   ^              ^
          *   |                   |              |
@@ -148,7 +148,7 @@ public class DAGraphTests {
         boolean dlDetected;
 
         // ----------------------------------------------------
-        /**
+        /*
          * [A] <-----------> [A]
          */
         dlDetected = false;
@@ -161,7 +161,7 @@ public class DAGraphTests {
         Assertions.assertTrue(dlDetected, "Expected exception is not thrown");
 
         // ----------------------------------------------------
-        /**
+        /*
          * [A] -----------> [B]
          *  ^                 ^
          *  |                 |
@@ -184,7 +184,7 @@ public class DAGraphTests {
         Assertions.assertTrue(dlDetected, "Expected exception is not thrown");
 
         // ----------------------------------------------------
-        /**
+        /*
          * [2] ------------> [1]
          *                  ^  |
          *  ----------------|  |
@@ -211,7 +211,7 @@ public class DAGraphTests {
         // ----------------------------------------------------
         // Graph-1
 
-        /**
+        /*
          * [B] -----------> [A]
          *  ^                 ^
          *  |                 |
@@ -232,7 +232,7 @@ public class DAGraphTests {
         // ----------------------------------------------------
         // Graph-2
 
-        /**
+        /*
          * [E] ---> [D] ---> G
          *  ^
          *  |
@@ -252,7 +252,7 @@ public class DAGraphTests {
 
         // ----------------------------------------------------
         // Graph-3
-        /**
+        /*
          * [J] ---> [H] ---> I
          */
 
@@ -276,7 +276,7 @@ public class DAGraphTests {
         DAGraph<String, ItemHolder> graph4Root1 = graph2Root;   // graphF
         DAGraph<String, ItemHolder> graph4Root2 = graph3Root;   // graphJ
 
-        /**
+        /*
          * [B] -----------> [A]
          *  ^                 ^
          *  |                 |
@@ -373,7 +373,7 @@ public class DAGraphTests {
         // ----------------------------------------------------
         // Graph-1
 
-        /**
+        /*
          * [L] -----------> [K]
          *  ^                 ^
          *  |                 |
@@ -395,7 +395,7 @@ public class DAGraphTests {
         //
         graphA.addDependencyGraph(graphL);
 
-        /**
+        /*
          *                   |---------> [L] -----------> [K]
          *                   |           ^                 ^
          *                   |           |                 |
@@ -462,17 +462,15 @@ public class DAGraphTests {
 
     private DAGraph<String, ItemHolder> createGraph(String resourceName) {
         ItemHolder node = new ItemHolder(resourceName, "data" + resourceName);
-        DAGraph<String, ItemHolder> graph = new DAGraph<>(node);
-        return graph;
+        return new DAGraph<>(node);
     }
 
     private void assertExactMatch(Set<String> set, String[] values) {
-        HashSet<String> s = new HashSet<>();
-        s.addAll(set);
+        HashSet<String> s = new HashSet<>(set);
 
-        s.removeAll(Arrays.asList(values));
-        if (s.size() != 0) {
-            Assertions.assertTrue(false, "Content of set " + set + " does not match with provided array " + Arrays.asList(values));
+        Arrays.asList(values).forEach(s::remove);
+        if (!s.isEmpty()) {
+            Assertions.fail("Content of set " + set + " does not match with provided array " + Arrays.asList(values));
         }
     }
 }

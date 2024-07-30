@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the parameters for using a user's KeyVault certificate for securing custom domain. */
+/**
+ * Describes the parameters for using a user's KeyVault certificate for securing custom domain.
+ */
 @Fluent
 public final class KeyVaultCertificateSourceParameters {
     /*
@@ -59,14 +61,15 @@ public final class KeyVaultCertificateSourceParameters {
     @JsonProperty(value = "deleteRule", required = true)
     private DeleteRule deleteRule;
 
-    /** Creates an instance of KeyVaultCertificateSourceParameters class. */
+    /**
+     * Creates an instance of KeyVaultCertificateSourceParameters class.
+     */
     public KeyVaultCertificateSourceParameters() {
-        typeName = "KeyVaultCertificateSourceParameters";
     }
 
     /**
      * Get the typeName property: The typeName property.
-     *
+     * 
      * @return the typeName value.
      */
     public String typeName() {
@@ -75,7 +78,7 @@ public final class KeyVaultCertificateSourceParameters {
 
     /**
      * Set the typeName property: The typeName property.
-     *
+     * 
      * @param typeName the typeName value to set.
      * @return the KeyVaultCertificateSourceParameters object itself.
      */
@@ -86,7 +89,7 @@ public final class KeyVaultCertificateSourceParameters {
 
     /**
      * Get the subscriptionId property: Subscription Id of the user's Key Vault containing the SSL certificate.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -95,7 +98,7 @@ public final class KeyVaultCertificateSourceParameters {
 
     /**
      * Set the subscriptionId property: Subscription Id of the user's Key Vault containing the SSL certificate.
-     *
+     * 
      * @param subscriptionId the subscriptionId value to set.
      * @return the KeyVaultCertificateSourceParameters object itself.
      */
@@ -106,7 +109,7 @@ public final class KeyVaultCertificateSourceParameters {
 
     /**
      * Get the resourceGroupName property: Resource group of the user's Key Vault containing the SSL certificate.
-     *
+     * 
      * @return the resourceGroupName value.
      */
     public String resourceGroupName() {
@@ -115,7 +118,7 @@ public final class KeyVaultCertificateSourceParameters {
 
     /**
      * Set the resourceGroupName property: Resource group of the user's Key Vault containing the SSL certificate.
-     *
+     * 
      * @param resourceGroupName the resourceGroupName value to set.
      * @return the KeyVaultCertificateSourceParameters object itself.
      */
@@ -126,7 +129,7 @@ public final class KeyVaultCertificateSourceParameters {
 
     /**
      * Get the vaultName property: The name of the user's Key Vault containing the SSL certificate.
-     *
+     * 
      * @return the vaultName value.
      */
     public String vaultName() {
@@ -135,7 +138,7 @@ public final class KeyVaultCertificateSourceParameters {
 
     /**
      * Set the vaultName property: The name of the user's Key Vault containing the SSL certificate.
-     *
+     * 
      * @param vaultName the vaultName value to set.
      * @return the KeyVaultCertificateSourceParameters object itself.
      */
@@ -146,7 +149,7 @@ public final class KeyVaultCertificateSourceParameters {
 
     /**
      * Get the secretName property: The name of Key Vault Secret (representing the full certificate PFX) in Key Vault.
-     *
+     * 
      * @return the secretName value.
      */
     public String secretName() {
@@ -155,7 +158,7 @@ public final class KeyVaultCertificateSourceParameters {
 
     /**
      * Set the secretName property: The name of Key Vault Secret (representing the full certificate PFX) in Key Vault.
-     *
+     * 
      * @param secretName the secretName value to set.
      * @return the KeyVaultCertificateSourceParameters object itself.
      */
@@ -166,7 +169,7 @@ public final class KeyVaultCertificateSourceParameters {
 
     /**
      * Get the secretVersion property: The version(GUID) of Key Vault Secret in Key Vault.
-     *
+     * 
      * @return the secretVersion value.
      */
     public String secretVersion() {
@@ -175,7 +178,7 @@ public final class KeyVaultCertificateSourceParameters {
 
     /**
      * Set the secretVersion property: The version(GUID) of Key Vault Secret in Key Vault.
-     *
+     * 
      * @param secretVersion the secretVersion value to set.
      * @return the KeyVaultCertificateSourceParameters object itself.
      */
@@ -187,7 +190,7 @@ public final class KeyVaultCertificateSourceParameters {
     /**
      * Get the updateRule property: Describes the action that shall be taken when the certificate is updated in Key
      * Vault.
-     *
+     * 
      * @return the updateRule value.
      */
     public UpdateRule updateRule() {
@@ -197,7 +200,7 @@ public final class KeyVaultCertificateSourceParameters {
     /**
      * Set the updateRule property: Describes the action that shall be taken when the certificate is updated in Key
      * Vault.
-     *
+     * 
      * @param updateRule the updateRule value to set.
      * @return the KeyVaultCertificateSourceParameters object itself.
      */
@@ -209,7 +212,7 @@ public final class KeyVaultCertificateSourceParameters {
     /**
      * Get the deleteRule property: Describes the action that shall be taken when the certificate is removed from Key
      * Vault.
-     *
+     * 
      * @return the deleteRule value.
      */
     public DeleteRule deleteRule() {
@@ -219,7 +222,7 @@ public final class KeyVaultCertificateSourceParameters {
     /**
      * Set the deleteRule property: Describes the action that shall be taken when the certificate is removed from Key
      * Vault.
-     *
+     * 
      * @param deleteRule the deleteRule value to set.
      * @return the KeyVaultCertificateSourceParameters object itself.
      */
@@ -230,45 +233,33 @@ public final class KeyVaultCertificateSourceParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (subscriptionId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property subscriptionId in model KeyVaultCertificateSourceParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property subscriptionId in model KeyVaultCertificateSourceParameters"));
         }
         if (resourceGroupName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resourceGroupName in model KeyVaultCertificateSourceParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property resourceGroupName in model KeyVaultCertificateSourceParameters"));
         }
         if (vaultName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property vaultName in model KeyVaultCertificateSourceParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property vaultName in model KeyVaultCertificateSourceParameters"));
         }
         if (secretName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property secretName in model KeyVaultCertificateSourceParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property secretName in model KeyVaultCertificateSourceParameters"));
         }
         if (updateRule() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property updateRule in model KeyVaultCertificateSourceParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property updateRule in model KeyVaultCertificateSourceParameters"));
         }
         if (deleteRule() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property deleteRule in model KeyVaultCertificateSourceParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property deleteRule in model KeyVaultCertificateSourceParameters"));
         }
     }
 

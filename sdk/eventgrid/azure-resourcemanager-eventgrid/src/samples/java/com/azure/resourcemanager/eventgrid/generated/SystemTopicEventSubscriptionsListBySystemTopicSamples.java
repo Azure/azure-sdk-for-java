@@ -9,9 +9,7 @@ package com.azure.resourcemanager.eventgrid.generated;
  */
 public final class SystemTopicEventSubscriptionsListBySystemTopicSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
-     * SystemTopicEventSubscriptions_ListBySystemTopic.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/SystemTopicEventSubscriptions_ListBySystemTopic.json
      */
     /**
      * Sample code: SystemTopicEventSubscriptions_ListBySystemTopic.
@@ -20,7 +18,7 @@ public final class SystemTopicEventSubscriptionsListBySystemTopicSamples {
      */
     public static void
         systemTopicEventSubscriptionsListBySystemTopic(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.systemTopicEventSubscriptions().listBySystemTopic("examplerg", "exampleSystemTopic1", null, null,
-            com.azure.core.util.Context.NONE);
+        manager.systemTopicEventSubscriptions()
+            .listBySystemTopic("examplerg", "exampleSystemTopic1", null, null, com.azure.core.util.Context.NONE);
     }
 }

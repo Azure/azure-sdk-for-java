@@ -8,26 +8,26 @@ import com.azure.resourcemanager.hybridcompute.models.MachineExtension;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for MachineExtensions Update. */
+/**
+ * Samples for MachineExtensions Update.
+ */
 public final class MachineExtensionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-06-20-preview/examples/extension/Extension_Update.json
+     * x-ms-original-file:
+     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-05-20-preview/examples/
+     * extension/Extension_Update.json
      */
     /**
      * Sample code: Create or Update a Machine Extension.
-     *
+     * 
      * @param manager Entry point to HybridComputeManager.
      */
-    public static void createOrUpdateAMachineExtension(
-        com.azure.resourcemanager.hybridcompute.HybridComputeManager manager) {
-        MachineExtension resource =
-            manager
-                .machineExtensions()
-                .getWithResponse(
-                    "myResourceGroup", "myMachine", "CustomScriptExtension", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+    public static void
+        createOrUpdateAMachineExtension(com.azure.resourcemanager.hybridcompute.HybridComputeManager manager) {
+        MachineExtension resource = manager.machineExtensions()
+            .getWithResponse("myResourceGroup", "myMachine", "CustomScriptExtension", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withPublisher("Microsoft.Compute")
             .withType("CustomScriptExtension")
             .withTypeHandlerVersion("1.10")

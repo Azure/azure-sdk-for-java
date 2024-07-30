@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.resources.models.SubscriptionFeatureRegistrationProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Subscription feature registration details. */
+/**
+ * Subscription feature registration details.
+ */
 @Fluent
 public final class SubscriptionFeatureRegistrationInner extends ProxyResource {
     /*
@@ -18,13 +20,15 @@ public final class SubscriptionFeatureRegistrationInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private SubscriptionFeatureRegistrationProperties properties;
 
-    /** Creates an instance of SubscriptionFeatureRegistrationInner class. */
+    /**
+     * Creates an instance of SubscriptionFeatureRegistrationInner class.
+     */
     public SubscriptionFeatureRegistrationInner() {
     }
 
     /**
      * Get the properties property: The properties property.
-     *
+     * 
      * @return the properties value.
      */
     public SubscriptionFeatureRegistrationProperties properties() {
@@ -33,7 +37,7 @@ public final class SubscriptionFeatureRegistrationInner extends ProxyResource {
 
     /**
      * Set the properties property: The properties property.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the SubscriptionFeatureRegistrationInner object itself.
      */
@@ -44,7 +48,7 @@ public final class SubscriptionFeatureRegistrationInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

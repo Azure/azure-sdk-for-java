@@ -84,15 +84,13 @@ public final class ServerPropertiesForUpdate {
     private ReplicationRole replicationRole;
 
     /*
-     * Replica properties of a server. These Replica properties are required to be passed only in case you want to
-     * Promote a server.
+     * Replica properties of a server. These Replica properties are required to be passed only in case you want to Promote a server.
      */
     @JsonProperty(value = "replica")
     private Replica replica;
 
     /*
-     * Network properties of a server. These are required to be passed only in case if server is a private access
-     * server.
+     * Network properties of a server. These are required to be passed only in case if server is a private access server.
      */
     @JsonProperty(value = "network")
     private Network network;
@@ -304,8 +302,8 @@ public final class ServerPropertiesForUpdate {
     }
 
     /**
-     * Get the replica property: Replica properties of a server. These Replica properties are required to be passed
-     * only in case you want to Promote a server.
+     * Get the replica property: Replica properties of a server. These Replica properties are required to be passed only
+     * in case you want to Promote a server.
      * 
      * @return the replica value.
      */
@@ -314,8 +312,8 @@ public final class ServerPropertiesForUpdate {
     }
 
     /**
-     * Set the replica property: Replica properties of a server. These Replica properties are required to be passed
-     * only in case you want to Promote a server.
+     * Set the replica property: Replica properties of a server. These Replica properties are required to be passed only
+     * in case you want to Promote a server.
      * 
      * @param replica the replica value to set.
      * @return the ServerPropertiesForUpdate object itself.

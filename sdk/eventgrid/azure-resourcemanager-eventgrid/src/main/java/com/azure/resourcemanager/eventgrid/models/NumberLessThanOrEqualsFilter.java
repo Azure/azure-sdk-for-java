@@ -6,16 +6,28 @@ package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * NumberLessThanOrEquals Filter.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "operatorType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "operatorType",
+    defaultImpl = NumberLessThanOrEqualsFilter.class,
+    visible = true)
 @JsonTypeName("NumberLessThanOrEquals")
 @Fluent
 public final class NumberLessThanOrEqualsFilter extends Filter {
+    /*
+     * The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "operatorType", required = true)
+    private FilterOperatorType operatorType = FilterOperatorType.NUMBER_LESS_THAN_OR_EQUALS;
+
     /*
      * The filter value.
      */
@@ -26,6 +38,17 @@ public final class NumberLessThanOrEqualsFilter extends Filter {
      * Creates an instance of NumberLessThanOrEqualsFilter class.
      */
     public NumberLessThanOrEqualsFilter() {
+    }
+
+    /**
+     * Get the operatorType property: The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals
+     * and others.
+     * 
+     * @return the operatorType value.
+     */
+    @Override
+    public FilterOperatorType operatorType() {
+        return this.operatorType;
     }
 
     /**

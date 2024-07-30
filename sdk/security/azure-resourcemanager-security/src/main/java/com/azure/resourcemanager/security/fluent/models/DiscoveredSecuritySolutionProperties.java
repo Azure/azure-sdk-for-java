@@ -131,20 +131,24 @@ public final class DiscoveredSecuritySolutionProperties {
      */
     public void validate() {
         if (securityFamily() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property securityFamily in model DiscoveredSecuritySolutionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property securityFamily in model DiscoveredSecuritySolutionProperties"));
         }
         if (offer() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property offer in model DiscoveredSecuritySolutionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property offer in model DiscoveredSecuritySolutionProperties"));
         }
         if (publisher() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property publisher in model DiscoveredSecuritySolutionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property publisher in model DiscoveredSecuritySolutionProperties"));
         }
         if (sku() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property sku in model DiscoveredSecuritySolutionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sku in model DiscoveredSecuritySolutionProperties"));
         }
     }
 

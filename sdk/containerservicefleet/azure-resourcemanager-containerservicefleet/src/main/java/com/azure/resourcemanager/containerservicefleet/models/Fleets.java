@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Fleets. */
+/**
+ * Resource collection API of Fleets.
+ */
 public interface Fleets {
     /**
      * Lists fleets in the specified subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Fleet list operation as paginated response with {@link PagedIterable}.
@@ -21,7 +23,7 @@ public interface Fleets {
 
     /**
      * Lists fleets in the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -32,7 +34,7 @@ public interface Fleets {
 
     /**
      * Lists fleets in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -43,7 +45,7 @@ public interface Fleets {
 
     /**
      * Lists fleets in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,7 +57,7 @@ public interface Fleets {
 
     /**
      * Gets a Fleet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param context The context to associate with this operation.
@@ -68,7 +70,7 @@ public interface Fleets {
 
     /**
      * Gets a Fleet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -80,7 +82,7 @@ public interface Fleets {
 
     /**
      * Delete a Fleet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -91,7 +93,7 @@ public interface Fleets {
 
     /**
      * Delete a Fleet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param ifMatch The request should only proceed if an entity matches this string.
@@ -104,7 +106,7 @@ public interface Fleets {
 
     /**
      * Lists the user credentials of a Fleet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param context The context to associate with this operation.
@@ -113,12 +115,12 @@ public interface Fleets {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Credential results response along with {@link Response}.
      */
-    Response<FleetCredentialResults> listCredentialsWithResponse(
-        String resourceGroupName, String fleetName, Context context);
+    Response<FleetCredentialResults> listCredentialsWithResponse(String resourceGroupName, String fleetName,
+        Context context);
 
     /**
      * Lists the user credentials of a Fleet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -130,7 +132,7 @@ public interface Fleets {
 
     /**
      * Gets a Fleet.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -141,7 +143,7 @@ public interface Fleets {
 
     /**
      * Gets a Fleet.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -153,7 +155,7 @@ public interface Fleets {
 
     /**
      * Delete a Fleet.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -163,7 +165,7 @@ public interface Fleets {
 
     /**
      * Delete a Fleet.
-     *
+     * 
      * @param id the resource ID.
      * @param ifMatch The request should only proceed if an entity matches this string.
      * @param context The context to associate with this operation.
@@ -175,7 +177,7 @@ public interface Fleets {
 
     /**
      * Begins definition for a new Fleet resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Fleet definition.
      */

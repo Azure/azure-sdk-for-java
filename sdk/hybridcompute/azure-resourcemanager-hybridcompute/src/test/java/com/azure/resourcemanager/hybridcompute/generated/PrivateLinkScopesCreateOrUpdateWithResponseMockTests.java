@@ -6,77 +6,45 @@ package com.azure.resourcemanager.hybridcompute.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcompute.HybridComputeManager;
 import com.azure.resourcemanager.hybridcompute.models.HybridComputePrivateLinkScope;
 import com.azure.resourcemanager.hybridcompute.models.HybridComputePrivateLinkScopeProperties;
 import com.azure.resourcemanager.hybridcompute.models.PublicNetworkAccessType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PrivateLinkScopesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"nbnxwcdomm\",\"privateLinkScopeId\":\"fqawzfgbrttui\",\"privateEndpointConnections\":[{\"id\":\"iexhajl\",\"name\":\"t\",\"type\":\"qfyuttd\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"pvn\",\"description\":\"swmtxk\"},\"provisioningState\":\"twwgzwx\",\"groupIds\":[\"ecvo\",\"ygzyvneezaifght\",\"oqqtl\",\"fhzbkr\"]}},{\"id\":\"jjavfq\",\"name\":\"hnqoewdo\",\"type\":\"yetesy\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"bztjhqtfbovnynkb\",\"description\":\"etnjuhpsprkz\"},\"provisioningState\":\"upia\",\"groupIds\":[\"n\",\"fbwqrooht\"]}},{\"id\":\"vmaonurjt\",\"name\":\"ghihpvecms\",\"type\":\"lbl\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"tbsjuscvsf\",\"description\":\"igctmgxuupbezq\"},\"provisioningState\":\"ydrtc\",\"groupIds\":[\"d\",\"kkyihzt\",\"eq\"]}},{\"id\":\"qzgwldoychil\",\"name\":\"ecfehuwa\",\"type\":\"guh\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"lizst\",\"description\":\"csjvhrwef\"},\"provisioningState\":\"wqejpmvsse\",\"groupIds\":[\"pwamcxtczhupeuk\",\"ijdu\",\"yespydjfbocyv\"]}}]},\"location\":\"ulrtywikdmh\",\"tags\":{\"ufr\":\"uflgbhgauacdixm\",\"ozo\":\"ryjqgdkf\"},\"id\":\"oqbvjhvefgwbmqj\",\"name\":\"hntasfaymx\",\"type\":\"ulpzealb\"}";
 
-        String responseStr =
-            "{\"properties\":{\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"fwlwxjwetnps\",\"privateLinkScopeId\":\"clafzvaylpt\",\"privateEndpointConnections\":[{\"id\":\"wztcmwqkchc\",\"name\":\"axfe\",\"type\":\"jkjexf\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"hpsylkksh\",\"description\":\"bffmbmxz\"},\"provisioningState\":\"gywwpgjxs\",\"groupIds\":[\"fujg\"]}},{\"id\":\"gaao\",\"name\":\"ttaqutdew\",\"type\":\"xswvru\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"jgehkf\",\"description\":\"imrt\"},\"provisioningState\":\"okffqyinljqepqwh\",\"groupIds\":[\"onsts\",\"i\",\"xgvelfclduccbird\",\"vuwcobiegstmnin\"]}}]},\"location\":\"izcil\",\"tags\":{\"xqzv\":\"gshejjtbxqmulux\",\"ycucrwnamikzeb\":\"ers\"},\"id\":\"qbsms\",\"name\":\"ziqgfuh\",\"type\":\"kzruswh\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        HybridComputeManager manager = HybridComputeManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        HybridComputePrivateLinkScope response = manager.privateLinkScopes()
+            .define("pli")
+            .withRegion("nrmvvfkoxmlghk")
+            .withExistingResourceGroup("gnzxojpslsvj")
+            .withTags(mapOf("wex", "dvrmazlpd", "wvqsgny", "mzvlazipbh"))
+            .withProperties(
+                new HybridComputePrivateLinkScopeProperties().withPublicNetworkAccess(PublicNetworkAccessType.ENABLED))
+            .create();
 
-        HybridComputeManager manager =
-            HybridComputeManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        HybridComputePrivateLinkScope response =
-            manager
-                .privateLinkScopes()
-                .define("jphslhcaw")
-                .withRegion("l")
-                .withExistingResourceGroup("lxieixynllxecwcr")
-                .withTags(mapOf("iiznktwfan", "c", "dibmikostbzbkiwb", "nv"))
-                .withProperties(
-                    new HybridComputePrivateLinkScopeProperties()
-                        .withPublicNetworkAccess(PublicNetworkAccessType.ENABLED))
-                .create();
-
-        Assertions.assertEquals("izcil", response.location());
-        Assertions.assertEquals("gshejjtbxqmulux", response.tags().get("xqzv"));
+        Assertions.assertEquals("ulrtywikdmh", response.location());
+        Assertions.assertEquals("uflgbhgauacdixm", response.tags().get("ufr"));
         Assertions.assertEquals(PublicNetworkAccessType.ENABLED, response.properties().publicNetworkAccess());
     }
 

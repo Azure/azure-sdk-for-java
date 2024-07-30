@@ -130,20 +130,20 @@ public final class PrivateLinkResource {
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property id in model PrivateLinkResource"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model PrivateLinkResource"));
         }
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model PrivateLinkResource"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model PrivateLinkResource"));
         }
         if (type() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property type in model PrivateLinkResource"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model PrivateLinkResource"));
         }
         if (properties() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property properties in model PrivateLinkResource"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property properties in model PrivateLinkResource"));
         } else {
             properties().validate();
         }

@@ -105,8 +105,8 @@ public final class LtrBackupResponseInner {
     }
 
     /**
-     * Get the backupMetadata property: Metadata to be stored in RP. Store everything that will be required to perform
-     * a successful restore using this Recovery point. e.g. Versions, DataFormat etc.
+     * Get the backupMetadata property: Metadata to be stored in RP. Store everything that will be required to perform a
+     * successful restore using this Recovery point. e.g. Versions, DataFormat etc.
      * 
      * @return the backupMetadata value.
      */
@@ -115,8 +115,8 @@ public final class LtrBackupResponseInner {
     }
 
     /**
-     * Set the backupMetadata property: Metadata to be stored in RP. Store everything that will be required to perform
-     * a successful restore using this Recovery point. e.g. Versions, DataFormat etc.
+     * Set the backupMetadata property: Metadata to be stored in RP. Store everything that will be required to perform a
+     * successful restore using this Recovery point. e.g. Versions, DataFormat etc.
      * 
      * @param backupMetadata the backupMetadata value to set.
      * @return the LtrBackupResponseInner object itself.

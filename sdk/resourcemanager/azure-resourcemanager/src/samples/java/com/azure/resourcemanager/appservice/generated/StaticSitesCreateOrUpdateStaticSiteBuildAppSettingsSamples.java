@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.appservice.generated;
 
 import com.azure.resourcemanager.appservice.fluent.models.StringDictionaryInner;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,20 +14,22 @@ import java.util.Map;
  */
 public final class StaticSitesCreateOrUpdateStaticSiteBuildAppSettingsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
-     * CreateOrUpdateStaticSiteBuildAppSettings.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/CreateOrUpdateStaticSiteBuildAppSettings.json
      */
     /**
      * Sample code: Creates or updates the function app settings of a static site build.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
         createsOrUpdatesTheFunctionAppSettingsOfAStaticSiteBuild(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getStaticSites().createOrUpdateStaticSiteBuildAppSettingsWithResponse(
-            "rg", "testStaticSite0", "12",
-            new StringDictionaryInner().withProperties(mapOf("setting1", "someval", "setting2", "someval2")),
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getStaticSites()
+            .createOrUpdateStaticSiteBuildAppSettingsWithResponse("rg", "testStaticSite0", "12",
+                new StringDictionaryInner().withProperties(mapOf("setting1", "someval", "setting2", "someval2")),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

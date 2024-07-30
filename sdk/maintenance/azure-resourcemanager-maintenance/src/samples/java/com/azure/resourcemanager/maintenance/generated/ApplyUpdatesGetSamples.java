@@ -4,25 +4,21 @@
 
 package com.azure.resourcemanager.maintenance.generated;
 
-/** Samples for ApplyUpdates Get. */
+/**
+ * Samples for ApplyUpdates Get.
+ */
 public final class ApplyUpdatesGetSamples {
     /*
-     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2023-04-01/examples/ApplyUpdates_Get.json
+     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2023-10-01-preview/examples/ApplyUpdates_Get.json
      */
     /**
      * Sample code: ApplyUpdates_Get.
-     *
+     * 
      * @param manager Entry point to MaintenanceManager.
      */
     public static void applyUpdatesGet(com.azure.resourcemanager.maintenance.MaintenanceManager manager) {
-        manager
-            .applyUpdates()
-            .getWithResponse(
-                "examplerg",
-                "Microsoft.Compute",
-                "virtualMachineScaleSets",
-                "smdtest1",
-                "e9b9685d-78e4-44c4-a81c-64a14f9b87b6",
-                com.azure.core.util.Context.NONE);
+        manager.applyUpdates()
+            .getWithResponse("examplerg", "Microsoft.Compute", "virtualMachineScaleSets", "smdtest1",
+                "e9b9685d-78e4-44c4-a81c-64a14f9b87b6", com.azure.core.util.Context.NONE);
     }
 }

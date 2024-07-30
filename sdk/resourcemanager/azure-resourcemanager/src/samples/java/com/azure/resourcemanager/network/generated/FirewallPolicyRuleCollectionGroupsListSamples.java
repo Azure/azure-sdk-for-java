@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class FirewallPolicyRuleCollectionGroupsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * FirewallPolicyRuleCollectionGroupList.json
      */
     /**
@@ -19,12 +19,15 @@ public final class FirewallPolicyRuleCollectionGroupsListSamples {
      */
     public static void listAllFirewallPolicyRuleCollectionGroupsForAGivenFirewallPolicy(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getFirewallPolicyRuleCollectionGroups().list("rg1", "firewallPolicy",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getFirewallPolicyRuleCollectionGroups()
+            .list("rg1", "firewallPolicy", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * FirewallPolicyRuleCollectionGroupWithIpGroupsList.json
      */
     /**
@@ -34,12 +37,15 @@ public final class FirewallPolicyRuleCollectionGroupsListSamples {
      */
     public static void listAllFirewallPolicyRuleCollectionGroupsWithIpGroupsForAGivenFirewallPolicy(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getFirewallPolicyRuleCollectionGroups().list("rg1", "firewallPolicy",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getFirewallPolicyRuleCollectionGroups()
+            .list("rg1", "firewallPolicy", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * FirewallPolicyRuleCollectionGroupWithWebCategoriesList.json
      */
     /**
@@ -49,7 +55,10 @@ public final class FirewallPolicyRuleCollectionGroupsListSamples {
      */
     public static void listAllFirewallPolicyRuleCollectionGroupWithWebCategories(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getFirewallPolicyRuleCollectionGroups().list("rg1", "firewallPolicy",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getFirewallPolicyRuleCollectionGroups()
+            .list("rg1", "firewallPolicy", com.azure.core.util.Context.NONE);
     }
 }

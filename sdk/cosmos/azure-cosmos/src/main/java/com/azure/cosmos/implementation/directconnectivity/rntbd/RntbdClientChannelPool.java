@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.directconnectivity.ChannelAcquisitionException;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint.Config;
 import com.azure.cosmos.implementation.faultinjection.RntbdFaultInjectionConnectionCloseEvent;
 import com.azure.cosmos.implementation.faultinjection.RntbdFaultInjectionConnectionResetEvent;
@@ -36,6 +37,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.SocketAddress;
 import java.nio.channels.ClosedChannelException;
 import java.time.Duration;
@@ -120,25 +122,25 @@ import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 public final class RntbdClientChannelPool implements ChannelPool {
 
     // TODO: moderakh setup proper retry in higher stack for the exceptions here
-    private static final TimeoutException ACQUISITION_TIMEOUT = ThrowableUtil.unknownStackTrace(
-        new TimeoutException("acquisition took longer than the configured maximum time"),
+    private static final ChannelAcquisitionException ACQUISITION_TIMEOUT = ThrowableUtil.unknownStackTrace(
+        new ChannelAcquisitionException("acquisition took longer than the configured maximum time"),
         RntbdClientChannelPool.class, "<init>");
 
     private static final ClosedChannelException CHANNEL_CLOSED_ON_ACQUIRE = ThrowableUtil.unknownStackTrace(
         new ClosedChannelException(), RntbdClientChannelPool.class, "acquire");
 
-    private static final IllegalStateException POOL_CLOSED_ON_ACQUIRE = ThrowableUtil.unknownStackTrace(
+    private static final ChannelAcquisitionException POOL_CLOSED_ON_ACQUIRE = ThrowableUtil.unknownStackTrace(
         new ChannelAcquisitionException("service endpoint was closed while acquiring a channel"),
         RntbdClientChannelPool.class, "acquire");
 
-    private static final IllegalStateException POOL_CLOSED_ON_RELEASE = ThrowableUtil.unknownStackTrace(
+    private static final ChannelAcquisitionException POOL_CLOSED_ON_RELEASE = ThrowableUtil.unknownStackTrace(
         new ChannelAcquisitionException("service endpoint was closed while releasing a channel"),
         RntbdClientChannelPool.class, "release");
 
     private static final AttributeKey<RntbdClientChannelPool> POOL_KEY = AttributeKey.newInstance(
         RntbdClientChannelPool.class.getName());
 
-    private static final IllegalStateException TOO_MANY_PENDING_ACQUISITIONS = ThrowableUtil.unknownStackTrace(
+    private static final ChannelAcquisitionException TOO_MANY_PENDING_ACQUISITIONS = ThrowableUtil.unknownStackTrace(
         new ChannelAcquisitionException("too many outstanding acquire operations"),
         RntbdClientChannelPool.class, "acquire");
 
@@ -695,7 +697,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
             if (this.allowedToOpenNewChannel(this.maxChannels)) {
                 if (this.connecting.compareAndSet(false, true)) {
-
                     // Fulfill this request with a new channel, assuming we can connect one
                     // If our connection attempt fails, notifyChannelConnect will call us again
 
@@ -740,7 +741,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
                     if (manager == null) {
                         if (logger.isDebugEnabled()) {
-                            logger.debug("Channel({} --> {}) closed", channel, this.remoteAddress());
+                            logger.debug("Channel({} --> {}) closed due to CPU > 0.90D", channel, this.remoteAddress());
                         }
                     } else {
                         final long pendingRequestCount = manager.pendingRequestCount();
@@ -1046,7 +1047,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
         }).addListener(closed -> {
             if (!closed.isSuccess()) {
-                logger.error("[{}] close failed due to ", this, closed.cause());
+                logger.info("[{}] close failed due to ", this, closed.cause());
             } else {
                 logger.debug("[{}] closed", this);
             }
@@ -1114,8 +1115,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
         this.acquisitionAndIdleEndpointDetectionTimeout.set(acquisitionAndIdleEndpointDetectionTimer.newTimeout(
             (Timeout timeout) -> {
                 if (idleEndpointTimeoutInNanos == 0) {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("Idle endpoint check is disabled");
+                    // log is too noisy when debug is enabled
+                    if (logger.isTraceEnabled()) {
+                        logger.trace("Idle endpoint check is disabled");
                     }
                 } else {
                     final long elapsedTimeInNanos = System.nanoTime() - endpoint.lastRequestNanoTime();
@@ -1123,10 +1125,10 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     if (idleEndpointTimeoutInNanos - elapsedTimeInNanos <= 0) {
                         if (logger.isDebugEnabled()) {
                             logger.debug(
-                                "{} closing endpoint due to inactivity (elapsedTime: {} > idleEndpointTimeout: {})",
-                                endpoint,
-                                Duration.ofNanos(elapsedTimeInNanos),
-                                Duration.ofNanos(idleEndpointTimeoutInNanos));
+                                    "{} closing endpoint due to inactivity (elapsedTime: {} > idleEndpointTimeout: {})",
+                                    endpoint,
+                                    Duration.ofNanos(elapsedTimeInNanos),
+                                    Duration.ofNanos(idleEndpointTimeoutInNanos));
                         }
                         endpoint.close();
                         return;
@@ -1202,7 +1204,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 }
 
                 if (promise.trySuccess(channel)) {
-
+  
                     if (logger.isDebugEnabled()) {
                         logger.debug("established a channel local {}, remote {}", channel.localAddress(), channel.remoteAddress());
                     }
@@ -1221,9 +1223,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     });
                 } else {
                     if (logger.isDebugEnabled()) {
-                        logger.debug("notifyChannelConnect promise.trySuccess(channel)=false");
+                        logger.debug("notifyChannelConnect local {}, remote {} promise.trySuccess(channel)=false",
+                                channel.localAddress(), channel.remoteAddress());
                     }
-
                     // Promise was completed in the meantime (like cancelled), just close the channel
                     this.closeChannel(channel);
                 }
@@ -1462,7 +1464,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 this.poolHandler.channelReleased(channel);
                 promise.setSuccess(null);
             } else {
-                final IllegalStateException error = new ChannelAcquisitionException(lenientFormat(
+                final ChannelAcquisitionException error = new ChannelAcquisitionException(lenientFormat(
                     "cannot offer channel back to pool because the pool is at capacity (%s)\n  %s\n  %s",
                     this.maxChannels,
                     this,
@@ -1642,7 +1644,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                         this.originalPromise.setSuccess(channel);
                     } else {
                         final Throwable cause = completed.cause();
-                        logger.warn("Channel({}) health check request failed due to:", channel, cause);
+                        logger.info("Channel({}) health check request failed due to:", channel, cause);
                         this.fail(cause);
                     }
                 });
@@ -1689,7 +1691,11 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 }
 
             } else {
-                logger.warn("channel acquisition failed due to ", future.cause());
+                if (future.cause() instanceof ConnectException) {
+                    logger.info("channel acquisition failed due to ", future.cause());
+                } else {
+                    logger.warn("channel acquisition failed due to ", future.cause());
+                }
                 this.fail(future.cause());
             }
         }
@@ -1725,8 +1731,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
          */
         @Override
         public final void run() {
-            if (logger.isDebugEnabled()) {
-                logger.debug("Starting the AcquireTimeoutTask to clean for endpoint [{}].", this.pool.remoteAddress());
+            // log is too noisy when debug is enabled
+            if (logger.isTraceEnabled()) {
+                logger.trace("Starting the AcquireTimeoutTask to clean for endpoint [{}].", this.pool.remoteAddress());
             }
             long currentNanoTime = System.nanoTime();
 
@@ -1744,6 +1751,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 // * https://docs.oracle.com/javase/7/docs/api/java/lang/System.html#nanoTime()
                 // * https://github.com/netty/netty/issues/3705
                 if (expiryTime - currentNanoTime <= 0) {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("clean up for endpoint [{}].", this.pool.remoteAddress());
+                    }
                     this.onTimeout(removedTask);
                 } else {
                     if (!this.pool.pendingAcquisitions.offer(removedTask)) {
@@ -1789,20 +1799,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
             generator.writeNumberField("requestQueueLength", value.requestQueueLength());
             generator.writeEndObject();
             generator.writeEndObject();
-        }
-    }
-
-    private static class ChannelAcquisitionException extends IllegalStateException {
-
-        private static final long serialVersionUID = -6011782222645074949L;
-
-        public ChannelAcquisitionException(String message) {
-            super(message);
-        }
-
-        @Override
-        public synchronized Throwable fillInStackTrace() {
-            return this;
         }
     }
 

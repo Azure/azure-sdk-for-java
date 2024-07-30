@@ -12,18 +12,18 @@ public final class MigrationNameAvailabilityResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrationNameAvailabilityResourceInner model = BinaryData.fromString(
-            "{\"name\":\"cdl\",\"type\":\"h\",\"nameAvailable\":true,\"reason\":\"Invalid\",\"message\":\"acstwityk\"}")
+            "{\"name\":\"i\",\"type\":\"ybxarzgszu\",\"nameAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"opidoamciodh\"}")
             .toObject(MigrationNameAvailabilityResourceInner.class);
-        Assertions.assertEquals("cdl", model.name());
-        Assertions.assertEquals("h", model.type());
+        Assertions.assertEquals("i", model.name());
+        Assertions.assertEquals("ybxarzgszu", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MigrationNameAvailabilityResourceInner model
-            = new MigrationNameAvailabilityResourceInner().withName("cdl").withType("h");
+            = new MigrationNameAvailabilityResourceInner().withName("i").withType("ybxarzgszu");
         model = BinaryData.fromObject(model).toObject(MigrationNameAvailabilityResourceInner.class);
-        Assertions.assertEquals("cdl", model.name());
-        Assertions.assertEquals("h", model.type());
+        Assertions.assertEquals("i", model.name());
+        Assertions.assertEquals("ybxarzgszu", model.type());
     }
 }

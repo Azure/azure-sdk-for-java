@@ -5,8 +5,11 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -16,28 +19,25 @@ import java.util.Map;
  * Information about a single thread associated with an assistant.
  */
 @Immutable
-public final class AssistantThread {
+public final class AssistantThread implements JsonSerializable<AssistantThread> {
 
     /*
      * The identifier, which can be referenced in API endpoints.
      */
     @Generated
-    @JsonProperty(value = "id")
-    private String id;
+    private final String id;
 
     /*
      * The object type, which is always 'thread'.
      */
     @Generated
-    @JsonProperty(value = "object")
-    private String object = "thread";
+    private final String object = "thread";
 
     /*
      * The Unix timestamp, in seconds, representing when this object was created.
      */
     @Generated
-    @JsonProperty(value = "created_at")
-    private long createdAt;
+    private final long createdAt;
 
     /*
      * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
@@ -45,8 +45,7 @@ public final class AssistantThread {
      * characters in length.
      */
     @Generated
-    @JsonProperty(value = "metadata")
-    private Map<String, String> metadata;
+    private final Map<String, String> metadata;
 
     /**
      * Get the id property: The identifier, which can be referenced in API endpoints.
@@ -91,23 +90,97 @@ public final class AssistantThread {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("object", this.object);
+        jsonWriter.writeLongField("created_at", this.createdAt);
+        jsonWriter.writeJsonField("tool_resources", this.toolResources);
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AssistantThread from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AssistantThread if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AssistantThread.
+     */
+    @Generated
+    public static AssistantThread fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String id = null;
+            OffsetDateTime createdAt = null;
+            ToolResources toolResources = null;
+            Map<String, String> metadata = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("created_at".equals(fieldName)) {
+                    createdAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
+                } else if ("tool_resources".equals(fieldName)) {
+                    toolResources = ToolResources.fromJson(reader);
+                } else if ("metadata".equals(fieldName)) {
+                    metadata = reader.readMap(reader1 -> reader1.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new AssistantThread(id, createdAt, toolResources, metadata);
+        });
+    }
+
+    /*
+     * A set of resources that are made available to the assistant's tools in this thread. The resources are specific to
+     * the type
+     * of tool. For example, the `code_interpreter` tool requires a list of file IDs, while the `file_search` tool
+     * requires a list
+     * of vector store IDs.
+     */
+    @Generated
+    private final ToolResources toolResources;
+
+    /**
      * Creates an instance of AssistantThread class.
      *
      * @param id the id value to set.
      * @param createdAt the createdAt value to set.
+     * @param toolResources the toolResources value to set.
      * @param metadata the metadata value to set.
      */
     @Generated
-    private AssistantThread(String id, OffsetDateTime createdAt, Map<String, String> metadata) {
+    private AssistantThread(String id, OffsetDateTime createdAt, ToolResources toolResources,
+        Map<String, String> metadata) {
         this.id = id;
-        this.createdAt = createdAt.toEpochSecond();
+        if (createdAt == null) {
+            this.createdAt = 0L;
+        } else {
+            this.createdAt = createdAt.toEpochSecond();
+        }
+        this.toolResources = toolResources;
         this.metadata = metadata;
     }
 
+    /**
+     * Get the toolResources property: A set of resources that are made available to the assistant's tools in this
+     * thread. The resources are specific to the type
+     * of tool. For example, the `code_interpreter` tool requires a list of file IDs, while the `file_search` tool
+     * requires a list
+     * of vector store IDs.
+     *
+     * @return the toolResources value.
+     */
     @Generated
-    @JsonCreator
-    private AssistantThread(@JsonProperty(value = "id") String id, @JsonProperty(value = "created_at") long createdAt,
-        @JsonProperty(value = "metadata") Map<String, String> metadata) {
-        this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), metadata);
+    public ToolResources getToolResources() {
+        return this.toolResources;
     }
 }

@@ -35,8 +35,8 @@ public final class CustomEntityStoreAssignmentRequest {
     }
 
     /**
-     * Get the principal property: The principal assigned with entity store. If not provided, will use caller
-     * principal. Format of principal is: [AAD type]=[PrincipalObjectId];[TenantId].
+     * Get the principal property: The principal assigned with entity store. If not provided, will use caller principal.
+     * Format of principal is: [AAD type]=[PrincipalObjectId];[TenantId].
      * 
      * @return the principal value.
      */
@@ -45,8 +45,8 @@ public final class CustomEntityStoreAssignmentRequest {
     }
 
     /**
-     * Set the principal property: The principal assigned with entity store. If not provided, will use caller
-     * principal. Format of principal is: [AAD type]=[PrincipalObjectId];[TenantId].
+     * Set the principal property: The principal assigned with entity store. If not provided, will use caller principal.
+     * Format of principal is: [AAD type]=[PrincipalObjectId];[TenantId].
      * 
      * @param principal the principal value to set.
      * @return the CustomEntityStoreAssignmentRequest object itself.

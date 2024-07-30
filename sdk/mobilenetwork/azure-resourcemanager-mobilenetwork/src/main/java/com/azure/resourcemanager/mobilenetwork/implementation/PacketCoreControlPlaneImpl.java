@@ -13,6 +13,7 @@ import com.azure.resourcemanager.mobilenetwork.models.BillingSku;
 import com.azure.resourcemanager.mobilenetwork.models.CoreNetworkType;
 import com.azure.resourcemanager.mobilenetwork.models.DiagnosticsUploadConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.EventHubConfiguration;
+import com.azure.resourcemanager.mobilenetwork.models.HomeNetworkPrivateKeysProvisioning;
 import com.azure.resourcemanager.mobilenetwork.models.IdentityAndTagsObject;
 import com.azure.resourcemanager.mobilenetwork.models.Installation;
 import com.azure.resourcemanager.mobilenetwork.models.InterfaceProperties;
@@ -24,6 +25,7 @@ import com.azure.resourcemanager.mobilenetwork.models.PlatformConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.SignalingConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.SiteResourceId;
+import com.azure.resourcemanager.mobilenetwork.models.UserConsentConfiguration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -145,6 +147,14 @@ public final class PacketCoreControlPlaneImpl
         return this.innerModel().interopSettings();
     }
 
+    public HomeNetworkPrivateKeysProvisioning homeNetworkPrivateKeysProvisioning() {
+        return this.innerModel().homeNetworkPrivateKeysProvisioning();
+    }
+
+    public UserConsentConfiguration userConsent() {
+        return this.innerModel().userConsent();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -177,25 +187,21 @@ public final class PacketCoreControlPlaneImpl
     }
 
     public PacketCoreControlPlane create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPacketCoreControlPlanes()
-                .createOrUpdate(resourceGroupName, packetCoreControlPlaneName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPacketCoreControlPlanes()
+            .createOrUpdate(resourceGroupName, packetCoreControlPlaneName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public PacketCoreControlPlane create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPacketCoreControlPlanes()
-                .createOrUpdate(resourceGroupName, packetCoreControlPlaneName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getPacketCoreControlPlanes()
+            .createOrUpdate(resourceGroupName, packetCoreControlPlaneName, this.innerModel(), context);
         return this;
     }
 
-    PacketCoreControlPlaneImpl(
-        String name, com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager) {
+    PacketCoreControlPlaneImpl(String name,
+        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager) {
         this.innerObject = new PacketCoreControlPlaneInner();
         this.serviceManager = serviceManager;
         this.packetCoreControlPlaneName = name;
@@ -207,51 +213,43 @@ public final class PacketCoreControlPlaneImpl
     }
 
     public PacketCoreControlPlane apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPacketCoreControlPlanes()
-                .updateTagsWithResponse(resourceGroupName, packetCoreControlPlaneName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPacketCoreControlPlanes()
+            .updateTagsWithResponse(resourceGroupName, packetCoreControlPlaneName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PacketCoreControlPlane apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPacketCoreControlPlanes()
-                .updateTagsWithResponse(resourceGroupName, packetCoreControlPlaneName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPacketCoreControlPlanes()
+            .updateTagsWithResponse(resourceGroupName, packetCoreControlPlaneName, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    PacketCoreControlPlaneImpl(
-        PacketCoreControlPlaneInner innerObject,
+    PacketCoreControlPlaneImpl(PacketCoreControlPlaneInner innerObject,
         com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.packetCoreControlPlaneName = Utils.getValueFromIdByName(innerObject.id(), "packetCoreControlPlanes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.packetCoreControlPlaneName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "packetCoreControlPlanes");
     }
 
     public PacketCoreControlPlane refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPacketCoreControlPlanes()
-                .getByResourceGroupWithResponse(resourceGroupName, packetCoreControlPlaneName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPacketCoreControlPlanes()
+            .getByResourceGroupWithResponse(resourceGroupName, packetCoreControlPlaneName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PacketCoreControlPlane refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPacketCoreControlPlanes()
-                .getByResourceGroupWithResponse(resourceGroupName, packetCoreControlPlaneName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPacketCoreControlPlanes()
+            .getByResourceGroupWithResponse(resourceGroupName, packetCoreControlPlaneName, context)
+            .getValue();
         return this;
     }
 
@@ -260,8 +258,7 @@ public final class PacketCoreControlPlaneImpl
     }
 
     public AsyncOperationStatus rollback(Context context) {
-        return serviceManager
-            .packetCoreControlPlanes()
+        return serviceManager.packetCoreControlPlanes()
             .rollback(resourceGroupName, packetCoreControlPlaneName, context);
     }
 
@@ -270,21 +267,18 @@ public final class PacketCoreControlPlaneImpl
     }
 
     public AsyncOperationStatus reinstall(Context context) {
-        return serviceManager
-            .packetCoreControlPlanes()
+        return serviceManager.packetCoreControlPlanes()
             .reinstall(resourceGroupName, packetCoreControlPlaneName, context);
     }
 
     public AsyncOperationStatus collectDiagnosticsPackage(PacketCoreControlPlaneCollectDiagnosticsPackage parameters) {
-        return serviceManager
-            .packetCoreControlPlanes()
+        return serviceManager.packetCoreControlPlanes()
             .collectDiagnosticsPackage(resourceGroupName, packetCoreControlPlaneName, parameters);
     }
 
-    public AsyncOperationStatus collectDiagnosticsPackage(
-        PacketCoreControlPlaneCollectDiagnosticsPackage parameters, Context context) {
-        return serviceManager
-            .packetCoreControlPlanes()
+    public AsyncOperationStatus collectDiagnosticsPackage(PacketCoreControlPlaneCollectDiagnosticsPackage parameters,
+        Context context) {
+        return serviceManager.packetCoreControlPlanes()
             .collectDiagnosticsPackage(resourceGroupName, packetCoreControlPlaneName, parameters, context);
     }
 
@@ -318,8 +312,8 @@ public final class PacketCoreControlPlaneImpl
         return this;
     }
 
-    public PacketCoreControlPlaneImpl withLocalDiagnosticsAccess(
-        LocalDiagnosticsAccessConfiguration localDiagnosticsAccess) {
+    public PacketCoreControlPlaneImpl
+        withLocalDiagnosticsAccess(LocalDiagnosticsAccessConfiguration localDiagnosticsAccess) {
         this.innerModel().withLocalDiagnosticsAccess(localDiagnosticsAccess);
         return this;
     }
@@ -359,8 +353,8 @@ public final class PacketCoreControlPlaneImpl
         return this;
     }
 
-    public PacketCoreControlPlaneImpl withControlPlaneAccessVirtualIpv4Addresses(
-        List<String> controlPlaneAccessVirtualIpv4Addresses) {
+    public PacketCoreControlPlaneImpl
+        withControlPlaneAccessVirtualIpv4Addresses(List<String> controlPlaneAccessVirtualIpv4Addresses) {
         this.innerModel().withControlPlaneAccessVirtualIpv4Addresses(controlPlaneAccessVirtualIpv4Addresses);
         return this;
     }
@@ -387,6 +381,11 @@ public final class PacketCoreControlPlaneImpl
 
     public PacketCoreControlPlaneImpl withInteropSettings(Object interopSettings) {
         this.innerModel().withInteropSettings(interopSettings);
+        return this;
+    }
+
+    public PacketCoreControlPlaneImpl withUserConsent(UserConsentConfiguration userConsent) {
+        this.innerModel().withUserConsent(userConsent);
         return this;
     }
 

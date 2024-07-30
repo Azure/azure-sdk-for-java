@@ -6,57 +6,39 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.Type;
 import com.azure.resourcemanager.netapp.models.VolumeQuotaRule;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class VolumeQuotaRulesListByVolumeMockTests {
     @Test
     public void testListByVolume() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Patching\",\"quotaSizeInKiBs\":6035951377180684883,\"quotaType\":\"IndividualGroupQuota\",\"quotaTarget\":\"oxczytp\"},\"location\":\"nwvroevytlyokrr\",\"tags\":{\"rxklobdxnazpmk\":\"uxvnsasbcrymodi\",\"vfxzopjh\":\"lmv\",\"d\":\"zxlioh\"},\"id\":\"dtfgxqbawpcbb\",\"name\":\"zqcyknap\",\"type\":\"ofyuicd\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"quotaSizeInKiBs\":4706724990573713348,\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"knlqwzdvpiwhxqsz\"},\"location\":\"maajquhuxylr\",\"tags\":{\"jbmzyospspsh\":\"ty\"},\"id\":\"kfkyjp\",\"name\":\"sp\",\"type\":\"pssdfppyogtie\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        NetAppFilesManager manager = NetAppFilesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        NetAppFilesManager manager = NetAppFilesManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        PagedIterable<VolumeQuotaRule> response = manager.volumeQuotaRules()
+            .listByVolume("w", "auunfprnjletlx", "mr", "ddoui", com.azure.core.util.Context.NONE);
 
-        PagedIterable<VolumeQuotaRule> response = manager.volumeQuotaRules().listByVolume("ninvudbchaqdt", "qecrqctmxx",
-            "tddmf", "huytxzvtzn", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("nwvroevytlyokrr", response.iterator().next().location());
-        Assertions.assertEquals("uxvnsasbcrymodi", response.iterator().next().tags().get("rxklobdxnazpmk"));
-        Assertions.assertEquals(6035951377180684883L, response.iterator().next().quotaSizeInKiBs());
-        Assertions.assertEquals(Type.INDIVIDUAL_GROUP_QUOTA, response.iterator().next().quotaType());
-        Assertions.assertEquals("oxczytp", response.iterator().next().quotaTarget());
+        Assertions.assertEquals("maajquhuxylr", response.iterator().next().location());
+        Assertions.assertEquals("ty", response.iterator().next().tags().get("jbmzyospspsh"));
+        Assertions.assertEquals(4706724990573713348L, response.iterator().next().quotaSizeInKiBs());
+        Assertions.assertEquals(Type.DEFAULT_USER_QUOTA, response.iterator().next().quotaType());
+        Assertions.assertEquals("knlqwzdvpiwhxqsz", response.iterator().next().quotaTarget());
     }
 }

@@ -6,58 +6,57 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Authorization to copy a document model to the specified target resource and
  * modelId.
  */
 @Immutable
-public final class CopyAuthorization {
+public final class CopyAuthorization implements JsonSerializable<CopyAuthorization> {
     /*
      * ID of the target Azure resource where the document model should be copied to.
      */
     @Generated
-    @JsonProperty(value = "targetResourceId")
-    private String targetResourceId;
+    private final String targetResourceId;
 
     /*
      * Location of the target Azure resource where the document model should be copied
      * to.
      */
     @Generated
-    @JsonProperty(value = "targetResourceRegion")
-    private String targetResourceRegion;
+    private final String targetResourceRegion;
 
     /*
      * Identifier of the target document model.
      */
     @Generated
-    @JsonProperty(value = "targetModelId")
-    private String targetModelId;
+    private final String targetModelId;
 
     /*
      * URL of the copied document model in the target account.
      */
     @Generated
-    @JsonProperty(value = "targetModelLocation")
-    private String targetModelLocation;
+    private final String targetModelLocation;
 
     /*
      * Token used to authorize the request.
      */
     @Generated
-    @JsonProperty(value = "accessToken")
-    private String accessToken;
+    private final String accessToken;
 
     /*
      * Date/time when the access token expires.
      */
     @Generated
-    @JsonProperty(value = "expirationDateTime")
-    private OffsetDateTime expirationDateTime;
+    private final OffsetDateTime expirationDateTime;
 
     /**
      * Creates an instance of CopyAuthorization class.
@@ -70,13 +69,8 @@ public final class CopyAuthorization {
      * @param expirationDateTime the expirationDateTime value to set.
      */
     @Generated
-    @JsonCreator
-    public CopyAuthorization(@JsonProperty(value = "targetResourceId") String targetResourceId,
-        @JsonProperty(value = "targetResourceRegion") String targetResourceRegion,
-        @JsonProperty(value = "targetModelId") String targetModelId,
-        @JsonProperty(value = "targetModelLocation") String targetModelLocation,
-        @JsonProperty(value = "accessToken") String accessToken,
-        @JsonProperty(value = "expirationDateTime") OffsetDateTime expirationDateTime) {
+    public CopyAuthorization(String targetResourceId, String targetResourceRegion, String targetModelId,
+        String targetModelLocation, String accessToken, OffsetDateTime expirationDateTime) {
         this.targetResourceId = targetResourceId;
         this.targetResourceRegion = targetResourceRegion;
         this.targetModelId = targetModelId;
@@ -145,5 +139,68 @@ public final class CopyAuthorization {
     @Generated
     public OffsetDateTime getExpirationDateTime() {
         return this.expirationDateTime;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetResourceId", this.targetResourceId);
+        jsonWriter.writeStringField("targetResourceRegion", this.targetResourceRegion);
+        jsonWriter.writeStringField("targetModelId", this.targetModelId);
+        jsonWriter.writeStringField("targetModelLocation", this.targetModelLocation);
+        jsonWriter.writeStringField("accessToken", this.accessToken);
+        jsonWriter.writeStringField("expirationDateTime",
+            this.expirationDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationDateTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CopyAuthorization from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CopyAuthorization if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CopyAuthorization.
+     */
+    @Generated
+    public static CopyAuthorization fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String targetResourceId = null;
+            String targetResourceRegion = null;
+            String targetModelId = null;
+            String targetModelLocation = null;
+            String accessToken = null;
+            OffsetDateTime expirationDateTime = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetResourceId".equals(fieldName)) {
+                    targetResourceId = reader.getString();
+                } else if ("targetResourceRegion".equals(fieldName)) {
+                    targetResourceRegion = reader.getString();
+                } else if ("targetModelId".equals(fieldName)) {
+                    targetModelId = reader.getString();
+                } else if ("targetModelLocation".equals(fieldName)) {
+                    targetModelLocation = reader.getString();
+                } else if ("accessToken".equals(fieldName)) {
+                    accessToken = reader.getString();
+                } else if ("expirationDateTime".equals(fieldName)) {
+                    expirationDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new CopyAuthorization(targetResourceId, targetResourceRegion, targetModelId, targetModelLocation,
+                accessToken, expirationDateTime);
+        });
     }
 }

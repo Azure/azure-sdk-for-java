@@ -13,9 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class VirtualNetworkRule {
     /*
-     * Resource ID of a subnet, for example:
-     * /subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.Network/virtualNetworks/{
-     * virtualNetworkName}/subnets/{subnetName}.
+     * Resource ID of a subnet, for example: /subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}.
      */
     @JsonProperty(value = "id")
     private String id;

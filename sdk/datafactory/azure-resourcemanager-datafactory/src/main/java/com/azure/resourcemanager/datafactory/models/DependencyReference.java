@@ -5,18 +5,16 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Referenced dependency.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = DependencyReference.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = DependencyReference.class, visible = true)
 @JsonTypeName("DependencyReference")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "TriggerDependencyReference", value = TriggerDependencyReference.class),
@@ -25,10 +23,26 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         value = SelfDependencyTumblingWindowTriggerReference.class) })
 @Immutable
 public class DependencyReference {
+    /*
+     * The type of dependency reference.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "DependencyReference";
+
     /**
      * Creates an instance of DependencyReference class.
      */
     public DependencyReference() {
+    }
+
+    /**
+     * Get the type property: The type of dependency reference.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**

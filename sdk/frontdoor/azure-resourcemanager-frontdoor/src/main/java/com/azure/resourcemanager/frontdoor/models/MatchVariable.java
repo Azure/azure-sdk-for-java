@@ -8,38 +8,58 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Request variable to compare with. */
+/**
+ * Request variable to compare with.
+ */
 public final class MatchVariable extends ExpandableStringEnum<MatchVariable> {
-    /** Static value RemoteAddr for MatchVariable. */
+    /**
+     * Static value RemoteAddr for MatchVariable.
+     */
     public static final MatchVariable REMOTE_ADDR = fromString("RemoteAddr");
 
-    /** Static value RequestMethod for MatchVariable. */
+    /**
+     * Static value RequestMethod for MatchVariable.
+     */
     public static final MatchVariable REQUEST_METHOD = fromString("RequestMethod");
 
-    /** Static value QueryString for MatchVariable. */
+    /**
+     * Static value QueryString for MatchVariable.
+     */
     public static final MatchVariable QUERY_STRING = fromString("QueryString");
 
-    /** Static value PostArgs for MatchVariable. */
+    /**
+     * Static value PostArgs for MatchVariable.
+     */
     public static final MatchVariable POST_ARGS = fromString("PostArgs");
 
-    /** Static value RequestUri for MatchVariable. */
+    /**
+     * Static value RequestUri for MatchVariable.
+     */
     public static final MatchVariable REQUEST_URI = fromString("RequestUri");
 
-    /** Static value RequestHeader for MatchVariable. */
+    /**
+     * Static value RequestHeader for MatchVariable.
+     */
     public static final MatchVariable REQUEST_HEADER = fromString("RequestHeader");
 
-    /** Static value RequestBody for MatchVariable. */
+    /**
+     * Static value RequestBody for MatchVariable.
+     */
     public static final MatchVariable REQUEST_BODY = fromString("RequestBody");
 
-    /** Static value Cookies for MatchVariable. */
+    /**
+     * Static value Cookies for MatchVariable.
+     */
     public static final MatchVariable COOKIES = fromString("Cookies");
 
-    /** Static value SocketAddr for MatchVariable. */
+    /**
+     * Static value SocketAddr for MatchVariable.
+     */
     public static final MatchVariable SOCKET_ADDR = fromString("SocketAddr");
 
     /**
      * Creates a new instance of MatchVariable value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -48,7 +68,7 @@ public final class MatchVariable extends ExpandableStringEnum<MatchVariable> {
 
     /**
      * Creates or finds a MatchVariable from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MatchVariable.
      */
@@ -59,7 +79,7 @@ public final class MatchVariable extends ExpandableStringEnum<MatchVariable> {
 
     /**
      * Gets known MatchVariable values.
-     *
+     * 
      * @return known MatchVariable values.
      */
     public static Collection<MatchVariable> values() {

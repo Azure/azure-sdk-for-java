@@ -7,7 +7,6 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.paging.ContinuablePage;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -38,6 +37,7 @@ import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
+import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
@@ -1058,10 +1058,12 @@ public class ServiceAsyncApiTests extends BlobTestBase {
 
     @Test
     public void oAuthOnSecondary() {
-        BlobServiceAsyncClient serviceClient = setOauthCredentials(getServiceClientBuilder(null,
-            ENVIRONMENT.getPrimaryAccount().getBlobEndpointSecondary())).buildAsyncClient();
+        BlobServiceClientBuilder secondaryBuilder = getServiceClientBuilder(null,
+            ENVIRONMENT.getPrimaryAccount().getBlobEndpointSecondary());
+        BlobServiceAsyncClient secondaryClient = secondaryBuilder
+            .credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildAsyncClient();
 
-        StepVerifier.create(serviceClient.getProperties())
+        StepVerifier.create(secondaryClient.getProperties())
             .expectNextCount(1)
             .verifyComplete();
     }
@@ -1204,19 +1206,20 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @LiveOnly
     @Test
-    public void audienceError() {
-        BlobServiceAsyncClient aadService = instrument(new BlobServiceClientBuilder()
-            .endpoint(ccAsync.getBlobContainerUrl())
-            .credential(new MockTokenCredential())
-            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience")))
-            .buildAsyncClient();
+    /* This test tests if the bearer challenge is working properly. A bad audience is passed in, the service returns
+    the default audience, and the request gets retried with this default audience, making the call function as expected.
+     */
+    public void audienceErrorBearerChallengeRetry() {
+        BlobServiceAsyncClient aadService = getServiceClientBuilderWithTokenCredential(ccAsync.getBlobContainerUrl())
+                .audience(BlobAudience.createBlobServiceAccountAudience("badAudience"))
+                .buildAsyncClient();
 
         StepVerifier.create(aadService.getProperties())
-            .verifyErrorSatisfies(r -> {
-                BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
-                assertTrue(e.getErrorCode() == BlobErrorCode.INVALID_AUTHENTICATION_INFO);
-            });
+            .assertNext(r -> assertNotNull(r))
+            .verifyComplete();
     }
 
     @Test

@@ -39,6 +39,23 @@ public class AccessibleByteArrayOutputStream extends ByteArrayOutputStream {
         return Arrays.copyOf(buf, count);
     }
 
+    /**
+     * Creates a byte array from the specified range of bytes written to the stream.
+     *
+     * @param start The start index of the range.
+     * @param end The end index of the range.
+     * @return A byte array containing the specified range of bytes written to the stream.
+     * @throws IndexOutOfBoundsException If {@code start} is less than 0, {@code end} is greater than or equal to
+     * {@link #count()}, or {@code start} is greater than {@code end}.
+     */
+    public byte[] toByteArray(int start, int end) {
+        if (start < 0 || end >= count || start > end) {
+            throw new IndexOutOfBoundsException("start: " + start + ", end: " + end + ", count: " + count);
+        }
+
+        return Arrays.copyOfRange(buf, start, end);
+    }
+
     // Commenting out as this isn't used but may be added back in the future.
     // /**
     // * Returns the internal {@code byte[]} without copying.
@@ -99,5 +116,9 @@ public class AccessibleByteArrayOutputStream extends ByteArrayOutputStream {
      */
     public String bomAwareToString(String contentType) {
         return ImplUtils.bomAwareToString(buf, 0, count, contentType);
+    }
+
+    @Override
+    public void close() {
     }
 }

@@ -5,16 +5,46 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Describes a Virtual Machine Scale Set VM Reimage Parameters.
  */
 @Fluent
 public class VirtualMachineScaleSetVMReimageParameters extends VirtualMachineReimageParameters {
+    /*
+     * Parameter to force update ephemeral OS disk for a virtual machine scale set VM
+     */
+    @JsonProperty(value = "forceUpdateOSDiskForEphemeral")
+    private Boolean forceUpdateOSDiskForEphemeral;
+
     /**
      * Creates an instance of VirtualMachineScaleSetVMReimageParameters class.
      */
     public VirtualMachineScaleSetVMReimageParameters() {
+    }
+
+    /**
+     * Get the forceUpdateOSDiskForEphemeral property: Parameter to force update ephemeral OS disk for a virtual machine
+     * scale set VM.
+     * 
+     * @return the forceUpdateOSDiskForEphemeral value.
+     */
+    public Boolean forceUpdateOSDiskForEphemeral() {
+        return this.forceUpdateOSDiskForEphemeral;
+    }
+
+    /**
+     * Set the forceUpdateOSDiskForEphemeral property: Parameter to force update ephemeral OS disk for a virtual machine
+     * scale set VM.
+     * 
+     * @param forceUpdateOSDiskForEphemeral the forceUpdateOSDiskForEphemeral value to set.
+     * @return the VirtualMachineScaleSetVMReimageParameters object itself.
+     */
+    public VirtualMachineScaleSetVMReimageParameters
+        withForceUpdateOSDiskForEphemeral(Boolean forceUpdateOSDiskForEphemeral) {
+        this.forceUpdateOSDiskForEphemeral = forceUpdateOSDiskForEphemeral;
+        return this;
     }
 
     /**

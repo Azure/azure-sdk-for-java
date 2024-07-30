@@ -34,16 +34,19 @@ public final class ManagedPrivateEndpointListResponseTests {
                 new ManagedPrivateEndpointResourceInner().withId("ijtk")
                     .withProperties(new ManagedPrivateEndpoint().withConnectionState(new ConnectionStateProperties())
                         .withFqdns(Arrays.asList("ilguooqjagmditg", "eiookjbsah", "tdtpdelqacslmo"))
-                        .withGroupId("ebnfxofvc").withPrivateLinkResourceId("irazftxejwabmd")
+                        .withGroupId("ebnfxofvc")
+                        .withPrivateLinkResourceId("irazftxejwabmd")
                         .withAdditionalProperties(mapOf("isReserved", false, "provisioningState", "tmvcop"))),
                 new ManagedPrivateEndpointResourceInner().withId("hzjmucftbyrp")
                     .withProperties(new ManagedPrivateEndpoint().withConnectionState(new ConnectionStateProperties())
-                        .withFqdns(Arrays.asList("j", "enuygbq", "qqekewvnqvcdlgu")).withGroupId("cmfdjwnlax")
+                        .withFqdns(Arrays.asList("j", "enuygbq", "qqekewvnqvcdlgu"))
+                        .withGroupId("cmfdjwnlax")
                         .withPrivateLinkResourceId("qikczvvita")
                         .withAdditionalProperties(mapOf("isReserved", false, "provisioningState", "xmfcsserxhtv"))),
                 new ManagedPrivateEndpointResourceInner().withId("cqxypokkhminq")
                     .withProperties(new ManagedPrivateEndpoint().withConnectionState(new ConnectionStateProperties())
-                        .withFqdns(Arrays.asList("vqtanarfdlpuk")).withGroupId("yrneizjcpeo")
+                        .withFqdns(Arrays.asList("vqtanarfdlpuk"))
+                        .withGroupId("yrneizjcpeo")
                         .withPrivateLinkResourceId("mgbro")
                         .withAdditionalProperties(mapOf("isReserved", true, "provisioningState", "ddbhf")))))
             .withNextLink("mczngn");

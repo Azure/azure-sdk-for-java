@@ -91,6 +91,8 @@ public final class QueueServiceAsyncClient {
     }
 
     /**
+     * Gets the URL of the storage queue.
+     *
      * @return the URL of the storage queue
      */
     public String getQueueServiceUrl() {
@@ -187,18 +189,12 @@ public final class QueueServiceAsyncClient {
     public Mono<Response<QueueAsyncClient>> createQueueWithResponse(String queueName, Map<String, String> metadata) {
         try {
             Objects.requireNonNull(queueName, "'queueName' cannot be null.");
-            return withContext(context -> createQueueWithResponse(queueName, metadata, context));
+            QueueAsyncClient queueAsyncClient = getQueueAsyncClient(queueName);
+            return queueAsyncClient.createWithResponse(metadata)
+                .map(response -> new SimpleResponse<>(response, queueAsyncClient));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
-    }
-
-    Mono<Response<QueueAsyncClient>> createQueueWithResponse(String queueName, Map<String, String> metadata,
-        Context context) {
-        QueueAsyncClient queueAsyncClient = getQueueAsyncClient(queueName);
-
-        return queueAsyncClient.createWithResponse(metadata, context)
-            .map(response -> new SimpleResponse<>(response, queueAsyncClient));
     }
 
     /**
@@ -247,15 +243,10 @@ public final class QueueServiceAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteQueueWithResponse(String queueName) {
         try {
-            return withContext(context -> deleteQueueWithResponse(queueName, context));
+            return getQueueAsyncClient(queueName).deleteWithResponse();
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
-    }
-
-    Mono<Response<Void>> deleteQueueWithResponse(String queueName, Context context) {
-        QueueAsyncClient queueAsyncClient = getQueueAsyncClient(queueName);
-        return queueAsyncClient.deleteWithResponse(context);
     }
 
     /**
@@ -548,8 +539,7 @@ public final class QueueServiceAsyncClient {
 
     Mono<Response<Void>> setPropertiesWithResponse(QueueServiceProperties properties, Context context) {
         context = context == null ? Context.NONE : context;
-        return client.getServices().setPropertiesWithResponseAsync(properties, null, null, context)
-            .map(response -> new SimpleResponse<>(response, null));
+        return client.getServices().setPropertiesNoCustomHeadersWithResponseAsync(properties, null, null, context);
     }
 
     /**

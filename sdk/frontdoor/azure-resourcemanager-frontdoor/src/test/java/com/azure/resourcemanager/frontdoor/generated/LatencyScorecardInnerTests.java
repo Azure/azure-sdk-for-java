@@ -15,27 +15,26 @@ import org.junit.jupiter.api.Assertions;
 public final class LatencyScorecardInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LatencyScorecardInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"id\":\"rlazszrnw\",\"name\":\"indfpwpjyl\",\"description\":\"tlhflsjcdhszf\",\"endpointA\":\"fbgofeljagrqmqh\",\"endpointB\":\"vriiio\",\"startDateTimeUTC\":\"2021-04-25T18:11:53Z\",\"endDateTimeUTC\":\"2021-08-27T10:03:09Z\",\"country\":\"fk\",\"latencyMetrics\":[{\"name\":\"ex\",\"endDateTimeUTC\":\"wueluqhhahhxv\",\"aValue\":41.38071,\"bValue\":99.721016,\"delta\":54.870827,\"deltaPercent\":0.074237585,\"aCLower95CI\":85.248795,\"aHUpper95CI\":61.13008,\"bCLower95CI\":89.108795,\"bUpper95CI\":78.10289},{\"name\":\"qs\",\"endDateTimeUTC\":\"qxujxukndxd\",\"aValue\":84.70417,\"bValue\":35.546135,\"delta\":47.985943,\"deltaPercent\":54.662663,\"aCLower95CI\":41.437172,\"aHUpper95CI\":46.247612,\"bCLower95CI\":21.394676,\"bUpper95CI\":94.70884},{\"name\":\"whbotzingamv\",\"endDateTimeUTC\":\"ho\",\"aValue\":41.892742,\"bValue\":85.72325,\"delta\":94.45262,\"deltaPercent\":97.52175,\"aCLower95CI\":24.885792,\"aHUpper95CI\":24.78965,\"bCLower95CI\":77.53663,\"bUpper95CI\":46.93581}]},\"location\":\"nwcvtbvkayhmtnv\",\"tags\":{\"cjaesgvvs\":\"atkzwpcnpw\",\"wygzlvdnkfxusem\":\"cyajguqf\",\"pfcqdp\":\"wzrmuh\"},\"id\":\"qxqvpsvuoymgc\",\"name\":\"elvezrypq\",\"type\":\"mfe\"}")
-                .toObject(LatencyScorecardInner.class);
-        Assertions.assertEquals("nwcvtbvkayhmtnv", model.location());
-        Assertions.assertEquals("atkzwpcnpw", model.tags().get("cjaesgvvs"));
+        LatencyScorecardInner model = BinaryData.fromString(
+            "{\"properties\":{\"id\":\"ahhvjhhna\",\"name\":\"ybbjjidjksyx\",\"description\":\"xvxevblbjednljla\",\"endpointA\":\"uaulxunsm\",\"endpointB\":\"nkppxynen\",\"startDateTimeUTC\":\"2021-03-25T10:54:56Z\",\"endDateTimeUTC\":\"2021-08-03T19:56:39Z\",\"country\":\"zzgwklnsrm\",\"latencyMetrics\":[{\"name\":\"cxcktpi\",\"endDateTimeUTC\":\"erteeammxqiekk\",\"aValue\":59.703384,\"bValue\":96.93083,\"delta\":26.63849,\"deltaPercent\":12.828475,\"aCLower95CI\":55.168236,\"aHUpper95CI\":68.03398,\"bCLower95CI\":61.51553,\"bUpper95CI\":51.644337},{\"name\":\"efdeesve\",\"endDateTimeUTC\":\"ijpxtx\",\"aValue\":25.637108,\"bValue\":90.25361,\"delta\":98.42054,\"deltaPercent\":84.732414,\"aCLower95CI\":55.696815,\"aHUpper95CI\":28.99242,\"bCLower95CI\":93.74711,\"bUpper95CI\":53.828697},{\"name\":\"bxv\",\"endDateTimeUTC\":\"itvtzeexavo\",\"aValue\":68.84001,\"bValue\":53.85332,\"delta\":9.79231,\"deltaPercent\":0.8543253,\"aCLower95CI\":13.757277,\"aHUpper95CI\":61.999382,\"bCLower95CI\":14.225859,\"bUpper95CI\":3.4114003},{\"name\":\"gsfjac\",\"endDateTimeUTC\":\"lhhxudbxvodhtnsi\",\"aValue\":69.404366,\"bValue\":0.56890845,\"delta\":13.827729,\"deltaPercent\":31.628572,\"aCLower95CI\":25.156885,\"aHUpper95CI\":47.039097,\"bCLower95CI\":47.95568,\"bUpper95CI\":96.791}]},\"location\":\"rcxfailcfxwmdb\",\"tags\":{\"jln\":\"fgsftufqob\",\"rzvul\":\"cgcckknhxkizvyt\",\"aeranokqgukkjqnv\":\"r\",\"cdisd\":\"roylaxxu\"},\"id\":\"sfjbjsvg\",\"name\":\"rwhryvycytd\",\"type\":\"lxgccknfnwmbtm\"}")
+            .toObject(LatencyScorecardInner.class);
+        Assertions.assertEquals("rcxfailcfxwmdb", model.location());
+        Assertions.assertEquals("fgsftufqob", model.tags().get("jln"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LatencyScorecardInner model =
-            new LatencyScorecardInner()
-                .withLocation("nwcvtbvkayhmtnv")
-                .withTags(mapOf("cjaesgvvs", "atkzwpcnpw", "wygzlvdnkfxusem", "cyajguqf", "pfcqdp", "wzrmuh"))
-                .withLatencyMetrics(Arrays.asList(new LatencyMetric(), new LatencyMetric(), new LatencyMetric()));
+        LatencyScorecardInner model = new LatencyScorecardInner().withLocation("rcxfailcfxwmdb")
+            .withTags(
+                mapOf("jln", "fgsftufqob", "rzvul", "cgcckknhxkizvyt", "aeranokqgukkjqnv", "r", "cdisd", "roylaxxu"))
+            .withLatencyMetrics(
+                Arrays.asList(new LatencyMetric(), new LatencyMetric(), new LatencyMetric(), new LatencyMetric()));
         model = BinaryData.fromObject(model).toObject(LatencyScorecardInner.class);
-        Assertions.assertEquals("nwcvtbvkayhmtnv", model.location());
-        Assertions.assertEquals("atkzwpcnpw", model.tags().get("cjaesgvvs"));
+        Assertions.assertEquals("rcxfailcfxwmdb", model.location());
+        Assertions.assertEquals("fgsftufqob", model.tags().get("jln"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

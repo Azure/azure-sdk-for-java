@@ -15,75 +15,93 @@ import com.azure.resourcemanager.frontdoor.models.RoutingRuleUpdateParametersWeb
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The JSON object that contains the properties required to create a routing rule. */
+/**
+ * The JSON object that contains the properties required to create a routing rule.
+ */
 @Fluent
 public final class RoutingRuleProperties extends RoutingRuleUpdateParameters {
     /*
      * Resource status of the Front Door or Front Door SubResource.
-     *
+     * 
      * Resource status.
      */
     @JsonProperty(value = "resourceState", access = JsonProperty.Access.WRITE_ONLY)
     private FrontDoorResourceState resourceState;
 
-    /** Creates an instance of RoutingRuleProperties class. */
+    /**
+     * Creates an instance of RoutingRuleProperties class.
+     */
     public RoutingRuleProperties() {
     }
 
     /**
      * Get the resourceState property: Resource status of the Front Door or Front Door SubResource.
-     *
-     * <p>Resource status.
-     *
+     * 
+     * Resource status.
+     * 
      * @return the resourceState value.
      */
     public FrontDoorResourceState resourceState() {
         return this.resourceState;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RoutingRuleProperties withFrontendEndpoints(List<SubResource> frontendEndpoints) {
         super.withFrontendEndpoints(frontendEndpoints);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RoutingRuleProperties withAcceptedProtocols(List<FrontDoorProtocol> acceptedProtocols) {
         super.withAcceptedProtocols(acceptedProtocols);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RoutingRuleProperties withPatternsToMatch(List<String> patternsToMatch) {
         super.withPatternsToMatch(patternsToMatch);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RoutingRuleProperties withEnabledState(RoutingRuleEnabledState enabledState) {
         super.withEnabledState(enabledState);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RoutingRuleProperties withRouteConfiguration(RouteConfiguration routeConfiguration) {
         super.withRouteConfiguration(routeConfiguration);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RoutingRuleProperties withRulesEngine(SubResource rulesEngine) {
         super.withRulesEngine(rulesEngine);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RoutingRuleProperties withWebApplicationFirewallPolicyLink(
         RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink) {
@@ -93,7 +111,7 @@ public final class RoutingRuleProperties extends RoutingRuleUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

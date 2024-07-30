@@ -6,70 +6,39 @@ package com.azure.resourcemanager.mobilenetwork.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mobilenetwork.MobileNetworkManager;
 import com.azure.resourcemanager.mobilenetwork.models.AsyncOperationStatus;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PacketCapturesStopMockTests {
     @Test
     public void testStop() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"id\":\"rkwpzdqtvhcspod\",\"name\":\"axsipietgb\",\"status\":\"bjfu\",\"resourceId\":\"moichdlpnfpubntn\",\"startTime\":\"2021-11-11T15:52:58Z\",\"endTime\":\"2021-09-14T09:27:45Z\",\"percentComplete\":7.7215321252880775,\"properties\":\"datawsaae\"}";
 
-        String responseStr =
-            "{\"id\":\"vclx\",\"name\":\"pdkvg\",\"status\":\"abuiy\",\"resourceId\":\"buzphdugn\",\"startTime\":\"2021-09-24T01:09:52Z\",\"endTime\":\"2021-08-29T15:14:45Z\",\"percentComplete\":65.76420280046689,\"properties\":\"datajiuqhibtozi\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MobileNetworkManager manager = MobileNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        AsyncOperationStatus response
+            = manager.packetCaptures().stop("hqo", "oihiqak", "diw", com.azure.core.util.Context.NONE);
 
-        MobileNetworkManager manager =
-            MobileNetworkManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        AsyncOperationStatus response =
-            manager
-                .packetCaptures()
-                .stop("gplucfotangcfhny", "zcugswvxwlmzqw", "vtxnjmxmcuqud", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("vclx", response.id());
-        Assertions.assertEquals("pdkvg", response.name());
-        Assertions.assertEquals("abuiy", response.status());
-        Assertions.assertEquals("buzphdugn", response.resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-24T01:09:52Z"), response.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-29T15:14:45Z"), response.endTime());
-        Assertions.assertEquals(65.76420280046689D, response.percentComplete());
+        Assertions.assertEquals("rkwpzdqtvhcspod", response.id());
+        Assertions.assertEquals("axsipietgb", response.name());
+        Assertions.assertEquals("bjfu", response.status());
+        Assertions.assertEquals("moichdlpnfpubntn", response.resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-11T15:52:58Z"), response.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-14T09:27:45Z"), response.endTime());
+        Assertions.assertEquals(7.7215321252880775D, response.percentComplete());
     }
 }

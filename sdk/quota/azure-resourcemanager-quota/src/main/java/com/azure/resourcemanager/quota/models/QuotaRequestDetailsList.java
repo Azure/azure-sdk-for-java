@@ -53,8 +53,8 @@ public final class QuotaRequestDetailsList {
     }
 
     /**
-     * Get the nextLink property: The URI for fetching the next page of quota limits. When there are no more pages,
-     * this string is null.
+     * Get the nextLink property: The URI for fetching the next page of quota limits. When there are no more pages, this
+     * string is null.
      * 
      * @return the nextLink value.
      */
@@ -63,8 +63,8 @@ public final class QuotaRequestDetailsList {
     }
 
     /**
-     * Set the nextLink property: The URI for fetching the next page of quota limits. When there are no more pages,
-     * this string is null.
+     * Set the nextLink property: The URI for fetching the next page of quota limits. When there are no more pages, this
+     * string is null.
      * 
      * @param nextLink the nextLink value to set.
      * @return the QuotaRequestDetailsList object itself.

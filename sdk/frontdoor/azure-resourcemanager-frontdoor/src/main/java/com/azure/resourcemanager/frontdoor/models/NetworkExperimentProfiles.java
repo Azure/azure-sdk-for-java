@@ -8,58 +8,60 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of NetworkExperimentProfiles. */
+/**
+ * Resource collection API of NetworkExperimentProfiles.
+ */
 public interface NetworkExperimentProfiles {
     /**
      * Gets a list of Network Experiment Profiles under a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Network Experiment Profiles under a subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of Network Experiment Profiles under a subscription as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<Profile> list();
 
     /**
      * Gets a list of Network Experiment Profiles under a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Network Experiment Profiles under a subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of Network Experiment Profiles under a subscription as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<Profile> list(Context context);
 
     /**
      * Gets a list of Network Experiment Profiles within a resource group under a subscription.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Network Experiment Profiles within a resource group under a subscription as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     PagedIterable<Profile> listByResourceGroup(String resourceGroupName);
 
     /**
      * Gets a list of Network Experiment Profiles within a resource group under a subscription.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Network Experiment Profiles within a resource group under a subscription as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     PagedIterable<Profile> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Gets an NetworkExperiment Profile by ProfileName.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param context The context to associate with this operation.
@@ -72,7 +74,7 @@ public interface NetworkExperimentProfiles {
 
     /**
      * Gets an NetworkExperiment Profile by ProfileName.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -84,7 +86,7 @@ public interface NetworkExperimentProfiles {
 
     /**
      * Deletes an NetworkExperiment Profile by ProfileName.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -95,7 +97,7 @@ public interface NetworkExperimentProfiles {
 
     /**
      * Deletes an NetworkExperiment Profile by ProfileName.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param context The context to associate with this operation.
@@ -107,7 +109,7 @@ public interface NetworkExperimentProfiles {
 
     /**
      * Gets an NetworkExperiment Profile by ProfileName.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -118,7 +120,7 @@ public interface NetworkExperimentProfiles {
 
     /**
      * Gets an NetworkExperiment Profile by ProfileName.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -130,7 +132,7 @@ public interface NetworkExperimentProfiles {
 
     /**
      * Deletes an NetworkExperiment Profile by ProfileName.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -140,7 +142,7 @@ public interface NetworkExperimentProfiles {
 
     /**
      * Deletes an NetworkExperiment Profile by ProfileName.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -151,7 +153,7 @@ public interface NetworkExperimentProfiles {
 
     /**
      * Begins definition for a new Profile resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Profile definition.
      */

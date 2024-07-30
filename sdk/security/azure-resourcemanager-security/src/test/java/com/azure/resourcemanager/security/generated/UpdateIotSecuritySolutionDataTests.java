@@ -19,12 +19,12 @@ public final class UpdateIotSecuritySolutionDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateIotSecuritySolutionData model = BinaryData.fromString(
-            "{\"properties\":{\"userDefinedResources\":{\"query\":\"wjhrsidqpxlbtpa\",\"querySubscriptions\":[\"tngatwmykyu\"]},\"recommendationsConfiguration\":[{\"recommendationType\":\"IoT_EdgeLoggingOptions\",\"name\":\"wmfjhp\",\"status\":\"Disabled\"}]},\"tags\":{\"vdwkqpldr\":\"q\",\"taoutnpdct\":\"efgnaavuagnt\",\"yeuyldph\":\"hspfefyihd\",\"thhllnmwyne\":\"tybkcgs\"}}")
+            "{\"properties\":{\"userDefinedResources\":{\"query\":\"qzrdzsylollg\",\"querySubscriptions\":[\"czzydmxzjij\"]},\"recommendationsConfiguration\":[{\"recommendationType\":\"IoT_PermissiveInputFirewallRules\",\"name\":\"rkihcirld\",\"status\":\"Disabled\"},{\"recommendationType\":\"IoT_PermissiveInputFirewallRules\",\"name\":\"dcoxnbk\",\"status\":\"Disabled\"},{\"recommendationType\":\"IoT_IPFilter_DenyAll\",\"name\":\"urnnqbnqbpiz\",\"status\":\"Disabled\"}]},\"tags\":{\"hvcta\":\"grdogypxrxvbfihw\",\"bxrblmliowxihspn\":\"s\",\"lsbs\":\"wqagnepzwa\"}}")
             .toObject(UpdateIotSecuritySolutionData.class);
-        Assertions.assertEquals("q", model.tags().get("vdwkqpldr"));
-        Assertions.assertEquals("wjhrsidqpxlbtpa", model.userDefinedResources().query());
-        Assertions.assertEquals("tngatwmykyu", model.userDefinedResources().querySubscriptions().get(0));
-        Assertions.assertEquals(RecommendationType.IO_T_EDGE_LOGGING_OPTIONS,
+        Assertions.assertEquals("grdogypxrxvbfihw", model.tags().get("hvcta"));
+        Assertions.assertEquals("qzrdzsylollg", model.userDefinedResources().query());
+        Assertions.assertEquals("czzydmxzjij", model.userDefinedResources().querySubscriptions().get(0));
+        Assertions.assertEquals(RecommendationType.IO_T_PERMISSIVE_INPUT_FIREWALL_RULES,
             model.recommendationsConfiguration().get(0).recommendationType());
         Assertions.assertEquals(RecommendationConfigStatus.DISABLED,
             model.recommendationsConfiguration().get(0).status());
@@ -33,18 +33,24 @@ public final class UpdateIotSecuritySolutionDataTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UpdateIotSecuritySolutionData model = new UpdateIotSecuritySolutionData()
-            .withTags(mapOf("vdwkqpldr", "q", "taoutnpdct", "efgnaavuagnt", "yeuyldph", "hspfefyihd", "thhllnmwyne",
-                "tybkcgs"))
-            .withUserDefinedResources(new UserDefinedResourcesProperties().withQuery("wjhrsidqpxlbtpa")
-                .withQuerySubscriptions(Arrays.asList("tngatwmykyu")))
-            .withRecommendationsConfiguration(Arrays.asList(new RecommendationConfigurationProperties()
-                .withRecommendationType(RecommendationType.IO_T_EDGE_LOGGING_OPTIONS)
-                .withStatus(RecommendationConfigStatus.DISABLED)));
+            .withTags(mapOf("hvcta", "grdogypxrxvbfihw", "bxrblmliowxihspn", "s", "lsbs", "wqagnepzwa"))
+            .withUserDefinedResources(new UserDefinedResourcesProperties().withQuery("qzrdzsylollg")
+                .withQuerySubscriptions(Arrays.asList("czzydmxzjij")))
+            .withRecommendationsConfiguration(Arrays.asList(
+                new RecommendationConfigurationProperties()
+                    .withRecommendationType(RecommendationType.IO_T_PERMISSIVE_INPUT_FIREWALL_RULES)
+                    .withStatus(RecommendationConfigStatus.DISABLED),
+                new RecommendationConfigurationProperties()
+                    .withRecommendationType(RecommendationType.IO_T_PERMISSIVE_INPUT_FIREWALL_RULES)
+                    .withStatus(RecommendationConfigStatus.DISABLED),
+                new RecommendationConfigurationProperties()
+                    .withRecommendationType(RecommendationType.IO_T_IPFILTER_DENY_ALL)
+                    .withStatus(RecommendationConfigStatus.DISABLED)));
         model = BinaryData.fromObject(model).toObject(UpdateIotSecuritySolutionData.class);
-        Assertions.assertEquals("q", model.tags().get("vdwkqpldr"));
-        Assertions.assertEquals("wjhrsidqpxlbtpa", model.userDefinedResources().query());
-        Assertions.assertEquals("tngatwmykyu", model.userDefinedResources().querySubscriptions().get(0));
-        Assertions.assertEquals(RecommendationType.IO_T_EDGE_LOGGING_OPTIONS,
+        Assertions.assertEquals("grdogypxrxvbfihw", model.tags().get("hvcta"));
+        Assertions.assertEquals("qzrdzsylollg", model.userDefinedResources().query());
+        Assertions.assertEquals("czzydmxzjij", model.userDefinedResources().querySubscriptions().get(0));
+        Assertions.assertEquals(RecommendationType.IO_T_PERMISSIVE_INPUT_FIREWALL_RULES,
             model.recommendationsConfiguration().get(0).recommendationType());
         Assertions.assertEquals(RecommendationConfigStatus.DISABLED,
             model.recommendationsConfiguration().get(0).status());

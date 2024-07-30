@@ -22,8 +22,8 @@ public final class SitesImpl implements Sites {
 
     private final com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager;
 
-    public SitesImpl(
-        SitesClient innerClient, com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager) {
+    public SitesImpl(SitesClient innerClient,
+        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -36,15 +36,12 @@ public final class SitesImpl implements Sites {
         this.serviceClient().delete(resourceGroupName, mobileNetworkName, siteName, context);
     }
 
-    public Response<Site> getWithResponse(
-        String resourceGroupName, String mobileNetworkName, String siteName, Context context) {
-        Response<SiteInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, mobileNetworkName, siteName, context);
+    public Response<Site> getWithResponse(String resourceGroupName, String mobileNetworkName, String siteName,
+        Context context) {
+        Response<SiteInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, mobileNetworkName, siteName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SiteImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -62,134 +59,98 @@ public final class SitesImpl implements Sites {
 
     public PagedIterable<Site> listByMobileNetwork(String resourceGroupName, String mobileNetworkName) {
         PagedIterable<SiteInner> inner = this.serviceClient().listByMobileNetwork(resourceGroupName, mobileNetworkName);
-        return Utils.mapPage(inner, inner1 -> new SiteImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SiteImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Site> listByMobileNetwork(
-        String resourceGroupName, String mobileNetworkName, Context context) {
-        PagedIterable<SiteInner> inner =
-            this.serviceClient().listByMobileNetwork(resourceGroupName, mobileNetworkName, context);
-        return Utils.mapPage(inner, inner1 -> new SiteImpl(inner1, this.manager()));
+    public PagedIterable<Site> listByMobileNetwork(String resourceGroupName, String mobileNetworkName,
+        Context context) {
+        PagedIterable<SiteInner> inner
+            = this.serviceClient().listByMobileNetwork(resourceGroupName, mobileNetworkName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SiteImpl(inner1, this.manager()));
     }
 
-    public void deletePacketCore(
-        String resourceGroupName, String mobileNetworkName, String siteName, SiteDeletePacketCore parameters) {
+    public void deletePacketCore(String resourceGroupName, String mobileNetworkName, String siteName,
+        SiteDeletePacketCore parameters) {
         this.serviceClient().deletePacketCore(resourceGroupName, mobileNetworkName, siteName, parameters);
     }
 
-    public void deletePacketCore(
-        String resourceGroupName,
-        String mobileNetworkName,
-        String siteName,
-        SiteDeletePacketCore parameters,
-        Context context) {
+    public void deletePacketCore(String resourceGroupName, String mobileNetworkName, String siteName,
+        SiteDeletePacketCore parameters, Context context) {
         this.serviceClient().deletePacketCore(resourceGroupName, mobileNetworkName, siteName, parameters, context);
     }
 
     public Site getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String mobileNetworkName = Utils.getValueFromIdByName(id, "mobileNetworks");
+        String mobileNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "mobileNetworks");
         if (mobileNetworkName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'mobileNetworks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'mobileNetworks'.", id)));
         }
-        String siteName = Utils.getValueFromIdByName(id, "sites");
+        String siteName = ResourceManagerUtils.getValueFromIdByName(id, "sites");
         if (siteName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'sites'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sites'.", id)));
         }
         return this.getWithResponse(resourceGroupName, mobileNetworkName, siteName, Context.NONE).getValue();
     }
 
     public Response<Site> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String mobileNetworkName = Utils.getValueFromIdByName(id, "mobileNetworks");
+        String mobileNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "mobileNetworks");
         if (mobileNetworkName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'mobileNetworks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'mobileNetworks'.", id)));
         }
-        String siteName = Utils.getValueFromIdByName(id, "sites");
+        String siteName = ResourceManagerUtils.getValueFromIdByName(id, "sites");
         if (siteName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'sites'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sites'.", id)));
         }
         return this.getWithResponse(resourceGroupName, mobileNetworkName, siteName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String mobileNetworkName = Utils.getValueFromIdByName(id, "mobileNetworks");
+        String mobileNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "mobileNetworks");
         if (mobileNetworkName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'mobileNetworks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'mobileNetworks'.", id)));
         }
-        String siteName = Utils.getValueFromIdByName(id, "sites");
+        String siteName = ResourceManagerUtils.getValueFromIdByName(id, "sites");
         if (siteName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'sites'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sites'.", id)));
         }
         this.delete(resourceGroupName, mobileNetworkName, siteName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String mobileNetworkName = Utils.getValueFromIdByName(id, "mobileNetworks");
+        String mobileNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "mobileNetworks");
         if (mobileNetworkName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'mobileNetworks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'mobileNetworks'.", id)));
         }
-        String siteName = Utils.getValueFromIdByName(id, "sites");
+        String siteName = ResourceManagerUtils.getValueFromIdByName(id, "sites");
         if (siteName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'sites'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sites'.", id)));
         }
         this.delete(resourceGroupName, mobileNetworkName, siteName, context);
     }

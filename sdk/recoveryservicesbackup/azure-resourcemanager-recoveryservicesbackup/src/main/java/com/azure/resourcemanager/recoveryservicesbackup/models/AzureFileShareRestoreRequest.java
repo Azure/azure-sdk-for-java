@@ -6,6 +6,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -13,10 +14,21 @@ import java.util.List;
 /**
  * AzureFileShare Restore Request.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "objectType",
+    defaultImpl = AzureFileShareRestoreRequest.class,
+    visible = true)
 @JsonTypeName("AzureFileShareRestoreRequest")
 @Fluent
 public final class AzureFileShareRestoreRequest extends RestoreRequest {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "objectType", required = true)
+    private String objectType = "AzureFileShareRestoreRequest";
+
     /*
      * Type of this recovery.
      */
@@ -57,6 +69,17 @@ public final class AzureFileShareRestoreRequest extends RestoreRequest {
      * Creates an instance of AzureFileShareRestoreRequest class.
      */
     public AzureFileShareRestoreRequest() {
+    }
+
+    /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
     }
 
     /**
@@ -178,6 +201,16 @@ public final class AzureFileShareRestoreRequest extends RestoreRequest {
      */
     public AzureFileShareRestoreRequest withTargetDetails(TargetAfsRestoreInfo targetDetails) {
         this.targetDetails = targetDetails;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureFileShareRestoreRequest
+        withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
+        super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
         return this;
     }
 

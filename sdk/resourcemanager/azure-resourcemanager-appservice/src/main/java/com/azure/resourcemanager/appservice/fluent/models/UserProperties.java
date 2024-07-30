@@ -156,8 +156,9 @@ public final class UserProperties {
      */
     public void validate() {
         if (publishingUsername() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property publishingUsername in model UserProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property publishingUsername in model UserProperties"));
         }
     }
 

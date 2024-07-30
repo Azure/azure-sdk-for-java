@@ -157,18 +157,18 @@ public final class MatchCondition {
      */
     public void validate() {
         if (matchVariables() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property matchVariables in model MatchCondition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property matchVariables in model MatchCondition"));
         } else {
             matchVariables().forEach(e -> e.validate());
         }
         if (operator() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property operator in model MatchCondition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property operator in model MatchCondition"));
         }
         if (matchValues() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property matchValues in model MatchCondition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property matchValues in model MatchCondition"));
         }
     }
 

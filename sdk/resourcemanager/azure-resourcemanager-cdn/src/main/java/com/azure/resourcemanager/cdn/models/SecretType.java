@@ -8,24 +8,34 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of the secret resource. */
+/**
+ * The type of the secret resource.
+ */
 public final class SecretType extends ExpandableStringEnum<SecretType> {
-    /** Static value UrlSigningKey for SecretType. */
+    /**
+     * Static value UrlSigningKey for SecretType.
+     */
     public static final SecretType URL_SIGNING_KEY = fromString("UrlSigningKey");
 
-    /** Static value CustomerCertificate for SecretType. */
+    /**
+     * Static value CustomerCertificate for SecretType.
+     */
     public static final SecretType CUSTOMER_CERTIFICATE = fromString("CustomerCertificate");
 
-    /** Static value ManagedCertificate for SecretType. */
+    /**
+     * Static value ManagedCertificate for SecretType.
+     */
     public static final SecretType MANAGED_CERTIFICATE = fromString("ManagedCertificate");
 
-    /** Static value AzureFirstPartyManagedCertificate for SecretType. */
-    public static final SecretType AZURE_FIRST_PARTY_MANAGED_CERTIFICATE =
-        fromString("AzureFirstPartyManagedCertificate");
+    /**
+     * Static value AzureFirstPartyManagedCertificate for SecretType.
+     */
+    public static final SecretType AZURE_FIRST_PARTY_MANAGED_CERTIFICATE
+        = fromString("AzureFirstPartyManagedCertificate");
 
     /**
      * Creates a new instance of SecretType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,7 +44,7 @@ public final class SecretType extends ExpandableStringEnum<SecretType> {
 
     /**
      * Creates or finds a SecretType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SecretType.
      */
@@ -45,7 +55,7 @@ public final class SecretType extends ExpandableStringEnum<SecretType> {
 
     /**
      * Gets known SecretType values.
-     *
+     * 
      * @return known SecretType values.
      */
     public static Collection<SecretType> values() {

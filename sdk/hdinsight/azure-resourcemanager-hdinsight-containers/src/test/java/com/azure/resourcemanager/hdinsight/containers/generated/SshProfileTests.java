@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class SshProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SshProfile model =
-            BinaryData.fromString("{\"count\":1793540494,\"podPrefix\":\"u\"}").toObject(SshProfile.class);
-        Assertions.assertEquals(1793540494, model.count());
+        SshProfile model
+            = BinaryData.fromString("{\"count\":1278137451,\"podPrefix\":\"erfuwuttt\"}").toObject(SshProfile.class);
+        Assertions.assertEquals(1278137451, model.count());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SshProfile model = new SshProfile().withCount(1793540494);
+        SshProfile model = new SshProfile().withCount(1278137451);
         model = BinaryData.fromObject(model).toObject(SshProfile.class);
-        Assertions.assertEquals(1793540494, model.count());
+        Assertions.assertEquals(1278137451, model.count());
     }
 }

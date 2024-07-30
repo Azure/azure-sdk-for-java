@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Mapping of user object ID to role assignments. */
+/**
+ * Mapping of user object ID to role assignments.
+ */
 @Fluent
 public final class UserRoleAssignmentValue {
     /*
@@ -19,13 +21,15 @@ public final class UserRoleAssignmentValue {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, EnvironmentRole> roles;
 
-    /** Creates an instance of UserRoleAssignmentValue class. */
+    /**
+     * Creates an instance of UserRoleAssignmentValue class.
+     */
     public UserRoleAssignmentValue() {
     }
 
     /**
      * Get the roles property: A map of roles to assign to the parent user.
-     *
+     * 
      * @return the roles value.
      */
     public Map<String, EnvironmentRole> roles() {
@@ -34,7 +38,7 @@ public final class UserRoleAssignmentValue {
 
     /**
      * Set the roles property: A map of roles to assign to the parent user.
-     *
+     * 
      * @param roles the roles value to set.
      * @return the UserRoleAssignmentValue object itself.
      */
@@ -45,19 +49,16 @@ public final class UserRoleAssignmentValue {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (roles() != null) {
-            roles()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            roles().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

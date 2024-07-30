@@ -14,7 +14,7 @@ public final class SecurityOperatorInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecurityOperatorInner model = BinaryData.fromString(
-            "{\"identity\":{\"principalId\":\"xywr\",\"tenantId\":\"pyklyhpluodpvru\",\"type\":\"SystemAssigned\"},\"id\":\"gzibthostgktstv\",\"name\":\"xeclzedqbcvhzlhp\",\"type\":\"odqkdlwwqfb\"}")
+            "{\"identity\":{\"principalId\":\"zkopb\",\"tenantId\":\"nrfdw\",\"type\":\"SystemAssigned\"},\"id\":\"hhziuief\",\"name\":\"zbhd\",\"type\":\"smlmzqhoftrm\"}")
             .toObject(SecurityOperatorInner.class);
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
     }

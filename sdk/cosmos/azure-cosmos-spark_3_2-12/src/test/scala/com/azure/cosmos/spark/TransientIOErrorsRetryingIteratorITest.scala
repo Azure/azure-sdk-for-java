@@ -2,7 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.{HttpConstants, ImplementationBridgeHelpers, ServiceUnavailableException, SparkRowItem, Strings, Utils}
+import com.azure.cosmos.{CosmosItemSerializerNoExceptionWrapping}
+import com.azure.cosmos.implementation.{HttpConstants, ObjectNodeMap, ServiceUnavailableException, SparkRowItem, Strings, Utils}
 import com.azure.cosmos.models.{CosmosQueryRequestOptions, ModelBridgeInternal}
 import com.azure.cosmos.spark.TransientIOErrorsRetryingIteratorITest.maxRetryCountPerIOOperation
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
@@ -10,6 +11,7 @@ import com.azure.cosmos.util.CosmosPagedIterable
 import com.fasterxml.jackson.databind.node.ObjectNode
 import reactor.util.concurrent.Queues
 
+import java.util
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.{AtomicLong, AtomicReference}
@@ -54,19 +56,36 @@ class TransientIOErrorsRetryingIteratorITest
 
     val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
     val queryOptions = new CosmosQueryRequestOptions()
-    ImplementationBridgeHelpers
-      .CosmosQueryRequestOptionsHelper
-      .getCosmosQueryRequestOptionsAccessor
-      .getImpl(queryOptions)
-      .setItemFactoryMethod(
-        jsonNode => {
-          val row = cosmosRowConverter.fromObjectNodeToRow(
-            ItemsTable.defaultSchemaForInferenceDisabled,
-            jsonNode.asInstanceOf[ObjectNode],
-            SchemaConversionModes.Strict)
+      .setCustomItemSerializer(
+        new CosmosItemSerializerNoExceptionWrapping {
+          override def serialize[T](item: T): util.Map[String, AnyRef] = ???
 
-          SparkRowItem(row, None)
-        })
+          override def deserialize[T](jsonNodeMap: util.Map[String, AnyRef], classType: Class[T]): T = {
+            if (jsonNodeMap == null) {
+              throw new IllegalStateException("The 'jsonNodeMap' should never be null here.")
+            }
+
+            if (classType != classOf[SparkRowItem]) {
+              throw new IllegalStateException("The 'classType' must be 'classOf[SparkRowItem])' here.")
+            }
+
+            val objectNode: ObjectNode = jsonNodeMap match {
+              case map: ObjectNodeMap =>
+                map.getObjectNode
+              case _ =>
+                Utils.getSimpleObjectMapper.convertValue(jsonNodeMap, classOf[ObjectNode])
+            }
+
+            val row = cosmosRowConverter.fromObjectNodeToRow(
+              ItemsTable.defaultSchemaForInferenceDisabled,
+              objectNode,
+              SchemaConversionModes.Strict)
+
+            SparkRowItem(row, None).asInstanceOf[T]
+          }
+        }
+      )
+
     val retryingIterator = new TransientIOErrorsRetryingIterator(
       continuationToken => {
         if (!Strings.isNullOrWhiteSpace(continuationToken)) {
@@ -180,19 +199,36 @@ class TransientIOErrorsRetryingIteratorITest
     )
     val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
     val queryOptions = new CosmosQueryRequestOptions()
-    ImplementationBridgeHelpers
-      .CosmosQueryRequestOptionsHelper
-      .getCosmosQueryRequestOptionsAccessor
-      .getImpl(queryOptions)
-      .setItemFactoryMethod(
-        jsonNode => {
-          val row = cosmosRowConverter.fromObjectNodeToRow(
-            ItemsTable.defaultSchemaForInferenceDisabled,
-            jsonNode.asInstanceOf[ObjectNode],
-            SchemaConversionModes.Strict)
+      .setCustomItemSerializer(
+        new CosmosItemSerializerNoExceptionWrapping {
+          override def serialize[T](item: T): util.Map[String, AnyRef] = ???
 
-          SparkRowItem(row, None)
-        })
+          override def deserialize[T](jsonNodeMap: util.Map[String, AnyRef], classType: Class[T]): T = {
+            if (jsonNodeMap == null) {
+              throw new IllegalStateException("The 'jsonNodeMap' should never be null here.")
+            }
+
+            if (classType != classOf[SparkRowItem]) {
+              throw new IllegalStateException("The 'classType' must be 'classOf[SparkRowItem])' here.")
+            }
+
+            val objectNode: ObjectNode = jsonNodeMap match {
+              case map: ObjectNodeMap =>
+                map.getObjectNode
+              case _ =>
+                Utils.getSimpleObjectMapper.convertValue(jsonNodeMap, classOf[ObjectNode])
+            }
+
+            val row = cosmosRowConverter.fromObjectNodeToRow(
+              ItemsTable.defaultSchemaForInferenceDisabled,
+              objectNode,
+              SchemaConversionModes.Strict)
+
+            SparkRowItem(row, None).asInstanceOf[T]
+          }
+        }
+      )
+
     val retryingIterator = new TransientIOErrorsRetryingIterator(
       continuationToken => {
         if (!Strings.isNullOrWhiteSpace(continuationToken)) {

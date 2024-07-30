@@ -6,12 +6,15 @@ package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import com.azure.resourcemanager.cdn.models.SecretParameters;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Friendly Secret name mapping to the any Secret or secret related information. */
+/**
+ * Friendly Secret name mapping to the any Secret or secret related information.
+ */
 @Fluent
 public final class SecretInner extends ProxyResource {
     /*
@@ -20,13 +23,21 @@ public final class SecretInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private SecretProperties innerProperties;
 
-    /** Creates an instance of SecretInner class. */
+    /*
+     * Read only system data
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Creates an instance of SecretInner class.
+     */
     public SecretInner() {
     }
 
     /**
      * Get the innerProperties property: The JSON object that contains the properties of the Secret to create.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SecretProperties innerProperties() {
@@ -34,8 +45,17 @@ public final class SecretInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Read only system data.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
      * Get the profileName property: The name of the profile which holds the secret.
-     *
+     * 
      * @return the profileName value.
      */
     public String profileName() {
@@ -44,7 +64,7 @@ public final class SecretInner extends ProxyResource {
 
     /**
      * Get the parameters property: object which contains secret parameters.
-     *
+     * 
      * @return the parameters value.
      */
     public SecretParameters parameters() {
@@ -53,7 +73,7 @@ public final class SecretInner extends ProxyResource {
 
     /**
      * Set the parameters property: object which contains secret parameters.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the SecretInner object itself.
      */
@@ -67,7 +87,7 @@ public final class SecretInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning status.
-     *
+     * 
      * @return the provisioningState value.
      */
     public AfdProvisioningState provisioningState() {
@@ -76,7 +96,7 @@ public final class SecretInner extends ProxyResource {
 
     /**
      * Get the deploymentStatus property: The deploymentStatus property.
-     *
+     * 
      * @return the deploymentStatus value.
      */
     public DeploymentStatus deploymentStatus() {
@@ -85,7 +105,7 @@ public final class SecretInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

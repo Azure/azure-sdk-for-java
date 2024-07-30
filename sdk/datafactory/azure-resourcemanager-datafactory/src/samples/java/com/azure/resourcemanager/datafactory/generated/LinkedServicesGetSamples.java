@@ -19,7 +19,8 @@ public final class LinkedServicesGetSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void linkedServicesGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.linkedServices().getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleLinkedService",
-            null, com.azure.core.util.Context.NONE);
+        manager.linkedServices()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleLinkedService", null,
+                com.azure.core.util.Context.NONE);
     }
 }

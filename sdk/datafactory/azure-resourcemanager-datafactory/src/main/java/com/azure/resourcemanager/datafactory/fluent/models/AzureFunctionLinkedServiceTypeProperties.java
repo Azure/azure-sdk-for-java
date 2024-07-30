@@ -103,8 +103,8 @@ public final class AzureFunctionLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -113,8 +113,8 @@ public final class AzureFunctionLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureFunctionLinkedServiceTypeProperties object itself.
@@ -195,8 +195,9 @@ public final class AzureFunctionLinkedServiceTypeProperties {
      */
     public void validate() {
         if (functionAppUrl() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property functionAppUrl in model AzureFunctionLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property functionAppUrl in model AzureFunctionLinkedServiceTypeProperties"));
         }
         if (functionKey() != null) {
             functionKey().validate();

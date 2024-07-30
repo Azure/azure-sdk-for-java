@@ -132,12 +132,14 @@ public final class ApplicationProperties {
      */
     public void validate() {
         if (sourceResourceType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property sourceResourceType in model ApplicationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceResourceType in model ApplicationProperties"));
         }
         if (conditionSets() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property conditionSets in model ApplicationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property conditionSets in model ApplicationProperties"));
         }
     }
 

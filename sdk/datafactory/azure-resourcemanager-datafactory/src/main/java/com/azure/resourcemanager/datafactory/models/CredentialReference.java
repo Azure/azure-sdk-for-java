@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -106,7 +106,7 @@ public final class CredentialReference {
     @JsonAnySetter
     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }
@@ -118,12 +118,13 @@ public final class CredentialReference {
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property type in model CredentialReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model CredentialReference"));
         }
         if (referenceName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property referenceName in model CredentialReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property referenceName in model CredentialReference"));
         }
     }
 

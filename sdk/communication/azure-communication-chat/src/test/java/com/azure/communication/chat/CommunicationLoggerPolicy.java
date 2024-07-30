@@ -9,6 +9,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.logging.ClientLogger;
 
+import com.azure.core.util.logging.LogLevel;
 import reactor.core.publisher.Mono;
 
 /**
@@ -16,7 +17,7 @@ import reactor.core.publisher.Mono;
  */
 public class CommunicationLoggerPolicy implements HttpPipelinePolicy {
 
-    private final ClientLogger logger = new ClientLogger(CommunicationLoggerPolicy.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CommunicationLoggerPolicy.class);
     private final String testName;
 
     /**
@@ -34,7 +35,7 @@ public class CommunicationLoggerPolicy implements HttpPipelinePolicy {
             final HttpResponse bufferedResponse = httpResponse.buffer();
 
             // Should sanitize printed reponse url
-            System.out.println("MS-CV header for " + testName + " request "
+            LOGGER.log(LogLevel.VERBOSE, () -> "MS-CV header for " + testName + " request "
                 + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
             return Mono.just(bufferedResponse);
         });

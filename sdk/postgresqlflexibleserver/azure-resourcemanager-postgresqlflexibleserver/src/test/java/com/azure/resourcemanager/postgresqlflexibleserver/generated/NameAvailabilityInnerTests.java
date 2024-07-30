@@ -23,7 +23,8 @@ public final class NameAvailabilityInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NameAvailabilityInner model = new NameAvailabilityInner().withNameAvailable(false)
-            .withReason(CheckNameAvailabilityReason.ALREADY_EXISTS).withMessage("dsfcpkvxodpuoz");
+            .withReason(CheckNameAvailabilityReason.ALREADY_EXISTS)
+            .withMessage("dsfcpkvxodpuoz");
         model = BinaryData.fromObject(model).toObject(NameAvailabilityInner.class);
         Assertions.assertEquals(false, model.nameAvailable());
         Assertions.assertEquals(CheckNameAvailabilityReason.ALREADY_EXISTS, model.reason());

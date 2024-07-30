@@ -7,16 +7,28 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Request parameters for tiering cost info for protected item.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "objectType",
+    defaultImpl = FetchTieringCostSavingsInfoForProtectedItemRequest.class,
+    visible = true)
 @JsonTypeName("FetchTieringCostSavingsInfoForProtectedItemRequest")
 @Fluent
 public final class FetchTieringCostSavingsInfoForProtectedItemRequest extends FetchTieringCostInfoRequest {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "objectType", required = true)
+    private String objectType = "FetchTieringCostSavingsInfoForProtectedItemRequest";
+
     /*
      * Name of the protected item container
      */
@@ -33,6 +45,17 @@ public final class FetchTieringCostSavingsInfoForProtectedItemRequest extends Fe
      * Creates an instance of FetchTieringCostSavingsInfoForProtectedItemRequest class.
      */
     public FetchTieringCostSavingsInfoForProtectedItemRequest() {
+    }
+
+    /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
     }
 
     /**
@@ -102,12 +125,14 @@ public final class FetchTieringCostSavingsInfoForProtectedItemRequest extends Fe
     public void validate() {
         super.validate();
         if (containerName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property containerName in model FetchTieringCostSavingsInfoForProtectedItemRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property containerName in model FetchTieringCostSavingsInfoForProtectedItemRequest"));
         }
         if (protectedItemName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property protectedItemName in model FetchTieringCostSavingsInfoForProtectedItemRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property protectedItemName in model FetchTieringCostSavingsInfoForProtectedItemRequest"));
         }
     }
 

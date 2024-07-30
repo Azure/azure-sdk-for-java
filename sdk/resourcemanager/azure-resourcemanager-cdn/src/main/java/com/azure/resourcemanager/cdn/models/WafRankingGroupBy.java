@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WafRankingGroupBy. */
+/**
+ * Defines values for WafRankingGroupBy.
+ */
 public final class WafRankingGroupBy extends ExpandableStringEnum<WafRankingGroupBy> {
-    /** Static value httpStatusCode for WafRankingGroupBy. */
+    /**
+     * Static value httpStatusCode for WafRankingGroupBy.
+     */
     public static final WafRankingGroupBy HTTP_STATUS_CODE = fromString("httpStatusCode");
 
-    /** Static value customDomain for WafRankingGroupBy. */
+    /**
+     * Static value customDomain for WafRankingGroupBy.
+     */
     public static final WafRankingGroupBy CUSTOM_DOMAIN = fromString("customDomain");
 
     /**
      * Creates a new instance of WafRankingGroupBy value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class WafRankingGroupBy extends ExpandableStringEnum<WafRankingGrou
 
     /**
      * Creates or finds a WafRankingGroupBy from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WafRankingGroupBy.
      */
@@ -38,7 +44,7 @@ public final class WafRankingGroupBy extends ExpandableStringEnum<WafRankingGrou
 
     /**
      * Gets known WafRankingGroupBy values.
-     *
+     * 
      * @return known WafRankingGroupBy values.
      */
     public static Collection<WafRankingGroupBy> values() {

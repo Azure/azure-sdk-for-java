@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.28 (Unreleased)
+## 1.0.0-beta.30 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,2554 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.29 (2024-06-19)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.ManagedIdentityCredentialResource` was removed
+
+* `models.ServicePrincipalCredentialResource` was removed
+
+#### `models.CredentialOperations` was modified
+
+* `createOrUpdateWithResponse(java.lang.String,java.lang.String,java.lang.String,fluent.models.CredentialResourceInner,java.lang.String,com.azure.core.util.Context)` was removed
+* `createOrUpdate(java.lang.String,java.lang.String,java.lang.String,fluent.models.CredentialResourceInner)` was removed
+
+#### `models.ExpressionV2` was modified
+
+* `operator()` was removed
+* `withOperator(java.lang.String)` was removed
+
+### Features Added
+
+* `models.CredentialResource$Update` was added
+
+* `models.SqlServerBaseLinkedServiceTypeProperties` was added
+
+* `models.CredentialResource$DefinitionStages` was added
+
+* `models.CredentialResource$UpdateStages` was added
+
+* `models.CredentialResource$Definition` was added
+
+* `models.AmazonRdsForSqlAuthenticationType` was added
+
+* `models.AzureSqlMIAuthenticationType` was added
+
+* `models.ContinuationSettingsReference` was added
+
+* `models.SqlServerAuthenticationType` was added
+
+* `models.AzureSqlDWAuthenticationType` was added
+
+* `models.AzureSqlDatabaseAuthenticationType` was added
+
+#### `models.CredentialOperations` was modified
+
+* `getById(java.lang.String)` was added
+* `deleteById(java.lang.String)` was added
+* `getByIdWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `define(java.lang.String)` was added
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.SalesforceV2Source` was modified
+
+* `withQuery(java.lang.Object)` was added
+* `query()` was added
+
+#### `models.ExpressionV2` was modified
+
+* `withOperators(java.util.List)` was added
+* `operators()` was added
+
+#### `models.ExecuteWranglingDataflowActivity` was modified
+
+* `continuationSettings()` was added
+* `withContinuationSettings(models.ContinuationSettingsReference)` was added
+
+#### `models.LakeHouseTableDataset` was modified
+
+* `withSchemaTypePropertiesSchema(java.lang.Object)` was added
+* `schemaTypePropertiesSchema()` was added
+
+#### `models.SalesforceServiceCloudV2Source` was modified
+
+* `withQuery(java.lang.Object)` was added
+* `query()` was added
+
+#### `models.AzureSqlDatabaseLinkedService` was modified
+
+* `withConnectTimeout(java.lang.Object)` was added
+* `multipleActiveResultSets()` was added
+* `withLoadBalanceTimeout(java.lang.Object)` was added
+* `integratedSecurity()` was added
+* `withServer(java.lang.Object)` was added
+* `withDatabase(java.lang.Object)` was added
+* `withMultiSubnetFailover(java.lang.Object)` was added
+* `withIntegratedSecurity(java.lang.Object)` was added
+* `withMinPoolSize(java.lang.Object)` was added
+* `server()` was added
+* `withMaxPoolSize(java.lang.Object)` was added
+* `withAuthenticationType(models.AzureSqlDatabaseAuthenticationType)` was added
+* `withConnectRetryCount(java.lang.Object)` was added
+* `withUsername(java.lang.Object)` was added
+* `withConnectRetryInterval(java.lang.Object)` was added
+* `username()` was added
+* `connectTimeout()` was added
+* `connectRetryCount()` was added
+* `database()` was added
+* `authenticationType()` was added
+* `trustServerCertificate()` was added
+* `withEncrypt(java.lang.Object)` was added
+* `multiSubnetFailover()` was added
+* `minPoolSize()` was added
+* `servicePrincipalCredential()` was added
+* `withHostnameInCertificate(java.lang.Object)` was added
+* `failoverPartner()` was added
+* `withServicePrincipalCredential(models.SecretBase)` was added
+* `withTrustServerCertificate(java.lang.Object)` was added
+* `servicePrincipalCredentialType()` was added
+* `withPacketSize(java.lang.Object)` was added
+* `loadBalanceTimeout()` was added
+* `withCommandTimeout(java.lang.Object)` was added
+* `applicationIntent()` was added
+* `packetSize()` was added
+* `commandTimeout()` was added
+* `withServicePrincipalCredentialType(java.lang.Object)` was added
+* `connectRetryInterval()` was added
+* `hostnameInCertificate()` was added
+* `maxPoolSize()` was added
+* `withFailoverPartner(java.lang.Object)` was added
+* `encrypt()` was added
+* `withMultipleActiveResultSets(java.lang.Object)` was added
+* `withPooling(java.lang.Object)` was added
+* `withApplicationIntent(java.lang.Object)` was added
+* `pooling()` was added
+
+#### `models.AzureSqlDWLinkedService` was modified
+
+* `withMultipleActiveResultSets(java.lang.Object)` was added
+* `withLoadBalanceTimeout(java.lang.Object)` was added
+* `commandTimeout()` was added
+* `withDatabase(java.lang.Object)` was added
+* `connectTimeout()` was added
+* `connectRetryInterval()` was added
+* `minPoolSize()` was added
+* `applicationIntent()` was added
+* `withCommandTimeout(java.lang.Object)` was added
+* `withServer(java.lang.Object)` was added
+* `integratedSecurity()` was added
+* `withConnectTimeout(java.lang.Object)` was added
+* `database()` was added
+* `withFailoverPartner(java.lang.Object)` was added
+* `withEncrypt(java.lang.Object)` was added
+* `withHostnameInCertificate(java.lang.Object)` was added
+* `withMaxPoolSize(java.lang.Object)` was added
+* `withPacketSize(java.lang.Object)` was added
+* `multiSubnetFailover()` was added
+* `withIntegratedSecurity(java.lang.Object)` was added
+* `connectRetryCount()` was added
+* `encrypt()` was added
+* `withServicePrincipalCredential(models.SecretBase)` was added
+* `username()` was added
+* `withAuthenticationType(models.AzureSqlDWAuthenticationType)` was added
+* `authenticationType()` was added
+* `trustServerCertificate()` was added
+* `maxPoolSize()` was added
+* `withPooling(java.lang.Object)` was added
+* `withApplicationIntent(java.lang.Object)` was added
+* `withTrustServerCertificate(java.lang.Object)` was added
+* `packetSize()` was added
+* `withMultiSubnetFailover(java.lang.Object)` was added
+* `failoverPartner()` was added
+* `servicePrincipalCredentialType()` was added
+* `server()` was added
+* `pooling()` was added
+* `withMinPoolSize(java.lang.Object)` was added
+* `loadBalanceTimeout()` was added
+* `multipleActiveResultSets()` was added
+* `servicePrincipalCredential()` was added
+* `hostnameInCertificate()` was added
+* `withConnectRetryCount(java.lang.Object)` was added
+* `withConnectRetryInterval(java.lang.Object)` was added
+* `withServicePrincipalCredentialType(java.lang.Object)` was added
+* `withUsername(java.lang.Object)` was added
+
+#### `models.SnowflakeExportCopyCommand` was modified
+
+* `storageIntegration()` was added
+* `withStorageIntegration(java.lang.Object)` was added
+
+#### `models.CredentialResource` was modified
+
+* `resourceGroupName()` was added
+* `refresh()` was added
+* `update()` was added
+* `refresh(com.azure.core.util.Context)` was added
+
+#### `models.SnowflakeImportCopyCommand` was modified
+
+* `withStorageIntegration(java.lang.Object)` was added
+* `storageIntegration()` was added
+
+#### `models.ExecuteDataFlowActivity` was modified
+
+* `withContinuationSettings(models.ContinuationSettingsReference)` was added
+* `continuationSettings()` was added
+
+#### `models.SqlServerLinkedService` was modified
+
+* `connectRetryCount()` was added
+* `applicationIntent()` was added
+* `withDatabase(java.lang.Object)` was added
+* `withMultipleActiveResultSets(java.lang.Object)` was added
+* `withCommandTimeout(java.lang.Object)` was added
+* `maxPoolSize()` was added
+* `withMultiSubnetFailover(java.lang.Object)` was added
+* `connectTimeout()` was added
+* `withEncrypt(java.lang.Object)` was added
+* `withCredential(models.CredentialReference)` was added
+* `withPacketSize(java.lang.Object)` was added
+* `minPoolSize()` was added
+* `multipleActiveResultSets()` was added
+* `withTrustServerCertificate(java.lang.Object)` was added
+* `packetSize()` was added
+* `credential()` was added
+* `withMaxPoolSize(java.lang.Object)` was added
+* `withIntegratedSecurity(java.lang.Object)` was added
+* `withLoadBalanceTimeout(java.lang.Object)` was added
+* `withConnectRetryCount(java.lang.Object)` was added
+* `integratedSecurity()` was added
+* `withHostnameInCertificate(java.lang.Object)` was added
+* `pooling()` was added
+* `multiSubnetFailover()` was added
+* `trustServerCertificate()` was added
+* `withConnectRetryInterval(java.lang.Object)` was added
+* `withPooling(java.lang.Object)` was added
+* `hostnameInCertificate()` was added
+* `failoverPartner()` was added
+* `authenticationType()` was added
+* `withConnectTimeout(java.lang.Object)` was added
+* `loadBalanceTimeout()` was added
+* `withMinPoolSize(java.lang.Object)` was added
+* `withAuthenticationType(models.SqlServerAuthenticationType)` was added
+* `commandTimeout()` was added
+* `withApplicationIntent(java.lang.Object)` was added
+* `withServer(java.lang.Object)` was added
+* `connectRetryInterval()` was added
+* `withFailoverPartner(java.lang.Object)` was added
+* `encrypt()` was added
+* `server()` was added
+* `database()` was added
+
+#### `models.DynamicsCrmLinkedService` was modified
+
+* `withCredential(models.CredentialReference)` was added
+* `credential()` was added
+
+#### `models.AzureSqlMILinkedService` was modified
+
+* `withHostnameInCertificate(java.lang.Object)` was added
+* `multipleActiveResultSets()` was added
+* `trustServerCertificate()` was added
+* `server()` was added
+* `packetSize()` was added
+* `withMinPoolSize(java.lang.Object)` was added
+* `hostnameInCertificate()` was added
+* `encrypt()` was added
+* `connectRetryCount()` was added
+* `withIntegratedSecurity(java.lang.Object)` was added
+* `withCommandTimeout(java.lang.Object)` was added
+* `maxPoolSize()` was added
+* `withPooling(java.lang.Object)` was added
+* `withDatabase(java.lang.Object)` was added
+* `username()` was added
+* `withLoadBalanceTimeout(java.lang.Object)` was added
+* `loadBalanceTimeout()` was added
+* `withUsername(java.lang.Object)` was added
+* `integratedSecurity()` was added
+* `database()` was added
+* `withServer(java.lang.Object)` was added
+* `pooling()` was added
+* `withEncrypt(java.lang.Object)` was added
+* `withFailoverPartner(java.lang.Object)` was added
+* `commandTimeout()` was added
+* `multiSubnetFailover()` was added
+* `withConnectRetryCount(java.lang.Object)` was added
+* `withMultiSubnetFailover(java.lang.Object)` was added
+* `withMultipleActiveResultSets(java.lang.Object)` was added
+* `withApplicationIntent(java.lang.Object)` was added
+* `connectRetryInterval()` was added
+* `servicePrincipalCredentialType()` was added
+* `servicePrincipalCredential()` was added
+* `connectTimeout()` was added
+* `failoverPartner()` was added
+* `withMaxPoolSize(java.lang.Object)` was added
+* `applicationIntent()` was added
+* `withAuthenticationType(models.AzureSqlMIAuthenticationType)` was added
+* `minPoolSize()` was added
+* `withConnectTimeout(java.lang.Object)` was added
+* `withServicePrincipalCredentialType(java.lang.Object)` was added
+* `withServicePrincipalCredential(models.SecretBase)` was added
+* `withPacketSize(java.lang.Object)` was added
+* `withConnectRetryInterval(java.lang.Object)` was added
+* `withTrustServerCertificate(java.lang.Object)` was added
+* `authenticationType()` was added
+
+#### `models.AmazonRdsForSqlServerLinkedService` was modified
+
+* `withFailoverPartner(java.lang.Object)` was added
+* `withPacketSize(java.lang.Object)` was added
+* `authenticationType()` was added
+* `minPoolSize()` was added
+* `multipleActiveResultSets()` was added
+* `withConnectRetryInterval(java.lang.Object)` was added
+* `withConnectTimeout(java.lang.Object)` was added
+* `failoverPartner()` was added
+* `hostnameInCertificate()` was added
+* `withLoadBalanceTimeout(java.lang.Object)` was added
+* `withMaxPoolSize(java.lang.Object)` was added
+* `applicationIntent()` was added
+* `connectRetryCount()` was added
+* `encrypt()` was added
+* `withAuthenticationType(models.AmazonRdsForSqlAuthenticationType)` was added
+* `loadBalanceTimeout()` was added
+* `multiSubnetFailover()` was added
+* `connectRetryInterval()` was added
+* `withConnectRetryCount(java.lang.Object)` was added
+* `withHostnameInCertificate(java.lang.Object)` was added
+* `withCommandTimeout(java.lang.Object)` was added
+* `withEncrypt(java.lang.Object)` was added
+* `packetSize()` was added
+* `withPooling(java.lang.Object)` was added
+* `connectTimeout()` was added
+* `trustServerCertificate()` was added
+* `integratedSecurity()` was added
+* `withMinPoolSize(java.lang.Object)` was added
+* `server()` was added
+* `withIntegratedSecurity(java.lang.Object)` was added
+* `commandTimeout()` was added
+* `withDatabase(java.lang.Object)` was added
+* `withServer(java.lang.Object)` was added
+* `database()` was added
+* `maxPoolSize()` was added
+* `withApplicationIntent(java.lang.Object)` was added
+* `withMultiSubnetFailover(java.lang.Object)` was added
+* `pooling()` was added
+* `withMultipleActiveResultSets(java.lang.Object)` was added
+* `withTrustServerCertificate(java.lang.Object)` was added
+
+## 1.0.0-beta.28 (2024-04-18)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.ManagedIdentityCredentialResource$Update` was removed
+
+* `models.ManagedIdentityCredentialResource$DefinitionStages` was removed
+
+* `models.ManagedIdentityCredentialResource$Definition` was removed
+
+* `models.ManagedIdentityCredentialResource$UpdateStages` was removed
+
+* `models.ScriptType` was removed
+
+#### `models.CredentialOperations` was modified
+
+* `define(java.lang.String)` was removed
+* `getById(java.lang.String)` was removed
+* `deleteById(java.lang.String)` was removed
+* `getByIdWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `models.ManagedIdentityCredentialResource get(java.lang.String,java.lang.String,java.lang.String)` -> `models.CredentialResource get(java.lang.String,java.lang.String,java.lang.String)`
+
+#### `models.ScriptActivityScriptBlock` was modified
+
+* `models.ScriptType type()` -> `java.lang.Object type()`
+* `withType(models.ScriptType)` was removed
+
+#### `models.ManagedIdentityCredentialResource` was modified
+
+* `refresh()` was removed
+* `update()` was removed
+* `etag()` was removed
+* `innerModel()` was removed
+* `type()` was removed
+* `resourceGroupName()` was removed
+* `id()` was removed
+* `refresh(com.azure.core.util.Context)` was removed
+* `name()` was removed
+* `models.ManagedIdentityCredential properties()` -> `models.ManagedIdentityCredential properties()`
+
+### Features Added
+
+* `models.CredentialResource` was added
+
+* `models.ServicePrincipalCredentialResource` was added
+
+#### `models.CosmosDbMongoDbApiSource` was modified
+
+* `type()` was added
+
+#### `models.SqlMISink` was modified
+
+* `type()` was added
+
+#### `models.CredentialOperations` was modified
+
+* `createOrUpdate(java.lang.String,java.lang.String,java.lang.String,fluent.models.CredentialResourceInner)` was added
+* `createOrUpdateWithResponse(java.lang.String,java.lang.String,java.lang.String,fluent.models.CredentialResourceInner,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.QuickBooksSource` was modified
+
+* `type()` was added
+
+#### `models.SapEccLinkedService` was modified
+
+* `type()` was added
+
+#### `models.SmartsheetLinkedService` was modified
+
+* `type()` was added
+
+#### `models.TarReadSettings` was modified
+
+* `type()` was added
+
+#### `models.TwilioLinkedService` was modified
+
+* `type()` was added
+
+#### `models.Activity` was modified
+
+* `type()` was added
+
+#### `models.HBaseLinkedService` was modified
+
+* `type()` was added
+
+#### `models.AzureDataLakeStoreLocation` was modified
+
+* `type()` was added
+
+#### `models.MicrosoftAccessTableDataset` was modified
+
+* `type()` was added
+
+#### `models.DrillLinkedService` was modified
+
+* `type()` was added
+
+#### `models.GoogleBigQuerySource` was modified
+
+* `type()` was added
+
+#### `models.ServiceNowObjectDataset` was modified
+
+* `type()` was added
+
+#### `models.LinkedIntegrationRuntimeKeyAuthorization` was modified
+
+* `authorizationType()` was added
+
+#### `models.WarehouseTableDataset` was modified
+
+* `type()` was added
+
+#### `models.CopySink` was modified
+
+* `type()` was added
+
+#### `models.SnowflakeLinkedService` was modified
+
+* `type()` was added
+
+#### `models.FileShareDataset` was modified
+
+* `type()` was added
+
+#### `models.SapOdpLinkedService` was modified
+
+* `type()` was added
+
+#### `models.WebLinkedServiceTypeProperties` was modified
+
+* `authenticationType()` was added
+
+#### `models.DelimitedTextSource` was modified
+
+* `type()` was added
+
+#### `models.Trigger` was modified
+
+* `type()` was added
+
+#### `models.MongoDbAtlasLinkedService` was modified
+
+* `type()` was added
+
+#### `models.IntegrationRuntime` was modified
+
+* `type()` was added
+
+#### `models.WebBasicAuthentication` was modified
+
+* `authenticationType()` was added
+
+#### `models.EloquaObjectDataset` was modified
+
+* `type()` was added
+
+#### `models.CustomDataset` was modified
+
+* `type()` was added
+
+#### `models.FileServerWriteSettings` was modified
+
+* `type()` was added
+
+#### `models.OdbcTableDataset` was modified
+
+* `type()` was added
+
+#### `models.TumblingWindowTrigger` was modified
+
+* `type()` was added
+
+#### `models.AzureFileStorageLocation` was modified
+
+* `type()` was added
+
+#### `models.SapOpenHubLinkedService` was modified
+
+* `type()` was added
+
+#### `models.AzureFileStorageWriteSettings` was modified
+
+* `type()` was added
+
+#### `models.SsisProject` was modified
+
+* `type()` was added
+
+#### `models.SapHanaTableDataset` was modified
+
+* `type()` was added
+
+#### `models.SalesforceSource` was modified
+
+* `type()` was added
+
+#### `models.SqlServerSink` was modified
+
+* `type()` was added
+
+#### `models.CosmosDbSqlApiSink` was modified
+
+* `type()` was added
+
+#### `models.SalesforceServiceCloudSource` was modified
+
+* `type()` was added
+
+#### `models.HubspotObjectDataset` was modified
+
+* `type()` was added
+
+#### `models.NetezzaSource` was modified
+
+* `type()` was added
+
+#### `models.AmazonMwsObjectDataset` was modified
+
+* `type()` was added
+
+#### `models.VerticaLinkedService` was modified
+
+* `type()` was added
+
+#### `models.DatasetStorageFormat` was modified
+
+* `type()` was added
+
+#### `models.HDInsightOnDemandLinkedService` was modified
+
+* `type()` was added
+
+#### `models.OrcFormat` was modified
+
+* `type()` was added
+
+#### `models.TumblingWindowTriggerDependencyReference` was modified
+
+* `type()` was added
+
+#### `models.AzureTableSink` was modified
+
+* `type()` was added
+
+#### `models.DatasetLocation` was modified
+
+* `type()` was added
+
+#### `models.PostgreSqlV2TableDataset` was modified
+
+* `type()` was added
+
+#### `models.AzureTableStorageLinkedService` was modified
+
+* `type()` was added
+
+#### `models.MySqlSource` was modified
+
+* `type()` was added
+
+#### `models.FileServerLinkedService` was modified
+
+* `type()` was added
+
+#### `models.SqlMISource` was modified
+
+* `type()` was added
+
+#### `models.AzureDataLakeStoreReadSettings` was modified
+
+* `type()` was added
+
+#### `models.SelfDependencyTumblingWindowTriggerReference` was modified
+
+* `type()` was added
+
+#### `models.ScriptActivity` was modified
+
+* `type()` was added
+
+#### `models.ParquetFormat` was modified
+
+* `type()` was added
+
+#### `models.InformixTableDataset` was modified
+
+* `type()` was added
+
+#### `models.GoogleBigQueryObjectDataset` was modified
+
+* `type()` was added
+
+#### `models.OracleServiceCloudObjectDataset` was modified
+
+* `type()` was added
+
+#### `models.MongoDbCollectionDataset` was modified
+
+* `type()` was added
+
+#### `models.HDInsightSparkActivity` was modified
+
+* `type()` was added
+
+#### `models.AmazonS3LinkedService` was modified
+
+* `type()` was added
+
+#### `models.NetezzaLinkedService` was modified
+
+* `type()` was added
+
+#### `models.DocumentDbCollectionSink` was modified
+
+* `type()` was added
+
+#### `models.JsonFormat` was modified
+
+* `type()` was added
+
+#### `models.DependencyReference` was modified
+
+* `type()` was added
+
+#### `models.ManagedIdentityCredential` was modified
+
+* `type()` was added
+
+#### `models.FormatReadSettings` was modified
+
+* `type()` was added
+
+#### `models.MagentoLinkedService` was modified
+
+* `type()` was added
+
+#### `models.InformixLinkedService` was modified
+
+* `type()` was added
+
+#### `models.EnvironmentVariableSetup` was modified
+
+* `type()` was added
+
+#### `models.WebActivity` was modified
+
+* `type()` was added
+
+#### `models.AzureMariaDBTableDataset` was modified
+
+* `type()` was added
+
+#### `models.VerticaTableDataset` was modified
+
+* `type()` was added
+
+#### `models.PaypalSource` was modified
+
+* `type()` was added
+
+#### `models.ParquetSink` was modified
+
+* `type()` was added
+
+#### `models.ServicePrincipalCredential` was modified
+
+* `type()` was added
+
+#### `models.HttpReadSettings` was modified
+
+* `type()` was added
+
+#### `models.GetMetadataActivity` was modified
+
+* `type()` was added
+
+#### `models.SalesforceObjectDataset` was modified
+
+* `type()` was added
+
+#### `models.SalesforceV2Source` was modified
+
+* `type()` was added
+
+#### `models.ZohoSource` was modified
+
+* `type()` was added
+
+#### `models.GoogleAdWordsObjectDataset` was modified
+
+* `type()` was added
+
+#### `models.FilterActivity` was modified
+
+* `type()` was added
+
+#### `models.Dataset` was modified
+
+* `type()` was added
+
+#### `models.Office365Source` was modified
+
+* `type()` was added
+
+#### `models.HttpLinkedService` was modified
+
+* `type()` was added
+
+#### `models.SapOpenHubSource` was modified
+
+* `type()` was added
+
+#### `models.HttpServerLocation` was modified
+
+* `type()` was added
+
+#### `models.GreenplumLinkedService` was modified
+
+* `type()` was added
+
+#### `models.ParquetWriteSettings` was modified
+
+* `type()` was added
+
+#### `models.PostgreSqlLinkedService` was modified
+
+* `type()` was added
+
+#### `models.ForEachActivity` was modified
+
+* `type()` was added
+
+#### `models.BinaryDataset` was modified
+
+* `type()` was added
+
+#### `models.CommonDataServiceForAppsLinkedService` was modified
+
+* `type()` was added
+
+#### `models.ExecuteWranglingDataflowActivity` was modified
+
+* `type()` was added
+
+#### `models.SquareLinkedService` was modified
+
+* `type()` was added
+
+#### `models.FactoryRepoConfiguration` was modified
+
+* `type()` was added
+
+#### `models.LakeHouseTableDataset` was modified
+
+* `type()` was added
+
+#### `models.AmazonS3CompatibleLocation` was modified
+
+* `type()` was added
+
+#### `models.AzurePostgreSqlTableDataset` was modified
+
+* `type()` was added
+
+#### `models.SnowflakeDataset` was modified
+
+* `type()` was added
+
+#### `models.HttpSource` was modified
+
+* `type()` was added
+
+#### `models.DynamicsCrmSink` was modified
+
+* `type()` was added
+
+#### `models.AzureBlobFSReadSettings` was modified
+
+* `type()` was added
+
+#### `models.HiveSource` was modified
+
+* `type()` was added
+
+#### `models.SalesforceServiceCloudV2LinkedService` was modified
+
+* `type()` was added
+
+#### `models.BinarySource` was modified
+
+* `type()` was added
+
+#### `models.AmazonMwsSource` was modified
+
+* `type()` was added
+
+#### `models.CassandraTableDataset` was modified
+
+* `type()` was added
+
+#### `models.SalesforceSink` was modified
+
+* `type()` was added
+
+#### `models.MicrosoftAccessSink` was modified
+
+* `type()` was added
+
+#### `models.DelimitedTextWriteSettings` was modified
+
+* `type()` was added
+
+#### `models.InformixSink` was modified
+
+* `type()` was added
+
+#### `models.AzureTableSource` was modified
+
+* `type()` was added
+
+#### `models.AzureDatabricksDeltaLakeExportCommand` was modified
+
+* `type()` was added
+
+#### `models.AppFiguresLinkedService` was modified
+
+* `type()` was added
+
+#### `models.AmazonRdsForOracleSource` was modified
+
+* `type()` was added
+
+#### `models.ComponentSetup` was modified
+
+* `type()` was added
+
+#### `models.AzureBatchLinkedService` was modified
+
+* `type()` was added
+
+#### `models.MongoDbLinkedService` was modified
+
+* `type()` was added
+
+#### `models.MongoDbAtlasCollectionDataset` was modified
+
+* `type()` was added
+
+#### `models.DatabricksNotebookActivity` was modified
+
+* `type()` was added
+
+#### `models.AzureDataExplorerTableDataset` was modified
+
+* `type()` was added
+
+#### `models.DocumentDbCollectionDataset` was modified
+
+* `type()` was added
+
+#### `models.GoogleBigQueryV2Source` was modified
+
+* `type()` was added
+
+#### `models.PostgreSqlV2Source` was modified
+
+* `type()` was added
+
+#### `models.SapHanaLinkedService` was modified
+
+* `type()` was added
+
+#### `models.WaitActivity` was modified
+
+* `type()` was added
+
+#### `models.OracleCloudStorageLinkedService` was modified
+
+* `type()` was added
+
+#### `models.CopyActivity` was modified
+
+* `type()` was added
+
+#### `models.SnowflakeSink` was modified
+
+* `type()` was added
+
+#### `models.CmdkeySetup` was modified
+
+* `type()` was added
+
+#### `models.WarehouseSource` was modified
+
+* `type()` was added
+
+#### `models.AzurePostgreSqlSource` was modified
+
+* `type()` was added
+
+#### `models.IfConditionActivity` was modified
+
+* `type()` was added
+
+#### `models.SqlDWSink` was modified
+
+* `type()` was added
+
+#### `models.PrestoSource` was modified
+
+* `type()` was added
+
+#### `models.AzureDataLakeStoreSource` was modified
+
+* `type()` was added
+
+#### `models.AzureSynapseArtifactsLinkedService` was modified
+
+* `type()` was added
+
+#### `models.TeamDeskLinkedService` was modified
+
+* `type()` was added
+
+#### `models.AsanaLinkedService` was modified
+
+* `type()` was added
+
+#### `models.SalesforceServiceCloudV2ObjectDataset` was modified
+
+* `type()` was added
+
+#### `models.ShopifyObjectDataset` was modified
+
+* `type()` was added
+
+#### `models.ExecutionActivity` was modified
+
+* `type()` was added
+
+#### `models.SapTableResourceDataset` was modified
+
+* `type()` was added
+
+#### `models.WebhookActivity` was modified
+
+* `type()` was added
+
+#### `models.SapCloudForCustomerSource` was modified
+
+* `type()` was added
+
+#### `models.Office365Dataset` was modified
+
+* `type()` was added
+
+#### `models.MicrosoftAccessSource` was modified
+
+* `type()` was added
+
+#### `models.ServiceNowV2LinkedService` was modified
+
+* `type()` was added
+
+#### `models.ValidationActivity` was modified
+
+* `type()` was added
+
+#### `models.LakeHouseLinkedService` was modified
+
+* `type()` was added
+
+#### `models.ConcurLinkedService` was modified
+
+* `type()` was added
+
+#### `models.SquareObjectDataset` was modified
+
+* `type()` was added
+
+#### `models.BlobSink` was modified
+
+* `type()` was added
+
+#### `models.JsonWriteSettings` was modified
+
+* `type()` was added
+
+#### `models.AvroSink` was modified
+
+* `type()` was added
+
+#### `models.CustomActivity` was modified
+
+* `type()` was added
+
+#### `models.OracleTableDataset` was modified
+
+* `type()` was added
+
+#### `models.AzureMariaDBSource` was modified
+
+* `type()` was added
+
+#### `models.XeroObjectDataset` was modified
+
+* `type()` was added
+
+#### `models.CustomEventsTrigger` was modified
+
+* `type()` was added
+
+#### `models.SynapseNotebookActivity` was modified
+
+* `type()` was added
+
+#### `models.AmazonRedshiftTableDataset` was modified
+
+* `type()` was added
+
+#### `models.MariaDBLinkedService` was modified
+
+* `type()` was added
+
+#### `models.XeroLinkedService` was modified
+
+* `type()` was added
+
+#### `models.SnowflakeSource` was modified
+
+* `type()` was added
+
+#### `models.AzurePostgreSqlSink` was modified
+
+* `type()` was added
+
+#### `models.AzureSqlDWTableDataset` was modified
+
+* `type()` was added
+
+#### `models.OrcWriteSettings` was modified
+
+* `type()` was added
+
+#### `models.ServiceNowV2ObjectDataset` was modified
+
+* `type()` was added
+
+#### `models.GoogleAdWordsSource` was modified
+
+* `type()` was added
+
+#### `models.HiveObjectDataset` was modified
+
+* `type()` was added
+
+#### `models.SapOdpResourceDataset` was modified
+
+* `type()` was added
+
+#### `models.WarehouseSink` was modified
+
+* `type()` was added
+
+#### `models.TeradataTableDataset` was modified
+
+* `type()` was added
+
+#### `models.ConcurObjectDataset` was modified
+
+* `type()` was added
+
+#### `models.MultiplePipelineTrigger` was modified
+
+* `type()` was added
+
+#### `models.ServiceNowV2Source` was modified
+
+* `type()` was added
+
+#### `models.CouchbaseTableDataset` was modified
+
+* `type()` was added
+
+#### `models.OdbcSink` was modified
+
+* `type()` was added
+
+#### `models.MariaDBSource` was modified
+
+* `type()` was added
+
+#### `models.AzureFileStorageReadSettings` was modified
+
+* `type()` was added
+
+#### `models.RestSource` was modified
+
+* `type()` was added
+
+#### `models.FtpServerLocation` was modified
+
+* `type()` was added
+
+#### `models.AzureMLServiceLinkedService` was modified
+
+* `type()` was added
+
+#### `models.SapEccSource` was modified
+
+* `type()` was added
+
+#### `models.FtpReadSettings` was modified
+
+* `type()` was added
+
+#### `models.SapOpenHubTableDataset` was modified
+
+* `type()` was added
+
+#### `models.CassandraSource` was modified
+
+* `type()` was added
+
+#### `models.RerunTumblingWindowTrigger` was modified
+
+* `type()` was added
+
+#### `models.AzureDataLakeStoreDataset` was modified
+
+* `type()` was added
+
+#### `models.SapTableSource` was modified
+
+* `type()` was added
+
+#### `models.CommonDataServiceForAppsSource` was modified
+
+* `type()` was added
+
+#### `models.ScriptActivityScriptBlock` was modified
+
+* `withType(java.lang.Object)` was added
+
+#### `models.OracleSource` was modified
+
+* `type()` was added
+
+#### `models.LakeHouseWriteSettings` was modified
+
+* `type()` was added
+
+#### `models.DynamicsAXLinkedService` was modified
+
+* `type()` was added
+
+#### `models.AzureBlobFSWriteSettings` was modified
+
+* `type()` was added
+
+#### `models.FileServerReadSettings` was modified
+
+* `type()` was added
+
+#### `models.HdfsSource` was modified
+
+* `type()` was added
+
+#### `models.TabularTranslator` was modified
+
+* `type()` was added
+
+#### `models.CopySource` was modified
+
+* `type()` was added
+
+#### `models.MongoDbV2LinkedService` was modified
+
+* `type()` was added
+
+#### `models.MySqlTableDataset` was modified
+
+* `type()` was added
+
+#### `models.SalesforceServiceCloudV2Source` was modified
+
+* `type()` was added
+
+#### `models.PrestoLinkedService` was modified
+
+* `type()` was added
+
+#### `models.CosmosDbMongoDbApiCollectionDataset` was modified
+
+* `type()` was added
+
+#### `models.WebSource` was modified
+
+* `type()` was added
+
+#### `models.DynamicsCrmEntityDataset` was modified
+
+* `type()` was added
+
+#### `models.AzureMLBatchExecutionActivity` was modified
+
+* `type()` was added
+
+#### `models.AmazonRdsForOracleLinkedService` was modified
+
+* `type()` was added
+
+#### `models.Db2TableDataset` was modified
+
+* `type()` was added
+
+#### `models.DrillSource` was modified
+
+* `type()` was added
+
+#### `models.AzureStorageLinkedService` was modified
+
+* `type()` was added
+
+#### `models.ManagedIdentityCredentialResource` was modified
+
+* `validate()` was added
+* `withId(java.lang.String)` was added
+* `withProperties(models.ManagedIdentityCredential)` was added
+* `properties()` was added
+
+#### `models.SetVariableActivity` was modified
+
+* `type()` was added
+
+#### `models.SalesforceLinkedService` was modified
+
+* `type()` was added
+
+#### `models.RestResourceDataset` was modified
+
+* `type()` was added
+
+#### `models.SapBWLinkedService` was modified
+
+* `type()` was added
+
+#### `models.SsisFolder` was modified
+
+* `type()` was added
+
+#### `models.SharePointOnlineListResourceDataset` was modified
+
+* `type()` was added
+
+#### `models.ZohoLinkedService` was modified
+
+* `type()` was added
+
+#### `models.SapTableLinkedService` was modified
+
+* `type()` was added
+
+#### `models.ServiceNowSource` was modified
+
+* `type()` was added
+
+#### `models.MongoDbSource` was modified
+
+* `type()` was added
+
+#### `models.JiraLinkedService` was modified
+
+* `type()` was added
+
+#### `models.PostgreSqlTableDataset` was modified
+
+* `type()` was added
+
+#### `models.LakeHouseReadSettings` was modified
+
+* `type()` was added
+
+#### `models.JsonReadSettings` was modified
+
+* `type()` was added
+
+#### `models.DynamicsAXResourceDataset` was modified
+
+* `type()` was added
+
+#### `models.InformixSource` was modified
+
+* `type()` was added
+
+#### `models.AzureFileStorageLinkedService` was modified
+
+* `type()` was added
+
+#### `models.SparkObjectDataset` was modified
+
+* `type()` was added
+
+#### `models.AvroDataset` was modified
+
+* `type()` was added
+
+#### `models.ParquetSource` was modified
+
+* `type()` was added
+
+#### `models.SftpWriteSettings` was modified
+
+* `type()` was added
+
+#### `models.ScheduleTrigger` was modified
+
+* `type()` was added
+
+#### `models.ConcurSource` was modified
+
+* `type()` was added
+
+#### `models.DataLakeAnalyticsUsqlActivity` was modified
+
+* `type()` was added
+
+#### `models.AmazonRdsForSqlServerSource` was modified
+
+* `type()` was added
+
+#### `models.ImportSettings` was modified
+
+* `type()` was added
+
+#### `models.FactoryGitHubConfiguration` was modified
+
+* `type()` was added
+
+#### `models.OrcSink` was modified
+
+* `type()` was added
+
+#### `models.PhoenixSource` was modified
+
+* `type()` was added
+
+#### `models.CosmosDbMongoDbApiSink` was modified
+
+* `type()` was added
+
+#### `models.JiraObjectDataset` was modified
+
+* `type()` was added
+
+#### `models.BinaryReadSettings` was modified
+
+* `type()` was added
+
+#### `models.DataFlow` was modified
+
+* `type()` was added
+
+#### `models.ParquetDataset` was modified
+
+* `type()` was added
+
+#### `models.AzureSqlDatabaseLinkedService` was modified
+
+* `type()` was added
+
+#### `models.AzureSqlDWLinkedService` was modified
+
+* `type()` was added
+
+#### `models.SsisPackage` was modified
+
+* `type()` was added
+
+#### `models.AzureMLExecutePipelineActivity` was modified
+
+* `type()` was added
+
+#### `models.SalesforceMarketingCloudSource` was modified
+
+* `type()` was added
+
+#### `models.WranglingDataFlow` was modified
+
+* `type()` was added
+
+#### `models.DatabricksSparkJarActivity` was modified
+
+* `type()` was added
+
+#### `models.ShopifyLinkedService` was modified
+
+* `type()` was added
+
+#### `models.TeradataSource` was modified
+
+* `type()` was added
+
+#### `models.DrillTableDataset` was modified
+
+* `type()` was added
+
+#### `models.PrestoObjectDataset` was modified
+
+* `type()` was added
+
+#### `models.GreenplumSource` was modified
+
+* `type()` was added
+
+#### `models.SalesforceServiceCloudSink` was modified
+
+* `type()` was added
+
+#### `models.SalesforceV2LinkedService` was modified
+
+* `type()` was added
+
+#### `models.TeradataLinkedService` was modified
+
+* `type()` was added
+
+#### `models.SapBwSource` was modified
+
+* `type()` was added
+
+#### `models.OdbcSource` was modified
+
+* `type()` was added
+
+#### `models.ManagedIntegrationRuntime` was modified
+
+* `type()` was added
+
+#### `models.DelimitedTextSink` was modified
+
+* `type()` was added
+
+#### `models.DynamicsCrmSource` was modified
+
+* `type()` was added
+
+#### `models.AzureDataLakeStoreWriteSettings` was modified
+
+* `type()` was added
+
+#### `models.SapHanaSource` was modified
+
+* `type()` was added
+
+#### `models.DelimitedTextReadSettings` was modified
+
+* `type()` was added
+
+#### `models.SparkLinkedService` was modified
+
+* `type()` was added
+
+#### `models.SapCloudForCustomerSink` was modified
+
+* `type()` was added
+
+#### `models.OracleServiceCloudLinkedService` was modified
+
+* `type()` was added
+
+#### `models.SnowflakeExportCopyCommand` was modified
+
+* `type()` was added
+
+#### `models.AzureBlobStorageLinkedService` was modified
+
+* `type()` was added
+
+#### `models.SnowflakeV2Sink` was modified
+
+* `type()` was added
+
+#### `models.ODataResourceDataset` was modified
+
+* `type()` was added
+
+#### `models.AzureBlobFSSource` was modified
+
+* `type()` was added
+
+#### `models.BlobEventsTrigger` was modified
+
+* `type()` was added
+
+#### `models.AzureBlobStorageLocation` was modified
+
+* `type()` was added
+
+#### `models.TriggerDependencyReference` was modified
+
+* `type()` was added
+
+#### `models.SquareSource` was modified
+
+* `type()` was added
+
+#### `models.AzureDataLakeStoreLinkedService` was modified
+
+* `type()` was added
+
+#### `models.CustomDataSourceLinkedService` was modified
+
+* `type()` was added
+
+#### `models.WebAnonymousAuthentication` was modified
+
+* `authenticationType()` was added
+
+#### `models.ServiceNowLinkedService` was modified
+
+* `type()` was added
+
+#### `models.OrcDataset` was modified
+
+* `type()` was added
+
+#### `models.SqlServerTableDataset` was modified
+
+* `type()` was added
+
+#### `models.DynamicsSource` was modified
+
+* `type()` was added
+
+#### `models.AzureMySqlTableDataset` was modified
+
+* `type()` was added
+
+#### `models.AzureSearchLinkedService` was modified
+
+* `type()` was added
+
+#### `models.HBaseObjectDataset` was modified
+
+* `type()` was added
+
+#### `models.AmazonS3Location` was modified
+
+* `type()` was added
+
+#### `models.DynamicsSink` was modified
+
+* `type()` was added
+
+#### `models.StoreWriteSettings` was modified
+
+* `type()` was added
+
+#### `models.ExcelDataset` was modified
+
+* `type()` was added
+
+#### `models.JsonDataset` was modified
+
+* `type()` was added
+
+#### `models.ExecuteSsisPackageActivity` was modified
+
+* `type()` was added
+
+#### `models.ImpalaSource` was modified
+
+* `type()` was added
+
+#### `models.SybaseTableDataset` was modified
+
+* `type()` was added
+
+#### `models.SsisObjectMetadata` was modified
+
+* `type()` was added
+
+#### `models.UntilActivity` was modified
+
+* `type()` was added
+
+#### `models.AzureBlobFSLocation` was modified
+
+* `type()` was added
+
+#### `models.DeleteActivity` was modified
+
+* `type()` was added
+
+#### `models.AzureMySqlLinkedService` was modified
+
+* `type()` was added
+
+#### `models.LakeHouseLocation` was modified
+
+* `type()` was added
+
+#### `models.Credential` was modified
+
+* `type()` was added
+
+#### `models.AzureQueueSink` was modified
+
+* `type()` was added
+
+#### `models.JsonSink` was modified
+
+* `type()` was added
+
+#### `models.SynapseSparkJobDefinitionActivity` was modified
+
+* `type()` was added
+
+#### `models.HubspotLinkedService` was modified
+
+* `type()` was added
+
+#### `models.AzureSqlMITableDataset` was modified
+
+* `type()` was added
+
+#### `models.SalesforceV2ObjectDataset` was modified
+
+* `type()` was added
+
+#### `models.ZohoObjectDataset` was modified
+
+* `type()` was added
+
+#### `models.SapOdpSource` was modified
+
+* `type()` was added
+
+#### `models.SnowflakeV2LinkedService` was modified
+
+* `type()` was added
+
+#### `models.AzureTableDataset` was modified
+
+* `type()` was added
+
+#### `models.SapEccResourceDataset` was modified
+
+* `type()` was added
+
+#### `models.ControlActivity` was modified
+
+* `type()` was added
+
+#### `models.AmazonS3CompatibleReadSettings` was modified
+
+* `type()` was added
+
+#### `models.CommonDataServiceForAppsEntityDataset` was modified
+
+* `type()` was added
+
+#### `models.MappingDataFlow` was modified
+
+* `type()` was added
+
+#### `models.AzureBlobStorageWriteSettings` was modified
+
+* `type()` was added
+
+#### `models.HDInsightPigActivity` was modified
+
+* `type()` was added
+
+#### `models.SapBwCubeDataset` was modified
+
+* `type()` was added
+
+#### `models.CustomSetupBase` was modified
+
+* `type()` was added
+
+#### `models.SybaseSource` was modified
+
+* `type()` was added
+
+#### `models.JiraSource` was modified
+
+* `type()` was added
+
+#### `models.SftpLocation` was modified
+
+* `type()` was added
+
+#### `models.AzureBlobDataset` was modified
+
+* `type()` was added
+
+#### `models.DynamicsLinkedService` was modified
+
+* `type()` was added
+
+#### `models.WebTableDataset` was modified
+
+* `type()` was added
+
+#### `models.CassandraLinkedService` was modified
+
+* `type()` was added
+
+#### `models.AvroFormat` was modified
+
+* `type()` was added
+
+#### `models.SftpReadSettings` was modified
+
+* `type()` was added
+
+#### `models.ODataLinkedService` was modified
+
+* `type()` was added
+
+#### `models.GoogleAdWordsLinkedService` was modified
+
+* `type()` was added
+
+#### `models.HDInsightLinkedService` was modified
+
+* `type()` was added
+
+#### `models.GoogleCloudStorageLocation` was modified
+
+* `type()` was added
+
+#### `models.AzureBlobStorageReadSettings` was modified
+
+* `type()` was added
+
+#### `models.ResponsysSource` was modified
+
+* `type()` was added
+
+#### `models.RestServiceLinkedService` was modified
+
+* `type()` was added
+
+#### `models.CosmosDbLinkedService` was modified
+
+* `type()` was added
+
+#### `models.AzureBlobFSLinkedService` was modified
+
+* `type()` was added
+
+#### `models.JsonSource` was modified
+
+* `type()` was added
+
+#### `models.SapCloudForCustomerResourceDataset` was modified
+
+* `type()` was added
+
+#### `models.SparkSource` was modified
+
+* `type()` was added
+
+#### `models.RestSink` was modified
+
+* `type()` was added
+
+#### `models.CopyTranslator` was modified
+
+* `type()` was added
+
+#### `models.MongoDbAtlasSink` was modified
+
+* `type()` was added
+
+#### `models.HBaseSource` was modified
+
+* `type()` was added
+
+#### `models.SelfHostedIntegrationRuntime` was modified
+
+* `type()` was added
+
+#### `models.BinarySink` was modified
+
+* `type()` was added
+
+#### `models.AmazonS3ReadSettings` was modified
+
+* `type()` was added
+
+#### `models.OracleCloudStorageLocation` was modified
+
+* `type()` was added
+
+#### `models.VerticaSource` was modified
+
+* `type()` was added
+
+#### `models.SqlServerSource` was modified
+
+* `type()` was added
+
+#### `models.SwitchActivity` was modified
+
+* `type()` was added
+
+#### `models.AzureDataLakeAnalyticsLinkedService` was modified
+
+* `type()` was added
+
+#### `models.MariaDBTableDataset` was modified
+
+* `type()` was added
+
+#### `models.BlobSource` was modified
+
+* `type()` was added
+
+#### `models.HiveLinkedService` was modified
+
+* `type()` was added
+
+#### `models.ExportSettings` was modified
+
+* `type()` was added
+
+#### `models.SnowflakeV2Dataset` was modified
+
+* `type()` was added
+
+#### `models.StoreReadSettings` was modified
+
+* `type()` was added
+
+#### `models.AzureDatabricksDeltaLakeSink` was modified
+
+* `type()` was added
+
+#### `models.AzureDatabricksDeltaLakeLinkedService` was modified
+
+* `type()` was added
+
+#### `models.HttpDataset` was modified
+
+* `type()` was added
+
+#### `models.HdfsLocation` was modified
+
+* `type()` was added
+
+#### `models.LakeHouseTableSource` was modified
+
+* `type()` was added
+
+#### `models.AmazonRedshiftSource` was modified
+
+* `type()` was added
+
+#### `models.GoogleSheetsLinkedService` was modified
+
+* `type()` was added
+
+#### `models.MarketoSource` was modified
+
+* `type()` was added
+
+#### `models.ZipDeflateReadSettings` was modified
+
+* `type()` was added
+
+#### `models.EloquaLinkedService` was modified
+
+* `type()` was added
+
+#### `models.MongoDbV2CollectionDataset` was modified
+
+* `type()` was added
+
+#### `models.CompressionReadSettings` was modified
+
+* `type()` was added
+
+#### `models.AzureMLUpdateResourceActivity` was modified
+
+* `type()` was added
+
+#### `models.NetezzaTableDataset` was modified
+
+* `type()` was added
+
+#### `models.SqlDWSource` was modified
+
+* `type()` was added
+
+#### `models.AzureFunctionActivity` was modified
+
+* `type()` was added
+
+#### `models.IntegrationRuntimeStatus` was modified
+
+* `type()` was added
+
+#### `models.AzPowerShellSetup` was modified
+
+* `type()` was added
+
+#### `models.ExecutePipelineActivity` was modified
+
+* `type()` was added
+
+#### `models.XeroSource` was modified
+
+* `type()` was added
+
+#### `models.AzureMySqlSource` was modified
+
+* `type()` was added
+
+#### `models.ODataSource` was modified
+
+* `type()` was added
+
+#### `models.AzureSearchIndexDataset` was modified
+
+* `type()` was added
+
+#### `models.AzureDatabricksDeltaLakeImportCommand` was modified
+
+* `type()` was added
+
+#### `models.HDInsightHiveActivity` was modified
+
+* `type()` was added
+
+#### `models.SapCloudForCustomerLinkedService` was modified
+
+* `type()` was added
+
+#### `models.GoogleCloudStorageLinkedService` was modified
+
+* `type()` was added
+
+#### `models.FailActivity` was modified
+
+* `type()` was added
+
+#### `models.XmlSource` was modified
+
+* `type()` was added
+
+#### `models.OdbcLinkedService` was modified
+
+* `type()` was added
+
+#### `models.MongoDbAtlasSource` was modified
+
+* `type()` was added
+
+#### `models.TabularSource` was modified
+
+* `type()` was added
+
+#### `models.FileSystemSink` was modified
+
+* `type()` was added
+
+#### `models.LinkedService` was modified
+
+* `type()` was added
+
+#### `models.WarehouseLinkedService` was modified
+
+* `type()` was added
+
+#### `models.RelationalSource` was modified
+
+* `type()` was added
+
+#### `models.HdfsLinkedService` was modified
+
+* `type()` was added
+
+#### `models.SalesforceMarketingCloudObjectDataset` was modified
+
+* `type()` was added
+
+#### `models.SnowflakeV2Source` was modified
+
+* `type()` was added
+
+#### `models.TextFormat` was modified
+
+* `type()` was added
+
+#### `models.PaypalObjectDataset` was modified
+
+* `type()` was added
+
+#### `models.AzurePostgreSqlLinkedService` was modified
+
+* `type()` was added
+
+#### `models.SharePointOnlineListSource` was modified
+
+* `type()` was added
+
+#### `models.BlobTrigger` was modified
+
+* `type()` was added
+
+#### `models.OracleSink` was modified
+
+* `type()` was added
+
+#### `models.SnowflakeImportCopyCommand` was modified
+
+* `type()` was added
+
+#### `models.WebClientCertificateAuthentication` was modified
+
+* `authenticationType()` was added
+
+#### `models.AzureDatabricksDeltaLakeDataset` was modified
+
+* `type()` was added
+
+#### `models.AzureMLLinkedService` was modified
+
+* `type()` was added
+
+#### `models.SalesforceServiceCloudV2Sink` was modified
+
+* `type()` was added
+
+#### `models.OracleLinkedService` was modified
+
+* `type()` was added
+
+#### `models.SqlSink` was modified
+
+* `type()` was added
+
+#### `models.AzureFunctionLinkedService` was modified
+
+* `type()` was added
+
+#### `models.AzureSqlSink` was modified
+
+* `type()` was added
+
+#### `models.AzureBlobFSDataset` was modified
+
+* `type()` was added
+
+#### `models.PostgreSqlSource` was modified
+
+* `type()` was added
+
+#### `models.HdfsReadSettings` was modified
+
+* `type()` was added
+
+#### `models.AmazonS3CompatibleLinkedService` was modified
+
+* `type()` was added
+
+#### `models.MongoDbV2Source` was modified
+
+* `type()` was added
+
+#### `models.DelimitedTextDataset` was modified
+
+* `type()` was added
+
+#### `models.PaypalLinkedService` was modified
+
+* `type()` was added
+
+#### `models.ParquetReadSettings` was modified
+
+* `type()` was added
+
+#### `models.SalesforceMarketingCloudLinkedService` was modified
+
+* `type()` was added
+
+#### `models.AzureDataExplorerSource` was modified
+
+* `type()` was added
+
+#### `models.TarGZipReadSettings` was modified
+
+* `type()` was added
+
+#### `models.AzureSqlTableDataset` was modified
+
+* `type()` was added
+
+#### `models.FormatWriteSettings` was modified
+
+* `type()` was added
+
+#### `models.AzureDatabricksLinkedService` was modified
+
+* `type()` was added
+
+#### `models.GoogleBigQueryV2LinkedService` was modified
+
+* `type()` was added
+
+#### `models.AmazonS3Dataset` was modified
+
+* `type()` was added
+
+#### `models.SelfHostedIntegrationRuntimeStatus` was modified
+
+* `type()` was added
+
+#### `models.PostgreSqlV2LinkedService` was modified
+
+* `type()` was added
+
+#### `models.PhoenixObjectDataset` was modified
+
+* `type()` was added
+
+#### `models.MarketoObjectDataset` was modified
+
+* `type()` was added
+
+#### `models.SqlSource` was modified
+
+* `type()` was added
+
+#### `models.QuickbaseLinkedService` was modified
+
+* `type()` was added
+
+#### `models.ResponsysObjectDataset` was modified
+
+* `type()` was added
+
+#### `models.AzureDatabricksDeltaLakeSource` was modified
+
+* `type()` was added
+
+#### `models.MicrosoftAccessLinkedService` was modified
+
+* `type()` was added
+
+#### `models.CommonDataServiceForAppsSink` was modified
+
+* `type()` was added
+
+#### `models.DatabricksSparkPythonActivity` was modified
+
+* `type()` was added
+
+#### `models.OracleServiceCloudSource` was modified
+
+* `type()` was added
+
+#### `models.CosmosDbSqlApiCollectionDataset` was modified
+
+* `type()` was added
+
+#### `models.SecretBase` was modified
+
+* `type()` was added
+
+#### `models.AzureMariaDBLinkedService` was modified
+
+* `type()` was added
+
+#### `models.OrcSource` was modified
+
+* `type()` was added
+
+#### `models.LinkedIntegrationRuntimeRbacAuthorization` was modified
+
+* `authorizationType()` was added
+
+#### `models.ExecuteDataFlowActivity` was modified
+
+* `type()` was added
+
+#### `models.SqlServerLinkedService` was modified
+
+* `type()` was added
+
+#### `models.DynamicsEntityDataset` was modified
+
+* `type()` was added
+
+#### `models.DocumentDbCollectionSource` was modified
+
+* `type()` was added
+
+#### `models.AzureBlobFSSink` was modified
+
+* `type()` was added
+
+#### `models.AmazonRedshiftLinkedService` was modified
+
+* `type()` was added
+
+#### `models.CosmosDbSqlApiSource` was modified
+
+* `type()` was added
+
+#### `models.ResponsysLinkedService` was modified
+
+* `type()` was added
+
+#### `models.ImpalaLinkedService` was modified
+
+* `type()` was added
+
+#### `models.FileSystemSource` was modified
+
+* `type()` was added
+
+#### `models.FileServerLocation` was modified
+
+* `type()` was added
+
+#### `models.SftpServerLinkedService` was modified
+
+* `type()` was added
+
+#### `models.AzureKeyVaultSecretReference` was modified
+
+* `type()` was added
+
+#### `models.MySqlLinkedService` was modified
+
+* `type()` was added
+
+#### `models.MagentoSource` was modified
+
+* `type()` was added
+
+#### `models.LakeHouseTableSink` was modified
+
+* `type()` was added
+
+#### `models.CouchbaseSource` was modified
+
+* `type()` was added
+
+#### `models.HDInsightStreamingActivity` was modified
+
+* `type()` was added
+
+#### `models.PhoenixLinkedService` was modified
+
+* `type()` was added
+
+#### `models.Db2LinkedService` was modified
+
+* `type()` was added
+
+#### `models.DynamicsCrmLinkedService` was modified
+
+* `type()` was added
+
+#### `models.LookupActivity` was modified
+
+* `type()` was added
+
+#### `models.FtpServerLinkedService` was modified
+
+* `type()` was added
+
+#### `models.XmlDataset` was modified
+
+* `type()` was added
+
+#### `models.QuickBooksLinkedService` was modified
+
+* `type()` was added
+
+#### `models.GreenplumTableDataset` was modified
+
+* `type()` was added
+
+#### `models.SalesforceServiceCloudLinkedService` was modified
+
+* `type()` was added
+
+#### `models.SecureString` was modified
+
+* `type()` was added
+
+#### `models.AvroSource` was modified
+
+* `type()` was added
+
+#### `models.GoogleCloudStorageReadSettings` was modified
+
+* `type()` was added
+
+#### `models.SalesforceServiceCloudObjectDataset` was modified
+
+* `type()` was added
+
+#### `models.SalesforceV2Sink` was modified
+
+* `type()` was added
+
+#### `models.AzureDataExplorerLinkedService` was modified
+
+* `type()` was added
+
+#### `models.Db2Source` was modified
+
+* `type()` was added
+
+#### `models.HubspotSource` was modified
+
+* `type()` was added
+
+#### `models.CouchbaseLinkedService` was modified
+
+* `type()` was added
+
+#### `models.MagentoObjectDataset` was modified
+
+* `type()` was added
+
+#### `models.SharePointOnlineListLinkedService` was modified
+
+* `type()` was added
+
+#### `models.AppendVariableActivity` was modified
+
+* `type()` was added
+
+#### `models.SybaseLinkedService` was modified
+
+* `type()` was added
+
+#### `models.SsisEnvironment` was modified
+
+* `type()` was added
+
+#### `models.FactoryVstsConfiguration` was modified
+
+* `type()` was added
+
+#### `models.Flowlet` was modified
+
+* `type()` was added
+
+#### `models.HDInsightMapReduceActivity` was modified
+
+* `type()` was added
+
+#### `models.AmazonMwsLinkedService` was modified
+
+* `type()` was added
+
+#### `models.MongoDbV2Sink` was modified
+
+* `type()` was added
+
+#### `models.QuickBooksObjectDataset` was modified
+
+* `type()` was added
+
+#### `models.CosmosDbMongoDbApiLinkedService` was modified
+
+* `type()` was added
+
+#### `models.RelationalTableDataset` was modified
+
+* `type()` was added
+
+#### `models.GoogleBigQueryLinkedService` was modified
+
+* `type()` was added
+
+#### `models.AmazonRdsForOracleTableDataset` was modified
+
+* `type()` was added
+
+#### `models.SqlServerStoredProcedureActivity` was modified
+
+* `type()` was added
+
+#### `models.AzureSqlSource` was modified
+
+* `type()` was added
+
+#### `models.DataworldLinkedService` was modified
+
+* `type()` was added
+
+#### `models.ExcelSource` was modified
+
+* `type()` was added
+
+#### `models.AzureKeyVaultLinkedService` was modified
+
+* `type()` was added
+
+#### `models.ManagedIntegrationRuntimeStatus` was modified
+
+* `type()` was added
+
+#### `models.OracleCloudStorageReadSettings` was modified
+
+* `type()` was added
+
+#### `models.AzureSearchIndexSink` was modified
+
+* `type()` was added
+
+#### `models.AzureDataExplorerCommandActivity` was modified
+
+* `type()` was added
+
+#### `models.AzureSqlMILinkedService` was modified
+
+* `type()` was added
+
+#### `models.LinkedIntegrationRuntimeType` was modified
+
+* `authorizationType()` was added
+
+#### `models.ImpalaObjectDataset` was modified
+
+* `type()` was added
+
+#### `models.AmazonRdsForSqlServerTableDataset` was modified
+
+* `type()` was added
+
+#### `models.AzureDataExplorerSink` was modified
+
+* `type()` was added
+
+#### `models.AzureMySqlSink` was modified
+
+* `type()` was added
+
+#### `models.Office365LinkedService` was modified
+
+* `type()` was added
+
+#### `models.XmlReadSettings` was modified
+
+* `type()` was added
+
+#### `models.EloquaSource` was modified
+
+* `type()` was added
+
+#### `models.AzureDataLakeStoreSink` was modified
+
+* `type()` was added
+
+#### `models.AvroWriteSettings` was modified
+
+* `type()` was added
+
+#### `models.ChainingTrigger` was modified
+
+* `type()` was added
+
+#### `models.AmazonRdsForSqlServerLinkedService` was modified
+
+* `type()` was added
+
+#### `models.WebLinkedService` was modified
+
+* `type()` was added
+
+#### `models.ZendeskLinkedService` was modified
+
+* `type()` was added
+
+#### `models.MarketoLinkedService` was modified
+
+* `type()` was added
+
+#### `models.ShopifySource` was modified
+
+* `type()` was added
+
+#### `models.GoogleBigQueryV2ObjectDataset` was modified
+
+* `type()` was added
+
+#### `models.DynamicsAXSource` was modified
+
+* `type()` was added
 
 ## 1.0.0-beta.27 (2024-03-14)
 

@@ -34,9 +34,12 @@ public final class ClientDiscoveryResponseTests {
         ClientDiscoveryResponse model = new ClientDiscoveryResponse()
             .withValue(Arrays
                 .asList(
-                    new ClientDiscoveryValueForSingleApiInner().withName("cph")
-                        .withDisplay(new ClientDiscoveryDisplay()
-                            .withProvider("ot").withResource("qgoulznd").withOperation("kwy").withDescription("gfgibm"))
+                    new ClientDiscoveryValueForSingleApiInner()
+                        .withName("cph")
+                        .withDisplay(new ClientDiscoveryDisplay().withProvider("ot")
+                            .withResource("qgoulznd")
+                            .withOperation("kwy")
+                            .withDescription("gfgibm"))
                         .withOrigin("gakeqsr")
                         .withProperties(new ClientDiscoveryForProperties()
                             .withServiceSpecification(new ClientDiscoveryForServiceSpecification()
@@ -44,17 +47,21 @@ public final class ClientDiscoveryResponseTests {
                                     new ClientDiscoveryForLogSpecification(), new ClientDiscoveryForLogSpecification(),
                                     new ClientDiscoveryForLogSpecification())))),
                     new ClientDiscoveryValueForSingleApiInner().withName("e")
-                        .withDisplay(new ClientDiscoveryDisplay().withProvider("tbciqfouflmm").withResource("zsm")
-                            .withOperation("mglougpbkw").withDescription("utduqktapspwgcu"))
-                        .withOrigin("tumkdosvqwhbm").withProperties(
-                            new ClientDiscoveryForProperties()
-                                .withServiceSpecification(new ClientDiscoveryForServiceSpecification()
-                                    .withLogSpecifications(Arrays.asList(new ClientDiscoveryForLogSpecification(),
-                                        new ClientDiscoveryForLogSpecification(),
-                                        new ClientDiscoveryForLogSpecification())))),
+                        .withDisplay(new ClientDiscoveryDisplay().withProvider("tbciqfouflmm")
+                            .withResource("zsm")
+                            .withOperation("mglougpbkw")
+                            .withDescription("utduqktapspwgcu"))
+                        .withOrigin("tumkdosvqwhbm")
+                        .withProperties(new ClientDiscoveryForProperties()
+                            .withServiceSpecification(new ClientDiscoveryForServiceSpecification()
+                                .withLogSpecifications(Arrays.asList(new ClientDiscoveryForLogSpecification(),
+                                    new ClientDiscoveryForLogSpecification(),
+                                    new ClientDiscoveryForLogSpecification())))),
                     new ClientDiscoveryValueForSingleApiInner().withName("ddgmb")
-                        .withDisplay(new ClientDiscoveryDisplay().withProvider("xppbhtqqro").withResource("p")
-                            .withOperation("s").withDescription("gbquxigj"))
+                        .withDisplay(new ClientDiscoveryDisplay().withProvider("xppbhtqqro")
+                            .withResource("p")
+                            .withOperation("s")
+                            .withDescription("gbquxigj"))
                         .withOrigin("gzjaoyfhrtxilne")
                         .withProperties(new ClientDiscoveryForProperties().withServiceSpecification(
                             new ClientDiscoveryForServiceSpecification().withLogSpecifications(Arrays.asList(

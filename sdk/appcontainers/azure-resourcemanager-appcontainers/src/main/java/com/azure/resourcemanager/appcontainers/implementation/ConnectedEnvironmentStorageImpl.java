@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.appcontainers.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.ConnectedEnvironmentStorageInner;
 import com.azure.resourcemanager.appcontainers.models.ConnectedEnvironmentStorage;
@@ -31,6 +32,10 @@ public final class ConnectedEnvironmentStorageImpl
         return this.innerModel().properties();
     }
 
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
     public String resourceGroupName() {
         return resourceGroupName;
     }
@@ -49,37 +54,33 @@ public final class ConnectedEnvironmentStorageImpl
 
     private String storageName;
 
-    public ConnectedEnvironmentStorageImpl withExistingConnectedEnvironment(
-        String resourceGroupName, String connectedEnvironmentName) {
+    public ConnectedEnvironmentStorageImpl withExistingConnectedEnvironment(String resourceGroupName,
+        String connectedEnvironmentName) {
         this.resourceGroupName = resourceGroupName;
         this.connectedEnvironmentName = connectedEnvironmentName;
         return this;
     }
 
     public ConnectedEnvironmentStorage create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectedEnvironmentsStorages()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, connectedEnvironmentName, storageName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedEnvironmentsStorages()
+            .createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName, storageName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ConnectedEnvironmentStorage create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectedEnvironmentsStorages()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, connectedEnvironmentName, storageName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedEnvironmentsStorages()
+            .createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName, storageName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
-    ConnectedEnvironmentStorageImpl(
-        String name, com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
+    ConnectedEnvironmentStorageImpl(String name,
+        com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = new ConnectedEnvironmentStorageInner();
         this.serviceManager = serviceManager;
         this.storageName = name;
@@ -90,54 +91,46 @@ public final class ConnectedEnvironmentStorageImpl
     }
 
     public ConnectedEnvironmentStorage apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectedEnvironmentsStorages()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, connectedEnvironmentName, storageName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedEnvironmentsStorages()
+            .createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName, storageName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ConnectedEnvironmentStorage apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectedEnvironmentsStorages()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, connectedEnvironmentName, storageName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedEnvironmentsStorages()
+            .createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName, storageName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
-    ConnectedEnvironmentStorageImpl(
-        ConnectedEnvironmentStorageInner innerObject,
+    ConnectedEnvironmentStorageImpl(ConnectedEnvironmentStorageInner innerObject,
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.connectedEnvironmentName = Utils.getValueFromIdByName(innerObject.id(), "connectedEnvironments");
-        this.storageName = Utils.getValueFromIdByName(innerObject.id(), "storages");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.connectedEnvironmentName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "connectedEnvironments");
+        this.storageName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "storages");
     }
 
     public ConnectedEnvironmentStorage refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectedEnvironmentsStorages()
-                .getWithResponse(resourceGroupName, connectedEnvironmentName, storageName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedEnvironmentsStorages()
+            .getWithResponse(resourceGroupName, connectedEnvironmentName, storageName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ConnectedEnvironmentStorage refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectedEnvironmentsStorages()
-                .getWithResponse(resourceGroupName, connectedEnvironmentName, storageName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedEnvironmentsStorages()
+            .getWithResponse(resourceGroupName, connectedEnvironmentName, storageName, context)
+            .getValue();
         return this;
     }
 

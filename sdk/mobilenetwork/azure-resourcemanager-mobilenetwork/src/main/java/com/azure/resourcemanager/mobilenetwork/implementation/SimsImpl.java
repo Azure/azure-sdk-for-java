@@ -15,9 +15,11 @@ import com.azure.resourcemanager.mobilenetwork.fluent.models.SimInner;
 import com.azure.resourcemanager.mobilenetwork.models.AsyncOperationStatus;
 import com.azure.resourcemanager.mobilenetwork.models.EncryptedSimUploadList;
 import com.azure.resourcemanager.mobilenetwork.models.Sim;
+import com.azure.resourcemanager.mobilenetwork.models.SimClone;
 import com.azure.resourcemanager.mobilenetwork.models.SimDeleteList;
-import com.azure.resourcemanager.mobilenetwork.models.SimUploadList;
+import com.azure.resourcemanager.mobilenetwork.models.SimMove;
 import com.azure.resourcemanager.mobilenetwork.models.Sims;
+import com.azure.resourcemanager.mobilenetwork.models.SimUploadList;
 
 public final class SimsImpl implements Sims {
     private static final ClientLogger LOGGER = new ClientLogger(SimsImpl.class);
@@ -26,8 +28,8 @@ public final class SimsImpl implements Sims {
 
     private final com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager;
 
-    public SimsImpl(
-        SimsClient innerClient, com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager) {
+    public SimsImpl(SimsClient innerClient,
+        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -40,15 +42,12 @@ public final class SimsImpl implements Sims {
         this.serviceClient().delete(resourceGroupName, simGroupName, simName, context);
     }
 
-    public Response<Sim> getWithResponse(
-        String resourceGroupName, String simGroupName, String simName, Context context) {
-        Response<SimInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, simGroupName, simName, context);
+    public Response<Sim> getWithResponse(String resourceGroupName, String simGroupName, String simName,
+        Context context) {
+        Response<SimInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, simGroupName, simName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SimImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -66,12 +65,12 @@ public final class SimsImpl implements Sims {
 
     public PagedIterable<Sim> listByGroup(String resourceGroupName, String simGroupName) {
         PagedIterable<SimInner> inner = this.serviceClient().listByGroup(resourceGroupName, simGroupName);
-        return Utils.mapPage(inner, inner1 -> new SimImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SimImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Sim> listByGroup(String resourceGroupName, String simGroupName, Context context) {
         PagedIterable<SimInner> inner = this.serviceClient().listByGroup(resourceGroupName, simGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new SimImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SimImpl(inner1, this.manager()));
     }
 
     public AsyncOperationStatus bulkUpload(String resourceGroupName, String simGroupName, SimUploadList parameters) {
@@ -83,10 +82,10 @@ public final class SimsImpl implements Sims {
         }
     }
 
-    public AsyncOperationStatus bulkUpload(
-        String resourceGroupName, String simGroupName, SimUploadList parameters, Context context) {
-        AsyncOperationStatusInner inner =
-            this.serviceClient().bulkUpload(resourceGroupName, simGroupName, parameters, context);
+    public AsyncOperationStatus bulkUpload(String resourceGroupName, String simGroupName, SimUploadList parameters,
+        Context context) {
+        AsyncOperationStatusInner inner
+            = this.serviceClient().bulkUpload(resourceGroupName, simGroupName, parameters, context);
         if (inner != null) {
             return new AsyncOperationStatusImpl(inner, this.manager());
         } else {
@@ -103,10 +102,10 @@ public final class SimsImpl implements Sims {
         }
     }
 
-    public AsyncOperationStatus bulkDelete(
-        String resourceGroupName, String simGroupName, SimDeleteList parameters, Context context) {
-        AsyncOperationStatusInner inner =
-            this.serviceClient().bulkDelete(resourceGroupName, simGroupName, parameters, context);
+    public AsyncOperationStatus bulkDelete(String resourceGroupName, String simGroupName, SimDeleteList parameters,
+        Context context) {
+        AsyncOperationStatusInner inner
+            = this.serviceClient().bulkDelete(resourceGroupName, simGroupName, parameters, context);
         if (inner != null) {
             return new AsyncOperationStatusImpl(inner, this.manager());
         } else {
@@ -114,10 +113,10 @@ public final class SimsImpl implements Sims {
         }
     }
 
-    public AsyncOperationStatus bulkUploadEncrypted(
-        String resourceGroupName, String simGroupName, EncryptedSimUploadList parameters) {
-        AsyncOperationStatusInner inner =
-            this.serviceClient().bulkUploadEncrypted(resourceGroupName, simGroupName, parameters);
+    public AsyncOperationStatus bulkUploadEncrypted(String resourceGroupName, String simGroupName,
+        EncryptedSimUploadList parameters) {
+        AsyncOperationStatusInner inner
+            = this.serviceClient().bulkUploadEncrypted(resourceGroupName, simGroupName, parameters);
         if (inner != null) {
             return new AsyncOperationStatusImpl(inner, this.manager());
         } else {
@@ -125,10 +124,50 @@ public final class SimsImpl implements Sims {
         }
     }
 
-    public AsyncOperationStatus bulkUploadEncrypted(
-        String resourceGroupName, String simGroupName, EncryptedSimUploadList parameters, Context context) {
-        AsyncOperationStatusInner inner =
-            this.serviceClient().bulkUploadEncrypted(resourceGroupName, simGroupName, parameters, context);
+    public AsyncOperationStatus bulkUploadEncrypted(String resourceGroupName, String simGroupName,
+        EncryptedSimUploadList parameters, Context context) {
+        AsyncOperationStatusInner inner
+            = this.serviceClient().bulkUploadEncrypted(resourceGroupName, simGroupName, parameters, context);
+        if (inner != null) {
+            return new AsyncOperationStatusImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public AsyncOperationStatus move(String resourceGroupName, String simGroupName, SimMove parameters) {
+        AsyncOperationStatusInner inner = this.serviceClient().move(resourceGroupName, simGroupName, parameters);
+        if (inner != null) {
+            return new AsyncOperationStatusImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public AsyncOperationStatus move(String resourceGroupName, String simGroupName, SimMove parameters,
+        Context context) {
+        AsyncOperationStatusInner inner
+            = this.serviceClient().move(resourceGroupName, simGroupName, parameters, context);
+        if (inner != null) {
+            return new AsyncOperationStatusImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public AsyncOperationStatus clone(String resourceGroupName, String simGroupName, SimClone parameters) {
+        AsyncOperationStatusInner inner = this.serviceClient().clone(resourceGroupName, simGroupName, parameters);
+        if (inner != null) {
+            return new AsyncOperationStatusImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public AsyncOperationStatus clone(String resourceGroupName, String simGroupName, SimClone parameters,
+        Context context) {
+        AsyncOperationStatusInner inner
+            = this.serviceClient().clone(resourceGroupName, simGroupName, parameters, context);
         if (inner != null) {
             return new AsyncOperationStatusImpl(inner, this.manager());
         } else {
@@ -137,105 +176,77 @@ public final class SimsImpl implements Sims {
     }
 
     public Sim getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String simGroupName = Utils.getValueFromIdByName(id, "simGroups");
+        String simGroupName = ResourceManagerUtils.getValueFromIdByName(id, "simGroups");
         if (simGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'simGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'simGroups'.", id)));
         }
-        String simName = Utils.getValueFromIdByName(id, "sims");
+        String simName = ResourceManagerUtils.getValueFromIdByName(id, "sims");
         if (simName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'sims'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sims'.", id)));
         }
         return this.getWithResponse(resourceGroupName, simGroupName, simName, Context.NONE).getValue();
     }
 
     public Response<Sim> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String simGroupName = Utils.getValueFromIdByName(id, "simGroups");
+        String simGroupName = ResourceManagerUtils.getValueFromIdByName(id, "simGroups");
         if (simGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'simGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'simGroups'.", id)));
         }
-        String simName = Utils.getValueFromIdByName(id, "sims");
+        String simName = ResourceManagerUtils.getValueFromIdByName(id, "sims");
         if (simName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'sims'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sims'.", id)));
         }
         return this.getWithResponse(resourceGroupName, simGroupName, simName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String simGroupName = Utils.getValueFromIdByName(id, "simGroups");
+        String simGroupName = ResourceManagerUtils.getValueFromIdByName(id, "simGroups");
         if (simGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'simGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'simGroups'.", id)));
         }
-        String simName = Utils.getValueFromIdByName(id, "sims");
+        String simName = ResourceManagerUtils.getValueFromIdByName(id, "sims");
         if (simName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'sims'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sims'.", id)));
         }
         this.delete(resourceGroupName, simGroupName, simName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String simGroupName = Utils.getValueFromIdByName(id, "simGroups");
+        String simGroupName = ResourceManagerUtils.getValueFromIdByName(id, "simGroups");
         if (simGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'simGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'simGroups'.", id)));
         }
-        String simName = Utils.getValueFromIdByName(id, "sims");
+        String simName = ResourceManagerUtils.getValueFromIdByName(id, "sims");
         if (simName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'sims'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sims'.", id)));
         }
         this.delete(resourceGroupName, simGroupName, simName, context);
     }

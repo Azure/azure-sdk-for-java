@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The MigrateResultProperties model. */
+/**
+ * The MigrateResultProperties model.
+ */
 @Immutable
 public final class MigrateResultProperties {
     /*
@@ -17,13 +19,15 @@ public final class MigrateResultProperties {
     @JsonProperty(value = "migratedProfileResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceReference migratedProfileResourceId;
 
-    /** Creates an instance of MigrateResultProperties class. */
+    /**
+     * Creates an instance of MigrateResultProperties class.
+     */
     public MigrateResultProperties() {
     }
 
     /**
      * Get the migratedProfileResourceId property: Arm resource id of the migrated profile.
-     *
+     * 
      * @return the migratedProfileResourceId value.
      */
     public ResourceReference migratedProfileResourceId() {
@@ -32,7 +36,7 @@ public final class MigrateResultProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

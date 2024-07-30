@@ -11,14 +11,14 @@ public final class SkipErrorFileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkipErrorFile model
-            = BinaryData.fromString("{\"fileMissing\":\"dataalh\",\"dataInconsistency\":\"dataneclphmjsqcubyjr\"}")
+            = BinaryData.fromString("{\"fileMissing\":\"datatetfdpu\",\"dataInconsistency\":\"datazdtjbesfum\"}")
                 .toObject(SkipErrorFile.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SkipErrorFile model
-            = new SkipErrorFile().withFileMissing("dataalh").withDataInconsistency("dataneclphmjsqcubyjr");
+            = new SkipErrorFile().withFileMissing("datatetfdpu").withDataInconsistency("datazdtjbesfum");
         model = BinaryData.fromObject(model).toObject(SkipErrorFile.class);
     }
 }

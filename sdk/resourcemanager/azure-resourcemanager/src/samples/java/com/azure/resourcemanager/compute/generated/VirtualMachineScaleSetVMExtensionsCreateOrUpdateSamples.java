@@ -15,7 +15,7 @@ import java.io.IOException;
 public final class VirtualMachineScaleSetVMExtensionsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSetVMExtension_Create.json
      */
     /**
@@ -25,12 +25,17 @@ public final class VirtualMachineScaleSetVMExtensionsCreateOrUpdateSamples {
      */
     public static void createVirtualMachineScaleSetVMExtension(com.azure.resourcemanager.AzureResourceManager azure)
         throws IOException {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetVMExtensions().createOrUpdate(
-            "myResourceGroup", "myvmScaleSet", "0", "myVMExtension",
-            new VirtualMachineScaleSetVMExtensionInner().withPublisher("extPublisher").withTypePropertiesType("extType")
-                .withTypeHandlerVersion("1.2").withAutoUpgradeMinorVersion(true)
-                .withSettings(SerializerFactory.createDefaultManagementSerializerAdapter()
-                    .deserialize("{\"UserName\":\"xyz@microsoft.com\"}", Object.class, SerializerEncoding.JSON)),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetVMExtensions()
+            .createOrUpdate("myResourceGroup", "myvmScaleSet", "0", "myVMExtension",
+                new VirtualMachineScaleSetVMExtensionInner().withPublisher("extPublisher")
+                    .withTypePropertiesType("extType")
+                    .withTypeHandlerVersion("1.2")
+                    .withAutoUpgradeMinorVersion(true)
+                    .withSettings(SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize("{\"UserName\":\"xyz@microsoft.com\"}", Object.class, SerializerEncoding.JSON)),
+                com.azure.core.util.Context.NONE);
     }
 }

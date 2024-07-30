@@ -135,8 +135,7 @@ public final class HubVirtualNetworkConnectionInner extends SubResource {
     }
 
     /**
-     * Get the allowRemoteVnetToUseHubVnetGateways property: Deprecated: Allow RemoteVnet to use Virtual Hub's
-     * gateways.
+     * Get the allowRemoteVnetToUseHubVnetGateways property: Deprecated: Allow RemoteVnet to use Virtual Hub's gateways.
      * 
      * @return the allowRemoteVnetToUseHubVnetGateways value.
      */
@@ -145,8 +144,7 @@ public final class HubVirtualNetworkConnectionInner extends SubResource {
     }
 
     /**
-     * Set the allowRemoteVnetToUseHubVnetGateways property: Deprecated: Allow RemoteVnet to use Virtual Hub's
-     * gateways.
+     * Set the allowRemoteVnetToUseHubVnetGateways property: Deprecated: Allow RemoteVnet to use Virtual Hub's gateways.
      * 
      * @param allowRemoteVnetToUseHubVnetGateways the allowRemoteVnetToUseHubVnetGateways value to set.
      * @return the HubVirtualNetworkConnectionInner object itself.

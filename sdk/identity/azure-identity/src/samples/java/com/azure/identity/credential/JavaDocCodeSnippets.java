@@ -3,16 +3,21 @@
 
 package com.azure.identity.credential;
 
+import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.ProxyOptions.Type;
 
+import com.azure.identity.AuthenticationRecord;
 import com.azure.identity.AzureCliCredential;
 import com.azure.identity.AzureCliCredentialBuilder;
 import com.azure.identity.AzureDeveloperCliCredential;
 import com.azure.identity.AzureDeveloperCliCredentialBuilder;
 import com.azure.identity.AuthorizationCodeCredential;
 import com.azure.identity.AuthorizationCodeCredentialBuilder;
+import com.azure.identity.AzurePipelinesCredential;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
 import com.azure.identity.AzurePowerShellCredential;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.ClientAssertionCredential;
@@ -41,9 +46,15 @@ import com.azure.identity.UsernamePasswordCredential;
 import com.azure.identity.UsernamePasswordCredentialBuilder;
 import com.azure.identity.WorkloadIdentityCredential;
 import com.azure.identity.WorkloadIdentityCredentialBuilder;
+import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.net.InetSocketAddress;
+import java.nio.file.Files;
 
 /**
     * This class contains code samples for generating javadocs through doclets for azure-identity.
@@ -53,6 +64,9 @@ public final class JavaDocCodeSnippets {
 
     private String clientId = System.getenv("AZURE_CLIENT_ID");
     private String clientSecret = System.getenv("AZURE_CLIENT_SECRET");
+    private String serviceConnectionId = System.getenv("SERVICE_CONNECTION_ID");
+
+
     private String fakeUsernamePlaceholder = "fakeUsernamePlaceholder";
     private String fakePasswordPlaceholder = "fakePasswordPlaceholder";
     /**
@@ -307,5 +321,61 @@ public final class JavaDocCodeSnippets {
         TokenCredential azureDevCliCredential = new AzureDeveloperCliCredentialBuilder()
             .build();
         // END: com.azure.identity.credential.azuredeveloperclicredential.construct
+    }
+
+    public void azurePipelinesCredentialCodeSnippets() {
+
+        // BEGIN: com.azure.identity.credential.azurepipelinescredential.construct
+        // serviceConnectionId is retrieved from the portal.
+        // systemAccessToken is retrieved from the pipeline environment as shown.
+        // You may choose another name for this variable.
+
+        String systemAccessToken = System.getenv("SYSTEM_ACCESSTOKEN");
+        AzurePipelinesCredential credential = new AzurePipelinesCredentialBuilder()
+            .clientId(clientId)
+            .tenantId(tenantId)
+            .serviceConnectionId(serviceConnectionId)
+            .systemAccessToken(systemAccessToken)
+            .build();
+        // END: com.azure.identity.credential.azurepipelinescredential.construct
+    }
+
+    public void silentAuthenticationSnippets() {
+        // BEGIN: com.azure.identity.silentauthentication
+        String authenticationRecordPath = "path/to/authentication-record.json";
+        AuthenticationRecord authenticationRecord = null;
+        try {
+            // If we have an existing record, deserialize it.
+            if (Files.exists(new File(authenticationRecordPath).toPath())) {
+                 authenticationRecord = AuthenticationRecord.deserialize(new FileInputStream(authenticationRecordPath));
+            }
+        } catch (FileNotFoundException e) {
+            // Handle error as appropriate.
+        }
+
+        DeviceCodeCredentialBuilder builder = new DeviceCodeCredentialBuilder()
+            .clientId(clientId)
+            .tenantId(tenantId);
+        if (authenticationRecord != null) {
+            // As we have a record, configure the builder to use it.
+            builder.authenticationRecord(authenticationRecord);
+        }
+        DeviceCodeCredential credential = builder.build();
+        TokenRequestContext trc = new TokenRequestContext().addScopes("your-appropriate-scope");
+        if (authenticationRecord == null) {
+            // We don't have a record, so we get one and store it. The next authentication will use it.
+            credential.authenticate(trc).flatMap(record -> {
+                try {
+                    return record.serializeAsync(new FileOutputStream(authenticationRecordPath));
+                } catch (FileNotFoundException e) {
+                    return Mono.error(e);
+                }
+            }).subscribe();
+        }
+
+        // Now the credential can be passed to another service client or used directly.
+        AccessToken token = credential.getTokenSync(trc);
+
+        // END: com.azure.identity.silentauthentication
     }
 }

@@ -50,8 +50,8 @@ public final class ExternalSecuritySolutionsImpl implements ExternalSecuritySolu
 
     public Response<ExternalSecuritySolution> getWithResponse(String resourceGroupName, String ascLocation,
         String externalSecuritySolutionsName, Context context) {
-        Response<ExternalSecuritySolutionInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            ascLocation, externalSecuritySolutionsName, context);
+        Response<ExternalSecuritySolutionInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, ascLocation, externalSecuritySolutionsName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ExternalSecuritySolutionImpl(inner.getValue(), this.manager()));

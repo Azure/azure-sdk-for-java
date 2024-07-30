@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Properties required to update a CdnWebApplicationFirewallPolicy. */
+/**
+ * Properties required to update a CdnWebApplicationFirewallPolicy.
+ */
 @Fluent
 public final class CdnWebApplicationFirewallPolicyPatchParameters {
     /*
@@ -19,13 +21,15 @@ public final class CdnWebApplicationFirewallPolicyPatchParameters {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of CdnWebApplicationFirewallPolicyPatchParameters class. */
+    /**
+     * Creates an instance of CdnWebApplicationFirewallPolicyPatchParameters class.
+     */
     public CdnWebApplicationFirewallPolicyPatchParameters() {
     }
 
     /**
      * Get the tags property: CdnWebApplicationFirewallPolicy tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -34,7 +38,7 @@ public final class CdnWebApplicationFirewallPolicyPatchParameters {
 
     /**
      * Set the tags property: CdnWebApplicationFirewallPolicy tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the CdnWebApplicationFirewallPolicyPatchParameters object itself.
      */
@@ -45,7 +49,7 @@ public final class CdnWebApplicationFirewallPolicyPatchParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -2,12 +2,12 @@
 # make sure the version is same to sdk/spring/scripts/spring_boot_2.7.18_managed_external_dependencies.txt
 # If your version is different from sdk/spring/scripts/spring_boot_2.7.18_managed_external_dependencies.txt,
 # please discuss with Spring Integration team members:
-# @chenrujun (rujche), @saragluna (xiada), @yiliuTo (yiliu6), @backwind1233 (zhihaoguo).
+# @rujche (rujche), @saragluna (xiada), @yiliuTo (yiliu6), @backwind1233 (zhihaoguo).
 # Thanks.
 
 # Format;
 # groupId:artifactId;dependency-version
-ch.qos.logback:logback-classic;1.3.12
+ch.qos.logback:logback-classic;1.3.14
 com.azure.tools:azure-autorest-customization;1.0.0-beta.8
 com.fasterxml.jackson.core:jackson-annotations;2.13.5
 com.fasterxml.jackson.core:jackson-core;2.13.5
@@ -22,8 +22,8 @@ com.fasterxml.woodstox:woodstox-core;6.4.0
 com.github.spotbugs:spotbugs;4.8.3
 com.github.spotbugs:spotbugs-annotations;4.8.3
 com.github.spotbugs:spotbugs-maven-plugin;4.8.2.0
-com.google.code.gson:gson;2.10
-com.google.guava:guava;33.0.0-jre
+com.google.code.gson:gson;2.10.1
+com.google.guava:guava;33.1.0-jre
 com.h2database:h2;2.2.220
 com.h3xstream.findsecbugs:findsecbugs-plugin;1.9.0
 com.knuddels:jtokkit;1.0.0
@@ -39,12 +39,14 @@ com.microsoft.azure:azure-keyvault-cryptography;1.2.2
 com.microsoft.azure:azure-media;0.9.8
 com.microsoft.azure:azure-servicebus;3.6.1
 com.microsoft.azure:azure-servicebus-jms;1.0.0
-com.microsoft.azure:qpid-proton-j-extensions;1.2.4
+com.microsoft.azure:qpid-proton-j-extensions;1.2.5
 com.microsoft.azure.sdk.iot:iot-service-client;1.30.0
 com.microsoft.rest:client-runtime;1.7.4
 com.microsoft.rest.v2:client-runtime;2.1.1
 com.microsoft.sqlserver:mssql-jdbc;10.2.3.jre8
 com.microsoft.azure:spring-data-cosmosdb;2.3.0
+com.microsoft.azure:azure-functions-maven-plugin;1.30.0
+com.microsoft.azure.functions:azure-functions-java-library;2.2.0
 com.mysql:mysql-connector-j;8.0.33
 com.squareup.okhttp3:mockwebserver;4.12.0
 com.squareup.okhttp3:okhttp;4.12.0
@@ -52,29 +54,29 @@ commons-codec:commons-codec;1.15
 commons-net:commons-net;3.9.0
 io.cloudevents:cloudevents-api;2.2.0
 io.cloudevents:cloudevents-core;2.2.0
-io.fabric8:kubernetes-client;5.12.3
+io.fabric8:kubernetes-client;6.12.1
 io.micrometer:micrometer-core;1.9.17
 io.micrometer:micrometer-registry-azure-monitor;1.9.17
 io.micrometer:micrometer-registry-graphite;1.9.17
-io.netty:netty-buffer;4.1.101.Final
-io.netty:netty-common;4.1.101.Final
-io.netty:netty-codec;4.1.101.Final
-io.netty:netty-codec-http;4.1.101.Final
-io.netty:netty-codec-http2;4.1.101.Final
-io.netty:netty-transport;4.1.101.Final
-io.netty:netty-handler;4.1.101.Final
-io.netty:netty-handler-proxy;4.1.101.Final
-io.netty:netty-tcnative;2.0.62.Final
-io.netty:netty-tcnative-boringssl-static;2.0.62.Final
-io.netty:netty-transport-native-epoll;4.1.101.Final
-io.netty:netty-transport-native-unix-common;4.1.101.Final
-io.netty:netty-transport-native-kqueue;4.1.101.Final
-io.projectreactor.netty:reactor-netty;1.0.40
-io.projectreactor.netty:reactor-netty-http;1.0.40
-io.projectreactor:reactor-core;3.4.34
-io.vertx:vertx-codegen;4.5.4
-io.vertx:vertx-core;4.5.4
-io.vertx:vertx-reactive-streams;4.5.4
+io.netty:netty-buffer;4.1.110.Final
+io.netty:netty-common;4.1.110.Final
+io.netty:netty-codec;4.1.110.Final
+io.netty:netty-codec-http;4.1.110.Final
+io.netty:netty-codec-http2;4.1.110.Final
+io.netty:netty-transport;4.1.110.Final
+io.netty:netty-handler;4.1.110.Final
+io.netty:netty-handler-proxy;4.1.110.Final
+io.netty:netty-tcnative;2.0.65.Final
+io.netty:netty-tcnative-boringssl-static;2.0.65.Final
+io.netty:netty-transport-native-epoll;4.1.110.Final
+io.netty:netty-transport-native-unix-common;4.1.110.Final
+io.netty:netty-transport-native-kqueue;4.1.110.Final
+io.projectreactor.netty:reactor-netty;1.0.45
+io.projectreactor.netty:reactor-netty-http;1.0.45
+io.projectreactor:reactor-core;3.4.38
+io.vertx:vertx-codegen;4.5.8
+io.vertx:vertx-core;4.5.8
+io.vertx:vertx-reactive-streams;4.5.8
 jakarta.validation:jakarta.validation-api;2.0.2
 javax.annotation:javax.annotation-api;1.3.2
 javax.json:javax.json-api;1.1.4
@@ -90,18 +92,17 @@ org.apache.kafka:kafka-clients;3.1.2
 org.apache.logging.log4j:log4j-api;2.17.2
 org.apache.logging.log4j:log4j-core;2.17.2
 org.apache.logging.log4j:log4j-slf4j-impl;2.17.2
-org.apache.maven:maven-core;3.5.4
-org.apache.maven.archetype:archetype-packaging;3.2.0
-org.apache.maven.plugins:maven-archetype-plugin;3.2.0
-org.apache.maven.plugins:maven-gpg-plugin;3.1.0
-org.apache.qpid:proton-j;0.33.8
-org.apache.qpid:qpid-jms-client;0.53.0
+org.apache.maven:maven-core;3.9.6
+org.apache.maven.archetype:archetype-packaging;3.2.1
+org.apache.maven.plugins:maven-archetype-plugin;3.2.1
+org.apache.maven.plugins:maven-gpg-plugin;3.2.2
+org.apache.qpid:proton-j;0.34.1
 org.apache.tinkerpop:gremlin-driver;3.2.4
 org.asynchttpclient:async-http-client;2.12.1
 org.codehaus.gmavenplus:gmavenplus-plugin;3.0.2
 org.codehaus.groovy:groovy-jsr223;3.0.19
 org.codehaus.janino:janino;3.1.10
-org.conscrypt:conscrypt-openjdk-uber;2.2.1
+org.conscrypt:conscrypt-openjdk-uber;2.5.2
 org.glassfish.tyrus:tyrus-client;1.16
 org.hibernate.validator:hibernate-validator;6.2.5.Final
 org.javatuples:javatuples;1.2
@@ -117,11 +118,11 @@ org.slf4j:slf4j-api;1.7.36
 org.slf4j:slf4j-nop;1.7.36
 org.slf4j:slf4j-simple;1.7.36
 redis.clients:jedis;5.1.0
-io.lettuce:lettuce-core;6.3.1.RELEASE
-org.redisson:redisson;3.27.0
+io.lettuce:lettuce-core;6.3.2.RELEASE
+org.redisson:redisson;3.27.2
 net.bytebuddy:byte-buddy;1.12.23
-testdep_net.bytebuddy:byte-buddy;1.14.8
-testdep_net.bytebuddy:byte-buddy-agent;1.14.8
+testdep_net.bytebuddy:byte-buddy;1.14.12
+testdep_net.bytebuddy:byte-buddy-agent;1.14.12
 
 ## Spring boot dependency versions
 org.springframework.boot:spring-boot-dependencies;2.7.18
@@ -200,36 +201,35 @@ com.microsoft.azure:azure-mgmt-resources;1.3.0
 com.microsoft.azure:azure-mgmt-search;1.24.1
 com.microsoft.azure:azure-mgmt-storage;1.3.0
 com.microsoft.azure:azure-storage;8.0.0
-com.microsoft.azure:msal4j;1.14.3
+com.microsoft.azure:msal4j;1.16.1
 com.microsoft.azure:msal4j-brokers;1.0.0
-com.microsoft.azure:msal4j-persistence-extension;1.2.0
+com.microsoft.azure:msal4j-persistence-extension;1.3.0
 com.sun.activation:jakarta.activation;1.2.2
-io.opentelemetry:opentelemetry-api;1.35.0
-io.opentelemetry:opentelemetry-sdk;1.35.0
-io.opentelemetry:opentelemetry-sdk-metrics;1.35.0
-io.opentelemetry:opentelemetry-sdk-logs;1.35.0
-io.opentelemetry:opentelemetry-exporter-logging;1.35.0
-io.opentelemetry:opentelemetry-exporter-otlp;1.35.0
-io.opentelemetry:opentelemetry-sdk-testing;1.35.0
-io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;1.35.0
-io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;1.35.0
-io.opentelemetry:opentelemetry-bom;1.35.0
-io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom-alpha;2.1.0-alpha
-io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;2.1.0-alpha
-io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;2.1.0-alpha
-io.opentelemetry.instrumentation:opentelemetry-jdbc;2.1.0-alpha
-io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;2.1.0-alpha
+io.opentelemetry:opentelemetry-api;1.40.0
+io.opentelemetry:opentelemetry-sdk;1.40.0
+io.opentelemetry:opentelemetry-sdk-metrics;1.40.0
+io.opentelemetry:opentelemetry-sdk-logs;1.40.0
+io.opentelemetry:opentelemetry-exporter-logging;1.40.0
+io.opentelemetry:opentelemetry-exporter-otlp;1.40.0
+io.opentelemetry:opentelemetry-sdk-testing;1.40.0
+io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;1.40.0
+io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;1.40.0
+io.opentelemetry:opentelemetry-bom;1.40.0
+io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;2.6.0-alpha
+io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;2.6.0
+io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;2.6.0-alpha
+io.opentelemetry.semconv:opentelemetry-semconv-incubating;1.25.0-alpha
 
-io.projectreactor:reactor-test;3.4.34
+io.projectreactor:reactor-test;3.4.38
 io.github.hakky54:logcaptor;2.9.0
-com.squareup.okio:okio;3.6.0
-com.squareup.okio:okio-jvm;3.6.0
+com.squareup.okio:okio;3.9.0
+com.squareup.okio:okio-jvm;3.9.0
 junit:junit;4.13.2
 commons-cli:commons-cli;1.3
 org.assertj:assertj-core;3.22.0
-org.bouncycastle:bcprov-jdk15to18;1.77
-org.bouncycastle:bcprov-jdk18on;1.77
-org.bouncycastle:bcpkix-lts8on;2.73.3
+org.bouncycastle:bcprov-jdk15to18;1.78.1
+org.bouncycastle:bcprov-jdk18on;1.78.1
+org.bouncycastle:bcpkix-lts8on;2.73.6
 org.eclipse.jetty:jetty-http;9.4.54.v20240208
 org.eclipse.jetty:jetty-server;9.4.54.v20240208
 org.eclipse.jetty:jetty-servlet;9.4.54.v20240208
@@ -254,7 +254,7 @@ org.junit.platform:junit-platform-testkit;1.9.3
 org.junit.vintage:junit-vintage-engine;5.9.3
 org.openjdk.jmh:jmh-core;1.37
 org.openjdk.jmh:jmh-generator-annprocess;1.37
-org.spockframework:spock-core;2.4-M1-groovy-4.0
+org.spockframework:spock-core;2.4-M4-groovy-4.0
 org.testng:testng;7.5.1
 org.awaitility:awaitility;4.2.0
 uk.org.lidalia:slf4j-test;1.2.0
@@ -263,8 +263,8 @@ com.google.truth:truth;1.1.3
 
 ## Maven Tools versions
 com.azure:sdk-build-tools;1.0.0
-com.azure.tools:codesnippet-maven-plugin;1.0.0-beta.8
-com.beust:jcommander;1.78
+com.azure.tools:codesnippet-maven-plugin;1.0.0-beta.10
+com.beust:jcommander;1.82
 # Spotless 2.30.0 is the last version supporting a Java 8 runtime
 com.diffplug.spotless:spotless-maven-plugin;2.30.0
 com.github.javaparser:javaparser-core;3.24.2
@@ -272,7 +272,7 @@ com.google.code.findbugs:jsr305;3.0.2
 com.microsoft.azure:azure-webapp-maven-plugin;1.14.0
 com.nimbusds:nimbus-jose-jwt;9.37.3
 com.puppycrawl.tools:checkstyle;9.3
-com.toasttab.android:gummy-bears-api-26;0.5.1
+com.toasttab.android:gummy-bears-api-26;0.8.0
 commons-io:commons-io;2.11.0
 commons-validator:commons-validator;1.6
 io.dropwizard.metrics:metrics-core;4.2.22
@@ -282,50 +282,49 @@ io.reactivex.rxjava2:rxjava;2.2.21
 net.java.dev.jna:jna-platform;5.6.0
 net.oneandone.reflections8:reflections8;0.11.7
 net.jonathangiles.tools:dependencyChecker-maven-plugin;1.0.6
-net.jonathangiles.tools:whitelistgenerator-maven-plugin;1.0.2
 org.apache.commons:commons-collections4;4.4
 org.apache.commons:commons-text;1.10.0
 org.apache.commons:commons-dbcp2;2.9.0
-org.apache.maven:maven-plugin-api;3.8.6
+org.apache.maven:maven-plugin-api;3.9.6
 org.apache.maven:maven-project;2.2.1
-org.apache.maven.plugin-tools:maven-plugin-annotations;3.6.4
-org.apache.maven.plugins:maven-antrun-plugin;3.0.0
-org.apache.maven.plugins:maven-assembly-plugin;3.3.0
+org.apache.maven.plugin-tools:maven-plugin-annotations;3.12.0
+org.apache.maven.plugins:maven-antrun-plugin;3.1.0
+org.apache.maven.plugins:maven-assembly-plugin;3.7.1
 org.apache.maven.plugins:maven-checkstyle-plugin;3.3.1
-org.apache.maven.plugins:maven-clean-plugin;3.2.0
-org.apache.maven.plugins:maven-compiler-plugin;3.12.1
-org.apache.maven.plugins:maven-eclipse-plugin;2.8
-org.apache.maven.plugins:maven-enforcer-plugin;3.0.0-M3
+org.apache.maven.plugins:maven-clean-plugin;3.3.2
+org.apache.maven.plugins:maven-compiler-plugin;3.13.0
+org.apache.maven.plugins:maven-eclipse-plugin;2.10
+org.apache.maven.plugins:maven-enforcer-plugin;3.4.1
 org.apache.maven.plugins:maven-failsafe-plugin;3.2.5
-org.apache.maven.plugins:maven-help-plugin;3.2.0
-org.apache.maven.plugins:maven-install-plugin;3.0.0-M1
-org.apache.maven.plugins:maven-jar-plugin;3.2.2
-org.apache.maven.plugins:maven-javadoc-plugin;3.6.0
-org.apache.maven.plugins:maven-jxr-plugin;3.0.0
-org.apache.maven.plugins:maven-plugin-plugin;3.6.4
-org.apache.maven.plugins:maven-project-info-reports-plugin;3.0.0
-org.apache.maven.plugins:maven-release-plugin;2.5.3
-org.apache.maven.plugins:maven-resources-plugin;3.3.0
-org.apache.maven.plugins:maven-shade-plugin;3.5.1
-org.apache.maven.plugins:maven-site-plugin;3.7.1
-org.apache.maven.plugins:maven-source-plugin;3.2.1
+org.apache.maven.plugins:maven-help-plugin;3.4.0
+org.apache.maven.plugins:maven-install-plugin;3.1.1
+org.apache.maven.plugins:maven-jar-plugin;3.3.0
+org.apache.maven.plugins:maven-javadoc-plugin;3.6.3
+org.apache.maven.plugins:maven-jxr-plugin;3.3.2
+org.apache.maven.plugins:maven-plugin-plugin;3.12.0
+org.apache.maven.plugins:maven-project-info-reports-plugin;3.5.0
+org.apache.maven.plugins:maven-release-plugin;3.0.1
+org.apache.maven.plugins:maven-resources-plugin;3.3.1
+org.apache.maven.plugins:maven-shade-plugin;3.5.2
+org.apache.maven.plugins:maven-site-plugin;3.12.1
+org.apache.maven.plugins:maven-source-plugin;3.3.1
 org.apache.maven.plugins:maven-surefire-plugin;3.2.5
 org.codehaus.mojo:animal-sniffer-maven-plugin;1.23
-org.codehaus.mojo:build-helper-maven-plugin;3.3.0
+org.codehaus.mojo:build-helper-maven-plugin;3.5.0
 org.codehaus.mojo:cobertura-maven-plugin;2.7
-org.codehaus.mojo:exec-maven-plugin;3.1.0
+org.codehaus.mojo:exec-maven-plugin;3.2.0
 org.codehaus.mojo:findbugs-maven-plugin;3.0.5
-org.codehaus.mojo:properties-maven-plugin;1.0.0
-org.codehaus.mojo:xml-maven-plugin;1.0.2
+org.codehaus.mojo:properties-maven-plugin;1.2.1
+org.codehaus.mojo:xml-maven-plugin;1.1.0
 org.eclipse.jetty:jetty-maven-plugin;9.4.33.v20201020
 org.eclipse.m2e:lifecycle-mapping;1.0.0
 org.hdrhistogram:HdrHistogram;2.1.12
-org.jacoco:jacoco-maven-plugin;0.8.11
-org.jacoco:org.jacoco.agent;0.8.11
+org.jacoco:jacoco-maven-plugin;0.8.12
+org.jacoco:org.jacoco.agent;0.8.12
 org.mockito:mockito-core;4.11.0
 org.mockito:mockito-inline;4.11.0
 org.moditect:moditect-maven-plugin;1.0.0.RC1
-org.ow2.asm:asm;9.6
+org.ow2.asm:asm;9.7
 org.revapi:revapi;0.14.4
 org.revapi:revapi-java;0.26.1
 org.revapi:revapi-java-spi;0.23.6
@@ -353,6 +352,7 @@ test_jar_com.microsoft.azure:azure-mgmt-resources;1.3.1-SNAPSHOT
 
 # everything under sdk\cosmos
 cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;2.13.5
+cosmos_com.fasterxml.jackson.module:jackson-module-blackbird;2.13.5
 cosmos_com.google.guava:guava;33.0.0-jre
 cosmos_com.microsoft.data.encryption:cryptography;0.2.2.jre8-preview
 cosmos_com.microsoft.data.encryption:azure-key-vault-keystoreprovider;0.2.2.jre8-preview
@@ -361,6 +361,10 @@ cosmos_io.dropwizard.metrics:metrics-graphite;4.1.0
 cosmos_io.dropwizard.metrics:metrics-jvm;4.1.0
 cosmos_org.mpierce.metrics.reservoir:hdrhistogram-metrics-reservoir;1.1.0
 cosmos_org.hdrhistogram:HdrHistogram;2.1.12
+cosmos_org.codehaus.mojo:build-helper-maven-plugin;3.5.0
+cosmos_com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.15.2
+cosmos_com.fasterxml.jackson.core:jackson-databind;2.15.2
+cosmos_com.fasterxml.jackson.module:jackson-module-scala_2.12;2.15.2
 
 ## Cosmos Spark connector under sdk\cosmos\azure-cosmos-spark_3-1_2-12\pom.xml
 # Cosmos Spark connector runtime dependencies - provided by Spark runtime/host
@@ -368,11 +372,13 @@ cosmos-spark_3-1_org.apache.spark:spark-sql_2.12;3.1.1
 cosmos-spark_3-2_org.apache.spark:spark-sql_2.12;3.2.0
 cosmos-spark_3-3_org.apache.spark:spark-sql_2.12;3.3.0
 cosmos-spark_3-4_org.apache.spark:spark-sql_2.12;3.4.0
+cosmos-spark_3-5_org.apache.spark:spark-sql_2.12;3.5.0
 cosmos-spark_3-1_org.apache.spark:spark-hive_2.12;3.1.1
 cosmos-spark_3-2_org.apache.spark:spark-hive_2.12;3.2.0
 cosmos-spark_3-3_org.apache.spark:spark-hive_2.12;3.3.0
 cosmos-spark_3-4_org.apache.spark:spark-hive_2.12;3.4.0
-cosmos_org.scala-lang:scala-library;2.12.10
+cosmos-spark_3-5_org.apache.spark:spark-hive_2.12;3.5.0
+cosmos_org.scala-lang:scala-library;2.12.19
 cosmos_org.scala-lang.modules:scala-java8-compat_2.12;0.8.0
 cosmos_io.projectreactor:reactor-scala-extensions_2.12;0.8.0
 cosmos_commons-io:commons-io;2.4
@@ -387,7 +393,7 @@ cosmos_com.globalmentor:hadoop-bare-naked-local-fs;0.1.0
 cosmos_org.mockito:mockito-core;4.8.1
 
 # Maven Tools for Cosmos Spark connector only
-cosmos_org.scalatest:scalatest-maven-plugin;2.0.2
+cosmos_org.scalatest:scalatest-maven-plugin;2.1.0
 cosmos_net.alchim31.maven:scala-maven-plugin;4.8.1
 cosmos_org.scalastyle:scalastyle-maven-plugin;1.0.0
 
@@ -400,6 +406,8 @@ cosmos_org.apache.kafka:connect-runtime;3.6.0
 cosmos_org.testcontainers:testcontainers;1.19.5
 cosmos_org.testcontainers:kafka;1.19.5
 cosmos_org.sourcelab:kafka-connect-client;4.0.4
+cosmos_io.confluent:kafka-avro-serializer;7.6.0
+cosmos_org.apache.avro:avro;1.11.3
 # Maven Tools for Cosmos Kafka connector only
 cosmos_io.confluent:kafka-connect-maven-plugin;0.12.0
 
@@ -438,3 +446,102 @@ spring_com.microsoft.azure:azure;1.34.0
 
 # sdk\spring\spring-cloud-azure-service\pom.xml
 spring_redis.clients:jedis;3.8.0
+
+# sdk\spring\pom.xml modules
+springboot3_com.diffplug.spotless:spotless-maven-plugin;2.30.0
+springboot3_com.fasterxml.jackson.core:jackson-annotations;2.17.1
+springboot3_com.fasterxml.jackson.core:jackson-core;2.17.1
+springboot3_com.fasterxml.jackson.core:jackson-databind;2.17.1
+springboot3_com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.17.1
+springboot3_com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.17.1
+springboot3_com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.17.1
+springboot3_com.fasterxml.jackson.module:jackson-module-afterburner;2.17.1
+springboot3_com.fasterxml.jackson.module:jackson-module-parameter-names;2.17.1
+springboot3_com.github.spotbugs:spotbugs-maven-plugin;4.8.2.0
+springboot3_com.google.code.findbugs:jsr305;3.0.2
+springboot3_com.mysql:mysql-connector-j;8.3.0
+springboot3_com.nimbusds:nimbus-jose-jwt;9.37.3
+springboot3_io.lettuce:lettuce-core;6.3.2.RELEASE
+springboot3_io.micrometer:micrometer-core;1.13.1
+springboot3_io.netty:netty-buffer;4.1.111.Final
+springboot3_io.netty:netty-codec-http;4.1.111.Final
+springboot3_io.netty:netty-common;4.1.111.Final
+springboot3_io.netty:netty-handler;4.1.111.Final
+springboot3_io.netty:netty-transport-native-epoll;4.1.111.Final
+springboot3_io.netty:netty-transport-native-kqueue;4.1.111.Final
+springboot3_io.netty:netty-transport;4.1.111.Final
+springboot3_io.projectreactor.netty:reactor-netty;1.1.20
+springboot3_io.projectreactor:reactor-test;3.6.7
+springboot3_jakarta.servlet:jakarta.servlet-api;6.0.0
+springboot3_jakarta.validation:jakarta.validation-api;3.0.2
+springboot3_javax.annotation:javax.annotation-api;1.3.2
+springboot3_junit:junit;4.13.2
+springboot3_net.bytebuddy:byte-buddy-agent;1.14.17
+springboot3_net.bytebuddy:byte-buddy;1.14.17
+springboot3_org.apache.commons:commons-lang3;3.14.0
+springboot3_org.apache.kafka:kafka-clients;3.7.0
+springboot3_org.apache.maven.plugins:maven-antrun-plugin;3.1.0
+springboot3_org.apache.maven.plugins:maven-compiler-plugin;3.13.0
+springboot3_org.apache.maven.plugins:maven-enforcer-plugin;3.4.1
+springboot3_org.apache.maven.plugins:maven-failsafe-plugin;3.2.5
+springboot3_org.apache.maven.plugins:maven-jar-plugin;3.4.2
+springboot3_org.apache.maven.plugins:maven-javadoc-plugin;3.6.3
+springboot3_org.apache.maven.plugins:maven-surefire-plugin;3.2.5
+springboot3_org.apache.qpid:qpid-jms-client;2.0.0
+springboot3_org.assertj:assertj-core;3.25.3
+springboot3_org.hibernate.validator:hibernate-validator;8.0.1.Final
+springboot3_org.javatuples:javatuples;1.2
+springboot3_org.junit.jupiter:junit-jupiter;5.10.2
+springboot3_org.junit.vintage:junit-vintage-engine;5.10.2
+springboot3_org.messaginghub:pooled-jms;3.1.6
+springboot3_org.mockito:mockito-core;5.11.0
+springboot3_org.postgresql:postgresql;42.7.3
+springboot3_org.revapi:revapi-maven-plugin;0.14.6
+springboot3_org.slf4j:slf4j-api;2.0.13
+springboot3_org.slf4j:slf4j-simple;2.0.13
+springboot3_org.springframework.boot:spring-boot-actuator-autoconfigure;3.3.1
+springboot3_org.springframework.boot:spring-boot-actuator;3.3.1
+springboot3_org.springframework.boot:spring-boot-autoconfigure;3.3.1
+springboot3_org.springframework.boot:spring-boot-configuration-metadata;3.3.1
+springboot3_org.springframework.boot:spring-boot-configuration-processor;3.3.1
+springboot3_org.springframework.boot:spring-boot-dependencies;3.3.1
+springboot3_org.springframework.boot:spring-boot-starter-actuator;3.3.1
+springboot3_org.springframework.boot:spring-boot-starter-integration;3.3.1
+springboot3_org.springframework.boot:spring-boot-starter-parent;3.3.1
+springboot3_org.springframework.boot:spring-boot-starter-test;3.3.1
+springboot3_org.springframework.boot:spring-boot-starter-web;3.3.1
+springboot3_org.springframework.boot:spring-boot-starter;3.3.1
+springboot3_org.springframework.boot:spring-boot-test;3.3.1
+springboot3_org.springframework.boot:spring-boot-testcontainers;3.3.1
+springboot3_org.springframework.cloud:spring-cloud-bus;4.1.1
+springboot3_org.springframework.cloud:spring-cloud-context;4.1.3
+springboot3_org.springframework.cloud:spring-cloud-starter-bootstrap;4.1.3
+springboot3_org.springframework.cloud:spring-cloud-starter-stream-kafka;4.1.2
+springboot3_org.springframework.cloud:spring-cloud-stream-test-binder;4.1.2
+springboot3_org.springframework.cloud:spring-cloud-stream;4.1.2
+springboot3_org.springframework.data:spring-data-commons;3.3.1
+springboot3_org.springframework.data:spring-data-redis;3.3.1
+springboot3_org.springframework.integration:spring-integration-core;6.3.1
+springboot3_org.springframework.kafka:spring-kafka;3.2.1
+springboot3_org.springframework.retry:spring-retry;2.0.6
+springboot3_org.springframework.security:spring-security-config;6.3.1
+springboot3_org.springframework.security:spring-security-oauth2-client;6.3.1
+springboot3_org.springframework.security:spring-security-oauth2-jose;6.3.1
+springboot3_org.springframework.security:spring-security-oauth2-resource-server;6.3.1
+springboot3_org.springframework.security:spring-security-web;6.3.1
+springboot3_org.springframework:spring-beans;6.1.10
+springboot3_org.springframework:spring-context-support;6.1.10
+springboot3_org.springframework:spring-context;6.1.10
+springboot3_org.springframework:spring-core-test;6.1.10
+springboot3_org.springframework:spring-core;6.1.10
+springboot3_org.springframework:spring-expression;6.1.10
+springboot3_org.springframework:spring-jdbc;6.1.10
+springboot3_org.springframework:spring-jms;6.1.10
+springboot3_org.springframework:spring-messaging;6.1.10
+springboot3_org.springframework:spring-test;6.1.10
+springboot3_org.springframework:spring-tx;6.1.10
+springboot3_org.springframework:spring-web;6.1.10
+springboot3_org.springframework:spring-webmvc;6.1.10
+springboot3_org.testcontainers:testcontainers;1.19.8
+springboot3_org.testcontainers:junit-jupiter;1.19.8
+springboot3_org.testcontainers:azure;1.19.8

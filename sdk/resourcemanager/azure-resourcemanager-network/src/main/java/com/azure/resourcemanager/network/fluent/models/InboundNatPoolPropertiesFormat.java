@@ -272,8 +272,9 @@ public final class InboundNatPoolPropertiesFormat {
      */
     public void validate() {
         if (protocol() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property protocol in model InboundNatPoolPropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property protocol in model InboundNatPoolPropertiesFormat"));
         }
     }
 

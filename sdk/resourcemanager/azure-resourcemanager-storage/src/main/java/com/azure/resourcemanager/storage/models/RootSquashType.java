@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The property is for NFS share only. The default is NoRootSquash. */
+/**
+ * The property is for NFS share only. The default is NoRootSquash.
+ */
 public final class RootSquashType extends ExpandableStringEnum<RootSquashType> {
-    /** Static value NoRootSquash for RootSquashType. */
+    /**
+     * Static value NoRootSquash for RootSquashType.
+     */
     public static final RootSquashType NO_ROOT_SQUASH = fromString("NoRootSquash");
 
-    /** Static value RootSquash for RootSquashType. */
+    /**
+     * Static value RootSquash for RootSquashType.
+     */
     public static final RootSquashType ROOT_SQUASH = fromString("RootSquash");
 
-    /** Static value AllSquash for RootSquashType. */
+    /**
+     * Static value AllSquash for RootSquashType.
+     */
     public static final RootSquashType ALL_SQUASH = fromString("AllSquash");
 
     /**
      * Creates a new instance of RootSquashType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class RootSquashType extends ExpandableStringEnum<RootSquashType> {
 
     /**
      * Creates or finds a RootSquashType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RootSquashType.
      */
@@ -41,7 +49,7 @@ public final class RootSquashType extends ExpandableStringEnum<RootSquashType> {
 
     /**
      * Gets known RootSquashType values.
-     *
+     * 
      * @return known RootSquashType values.
      */
     public static Collection<RootSquashType> values() {

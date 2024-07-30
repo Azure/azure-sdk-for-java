@@ -5,27 +5,29 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The MetadataPermissionsApplicationsItem model.
  */
 @Immutable
-public final class MetadataPermissionsApplicationsItem {
+public final class MetadataPermissionsApplicationsItem
+    implements JsonSerializable<MetadataPermissionsApplicationsItem> {
     /*
      * The resource ID on the permission indication.
      */
-    @JsonProperty(value = "resourceId", required = true)
-    private String resourceId;
+    private final String resourceId;
 
     /**
      * Creates an instance of MetadataPermissionsApplicationsItem class.
      * 
      * @param resourceId the resourceId value to set.
      */
-    @JsonCreator
-    public MetadataPermissionsApplicationsItem(@JsonProperty(value = "resourceId", required = true) String resourceId) {
+    public MetadataPermissionsApplicationsItem(String resourceId) {
         this.resourceId = resourceId;
     }
 
@@ -36,5 +38,43 @@ public final class MetadataPermissionsApplicationsItem {
      */
     public String getResourceId() {
         return this.resourceId;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetadataPermissionsApplicationsItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetadataPermissionsApplicationsItem if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MetadataPermissionsApplicationsItem.
+     */
+    public static MetadataPermissionsApplicationsItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean resourceIdFound = false;
+            String resourceId = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    resourceId = reader.getString();
+                    resourceIdFound = true;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (resourceIdFound) {
+                return new MetadataPermissionsApplicationsItem(resourceId);
+            }
+            throw new IllegalStateException("Missing required property: resourceId");
+        });
     }
 }

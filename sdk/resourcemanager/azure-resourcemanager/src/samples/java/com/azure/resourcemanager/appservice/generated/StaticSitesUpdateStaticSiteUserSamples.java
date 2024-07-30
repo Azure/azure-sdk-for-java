@@ -11,8 +11,7 @@ import com.azure.resourcemanager.appservice.fluent.models.StaticSiteUserArmResou
  */
 public final class StaticSitesUpdateStaticSiteUserSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/UpdateStaticSiteUser.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/UpdateStaticSiteUser.json
      */
     /**
      * Sample code: Create or update a user for a static site.
@@ -20,8 +19,11 @@ public final class StaticSitesUpdateStaticSiteUserSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateAUserForAStaticSite(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getStaticSites().updateStaticSiteUserWithResponse("rg",
-            "testStaticSite0", "aad", "1234", new StaticSiteUserArmResourceInner().withRoles("contributor"),
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getStaticSites()
+            .updateStaticSiteUserWithResponse("rg", "testStaticSite0", "aad", "1234",
+                new StaticSiteUserArmResourceInner().withRoles("contributor"), com.azure.core.util.Context.NONE);
     }
 }

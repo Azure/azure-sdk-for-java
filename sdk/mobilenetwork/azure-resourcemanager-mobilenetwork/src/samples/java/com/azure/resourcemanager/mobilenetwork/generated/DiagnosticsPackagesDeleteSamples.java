@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-/** Samples for DiagnosticsPackages Delete. */
+/**
+ * Samples for DiagnosticsPackages Delete.
+ */
 public final class DiagnosticsPackagesDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/DiagnosticsPackageDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/DiagnosticsPackageDelete.json
      */
     /**
      * Sample code: Delete diagnostics package.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void deleteDiagnosticsPackage(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {

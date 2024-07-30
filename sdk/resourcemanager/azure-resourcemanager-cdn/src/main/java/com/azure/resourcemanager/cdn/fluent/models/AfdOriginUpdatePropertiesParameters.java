@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cdn.models.ResourceReference;
 import com.azure.resourcemanager.cdn.models.SharedPrivateLinkResourceProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The JSON object that contains the properties of the origin. */
+/**
+ * The JSON object that contains the properties of the origin.
+ */
 @Fluent
 public class AfdOriginUpdatePropertiesParameters {
     /*
@@ -84,13 +86,15 @@ public class AfdOriginUpdatePropertiesParameters {
     @JsonProperty(value = "enforceCertificateNameCheck")
     private Boolean enforceCertificateNameCheck;
 
-    /** Creates an instance of AfdOriginUpdatePropertiesParameters class. */
+    /**
+     * Creates an instance of AfdOriginUpdatePropertiesParameters class.
+     */
     public AfdOriginUpdatePropertiesParameters() {
     }
 
     /**
      * Get the originGroupName property: The name of the origin group which contains this origin.
-     *
+     * 
      * @return the originGroupName value.
      */
     public String originGroupName() {
@@ -99,7 +103,7 @@ public class AfdOriginUpdatePropertiesParameters {
 
     /**
      * Get the azureOrigin property: Resource reference to the Azure origin resource.
-     *
+     * 
      * @return the azureOrigin value.
      */
     public ResourceReference azureOrigin() {
@@ -108,7 +112,7 @@ public class AfdOriginUpdatePropertiesParameters {
 
     /**
      * Set the azureOrigin property: Resource reference to the Azure origin resource.
-     *
+     * 
      * @param azureOrigin the azureOrigin value to set.
      * @return the AfdOriginUpdatePropertiesParameters object itself.
      */
@@ -120,7 +124,7 @@ public class AfdOriginUpdatePropertiesParameters {
     /**
      * Get the hostname property: The address of the origin. Domain names, IPv4 addresses, and IPv6 addresses are
      * supported.This should be unique across all origins in an endpoint.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -130,7 +134,7 @@ public class AfdOriginUpdatePropertiesParameters {
     /**
      * Set the hostname property: The address of the origin. Domain names, IPv4 addresses, and IPv6 addresses are
      * supported.This should be unique across all origins in an endpoint.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the AfdOriginUpdatePropertiesParameters object itself.
      */
@@ -141,7 +145,7 @@ public class AfdOriginUpdatePropertiesParameters {
 
     /**
      * Get the httpPort property: The value of the HTTP port. Must be between 1 and 65535.
-     *
+     * 
      * @return the httpPort value.
      */
     public Integer httpPort() {
@@ -150,7 +154,7 @@ public class AfdOriginUpdatePropertiesParameters {
 
     /**
      * Set the httpPort property: The value of the HTTP port. Must be between 1 and 65535.
-     *
+     * 
      * @param httpPort the httpPort value to set.
      * @return the AfdOriginUpdatePropertiesParameters object itself.
      */
@@ -161,7 +165,7 @@ public class AfdOriginUpdatePropertiesParameters {
 
     /**
      * Get the httpsPort property: The value of the HTTPS port. Must be between 1 and 65535.
-     *
+     * 
      * @return the httpsPort value.
      */
     public Integer httpsPort() {
@@ -170,7 +174,7 @@ public class AfdOriginUpdatePropertiesParameters {
 
     /**
      * Set the httpsPort property: The value of the HTTPS port. Must be between 1 and 65535.
-     *
+     * 
      * @param httpsPort the httpsPort value to set.
      * @return the AfdOriginUpdatePropertiesParameters object itself.
      */
@@ -184,7 +188,7 @@ public class AfdOriginUpdatePropertiesParameters {
      * blank, the request hostname determines this value. Azure Front Door origins, such as Web Apps, Blob Storage, and
      * Cloud Services require this host header value to match the origin hostname by default. This overrides the host
      * header defined at Endpoint.
-     *
+     * 
      * @return the originHostHeader value.
      */
     public String originHostHeader() {
@@ -196,7 +200,7 @@ public class AfdOriginUpdatePropertiesParameters {
      * blank, the request hostname determines this value. Azure Front Door origins, such as Web Apps, Blob Storage, and
      * Cloud Services require this host header value to match the origin hostname by default. This overrides the host
      * header defined at Endpoint.
-     *
+     * 
      * @param originHostHeader the originHostHeader value to set.
      * @return the AfdOriginUpdatePropertiesParameters object itself.
      */
@@ -208,7 +212,7 @@ public class AfdOriginUpdatePropertiesParameters {
     /**
      * Get the priority property: Priority of origin in given origin group for load balancing. Higher priorities will
      * not be used for load balancing if any lower priority origin is healthy.Must be between 1 and 5.
-     *
+     * 
      * @return the priority value.
      */
     public Integer priority() {
@@ -218,7 +222,7 @@ public class AfdOriginUpdatePropertiesParameters {
     /**
      * Set the priority property: Priority of origin in given origin group for load balancing. Higher priorities will
      * not be used for load balancing if any lower priority origin is healthy.Must be between 1 and 5.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the AfdOriginUpdatePropertiesParameters object itself.
      */
@@ -230,7 +234,7 @@ public class AfdOriginUpdatePropertiesParameters {
     /**
      * Get the weight property: Weight of the origin in given origin group for load balancing. Must be between 1 and
      * 1000.
-     *
+     * 
      * @return the weight value.
      */
     public Integer weight() {
@@ -240,7 +244,7 @@ public class AfdOriginUpdatePropertiesParameters {
     /**
      * Set the weight property: Weight of the origin in given origin group for load balancing. Must be between 1 and
      * 1000.
-     *
+     * 
      * @param weight the weight value to set.
      * @return the AfdOriginUpdatePropertiesParameters object itself.
      */
@@ -251,7 +255,7 @@ public class AfdOriginUpdatePropertiesParameters {
 
     /**
      * Get the sharedPrivateLinkResource property: The properties of the private link resource for private origin.
-     *
+     * 
      * @return the sharedPrivateLinkResource value.
      */
     public SharedPrivateLinkResourceProperties sharedPrivateLinkResource() {
@@ -260,12 +264,12 @@ public class AfdOriginUpdatePropertiesParameters {
 
     /**
      * Set the sharedPrivateLinkResource property: The properties of the private link resource for private origin.
-     *
+     * 
      * @param sharedPrivateLinkResource the sharedPrivateLinkResource value to set.
      * @return the AfdOriginUpdatePropertiesParameters object itself.
      */
-    public AfdOriginUpdatePropertiesParameters withSharedPrivateLinkResource(
-        SharedPrivateLinkResourceProperties sharedPrivateLinkResource) {
+    public AfdOriginUpdatePropertiesParameters
+        withSharedPrivateLinkResource(SharedPrivateLinkResourceProperties sharedPrivateLinkResource) {
         this.sharedPrivateLinkResource = sharedPrivateLinkResource;
         return this;
     }
@@ -274,7 +278,7 @@ public class AfdOriginUpdatePropertiesParameters {
      * Get the enabledState property: Whether to enable health probes to be made against backends defined under
      * backendPools. Health probes can only be disabled if there is a single enabled backend in single enabled backend
      * pool.
-     *
+     * 
      * @return the enabledState value.
      */
     public EnabledState enabledState() {
@@ -285,7 +289,7 @@ public class AfdOriginUpdatePropertiesParameters {
      * Set the enabledState property: Whether to enable health probes to be made against backends defined under
      * backendPools. Health probes can only be disabled if there is a single enabled backend in single enabled backend
      * pool.
-     *
+     * 
      * @param enabledState the enabledState value to set.
      * @return the AfdOriginUpdatePropertiesParameters object itself.
      */
@@ -296,7 +300,7 @@ public class AfdOriginUpdatePropertiesParameters {
 
     /**
      * Get the enforceCertificateNameCheck property: Whether to enable certificate name check at origin level.
-     *
+     * 
      * @return the enforceCertificateNameCheck value.
      */
     public Boolean enforceCertificateNameCheck() {
@@ -305,7 +309,7 @@ public class AfdOriginUpdatePropertiesParameters {
 
     /**
      * Set the enforceCertificateNameCheck property: Whether to enable certificate name check at origin level.
-     *
+     * 
      * @param enforceCertificateNameCheck the enforceCertificateNameCheck value to set.
      * @return the AfdOriginUpdatePropertiesParameters object itself.
      */
@@ -316,7 +320,7 @@ public class AfdOriginUpdatePropertiesParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

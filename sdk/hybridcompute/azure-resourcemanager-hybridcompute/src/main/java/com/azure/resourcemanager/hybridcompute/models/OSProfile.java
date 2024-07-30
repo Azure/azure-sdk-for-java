@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Specifies the operating system settings for the hybrid machine. */
+/**
+ * Specifies the operating system settings for the hybrid machine.
+ */
 @Fluent
-public final class OSProfile {
+public final class OSProfile implements JsonSerializable<OSProfile> {
     /*
      * Specifies the host OS name of the hybrid machine.
      */
-    @JsonProperty(value = "computerName", access = JsonProperty.Access.WRITE_ONLY)
     private String computerName;
 
     /*
      * Specifies the windows configuration for update management.
      */
-    @JsonProperty(value = "windowsConfiguration")
     private OSProfileWindowsConfiguration windowsConfiguration;
 
     /*
      * Specifies the linux configuration for update management.
      */
-    @JsonProperty(value = "linuxConfiguration")
     private OSProfileLinuxConfiguration linuxConfiguration;
 
-    /** Creates an instance of OSProfile class. */
+    /**
+     * Creates an instance of OSProfile class.
+     */
     public OSProfile() {
     }
 
     /**
      * Get the computerName property: Specifies the host OS name of the hybrid machine.
-     *
+     * 
      * @return the computerName value.
      */
     public String computerName() {
@@ -43,7 +48,7 @@ public final class OSProfile {
 
     /**
      * Get the windowsConfiguration property: Specifies the windows configuration for update management.
-     *
+     * 
      * @return the windowsConfiguration value.
      */
     public OSProfileWindowsConfiguration windowsConfiguration() {
@@ -52,7 +57,7 @@ public final class OSProfile {
 
     /**
      * Set the windowsConfiguration property: Specifies the windows configuration for update management.
-     *
+     * 
      * @param windowsConfiguration the windowsConfiguration value to set.
      * @return the OSProfile object itself.
      */
@@ -63,7 +68,7 @@ public final class OSProfile {
 
     /**
      * Get the linuxConfiguration property: Specifies the linux configuration for update management.
-     *
+     * 
      * @return the linuxConfiguration value.
      */
     public OSProfileLinuxConfiguration linuxConfiguration() {
@@ -72,7 +77,7 @@ public final class OSProfile {
 
     /**
      * Set the linuxConfiguration property: Specifies the linux configuration for update management.
-     *
+     * 
      * @param linuxConfiguration the linuxConfiguration value to set.
      * @return the OSProfile object itself.
      */
@@ -83,7 +88,7 @@ public final class OSProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -93,5 +98,46 @@ public final class OSProfile {
         if (linuxConfiguration() != null) {
             linuxConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("windowsConfiguration", this.windowsConfiguration);
+        jsonWriter.writeJsonField("linuxConfiguration", this.linuxConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OSProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OSProfile if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the OSProfile.
+     */
+    public static OSProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OSProfile deserializedOSProfile = new OSProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("computerName".equals(fieldName)) {
+                    deserializedOSProfile.computerName = reader.getString();
+                } else if ("windowsConfiguration".equals(fieldName)) {
+                    deserializedOSProfile.windowsConfiguration = OSProfileWindowsConfiguration.fromJson(reader);
+                } else if ("linuxConfiguration".equals(fieldName)) {
+                    deserializedOSProfile.linuxConfiguration = OSProfileLinuxConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOSProfile;
+        });
     }
 }

@@ -100,30 +100,26 @@ public final class PacketCaptureImpl implements PacketCapture, PacketCapture.Def
 
     private String packetCaptureName;
 
-    public PacketCaptureImpl withExistingPacketCoreControlPlane(
-        String resourceGroupName, String packetCoreControlPlaneName) {
+    public PacketCaptureImpl withExistingPacketCoreControlPlane(String resourceGroupName,
+        String packetCoreControlPlaneName) {
         this.resourceGroupName = resourceGroupName;
         this.packetCoreControlPlaneName = packetCoreControlPlaneName;
         return this;
     }
 
     public PacketCapture create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPacketCaptures()
-                .createOrUpdate(
-                    resourceGroupName, packetCoreControlPlaneName, packetCaptureName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPacketCaptures()
+            .createOrUpdate(resourceGroupName, packetCoreControlPlaneName, packetCaptureName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public PacketCapture create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPacketCaptures()
-                .createOrUpdate(
-                    resourceGroupName, packetCoreControlPlaneName, packetCaptureName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getPacketCaptures()
+            .createOrUpdate(resourceGroupName, packetCoreControlPlaneName, packetCaptureName, this.innerModel(),
+                context);
         return this;
     }
 
@@ -138,51 +134,44 @@ public final class PacketCaptureImpl implements PacketCapture, PacketCapture.Def
     }
 
     public PacketCapture apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPacketCaptures()
-                .createOrUpdate(
-                    resourceGroupName, packetCoreControlPlaneName, packetCaptureName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPacketCaptures()
+            .createOrUpdate(resourceGroupName, packetCoreControlPlaneName, packetCaptureName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public PacketCapture apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPacketCaptures()
-                .createOrUpdate(
-                    resourceGroupName, packetCoreControlPlaneName, packetCaptureName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getPacketCaptures()
+            .createOrUpdate(resourceGroupName, packetCoreControlPlaneName, packetCaptureName, this.innerModel(),
+                context);
         return this;
     }
 
-    PacketCaptureImpl(
-        PacketCaptureInner innerObject, com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager) {
+    PacketCaptureImpl(PacketCaptureInner innerObject,
+        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.packetCoreControlPlaneName = Utils.getValueFromIdByName(innerObject.id(), "packetCoreControlPlanes");
-        this.packetCaptureName = Utils.getValueFromIdByName(innerObject.id(), "packetCaptures");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.packetCoreControlPlaneName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "packetCoreControlPlanes");
+        this.packetCaptureName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "packetCaptures");
     }
 
     public PacketCapture refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPacketCaptures()
-                .getWithResponse(resourceGroupName, packetCoreControlPlaneName, packetCaptureName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPacketCaptures()
+            .getWithResponse(resourceGroupName, packetCoreControlPlaneName, packetCaptureName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PacketCapture refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPacketCaptures()
-                .getWithResponse(resourceGroupName, packetCoreControlPlaneName, packetCaptureName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPacketCaptures()
+            .getWithResponse(resourceGroupName, packetCoreControlPlaneName, packetCaptureName, context)
+            .getValue();
         return this;
     }
 
@@ -191,8 +180,7 @@ public final class PacketCaptureImpl implements PacketCapture, PacketCapture.Def
     }
 
     public AsyncOperationStatus stop(Context context) {
-        return serviceManager
-            .packetCaptures()
+        return serviceManager.packetCaptures()
             .stop(resourceGroupName, packetCoreControlPlaneName, packetCaptureName, context);
     }
 

@@ -18,7 +18,8 @@ public final class IntegrationRuntimesGetSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void integrationRuntimesGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimes().getWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleIntegrationRuntime", null, com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime", null,
+                com.azure.core.util.Context.NONE);
     }
 }

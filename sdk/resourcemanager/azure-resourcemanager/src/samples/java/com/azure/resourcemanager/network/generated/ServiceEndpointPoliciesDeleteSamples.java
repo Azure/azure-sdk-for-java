@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class ServiceEndpointPoliciesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/ServiceEndpointPolicyDelete.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ServiceEndpointPolicyDelete.
      * json
      */
     /**
@@ -19,7 +19,10 @@ public final class ServiceEndpointPoliciesDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteServiceEndpointPolicy(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getServiceEndpointPolicies().delete("rg1", "serviceEndpointPolicy1",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getServiceEndpointPolicies()
+            .delete("rg1", "serviceEndpointPolicy1", com.azure.core.util.Context.NONE);
     }
 }

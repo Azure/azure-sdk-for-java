@@ -5,13 +5,13 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.implementation.util.ByteBufferBackedOutputStreamUtil;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
-import com.fasterxml.jackson.databind.util.ByteBufferBackedOutputStream;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -72,7 +72,7 @@ class StorageSeekableByteChannelBlobReadBehavior implements StorageSeekableByteC
 
         int initialPosition = dst.position();
 
-        try (ByteBufferBackedOutputStream dstStream = new ByteBufferBackedOutputStream(dst)) {
+        try (ByteBufferBackedOutputStreamUtil dstStream = new ByteBufferBackedOutputStreamUtil(dst)) {
             BlobDownloadResponse response =  client.downloadStreamWithResponse(dstStream,
                 new BlobRange(sourceOffset, (long) dst.remaining()), null /*downloadRetryOptions*/, requestConditions,
                 false, null, null);

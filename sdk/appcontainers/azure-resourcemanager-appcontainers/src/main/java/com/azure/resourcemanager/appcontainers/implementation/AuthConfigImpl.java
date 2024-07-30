@@ -9,6 +9,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.AuthConfigInner;
 import com.azure.resourcemanager.appcontainers.models.AuthConfig;
 import com.azure.resourcemanager.appcontainers.models.AuthPlatform;
+import com.azure.resourcemanager.appcontainers.models.EncryptionSettings;
 import com.azure.resourcemanager.appcontainers.models.GlobalValidation;
 import com.azure.resourcemanager.appcontainers.models.HttpSettings;
 import com.azure.resourcemanager.appcontainers.models.IdentityProviders;
@@ -55,6 +56,10 @@ public final class AuthConfigImpl implements AuthConfig, AuthConfig.Definition, 
         return this.innerModel().httpSettings();
     }
 
+    public EncryptionSettings encryptionSettings() {
+        return this.innerModel().encryptionSettings();
+    }
+
     public String resourceGroupName() {
         return resourceGroupName;
     }
@@ -80,24 +85,19 @@ public final class AuthConfigImpl implements AuthConfig, AuthConfig.Definition, 
     }
 
     public AuthConfig create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContainerAppsAuthConfigs()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, containerAppName, authConfigName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContainerAppsAuthConfigs()
+            .createOrUpdateWithResponse(resourceGroupName, containerAppName, authConfigName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public AuthConfig create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContainerAppsAuthConfigs()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, containerAppName, authConfigName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContainerAppsAuthConfigs()
+            .createOrUpdateWithResponse(resourceGroupName, containerAppName, authConfigName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -112,53 +112,44 @@ public final class AuthConfigImpl implements AuthConfig, AuthConfig.Definition, 
     }
 
     public AuthConfig apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContainerAppsAuthConfigs()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, containerAppName, authConfigName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContainerAppsAuthConfigs()
+            .createOrUpdateWithResponse(resourceGroupName, containerAppName, authConfigName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public AuthConfig apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContainerAppsAuthConfigs()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, containerAppName, authConfigName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContainerAppsAuthConfigs()
+            .createOrUpdateWithResponse(resourceGroupName, containerAppName, authConfigName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    AuthConfigImpl(
-        AuthConfigInner innerObject, com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
+    AuthConfigImpl(AuthConfigInner innerObject,
+        com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.containerAppName = Utils.getValueFromIdByName(innerObject.id(), "containerApps");
-        this.authConfigName = Utils.getValueFromIdByName(innerObject.id(), "authConfigs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.containerAppName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "containerApps");
+        this.authConfigName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "authConfigs");
     }
 
     public AuthConfig refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContainerAppsAuthConfigs()
-                .getWithResponse(resourceGroupName, containerAppName, authConfigName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContainerAppsAuthConfigs()
+            .getWithResponse(resourceGroupName, containerAppName, authConfigName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AuthConfig refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContainerAppsAuthConfigs()
-                .getWithResponse(resourceGroupName, containerAppName, authConfigName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContainerAppsAuthConfigs()
+            .getWithResponse(resourceGroupName, containerAppName, authConfigName, context)
+            .getValue();
         return this;
     }
 
@@ -184,6 +175,11 @@ public final class AuthConfigImpl implements AuthConfig, AuthConfig.Definition, 
 
     public AuthConfigImpl withHttpSettings(HttpSettings httpSettings) {
         this.innerModel().withHttpSettings(httpSettings);
+        return this;
+    }
+
+    public AuthConfigImpl withEncryptionSettings(EncryptionSettings encryptionSettings) {
+        this.innerModel().withEncryptionSettings(encryptionSettings);
         return this;
     }
 }

@@ -29,12 +29,15 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 
 import static com.azure.core.test.utils.TestProxyUtils.checkForTestProxyErrors;
 import static com.azure.core.test.utils.TestProxyUtils.createAddSanitizersRequest;
 import static com.azure.core.test.utils.TestProxyUtils.getAssetJsonFile;
+import static com.azure.core.test.utils.TestProxyUtils.getRemoveSanitizerRequest;
 import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
 
 /**
@@ -205,6 +208,28 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
 
     private boolean isRecording() {
         return xRecordingId != null;
+    }
+
+    /**
+     * Removes the list of sanitizers from the current playback session.
+     * @param sanitizers The sanitizers to remove.
+     * @throws RuntimeException if an {@link IOException} is thrown.
+     */
+    public void removeProxySanitization(List<String> sanitizers) {
+        if (isRecording()) {
+            Map<String, List<String>> data = new HashMap<>();
+            data.put("Sanitizers", sanitizers);
+
+            HttpRequest request;
+            try {
+                request = getRemoveSanitizerRequest().setBody(SERIALIZER.serialize(data, SerializerEncoding.JSON))
+                    .setHeader(X_RECORDING_ID, xRecordingId);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            client.sendSync(request, Context.NONE).close();
+        }
     }
 
     /**

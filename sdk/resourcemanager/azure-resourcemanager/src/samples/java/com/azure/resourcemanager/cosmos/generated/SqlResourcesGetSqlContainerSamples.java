@@ -9,9 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class SqlResourcesGetSqlContainerSamples {
     /*
-     * x-ms-original-file:
-     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlContainerGet.
-     * json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlContainerGet.json
      */
     /**
      * Sample code: CosmosDBSqlContainerGet.
@@ -19,7 +17,11 @@ public final class SqlResourcesGetSqlContainerSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBSqlContainerGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getSqlResources().getSqlContainerWithResponse("rgName",
-            "ddb1", "databaseName", "containerName", com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getSqlResources()
+            .getSqlContainerWithResponse("rgName", "ddb1", "databaseName", "containerName",
+                com.azure.core.util.Context.NONE);
     }
 }

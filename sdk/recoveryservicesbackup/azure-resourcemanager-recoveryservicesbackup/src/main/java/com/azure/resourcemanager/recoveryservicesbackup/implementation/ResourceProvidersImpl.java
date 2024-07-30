@@ -70,14 +70,16 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     public void moveRecoveryPoint(String vaultName, String resourceGroupName, String fabricName, String containerName,
         String protectedItemName, String recoveryPointId, MoveRPAcrossTiersRequest parameters) {
-        this.serviceClient().moveRecoveryPoint(vaultName, resourceGroupName, fabricName, containerName,
-            protectedItemName, recoveryPointId, parameters);
+        this.serviceClient()
+            .moveRecoveryPoint(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+                recoveryPointId, parameters);
     }
 
     public void moveRecoveryPoint(String vaultName, String resourceGroupName, String fabricName, String containerName,
         String protectedItemName, String recoveryPointId, MoveRPAcrossTiersRequest parameters, Context context) {
-        this.serviceClient().moveRecoveryPoint(vaultName, resourceGroupName, fabricName, containerName,
-            protectedItemName, recoveryPointId, parameters, context);
+        this.serviceClient()
+            .moveRecoveryPoint(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+                recoveryPointId, parameters, context);
     }
 
     private ResourceProvidersClient serviceClient() {

@@ -12,22 +12,24 @@ public final class ApiOperationDisplayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApiOperationDisplay model = BinaryData.fromString(
-            "{\"operation\":\"fidfvzw\",\"provider\":\"uht\",\"resource\":\"wisdkft\",\"description\":\"xmnteiwaop\"}")
+            "{\"operation\":\"r\",\"provider\":\"sdpydnfyhxdeoejz\",\"resource\":\"w\",\"description\":\"sjttgzfbish\"}")
             .toObject(ApiOperationDisplay.class);
-        Assertions.assertEquals("fidfvzw", model.operation());
-        Assertions.assertEquals("uht", model.provider());
-        Assertions.assertEquals("wisdkft", model.resource());
-        Assertions.assertEquals("xmnteiwaop", model.description());
+        Assertions.assertEquals("r", model.operation());
+        Assertions.assertEquals("sdpydnfyhxdeoejz", model.provider());
+        Assertions.assertEquals("w", model.resource());
+        Assertions.assertEquals("sjttgzfbish", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiOperationDisplay model = new ApiOperationDisplay().withOperation("fidfvzw").withProvider("uht")
-            .withResource("wisdkft").withDescription("xmnteiwaop");
+        ApiOperationDisplay model = new ApiOperationDisplay().withOperation("r")
+            .withProvider("sdpydnfyhxdeoejz")
+            .withResource("w")
+            .withDescription("sjttgzfbish");
         model = BinaryData.fromObject(model).toObject(ApiOperationDisplay.class);
-        Assertions.assertEquals("fidfvzw", model.operation());
-        Assertions.assertEquals("uht", model.provider());
-        Assertions.assertEquals("wisdkft", model.resource());
-        Assertions.assertEquals("xmnteiwaop", model.description());
+        Assertions.assertEquals("r", model.operation());
+        Assertions.assertEquals("sdpydnfyhxdeoejz", model.provider());
+        Assertions.assertEquals("w", model.resource());
+        Assertions.assertEquals("sjttgzfbish", model.description());
     }
 }

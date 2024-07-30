@@ -214,8 +214,8 @@ public final class WarehouseLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -224,8 +224,8 @@ public final class WarehouseLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the WarehouseLinkedServiceTypeProperties object itself.
@@ -236,9 +236,9 @@ public final class WarehouseLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the servicePrincipalCredentialType property: The service principal credential type to use in
-     * Server-To-Server authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate.
-     * Type: string (or Expression with resultType string).
+     * Get the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
+     * Expression with resultType string).
      * 
      * @return the servicePrincipalCredentialType value.
      */
@@ -247,9 +247,9 @@ public final class WarehouseLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the servicePrincipalCredentialType property: The service principal credential type to use in
-     * Server-To-Server authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate.
-     * Type: string (or Expression with resultType string).
+     * Set the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
+     * Expression with resultType string).
      * 
      * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
      * @return the WarehouseLinkedServiceTypeProperties object itself.
@@ -293,12 +293,14 @@ public final class WarehouseLinkedServiceTypeProperties {
      */
     public void validate() {
         if (artifactId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property artifactId in model WarehouseLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property artifactId in model WarehouseLinkedServiceTypeProperties"));
         }
         if (endpoint() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property endpoint in model WarehouseLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property endpoint in model WarehouseLinkedServiceTypeProperties"));
         }
         if (servicePrincipalKey() != null) {
             servicePrincipalKey().validate();

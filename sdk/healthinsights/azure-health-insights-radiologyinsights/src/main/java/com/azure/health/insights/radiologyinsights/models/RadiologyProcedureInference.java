@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,10 +16,22 @@ import java.util.List;
  * Radiology procedures are the specific imaging studies or examinations ordered for the patient, extracted from the
  * document information and text.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = RadiologyProcedureInference.class,
+    visible = true)
 @JsonTypeName("radiologyProcedure")
 @Immutable
-public final class RadiologyProcedureInference extends FhirR4Extendible1 {
+public final class RadiologyProcedureInference extends RadiologyInsightsInference {
+
+    /*
+     * Discriminator property for RadiologyInsightsInference.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.RADIOLOGY_PROCEDURE;
 
     /*
      * LOINC codes for the procedure.
@@ -32,14 +45,14 @@ public final class RadiologyProcedureInference extends FhirR4Extendible1 {
      */
     @Generated
     @JsonProperty(value = "imagingProcedures")
-    private List<ImagingProcedure> imagingProcedures;
+    private final List<ImagingProcedure> imagingProcedures;
 
     /*
      * Ordered procedure information from the document information or text.
      */
     @Generated
     @JsonProperty(value = "orderedProcedure")
-    private FhirR4Extendible orderedProcedure;
+    private final OrderedProcedure orderedProcedure;
 
     /**
      * Creates an instance of RadiologyProcedureInference class.
@@ -51,9 +64,20 @@ public final class RadiologyProcedureInference extends FhirR4Extendible1 {
     @JsonCreator
     private RadiologyProcedureInference(
         @JsonProperty(value = "imagingProcedures") List<ImagingProcedure> imagingProcedures,
-        @JsonProperty(value = "orderedProcedure") FhirR4Extendible orderedProcedure) {
+        @JsonProperty(value = "orderedProcedure") OrderedProcedure orderedProcedure) {
         this.imagingProcedures = imagingProcedures;
         this.orderedProcedure = orderedProcedure;
+    }
+
+    /**
+     * Get the kind property: Discriminator property for RadiologyInsightsInference.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public RadiologyInsightsInferenceType getKind() {
+        return this.kind;
     }
 
     /**
@@ -82,7 +106,7 @@ public final class RadiologyProcedureInference extends FhirR4Extendible1 {
      * @return the orderedProcedure value.
      */
     @Generated
-    public FhirR4Extendible getOrderedProcedure() {
+    public OrderedProcedure getOrderedProcedure() {
         return this.orderedProcedure;
     }
 }

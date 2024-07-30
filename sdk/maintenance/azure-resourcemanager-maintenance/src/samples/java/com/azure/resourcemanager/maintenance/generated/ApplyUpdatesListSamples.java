@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.maintenance.generated;
 
-/** Samples for ApplyUpdates List. */
+/**
+ * Samples for ApplyUpdates List.
+ */
 public final class ApplyUpdatesListSamples {
     /*
-     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2023-04-01/examples/ApplyUpdates_List.json
+     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2023-10-01-preview/examples/ApplyUpdates_List.json
      */
     /**
      * Sample code: ApplyUpdates_List.
-     *
+     * 
      * @param manager Entry point to MaintenanceManager.
      */
     public static void applyUpdatesList(com.azure.resourcemanager.maintenance.MaintenanceManager manager) {

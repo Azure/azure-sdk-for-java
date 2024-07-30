@@ -6,16 +6,24 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The location of azure blobFS dataset.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = AzureBlobFSLocation.class, visible = true)
 @JsonTypeName("AzureBlobFSLocation")
 @Fluent
 public final class AzureBlobFSLocation extends DatasetLocation {
+    /*
+     * Type of dataset storage location.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "AzureBlobFSLocation";
+
     /*
      * Specify the fileSystem of azure blobFS. Type: string (or Expression with resultType string).
      */
@@ -26,6 +34,16 @@ public final class AzureBlobFSLocation extends DatasetLocation {
      * Creates an instance of AzureBlobFSLocation class.
      */
     public AzureBlobFSLocation() {
+    }
+
+    /**
+     * Get the type property: Type of dataset storage location.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

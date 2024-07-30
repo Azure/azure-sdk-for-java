@@ -5,59 +5,56 @@ package com.azure.ai.translation.text.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties of the target dictionary language.
  */
 @Immutable
-public final class TargetDictionaryLanguage {
+public final class TargetDictionaryLanguage implements JsonSerializable<TargetDictionaryLanguage> {
 
     /*
      * Display name of the language in the locale requested via Accept-Language header.
      */
     @Generated
-    @JsonProperty(value = "name")
-    private String name;
+    private final String name;
 
     /*
      * Display name of the language in the locale native for this language.
      */
     @Generated
-    @JsonProperty(value = "nativeName")
-    private String nativeName;
+    private final String nativeName;
 
     /*
      * Directionality, which is rtl for right-to-left languages or ltr for left-to-right languages.
      */
     @Generated
-    @JsonProperty(value = "dir")
-    private String dir;
+    private final LanguageDirectionality directionality;
 
     /*
      * Language code identifying the target language.
      */
     @Generated
-    @JsonProperty(value = "code")
-    private String code;
+    private final String code;
 
     /**
      * Creates an instance of TargetDictionaryLanguage class.
      *
      * @param name the name value to set.
      * @param nativeName the nativeName value to set.
-     * @param dir the dir value to set.
+     * @param directionality the directionality value to set.
      * @param code the code value to set.
      */
     @Generated
-    @JsonCreator
-    private TargetDictionaryLanguage(@JsonProperty(value = "name") String name,
-        @JsonProperty(value = "nativeName") String nativeName, @JsonProperty(value = "dir") String dir,
-        @JsonProperty(value = "code") String code) {
+    private TargetDictionaryLanguage(String name, String nativeName, LanguageDirectionality directionality,
+        String code) {
         this.name = name;
         this.nativeName = nativeName;
-        this.dir = dir;
+        this.directionality = directionality;
         this.code = code;
     }
 
@@ -82,14 +79,14 @@ public final class TargetDictionaryLanguage {
     }
 
     /**
-     * Get the dir property: Directionality, which is rtl for right-to-left languages or ltr for left-to-right
-     * languages.
+     * Get the directionality property: Directionality, which is rtl for right-to-left languages or ltr for
+     * left-to-right languages.
      *
-     * @return the dir value.
+     * @return the directionality value.
      */
     @Generated
-    public String getDir() {
-        return this.dir;
+    public LanguageDirectionality getDirectionality() {
+        return this.directionality;
     }
 
     /**
@@ -100,5 +97,54 @@ public final class TargetDictionaryLanguage {
     @Generated
     public String getCode() {
         return this.code;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("nativeName", this.nativeName);
+        jsonWriter.writeStringField("dir", this.directionality == null ? null : this.directionality.toString());
+        jsonWriter.writeStringField("code", this.code);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TargetDictionaryLanguage from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TargetDictionaryLanguage if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TargetDictionaryLanguage.
+     */
+    @Generated
+    public static TargetDictionaryLanguage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String name = null;
+            String nativeName = null;
+            LanguageDirectionality directionality = null;
+            String code = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("nativeName".equals(fieldName)) {
+                    nativeName = reader.getString();
+                } else if ("dir".equals(fieldName)) {
+                    directionality = LanguageDirectionality.fromString(reader.getString());
+                } else if ("code".equals(fieldName)) {
+                    code = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new TargetDictionaryLanguage(name, nativeName, directionality, code);
+        });
     }
 }

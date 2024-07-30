@@ -12,8 +12,8 @@ import com.azure.resourcemanager.netapp.models.UpdateNetworkSiblingSetRequest;
  */
 public final class NetAppResourceUpdateNetworkSiblingSetSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/
-     * NetworkSiblingSet_Update.json
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/NetworkSiblingSet_Update.json
      */
     /**
      * Sample code: NetworkFeatures_Update.
@@ -21,11 +21,12 @@ public final class NetAppResourceUpdateNetworkSiblingSetSamples {
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void networkFeaturesUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.netAppResources().updateNetworkSiblingSet("eastus", new UpdateNetworkSiblingSetRequest()
-            .withNetworkSiblingSetId("9760acf5-4638-11e7-9bdb-020073ca3333")
-            .withSubnetId(
-                "/subscriptions/9760acf5-4638-11e7-9bdb-020073ca7778/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/testSubnet")
-            .withNetworkSiblingSetStateId("12345_44420.8001578125").withNetworkFeatures(NetworkFeatures.STANDARD),
-            com.azure.core.util.Context.NONE);
+        manager.netAppResources()
+            .updateNetworkSiblingSet("eastus", new UpdateNetworkSiblingSetRequest()
+                .withNetworkSiblingSetId("9760acf5-4638-11e7-9bdb-020073ca3333")
+                .withSubnetId(
+                    "/subscriptions/9760acf5-4638-11e7-9bdb-020073ca7778/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/testSubnet")
+                .withNetworkSiblingSetStateId("12345_44420.8001578125")
+                .withNetworkFeatures(NetworkFeatures.STANDARD), com.azure.core.util.Context.NONE);
     }
 }

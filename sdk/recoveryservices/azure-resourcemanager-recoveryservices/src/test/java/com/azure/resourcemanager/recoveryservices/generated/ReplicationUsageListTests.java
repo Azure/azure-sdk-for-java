@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ReplicationUsageListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReplicationUsageList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"monitoringSummary\":{\"unHealthyVmCount\":504319220,\"unHealthyProviderCount\":447712917,\"eventsCount\":1678603587,\"deprecatedProviderCount\":570858872,\"supportedProviderCount\":1317141227,\"unsupportedProviderCount\":218433295},\"jobsSummary\":{\"failedJobs\":1979108310,\"suspendedJobs\":749968711,\"inProgressJobs\":852848380},\"protectedItemCount\":1458962503,\"recoveryPlanCount\":1604398792,\"registeredServersCount\":470539276,\"recoveryServicesProviderAuthType\":280766823},{\"monitoringSummary\":{\"unHealthyVmCount\":2006072305,\"unHealthyProviderCount\":365003669,\"eventsCount\":1426424508,\"deprecatedProviderCount\":1823577017,\"supportedProviderCount\":497746750,\"unsupportedProviderCount\":1463064081},\"jobsSummary\":{\"failedJobs\":1514587416,\"suspendedJobs\":58615730,\"inProgressJobs\":1850052044},\"protectedItemCount\":565101842,\"recoveryPlanCount\":1021775650,\"registeredServersCount\":934276292,\"recoveryServicesProviderAuthType\":2026517402}]}")
-                .toObject(ReplicationUsageList.class);
+        ReplicationUsageList model = BinaryData.fromString(
+            "{\"value\":[{\"monitoringSummary\":{\"unHealthyVmCount\":504319220,\"unHealthyProviderCount\":447712917,\"eventsCount\":1678603587,\"deprecatedProviderCount\":570858872,\"supportedProviderCount\":1317141227,\"unsupportedProviderCount\":218433295},\"jobsSummary\":{\"failedJobs\":1979108310,\"suspendedJobs\":749968711,\"inProgressJobs\":852848380},\"protectedItemCount\":1458962503,\"recoveryPlanCount\":1604398792,\"registeredServersCount\":470539276,\"recoveryServicesProviderAuthType\":280766823},{\"monitoringSummary\":{\"unHealthyVmCount\":2006072305,\"unHealthyProviderCount\":365003669,\"eventsCount\":1426424508,\"deprecatedProviderCount\":1823577017,\"supportedProviderCount\":497746750,\"unsupportedProviderCount\":1463064081},\"jobsSummary\":{\"failedJobs\":1514587416,\"suspendedJobs\":58615730,\"inProgressJobs\":1850052044},\"protectedItemCount\":565101842,\"recoveryPlanCount\":1021775650,\"registeredServersCount\":934276292,\"recoveryServicesProviderAuthType\":2026517402}]}")
+            .toObject(ReplicationUsageList.class);
         Assertions.assertEquals(504319220, model.value().get(0).monitoringSummary().unHealthyVmCount());
         Assertions.assertEquals(447712917, model.value().get(0).monitoringSummary().unHealthyProviderCount());
         Assertions.assertEquals(1678603587, model.value().get(0).monitoringSummary().eventsCount());
@@ -37,47 +35,35 @@ public final class ReplicationUsageListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReplicationUsageList model =
-            new ReplicationUsageList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ReplicationUsageInner()
-                                .withMonitoringSummary(
-                                    new MonitoringSummary()
-                                        .withUnHealthyVmCount(504319220)
-                                        .withUnHealthyProviderCount(447712917)
-                                        .withEventsCount(1678603587)
-                                        .withDeprecatedProviderCount(570858872)
-                                        .withSupportedProviderCount(1317141227)
-                                        .withUnsupportedProviderCount(218433295))
-                                .withJobsSummary(
-                                    new JobsSummary()
-                                        .withFailedJobs(1979108310)
-                                        .withSuspendedJobs(749968711)
-                                        .withInProgressJobs(852848380))
-                                .withProtectedItemCount(1458962503)
-                                .withRecoveryPlanCount(1604398792)
-                                .withRegisteredServersCount(470539276)
-                                .withRecoveryServicesProviderAuthType(280766823),
-                            new ReplicationUsageInner()
-                                .withMonitoringSummary(
-                                    new MonitoringSummary()
-                                        .withUnHealthyVmCount(2006072305)
-                                        .withUnHealthyProviderCount(365003669)
-                                        .withEventsCount(1426424508)
-                                        .withDeprecatedProviderCount(1823577017)
-                                        .withSupportedProviderCount(497746750)
-                                        .withUnsupportedProviderCount(1463064081))
-                                .withJobsSummary(
-                                    new JobsSummary()
-                                        .withFailedJobs(1514587416)
-                                        .withSuspendedJobs(58615730)
-                                        .withInProgressJobs(1850052044))
-                                .withProtectedItemCount(565101842)
-                                .withRecoveryPlanCount(1021775650)
-                                .withRegisteredServersCount(934276292)
-                                .withRecoveryServicesProviderAuthType(2026517402)));
+        ReplicationUsageList model = new ReplicationUsageList().withValue(Arrays.asList(
+            new ReplicationUsageInner()
+                .withMonitoringSummary(new MonitoringSummary().withUnHealthyVmCount(504319220)
+                    .withUnHealthyProviderCount(447712917)
+                    .withEventsCount(1678603587)
+                    .withDeprecatedProviderCount(570858872)
+                    .withSupportedProviderCount(1317141227)
+                    .withUnsupportedProviderCount(218433295))
+                .withJobsSummary(new JobsSummary().withFailedJobs(1979108310)
+                    .withSuspendedJobs(749968711)
+                    .withInProgressJobs(852848380))
+                .withProtectedItemCount(1458962503)
+                .withRecoveryPlanCount(1604398792)
+                .withRegisteredServersCount(470539276)
+                .withRecoveryServicesProviderAuthType(280766823),
+            new ReplicationUsageInner()
+                .withMonitoringSummary(new MonitoringSummary().withUnHealthyVmCount(2006072305)
+                    .withUnHealthyProviderCount(365003669)
+                    .withEventsCount(1426424508)
+                    .withDeprecatedProviderCount(1823577017)
+                    .withSupportedProviderCount(497746750)
+                    .withUnsupportedProviderCount(1463064081))
+                .withJobsSummary(new JobsSummary().withFailedJobs(1514587416)
+                    .withSuspendedJobs(58615730)
+                    .withInProgressJobs(1850052044))
+                .withProtectedItemCount(565101842)
+                .withRecoveryPlanCount(1021775650)
+                .withRegisteredServersCount(934276292)
+                .withRecoveryServicesProviderAuthType(2026517402)));
         model = BinaryData.fromObject(model).toObject(ReplicationUsageList.class);
         Assertions.assertEquals(504319220, model.value().get(0).monitoringSummary().unHealthyVmCount());
         Assertions.assertEquals(447712917, model.value().get(0).monitoringSummary().unHealthyProviderCount());

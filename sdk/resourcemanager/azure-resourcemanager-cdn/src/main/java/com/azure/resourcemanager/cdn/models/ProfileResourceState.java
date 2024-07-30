@@ -8,38 +8,58 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Resource status of the profile. */
+/**
+ * Resource status of the profile.
+ */
 public final class ProfileResourceState extends ExpandableStringEnum<ProfileResourceState> {
-    /** Static value Creating for ProfileResourceState. */
+    /**
+     * Static value Creating for ProfileResourceState.
+     */
     public static final ProfileResourceState CREATING = fromString("Creating");
 
-    /** Static value Active for ProfileResourceState. */
+    /**
+     * Static value Active for ProfileResourceState.
+     */
     public static final ProfileResourceState ACTIVE = fromString("Active");
 
-    /** Static value Deleting for ProfileResourceState. */
+    /**
+     * Static value Deleting for ProfileResourceState.
+     */
     public static final ProfileResourceState DELETING = fromString("Deleting");
 
-    /** Static value Disabled for ProfileResourceState. */
+    /**
+     * Static value Disabled for ProfileResourceState.
+     */
     public static final ProfileResourceState DISABLED = fromString("Disabled");
 
-    /** Static value Migrating for ProfileResourceState. */
+    /**
+     * Static value Migrating for ProfileResourceState.
+     */
     public static final ProfileResourceState MIGRATING = fromString("Migrating");
 
-    /** Static value Migrated for ProfileResourceState. */
+    /**
+     * Static value Migrated for ProfileResourceState.
+     */
     public static final ProfileResourceState MIGRATED = fromString("Migrated");
 
-    /** Static value PendingMigrationCommit for ProfileResourceState. */
+    /**
+     * Static value PendingMigrationCommit for ProfileResourceState.
+     */
     public static final ProfileResourceState PENDING_MIGRATION_COMMIT = fromString("PendingMigrationCommit");
 
-    /** Static value CommittingMigration for ProfileResourceState. */
+    /**
+     * Static value CommittingMigration for ProfileResourceState.
+     */
     public static final ProfileResourceState COMMITTING_MIGRATION = fromString("CommittingMigration");
 
-    /** Static value AbortingMigration for ProfileResourceState. */
+    /**
+     * Static value AbortingMigration for ProfileResourceState.
+     */
     public static final ProfileResourceState ABORTING_MIGRATION = fromString("AbortingMigration");
 
     /**
      * Creates a new instance of ProfileResourceState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -48,7 +68,7 @@ public final class ProfileResourceState extends ExpandableStringEnum<ProfileReso
 
     /**
      * Creates or finds a ProfileResourceState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ProfileResourceState.
      */
@@ -59,7 +79,7 @@ public final class ProfileResourceState extends ExpandableStringEnum<ProfileReso
 
     /**
      * Gets known ProfileResourceState values.
-     *
+     * 
      * @return known ProfileResourceState values.
      */
     public static Collection<ProfileResourceState> values() {

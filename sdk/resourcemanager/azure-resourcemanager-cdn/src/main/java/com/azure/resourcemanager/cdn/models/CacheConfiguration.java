@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cdn.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Caching settings for a caching-type route. To disable caching, do not provide a cacheConfiguration object. */
+/**
+ * Caching settings for a caching-type route. To disable caching, do not provide a cacheConfiguration object.
+ */
 @Fluent
 public final class CacheConfiguration {
     /*
@@ -43,7 +45,9 @@ public final class CacheConfiguration {
     @JsonProperty(value = "cacheDuration")
     private String cacheDuration;
 
-    /** Creates an instance of CacheConfiguration class. */
+    /**
+     * Creates an instance of CacheConfiguration class.
+     */
     public CacheConfiguration() {
     }
 
@@ -51,7 +55,7 @@ public final class CacheConfiguration {
      * Get the queryStringCachingBehavior property: Defines how Frontdoor caches requests that include query strings.
      * You can ignore any query strings when caching, ignore specific query strings, cache every request with a unique
      * URL, or cache specific query strings.
-     *
+     * 
      * @return the queryStringCachingBehavior value.
      */
     public RuleQueryStringCachingBehavior queryStringCachingBehavior() {
@@ -62,19 +66,19 @@ public final class CacheConfiguration {
      * Set the queryStringCachingBehavior property: Defines how Frontdoor caches requests that include query strings.
      * You can ignore any query strings when caching, ignore specific query strings, cache every request with a unique
      * URL, or cache specific query strings.
-     *
+     * 
      * @param queryStringCachingBehavior the queryStringCachingBehavior value to set.
      * @return the CacheConfiguration object itself.
      */
-    public CacheConfiguration withQueryStringCachingBehavior(
-        RuleQueryStringCachingBehavior queryStringCachingBehavior) {
+    public CacheConfiguration
+        withQueryStringCachingBehavior(RuleQueryStringCachingBehavior queryStringCachingBehavior) {
         this.queryStringCachingBehavior = queryStringCachingBehavior;
         return this;
     }
 
     /**
      * Get the queryParameters property: query parameters to include or exclude (comma separated).
-     *
+     * 
      * @return the queryParameters value.
      */
     public String queryParameters() {
@@ -83,7 +87,7 @@ public final class CacheConfiguration {
 
     /**
      * Set the queryParameters property: query parameters to include or exclude (comma separated).
-     *
+     * 
      * @param queryParameters the queryParameters value to set.
      * @return the CacheConfiguration object itself.
      */
@@ -96,7 +100,7 @@ public final class CacheConfiguration {
      * Get the isCompressionEnabled property: Indicates whether content compression is enabled. If compression is
      * enabled, content will be served as compressed if user requests for a compressed version. Content won't be
      * compressed on AzureFrontDoor when requested content is smaller than 1 byte or larger than 1 MB.
-     *
+     * 
      * @return the isCompressionEnabled value.
      */
     public RuleIsCompressionEnabled isCompressionEnabled() {
@@ -107,7 +111,7 @@ public final class CacheConfiguration {
      * Set the isCompressionEnabled property: Indicates whether content compression is enabled. If compression is
      * enabled, content will be served as compressed if user requests for a compressed version. Content won't be
      * compressed on AzureFrontDoor when requested content is smaller than 1 byte or larger than 1 MB.
-     *
+     * 
      * @param isCompressionEnabled the isCompressionEnabled value to set.
      * @return the CacheConfiguration object itself.
      */
@@ -118,7 +122,7 @@ public final class CacheConfiguration {
 
     /**
      * Get the cacheBehavior property: Caching behavior for the requests.
-     *
+     * 
      * @return the cacheBehavior value.
      */
     public RuleCacheBehavior cacheBehavior() {
@@ -127,7 +131,7 @@ public final class CacheConfiguration {
 
     /**
      * Set the cacheBehavior property: Caching behavior for the requests.
-     *
+     * 
      * @param cacheBehavior the cacheBehavior value to set.
      * @return the CacheConfiguration object itself.
      */
@@ -139,7 +143,7 @@ public final class CacheConfiguration {
     /**
      * Get the cacheDuration property: The duration for which the content needs to be cached. Allowed format is
      * [d.]hh:mm:ss.
-     *
+     * 
      * @return the cacheDuration value.
      */
     public String cacheDuration() {
@@ -149,7 +153,7 @@ public final class CacheConfiguration {
     /**
      * Set the cacheDuration property: The duration for which the content needs to be cached. Allowed format is
      * [d.]hh:mm:ss.
-     *
+     * 
      * @param cacheDuration the cacheDuration value to set.
      * @return the CacheConfiguration object itself.
      */
@@ -160,7 +164,7 @@ public final class CacheConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

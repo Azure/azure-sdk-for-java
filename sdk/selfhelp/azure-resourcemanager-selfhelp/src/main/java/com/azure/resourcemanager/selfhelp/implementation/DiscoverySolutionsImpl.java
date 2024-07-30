@@ -25,16 +25,14 @@ public final class DiscoverySolutionsImpl implements DiscoverySolutions {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<SolutionMetadataResource> list(String scope) {
-        PagedIterable<SolutionMetadataResourceInner> inner = this.serviceClient().list(scope);
-        return Utils.mapPage(inner, inner1 -> new SolutionMetadataResourceImpl(inner1, this.manager()));
+    public PagedIterable<SolutionMetadataResource> list() {
+        PagedIterable<SolutionMetadataResourceInner> inner = this.serviceClient().list();
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SolutionMetadataResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<SolutionMetadataResource> list(String scope, String filter, String skiptoken,
-        Context context) {
-        PagedIterable<SolutionMetadataResourceInner> inner
-            = this.serviceClient().list(scope, filter, skiptoken, context);
-        return Utils.mapPage(inner, inner1 -> new SolutionMetadataResourceImpl(inner1, this.manager()));
+    public PagedIterable<SolutionMetadataResource> list(String filter, String skiptoken, Context context) {
+        PagedIterable<SolutionMetadataResourceInner> inner = this.serviceClient().list(filter, skiptoken, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SolutionMetadataResourceImpl(inner1, this.manager()));
     }
 
     private DiscoverySolutionsClient serviceClient() {

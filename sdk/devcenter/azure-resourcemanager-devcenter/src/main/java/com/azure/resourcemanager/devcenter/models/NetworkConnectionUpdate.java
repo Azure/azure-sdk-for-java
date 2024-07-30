@@ -21,27 +21,33 @@ public final class NetworkConnectionUpdate extends TrackedResourceUpdate {
     @JsonProperty(value = "properties")
     private NetworkConnectionUpdateProperties innerProperties;
 
-    /** Creates an instance of NetworkConnectionUpdate class. */
+    /**
+     * Creates an instance of NetworkConnectionUpdate class.
+     */
     public NetworkConnectionUpdate() {
     }
 
     /**
      * Get the innerProperties property: Properties of a network connection resource to be updated.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NetworkConnectionUpdateProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkConnectionUpdate withTags(Map<String, String> tags) {
         super.withTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkConnectionUpdate withLocation(String location) {
         super.withLocation(location);
@@ -50,7 +56,7 @@ public final class NetworkConnectionUpdate extends TrackedResourceUpdate {
 
     /**
      * Get the subnetId property: The subnet to attach Virtual Machines to.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -59,7 +65,7 @@ public final class NetworkConnectionUpdate extends TrackedResourceUpdate {
 
     /**
      * Set the subnetId property: The subnet to attach Virtual Machines to.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the NetworkConnectionUpdate object itself.
      */
@@ -73,7 +79,7 @@ public final class NetworkConnectionUpdate extends TrackedResourceUpdate {
 
     /**
      * Get the domainName property: Active Directory domain name.
-     *
+     * 
      * @return the domainName value.
      */
     public String domainName() {
@@ -82,7 +88,7 @@ public final class NetworkConnectionUpdate extends TrackedResourceUpdate {
 
     /**
      * Set the domainName property: Active Directory domain name.
-     *
+     * 
      * @param domainName the domainName value to set.
      * @return the NetworkConnectionUpdate object itself.
      */
@@ -96,7 +102,7 @@ public final class NetworkConnectionUpdate extends TrackedResourceUpdate {
 
     /**
      * Get the organizationUnit property: Active Directory domain Organization Unit (OU).
-     *
+     * 
      * @return the organizationUnit value.
      */
     public String organizationUnit() {
@@ -105,7 +111,7 @@ public final class NetworkConnectionUpdate extends TrackedResourceUpdate {
 
     /**
      * Set the organizationUnit property: Active Directory domain Organization Unit (OU).
-     *
+     * 
      * @param organizationUnit the organizationUnit value to set.
      * @return the NetworkConnectionUpdate object itself.
      */
@@ -119,8 +125,8 @@ public final class NetworkConnectionUpdate extends TrackedResourceUpdate {
 
     /**
      * Get the domainUsername property: The username of an Active Directory account (user or service account) that has
-     * permissions to create computer objects in Active Directory. Required format: admin@contoso.com.
-     *
+     * permissions to create computer objects in Active Directory. Required format: admin&#064;contoso.com.
+     * 
      * @return the domainUsername value.
      */
     public String domainUsername() {
@@ -129,8 +135,8 @@ public final class NetworkConnectionUpdate extends TrackedResourceUpdate {
 
     /**
      * Set the domainUsername property: The username of an Active Directory account (user or service account) that has
-     * permissions to create computer objects in Active Directory. Required format: admin@contoso.com.
-     *
+     * permissions to create computer objects in Active Directory. Required format: admin&#064;contoso.com.
+     * 
      * @param domainUsername the domainUsername value to set.
      * @return the NetworkConnectionUpdate object itself.
      */
@@ -144,7 +150,7 @@ public final class NetworkConnectionUpdate extends TrackedResourceUpdate {
 
     /**
      * Get the domainPassword property: The password for the account used to join domain.
-     *
+     * 
      * @return the domainPassword value.
      */
     public String domainPassword() {
@@ -153,7 +159,7 @@ public final class NetworkConnectionUpdate extends TrackedResourceUpdate {
 
     /**
      * Set the domainPassword property: The password for the account used to join domain.
-     *
+     * 
      * @param domainPassword the domainPassword value to set.
      * @return the NetworkConnectionUpdate object itself.
      */
@@ -167,7 +173,7 @@ public final class NetworkConnectionUpdate extends TrackedResourceUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

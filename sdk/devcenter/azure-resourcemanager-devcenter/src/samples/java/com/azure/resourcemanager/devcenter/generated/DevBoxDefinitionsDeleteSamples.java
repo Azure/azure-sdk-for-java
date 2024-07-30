@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-/** Samples for DevBoxDefinitions Delete. */
+/**
+ * Samples for DevBoxDefinitions Delete.
+ */
 public final class DevBoxDefinitionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2023-10-01-preview/examples/DevBoxDefinitions_Delete.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/DevBoxDefinitions_Delete.json
      */
     /**
      * Sample code: DevBoxDefinitions_Delete.
-     *
+     * 
      * @param manager Entry point to DevCenterManager.
      */
     public static void devBoxDefinitionsDelete(com.azure.resourcemanager.devcenter.DevCenterManager manager) {

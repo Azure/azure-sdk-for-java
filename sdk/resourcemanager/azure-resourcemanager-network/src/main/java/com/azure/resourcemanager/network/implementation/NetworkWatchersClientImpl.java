@@ -321,7 +321,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -365,7 +365,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, networkWatcherName, apiVersion,
@@ -455,7 +455,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -494,7 +494,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, networkWatcherName, apiVersion,
@@ -578,7 +578,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -616,7 +616,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, networkWatcherName, apiVersion,
@@ -789,7 +789,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -833,7 +833,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), resourceGroupName, networkWatcherName, apiVersion,
@@ -916,7 +916,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -952,7 +952,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1038,7 +1038,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1068,7 +1068,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1164,7 +1164,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getTopology(this.client.getEndpoint(), resourceGroupName,
@@ -1209,7 +1209,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getTopology(this.client.getEndpoint(), resourceGroupName, networkWatcherName, apiVersion,
@@ -1305,7 +1305,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.verifyIpFlow(this.client.getEndpoint(), resourceGroupName,
@@ -1350,7 +1350,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.verifyIpFlow(this.client.getEndpoint(), resourceGroupName, networkWatcherName, apiVersion,
@@ -1543,7 +1543,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getNextHop(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -1587,7 +1587,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getNextHop(this.client.getEndpoint(), resourceGroupName, networkWatcherName, apiVersion,
@@ -1779,7 +1779,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getVMSecurityRules(this.client.getEndpoint(), resourceGroupName,
@@ -1824,7 +1824,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getVMSecurityRules(this.client.getEndpoint(), resourceGroupName, networkWatcherName, apiVersion,
@@ -2027,7 +2027,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getTroubleshooting(this.client.getEndpoint(), resourceGroupName,
@@ -2072,7 +2072,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getTroubleshooting(this.client.getEndpoint(), resourceGroupName, networkWatcherName, apiVersion,
@@ -2266,7 +2266,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getTroubleshootingResult(this.client.getEndpoint(), resourceGroupName,
@@ -2311,7 +2311,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getTroubleshootingResult(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -2511,7 +2511,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.setFlowLogConfiguration(this.client.getEndpoint(), resourceGroupName,
@@ -2556,7 +2556,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.setFlowLogConfiguration(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -2757,7 +2757,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getFlowLogStatus(this.client.getEndpoint(), resourceGroupName,
@@ -2802,7 +2802,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getFlowLogStatus(this.client.getEndpoint(), resourceGroupName, networkWatcherName, apiVersion,
@@ -3003,7 +3003,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.checkConnectivity(this.client.getEndpoint(), resourceGroupName,
@@ -3049,7 +3049,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.checkConnectivity(this.client.getEndpoint(), resourceGroupName, networkWatcherName, apiVersion,
@@ -3254,7 +3254,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getAzureReachabilityReport(this.client.getEndpoint(), resourceGroupName,
@@ -3299,7 +3299,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getAzureReachabilityReport(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -3508,7 +3508,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAvailableProviders(this.client.getEndpoint(), resourceGroupName,
@@ -3554,7 +3554,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listAvailableProviders(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
@@ -3763,7 +3763,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3813,7 +3813,7 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getNetworkConfigurationDiagnostic(this.client.getEndpoint(), resourceGroupName,
@@ -3971,7 +3971,8 @@ public final class NetworkWatchersClientImpl implements InnerSupportsGet<Network
         String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters,
         Context context) {
         return beginGetNetworkConfigurationDiagnosticAsync(resourceGroupName, networkWatcherName, parameters, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

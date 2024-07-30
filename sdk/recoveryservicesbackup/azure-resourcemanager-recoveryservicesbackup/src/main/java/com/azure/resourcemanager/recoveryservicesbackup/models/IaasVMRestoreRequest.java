@@ -7,6 +7,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,9 +17,9 @@ import java.util.List;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "objectType",
-    defaultImpl = IaasVMRestoreRequest.class)
+    defaultImpl = IaasVMRestoreRequest.class,
+    visible = true)
 @JsonTypeName("IaasVMRestoreRequest")
 @JsonSubTypes({
     @JsonSubTypes.Type(
@@ -26,6 +27,13 @@ import java.util.List;
         value = IaasVMRestoreWithRehydrationRequest.class) })
 @Fluent
 public class IaasVMRestoreRequest extends RestoreRequest {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "objectType", required = true)
+    private String objectType = "IaasVMRestoreRequest";
+
     /*
      * ID of the backup copy to be recovered.
      */
@@ -73,16 +81,14 @@ public class IaasVMRestoreRequest extends RestoreRequest {
 
     /*
      * Subnet ID, is the subnet ID associated with the to be restored VM. For Classic VMs it would be
-     * {VnetID}/Subnet/{SubnetName} and, for the Azure Resource Manager VMs it would be ARM resource ID used to
-     * represent
+     * {VnetID}/Subnet/{SubnetName} and, for the Azure Resource Manager VMs it would be ARM resource ID used to represent
      * the subnet.
      */
     @JsonProperty(value = "subnetId")
     private String subnetId;
 
     /*
-     * Fully qualified ARM ID of the domain name to be associated to the VM being restored. This applies only to
-     * Classic
+     * Fully qualified ARM ID of the domain name to be associated to the VM being restored. This applies only to Classic
      * Virtual Machines.
      */
     @JsonProperty(value = "targetDomainNameId")
@@ -132,8 +138,7 @@ public class IaasVMRestoreRequest extends RestoreRequest {
     private Boolean restoreWithManagedDisks;
 
     /*
-     * DiskEncryptionSet's ID - needed if the VM needs to be encrypted at rest during restore with customer managed
-     * key.
+     * DiskEncryptionSet's ID - needed if the VM needs to be encrypted at rest during restore with customer managed key.
      */
     @JsonProperty(value = "diskEncryptionSetId")
     private String diskEncryptionSetId;
@@ -179,6 +184,17 @@ public class IaasVMRestoreRequest extends RestoreRequest {
      * Creates an instance of IaasVMRestoreRequest class.
      */
     public IaasVMRestoreRequest() {
+    }
+
+    /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
     }
 
     /**
@@ -264,8 +280,8 @@ public class IaasVMRestoreRequest extends RestoreRequest {
     }
 
     /**
-     * Get the targetResourceGroupId property: This is the ARM Id of the resource group that you want to create for
-     * this Virtual machine and other artifacts.
+     * Get the targetResourceGroupId property: This is the ARM Id of the resource group that you want to create for this
+     * Virtual machine and other artifacts.
      * For e.g. /subscriptions/{subId}/resourcegroups/{rg}.
      * 
      * @return the targetResourceGroupId value.
@@ -275,8 +291,8 @@ public class IaasVMRestoreRequest extends RestoreRequest {
     }
 
     /**
-     * Set the targetResourceGroupId property: This is the ARM Id of the resource group that you want to create for
-     * this Virtual machine and other artifacts.
+     * Set the targetResourceGroupId property: This is the ARM Id of the resource group that you want to create for this
+     * Virtual machine and other artifacts.
      * For e.g. /subscriptions/{subId}/resourcegroups/{rg}.
      * 
      * @param targetResourceGroupId the targetResourceGroupId value to set.
@@ -680,6 +696,15 @@ public class IaasVMRestoreRequest extends RestoreRequest {
     public IaasVMRestoreRequest
         withTargetDiskNetworkAccessSettings(TargetDiskNetworkAccessSettings targetDiskNetworkAccessSettings) {
         this.targetDiskNetworkAccessSettings = targetDiskNetworkAccessSettings;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IaasVMRestoreRequest withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
+        super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
         return this;
     }
 

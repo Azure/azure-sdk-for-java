@@ -14,7 +14,7 @@ import java.util.Map;
 public final class SshPublicKeysUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * sshPublicKeyExamples/SshPublicKey_Update_MinimumSet_Gen.json
      */
     /**
@@ -23,13 +23,17 @@ public final class SshPublicKeysUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void sshPublicKeyUpdateMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getSshPublicKeys().updateWithResponse("rgcompute",
-            "aaaaaaaaaaa", new SshPublicKeyUpdateResource(), com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getSshPublicKeys()
+            .updateWithResponse("rgcompute", "aaaaaaaaaaa", new SshPublicKeyUpdateResource(),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * sshPublicKeyExamples/SshPublicKey_Update_MaximumSet_Gen.json
      */
     /**
@@ -38,10 +42,14 @@ public final class SshPublicKeysUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void sshPublicKeyUpdateMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getSshPublicKeys().updateWithResponse(
-            "rgcompute", "aaaaaaaaaaaa", new SshPublicKeyUpdateResource()
-                .withTags(mapOf("key2854", "fakeTokenPlaceholder")).withPublicKey("fakeTokenPlaceholder"),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getSshPublicKeys()
+            .updateWithResponse("rgcompute", "aaaaaaaaaaaa",
+                new SshPublicKeyUpdateResource().withTags(mapOf("key2854", "fakeTokenPlaceholder"))
+                    .withPublicKey("fakeTokenPlaceholder"),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

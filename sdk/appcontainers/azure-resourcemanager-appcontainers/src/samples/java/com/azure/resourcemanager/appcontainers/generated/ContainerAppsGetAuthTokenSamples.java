@@ -4,18 +4,22 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-/** Samples for ContainerApps GetAuthToken. */
+/**
+ * Samples for ContainerApps GetAuthToken.
+ */
 public final class ContainerAppsGetAuthTokenSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/ContainerApps_GetAuthToken.json
+     * x-ms-original-file:
+     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/ContainerApps_GetAuthToken.
+     * json
      */
     /**
      * Sample code: Get Container App Auth Token.
-     *
+     * 
      * @param manager Entry point to ContainerAppsApiManager.
      */
-    public static void getContainerAppAuthToken(
-        com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
+    public static void
+        getContainerAppAuthToken(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
         manager.containerApps().getAuthTokenWithResponse("rg", "testcontainerApp0", com.azure.core.util.Context.NONE);
     }
 }

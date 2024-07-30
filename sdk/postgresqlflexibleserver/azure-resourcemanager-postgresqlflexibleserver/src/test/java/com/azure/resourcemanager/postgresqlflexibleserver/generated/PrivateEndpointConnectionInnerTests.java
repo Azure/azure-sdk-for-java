@@ -25,10 +25,12 @@ public final class PrivateEndpointConnectionInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateEndpointConnectionInner model = new PrivateEndpointConnectionInner()
-            .withPrivateEndpoint(new PrivateEndpoint()).withPrivateLinkServiceConnectionState(
-                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
-                    .withDescription("py").withActionsRequired("klwndnhjdauwhv"));
+        PrivateEndpointConnectionInner model
+            = new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
+                .withPrivateLinkServiceConnectionState(
+                    new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                        .withDescription("py")
+                        .withActionsRequired("klwndnhjdauwhv"));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionInner.class);
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
             model.privateLinkServiceConnectionState().status());

@@ -6,56 +6,39 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.BackupPolicy;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class BackupPoliciesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"etag\":\"jbsahrtdtpde\",\"properties\":{\"backupPolicyId\":\"ac\",\"provisioningState\":\"m\",\"dailyBackupsToKeep\":818366731,\"weeklyBackupsToKeep\":1927909421,\"monthlyBackupsToKeep\":958421959,\"volumesAssigned\":49810118,\"enabled\":false,\"volumeBackups\":[{\"volumeName\":\"gdirazf\",\"backupsCount\":1368173114,\"policyEnabled\":false}]},\"location\":\"bmdujtmvcopexc\",\"tags\":{\"ltqs\":\"rbuhhlky\",\"kffdjktsys\":\"ogtu\",\"jtkbusqogsfika\":\"dfvclglxnfu\",\"arujt\":\"ians\"},\"id\":\"iqxf\",\"name\":\"yjqtt\",\"type\":\"wkpqhjpenuygbq\"}";
+            = "{\"etag\":\"qhndvnoam\",\"properties\":{\"backupPolicyId\":\"sehaohdjhhflzok\",\"provisioningState\":\"ox\",\"dailyBackupsToKeep\":220709617,\"weeklyBackupsToKeep\":1387277479,\"monthlyBackupsToKeep\":699384305,\"volumesAssigned\":1894197760,\"enabled\":true,\"volumeBackups\":[{\"volumeName\":\"atftgzpnpbsw\",\"volumeResourceId\":\"floccsrmozih\",\"backupsCount\":2097389313,\"policyEnabled\":false}]},\"location\":\"txx\",\"tags\":{\"lrmcaykg\":\"jcxcjxgrytfmpcyc\"},\"id\":\"noxuztrksx\",\"name\":\"pndfcpfnznt\",\"type\":\"jtwkjaos\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        NetAppFilesManager manager = NetAppFilesManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        NetAppFilesManager manager = NetAppFilesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         BackupPolicy response = manager.backupPolicies()
-            .getWithResponse("amlbnseqacjjvpil", "uooqjagmdit", "ueio", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("hczznvf", "ycjsx", "wwixzvumw", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("bmdujtmvcopexc", response.location());
-        Assertions.assertEquals("rbuhhlky", response.tags().get("ltqs"));
-        Assertions.assertEquals(818366731, response.dailyBackupsToKeep());
-        Assertions.assertEquals(1927909421, response.weeklyBackupsToKeep());
-        Assertions.assertEquals(958421959, response.monthlyBackupsToKeep());
-        Assertions.assertEquals(false, response.enabled());
+        Assertions.assertEquals("txx", response.location());
+        Assertions.assertEquals("jcxcjxgrytfmpcyc", response.tags().get("lrmcaykg"));
+        Assertions.assertEquals(220709617, response.dailyBackupsToKeep());
+        Assertions.assertEquals(1387277479, response.weeklyBackupsToKeep());
+        Assertions.assertEquals(699384305, response.monthlyBackupsToKeep());
+        Assertions.assertEquals(true, response.enabled());
     }
 }

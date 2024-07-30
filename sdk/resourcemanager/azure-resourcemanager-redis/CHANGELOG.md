@@ -1,14 +1,42 @@
 # Release History
 
-## 2.37.0-beta.1 (Unreleased)
+## 2.41.0-beta.1 (Unreleased)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-03-01`.
+
+## 2.40.0 (2024-06-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.39.0 (2024-05-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.38.0 (2024-04-16)
 
 ### Features Added
 
-### Breaking Changes
+- Supported disabling public network access in `RedisCache` via `disablePublicNetworkAccess()`, for private link feature.
 
-### Bugs Fixed
+## 2.37.0 (2024-03-22)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.36.0 (2024-02-29)
 

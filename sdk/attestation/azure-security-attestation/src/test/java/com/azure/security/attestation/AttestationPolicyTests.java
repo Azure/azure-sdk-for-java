@@ -4,6 +4,7 @@ package com.azure.security.attestation;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Base64Util;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -30,7 +31,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
+@LiveOnly
 public class AttestationPolicyTests extends AttestationClientTestBase {
+    // LiveOnly because "JWT cannot be stored in recordings."
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getPolicyClients")
     void testGetAttestationPolicy(HttpClient client, String clientUri, AttestationType attestationType) {
@@ -372,6 +375,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         }
     }
 
+    @LiveOnly
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getPolicyClients")
     void testSetAttestationPolicyAadAsync(HttpClient httpClient, String clientUri, AttestationType attestationType) {
@@ -397,6 +401,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
             .verify();
     }
 
+    @LiveOnly
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getPolicyClients")
     void testSetAttestationPolicyWithResponseAsync(HttpClient httpClient, String clientUri,

@@ -6,16 +6,24 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity Teradata source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = TeradataSource.class, visible = true)
 @JsonTypeName("TeradataSource")
 @Fluent
 public final class TeradataSource extends TabularSource {
+    /*
+     * Copy source type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "TeradataSource";
+
     /*
      * Teradata query. Type: string (or Expression with resultType string).
      */
@@ -23,8 +31,8 @@ public final class TeradataSource extends TabularSource {
     private Object query;
 
     /*
-     * The partition mechanism that will be used for teradata read in parallel. Possible values include: "None",
-     * "Hash", "DynamicRange".
+     * The partition mechanism that will be used for teradata read in parallel. Possible values include: "None", "Hash",
+     * "DynamicRange".
      */
     @JsonProperty(value = "partitionOption")
     private Object partitionOption;
@@ -39,6 +47,16 @@ public final class TeradataSource extends TabularSource {
      * Creates an instance of TeradataSource class.
      */
     public TeradataSource() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

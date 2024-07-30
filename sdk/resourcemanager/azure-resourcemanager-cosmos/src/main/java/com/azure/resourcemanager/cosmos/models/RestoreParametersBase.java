@@ -6,6 +6,7 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 
 /**
@@ -14,9 +15,7 @@ import java.time.OffsetDateTime;
 @Fluent
 public class RestoreParametersBase {
     /*
-     * The id of the restorable database account from which the restore has to be initiated. For example:
-     * /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{
-     * restorableDatabaseAccountName}
+     * The id of the restorable database account from which the restore has to be initiated. For example: /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}
      */
     @JsonProperty(value = "restoreSource")
     private String restoreSource;
@@ -37,7 +36,7 @@ public class RestoreParametersBase {
      * Get the restoreSource property: The id of the restorable database account from which the restore has to be
      * initiated. For example:
      * /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}.
-     * 
+     *
      * @return the restoreSource value.
      */
     public String restoreSource() {
@@ -48,7 +47,7 @@ public class RestoreParametersBase {
      * Set the restoreSource property: The id of the restorable database account from which the restore has to be
      * initiated. For example:
      * /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}.
-     * 
+     *
      * @param restoreSource the restoreSource value to set.
      * @return the RestoreParametersBase object itself.
      */
@@ -59,7 +58,7 @@ public class RestoreParametersBase {
 
     /**
      * Get the restoreTimestampInUtc property: Time to which the account has to be restored (ISO-8601 format).
-     * 
+     *
      * @return the restoreTimestampInUtc value.
      */
     public OffsetDateTime restoreTimestampInUtc() {
@@ -68,7 +67,7 @@ public class RestoreParametersBase {
 
     /**
      * Set the restoreTimestampInUtc property: Time to which the account has to be restored (ISO-8601 format).
-     * 
+     *
      * @param restoreTimestampInUtc the restoreTimestampInUtc value to set.
      * @return the RestoreParametersBase object itself.
      */
@@ -79,7 +78,7 @@ public class RestoreParametersBase {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

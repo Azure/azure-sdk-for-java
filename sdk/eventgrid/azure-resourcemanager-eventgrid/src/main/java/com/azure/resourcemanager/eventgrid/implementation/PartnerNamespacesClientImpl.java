@@ -37,8 +37,8 @@ import com.azure.resourcemanager.eventgrid.fluent.PartnerNamespacesClient;
 import com.azure.resourcemanager.eventgrid.fluent.models.PartnerNamespaceInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.PartnerNamespaceSharedAccessKeysInner;
 import com.azure.resourcemanager.eventgrid.models.PartnerNamespaceRegenerateKeyRequest;
-import com.azure.resourcemanager.eventgrid.models.PartnerNamespaceUpdateParameters;
 import com.azure.resourcemanager.eventgrid.models.PartnerNamespacesListResult;
+import com.azure.resourcemanager.eventgrid.models.PartnerNamespaceUpdateParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -1014,7 +1014,8 @@ public final class PartnerNamespacesClientImpl implements PartnerNamespacesClien
     private Mono<PartnerNamespaceInner> updateAsync(String resourceGroupName, String partnerNamespaceName,
         PartnerNamespaceUpdateParameters partnerNamespaceUpdateParameters, Context context) {
         return beginUpdateAsync(resourceGroupName, partnerNamespaceName, partnerNamespaceUpdateParameters, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

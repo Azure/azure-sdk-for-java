@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AmazonRedshiftLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,21 @@ import java.util.Map;
 /**
  * Linked service for Amazon Redshift.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = AmazonRedshiftLinkedService.class,
+    visible = true)
 @JsonTypeName("AmazonRedshift")
 @Fluent
 public final class AmazonRedshiftLinkedService extends LinkedService {
+    /*
+     * Type of linked service.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "AmazonRedshift";
+
     /*
      * Amazon Redshift linked service properties.
      */
@@ -31,6 +43,16 @@ public final class AmazonRedshiftLinkedService extends LinkedService {
      * Creates an instance of AmazonRedshiftLinkedService class.
      */
     public AmazonRedshiftLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -177,8 +199,8 @@ public final class AmazonRedshiftLinkedService extends LinkedService {
     }
 
     /**
-     * Get the port property: The TCP port number that the Amazon Redshift server uses to listen for client
-     * connections. The default value is 5439. Type: integer (or Expression with resultType integer).
+     * Get the port property: The TCP port number that the Amazon Redshift server uses to listen for client connections.
+     * The default value is 5439. Type: integer (or Expression with resultType integer).
      * 
      * @return the port value.
      */
@@ -187,8 +209,8 @@ public final class AmazonRedshiftLinkedService extends LinkedService {
     }
 
     /**
-     * Set the port property: The TCP port number that the Amazon Redshift server uses to listen for client
-     * connections. The default value is 5439. Type: integer (or Expression with resultType integer).
+     * Set the port property: The TCP port number that the Amazon Redshift server uses to listen for client connections.
+     * The default value is 5439. Type: integer (or Expression with resultType integer).
      * 
      * @param port the port value to set.
      * @return the AmazonRedshiftLinkedService object itself.
@@ -202,8 +224,8 @@ public final class AmazonRedshiftLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -212,8 +234,8 @@ public final class AmazonRedshiftLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AmazonRedshiftLinkedService object itself.
@@ -235,8 +257,9 @@ public final class AmazonRedshiftLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model AmazonRedshiftLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model AmazonRedshiftLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

@@ -6,85 +6,49 @@ package com.azure.resourcemanager.frontdoor.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.frontdoor.FrontDoorManager;
 import com.azure.resourcemanager.frontdoor.models.AggregationInterval;
 import com.azure.resourcemanager.frontdoor.models.Timeseries;
 import com.azure.resourcemanager.frontdoor.models.TimeseriesAggregationInterval;
 import com.azure.resourcemanager.frontdoor.models.TimeseriesType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ReportsGetTimeseriesWithResponseMockTests {
     @Test
     public void testGetTimeseriesWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"endpoint\":\"c\",\"startDateTimeUTC\":\"ulehurqlr\",\"endDateTimeUTC\":\"fawey\",\"aggregationInterval\":\"Daily\",\"timeseriesType\":\"MeasurementCounts\",\"country\":\"jdxravjuqdbrx\",\"timeseriesData\":[{\"dateTimeUTC\":\"hbapxkiyf\",\"value\":36.266453},{\"dateTimeUTC\":\"ajb\",\"value\":46.209423},{\"dateTimeUTC\":\"duusioycblevpmcl\",\"value\":38.790684}]},\"location\":\"xkyxlzgs\",\"tags\":{\"fhbzffovwmbjlzq\":\"zzlt\",\"owftptnuwjtks\":\"czpgvdwnapfdq\",\"cgqyhleseyq\":\"h\"},\"id\":\"hvyeldotj\",\"name\":\"dkwisw\",\"type\":\"kukjtasb\"}";
 
-        String responseStr =
-            "{\"properties\":{\"endpoint\":\"sjhoiftxfkfwegpr\",\"startDateTimeUTC\":\"tillucbiqtg\",\"endDateTimeUTC\":\"ohmcwsld\",\"aggregationInterval\":\"Hourly\",\"timeseriesType\":\"MeasurementCounts\",\"country\":\"wbralllibphbqzm\",\"timeseriesData\":[]},\"location\":\"kakankjpdnjzhaj\",\"tags\":{\"y\":\"hjlmu\",\"opteecj\":\"primr\",\"zaum\":\"eislstvasylwx\",\"thwtzol\":\"eoohguufuzboyj\"},\"id\":\"a\",\"name\":\"mwmdxmebwjscjpa\",\"type\":\"lxveabfqx\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        FrontDoorManager manager = FrontDoorManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Timeseries response = manager.reports()
+            .getTimeseriesWithResponse("zhomewjjstliu", "qawmoaianc", "nvodrrs",
+                OffsetDateTime.parse("2021-05-12T12:02:35Z"), OffsetDateTime.parse("2021-04-13T01:02:19Z"),
+                TimeseriesAggregationInterval.HOURLY, TimeseriesType.LATENCY_P50, "dkxrxvvbxi", "kgfbqljnqkhy",
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        FrontDoorManager manager =
-            FrontDoorManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Timeseries response =
-            manager
-                .reports()
-                .getTimeseriesWithResponse(
-                    "wxezwzhok",
-                    "bwnhhtql",
-                    "ehgpp",
-                    OffsetDateTime.parse("2021-06-28T11:23:36Z"),
-                    OffsetDateTime.parse("2021-01-18T15:46:05Z"),
-                    TimeseriesAggregationInterval.DAILY,
-                    TimeseriesType.LATENCY_P95,
-                    "pfeoajvgcxtxjcsh",
-                    "afidltugsres",
-                    com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("kakankjpdnjzhaj", response.location());
-        Assertions.assertEquals("hjlmu", response.tags().get("y"));
-        Assertions.assertEquals("sjhoiftxfkfwegpr", response.endpoint());
-        Assertions.assertEquals("tillucbiqtg", response.startDateTimeUtc());
-        Assertions.assertEquals("ohmcwsld", response.endDateTimeUtc());
-        Assertions.assertEquals(AggregationInterval.HOURLY, response.aggregationInterval());
+        Assertions.assertEquals("xkyxlzgs", response.location());
+        Assertions.assertEquals("zzlt", response.tags().get("fhbzffovwmbjlzq"));
+        Assertions.assertEquals("c", response.endpoint());
+        Assertions.assertEquals("ulehurqlr", response.startDateTimeUtc());
+        Assertions.assertEquals("fawey", response.endDateTimeUtc());
+        Assertions.assertEquals(AggregationInterval.DAILY, response.aggregationInterval());
         Assertions.assertEquals(TimeseriesType.MEASUREMENT_COUNTS, response.timeseriesType());
-        Assertions.assertEquals("wbralllibphbqzm", response.country());
+        Assertions.assertEquals("jdxravjuqdbrx", response.country());
+        Assertions.assertEquals("hbapxkiyf", response.timeseriesData().get(0).dateTimeUtc());
+        Assertions.assertEquals(36.266453F, response.timeseriesData().get(0).value());
     }
 }

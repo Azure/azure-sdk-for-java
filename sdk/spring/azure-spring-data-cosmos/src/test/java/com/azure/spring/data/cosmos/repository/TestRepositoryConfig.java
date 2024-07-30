@@ -8,7 +8,6 @@ import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
-import com.azure.spring.data.cosmos.AbstractIntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
@@ -48,6 +47,9 @@ public class TestRepositoryConfig extends AbstractCosmosConfiguration {
 
     @Value("${cosmos.queryMetricsEnabled}")
     private boolean queryMetricsEnabled;
+
+    @Value("${cosmos.indexMetricsEnabled}")
+    private boolean indexMetricsEnabled;
 
     @Value("${cosmos.maxDegreeOfParallelism}")
     private int maxDegreeOfParallelism;
@@ -102,6 +104,7 @@ public class TestRepositoryConfig extends AbstractCosmosConfiguration {
     public CosmosConfig cosmosConfig() {
         return CosmosConfig.builder()
                            .enableQueryMetrics(queryMetricsEnabled)
+                           .enableIndexMetrics(indexMetricsEnabled)
                            .maxDegreeOfParallelism(maxDegreeOfParallelism)
                            .maxBufferedItemCount(maxBufferedItemCount)
                            .responseContinuationTokenLimitInKb(responseContinuationTokenLimitInKb)

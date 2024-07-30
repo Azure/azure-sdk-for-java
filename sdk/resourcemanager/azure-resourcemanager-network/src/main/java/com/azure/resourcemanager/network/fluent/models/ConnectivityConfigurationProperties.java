@@ -219,15 +219,17 @@ public final class ConnectivityConfigurationProperties {
      */
     public void validate() {
         if (connectivityTopology() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property connectivityTopology in model ConnectivityConfigurationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property connectivityTopology in model ConnectivityConfigurationProperties"));
         }
         if (hubs() != null) {
             hubs().forEach(e -> e.validate());
         }
         if (appliesToGroups() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property appliesToGroups in model ConnectivityConfigurationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property appliesToGroups in model ConnectivityConfigurationProperties"));
         } else {
             appliesToGroups().forEach(e -> e.validate());
         }

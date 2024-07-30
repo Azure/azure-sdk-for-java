@@ -35,10 +35,10 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitsClient;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitInner;
-import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitStatsInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitsArpTableListResultInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitsRoutesTableListResultInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitsRoutesTableSummaryListResultInner;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitStatsInner;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitListResult;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -227,7 +227,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, circuitName,
@@ -264,7 +264,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, circuitName, apiVersion,
@@ -430,7 +430,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -468,7 +468,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, circuitName, apiVersion,
@@ -557,7 +557,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, circuitName,
@@ -600,7 +600,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, circuitName, apiVersion,
@@ -791,7 +791,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName, circuitName,
@@ -834,7 +834,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), resourceGroupName, circuitName, apiVersion,
@@ -930,7 +930,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listArpTable(this.client.getEndpoint(), resourceGroupName, circuitName,
@@ -976,7 +976,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listArpTable(this.client.getEndpoint(), resourceGroupName, circuitName, peeringName, devicePath,
@@ -1194,7 +1194,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listRoutesTable(this.client.getEndpoint(), resourceGroupName, circuitName,
@@ -1240,7 +1240,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listRoutesTable(this.client.getEndpoint(), resourceGroupName, circuitName, peeringName,
@@ -1458,7 +1458,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listRoutesTableSummary(this.client.getEndpoint(), resourceGroupName,
@@ -1504,7 +1504,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listRoutesTableSummary(this.client.getEndpoint(), resourceGroupName, circuitName, peeringName,
@@ -1719,7 +1719,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getStats(this.client.getEndpoint(), resourceGroupName, circuitName,
@@ -1757,7 +1757,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getStats(this.client.getEndpoint(), resourceGroupName, circuitName, apiVersion,
@@ -1845,7 +1845,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getPeeringStats(this.client.getEndpoint(), resourceGroupName, circuitName,
@@ -1887,7 +1887,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getPeeringStats(this.client.getEndpoint(), resourceGroupName, circuitName, peeringName,
@@ -1971,7 +1971,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -2007,7 +2007,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2095,7 +2095,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -2125,7 +2125,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -2189,9 +2189,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2217,9 +2215,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2246,9 +2242,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2275,9 +2269,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

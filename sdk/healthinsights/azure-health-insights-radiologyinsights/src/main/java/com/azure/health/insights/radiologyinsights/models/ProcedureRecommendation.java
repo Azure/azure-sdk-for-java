@@ -5,7 +5,9 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -14,9 +16,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "kind",
-    defaultImpl = ProcedureRecommendation.class)
+    defaultImpl = ProcedureRecommendation.class,
+    visible = true)
 @JsonTypeName("ProcedureRecommendation")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "genericProcedureRecommendation", value = GenericProcedureRecommendation.class),
@@ -24,10 +26,28 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Immutable
 public class ProcedureRecommendation {
 
+    /*
+     * Discriminator property for ProcedureRecommendation.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private String kind = "ProcedureRecommendation";
+
     /**
      * Creates an instance of ProcedureRecommendation class.
      */
     @Generated
     protected ProcedureRecommendation() {
+    }
+
+    /**
+     * Get the kind property: Discriminator property for ProcedureRecommendation.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    public String getKind() {
+        return this.kind;
     }
 }

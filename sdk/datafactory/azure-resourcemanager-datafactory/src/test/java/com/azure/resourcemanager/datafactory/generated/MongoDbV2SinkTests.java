@@ -11,16 +11,19 @@ public final class MongoDbV2SinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MongoDbV2Sink model = BinaryData.fromString(
-            "{\"type\":\"MongoDbV2Sink\",\"writeBehavior\":\"datauaqtqnqm\",\"writeBatchSize\":\"dataptzgomuju\",\"writeBatchTimeout\":\"datankuyombkgkyobu\",\"sinkRetryCount\":\"dataprvokodrpyxkzx\",\"sinkRetryWait\":\"datamoycufkxygxoubek\",\"maxConcurrentConnections\":\"datadxgtgcfk\",\"disableMetricsCollection\":\"datae\",\"\":{\"fpqebbqetx\":\"datahtlk\"}}")
+            "{\"type\":\"MongoDbV2Sink\",\"writeBehavior\":\"dataekmgpseassdqpwhp\",\"writeBatchSize\":\"datadosfgbvsozjf\",\"writeBatchTimeout\":\"datawxcjciotlbpuemqe\",\"sinkRetryCount\":\"datao\",\"sinkRetryWait\":\"datavhhedc\",\"maxConcurrentConnections\":\"datalycrldwccas\",\"disableMetricsCollection\":\"databdvsorvhbygw\",\"\":{\"wncggamxbtq\":\"dataqlzzkb\",\"qhbnwmok\":\"datazydaiolnkkghlex\"}}")
             .toObject(MongoDbV2Sink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MongoDbV2Sink model = new MongoDbV2Sink().withWriteBatchSize("dataptzgomuju")
-            .withWriteBatchTimeout("datankuyombkgkyobu").withSinkRetryCount("dataprvokodrpyxkzx")
-            .withSinkRetryWait("datamoycufkxygxoubek").withMaxConcurrentConnections("datadxgtgcfk")
-            .withDisableMetricsCollection("datae").withWriteBehavior("datauaqtqnqm");
+        MongoDbV2Sink model = new MongoDbV2Sink().withWriteBatchSize("datadosfgbvsozjf")
+            .withWriteBatchTimeout("datawxcjciotlbpuemqe")
+            .withSinkRetryCount("datao")
+            .withSinkRetryWait("datavhhedc")
+            .withMaxConcurrentConnections("datalycrldwccas")
+            .withDisableMetricsCollection("databdvsorvhbygw")
+            .withWriteBehavior("dataekmgpseassdqpwhp");
         model = BinaryData.fromObject(model).toObject(MongoDbV2Sink.class);
     }
 }

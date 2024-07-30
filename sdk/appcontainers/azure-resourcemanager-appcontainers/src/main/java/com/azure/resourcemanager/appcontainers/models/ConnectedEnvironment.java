@@ -11,81 +11,83 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.ConnectedEnvironmentInner;
 import java.util.Map;
 
-/** An immutable client-side representation of ConnectedEnvironment. */
+/**
+ * An immutable client-side representation of ConnectedEnvironment.
+ */
 public interface ConnectedEnvironment {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the extendedLocation property: The complex type of the extended location.
-     *
+     * 
      * @return the extendedLocation value.
      */
     ExtendedLocation extendedLocation();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the provisioningState property: Provisioning state of the Kubernetes Environment.
-     *
+     * 
      * @return the provisioningState value.
      */
     ConnectedEnvironmentProvisioningState provisioningState();
 
     /**
      * Gets the deploymentErrors property: Any errors that occurred during deployment or deployment validation.
-     *
+     * 
      * @return the deploymentErrors value.
      */
     String deploymentErrors();
 
     /**
      * Gets the defaultDomain property: Default Domain Name for the cluster.
-     *
+     * 
      * @return the defaultDomain value.
      */
     String defaultDomain();
 
     /**
      * Gets the staticIp property: Static IP of the connectedEnvironment.
-     *
+     * 
      * @return the staticIp value.
      */
     String staticIp();
@@ -93,65 +95,70 @@ public interface ConnectedEnvironment {
     /**
      * Gets the daprAIConnectionString property: Application Insights connection string used by Dapr to export Service
      * to Service communication telemetry.
-     *
+     * 
      * @return the daprAIConnectionString value.
      */
     String daprAIConnectionString();
 
     /**
      * Gets the customDomainConfiguration property: Custom domain configuration for the environment.
-     *
+     * 
      * @return the customDomainConfiguration value.
      */
     CustomDomainConfiguration customDomainConfiguration();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.appcontainers.fluent.models.ConnectedEnvironmentInner object.
-     *
+     * 
      * @return the inner object.
      */
     ConnectedEnvironmentInner innerModel();
 
-    /** The entirety of the ConnectedEnvironment definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the ConnectedEnvironment definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
-    /** The ConnectedEnvironment definition stages. */
+    /**
+     * The ConnectedEnvironment definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the ConnectedEnvironment definition. */
+        /**
+         * The first stage of the ConnectedEnvironment definition.
+         */
         interface Blank extends WithLocation {
         }
 
-        /** The stage of the ConnectedEnvironment definition allowing to specify location. */
+        /**
+         * The stage of the ConnectedEnvironment definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -159,18 +166,20 @@ public interface ConnectedEnvironment {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
             WithResourceGroup withRegion(String location);
         }
 
-        /** The stage of the ConnectedEnvironment definition allowing to specify parent resource. */
+        /**
+         * The stage of the ConnectedEnvironment definition allowing to specify parent resource.
+         */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
@@ -182,78 +191,85 @@ public interface ConnectedEnvironment {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithExtendedLocation,
-                DefinitionStages.WithStaticIp,
-                DefinitionStages.WithDaprAIConnectionString,
-                DefinitionStages.WithCustomDomainConfiguration {
+            extends DefinitionStages.WithTags, DefinitionStages.WithExtendedLocation, DefinitionStages.WithStaticIp,
+            DefinitionStages.WithDaprAIConnectionString, DefinitionStages.WithCustomDomainConfiguration {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             ConnectedEnvironment create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             ConnectedEnvironment create(Context context);
         }
 
-        /** The stage of the ConnectedEnvironment definition allowing to specify tags. */
+        /**
+         * The stage of the ConnectedEnvironment definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
 
-        /** The stage of the ConnectedEnvironment definition allowing to specify extendedLocation. */
+        /**
+         * The stage of the ConnectedEnvironment definition allowing to specify extendedLocation.
+         */
         interface WithExtendedLocation {
             /**
              * Specifies the extendedLocation property: The complex type of the extended location..
-             *
+             * 
              * @param extendedLocation The complex type of the extended location.
              * @return the next definition stage.
              */
             WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
         }
 
-        /** The stage of the ConnectedEnvironment definition allowing to specify staticIp. */
+        /**
+         * The stage of the ConnectedEnvironment definition allowing to specify staticIp.
+         */
         interface WithStaticIp {
             /**
              * Specifies the staticIp property: Static IP of the connectedEnvironment.
-             *
+             * 
              * @param staticIp Static IP of the connectedEnvironment.
              * @return the next definition stage.
              */
             WithCreate withStaticIp(String staticIp);
         }
 
-        /** The stage of the ConnectedEnvironment definition allowing to specify daprAIConnectionString. */
+        /**
+         * The stage of the ConnectedEnvironment definition allowing to specify daprAIConnectionString.
+         */
         interface WithDaprAIConnectionString {
             /**
              * Specifies the daprAIConnectionString property: Application Insights connection string used by Dapr to
              * export Service to Service communication telemetry.
-             *
+             * 
              * @param daprAIConnectionString Application Insights connection string used by Dapr to export Service to
-             *     Service communication telemetry.
+             * Service communication telemetry.
              * @return the next definition stage.
              */
             WithCreate withDaprAIConnectionString(String daprAIConnectionString);
         }
 
-        /** The stage of the ConnectedEnvironment definition allowing to specify customDomainConfiguration. */
+        /**
+         * The stage of the ConnectedEnvironment definition allowing to specify customDomainConfiguration.
+         */
         interface WithCustomDomainConfiguration {
             /**
              * Specifies the customDomainConfiguration property: Custom domain configuration for the environment.
-             *
+             * 
              * @param customDomainConfiguration Custom domain configuration for the environment.
              * @return the next definition stage.
              */
@@ -263,87 +279,97 @@ public interface ConnectedEnvironment {
 
     /**
      * Begins update for the ConnectedEnvironment resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     ConnectedEnvironment.Update update();
 
-    /** The template for ConnectedEnvironment update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithExtendedLocation,
-            UpdateStages.WithStaticIp,
-            UpdateStages.WithDaprAIConnectionString,
-            UpdateStages.WithCustomDomainConfiguration {
+    /**
+     * The template for ConnectedEnvironment update.
+     */
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithExtendedLocation, UpdateStages.WithStaticIp,
+        UpdateStages.WithDaprAIConnectionString, UpdateStages.WithCustomDomainConfiguration {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         ConnectedEnvironment apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         ConnectedEnvironment apply(Context context);
     }
 
-    /** The ConnectedEnvironment update stages. */
+    /**
+     * The ConnectedEnvironment update stages.
+     */
     interface UpdateStages {
-        /** The stage of the ConnectedEnvironment update allowing to specify tags. */
+        /**
+         * The stage of the ConnectedEnvironment update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
         }
 
-        /** The stage of the ConnectedEnvironment update allowing to specify extendedLocation. */
+        /**
+         * The stage of the ConnectedEnvironment update allowing to specify extendedLocation.
+         */
         interface WithExtendedLocation {
             /**
              * Specifies the extendedLocation property: The complex type of the extended location..
-             *
+             * 
              * @param extendedLocation The complex type of the extended location.
              * @return the next definition stage.
              */
             Update withExtendedLocation(ExtendedLocation extendedLocation);
         }
 
-        /** The stage of the ConnectedEnvironment update allowing to specify staticIp. */
+        /**
+         * The stage of the ConnectedEnvironment update allowing to specify staticIp.
+         */
         interface WithStaticIp {
             /**
              * Specifies the staticIp property: Static IP of the connectedEnvironment.
-             *
+             * 
              * @param staticIp Static IP of the connectedEnvironment.
              * @return the next definition stage.
              */
             Update withStaticIp(String staticIp);
         }
 
-        /** The stage of the ConnectedEnvironment update allowing to specify daprAIConnectionString. */
+        /**
+         * The stage of the ConnectedEnvironment update allowing to specify daprAIConnectionString.
+         */
         interface WithDaprAIConnectionString {
             /**
              * Specifies the daprAIConnectionString property: Application Insights connection string used by Dapr to
              * export Service to Service communication telemetry.
-             *
+             * 
              * @param daprAIConnectionString Application Insights connection string used by Dapr to export Service to
-             *     Service communication telemetry.
+             * Service communication telemetry.
              * @return the next definition stage.
              */
             Update withDaprAIConnectionString(String daprAIConnectionString);
         }
 
-        /** The stage of the ConnectedEnvironment update allowing to specify customDomainConfiguration. */
+        /**
+         * The stage of the ConnectedEnvironment update allowing to specify customDomainConfiguration.
+         */
         interface WithCustomDomainConfiguration {
             /**
              * Specifies the customDomainConfiguration property: Custom domain configuration for the environment.
-             *
+             * 
              * @param customDomainConfiguration Custom domain configuration for the environment.
              * @return the next definition stage.
              */
@@ -353,14 +379,14 @@ public interface ConnectedEnvironment {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     ConnectedEnvironment refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
@@ -368,29 +394,29 @@ public interface ConnectedEnvironment {
 
     /**
      * Checks the resource connectedEnvironmentName availability.
-     *
-     * <p>Checks if resource connectedEnvironmentName is available.
-     *
+     * 
+     * Checks if resource connectedEnvironmentName is available.
+     * 
      * @param checkNameAvailabilityRequest The check connectedEnvironmentName availability request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the check availability result along with {@link Response}.
      */
-    Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(
-        CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context);
+    Response<CheckNameAvailabilityResponse>
+        checkNameAvailabilityWithResponse(CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context);
 
     /**
      * Checks the resource connectedEnvironmentName availability.
-     *
-     * <p>Checks if resource connectedEnvironmentName is available.
-     *
+     * 
+     * Checks if resource connectedEnvironmentName is available.
+     * 
      * @param checkNameAvailabilityRequest The check connectedEnvironmentName availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the check availability result.
      */

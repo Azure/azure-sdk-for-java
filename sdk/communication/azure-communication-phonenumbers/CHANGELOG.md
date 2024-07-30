@@ -1,11 +1,84 @@
 # Release History
 
-## 1.2.0-beta.2 (2024-03-01)
+## 1.2.0-beta.4 (Unreleased)
 
 ### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+
+## 1.1.14 (2024-06-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` from `1.3.3` to version `1.3.4`.
+- Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
+
+
+## 1.1.13 (2024-05-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` from `1.3.2` to version `1.3.3`.
+- Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
+
+
+## 1.1.12 (2024-04-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-communication-common` from `1.3.1` to version `1.3.2`.
+
+
+## 1.1.11 (2024-03-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
+- Upgraded `azure-communication-common` from `1.3.0` to version `1.3.1`.
+
+
+## 1.2.0-beta.3 (2024-03-15)
+
+### Features Added
+
 - Add support for number lookup
   - Format only can be returned for no cost
   - Additional number details can be returned for a cost
+
+
+## 1.1.10 (2024-02-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
+- Upgraded `azure-communication-common` from `1.2.14` to version `1.3.0`.
+
+
+## 1.2.0-beta.2 (2024-01-30)
+
+### Features Added
+
+- Added support for API version `2023-10-01-preview`, This gives us functionality for Do Not Resell Consent Changes.
+- Users will now be able to purchase from countries like `IT`, `AT`, `FR`, `NO`, `PT`. They can do so by agreeing not to resell phone numbers by setting consentToNotResellNumbers to true.
+- Added support for 10DLC changes.
+
 
 ## 1.1.9 (2023-12-04)
 

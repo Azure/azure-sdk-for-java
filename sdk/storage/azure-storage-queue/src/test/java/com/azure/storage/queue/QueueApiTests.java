@@ -8,6 +8,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.queue.models.PeekedMessageItem;
 import com.azure.storage.queue.models.QueueAccessPolicy;
 import com.azure.storage.queue.models.QueueAudience;
@@ -814,6 +816,23 @@ public class QueueApiTests extends QueueTestBase {
     }
 
     @Test
+    public void updateMessageWithBase64Client() {
+        String updateMsg = "Updated test message";
+        QueueClient encodingQueueClient = getBase64Client();
+        encodingQueueClient.create();
+        encodingQueueClient.sendMessage("test message before update");
+
+        QueueMessageItem dequeueMsg = encodingQueueClient.receiveMessage();
+
+        assertEquals(204, encodingQueueClient.updateMessageWithResponse(dequeueMsg.getMessageId(),
+            dequeueMsg.getPopReceipt(), updateMsg, Duration.ofSeconds(1), null, null).getStatusCode());
+
+        sleepIfRunningAgainstService(2000);
+
+        assertEquals(updateMsg, encodingQueueClient.peekMessage().getMessageText());
+    }
+
+    @Test
     public void getQueueName() {
         assertEquals(queueName, queueClient.getQueueName());
     }
@@ -848,7 +867,7 @@ public class QueueApiTests extends QueueTestBase {
     @Test
     public void defaultAudience() {
         queueClient.createIfNotExists();
-        QueueClient aadQueue = getOAuthQueueClientBuilder(primaryQueueServiceClient.getQueueServiceUrl())
+        QueueClient aadQueue = getOAuthQueueClientBuilder()
             .audience(null) // should default to "https://storage.azure.com/"
             .queueName(queueClient.getQueueName())
             .buildClient();
@@ -859,24 +878,27 @@ public class QueueApiTests extends QueueTestBase {
     @Test
     public void storageAccountAudience() {
         queueClient.createIfNotExists();
-        QueueClient aadQueue = getOAuthQueueClientBuilder(primaryQueueServiceClient.getQueueServiceUrl())
+        QueueClient aadQueue = getOAuthQueueClientBuilder()
             .audience(QueueAudience.createQueueServiceAccountAudience(queueClient.getAccountName()))
             .queueName(queueClient.getQueueName())
             .buildClient();
 
         assertNotNull(aadQueue.getProperties());
     }
-
+    @RequiredServiceVersion(clazz = QueueServiceVersion.class, min = "2024-08-04")
+    @LiveOnly
     @Test
-    public void audienceError() {
+    /* This test tests if the bearer challenge is working properly. A bad audience is passed in, the service returns
+    the default audience, and the request gets retried with this default audience, making the call function as expected.
+     */
+    public void audienceErrorBearerChallengeRetry() {
         queueClient.createIfNotExists();
-        QueueClient aadQueue = getOAuthQueueClientBuilder(primaryQueueServiceClient.getQueueServiceUrl())
+        QueueClient aadQueue = getOAuthQueueClientBuilder()
             .queueName(queueClient.getQueueName())
             .audience(QueueAudience.createQueueServiceAccountAudience("badaudience"))
             .buildClient();
 
-        QueueStorageException e = assertThrows(QueueStorageException.class, aadQueue::getProperties);
-        assertEquals(QueueErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
+        assertNotNull(aadQueue.getProperties());
     }
 
     @Test
@@ -885,7 +907,7 @@ public class QueueApiTests extends QueueTestBase {
         QueueAudience audience = QueueAudience.fromString(url);
 
         queueClient.createIfNotExists();
-        QueueClient aadQueue = getOAuthQueueClientBuilder(primaryQueueServiceClient.getQueueServiceUrl())
+        QueueClient aadQueue = getOAuthQueueClientBuilder()
             .audience(audience)
             .queueName(queueClient.getQueueName())
             .buildClient();

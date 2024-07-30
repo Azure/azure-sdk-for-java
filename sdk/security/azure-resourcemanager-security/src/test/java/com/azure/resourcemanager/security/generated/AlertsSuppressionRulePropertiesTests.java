@@ -32,8 +32,10 @@ public final class AlertsSuppressionRulePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AlertsSuppressionRuleProperties model = new AlertsSuppressionRuleProperties().withAlertType("y")
-            .withExpirationDateUtc(OffsetDateTime.parse("2020-12-25T06:53:33Z")).withReason("uqqkpik")
-            .withState(RuleState.DISABLED).withComment("gvtqagnbuynh")
+            .withExpirationDateUtc(OffsetDateTime.parse("2020-12-25T06:53:33Z"))
+            .withReason("uqqkpik")
+            .withState(RuleState.DISABLED)
+            .withComment("gvtqagnbuynh")
             .withSuppressionAlertsScope(new SuppressionAlertsScope()
                 .withAllOf(Arrays.asList(new ScopeElement().withField("mebf").withAdditionalProperties(mapOf()))));
         model = BinaryData.fromObject(model).toObject(AlertsSuppressionRuleProperties.class);

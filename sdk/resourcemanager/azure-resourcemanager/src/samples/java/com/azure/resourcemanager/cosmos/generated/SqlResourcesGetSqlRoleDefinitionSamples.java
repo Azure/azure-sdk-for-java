@@ -9,8 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class SqlResourcesGetSqlRoleDefinitionSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
-     * CosmosDBSqlRoleDefinitionGet.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlRoleDefinitionGet.json
      */
     /**
      * Sample code: CosmosDBSqlRoleDefinitionGet.
@@ -18,7 +17,11 @@ public final class SqlResourcesGetSqlRoleDefinitionSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBSqlRoleDefinitionGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getSqlResources().getSqlRoleDefinitionWithResponse(
-            "myRoleDefinitionId", "myResourceGroupName", "myAccountName", com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getSqlResources()
+            .getSqlRoleDefinitionWithResponse("myRoleDefinitionId", "myResourceGroupName", "myAccountName",
+                com.azure.core.util.Context.NONE);
     }
 }

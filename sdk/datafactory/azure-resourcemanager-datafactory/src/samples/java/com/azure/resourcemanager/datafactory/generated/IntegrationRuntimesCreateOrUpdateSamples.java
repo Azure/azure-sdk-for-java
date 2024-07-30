@@ -20,7 +20,8 @@ public final class IntegrationRuntimesCreateOrUpdateSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void integrationRuntimesCreate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimes().define("exampleIntegrationRuntime")
+        manager.integrationRuntimes()
+            .define("exampleIntegrationRuntime")
             .withExistingFactory("exampleResourceGroup", "exampleFactoryName")
             .withProperties(new SelfHostedIntegrationRuntime().withDescription("A selfhosted integration runtime"))
             .create();

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class VirtualHubBgpConnectionsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualHubBgpConnectionDelete
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualHubBgpConnectionDelete
      * .json
      */
     /**
@@ -19,7 +19,10 @@ public final class VirtualHubBgpConnectionsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualHubRouteTableV2Delete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualHubBgpConnections().delete("rg1", "hub1", "conn1",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualHubBgpConnections()
+            .delete("rg1", "hub1", "conn1", com.azure.core.util.Context.NONE);
     }
 }

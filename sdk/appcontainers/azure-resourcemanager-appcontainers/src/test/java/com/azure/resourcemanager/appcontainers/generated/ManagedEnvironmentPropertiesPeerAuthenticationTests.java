@@ -12,17 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedEnvironmentPropertiesPeerAuthenticationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedEnvironmentPropertiesPeerAuthentication model =
-            BinaryData
-                .fromString("{\"mtls\":{\"enabled\":true}}")
-                .toObject(ManagedEnvironmentPropertiesPeerAuthentication.class);
+        ManagedEnvironmentPropertiesPeerAuthentication model = BinaryData.fromString("{\"mtls\":{\"enabled\":true}}")
+            .toObject(ManagedEnvironmentPropertiesPeerAuthentication.class);
         Assertions.assertEquals(true, model.mtls().enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedEnvironmentPropertiesPeerAuthentication model =
-            new ManagedEnvironmentPropertiesPeerAuthentication().withMtls(new Mtls().withEnabled(true));
+        ManagedEnvironmentPropertiesPeerAuthentication model
+            = new ManagedEnvironmentPropertiesPeerAuthentication().withMtls(new Mtls().withEnabled(true));
         model = BinaryData.fromObject(model).toObject(ManagedEnvironmentPropertiesPeerAuthentication.class);
         Assertions.assertEquals(true, model.mtls().enabled());
     }

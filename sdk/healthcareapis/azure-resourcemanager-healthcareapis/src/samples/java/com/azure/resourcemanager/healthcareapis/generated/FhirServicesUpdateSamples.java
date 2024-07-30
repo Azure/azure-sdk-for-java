@@ -13,9 +13,7 @@ import java.util.Map;
  */
 public final class FhirServicesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/fhirservices/
-     * FhirServices_Patch.json
+     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/fhirservices/FhirServices_Patch.json
      */
     /**
      * Sample code: Update a Fhir Service.
@@ -24,7 +22,8 @@ public final class FhirServicesUpdateSamples {
      */
     public static void updateAFhirService(com.azure.resourcemanager.healthcareapis.HealthcareApisManager manager) {
         FhirService resource = manager.fhirServices()
-            .getWithResponse("testRG", "workspace1", "fhirservice1", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("testRG", "workspace1", "fhirservice1", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tagKey", "fakeTokenPlaceholder")).apply();
     }
 

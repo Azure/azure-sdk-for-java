@@ -14,23 +14,24 @@ public final class MapperAttributeReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MapperAttributeReference model = BinaryData.fromString(
-            "{\"name\":\"oyjfqipu\",\"entity\":\"znclkfkeebgv\",\"entityConnectionReference\":{\"connectionName\":\"m\",\"type\":\"linkedservicetype\"}}")
+            "{\"name\":\"jj\",\"entity\":\"wbeqrkuor\",\"entityConnectionReference\":{\"connectionName\":\"sruqnmdvha\",\"type\":\"linkedservicetype\"}}")
             .toObject(MapperAttributeReference.class);
-        Assertions.assertEquals("oyjfqipu", model.name());
-        Assertions.assertEquals("znclkfkeebgv", model.entity());
-        Assertions.assertEquals("m", model.entityConnectionReference().connectionName());
+        Assertions.assertEquals("jj", model.name());
+        Assertions.assertEquals("wbeqrkuor", model.entity());
+        Assertions.assertEquals("sruqnmdvha", model.entityConnectionReference().connectionName());
         Assertions.assertEquals(ConnectionType.LINKEDSERVICETYPE, model.entityConnectionReference().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MapperAttributeReference model = new MapperAttributeReference().withName("oyjfqipu").withEntity("znclkfkeebgv")
-            .withEntityConnectionReference(
-                new MapperConnectionReference().withConnectionName("m").withType(ConnectionType.LINKEDSERVICETYPE));
+        MapperAttributeReference model = new MapperAttributeReference().withName("jj")
+            .withEntity("wbeqrkuor")
+            .withEntityConnectionReference(new MapperConnectionReference().withConnectionName("sruqnmdvha")
+                .withType(ConnectionType.LINKEDSERVICETYPE));
         model = BinaryData.fromObject(model).toObject(MapperAttributeReference.class);
-        Assertions.assertEquals("oyjfqipu", model.name());
-        Assertions.assertEquals("znclkfkeebgv", model.entity());
-        Assertions.assertEquals("m", model.entityConnectionReference().connectionName());
+        Assertions.assertEquals("jj", model.name());
+        Assertions.assertEquals("wbeqrkuor", model.entity());
+        Assertions.assertEquals("sruqnmdvha", model.entityConnectionReference().connectionName());
         Assertions.assertEquals(ConnectionType.LINKEDSERVICETYPE, model.entityConnectionReference().type());
     }
 }

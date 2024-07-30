@@ -6,6 +6,7 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 
 /**
@@ -60,7 +61,7 @@ public final class DiagnosticMetricSample {
 
     /**
      * Get the timestamp property: Time at which metric is measured.
-     * 
+     *
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -69,7 +70,7 @@ public final class DiagnosticMetricSample {
 
     /**
      * Set the timestamp property: Time at which metric is measured.
-     * 
+     *
      * @param timestamp the timestamp value to set.
      * @return the DiagnosticMetricSample object itself.
      */
@@ -83,7 +84,7 @@ public final class DiagnosticMetricSample {
      * This is returned and should be whichever instance name we desire to be returned
      * i.e. CPU and Memory return RDWORKERNAME (LargeDed..._IN_0)
      * where RDWORKERNAME is Machine name below and RoleInstance name in parenthesis.
-     * 
+     *
      * @return the roleInstance value.
      */
     public String roleInstance() {
@@ -95,7 +96,7 @@ public final class DiagnosticMetricSample {
      * This is returned and should be whichever instance name we desire to be returned
      * i.e. CPU and Memory return RDWORKERNAME (LargeDed..._IN_0)
      * where RDWORKERNAME is Machine name below and RoleInstance name in parenthesis.
-     * 
+     *
      * @param roleInstance the roleInstance value to set.
      * @return the DiagnosticMetricSample object itself.
      */
@@ -106,7 +107,7 @@ public final class DiagnosticMetricSample {
 
     /**
      * Get the total property: Total value of the metric. If multiple measurements are made this will have sum of all.
-     * 
+     *
      * @return the total value.
      */
     public Double total() {
@@ -115,7 +116,7 @@ public final class DiagnosticMetricSample {
 
     /**
      * Set the total property: Total value of the metric. If multiple measurements are made this will have sum of all.
-     * 
+     *
      * @param total the total value to set.
      * @return the DiagnosticMetricSample object itself.
      */
@@ -126,7 +127,7 @@ public final class DiagnosticMetricSample {
 
     /**
      * Get the maximum property: Maximum of the metric sampled during the time period.
-     * 
+     *
      * @return the maximum value.
      */
     public Double maximum() {
@@ -135,7 +136,7 @@ public final class DiagnosticMetricSample {
 
     /**
      * Set the maximum property: Maximum of the metric sampled during the time period.
-     * 
+     *
      * @param maximum the maximum value to set.
      * @return the DiagnosticMetricSample object itself.
      */
@@ -146,7 +147,7 @@ public final class DiagnosticMetricSample {
 
     /**
      * Get the minimum property: Minimum of the metric sampled during the time period.
-     * 
+     *
      * @return the minimum value.
      */
     public Double minimum() {
@@ -155,7 +156,7 @@ public final class DiagnosticMetricSample {
 
     /**
      * Set the minimum property: Minimum of the metric sampled during the time period.
-     * 
+     *
      * @param minimum the minimum value to set.
      * @return the DiagnosticMetricSample object itself.
      */
@@ -166,7 +167,7 @@ public final class DiagnosticMetricSample {
 
     /**
      * Get the isAggregated property: Whether the values are aggregates across all workers or not.
-     * 
+     *
      * @return the isAggregated value.
      */
     public Boolean isAggregated() {
@@ -175,7 +176,7 @@ public final class DiagnosticMetricSample {
 
     /**
      * Set the isAggregated property: Whether the values are aggregates across all workers or not.
-     * 
+     *
      * @param isAggregated the isAggregated value to set.
      * @return the DiagnosticMetricSample object itself.
      */
@@ -186,7 +187,7 @@ public final class DiagnosticMetricSample {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

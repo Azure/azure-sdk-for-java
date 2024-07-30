@@ -6,57 +6,41 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.BackupVault;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class BackupVaultsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"location\":\"drwjjkhvyom\",\"tags\":{\"vxnqmhrpqpd\":\"u\",\"ssffxuifmc\":\"wmkoisq\"},\"id\":\"ypobkdqzr\",\"name\":\"zsylollgt\",\"type\":\"czzydmxzjij\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"location\":\"mozusgzvlnsnnjz\",\"tags\":{\"p\":\"folpymwamxqzra\",\"ulajvlejchc\":\"dphtv\",\"mzlanru\":\"rlzk\",\"phcnzqtpj\":\"dwv\"},\"id\":\"mqrhvthl\",\"name\":\"iwdcxsmlzzhzd\",\"type\":\"xetlgydlhqv\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        NetAppFilesManager manager = NetAppFilesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        NetAppFilesManager manager = NetAppFilesManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        BackupVault response = manager.backupVaults().define("ljvrcmyfqipgxhnp").withRegion("ey")
-            .withExistingNetAppAccount("iwzcxmjpbyeph", "gt").withTags(mapOf("jlrxwtoaukhfk", "lpaugmrm",
-                "oaedsxjwuivedwcg", "cisiz", "mguaml", "eewxeiqbpsmg", "lzgaufcshhvnew", "dlrgms"))
+        BackupVault response = manager.backupVaults()
+            .define("ovvtzejetjkln")
+            .withRegion("o")
+            .withExistingNetAppAccount("lfojuidjp", "uyjucejikzo")
+            .withTags(mapOf("pcrrk", "zvhqjwtrhtgvg"))
             .create();
 
-        Assertions.assertEquals("drwjjkhvyom", response.location());
-        Assertions.assertEquals("u", response.tags().get("vxnqmhrpqpd"));
+        Assertions.assertEquals("mozusgzvlnsnnjz", response.location());
+        Assertions.assertEquals("folpymwamxqzra", response.tags().get("p"));
     }
 
     // Use "Map.of" if available

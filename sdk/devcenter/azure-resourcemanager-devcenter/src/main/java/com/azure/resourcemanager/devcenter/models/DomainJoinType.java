@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Active Directory join type. */
+/**
+ * Active Directory join type.
+ */
 public final class DomainJoinType extends ExpandableStringEnum<DomainJoinType> {
-    /** Static value HybridAzureADJoin for DomainJoinType. */
+    /**
+     * Static value HybridAzureADJoin for DomainJoinType.
+     */
     public static final DomainJoinType HYBRID_AZURE_ADJOIN = fromString("HybridAzureADJoin");
 
-    /** Static value AzureADJoin for DomainJoinType. */
+    /**
+     * Static value AzureADJoin for DomainJoinType.
+     */
     public static final DomainJoinType AZURE_ADJOIN = fromString("AzureADJoin");
 
     /**
      * Creates a new instance of DomainJoinType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class DomainJoinType extends ExpandableStringEnum<DomainJoinType> {
 
     /**
      * Creates or finds a DomainJoinType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DomainJoinType.
      */
@@ -38,7 +44,7 @@ public final class DomainJoinType extends ExpandableStringEnum<DomainJoinType> {
 
     /**
      * Gets known DomainJoinType values.
-     *
+     * 
      * @return known DomainJoinType values.
      */
     public static Collection<DomainJoinType> values() {

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class StaticMembersDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * NetworkManagerStaticMemberDelete.json
      */
     /**
@@ -18,7 +18,11 @@ public final class StaticMembersDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void staticMembersDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getStaticMembers().deleteWithResponse("SampleRG", "TestNM",
-            "testNetworkGroup", "testStaticMember", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getStaticMembers()
+            .deleteWithResponse("SampleRG", "TestNM", "testNetworkGroup", "testStaticMember",
+                com.azure.core.util.Context.NONE);
     }
 }

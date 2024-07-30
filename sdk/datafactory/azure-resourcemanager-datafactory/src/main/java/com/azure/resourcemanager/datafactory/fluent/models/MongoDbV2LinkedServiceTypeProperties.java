@@ -83,12 +83,14 @@ public final class MongoDbV2LinkedServiceTypeProperties {
      */
     public void validate() {
         if (connectionString() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property connectionString in model MongoDbV2LinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property connectionString in model MongoDbV2LinkedServiceTypeProperties"));
         }
         if (database() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property database in model MongoDbV2LinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property database in model MongoDbV2LinkedServiceTypeProperties"));
         }
     }
 

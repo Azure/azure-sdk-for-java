@@ -41,8 +41,7 @@ public final class IotFhirDestinationProperties extends IotDestinationProperties
     }
 
     /**
-     * Get the resourceIdentityResolutionType property: Determines how resource identity is resolved on the
-     * destination.
+     * Get the resourceIdentityResolutionType property: Determines how resource identity is resolved on the destination.
      * 
      * @return the resourceIdentityResolutionType value.
      */
@@ -51,8 +50,7 @@ public final class IotFhirDestinationProperties extends IotDestinationProperties
     }
 
     /**
-     * Set the resourceIdentityResolutionType property: Determines how resource identity is resolved on the
-     * destination.
+     * Set the resourceIdentityResolutionType property: Determines how resource identity is resolved on the destination.
      * 
      * @param resourceIdentityResolutionType the resourceIdentityResolutionType value to set.
      * @return the IotFhirDestinationProperties object itself.
@@ -112,16 +110,19 @@ public final class IotFhirDestinationProperties extends IotDestinationProperties
     public void validate() {
         super.validate();
         if (resourceIdentityResolutionType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property resourceIdentityResolutionType in model IotFhirDestinationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property resourceIdentityResolutionType in model IotFhirDestinationProperties"));
         }
         if (fhirServiceResourceId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property fhirServiceResourceId in model IotFhirDestinationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property fhirServiceResourceId in model IotFhirDestinationProperties"));
         }
         if (fhirMapping() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property fhirMapping in model IotFhirDestinationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property fhirMapping in model IotFhirDestinationProperties"));
         } else {
             fhirMapping().validate();
         }

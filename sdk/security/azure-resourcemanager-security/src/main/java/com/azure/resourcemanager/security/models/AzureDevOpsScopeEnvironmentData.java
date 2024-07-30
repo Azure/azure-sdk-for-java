@@ -5,20 +5,43 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The AzureDevOps scope connector's environment data.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "environmentType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "environmentType",
+    defaultImpl = AzureDevOpsScopeEnvironmentData.class,
+    visible = true)
 @JsonTypeName("AzureDevOpsScope")
 @Immutable
 public final class AzureDevOpsScopeEnvironmentData extends EnvironmentData {
+    /*
+     * The type of the environment data.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "environmentType", required = true)
+    private EnvironmentType environmentType = EnvironmentType.AZURE_DEV_OPS_SCOPE;
+
     /**
      * Creates an instance of AzureDevOpsScopeEnvironmentData class.
      */
     public AzureDevOpsScopeEnvironmentData() {
+    }
+
+    /**
+     * Get the environmentType property: The type of the environment data.
+     * 
+     * @return the environmentType value.
+     */
+    @Override
+    public EnvironmentType environmentType() {
+        return this.environmentType;
     }
 
     /**

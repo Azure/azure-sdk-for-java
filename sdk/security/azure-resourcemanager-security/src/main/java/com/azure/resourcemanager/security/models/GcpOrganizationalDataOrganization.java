@@ -6,6 +6,7 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -13,10 +14,21 @@ import java.util.List;
 /**
  * The gcpOrganization data for the parent account.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "organizationMembershipType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "organizationMembershipType",
+    defaultImpl = GcpOrganizationalDataOrganization.class,
+    visible = true)
 @JsonTypeName("Organization")
 @Fluent
 public final class GcpOrganizationalDataOrganization extends GcpOrganizationalData {
+    /*
+     * The multi cloud account's membership type in the organization
+     */
+    @JsonTypeId
+    @JsonProperty(value = "organizationMembershipType", required = true)
+    private OrganizationMembershipType organizationMembershipType = OrganizationMembershipType.ORGANIZATION;
+
     /*
      * If the multi cloud account is of membership type organization, list of accounts excluded from offering
      */
@@ -30,8 +42,7 @@ public final class GcpOrganizationalDataOrganization extends GcpOrganizationalDa
     private String serviceAccountEmailAddress;
 
     /*
-     * The GCP workload identity provider id which represents the permissions required to auto provision security
-     * connectors
+     * The GCP workload identity provider id which represents the permissions required to auto provision security connectors
      */
     @JsonProperty(value = "workloadIdentityProviderId")
     private String workloadIdentityProviderId;
@@ -46,6 +57,16 @@ public final class GcpOrganizationalDataOrganization extends GcpOrganizationalDa
      * Creates an instance of GcpOrganizationalDataOrganization class.
      */
     public GcpOrganizationalDataOrganization() {
+    }
+
+    /**
+     * Get the organizationMembershipType property: The multi cloud account's membership type in the organization.
+     * 
+     * @return the organizationMembershipType value.
+     */
+    @Override
+    public OrganizationMembershipType organizationMembershipType() {
+        return this.organizationMembershipType;
     }
 
     /**

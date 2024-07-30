@@ -1,8 +1,68 @@
 # Release History
 
-## 12.26.0-beta.1 (Unreleased)
+## 12.27.0 (2024-07-18)
 
 ### Features Added
+- Added support for getting account info on blob container clients and the blob base client.
+- Added support for bearer token challenges.
+- Added support for service version 2024-08-04.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
+- Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
+- Upgraded `azure-storage-common` from `12.25.1` to version `12.26.0`.
+- Upgraded `azure-storage-internal-avro` from `12.11.1` to version `12.12.0`.
+
+## 12.27.0-beta.1 (2024-06-11)
+
+### Features Added
+- Added support for getting account info on blob container clients and the blob base client.
+- Added support for bearer token challenges.
+- Added support for service version 2024-08-04.
+
+## 12.26.1 (2024-06-06)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
+- Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
+- Upgraded `azure-storage-common` from `12.25.0` to version `12.25.1`.
+- Upgraded `azure-storage-internal-avro` from `12.11.0` to version `12.11.1`.
+
+## 12.26.0 (2024-05-15)
+
+### Features Added
+- Added support for service versions 2024-02-04 and 2024-05-04.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
+- Upgraded `azure-storage-common` from `12.25.0-beta.2` to version `12.25.0`.
+- Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
+- Upgraded `azure-storage-internal-avro` from `12.11.0-beta.2` to version `12.11.0`.
+
+
+## 12.25.4 (2024-04-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
+- Upgraded `azure-storage-common` from `12.24.3` to version `12.25.0-beta.2`.
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-storage-internal-avro` from `12.10.3` to version `12.11.0-beta.2`.
+
+
+## 12.26.0-beta.1 (2024-04-15)
+
+### Features Added
+- Added support for service versions 2024-02-04 and 2024-05-04.
 
 ### Breaking Changes
 - When creating a `BlobClient` via `BlobContainerClient.getBlobClient(String blobName)` or 
@@ -12,9 +72,29 @@ URL-encoded. For example, if blob name is "test%25test" and is created by callin
 `BlobClient.getBlobName()` will return "test%25test" and the blob's url will result in 
 “https://account.blob.core.windows.net/container/test%25%25test”.
 
-### Bugs Fixed
+## 12.25.3 (2024-03-20)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
+- Upgraded `azure-storage-common` from `12.24.2` to version `12.24.3`.
+- Upgraded `azure-storage-internal-avro` from `12.10.2` to version `12.10.3`.
+
+
+## 12.25.2 (2024-02-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
+- Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
+- Upgraded `azure-storage-common` from `12.24.1` to version `12.24.2`.
+- Upgraded `azure-storage-internal-avro` from `12.10.1` to version `12.10.2`.
+
 
 ## 12.25.1 (2023-12-04)
 

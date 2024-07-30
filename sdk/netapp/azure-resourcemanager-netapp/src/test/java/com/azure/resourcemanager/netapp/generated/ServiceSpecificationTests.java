@@ -44,30 +44,47 @@ public final class ServiceSpecificationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceSpecification model = new ServiceSpecification().withMetricSpecifications(Arrays.asList(
-            new MetricSpecification().withName("cbkbfkg").withDisplayName("dkexxppofm").withDisplayDescription("x")
-                .withUnit("jpgd")
-                .withSupportedAggregationTypes(Arrays.asList(MetricAggregationType.AVERAGE,
-                    MetricAggregationType.AVERAGE, MetricAggregationType.AVERAGE, MetricAggregationType.AVERAGE))
-                .withSupportedTimeGrainTypes(Arrays.asList("pmouexhdz", "i", "qeojnxqbzvddntw", "deicbtwnpzao"))
-                .withInternalMetricName("uhrhcffcyddgl").withEnableRegionalMdmAccount(false)
-                .withSourceMdmAccount("jqkwpyeicx").withSourceMdmNamespace("ciwqvhk")
-                .withDimensions(Arrays.asList(new Dimension().withName("igdtopbob").withDisplayName("ghmewuam"),
-                    new Dimension().withName("hrzayvvtpgvdf").withDisplayName("otkftutqxlngx"),
-                    new Dimension().withName("fgugnxkrxdqmid").withDisplayName("hzrvqd")))
-                .withAggregationType("bhj").withFillGapWithZero(false).withCategory("ehoqfbowskan")
-                .withResourceIdDimensionNameOverride("tzlcuiywgqywgn").withIsInternal(true),
-            new MetricSpecification().withName("nhzgpphrcgyn").withDisplayName("cpecfvmmcoofs")
-                .withDisplayDescription("zevgb").withUnit("jqabcypmivkwlzuv")
-                .withSupportedAggregationTypes(
-                    Arrays.asList(MetricAggregationType.AVERAGE, MetricAggregationType.AVERAGE))
-                .withSupportedTimeGrainTypes(Arrays.asList("bacfionlebxetq", "tzxdpnqbqqwx"))
-                .withInternalMetricName("feallnwsu").withEnableRegionalMdmAccount(true)
-                .withSourceMdmAccount("jampmngnzscxaqw").withSourceMdmNamespace("chcbonqvpkvlrxnj")
-                .withDimensions(Arrays.asList(new Dimension().withName("ipheoflokeyyien").withDisplayName("dlwtgrhpdj"),
-                    new Dimension().withName("umasxazjpq").withDisplayName("gual")))
-                .withAggregationType("xxhejjzzvd").withFillGapWithZero(true).withCategory("dslfhotwmcy")
-                .withResourceIdDimensionNameOverride("wlbjnpgacftade").withIsInternal(true)))
+        ServiceSpecification model = new ServiceSpecification()
+            .withMetricSpecifications(Arrays.asList(
+                new MetricSpecification().withName("cbkbfkg")
+                    .withDisplayName("dkexxppofm")
+                    .withDisplayDescription("x")
+                    .withUnit("jpgd")
+                    .withSupportedAggregationTypes(Arrays.asList(MetricAggregationType.AVERAGE,
+                        MetricAggregationType.AVERAGE, MetricAggregationType.AVERAGE, MetricAggregationType.AVERAGE))
+                    .withSupportedTimeGrainTypes(Arrays.asList("pmouexhdz", "i", "qeojnxqbzvddntw", "deicbtwnpzao"))
+                    .withInternalMetricName("uhrhcffcyddgl")
+                    .withEnableRegionalMdmAccount(false)
+                    .withSourceMdmAccount("jqkwpyeicx")
+                    .withSourceMdmNamespace("ciwqvhk")
+                    .withDimensions(
+                        Arrays.asList(new Dimension().withName("igdtopbob").withDisplayName("ghmewuam"),
+                            new Dimension().withName("hrzayvvtpgvdf").withDisplayName("otkftutqxlngx"),
+                            new Dimension().withName("fgugnxkrxdqmid").withDisplayName("hzrvqd")))
+                    .withAggregationType("bhj")
+                    .withFillGapWithZero(false)
+                    .withCategory("ehoqfbowskan")
+                    .withResourceIdDimensionNameOverride("tzlcuiywgqywgn")
+                    .withIsInternal(true),
+                new MetricSpecification().withName("nhzgpphrcgyn")
+                    .withDisplayName("cpecfvmmcoofs")
+                    .withDisplayDescription("zevgb")
+                    .withUnit("jqabcypmivkwlzuv")
+                    .withSupportedAggregationTypes(
+                        Arrays.asList(MetricAggregationType.AVERAGE, MetricAggregationType.AVERAGE))
+                    .withSupportedTimeGrainTypes(Arrays.asList("bacfionlebxetq", "tzxdpnqbqqwx"))
+                    .withInternalMetricName("feallnwsu")
+                    .withEnableRegionalMdmAccount(true)
+                    .withSourceMdmAccount("jampmngnzscxaqw")
+                    .withSourceMdmNamespace("chcbonqvpkvlrxnj")
+                    .withDimensions(
+                        Arrays.asList(new Dimension().withName("ipheoflokeyyien").withDisplayName("dlwtgrhpdj"),
+                            new Dimension().withName("umasxazjpq").withDisplayName("gual")))
+                    .withAggregationType("xxhejjzzvd")
+                    .withFillGapWithZero(true)
+                    .withCategory("dslfhotwmcy")
+                    .withResourceIdDimensionNameOverride("wlbjnpgacftade")
+                    .withIsInternal(true)))
             .withLogSpecifications(
                 Arrays.asList(new LogSpecification().withName("fsoppusuesnzw").withDisplayName("jbavorxzdm"),
                     new LogSpecification().withName("ctbqvudwx").withDisplayName("dnvowg"),

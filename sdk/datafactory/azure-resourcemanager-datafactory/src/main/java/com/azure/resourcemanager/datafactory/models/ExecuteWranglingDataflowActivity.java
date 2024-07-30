@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.ExecutePowerQueryActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,21 @@ import java.util.Map;
 /**
  * Execute power query activity.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = ExecuteWranglingDataflowActivity.class,
+    visible = true)
 @JsonTypeName("ExecuteWranglingDataflow")
 @Fluent
 public final class ExecuteWranglingDataflowActivity extends Activity {
+    /*
+     * Type of activity.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "ExecuteWranglingDataflow";
+
     /*
      * Execute power query activity properties.
      */
@@ -36,6 +48,16 @@ public final class ExecuteWranglingDataflowActivity extends Activity {
      * Creates an instance of ExecuteWranglingDataflowActivity class.
      */
     public ExecuteWranglingDataflowActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -239,6 +261,30 @@ public final class ExecuteWranglingDataflowActivity extends Activity {
     }
 
     /**
+     * Get the continuationSettings property: Continuation settings for execute data flow activity.
+     * 
+     * @return the continuationSettings value.
+     */
+    public ContinuationSettingsReference continuationSettings() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().continuationSettings();
+    }
+
+    /**
+     * Set the continuationSettings property: Continuation settings for execute data flow activity.
+     * 
+     * @param continuationSettings the continuationSettings value to set.
+     * @return the ExecuteWranglingDataflowActivity object itself.
+     */
+    public ExecuteWranglingDataflowActivity
+        withContinuationSettings(ContinuationSettingsReference continuationSettings) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new ExecutePowerQueryActivityTypeProperties();
+        }
+        this.innerTypeProperties().withContinuationSettings(continuationSettings);
+        return this;
+    }
+
+    /**
      * Get the compute property: Compute properties for data flow activity.
      * 
      * @return the compute value.
@@ -312,8 +358,8 @@ public final class ExecuteWranglingDataflowActivity extends Activity {
     }
 
     /**
-     * Get the runConcurrently property: Concurrent run setting used for data flow execution. Allows sinks with the
-     * same save order to be processed concurrently. Type: boolean (or Expression with resultType boolean).
+     * Get the runConcurrently property: Concurrent run setting used for data flow execution. Allows sinks with the same
+     * save order to be processed concurrently. Type: boolean (or Expression with resultType boolean).
      * 
      * @return the runConcurrently value.
      */
@@ -322,8 +368,8 @@ public final class ExecuteWranglingDataflowActivity extends Activity {
     }
 
     /**
-     * Set the runConcurrently property: Concurrent run setting used for data flow execution. Allows sinks with the
-     * same save order to be processed concurrently. Type: boolean (or Expression with resultType boolean).
+     * Set the runConcurrently property: Concurrent run setting used for data flow execution. Allows sinks with the same
+     * save order to be processed concurrently. Type: boolean (or Expression with resultType boolean).
      * 
      * @param runConcurrently the runConcurrently value to set.
      * @return the ExecuteWranglingDataflowActivity object itself.
@@ -337,8 +383,8 @@ public final class ExecuteWranglingDataflowActivity extends Activity {
     }
 
     /**
-     * Get the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the
-     * sink. Type: integer (or Expression with resultType integer).
+     * Get the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the sink.
+     * Type: integer (or Expression with resultType integer).
      * 
      * @return the sourceStagingConcurrency value.
      */
@@ -347,8 +393,8 @@ public final class ExecuteWranglingDataflowActivity extends Activity {
     }
 
     /**
-     * Set the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the
-     * sink. Type: integer (or Expression with resultType integer).
+     * Set the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the sink.
+     * Type: integer (or Expression with resultType integer).
      * 
      * @param sourceStagingConcurrency the sourceStagingConcurrency value to set.
      * @return the ExecuteWranglingDataflowActivity object itself.
@@ -370,8 +416,9 @@ public final class ExecuteWranglingDataflowActivity extends Activity {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model ExecuteWranglingDataflowActivity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model ExecuteWranglingDataflowActivity"));
         } else {
             innerTypeProperties().validate();
         }

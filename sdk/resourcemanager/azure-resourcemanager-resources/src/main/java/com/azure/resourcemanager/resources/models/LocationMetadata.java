@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Location metadata information. */
+/**
+ * Location metadata information.
+ */
 @Fluent
 public final class LocationMetadata {
     /*
@@ -65,13 +67,15 @@ public final class LocationMetadata {
     @JsonProperty(value = "homeLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String homeLocation;
 
-    /** Creates an instance of LocationMetadata class. */
+    /**
+     * Creates an instance of LocationMetadata class.
+     */
     public LocationMetadata() {
     }
 
     /**
      * Get the regionType property: The type of the region.
-     *
+     * 
      * @return the regionType value.
      */
     public RegionType regionType() {
@@ -80,7 +84,7 @@ public final class LocationMetadata {
 
     /**
      * Get the regionCategory property: The category of the region.
-     *
+     * 
      * @return the regionCategory value.
      */
     public RegionCategory regionCategory() {
@@ -89,7 +93,7 @@ public final class LocationMetadata {
 
     /**
      * Get the geography property: The geography of the location.
-     *
+     * 
      * @return the geography value.
      */
     public String geography() {
@@ -98,7 +102,7 @@ public final class LocationMetadata {
 
     /**
      * Get the geographyGroup property: The geography group of the location.
-     *
+     * 
      * @return the geographyGroup value.
      */
     public String geographyGroup() {
@@ -107,7 +111,7 @@ public final class LocationMetadata {
 
     /**
      * Get the longitude property: The longitude of the location.
-     *
+     * 
      * @return the longitude value.
      */
     public String longitude() {
@@ -116,7 +120,7 @@ public final class LocationMetadata {
 
     /**
      * Get the latitude property: The latitude of the location.
-     *
+     * 
      * @return the latitude value.
      */
     public String latitude() {
@@ -125,7 +129,7 @@ public final class LocationMetadata {
 
     /**
      * Get the physicalLocation property: The physical location of the Azure location.
-     *
+     * 
      * @return the physicalLocation value.
      */
     public String physicalLocation() {
@@ -134,7 +138,7 @@ public final class LocationMetadata {
 
     /**
      * Get the pairedRegion property: The regions paired to this region.
-     *
+     * 
      * @return the pairedRegion value.
      */
     public List<PairedRegion> pairedRegion() {
@@ -143,7 +147,7 @@ public final class LocationMetadata {
 
     /**
      * Set the pairedRegion property: The regions paired to this region.
-     *
+     * 
      * @param pairedRegion the pairedRegion value to set.
      * @return the LocationMetadata object itself.
      */
@@ -154,7 +158,7 @@ public final class LocationMetadata {
 
     /**
      * Get the homeLocation property: The home location of an edge zone.
-     *
+     * 
      * @return the homeLocation value.
      */
     public String homeLocation() {
@@ -163,7 +167,7 @@ public final class LocationMetadata {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

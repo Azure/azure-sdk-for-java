@@ -55,10 +55,16 @@ public final class NginxDeploymentProperties {
     private NginxLogging logging;
 
     /*
-     * The scalingProperties property.
+     * Information on how the deployment will be scaled.
      */
     @JsonProperty(value = "scalingProperties")
     private NginxDeploymentScalingProperties scalingProperties;
+
+    /*
+     * Autoupgrade settings of a deployment.
+     */
+    @JsonProperty(value = "autoUpgradeProfile")
+    private AutoUpgradeProfile autoUpgradeProfile;
 
     /*
      * The userProfile property.
@@ -182,7 +188,7 @@ public final class NginxDeploymentProperties {
     }
 
     /**
-     * Get the scalingProperties property: The scalingProperties property.
+     * Get the scalingProperties property: Information on how the deployment will be scaled.
      * 
      * @return the scalingProperties value.
      */
@@ -191,13 +197,33 @@ public final class NginxDeploymentProperties {
     }
 
     /**
-     * Set the scalingProperties property: The scalingProperties property.
+     * Set the scalingProperties property: Information on how the deployment will be scaled.
      * 
      * @param scalingProperties the scalingProperties value to set.
      * @return the NginxDeploymentProperties object itself.
      */
     public NginxDeploymentProperties withScalingProperties(NginxDeploymentScalingProperties scalingProperties) {
         this.scalingProperties = scalingProperties;
+        return this;
+    }
+
+    /**
+     * Get the autoUpgradeProfile property: Autoupgrade settings of a deployment.
+     * 
+     * @return the autoUpgradeProfile value.
+     */
+    public AutoUpgradeProfile autoUpgradeProfile() {
+        return this.autoUpgradeProfile;
+    }
+
+    /**
+     * Set the autoUpgradeProfile property: Autoupgrade settings of a deployment.
+     * 
+     * @param autoUpgradeProfile the autoUpgradeProfile value to set.
+     * @return the NginxDeploymentProperties object itself.
+     */
+    public NginxDeploymentProperties withAutoUpgradeProfile(AutoUpgradeProfile autoUpgradeProfile) {
+        this.autoUpgradeProfile = autoUpgradeProfile;
         return this;
     }
 
@@ -235,6 +261,9 @@ public final class NginxDeploymentProperties {
         }
         if (scalingProperties() != null) {
             scalingProperties().validate();
+        }
+        if (autoUpgradeProfile() != null) {
+            autoUpgradeProfile().validate();
         }
         if (userProfile() != null) {
             userProfile().validate();

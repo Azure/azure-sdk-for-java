@@ -14,9 +14,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class FindingOptions {
 
     /*
-     * If this is true, provide the sentence that contains the first token of the finding's clinical indicator (i.e.
-     * the medical problem), if there is one. This sentence is provided as an extension with url 'ci_sentence', next to
-     * the token evidence. Default is false.
+     * If this is true, provide the sentence that contains the first token of the finding's clinical indicator (i.e. the
+     * medical problem), if there is one. This sentence is provided as an extension with url 'ci_sentence', next to the
+     * token evidence. Default is false.
      */
     @Generated
     @JsonProperty(value = "provideFocusedSentenceEvidence")

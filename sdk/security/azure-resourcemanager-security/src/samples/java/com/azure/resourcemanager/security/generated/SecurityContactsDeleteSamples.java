@@ -11,9 +11,7 @@ import com.azure.resourcemanager.security.models.SecurityContactName;
  */
 public final class SecurityContactsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/SecurityContacts/
-     * DeleteSecurityContact_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/SecurityContacts/DeleteSecurityContact_example.json
      */
     /**
      * Sample code: Deletes a security contact data.

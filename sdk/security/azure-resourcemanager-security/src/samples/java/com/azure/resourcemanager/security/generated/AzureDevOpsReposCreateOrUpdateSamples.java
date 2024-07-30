@@ -14,9 +14,7 @@ import com.azure.resourcemanager.security.models.OnboardingState;
  */
 public final class AzureDevOpsReposCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2023-09-01-preview/examples/
-     * SecurityConnectorsDevOps/CreateOrUpdateAzureDevOpsRepos_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/CreateOrUpdateAzureDevOpsRepos_example.json
      */
     /**
      * Sample code: CreateOrUpdate_AzureDevOpsRepos.
@@ -24,7 +22,8 @@ public final class AzureDevOpsReposCreateOrUpdateSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void createOrUpdateAzureDevOpsRepos(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.azureDevOpsRepos().define("myAzDevOpsRepo")
+        manager.azureDevOpsRepos()
+            .define("myAzDevOpsRepo")
             .withExistingProject("myRg", "mySecurityConnectorName", "myAzDevOpsOrg", "myAzDevOpsProject")
             .withProperties(new AzureDevOpsRepositoryProperties().withOnboardingState(OnboardingState.NOT_APPLICABLE)
                 .withActionableRemediation(new ActionableRemediation().withState(ActionableRemediationState.ENABLED)))

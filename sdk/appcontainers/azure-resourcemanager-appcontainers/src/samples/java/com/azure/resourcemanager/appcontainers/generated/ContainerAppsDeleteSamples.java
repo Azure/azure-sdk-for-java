@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-/** Samples for ContainerApps Delete. */
+/**
+ * Samples for ContainerApps Delete.
+ */
 public final class ContainerAppsDeleteSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/ContainerApps_Delete.json
+     * x-ms-original-file:
+     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/ContainerApps_Delete.json
      */
     /**
      * Sample code: Delete Container App.
-     *
+     * 
      * @param manager Entry point to ContainerAppsApiManager.
      */
     public static void deleteContainerApp(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {

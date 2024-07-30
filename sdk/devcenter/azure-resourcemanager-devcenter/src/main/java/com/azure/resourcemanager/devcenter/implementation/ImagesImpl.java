@@ -28,38 +28,35 @@ public final class ImagesImpl implements Images {
 
     public PagedIterable<Image> listByDevCenter(String resourceGroupName, String devCenterName) {
         PagedIterable<ImageInner> inner = this.serviceClient().listByDevCenter(resourceGroupName, devCenterName);
-        return Utils.mapPage(inner, inner1 -> new ImageImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ImageImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Image> listByDevCenter(
-        String resourceGroupName, String devCenterName, Integer top, Context context) {
-        PagedIterable<ImageInner> inner =
-            this.serviceClient().listByDevCenter(resourceGroupName, devCenterName, top, context);
-        return Utils.mapPage(inner, inner1 -> new ImageImpl(inner1, this.manager()));
+    public PagedIterable<Image> listByDevCenter(String resourceGroupName, String devCenterName, Integer top,
+        Context context) {
+        PagedIterable<ImageInner> inner
+            = this.serviceClient().listByDevCenter(resourceGroupName, devCenterName, top, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ImageImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Image> listByGallery(String resourceGroupName, String devCenterName, String galleryName) {
-        PagedIterable<ImageInner> inner =
-            this.serviceClient().listByGallery(resourceGroupName, devCenterName, galleryName);
-        return Utils.mapPage(inner, inner1 -> new ImageImpl(inner1, this.manager()));
+        PagedIterable<ImageInner> inner
+            = this.serviceClient().listByGallery(resourceGroupName, devCenterName, galleryName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ImageImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Image> listByGallery(
-        String resourceGroupName, String devCenterName, String galleryName, Integer top, Context context) {
-        PagedIterable<ImageInner> inner =
-            this.serviceClient().listByGallery(resourceGroupName, devCenterName, galleryName, top, context);
-        return Utils.mapPage(inner, inner1 -> new ImageImpl(inner1, this.manager()));
+    public PagedIterable<Image> listByGallery(String resourceGroupName, String devCenterName, String galleryName,
+        Integer top, Context context) {
+        PagedIterable<ImageInner> inner
+            = this.serviceClient().listByGallery(resourceGroupName, devCenterName, galleryName, top, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ImageImpl(inner1, this.manager()));
     }
 
-    public Response<Image> getWithResponse(
-        String resourceGroupName, String devCenterName, String galleryName, String imageName, Context context) {
-        Response<ImageInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, devCenterName, galleryName, imageName, context);
+    public Response<Image> getWithResponse(String resourceGroupName, String devCenterName, String galleryName,
+        String imageName, Context context) {
+        Response<ImageInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, devCenterName, galleryName, imageName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ImageImpl(inner.getValue(), this.manager()));
         } else {
             return null;

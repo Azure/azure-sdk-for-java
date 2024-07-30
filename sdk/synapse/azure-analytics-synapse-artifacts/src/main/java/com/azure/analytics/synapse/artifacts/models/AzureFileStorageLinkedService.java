@@ -5,89 +5,88 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Azure File Storage linked service.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AzureFileStorage")
-@JsonFlatten
 @Fluent
 public class AzureFileStorageLinkedService extends LinkedService {
     /*
+     * Type of linked service.
+     */
+    private String type = "AzureFileStorage";
+
+    /*
      * Host name of the server. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.host", required = true)
     private Object host;
 
     /*
      * User ID to logon the server. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.userId")
     private Object userId;
 
     /*
      * Password to logon the server.
      */
-    @JsonProperty(value = "typeProperties.password")
     private SecretBase password;
 
     /*
-     * The connection string. It is mutually exclusive with sasUri property. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * The connection string. It is mutually exclusive with sasUri property. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "typeProperties.connectionString")
     private Object connectionString;
 
     /*
      * The Azure key vault secret reference of accountKey in connection string.
      */
-    @JsonProperty(value = "typeProperties.accountKey")
     private AzureKeyVaultSecretReference accountKey;
 
     /*
-     * SAS URI of the Azure File resource. It is mutually exclusive with connectionString property. Type: string,
-     * SecureString or AzureKeyVaultSecretReference.
+     * SAS URI of the Azure File resource. It is mutually exclusive with connectionString property. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "typeProperties.sasUri")
     private Object sasUri;
 
     /*
      * The Azure key vault secret reference of sasToken in sas uri.
      */
-    @JsonProperty(value = "typeProperties.sasToken")
     private AzureKeyVaultSecretReference sasToken;
 
     /*
-     * The azure file share name. It is required when auth with accountKey/sasToken. Type: string (or Expression with
-     * resultType string).
+     * The azure file share name. It is required when auth with accountKey/sasToken. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.fileShare")
     private Object fileShare;
 
     /*
      * The azure file share snapshot version. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.snapshot")
     private Object snapshot;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
     /**
      * Creates an instance of AzureFileStorageLinkedService class.
      */
     public AzureFileStorageLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -279,8 +278,8 @@ public class AzureFileStorageLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
      * 
      * @return the encryptedCredential value.
      */
@@ -289,8 +288,8 @@ public class AzureFileStorageLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureFileStorageLinkedService object itself.
@@ -334,5 +333,124 @@ public class AzureFileStorageLinkedService extends LinkedService {
     public AzureFileStorageLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("connectVia", getConnectVia());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("type", this.type);
+        if (host != null
+            || userId != null
+            || password != null
+            || connectionString != null
+            || accountKey != null
+            || sasUri != null
+            || sasToken != null
+            || fileShare != null
+            || snapshot != null
+            || encryptedCredential != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("host", this.host);
+            jsonWriter.writeUntypedField("userId", this.userId);
+            jsonWriter.writeJsonField("password", this.password);
+            jsonWriter.writeUntypedField("connectionString", this.connectionString);
+            jsonWriter.writeJsonField("accountKey", this.accountKey);
+            jsonWriter.writeUntypedField("sasUri", this.sasUri);
+            jsonWriter.writeJsonField("sasToken", this.sasToken);
+            jsonWriter.writeUntypedField("fileShare", this.fileShare);
+            jsonWriter.writeUntypedField("snapshot", this.snapshot);
+            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFileStorageLinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFileStorageLinkedService if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureFileStorageLinkedService.
+     */
+    public static AzureFileStorageLinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFileStorageLinkedService deserializedAzureFileStorageLinkedService
+                = new AzureFileStorageLinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectVia".equals(fieldName)) {
+                    deserializedAzureFileStorageLinkedService
+                        .setConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedAzureFileStorageLinkedService.setDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedAzureFileStorageLinkedService.setParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedAzureFileStorageLinkedService.setAnnotations(annotations);
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureFileStorageLinkedService.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("host".equals(fieldName)) {
+                            deserializedAzureFileStorageLinkedService.host = reader.readUntyped();
+                        } else if ("userId".equals(fieldName)) {
+                            deserializedAzureFileStorageLinkedService.userId = reader.readUntyped();
+                        } else if ("password".equals(fieldName)) {
+                            deserializedAzureFileStorageLinkedService.password = SecretBase.fromJson(reader);
+                        } else if ("connectionString".equals(fieldName)) {
+                            deserializedAzureFileStorageLinkedService.connectionString = reader.readUntyped();
+                        } else if ("accountKey".equals(fieldName)) {
+                            deserializedAzureFileStorageLinkedService.accountKey
+                                = AzureKeyVaultSecretReference.fromJson(reader);
+                        } else if ("sasUri".equals(fieldName)) {
+                            deserializedAzureFileStorageLinkedService.sasUri = reader.readUntyped();
+                        } else if ("sasToken".equals(fieldName)) {
+                            deserializedAzureFileStorageLinkedService.sasToken
+                                = AzureKeyVaultSecretReference.fromJson(reader);
+                        } else if ("fileShare".equals(fieldName)) {
+                            deserializedAzureFileStorageLinkedService.fileShare = reader.readUntyped();
+                        } else if ("snapshot".equals(fieldName)) {
+                            deserializedAzureFileStorageLinkedService.snapshot = reader.readUntyped();
+                        } else if ("encryptedCredential".equals(fieldName)) {
+                            deserializedAzureFileStorageLinkedService.encryptedCredential = reader.readUntyped();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAzureFileStorageLinkedService.setAdditionalProperties(additionalProperties);
+
+            return deserializedAzureFileStorageLinkedService;
+        });
     }
 }

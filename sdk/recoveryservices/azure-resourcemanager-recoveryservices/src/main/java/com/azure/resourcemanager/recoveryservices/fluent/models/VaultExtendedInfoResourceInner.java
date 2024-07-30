@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Vault extended information. */
+/**
+ * Vault extended information.
+ */
 @Fluent
 public final class VaultExtendedInfoResourceInner extends ProxyResource {
     /*
@@ -23,13 +25,15 @@ public final class VaultExtendedInfoResourceInner extends ProxyResource {
     @JsonProperty(value = "etag")
     private String etag;
 
-    /** Creates an instance of VaultExtendedInfoResourceInner class. */
+    /**
+     * Creates an instance of VaultExtendedInfoResourceInner class.
+     */
     public VaultExtendedInfoResourceInner() {
     }
 
     /**
      * Get the innerProperties property: Vault extended information.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VaultExtendedInfo innerProperties() {
@@ -38,7 +42,7 @@ public final class VaultExtendedInfoResourceInner extends ProxyResource {
 
     /**
      * Get the etag property: Optional ETag.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -47,7 +51,7 @@ public final class VaultExtendedInfoResourceInner extends ProxyResource {
 
     /**
      * Set the etag property: Optional ETag.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the VaultExtendedInfoResourceInner object itself.
      */
@@ -58,7 +62,7 @@ public final class VaultExtendedInfoResourceInner extends ProxyResource {
 
     /**
      * Get the integrityKey property: Integrity key.
-     *
+     * 
      * @return the integrityKey value.
      */
     public String integrityKey() {
@@ -67,7 +71,7 @@ public final class VaultExtendedInfoResourceInner extends ProxyResource {
 
     /**
      * Set the integrityKey property: Integrity key.
-     *
+     * 
      * @param integrityKey the integrityKey value to set.
      * @return the VaultExtendedInfoResourceInner object itself.
      */
@@ -81,7 +85,7 @@ public final class VaultExtendedInfoResourceInner extends ProxyResource {
 
     /**
      * Get the encryptionKey property: Encryption key.
-     *
+     * 
      * @return the encryptionKey value.
      */
     public String encryptionKey() {
@@ -90,7 +94,7 @@ public final class VaultExtendedInfoResourceInner extends ProxyResource {
 
     /**
      * Set the encryptionKey property: Encryption key.
-     *
+     * 
      * @param encryptionKey the encryptionKey value to set.
      * @return the VaultExtendedInfoResourceInner object itself.
      */
@@ -104,7 +108,7 @@ public final class VaultExtendedInfoResourceInner extends ProxyResource {
 
     /**
      * Get the encryptionKeyThumbprint property: Encryption key thumbprint.
-     *
+     * 
      * @return the encryptionKeyThumbprint value.
      */
     public String encryptionKeyThumbprint() {
@@ -113,7 +117,7 @@ public final class VaultExtendedInfoResourceInner extends ProxyResource {
 
     /**
      * Set the encryptionKeyThumbprint property: Encryption key thumbprint.
-     *
+     * 
      * @param encryptionKeyThumbprint the encryptionKeyThumbprint value to set.
      * @return the VaultExtendedInfoResourceInner object itself.
      */
@@ -127,7 +131,7 @@ public final class VaultExtendedInfoResourceInner extends ProxyResource {
 
     /**
      * Get the algorithm property: Algorithm for Vault ExtendedInfo.
-     *
+     * 
      * @return the algorithm value.
      */
     public String algorithm() {
@@ -136,7 +140,7 @@ public final class VaultExtendedInfoResourceInner extends ProxyResource {
 
     /**
      * Set the algorithm property: Algorithm for Vault ExtendedInfo.
-     *
+     * 
      * @param algorithm the algorithm value to set.
      * @return the VaultExtendedInfoResourceInner object itself.
      */
@@ -150,7 +154,7 @@ public final class VaultExtendedInfoResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

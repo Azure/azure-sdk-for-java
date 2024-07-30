@@ -274,7 +274,7 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
                     session, null, receiverOptions.getMaxLockRenewDuration());
 
                 final ServiceBusSingleSessionManager sessionManager = new ServiceBusSingleSessionManager(LOGGER, identifier,
-                    sessionReceiver, receiverOptions.getPrefetchCount(), messageSerializer, connectionCacheWrapper.getRetryOptions());
+                    sessionReceiver, receiverOptions.getPrefetchCount(), messageSerializer, connectionCacheWrapper.getRetryOptions(), instrumentation);
 
                 final ReceiverOptions newReceiverOptions = createNamedSessionOptions(receiverOptions.getReceiveMode(),
                     receiverOptions.getPrefetchCount(), receiverOptions.getMaxLockRenewDuration(),

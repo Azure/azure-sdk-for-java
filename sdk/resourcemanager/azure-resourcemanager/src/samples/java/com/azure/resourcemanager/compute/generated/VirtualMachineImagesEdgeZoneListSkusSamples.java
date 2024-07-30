@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class VirtualMachineImagesEdgeZoneListSkusSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineImageExamples/VirtualMachineImagesEdgeZone_ListSkus_MaximumSet_Gen.json
      */
     /**
@@ -20,13 +20,17 @@ public final class VirtualMachineImagesEdgeZoneListSkusSamples {
      */
     public static void
         virtualMachineImagesEdgeZoneListSkusMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineImagesEdgeZones().listSkusWithResponse(
-            "aaaaaaaaaaaa", "aaaaa", "aaaaaaaaaaaa", "aaaaaaaaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineImagesEdgeZones()
+            .listSkusWithResponse("aaaaaaaaaaaa", "aaaaa", "aaaaaaaaaaaa", "aaaaaaaaaaaa",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineImageExamples/VirtualMachineImagesEdgeZone_ListSkus_MinimumSet_Gen.json
      */
     /**
@@ -36,8 +40,11 @@ public final class VirtualMachineImagesEdgeZoneListSkusSamples {
      */
     public static void
         virtualMachineImagesEdgeZoneListSkusMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineImagesEdgeZones().listSkusWithResponse(
-            "aaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaa", "aaaaaaaaaaaa",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineImagesEdgeZones()
+            .listSkusWithResponse("aaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaa", "aaaaaaaaaaaa",
+                com.azure.core.util.Context.NONE);
     }
 }

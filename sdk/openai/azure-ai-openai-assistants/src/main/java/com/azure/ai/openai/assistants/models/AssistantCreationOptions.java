@@ -5,8 +5,12 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.BinaryData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -14,49 +18,68 @@ import java.util.Map;
  * The request details to use when creating a new assistant.
  */
 @Fluent
-public final class AssistantCreationOptions {
+public final class AssistantCreationOptions implements JsonSerializable<AssistantCreationOptions> {
 
     /*
      * The ID of the model to use.
      */
     @Generated
-    @JsonProperty(value = "model")
-    private String model;
+    private final String model;
 
     /*
      * The name of the new assistant.
      */
     @Generated
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The description of the new assistant.
      */
     @Generated
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The system instructions for the new assistant to use.
      */
     @Generated
-    @JsonProperty(value = "instructions")
     private String instructions;
 
     /*
      * The collection of tools to enable for the new assistant.
      */
     @Generated
-    @JsonProperty(value = "tools")
     private List<ToolDefinition> tools;
 
     /*
-     * A list of previously uploaded file IDs to attach to the assistant.
+     * A set of resources that are used by the assistant's tools. The resources are specific to the type of tool. For
+     * example, the `code_interpreter`
+     * tool requires a list of file IDs, while the `file_search` tool requires a list of vector store IDs.
      */
     @Generated
-    @JsonProperty(value = "file_ids")
-    private List<String> fileIds;
+    private CreateToolResourcesOptions toolResources;
+
+    /*
+     * What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random,
+     * while lower values like 0.2 will make it more focused and deterministic.
+     */
+    @Generated
+    private Double temperature;
+
+    /*
+     * An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of
+     * the tokens with top_p probability mass.
+     * So 0.1 means only the tokens comprising the top 10% probability mass are considered.
+     * 
+     * We generally recommend altering this or temperature but not both.
+     */
+    @Generated
+    private Double topP;
+
+    /*
+     * The response format of the tool calls used by this assistant.
+     */
+    @Generated
+    private BinaryData responseFormat;
 
     /*
      * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
@@ -64,7 +87,6 @@ public final class AssistantCreationOptions {
      * characters in length.
      */
     @Generated
-    @JsonProperty(value = "metadata")
     private Map<String, String> metadata;
 
     /**
@@ -73,8 +95,7 @@ public final class AssistantCreationOptions {
      * @param model the model value to set.
      */
     @Generated
-    @JsonCreator
-    public AssistantCreationOptions(@JsonProperty(value = "model") String model) {
+    public AssistantCreationOptions(String model) {
         this.model = model;
     }
 
@@ -177,24 +198,110 @@ public final class AssistantCreationOptions {
     }
 
     /**
-     * Get the fileIds property: A list of previously uploaded file IDs to attach to the assistant.
+     * Get the toolResources property: A set of resources that are used by the assistant's tools. The resources are
+     * specific to the type of tool. For example, the `code_interpreter`
+     * tool requires a list of file IDs, while the `file_search` tool requires a list of vector store IDs.
      *
-     * @return the fileIds value.
+     * @return the toolResources value.
      */
     @Generated
-    public List<String> getFileIds() {
-        return this.fileIds;
+    public CreateToolResourcesOptions getToolResources() {
+        return this.toolResources;
     }
 
     /**
-     * Set the fileIds property: A list of previously uploaded file IDs to attach to the assistant.
+     * Set the toolResources property: A set of resources that are used by the assistant's tools. The resources are
+     * specific to the type of tool. For example, the `code_interpreter`
+     * tool requires a list of file IDs, while the `file_search` tool requires a list of vector store IDs.
      *
-     * @param fileIds the fileIds value to set.
+     * @param toolResources the toolResources value to set.
      * @return the AssistantCreationOptions object itself.
      */
     @Generated
-    public AssistantCreationOptions setFileIds(List<String> fileIds) {
-        this.fileIds = fileIds;
+    public AssistantCreationOptions setToolResources(CreateToolResourcesOptions toolResources) {
+        this.toolResources = toolResources;
+        return this;
+    }
+
+    /**
+     * Get the temperature property: What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make
+     * the output more random,
+     * while lower values like 0.2 will make it more focused and deterministic.
+     *
+     * @return the temperature value.
+     */
+    @Generated
+    public Double getTemperature() {
+        return this.temperature;
+    }
+
+    /**
+     * Set the temperature property: What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make
+     * the output more random,
+     * while lower values like 0.2 will make it more focused and deterministic.
+     *
+     * @param temperature the temperature value to set.
+     * @return the AssistantCreationOptions object itself.
+     */
+    @Generated
+    public AssistantCreationOptions setTemperature(Double temperature) {
+        this.temperature = temperature;
+        return this;
+    }
+
+    /**
+     * Get the topP property: An alternative to sampling with temperature, called nucleus sampling, where the model
+     * considers the results of the tokens with top_p probability mass.
+     * So 0.1 means only the tokens comprising the top 10% probability mass are considered.
+     *
+     * We generally recommend altering this or temperature but not both.
+     *
+     * @return the topP value.
+     */
+    @Generated
+    public Double getTopP() {
+        return this.topP;
+    }
+
+    /**
+     * Set the topP property: An alternative to sampling with temperature, called nucleus sampling, where the model
+     * considers the results of the tokens with top_p probability mass.
+     * So 0.1 means only the tokens comprising the top 10% probability mass are considered.
+     *
+     * We generally recommend altering this or temperature but not both.
+     *
+     * @param topP the topP value to set.
+     * @return the AssistantCreationOptions object itself.
+     */
+    @Generated
+    public AssistantCreationOptions setTopP(Double topP) {
+        this.topP = topP;
+        return this;
+    }
+
+    /**
+     * Get the responseFormat property: The response format of the tool calls used by this assistant.
+     *
+     * @return the responseFormat value.
+     */
+    public AssistantsApiResponseFormatOption getResponseFormat() {
+        return AssistantsApiResponseFormatOption.fromBinaryData(this.responseFormat);
+    }
+
+    /**
+     * Set the responseFormat property: The response format of the tool calls used by this assistant.
+     *
+     * @param responseFormat the responseFormat value to set.
+     * @return the AssistantCreationOptions object itself.
+     */
+    public AssistantCreationOptions setResponseFormat(AssistantsApiResponseFormatOption responseFormat) {
+        if (responseFormat.getFormat() != null) {
+            this.responseFormat = BinaryData.fromObject(responseFormat.getFormat());
+        } else if (responseFormat.getMode() != null) {
+            this.responseFormat = BinaryData.fromObject(responseFormat.getMode());
+        } else {
+            this.responseFormat = null;
+        }
         return this;
     }
 
@@ -222,5 +329,91 @@ public final class AssistantCreationOptions {
     public AssistantCreationOptions setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("model", this.model);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("instructions", this.instructions);
+        jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("tool_resources", this.toolResources);
+        jsonWriter.writeNumberField("temperature", this.temperature);
+        jsonWriter.writeNumberField("top_p", this.topP);
+        if (this.responseFormat != null) {
+            jsonWriter.writeUntypedField("response_format", this.responseFormat.toObject(Object.class));
+        }
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AssistantCreationOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AssistantCreationOptions if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AssistantCreationOptions.
+     */
+    @Generated
+    public static AssistantCreationOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String model = null;
+            String name = null;
+            String description = null;
+            String instructions = null;
+            List<ToolDefinition> tools = null;
+            CreateToolResourcesOptions toolResources = null;
+            Double temperature = null;
+            Double topP = null;
+            BinaryData responseFormat = null;
+            Map<String, String> metadata = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("model".equals(fieldName)) {
+                    model = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    description = reader.getString();
+                } else if ("instructions".equals(fieldName)) {
+                    instructions = reader.getString();
+                } else if ("tools".equals(fieldName)) {
+                    tools = reader.readArray(reader1 -> ToolDefinition.fromJson(reader1));
+                } else if ("tool_resources".equals(fieldName)) {
+                    toolResources = CreateToolResourcesOptions.fromJson(reader);
+                } else if ("temperature".equals(fieldName)) {
+                    temperature = reader.getNullable(JsonReader::getDouble);
+                } else if ("top_p".equals(fieldName)) {
+                    topP = reader.getNullable(JsonReader::getDouble);
+                } else if ("response_format".equals(fieldName)) {
+                    responseFormat
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                } else if ("metadata".equals(fieldName)) {
+                    metadata = reader.readMap(reader1 -> reader1.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            AssistantCreationOptions deserializedAssistantCreationOptions = new AssistantCreationOptions(model);
+            deserializedAssistantCreationOptions.name = name;
+            deserializedAssistantCreationOptions.description = description;
+            deserializedAssistantCreationOptions.instructions = instructions;
+            deserializedAssistantCreationOptions.tools = tools;
+            deserializedAssistantCreationOptions.toolResources = toolResources;
+            deserializedAssistantCreationOptions.temperature = temperature;
+            deserializedAssistantCreationOptions.topP = topP;
+            deserializedAssistantCreationOptions.responseFormat = responseFormat;
+            deserializedAssistantCreationOptions.metadata = metadata;
+            return deserializedAssistantCreationOptions;
+        });
     }
 }

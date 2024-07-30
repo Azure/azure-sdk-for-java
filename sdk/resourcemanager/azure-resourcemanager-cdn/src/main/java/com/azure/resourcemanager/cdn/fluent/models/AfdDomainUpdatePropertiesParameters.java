@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cdn.models.AfdDomainHttpsParameters;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The JSON object that contains the properties of the domain to create. */
+/**
+ * The JSON object that contains the properties of the domain to create.
+ */
 @Fluent
 public class AfdDomainUpdatePropertiesParameters {
     /*
@@ -37,13 +39,15 @@ public class AfdDomainUpdatePropertiesParameters {
     @JsonProperty(value = "preValidatedCustomDomainResourceId")
     private ResourceReference preValidatedCustomDomainResourceId;
 
-    /** Creates an instance of AfdDomainUpdatePropertiesParameters class. */
+    /**
+     * Creates an instance of AfdDomainUpdatePropertiesParameters class.
+     */
     public AfdDomainUpdatePropertiesParameters() {
     }
 
     /**
      * Get the profileName property: The name of the profile which holds the domain.
-     *
+     * 
      * @return the profileName value.
      */
     public String profileName() {
@@ -54,7 +58,7 @@ public class AfdDomainUpdatePropertiesParameters {
      * Get the tlsSettings property: The configuration specifying how to enable HTTPS for the domain - using
      * AzureFrontDoor managed certificate or user's own certificate. If not specified, enabling ssl uses AzureFrontDoor
      * managed certificate by default.
-     *
+     * 
      * @return the tlsSettings value.
      */
     public AfdDomainHttpsParameters tlsSettings() {
@@ -65,7 +69,7 @@ public class AfdDomainUpdatePropertiesParameters {
      * Set the tlsSettings property: The configuration specifying how to enable HTTPS for the domain - using
      * AzureFrontDoor managed certificate or user's own certificate. If not specified, enabling ssl uses AzureFrontDoor
      * managed certificate by default.
-     *
+     * 
      * @param tlsSettings the tlsSettings value to set.
      * @return the AfdDomainUpdatePropertiesParameters object itself.
      */
@@ -76,7 +80,7 @@ public class AfdDomainUpdatePropertiesParameters {
 
     /**
      * Get the azureDnsZone property: Resource reference to the Azure DNS zone.
-     *
+     * 
      * @return the azureDnsZone value.
      */
     public ResourceReference azureDnsZone() {
@@ -85,7 +89,7 @@ public class AfdDomainUpdatePropertiesParameters {
 
     /**
      * Set the azureDnsZone property: Resource reference to the Azure DNS zone.
-     *
+     * 
      * @param azureDnsZone the azureDnsZone value to set.
      * @return the AfdDomainUpdatePropertiesParameters object itself.
      */
@@ -95,9 +99,9 @@ public class AfdDomainUpdatePropertiesParameters {
     }
 
     /**
-     * Get the preValidatedCustomDomainResourceId property: Resource reference to the Azure resource where custom domain
-     * ownership was prevalidated.
-     *
+     * Get the preValidatedCustomDomainResourceId property: Resource reference to the Azure resource where custom
+     * domain ownership was prevalidated.
+     * 
      * @return the preValidatedCustomDomainResourceId value.
      */
     public ResourceReference preValidatedCustomDomainResourceId() {
@@ -105,21 +109,21 @@ public class AfdDomainUpdatePropertiesParameters {
     }
 
     /**
-     * Set the preValidatedCustomDomainResourceId property: Resource reference to the Azure resource where custom domain
-     * ownership was prevalidated.
-     *
+     * Set the preValidatedCustomDomainResourceId property: Resource reference to the Azure resource where custom
+     * domain ownership was prevalidated.
+     * 
      * @param preValidatedCustomDomainResourceId the preValidatedCustomDomainResourceId value to set.
      * @return the AfdDomainUpdatePropertiesParameters object itself.
      */
-    public AfdDomainUpdatePropertiesParameters withPreValidatedCustomDomainResourceId(
-        ResourceReference preValidatedCustomDomainResourceId) {
+    public AfdDomainUpdatePropertiesParameters
+        withPreValidatedCustomDomainResourceId(ResourceReference preValidatedCustomDomainResourceId) {
         this.preValidatedCustomDomainResourceId = preValidatedCustomDomainResourceId;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

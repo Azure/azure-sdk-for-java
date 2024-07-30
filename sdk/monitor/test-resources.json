@@ -45,25 +45,6 @@
       "type": "string",
       "defaultValue": "servicebus.windows.net"
     },
-    "testApplicationId": {
-      "type": "string",
-      "metadata": {
-        "description": "The client id of the service principal used to run tests."
-      }
-    },
-    "testApplicationSecret": {
-      "type": "string",
-      "metadata": {
-        "description": "The application client secret used to run tests."
-      }
-    },
-    "tenantId": {
-      "type": "string",
-      "defaultValue": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-      "metadata": {
-        "description": "The tenant id to which the application and resources belong."
-      }
-    },
     "location": {
       "type": "string",
       "defaultValue": "[resourceGroup().location]",
@@ -331,29 +312,17 @@
     }
   ],
   "outputs": {
-    "AZURE_APPCONFIG_CONNECTION_STRING": {
-      "type": "string",
-      "value": "[listKeys(resourceId('Microsoft.AppConfiguration/configurationStores',variables('uniqueAzConfigName')), '2019-02-01-preview').value[0].connectionString]"
-    },
     "roleDefinitionId": {
       "type": "string",
       "value": "[variables('roleDefinitionId')]"
     },
+    "AZURE_APPCONFIG_ENDPOINT": {
+      "type": "string",
+      "value": "[variables('endpointValue')]"
+    },
     "APPLICATIONINSIGHTS_CONNECTION_STRING": {
       "value": "[reference(resourceId('Microsoft.Insights/components', variables('uniqueAppInsightsName')), '2020-02-02-preview').ConnectionString]",
       "type": "string"
-    },
-    "AZURE_TENANT_ID": {
-      "type": "string",
-      "value": "[parameters('tenantId')]"
-    },
-    "AZURE_CLIENT_ID": {
-      "type": "string",
-      "value": "[parameters('testApplicationId')]"
-    },
-    "AZURE_CLIENT_SECRET": {
-      "type": "string",
-      "value": "[parameters('testApplicationSecret')]"
     },
     "AZURE_EVENTHUBS_CONNECTION_STRING": {
       "type": "string",

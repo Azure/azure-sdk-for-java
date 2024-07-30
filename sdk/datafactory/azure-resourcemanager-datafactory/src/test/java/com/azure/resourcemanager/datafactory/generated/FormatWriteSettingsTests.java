@@ -12,8 +12,8 @@ import java.util.Map;
 public final class FormatWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FormatWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"FormatWriteSettings\",\"\":{\"oksstaljiqlxjjl\":\"datagqsqvf\",\"qhscaand\":\"datauymna\",\"lsb\":\"datalvccuvcva\"}}")
+        FormatWriteSettings model = BinaryData
+            .fromString("{\"type\":\"FormatWriteSettings\",\"\":{\"jsvymozryyyvlxm\":\"datacxyrsleghozsm\"}}")
             .toObject(FormatWriteSettings.class);
     }
 

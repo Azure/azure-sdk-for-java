@@ -91,13 +91,13 @@ public final class TroubleshootersImpl implements Troubleshooters {
     }
 
     public TroubleshooterResource getById(String id) {
-        String scope = Utils.getValueFromIdByParameterName(id,
+        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.Help/troubleshooters/{troubleshooterName}", "scope");
         if (scope == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
         }
-        String troubleshooterName = Utils.getValueFromIdByParameterName(id,
+        String troubleshooterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.Help/troubleshooters/{troubleshooterName}", "troubleshooterName");
         if (troubleshooterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -107,13 +107,13 @@ public final class TroubleshootersImpl implements Troubleshooters {
     }
 
     public Response<TroubleshooterResource> getByIdWithResponse(String id, Context context) {
-        String scope = Utils.getValueFromIdByParameterName(id,
+        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.Help/troubleshooters/{troubleshooterName}", "scope");
         if (scope == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
         }
-        String troubleshooterName = Utils.getValueFromIdByParameterName(id,
+        String troubleshooterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.Help/troubleshooters/{troubleshooterName}", "troubleshooterName");
         if (troubleshooterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(

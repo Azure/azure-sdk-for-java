@@ -15,32 +15,40 @@ public final class OperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationListResult model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"zycispn\",\"display\":{\"provider\":\"hmgkbrpyy\",\"resource\":\"ibnuqqkpik\",\"operation\":\"rgvtqag\",\"description\":\"uynhijg\"},\"isDataAction\":false}],\"nextLink\":\"fsiarbutr\"}")
+            "{\"value\":[{\"name\":\"hl\",\"display\":{\"provider\":\"bh\",\"resource\":\"frlh\",\"operation\":\"sbkyvpycanuzbp\",\"description\":\"afkuwb\"},\"isDataAction\":false},{\"name\":\"bmehh\",\"display\":{\"provider\":\"v\",\"resource\":\"srtslhspkdeem\",\"operation\":\"fm\",\"description\":\"gkvtmelmqkrhah\"},\"isDataAction\":true}],\"nextLink\":\"ahaquh\"}")
             .toObject(OperationListResult.class);
-        Assertions.assertEquals("zycispn", model.value().get(0).name());
-        Assertions.assertEquals("hmgkbrpyy", model.value().get(0).display().provider());
-        Assertions.assertEquals("ibnuqqkpik", model.value().get(0).display().resource());
-        Assertions.assertEquals("rgvtqag", model.value().get(0).display().operation());
-        Assertions.assertEquals("uynhijg", model.value().get(0).display().description());
+        Assertions.assertEquals("hl", model.value().get(0).name());
+        Assertions.assertEquals("bh", model.value().get(0).display().provider());
+        Assertions.assertEquals("frlh", model.value().get(0).display().resource());
+        Assertions.assertEquals("sbkyvpycanuzbp", model.value().get(0).display().operation());
+        Assertions.assertEquals("afkuwb", model.value().get(0).display().description());
         Assertions.assertEquals(false, model.value().get(0).isDataAction());
-        Assertions.assertEquals("fsiarbutr", model.nextLink());
+        Assertions.assertEquals("ahaquh", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationListResult model = new OperationListResult()
-            .withValue(Arrays.asList(new OperationResultInner().withName("zycispn")
-                .withDisplay(new OperationDisplay().withProvider("hmgkbrpyy").withResource("ibnuqqkpik")
-                    .withOperation("rgvtqag").withDescription("uynhijg"))
-                .withIsDataAction(false)))
-            .withNextLink("fsiarbutr");
+        OperationListResult model = new OperationListResult().withValue(Arrays.asList(
+            new OperationResultInner().withName("hl")
+                .withDisplay(new OperationDisplay().withProvider("bh")
+                    .withResource("frlh")
+                    .withOperation("sbkyvpycanuzbp")
+                    .withDescription("afkuwb"))
+                .withIsDataAction(false),
+            new OperationResultInner().withName("bmehh")
+                .withDisplay(new OperationDisplay().withProvider("v")
+                    .withResource("srtslhspkdeem")
+                    .withOperation("fm")
+                    .withDescription("gkvtmelmqkrhah"))
+                .withIsDataAction(true)))
+            .withNextLink("ahaquh");
         model = BinaryData.fromObject(model).toObject(OperationListResult.class);
-        Assertions.assertEquals("zycispn", model.value().get(0).name());
-        Assertions.assertEquals("hmgkbrpyy", model.value().get(0).display().provider());
-        Assertions.assertEquals("ibnuqqkpik", model.value().get(0).display().resource());
-        Assertions.assertEquals("rgvtqag", model.value().get(0).display().operation());
-        Assertions.assertEquals("uynhijg", model.value().get(0).display().description());
+        Assertions.assertEquals("hl", model.value().get(0).name());
+        Assertions.assertEquals("bh", model.value().get(0).display().provider());
+        Assertions.assertEquals("frlh", model.value().get(0).display().resource());
+        Assertions.assertEquals("sbkyvpycanuzbp", model.value().get(0).display().operation());
+        Assertions.assertEquals("afkuwb", model.value().get(0).display().description());
         Assertions.assertEquals(false, model.value().get(0).isDataAction());
-        Assertions.assertEquals("fsiarbutr", model.nextLink());
+        Assertions.assertEquals("ahaquh", model.nextLink());
     }
 }

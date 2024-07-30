@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The RankingsResponseTablesPropertiesItemsItem model. */
+/**
+ * The RankingsResponseTablesPropertiesItemsItem model.
+ */
 @Fluent
 public final class RankingsResponseTablesPropertiesItemsItem {
     /*
@@ -23,13 +25,15 @@ public final class RankingsResponseTablesPropertiesItemsItem {
     @JsonProperty(value = "metrics")
     private List<RankingsResponseTablesPropertiesItemsMetricsItem> metrics;
 
-    /** Creates an instance of RankingsResponseTablesPropertiesItemsItem class. */
+    /**
+     * Creates an instance of RankingsResponseTablesPropertiesItemsItem class.
+     */
     public RankingsResponseTablesPropertiesItemsItem() {
     }
 
     /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,7 +42,7 @@ public final class RankingsResponseTablesPropertiesItemsItem {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the RankingsResponseTablesPropertiesItemsItem object itself.
      */
@@ -49,7 +53,7 @@ public final class RankingsResponseTablesPropertiesItemsItem {
 
     /**
      * Get the metrics property: The metrics property.
-     *
+     * 
      * @return the metrics value.
      */
     public List<RankingsResponseTablesPropertiesItemsMetricsItem> metrics() {
@@ -58,19 +62,19 @@ public final class RankingsResponseTablesPropertiesItemsItem {
 
     /**
      * Set the metrics property: The metrics property.
-     *
+     * 
      * @param metrics the metrics value to set.
      * @return the RankingsResponseTablesPropertiesItemsItem object itself.
      */
-    public RankingsResponseTablesPropertiesItemsItem withMetrics(
-        List<RankingsResponseTablesPropertiesItemsMetricsItem> metrics) {
+    public RankingsResponseTablesPropertiesItemsItem
+        withMetrics(List<RankingsResponseTablesPropertiesItemsMetricsItem> metrics) {
         this.metrics = metrics;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

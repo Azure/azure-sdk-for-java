@@ -2,15 +2,28 @@
 
 > see https://aka.ms/autorest
 
+This is the AutoRest configuration file for Maps Route.
+---
+## Getting Started
+
+To build the SDK for Maps Route, simply [Install AutoRest](https://aka.ms/autorest) and in this folder, run:
+
+> `autorest`
+
+To see additional help and options, run:
+
+> `autorest --help`
+
 ### Setup
-> see https://github.com/Azure/autorest.java
+```ps
+npm install -g autorest
+```
 
 ### Generation
-> see https://github.com/Azure/autorest.java/releases for the latest version of autorest
+
 ```ps
 cd <swagger-folder>
-mvn install
-autorest --java --use:@autorest/java@4.0.x
+autorest
 ```
 
 ### Code generation settings
@@ -19,27 +32,22 @@ autorest --java --use:@autorest/java@4.0.x
 
 ``` yaml
 directive:
-
   - from: swagger-document
     where: "$"
     transform: >
-        $["securityDefinitions"] = {};
-  - from: swagger-document
-    where: "$"
-    transform: >
-        $["security"] = [];
-
+      $["securityDefinitions"] = {};
+      $["security"] = [];
   - from: swagger-document
     where: $..responses
     debug: true
-    transform: |
-        $["default"] = { 
-                "description": "An unexpected error occurred.",
-                "schema": {
-                "$ref": "../../../../../common-types/data-plane/v1/types.json#/definitions/ErrorResponse"
-                },
-                "x-ms-error-response": true
-            }
+    transform: >
+      $["default"] = { 
+        "description": "An unexpected error occurred.",
+        "schema": {
+          "$ref": "../../../../../common-types/data-plane/v1/types.json#/definitions/ErrorResponse"
+        },
+        "x-ms-error-response": true
+      }
 
   - rename-model:
         from: RouteMatrixQuery
@@ -58,6 +66,7 @@ title: RouteClient
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/maps/data-plane/Route/preview/1.0/route.json
 namespace: com.azure.maps.route
 java: true
+use: '@autorest/java@4.1.29'
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
 payload-flattening-threshold: 0
@@ -70,7 +79,8 @@ generate-sync-async-clients: false
 polling: {}
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: AlternativeRouteType,BatchResultSummary,BatchResultItem,ComputeTravelTime,DelayMagnitude,DrivingSide,EffectiveSetting,GuidanceInstructionType,GuidanceManeuver,InclineLevel,JunctionType,Report,ResponseSectionType,ResponseTravelMode,Route,RouteAvoidType,RouteDirections,RouteDirectionsBatchItem,RouteGuidance,RouteInstructionGroup,RouteInstruction,RouteMatrix,RouteRange,RouteInstructionsType,RouteLeg,RouteLegSummary,RouteMatrixSummary,RouteOptimizedWaypoint,RouteRangeResult,RouteReport,RouteRepresentationForBestOrder,RouteSection,RouteSectionTec,RouteSectionTecCause,RouteSummary,RouteType,SectionType,SimpleCategory,TravelMode,VehicleEngineType,VehicleLoadType,WindingnessLevel
-customization-jar-path: target/azure-maps-route-customization-1.0.0-beta.1.jar
-customization-class: RouteCustomization
+custom-types: AlternativeRouteType,BatchResultSummary,BatchResultItem,ComputeTravelTime,DelayMagnitude,DrivingSide,EffectiveSetting,GuidanceInstructionType,GuidanceManeuver,InclineLevel,JunctionType,Report,ResponseSectionType,ResponseTravelMode,Route,RouteAvoidType,RouteDirections,RouteDirectionsBatchItem,RouteDirectionsBatchItemResponse,RouteGuidance,RouteInstructionGroup,RouteInstruction,RouteMatrix,RouteRange,RouteInstructionsType,RouteLeg,RouteLegSummary,RouteMatrixSummary,RouteOptimizedWaypoint,RouteRangeResult,RouteReport,RouteRepresentationForBestOrder,RouteSection,RouteSectionTec,RouteSectionTecCause,RouteSummary,RouteType,SectionType,SimpleCategory,TravelMode,VehicleEngineType,VehicleLoadType,WindingnessLevel
+customization-class: src/main/java/RouteCustomization.java
+generic-response-type: true
+no-custom-headers: true
 ```

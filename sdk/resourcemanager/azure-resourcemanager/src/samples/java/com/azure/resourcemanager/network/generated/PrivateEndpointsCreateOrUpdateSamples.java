@@ -17,7 +17,7 @@ import java.util.Arrays;
 public final class PrivateEndpointsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/PrivateEndpointCreateWithASG.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/PrivateEndpointCreateWithASG.
      * json
      */
     /**
@@ -27,9 +27,13 @@ public final class PrivateEndpointsCreateOrUpdateSamples {
      */
     public static void
         createPrivateEndpointWithApplicationSecurityGroups(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getPrivateEndpoints().createOrUpdate("rg1", "testPe",
-            new PrivateEndpointInner().withLocation("eastus2euap").withSubnet(new SubnetInner().withId(
-                "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"))
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getPrivateEndpoints()
+            .createOrUpdate("rg1", "testPe", new PrivateEndpointInner().withLocation("eastus2euap")
+                .withSubnet(new SubnetInner().withId(
+                    "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"))
                 .withPrivateLinkServiceConnections(Arrays.asList(new PrivateLinkServiceConnection()
                     .withPrivateLinkServiceId(
                         "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls")
@@ -37,12 +41,12 @@ public final class PrivateEndpointsCreateOrUpdateSamples {
                     .withRequestMessage("Please approve my connection.")))
                 .withApplicationSecurityGroups(Arrays.asList(new ApplicationSecurityGroupInner().withId(
                     "/subscriptions/subId/resourceGroups/rg1/provders/Microsoft.Network/applicationSecurityGroup/asg1"))),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/PrivateEndpointCreate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/PrivateEndpointCreate.json
      */
     /**
      * Sample code: Create private endpoint.
@@ -50,22 +54,27 @@ public final class PrivateEndpointsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createPrivateEndpoint(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getPrivateEndpoints().createOrUpdate("rg1", "testPe",
-            new PrivateEndpointInner().withLocation("eastus2euap").withSubnet(new SubnetInner().withId(
-                "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"))
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getPrivateEndpoints()
+            .createOrUpdate("rg1", "testPe", new PrivateEndpointInner().withLocation("eastus2euap")
+                .withSubnet(new SubnetInner().withId(
+                    "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"))
                 .withPrivateLinkServiceConnections(Arrays.asList(new PrivateLinkServiceConnection()
                     .withPrivateLinkServiceId(
                         "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls")
                     .withGroupIds(Arrays.asList("groupIdFromResource"))
                     .withRequestMessage("Please approve my connection.")))
                 .withIpConfigurations(Arrays.asList(new PrivateEndpointIpConfiguration().withName("pestaticconfig")
-                    .withGroupId("file").withMemberName("file").withPrivateIpAddress("192.168.0.6")))
-                .withCustomNetworkInterfaceName("testPeNic"),
-            com.azure.core.util.Context.NONE);
+                    .withGroupId("file")
+                    .withMemberName("file")
+                    .withPrivateIpAddress("192.168.0.6")))
+                .withCustomNetworkInterfaceName("testPeNic"), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * PrivateEndpointCreateForManualApproval.json
      */
     /**
@@ -75,17 +84,22 @@ public final class PrivateEndpointsCreateOrUpdateSamples {
      */
     public static void
         createPrivateEndpointWithManualApprovalConnection(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getPrivateEndpoints().createOrUpdate("rg1", "testPe",
-            new PrivateEndpointInner().withLocation("eastus").withSubnet(new SubnetInner().withId(
-                "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"))
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getPrivateEndpoints()
+            .createOrUpdate("rg1", "testPe", new PrivateEndpointInner().withLocation("eastus")
+                .withSubnet(new SubnetInner().withId(
+                    "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"))
                 .withManualPrivateLinkServiceConnections(Arrays.asList(new PrivateLinkServiceConnection()
                     .withPrivateLinkServiceId(
                         "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls")
                     .withGroupIds(Arrays.asList("groupIdFromResource"))
                     .withRequestMessage("Please manually approve my connection.")))
                 .withIpConfigurations(Arrays.asList(new PrivateEndpointIpConfiguration().withName("pestaticconfig")
-                    .withGroupId("file").withMemberName("file").withPrivateIpAddress("192.168.0.5")))
-                .withCustomNetworkInterfaceName("testPeNic"),
-            com.azure.core.util.Context.NONE);
+                    .withGroupId("file")
+                    .withMemberName("file")
+                    .withPrivateIpAddress("192.168.0.5")))
+                .withCustomNetworkInterfaceName("testPeNic"), com.azure.core.util.Context.NONE);
     }
 }

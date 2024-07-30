@@ -12,7 +12,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-core-tracing-opentelemetry</artifactId>
-  <version>1.0.0-beta.45</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;current} -->
+  <version>1.0.0-beta.48</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;current} -->
 
   <name>Microsoft Azure OpenTelemetry tracing plugin</name>
   <description>This package contains the OpenTelemetry tracing plugin for Azure client libraries.</description>
@@ -35,9 +35,10 @@
     <!-- Enables fail on deprecated API usage. -->
     <compiler.failondeprecatedstatus/>
 
-     <javadoc.excludePackageNames>com.azure.json,com.azure.core.implementation*,com.azure.core.util,com.azure.core.util*,
+    <javadoc.excludePackageNames>com.azure.json,com.azure.core.implementation*,com.azure.core.util,com.azure.core.util*,
       com.azure.core.models,com.azure.core.http,com.azure.core.http.policy,com.azure.core.http.rest,com.azure.core.exception,com.azure.core.cryptography,
-      com.azure.core.credential,com.azure.core.client.traits,com.azure.core.annotation</javadoc.excludePackageNames>
+      com.azure.core.credential,com.azure.core.client.traits,com.azure.core.annotation
+    </javadoc.excludePackageNames>
     <javaModulesSurefireArgLine>
       --add-reads com.azure.core.tracing.opentelemetry=com.azure.core.test
       --add-reads com.azure.core.tracing.opentelemetry=com.azure.core.experimental
@@ -54,18 +55,19 @@
     <spotbugs.skip>false</spotbugs.skip>
     <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
     <spotless.skip>false</spotless.skip>
+    <animal.sniffer.skip>false</animal.sniffer.skip>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-api</artifactId>
-      <version>1.35.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+      <version>1.40.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.48.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.51.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
@@ -78,25 +80,25 @@
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk</artifactId>
-      <version>1.35.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+      <version>1.40.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-experimental</artifactId>
-      <version>1.0.0-beta.49</version>  <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
+      <version>1.0.0-beta.52</version>  <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.25.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <version>1.27.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.15.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
+      <version>1.16.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -115,7 +117,7 @@
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk-testing</artifactId>
       <scope>test</scope>
-      <version>1.35.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
+      <version>1.40.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.openjdk.jmh</groupId>
@@ -136,14 +138,14 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.opentelemetry:opentelemetry-api:[1.35.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-sdk:[1.35.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-sdk-testing:[1.35.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-api:[1.40.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk:[1.40.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk-testing:[1.40.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -153,7 +155,7 @@
       <plugin>
         <groupId>com.azure.tools</groupId>
         <artifactId>codesnippet-maven-plugin</artifactId>
-        <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+        <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
         <configuration>
           <codesnippetRootDirectory>../azure-core-tracing-opentelemetry-samples/src/samples/java</codesnippetRootDirectory>
         </configuration>

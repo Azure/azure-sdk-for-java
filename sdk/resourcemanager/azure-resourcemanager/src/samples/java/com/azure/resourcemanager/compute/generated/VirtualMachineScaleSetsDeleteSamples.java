@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class VirtualMachineScaleSetsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Delete_Force.json
      */
     /**
@@ -19,7 +19,10 @@ public final class VirtualMachineScaleSetsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void forceDeleteAVMScaleSet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets().delete("myResourceGroup",
-            "myvmScaleSet", true, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .delete("myResourceGroup", "myvmScaleSet", true, com.azure.core.util.Context.NONE);
     }
 }

@@ -31,8 +31,8 @@ public final class SalesforceServiceCloudV2ObjectDatasetTypeProperties {
     }
 
     /**
-     * Get the objectApiName property: The Salesforce Service Cloud V2 object API name. Type: string (or Expression
-     * with resultType string).
+     * Get the objectApiName property: The Salesforce Service Cloud V2 object API name. Type: string (or Expression with
+     * resultType string).
      * 
      * @return the objectApiName value.
      */
@@ -41,8 +41,8 @@ public final class SalesforceServiceCloudV2ObjectDatasetTypeProperties {
     }
 
     /**
-     * Set the objectApiName property: The Salesforce Service Cloud V2 object API name. Type: string (or Expression
-     * with resultType string).
+     * Set the objectApiName property: The Salesforce Service Cloud V2 object API name. Type: string (or Expression with
+     * resultType string).
      * 
      * @param objectApiName the objectApiName value to set.
      * @return the SalesforceServiceCloudV2ObjectDatasetTypeProperties object itself.

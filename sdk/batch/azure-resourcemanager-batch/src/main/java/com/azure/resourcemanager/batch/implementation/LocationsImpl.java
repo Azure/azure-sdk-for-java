@@ -52,26 +52,26 @@ public final class LocationsImpl implements Locations {
 
     public PagedIterable<SupportedSku> listSupportedVirtualMachineSkus(String locationName) {
         PagedIterable<SupportedSkuInner> inner = this.serviceClient().listSupportedVirtualMachineSkus(locationName);
-        return Utils.mapPage(inner, inner1 -> new SupportedSkuImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SupportedSkuImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SupportedSku> listSupportedVirtualMachineSkus(String locationName, Integer maxresults,
         String filter, Context context) {
         PagedIterable<SupportedSkuInner> inner
             = this.serviceClient().listSupportedVirtualMachineSkus(locationName, maxresults, filter, context);
-        return Utils.mapPage(inner, inner1 -> new SupportedSkuImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SupportedSkuImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SupportedSku> listSupportedCloudServiceSkus(String locationName) {
         PagedIterable<SupportedSkuInner> inner = this.serviceClient().listSupportedCloudServiceSkus(locationName);
-        return Utils.mapPage(inner, inner1 -> new SupportedSkuImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SupportedSkuImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SupportedSku> listSupportedCloudServiceSkus(String locationName, Integer maxresults,
         String filter, Context context) {
         PagedIterable<SupportedSkuInner> inner
             = this.serviceClient().listSupportedCloudServiceSkus(locationName, maxresults, filter, context);
-        return Utils.mapPage(inner, inner1 -> new SupportedSkuImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SupportedSkuImpl(inner1, this.manager()));
     }
 
     public Response<CheckNameAvailabilityResult> checkNameAvailabilityWithResponse(String locationName,

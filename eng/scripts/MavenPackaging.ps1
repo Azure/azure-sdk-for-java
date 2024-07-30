@@ -10,7 +10,6 @@ class MavenPackageDetail {
   [string]$ArtifactID
   [string]$Version
   [bool]$IsSnapshot
-  [string]$SonaTypeProfileID
   [AssociatedArtifact[]]$AssociatedArtifacts
 }
 
@@ -63,34 +62,6 @@ function Get-AssociatedArtifacts([MavenPackageDetail]$PackageDetail) {
   return $associatedArtifacts
 }
 
-# This function maps the group ID that is detected in the POM file against a
-# know set of mappings to SonaType Nexus profile IDs. A profile ID is needed
-# to stage a Maven package in https://oss.sonatype.org prior to being "released"
-# into the public Maven Central repository (and mirrors).
-#
-# NOTE that the current azuresdk SonaType user identity has access to all of
-# the profile Ids below for publishing. If a new profile is introduced then
-# the azuresdk identity will need to be granted access to it so that it can
-# publish to it.
-function Get-SonaTypeProfileID([string]$GroupID) {
-  $sonaTypeProfileID = switch -wildcard ($GroupID)
-  {
-    "com.azure*"                     { "88192f04117501" }
-    "com.microsoft.azure*"           { "534d15ee3800f4" }
-    "com.microsoft.commondatamodel*" { "36ba35bb1eff8"  }
-    "com.microsoft.rest*"            { "66eef5eb9b85bd" }
-    "com.microsoft.servicefabric*"   { "8acff2e04dc15e" }
-    "com.microsoft.spring*"          { "615994e851c580" }
-    "com.microsoft.sqlserver*"       { "2bafd8aecdb240" }
-    "com.windowsazure*"              { "222b383b84716"  }
-    default {
-      throw "Profile ID for group ID $GroupID was not found."
-    }
-  }
-
-  return $sonaTypeProfileID
-}
-
 # This function returns an array of object where each object represents a logical Maven package
 # including all of its associated artifacts. It takes care of extracting out group ID, artifact ID,
 # and version information, as well as providing metadata for each of the associated files including
@@ -125,9 +96,6 @@ function Get-MavenPackageDetails([string]$ArtifactDirectory) {
 
     $packageDetail.IsSnapshot = $packageDetail.Version.EndsWith("-SNAPSHOT")
     Write-Information "IsSnapshot is: $($packageDetail.IsSnapshot)"
-
-    $packageDetail.SonaTypeProfileID = Get-SonaTypeProfileID($packageDetail.GroupID)
-    Write-Information "SonaType Profile ID is: $($packageDetail.SonaTypeProfileID)"
 
     $packageDetail.FullyQualifiedName = "$($packageDetail.GroupID):$($packageDetail.ArtifactID):$($packageDetail.Version)"
     Write-Information "Fully-qualified name is: $($packageDetail.FullyQualifiedName)"

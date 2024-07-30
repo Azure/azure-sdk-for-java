@@ -64,8 +64,8 @@ public final class ClientGroupsClientImpl implements ClientGroupsClient {
     }
 
     /**
-     * The interface defining all the services for EventGridManagementClientClientGroups to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for EventGridManagementClientClientGroups to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "EventGridManagementC")
@@ -493,7 +493,8 @@ public final class ClientGroupsClientImpl implements ClientGroupsClient {
     private Mono<ClientGroupInner> createOrUpdateAsync(String resourceGroupName, String namespaceName,
         String clientGroupName, ClientGroupInner clientGroupInfo, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, namespaceName, clientGroupName, clientGroupInfo, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

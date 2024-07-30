@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-/** Samples for Sites Delete. */
+/**
+ * Samples for Sites Delete.
+ */
 public final class SitesDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SiteDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SiteDelete.json
      */
     /**
      * Sample code: Delete mobile network site.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void deleteMobileNetworkSite(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {

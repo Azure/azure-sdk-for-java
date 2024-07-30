@@ -6,16 +6,28 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity Azure Databricks Delta Lake sink.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = AzureDatabricksDeltaLakeSink.class,
+    visible = true)
 @JsonTypeName("AzureDatabricksDeltaLakeSink")
 @Fluent
 public final class AzureDatabricksDeltaLakeSink extends CopySink {
+    /*
+     * Copy sink type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "AzureDatabricksDeltaLakeSink";
+
     /*
      * SQL pre-copy script. Type: string (or Expression with resultType string).
      */
@@ -32,6 +44,16 @@ public final class AzureDatabricksDeltaLakeSink extends CopySink {
      * Creates an instance of AzureDatabricksDeltaLakeSink class.
      */
     public AzureDatabricksDeltaLakeSink() {
+    }
+
+    /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

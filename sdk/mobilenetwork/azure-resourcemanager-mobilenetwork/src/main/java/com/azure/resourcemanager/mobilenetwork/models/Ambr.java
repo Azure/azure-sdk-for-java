@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Aggregate maximum bit rate. */
+/**
+ * Aggregate maximum bit rate.
+ */
 @Fluent
 public final class Ambr {
     /*
@@ -23,13 +25,15 @@ public final class Ambr {
     @JsonProperty(value = "downlink", required = true)
     private String downlink;
 
-    /** Creates an instance of Ambr class. */
+    /**
+     * Creates an instance of Ambr class.
+     */
     public Ambr() {
     }
 
     /**
      * Get the uplink property: Uplink bit rate.
-     *
+     * 
      * @return the uplink value.
      */
     public String uplink() {
@@ -38,7 +42,7 @@ public final class Ambr {
 
     /**
      * Set the uplink property: Uplink bit rate.
-     *
+     * 
      * @param uplink the uplink value to set.
      * @return the Ambr object itself.
      */
@@ -49,7 +53,7 @@ public final class Ambr {
 
     /**
      * Get the downlink property: Downlink bit rate.
-     *
+     * 
      * @return the downlink value.
      */
     public String downlink() {
@@ -58,7 +62,7 @@ public final class Ambr {
 
     /**
      * Set the downlink property: Downlink bit rate.
-     *
+     * 
      * @param downlink the downlink value to set.
      * @return the Ambr object itself.
      */
@@ -69,17 +73,16 @@ public final class Ambr {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (uplink() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property uplink in model Ambr"));
+            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property uplink in model Ambr"));
         }
         if (downlink() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property downlink in model Ambr"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property downlink in model Ambr"));
         }
     }
 

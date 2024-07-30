@@ -18,7 +18,8 @@ public final class PipelinesDeleteSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void pipelinesDelete(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.pipelines().deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "examplePipeline",
-            com.azure.core.util.Context.NONE);
+        manager.pipelines()
+            .deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "examplePipeline",
+                com.azure.core.util.Context.NONE);
     }
 }

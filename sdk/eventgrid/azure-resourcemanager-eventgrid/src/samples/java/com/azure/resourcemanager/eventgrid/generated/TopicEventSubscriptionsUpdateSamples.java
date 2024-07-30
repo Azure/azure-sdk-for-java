@@ -14,9 +14,7 @@ import java.util.Arrays;
  */
 public final class TopicEventSubscriptionsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
-     * TopicEventSubscriptions_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/TopicEventSubscriptions_Update.json
      */
     /**
      * Sample code: TopicEventSubscriptions_Update.
@@ -24,12 +22,16 @@ public final class TopicEventSubscriptionsUpdateSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void topicEventSubscriptionsUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        EventSubscription resource = manager.topicEventSubscriptions().getWithResponse("examplerg", "exampleTopic1",
-            "exampleEventSubscriptionName1", com.azure.core.util.Context.NONE).getValue();
+        EventSubscription resource = manager.topicEventSubscriptions()
+            .getWithResponse("examplerg", "exampleTopic1", "exampleEventSubscriptionName1",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update()
             .withDestination(new WebhookEventSubscriptionDestination().withEndpointUrl("https://requestb.in/15ksip71"))
             .withFilter(new EventSubscriptionFilter().withSubjectBeginsWith("existingPrefix")
-                .withSubjectEndsWith("newSuffix").withIsSubjectCaseSensitive(true))
-            .withLabels(Arrays.asList("label1", "label2")).apply();
+                .withSubjectEndsWith("newSuffix")
+                .withIsSubjectCaseSensitive(true))
+            .withLabels(Arrays.asList("label1", "label2"))
+            .apply();
     }
 }

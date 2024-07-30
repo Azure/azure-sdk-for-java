@@ -26,6 +26,10 @@ public class KeyVaultSettingsAsyncClientTest extends KeyVaultSettingsClientTestB
         asyncClient = getClientBuilder(buildAsyncAssertingClient(
             interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), forCleanup)
             .buildAsyncClient();
+        if (!interceptorManager.isLiveMode()) {
+            // Remove `id` and `name` sanitizers from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493");
+        }
     }
 
     @ParameterizedTest(name = DISPLAY_NAME)

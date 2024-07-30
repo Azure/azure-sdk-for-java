@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.SalesforceMarketingCloudLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,21 @@ import java.util.Map;
 /**
  * Salesforce Marketing Cloud linked service.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = SalesforceMarketingCloudLinkedService.class,
+    visible = true)
 @JsonTypeName("SalesforceMarketingCloud")
 @Fluent
 public final class SalesforceMarketingCloudLinkedService extends LinkedService {
+    /*
+     * Type of linked service.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "SalesforceMarketingCloud";
+
     /*
      * Salesforce Marketing Cloud linked service properties.
      */
@@ -31,6 +43,16 @@ public final class SalesforceMarketingCloudLinkedService extends LinkedService {
      * Creates an instance of SalesforceMarketingCloudLinkedService class.
      */
     public SalesforceMarketingCloudLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -104,8 +126,8 @@ public final class SalesforceMarketingCloudLinkedService extends LinkedService {
     }
 
     /**
-     * Get the clientId property: The client ID associated with the Salesforce Marketing Cloud application. Type:
-     * string (or Expression with resultType string).
+     * Get the clientId property: The client ID associated with the Salesforce Marketing Cloud application. Type: string
+     * (or Expression with resultType string).
      * 
      * @return the clientId value.
      */
@@ -114,8 +136,8 @@ public final class SalesforceMarketingCloudLinkedService extends LinkedService {
     }
 
     /**
-     * Set the clientId property: The client ID associated with the Salesforce Marketing Cloud application. Type:
-     * string (or Expression with resultType string).
+     * Set the clientId property: The client ID associated with the Salesforce Marketing Cloud application. Type: string
+     * (or Expression with resultType string).
      * 
      * @param clientId the clientId value to set.
      * @return the SalesforceMarketingCloudLinkedService object itself.
@@ -206,8 +228,8 @@ public final class SalesforceMarketingCloudLinkedService extends LinkedService {
     }
 
     /**
-     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
+     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
+     * SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
      * 
      * @return the usePeerVerification value.
      */
@@ -216,8 +238,8 @@ public final class SalesforceMarketingCloudLinkedService extends LinkedService {
     }
 
     /**
-     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
+     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
+     * SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
      * 
      * @param usePeerVerification the usePeerVerification value to set.
      * @return the SalesforceMarketingCloudLinkedService object itself.
@@ -231,8 +253,8 @@ public final class SalesforceMarketingCloudLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -241,8 +263,8 @@ public final class SalesforceMarketingCloudLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SalesforceMarketingCloudLinkedService object itself.
@@ -264,8 +286,9 @@ public final class SalesforceMarketingCloudLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model SalesforceMarketingCloudLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model SalesforceMarketingCloudLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

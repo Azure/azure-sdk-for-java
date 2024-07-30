@@ -69,8 +69,9 @@ public final class RegulatoryComplianceStandardList {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property value in model RegulatoryComplianceStandardList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model RegulatoryComplianceStandardList"));
         } else {
             value().forEach(e -> e.validate());
         }

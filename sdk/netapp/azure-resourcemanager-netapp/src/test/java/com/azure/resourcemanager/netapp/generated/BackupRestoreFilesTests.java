@@ -12,22 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupRestoreFilesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupRestoreFiles model = BinaryData.fromString(
-            "{\"fileList\":[\"onbzoggculapzwy\",\"pgogtqxepny\",\"b\",\"uajlyj\"],\"restoreFilePath\":\"vofqzhvfc\",\"destinationVolumeId\":\"byfmowuxr\"}")
+        BackupRestoreFiles model = BinaryData
+            .fromString(
+                "{\"fileList\":[\"zfvazi\"],\"restoreFilePath\":\"l\",\"destinationVolumeId\":\"rqttbajlkatnw\"}")
             .toObject(BackupRestoreFiles.class);
-        Assertions.assertEquals("onbzoggculapzwy", model.fileList().get(0));
-        Assertions.assertEquals("vofqzhvfc", model.restoreFilePath());
-        Assertions.assertEquals("byfmowuxr", model.destinationVolumeId());
+        Assertions.assertEquals("zfvazi", model.fileList().get(0));
+        Assertions.assertEquals("l", model.restoreFilePath());
+        Assertions.assertEquals("rqttbajlkatnw", model.destinationVolumeId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupRestoreFiles model
-            = new BackupRestoreFiles().withFileList(Arrays.asList("onbzoggculapzwy", "pgogtqxepny", "b", "uajlyj"))
-                .withRestoreFilePath("vofqzhvfc").withDestinationVolumeId("byfmowuxr");
+        BackupRestoreFiles model = new BackupRestoreFiles().withFileList(Arrays.asList("zfvazi"))
+            .withRestoreFilePath("l")
+            .withDestinationVolumeId("rqttbajlkatnw");
         model = BinaryData.fromObject(model).toObject(BackupRestoreFiles.class);
-        Assertions.assertEquals("onbzoggculapzwy", model.fileList().get(0));
-        Assertions.assertEquals("vofqzhvfc", model.restoreFilePath());
-        Assertions.assertEquals("byfmowuxr", model.destinationVolumeId());
+        Assertions.assertEquals("zfvazi", model.fileList().get(0));
+        Assertions.assertEquals("l", model.restoreFilePath());
+        Assertions.assertEquals("rqttbajlkatnw", model.destinationVolumeId());
     }
 }

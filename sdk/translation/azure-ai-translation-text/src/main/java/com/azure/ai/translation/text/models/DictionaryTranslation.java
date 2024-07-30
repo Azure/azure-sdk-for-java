@@ -5,23 +5,25 @@ package com.azure.ai.translation.text.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Translation source term.
  */
 @Immutable
-public final class DictionaryTranslation {
+public final class DictionaryTranslation implements JsonSerializable<DictionaryTranslation> {
 
     /*
      * A string giving the normalized form of this term in the target language.
      * This value should be used as input to lookup examples.
      */
     @Generated
-    @JsonProperty(value = "normalizedTarget")
-    private String normalizedTarget;
+    private final String normalizedTarget;
 
     /*
      * A string giving the term in the target language and in a form best suited
@@ -30,15 +32,13 @@ public final class DictionaryTranslation {
      * normalizedTarget = "juan" and displayTarget = "Juan".
      */
     @Generated
-    @JsonProperty(value = "displayTarget")
-    private String displayTarget;
+    private final String displayTarget;
 
     /*
      * A string associating this term with a part-of-speech tag.
      */
     @Generated
-    @JsonProperty(value = "posTag")
-    private String posTag;
+    private final String posTag;
 
     /*
      * A value between 0.0 and 1.0 which represents the "confidence"
@@ -46,8 +46,7 @@ public final class DictionaryTranslation {
      * The sum of confidence scores for one source word may or may not sum to 1.0.
      */
     @Generated
-    @JsonProperty(value = "confidence")
-    private double confidence;
+    private final double confidence;
 
     /*
      * A string giving the word to display as a prefix of the translation. Currently,
@@ -57,8 +56,7 @@ public final class DictionaryTranslation {
      * If there is no prefix, it will be the empty string.
      */
     @Generated
-    @JsonProperty(value = "prefixWord")
-    private String prefixWord;
+    private final String prefixWord;
 
     /*
      * A list of "back translations" of the target. For example, source words that the target can translate to.
@@ -67,8 +65,7 @@ public final class DictionaryTranslation {
      * However, it is not guaranteed to be in the first position, and often will not be.
      */
     @Generated
-    @JsonProperty(value = "backTranslations")
-    private List<BackTranslation> backTranslations;
+    private final List<BackTranslation> backTranslations;
 
     /**
      * Creates an instance of DictionaryTranslation class.
@@ -81,11 +78,8 @@ public final class DictionaryTranslation {
      * @param backTranslations the backTranslations value to set.
      */
     @Generated
-    @JsonCreator
-    private DictionaryTranslation(@JsonProperty(value = "normalizedTarget") String normalizedTarget,
-        @JsonProperty(value = "displayTarget") String displayTarget, @JsonProperty(value = "posTag") String posTag,
-        @JsonProperty(value = "confidence") double confidence, @JsonProperty(value = "prefixWord") String prefixWord,
-        @JsonProperty(value = "backTranslations") List<BackTranslation> backTranslations) {
+    private DictionaryTranslation(String normalizedTarget, String displayTarget, String posTag, double confidence,
+        String prefixWord, List<BackTranslation> backTranslations) {
         this.normalizedTarget = normalizedTarget;
         this.displayTarget = displayTarget;
         this.posTag = posTag;
@@ -166,5 +160,64 @@ public final class DictionaryTranslation {
     @Generated
     public List<BackTranslation> getBackTranslations() {
         return this.backTranslations;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("normalizedTarget", this.normalizedTarget);
+        jsonWriter.writeStringField("displayTarget", this.displayTarget);
+        jsonWriter.writeStringField("posTag", this.posTag);
+        jsonWriter.writeDoubleField("confidence", this.confidence);
+        jsonWriter.writeStringField("prefixWord", this.prefixWord);
+        jsonWriter.writeArrayField("backTranslations", this.backTranslations,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DictionaryTranslation from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DictionaryTranslation if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DictionaryTranslation.
+     */
+    @Generated
+    public static DictionaryTranslation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String normalizedTarget = null;
+            String displayTarget = null;
+            String posTag = null;
+            double confidence = 0.0;
+            String prefixWord = null;
+            List<BackTranslation> backTranslations = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("normalizedTarget".equals(fieldName)) {
+                    normalizedTarget = reader.getString();
+                } else if ("displayTarget".equals(fieldName)) {
+                    displayTarget = reader.getString();
+                } else if ("posTag".equals(fieldName)) {
+                    posTag = reader.getString();
+                } else if ("confidence".equals(fieldName)) {
+                    confidence = reader.getDouble();
+                } else if ("prefixWord".equals(fieldName)) {
+                    prefixWord = reader.getString();
+                } else if ("backTranslations".equals(fieldName)) {
+                    backTranslations = reader.readArray(reader1 -> BackTranslation.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new DictionaryTranslation(normalizedTarget, displayTarget, posTag, confidence, prefixWord,
+                backTranslations);
+        });
     }
 }

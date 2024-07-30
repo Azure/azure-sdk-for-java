@@ -30,7 +30,7 @@ import java.util.Map;
  */
 public final class VirtualNetworkGatewayConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * VirtualNetworkGatewayConnectionCreate.json
      */
     /**
@@ -39,25 +39,33 @@ public final class VirtualNetworkGatewayConnectionsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createVirtualNetworkGatewayConnectionS2S(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualNetworkGatewayConnections().createOrUpdate("rg1",
-            "connS2S",
-            new VirtualNetworkGatewayConnectionInner().withLocation("centralus").withVirtualNetworkGateway1(
-                new VirtualNetworkGatewayInner().withLocation("centralus").withTags(mapOf()).withId(
-                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw")
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworkGatewayConnections()
+            .createOrUpdate("rg1", "connS2S", new VirtualNetworkGatewayConnectionInner().withLocation("centralus")
+                .withVirtualNetworkGateway1(new VirtualNetworkGatewayInner().withLocation("centralus")
+                    .withTags(mapOf())
+                    .withId(
+                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw")
                     .withIpConfigurations(Arrays.asList(new VirtualNetworkGatewayIpConfigurationInner().withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw/ipConfigurations/gwipconfig1")
-                        .withName("gwipconfig1").withPrivateIpAllocationMethod(IpAllocationMethod.DYNAMIC)
+                        .withName("gwipconfig1")
+                        .withPrivateIpAllocationMethod(IpAllocationMethod.DYNAMIC)
                         .withSubnet(new SubResource().withId(
                             "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/GatewaySubnet"))
                         .withPublicIpAddress(new SubResource().withId(
                             "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/gwpip"))))
-                    .withGatewayType(VirtualNetworkGatewayType.VPN).withVpnType(VpnType.ROUTE_BASED)
-                    .withEnableBgp(false).withActive(false)
+                    .withGatewayType(VirtualNetworkGatewayType.VPN)
+                    .withVpnType(VpnType.ROUTE_BASED)
+                    .withEnableBgp(false)
+                    .withActive(false)
                     .withSku(new VirtualNetworkGatewaySku().withName(VirtualNetworkGatewaySkuName.VPN_GW1)
                         .withTier(VirtualNetworkGatewaySkuTier.VPN_GW1))
                     .withBgpSettings(
                         new BgpSettings().withAsn(65514L).withBgpPeeringAddress("10.0.1.30").withPeerWeight(0)))
-                .withLocalNetworkGateway2(new LocalNetworkGatewayInner().withLocation("centralus").withTags(mapOf())
+                .withLocalNetworkGateway2(new LocalNetworkGatewayInner().withLocation("centralus")
+                    .withTags(mapOf())
                     .withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/localNetworkGateways/localgw")
                     .withLocalNetworkAddressSpace(new AddressSpace().withAddressPrefixes(Arrays.asList("10.1.0.0/16")))
@@ -67,9 +75,12 @@ public final class VirtualNetworkGatewayConnectionsCreateOrUpdateSamples {
                 .withEgressNatRules(Arrays.asList(new SubResource().withId(
                     "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw/natRules/natRule2")))
                 .withConnectionType(VirtualNetworkGatewayConnectionType.IPSEC)
-                .withConnectionProtocol(VirtualNetworkGatewayConnectionProtocol.IKEV2).withRoutingWeight(0)
-                .withDpdTimeoutSeconds(30).withConnectionMode(VirtualNetworkGatewayConnectionMode.DEFAULT)
-                .withSharedKey("fakeTokenPlaceholder").withEnableBgp(false)
+                .withConnectionProtocol(VirtualNetworkGatewayConnectionProtocol.IKEV2)
+                .withRoutingWeight(0)
+                .withDpdTimeoutSeconds(30)
+                .withConnectionMode(VirtualNetworkGatewayConnectionMode.DEFAULT)
+                .withSharedKey("fakeTokenPlaceholder")
+                .withEnableBgp(false)
                 .withGatewayCustomBgpIpAddresses(Arrays.asList(
                     new GatewayCustomBgpIpAddressIpConfiguration().withIpConfigurationId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw/ipConfigurations/default")
@@ -77,9 +88,9 @@ public final class VirtualNetworkGatewayConnectionsCreateOrUpdateSamples {
                     new GatewayCustomBgpIpAddressIpConfiguration().withIpConfigurationId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw/ipConfigurations/ActiveActive")
                         .withCustomBgpIpAddress("169.254.21.3")))
-                .withUsePolicyBasedTrafficSelectors(false).withIpsecPolicies(Arrays.asList())
-                .withTrafficSelectorPolicies(Arrays.asList()),
-            com.azure.core.util.Context.NONE);
+                .withUsePolicyBasedTrafficSelectors(false)
+                .withIpsecPolicies(Arrays.asList())
+                .withTrafficSelectorPolicies(Arrays.asList()), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

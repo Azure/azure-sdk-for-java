@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.routing;
 
-import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -84,7 +84,7 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
 
     public void setMin(T min) {
         this.minValue = min;
-        BridgeInternal.setProperty(this, Range.MIN_PROPERTY, min);
+        this.set(Range.MIN_PROPERTY, min, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     @SuppressWarnings("unchecked")
@@ -98,7 +98,7 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
 
     public void setMax(T max) {
         this.maxValue = max;
-        BridgeInternal.setProperty(this, Range.MAX_PROPERTY, max);
+        this.set(Range.MAX_PROPERTY, max, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     @JsonProperty("isMinInclusive")
@@ -109,9 +109,9 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
 
     public void setMinInclusive(boolean isMinInclusive) {
         if (isMinInclusive) {
-            BridgeInternal.remove(this, Range.IS_MIN_INCLUSIVE_PROPERTY);
+            this.remove(Range.IS_MIN_INCLUSIVE_PROPERTY);
         } else {
-            BridgeInternal.setProperty(this, Range.IS_MIN_INCLUSIVE_PROPERTY, false);
+            this.set(Range.IS_MIN_INCLUSIVE_PROPERTY, false, CosmosItemSerializer.DEFAULT_SERIALIZER);
         }
     }
 
@@ -122,9 +122,9 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
 
     public void setMaxInclusive(boolean isMaxInclusive) {
         if (isMaxInclusive) {
-            BridgeInternal.setProperty(this, Range.IS_MAX_INCLUSIVE_PROPERTY, true);
+            this.set(Range.IS_MAX_INCLUSIVE_PROPERTY, true, CosmosItemSerializer.DEFAULT_SERIALIZER);
         } else {
-            BridgeInternal.remove(this, Range.IS_MAX_INCLUSIVE_PROPERTY);
+            this.remove(Range.IS_MAX_INCLUSIVE_PROPERTY);
         }
     }
 

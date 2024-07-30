@@ -54,8 +54,8 @@ public final class ApplicationGatewayPrivateEndpointConnectionPropertiesInner {
     }
 
     /**
-     * Get the privateLinkServiceConnectionState property: A collection of information about the state of the
-     * connection between service consumer and provider.
+     * Get the privateLinkServiceConnectionState property: A collection of information about the state of the connection
+     * between service consumer and provider.
      * 
      * @return the privateLinkServiceConnectionState value.
      */
@@ -64,8 +64,8 @@ public final class ApplicationGatewayPrivateEndpointConnectionPropertiesInner {
     }
 
     /**
-     * Set the privateLinkServiceConnectionState property: A collection of information about the state of the
-     * connection between service consumer and provider.
+     * Set the privateLinkServiceConnectionState property: A collection of information about the state of the connection
+     * between service consumer and provider.
      * 
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the ApplicationGatewayPrivateEndpointConnectionPropertiesInner object itself.
@@ -77,8 +77,8 @@ public final class ApplicationGatewayPrivateEndpointConnectionPropertiesInner {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the application gateway private endpoint
-     * connection resource.
+     * Get the provisioningState property: The provisioning state of the application gateway private endpoint connection
+     * resource.
      * 
      * @return the provisioningState value.
      */

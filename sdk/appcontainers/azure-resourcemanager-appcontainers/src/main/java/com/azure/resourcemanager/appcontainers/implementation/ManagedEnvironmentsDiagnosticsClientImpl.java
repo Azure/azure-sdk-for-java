@@ -25,26 +25,28 @@ import com.azure.resourcemanager.appcontainers.fluent.models.ManagedEnvironmentI
 import com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ManagedEnvironmentsDiagnosticsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ManagedEnvironmentsDiagnosticsClient.
+ */
 public final class ManagedEnvironmentsDiagnosticsClientImpl implements ManagedEnvironmentsDiagnosticsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ManagedEnvironmentsDiagnosticsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ContainerAppsApiClientImpl client;
 
     /**
      * Initializes an instance of ManagedEnvironmentsDiagnosticsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ManagedEnvironmentsDiagnosticsClientImpl(ContainerAppsApiClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    ManagedEnvironmentsDiagnosticsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(ManagedEnvironmentsDiagnosticsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -55,48 +57,40 @@ public final class ManagedEnvironmentsDiagnosticsClientImpl implements ManagedEn
     @Host("{$host}")
     @ServiceInterface(name = "ContainerAppsApiClie")
     public interface ManagedEnvironmentsDiagnosticsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/detectorProperties/rootApi/")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/detectorProperties/rootApi/")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ManagedEnvironmentInner>> getRoot(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ManagedEnvironmentInner>> getRoot(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("environmentName") String environmentName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("environmentName") String environmentName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get the properties of a Managed Environment.
-     *
-     * <p>Get the properties of a Managed Environment used to host container apps.
-     *
+     * 
+     * Get the properties of a Managed Environment used to host container apps.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a Managed Environment used to host container apps along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedEnvironmentInner>> getRootWithResponseAsync(
-        String resourceGroupName, String environmentName) {
+    private Mono<Response<ManagedEnvironmentInner>> getRootWithResponseAsync(String resourceGroupName,
+        String environmentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -108,25 +102,16 @@ public final class ManagedEnvironmentsDiagnosticsClientImpl implements ManagedEn
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getRoot(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            environmentName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.getRoot(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, environmentName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the properties of a Managed Environment.
-     *
-     * <p>Get the properties of a Managed Environment used to host container apps.
-     *
+     * 
+     * Get the properties of a Managed Environment used to host container apps.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Environment.
      * @param context The context to associate with this operation.
@@ -134,22 +119,18 @@ public final class ManagedEnvironmentsDiagnosticsClientImpl implements ManagedEn
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a Managed Environment used to host container apps along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedEnvironmentInner>> getRootWithResponseAsync(
-        String resourceGroupName, String environmentName, Context context) {
+    private Mono<Response<ManagedEnvironmentInner>> getRootWithResponseAsync(String resourceGroupName,
+        String environmentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -161,29 +142,22 @@ public final class ManagedEnvironmentsDiagnosticsClientImpl implements ManagedEn
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getRoot(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                environmentName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getRoot(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get the properties of a Managed Environment.
-     *
-     * <p>Get the properties of a Managed Environment used to host container apps.
-     *
+     * 
+     * Get the properties of a Managed Environment used to host container apps.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a Managed Environment used to host container apps on successful completion of {@link
-     *     Mono}.
+     * @return the properties of a Managed Environment used to host container apps on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ManagedEnvironmentInner> getRootAsync(String resourceGroupName, String environmentName) {
@@ -193,9 +167,9 @@ public final class ManagedEnvironmentsDiagnosticsClientImpl implements ManagedEn
 
     /**
      * Get the properties of a Managed Environment.
-     *
-     * <p>Get the properties of a Managed Environment used to host container apps.
-     *
+     * 
+     * Get the properties of a Managed Environment used to host container apps.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Environment.
      * @param context The context to associate with this operation.
@@ -205,16 +179,16 @@ public final class ManagedEnvironmentsDiagnosticsClientImpl implements ManagedEn
      * @return the properties of a Managed Environment used to host container apps along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagedEnvironmentInner> getRootWithResponse(
-        String resourceGroupName, String environmentName, Context context) {
+    public Response<ManagedEnvironmentInner> getRootWithResponse(String resourceGroupName, String environmentName,
+        Context context) {
         return getRootWithResponseAsync(resourceGroupName, environmentName, context).block();
     }
 
     /**
      * Get the properties of a Managed Environment.
-     *
-     * <p>Get the properties of a Managed Environment used to host container apps.
-     *
+     * 
+     * Get the properties of a Managed Environment used to host container apps.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

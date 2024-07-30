@@ -63,8 +63,8 @@ public final class ManagedServiceIdentity {
     }
 
     /**
-     * Get the tenantId property: The tenant id of the system assigned identity. This property will only be provided
-     * for a system assigned identity.
+     * Get the tenantId property: The tenant id of the system assigned identity. This property will only be provided for
+     * a system assigned identity.
      * 
      * @return the tenantId value.
      */

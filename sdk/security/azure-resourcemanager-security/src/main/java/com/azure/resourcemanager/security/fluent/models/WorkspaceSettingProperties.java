@@ -20,8 +20,7 @@ public final class WorkspaceSettingProperties {
     private String workspaceId;
 
     /*
-     * All the VMs in this scope will send their security data to the mentioned workspace unless overridden by a
-     * setting with more specific scope
+     * All the VMs in this scope will send their security data to the mentioned workspace unless overridden by a setting with more specific scope
      */
     @JsonProperty(value = "scope", required = true)
     private String scope;
@@ -53,8 +52,8 @@ public final class WorkspaceSettingProperties {
     }
 
     /**
-     * Get the scope property: All the VMs in this scope will send their security data to the mentioned workspace
-     * unless overridden by a setting with more specific scope.
+     * Get the scope property: All the VMs in this scope will send their security data to the mentioned workspace unless
+     * overridden by a setting with more specific scope.
      * 
      * @return the scope value.
      */
@@ -63,8 +62,8 @@ public final class WorkspaceSettingProperties {
     }
 
     /**
-     * Set the scope property: All the VMs in this scope will send their security data to the mentioned workspace
-     * unless overridden by a setting with more specific scope.
+     * Set the scope property: All the VMs in this scope will send their security data to the mentioned workspace unless
+     * overridden by a setting with more specific scope.
      * 
      * @param scope the scope value to set.
      * @return the WorkspaceSettingProperties object itself.
@@ -81,12 +80,14 @@ public final class WorkspaceSettingProperties {
      */
     public void validate() {
         if (workspaceId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property workspaceId in model WorkspaceSettingProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property workspaceId in model WorkspaceSettingProperties"));
         }
         if (scope() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property scope in model WorkspaceSettingProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property scope in model WorkspaceSettingProperties"));
         }
     }
 

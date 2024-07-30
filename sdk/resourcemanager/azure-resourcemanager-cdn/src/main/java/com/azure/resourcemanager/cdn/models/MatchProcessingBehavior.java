@@ -13,15 +13,19 @@ import java.util.Collection;
  * defaults to Continue.
  */
 public final class MatchProcessingBehavior extends ExpandableStringEnum<MatchProcessingBehavior> {
-    /** Static value Continue for MatchProcessingBehavior. */
+    /**
+     * Static value Continue for MatchProcessingBehavior.
+     */
     public static final MatchProcessingBehavior CONTINUE = fromString("Continue");
 
-    /** Static value Stop for MatchProcessingBehavior. */
+    /**
+     * Static value Stop for MatchProcessingBehavior.
+     */
     public static final MatchProcessingBehavior STOP = fromString("Stop");
 
     /**
      * Creates a new instance of MatchProcessingBehavior value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +34,7 @@ public final class MatchProcessingBehavior extends ExpandableStringEnum<MatchPro
 
     /**
      * Creates or finds a MatchProcessingBehavior from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MatchProcessingBehavior.
      */
@@ -41,7 +45,7 @@ public final class MatchProcessingBehavior extends ExpandableStringEnum<MatchPro
 
     /**
      * Gets known MatchProcessingBehavior values.
-     *
+     * 
      * @return known MatchProcessingBehavior values.
      */
     public static Collection<MatchProcessingBehavior> values() {

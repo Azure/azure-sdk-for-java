@@ -25,7 +25,7 @@ public final class LoggingUtil {
      * @param context the context of the getToken() request
      */
     public static void logTokenSuccess(ClientLogger logger, TokenRequestContext context) {
-        logger.log(LogLevel.INFORMATIONAL, () -> String.format(
+        logger.log(LogLevel.VERBOSE, () -> String.format(
             "Azure Identity => getToken() result for scopes [%s]: SUCCESS",
             CoreUtils.stringJoin(", ", context.getScopes())));
     }

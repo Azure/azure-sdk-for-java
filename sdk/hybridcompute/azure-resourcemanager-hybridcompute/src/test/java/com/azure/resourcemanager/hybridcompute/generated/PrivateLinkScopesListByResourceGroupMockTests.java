@@ -6,68 +6,38 @@ package com.azure.resourcemanager.hybridcompute.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcompute.HybridComputeManager;
 import com.azure.resourcemanager.hybridcompute.models.HybridComputePrivateLinkScope;
 import com.azure.resourcemanager.hybridcompute.models.PublicNetworkAccessType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PrivateLinkScopesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"publicNetworkAccess\":\"SecuredByPerimeter\",\"provisioningState\":\"ybmrqbrjbbmp\",\"privateLinkScopeId\":\"lvykfrex\",\"privateEndpointConnections\":[{\"id\":\"qwjksghudgz\",\"name\":\"ogjggsvoujkxibda\",\"type\":\"rkmdyom\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"vfb\",\"description\":\"dy\"},\"provisioningState\":\"hpwpgddeimawzovg\",\"groupIds\":[\"muikjcjcaztbws\"]}}]},\"location\":\"qowxwcom\",\"tags\":{\"yfdvlvhbwrnfxtgd\":\"ytwvczcswkacve\",\"kcoeqswank\":\"pqthehnmnaoya\"},\"id\":\"t\",\"name\":\"tmhdroznnhdr\",\"type\":\"ktgj\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"publicNetworkAccess\":\"Disabled\",\"provisioningState\":\"gamquhiosrsjui\",\"privateLinkScopeId\":\"cdisyir\",\"privateEndpointConnections\":[{\"id\":\"czexrxzbujrtrhqv\",\"name\":\"evkh\",\"type\":\"lnzonzlrpiqywn\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"szcofizeht\",\"description\":\"hgbjkvrelje\"},\"provisioningState\":\"urvzmlovuanashc\",\"groupIds\":[\"mjerbdk\",\"lvidizozs\",\"bccxjmonfdgn\",\"n\"]}},{\"id\":\"puuw\",\"name\":\"tvuqjctzenkeifzz\",\"type\":\"kdasvflyhbxcudch\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"boldforobwj\",\"description\":\"vizbfhfo\"},\"provisioningState\":\"acqpbtuodxesza\",\"groupIds\":[\"l\",\"wumuaslzk\"]}},{\"id\":\"rwoycqucwyh\",\"name\":\"nomdrkywuhpsv\",\"type\":\"urut\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"xwlalniexzsrzpg\",\"description\":\"pqtybb\"},\"provisioningState\":\"pgdakchzyvli\",\"groupIds\":[\"rkcxkj\",\"bn\"]}},{\"id\":\"ysux\",\"name\":\"qrntv\",\"type\":\"ijpstte\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"pwcyyufmhr\",\"description\":\"nc\"},\"provisioningState\":\"mqspkcdqzhlctdd\",\"groupIds\":[\"ndy\"]}}]},\"location\":\"chrqb\",\"tags\":{\"qqoli\":\"rcgegydcwboxjum\"},\"id\":\"r\",\"name\":\"aiouaubrjt\",\"type\":\"oq\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        HybridComputeManager manager = HybridComputeManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<HybridComputePrivateLinkScope> response
+            = manager.privateLinkScopes().listByResourceGroup("sinuqtljqobbpih", com.azure.core.util.Context.NONE);
 
-        HybridComputeManager manager =
-            HybridComputeManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<HybridComputePrivateLinkScope> response =
-            manager.privateLinkScopes().listByResourceGroup("lcgqlsismj", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("chrqb", response.iterator().next().location());
-        Assertions.assertEquals("rcgegydcwboxjum", response.iterator().next().tags().get("qqoli"));
-        Assertions
-            .assertEquals(
-                PublicNetworkAccessType.DISABLED, response.iterator().next().properties().publicNetworkAccess());
+        Assertions.assertEquals("qowxwcom", response.iterator().next().location());
+        Assertions.assertEquals("ytwvczcswkacve", response.iterator().next().tags().get("yfdvlvhbwrnfxtgd"));
+        Assertions.assertEquals(PublicNetworkAccessType.SECURED_BY_PERIMETER,
+            response.iterator().next().properties().publicNetworkAccess());
     }
 }

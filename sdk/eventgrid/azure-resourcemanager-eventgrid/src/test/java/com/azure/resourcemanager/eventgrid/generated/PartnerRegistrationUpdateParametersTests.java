@@ -13,18 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class PartnerRegistrationUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PartnerRegistrationUpdateParameters model = BinaryData.fromString(
-            "{\"tags\":{\"shcxlpmjerbdk\":\"amurvzmlovuan\",\"bccxjmonfdgn\":\"lvidizozs\",\"ypuuwwltvuqjctze\":\"n\"}}")
+        PartnerRegistrationUpdateParameters model = BinaryData.fromString("{\"tags\":{\"sovwxznptgoeiyb\":\"nqnzrd\"}}")
             .toObject(PartnerRegistrationUpdateParameters.class);
-        Assertions.assertEquals("amurvzmlovuan", model.tags().get("shcxlpmjerbdk"));
+        Assertions.assertEquals("nqnzrd", model.tags().get("sovwxznptgoeiyb"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PartnerRegistrationUpdateParameters model = new PartnerRegistrationUpdateParameters()
-            .withTags(mapOf("shcxlpmjerbdk", "amurvzmlovuan", "bccxjmonfdgn", "lvidizozs", "ypuuwwltvuqjctze", "n"));
+        PartnerRegistrationUpdateParameters model
+            = new PartnerRegistrationUpdateParameters().withTags(mapOf("sovwxznptgoeiyb", "nqnzrd"));
         model = BinaryData.fromObject(model).toObject(PartnerRegistrationUpdateParameters.class);
-        Assertions.assertEquals("amurvzmlovuan", model.tags().get("shcxlpmjerbdk"));
+        Assertions.assertEquals("nqnzrd", model.tags().get("sovwxznptgoeiyb"));
     }
 
     // Use "Map.of" if available

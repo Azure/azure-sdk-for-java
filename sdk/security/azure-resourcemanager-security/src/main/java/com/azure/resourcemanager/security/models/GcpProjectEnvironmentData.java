@@ -6,16 +6,28 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The GCP project connector environment data.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "environmentType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "environmentType",
+    defaultImpl = GcpProjectEnvironmentData.class,
+    visible = true)
 @JsonTypeName("GcpProject")
 @Fluent
 public final class GcpProjectEnvironmentData extends EnvironmentData {
+    /*
+     * The type of the environment data.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "environmentType", required = true)
+    private EnvironmentType environmentType = EnvironmentType.GCP_PROJECT;
+
     /*
      * The Gcp project's organizational data
      */
@@ -38,6 +50,16 @@ public final class GcpProjectEnvironmentData extends EnvironmentData {
      * Creates an instance of GcpProjectEnvironmentData class.
      */
     public GcpProjectEnvironmentData() {
+    }
+
+    /**
+     * Get the environmentType property: The type of the environment data.
+     * 
+     * @return the environmentType value.
+     */
+    @Override
+    public EnvironmentType environmentType() {
+        return this.environmentType;
     }
 
     /**

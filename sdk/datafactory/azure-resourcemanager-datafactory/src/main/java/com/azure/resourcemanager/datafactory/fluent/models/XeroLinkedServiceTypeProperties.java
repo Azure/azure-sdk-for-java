@@ -33,8 +33,8 @@ public final class XeroLinkedServiceTypeProperties {
     private SecretBase consumerKey;
 
     /*
-     * The private key from the .pem file that was generated for your Xero private application. You must include all
-     * the text from the .pem file, including the Unix line endings(
+     * The private key from the .pem file that was generated for your Xero private application. You must include all the
+     * text from the .pem file, including the Unix line endings(
      * ).
      */
     @JsonProperty(value = "privateKey")
@@ -203,8 +203,8 @@ public final class XeroLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true.
+     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
+     * SSL. The default value is true.
      * 
      * @return the usePeerVerification value.
      */
@@ -213,8 +213,8 @@ public final class XeroLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true.
+     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
+     * SSL. The default value is true.
      * 
      * @param usePeerVerification the usePeerVerification value to set.
      * @return the XeroLinkedServiceTypeProperties object itself.
@@ -225,8 +225,8 @@ public final class XeroLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -235,8 +235,8 @@ public final class XeroLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the XeroLinkedServiceTypeProperties object itself.

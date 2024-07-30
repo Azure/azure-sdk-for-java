@@ -5,22 +5,24 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The details describing tools that should be called to submit tool outputs.
  */
 @Immutable
-public final class SubmitToolOutputsDetails {
+public final class SubmitToolOutputsDetails implements JsonSerializable<SubmitToolOutputsDetails> {
 
     /*
      * The list of tool calls that must be resolved for the assistant thread run to continue.
      */
     @Generated
-    @JsonProperty(value = "tool_calls")
-    private List<RequiredToolCall> toolCalls;
+    private final List<RequiredToolCall> toolCalls;
 
     /**
      * Creates an instance of SubmitToolOutputsDetails class.
@@ -28,8 +30,7 @@ public final class SubmitToolOutputsDetails {
      * @param toolCalls the toolCalls value to set.
      */
     @Generated
-    @JsonCreator
-    private SubmitToolOutputsDetails(@JsonProperty(value = "tool_calls") List<RequiredToolCall> toolCalls) {
+    private SubmitToolOutputsDetails(List<RequiredToolCall> toolCalls) {
         this.toolCalls = toolCalls;
     }
 
@@ -42,5 +43,42 @@ public final class SubmitToolOutputsDetails {
     @Generated
     public List<RequiredToolCall> getToolCalls() {
         return this.toolCalls;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("tool_calls", this.toolCalls, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubmitToolOutputsDetails from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubmitToolOutputsDetails if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SubmitToolOutputsDetails.
+     */
+    @Generated
+    public static SubmitToolOutputsDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            List<RequiredToolCall> toolCalls = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("tool_calls".equals(fieldName)) {
+                    toolCalls = reader.readArray(reader1 -> RequiredToolCall.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new SubmitToolOutputsDetails(toolCalls);
+        });
     }
 }

@@ -6,7 +6,6 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class DocumentSignatureType extends ExpandableStringEnum<DocumentSi
      * @return the corresponding DocumentSignatureType.
      */
     @Generated
-    @JsonCreator
     public static DocumentSignatureType fromString(String name) {
         return fromString(name, DocumentSignatureType.class);
     }

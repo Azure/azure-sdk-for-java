@@ -6,16 +6,24 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Http read settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = HttpReadSettings.class, visible = true)
 @JsonTypeName("HttpReadSettings")
 @Fluent
 public final class HttpReadSettings extends StoreReadSettings {
+    /*
+     * The read setting type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "HttpReadSettings";
+
     /*
      * The HTTP method used to call the RESTful API. The default is GET. Type: string (or Expression with resultType
      * string).
@@ -58,6 +66,16 @@ public final class HttpReadSettings extends StoreReadSettings {
     }
 
     /**
+     * Get the type property: The read setting type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the requestMethod property: The HTTP method used to call the RESTful API. The default is GET. Type: string
      * (or Expression with resultType string).
      * 
@@ -80,8 +98,8 @@ public final class HttpReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Get the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string
-     * (or Expression with resultType string).
+     * Get the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or
+     * Expression with resultType string).
      * 
      * @return the requestBody value.
      */
@@ -90,8 +108,8 @@ public final class HttpReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Set the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string
-     * (or Expression with resultType string).
+     * Set the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or
+     * Expression with resultType string).
      * 
      * @param requestBody the requestBody value to set.
      * @return the HttpReadSettings object itself.

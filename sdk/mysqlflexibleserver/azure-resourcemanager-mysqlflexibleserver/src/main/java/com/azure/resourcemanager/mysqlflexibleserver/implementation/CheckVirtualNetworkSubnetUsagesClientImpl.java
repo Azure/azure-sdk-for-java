@@ -27,26 +27,28 @@ import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.VirtualNetwor
 import com.azure.resourcemanager.mysqlflexibleserver.models.VirtualNetworkSubnetUsageParameter;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CheckVirtualNetworkSubnetUsagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CheckVirtualNetworkSubnetUsagesClient.
+ */
 public final class CheckVirtualNetworkSubnetUsagesClientImpl implements CheckVirtualNetworkSubnetUsagesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CheckVirtualNetworkSubnetUsagesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MySqlManagementClientImpl client;
 
     /**
      * Initializes an instance of CheckVirtualNetworkSubnetUsagesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CheckVirtualNetworkSubnetUsagesClientImpl(MySqlManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    CheckVirtualNetworkSubnetUsagesService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(CheckVirtualNetworkSubnetUsagesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,46 +59,38 @@ public final class CheckVirtualNetworkSubnetUsagesClientImpl implements CheckVir
     @Host("{$host}")
     @ServiceInterface(name = "MySqlManagementClien")
     public interface CheckVirtualNetworkSubnetUsagesService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/locations/{locationName}/checkVirtualNetworkSubnetUsage")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/locations/{locationName}/checkVirtualNetworkSubnetUsage")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualNetworkSubnetUsageResultInner>> execute(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<VirtualNetworkSubnetUsageResultInner>> execute(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationName") String locationName,
             @BodyParam("application/json") VirtualNetworkSubnetUsageParameter parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get virtual network subnet usage for a given vNet resource id.
-     *
+     * 
      * @param locationName The name of the location.
      * @param parameters The required parameters for creating or updating a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual network subnet usage for a given vNet resource id along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VirtualNetworkSubnetUsageResultInner>> executeWithResponseAsync(
-        String locationName, VirtualNetworkSubnetUsageParameter parameters) {
+    private Mono<Response<VirtualNetworkSubnetUsageResultInner>> executeWithResponseAsync(String locationName,
+        VirtualNetworkSubnetUsageParameter parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
@@ -106,26 +100,17 @@ public final class CheckVirtualNetworkSubnetUsagesClientImpl implements CheckVir
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "2023-12-30";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .execute(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            locationName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.execute(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), locationName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get virtual network subnet usage for a given vNet resource id.
-     *
+     * 
      * @param locationName The name of the location.
      * @param parameters The required parameters for creating or updating a server.
      * @param context The context to associate with this operation.
@@ -133,22 +118,18 @@ public final class CheckVirtualNetworkSubnetUsagesClientImpl implements CheckVir
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual network subnet usage for a given vNet resource id along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VirtualNetworkSubnetUsageResultInner>> executeWithResponseAsync(
-        String locationName, VirtualNetworkSubnetUsageParameter parameters, Context context) {
+    private Mono<Response<VirtualNetworkSubnetUsageResultInner>> executeWithResponseAsync(String locationName,
+        VirtualNetworkSubnetUsageParameter parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
@@ -158,23 +139,16 @@ public final class CheckVirtualNetworkSubnetUsagesClientImpl implements CheckVir
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "2023-12-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .execute(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                locationName,
-                parameters,
-                accept,
-                context);
+        return service.execute(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), locationName,
+            parameters, accept, context);
     }
 
     /**
      * Get virtual network subnet usage for a given vNet resource id.
-     *
+     * 
      * @param locationName The name of the location.
      * @param parameters The required parameters for creating or updating a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -183,14 +157,14 @@ public final class CheckVirtualNetworkSubnetUsagesClientImpl implements CheckVir
      * @return virtual network subnet usage for a given vNet resource id on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VirtualNetworkSubnetUsageResultInner> executeAsync(
-        String locationName, VirtualNetworkSubnetUsageParameter parameters) {
+    private Mono<VirtualNetworkSubnetUsageResultInner> executeAsync(String locationName,
+        VirtualNetworkSubnetUsageParameter parameters) {
         return executeWithResponseAsync(locationName, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get virtual network subnet usage for a given vNet resource id.
-     *
+     * 
      * @param locationName The name of the location.
      * @param parameters The required parameters for creating or updating a server.
      * @param context The context to associate with this operation.
@@ -200,14 +174,14 @@ public final class CheckVirtualNetworkSubnetUsagesClientImpl implements CheckVir
      * @return virtual network subnet usage for a given vNet resource id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VirtualNetworkSubnetUsageResultInner> executeWithResponse(
-        String locationName, VirtualNetworkSubnetUsageParameter parameters, Context context) {
+    public Response<VirtualNetworkSubnetUsageResultInner> executeWithResponse(String locationName,
+        VirtualNetworkSubnetUsageParameter parameters, Context context) {
         return executeWithResponseAsync(locationName, parameters, context).block();
     }
 
     /**
      * Get virtual network subnet usage for a given vNet resource id.
-     *
+     * 
      * @param locationName The name of the location.
      * @param parameters The required parameters for creating or updating a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -216,8 +190,8 @@ public final class CheckVirtualNetworkSubnetUsagesClientImpl implements CheckVir
      * @return virtual network subnet usage for a given vNet resource id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualNetworkSubnetUsageResultInner execute(
-        String locationName, VirtualNetworkSubnetUsageParameter parameters) {
+    public VirtualNetworkSubnetUsageResultInner execute(String locationName,
+        VirtualNetworkSubnetUsageParameter parameters) {
         return executeWithResponse(locationName, parameters, Context.NONE).getValue();
     }
 }

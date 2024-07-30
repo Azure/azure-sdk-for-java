@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Managed service identity (User assigned identity). */
+/**
+ * Managed service identity (User assigned identity).
+ */
 @Fluent
 public final class ManagedServiceIdentity {
     /*
@@ -20,22 +22,21 @@ public final class ManagedServiceIdentity {
     private ManagedServiceIdentityType type;
 
     /*
-     * The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys
-     * will be ARM resource ids in the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
-     * The dictionary values can be empty objects ({}) in requests.
+     * The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests.
      */
     @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, UserAssignedIdentity> userAssignedIdentities;
 
-    /** Creates an instance of ManagedServiceIdentity class. */
+    /**
+     * Creates an instance of ManagedServiceIdentity class.
+     */
     public ManagedServiceIdentity() {
     }
 
     /**
      * Get the type property: Type of managed service identity (currently only UserAssigned allowed).
-     *
+     * 
      * @return the type value.
      */
     public ManagedServiceIdentityType type() {
@@ -44,7 +45,7 @@ public final class ManagedServiceIdentity {
 
     /**
      * Set the type property: Type of managed service identity (currently only UserAssigned allowed).
-     *
+     * 
      * @param type the type value to set.
      * @return the ManagedServiceIdentity object itself.
      */
@@ -58,7 +59,7 @@ public final class ManagedServiceIdentity {
      * userAssignedIdentities dictionary keys will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
      * The dictionary values can be empty objects ({}) in requests.
-     *
+     * 
      * @return the userAssignedIdentities value.
      */
     public Map<String, UserAssignedIdentity> userAssignedIdentities() {
@@ -70,7 +71,7 @@ public final class ManagedServiceIdentity {
      * userAssignedIdentities dictionary keys will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
      * The dictionary values can be empty objects ({}) in requests.
-     *
+     * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the ManagedServiceIdentity object itself.
      */
@@ -81,24 +82,20 @@ public final class ManagedServiceIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model ManagedServiceIdentity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model ManagedServiceIdentity"));
         }
         if (userAssignedIdentities() != null) {
-            userAssignedIdentities()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            userAssignedIdentities().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 

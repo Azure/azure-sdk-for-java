@@ -68,20 +68,26 @@ public class ReactorHandlerProvider {
      *
      * @param connectionId Identifier associated with this connection.
      * @param options Options for the connection.
+     *
      * @return A new {@link ConnectionHandler}.
      *
      * @throws NullPointerException If {@code connectionId}, {@code productName}, {@code clientVersion},
      *      {@code options} is {@code null}.
      */
     public ConnectionHandler createConnectionHandler(String connectionId, ConnectionOptions options) {
+
         Objects.requireNonNull(connectionId, "'connectionId' cannot be null.");
         Objects.requireNonNull(options, "'options' cannot be null.");
 
-        AmqpMetricsProvider metricsProvider = getMetricProvider(options.getFullyQualifiedNamespace(), null);
-        if (options.getTransportType() == AmqpTransportType.AMQP) {
-            final SslPeerDetails peerDetails = Proton.sslPeerDetails(options.getHostname(), options.getPort());
+        final AmqpMetricsProvider metricsProvider = getMetricProvider(options.getFullyQualifiedNamespace(), null);
 
-            return new ConnectionHandler(connectionId, options, peerDetails, metricsProvider);
+        if (options.getTransportType() == AmqpTransportType.AMQP) {
+            if (options.isEnableSsl()) {
+                final SslPeerDetails peerDetails = Proton.sslPeerDetails(options.getHostname(), options.getPort());
+                return new ConnectionHandler(connectionId, options, peerDetails, metricsProvider);
+            } else {
+                return new ConnectionHandler(connectionId, options, metricsProvider);
+            }
         }
 
         if (options.getTransportType() != AmqpTransportType.AMQP_WEB_SOCKETS) {

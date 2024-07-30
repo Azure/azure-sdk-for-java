@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,10 +16,22 @@ import java.util.List;
  * Follow-up recommendations offer guidance to healthcare providers on managing and monitoring patients based on the
  * findings of imaging studies.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = FollowupRecommendationInference.class,
+    visible = true)
 @JsonTypeName("followupRecommendation")
 @Immutable
-public final class FollowupRecommendationInference extends FhirR4Extendible1 {
+public final class FollowupRecommendationInference extends RadiologyInsightsInference {
+
+    /*
+     * Discriminator property for RadiologyInsightsInference.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.FOLLOWUP_RECOMMENDATION;
 
     /*
      * Date and time are displayed when the procedure is recommended to be done at a specific point in time.
@@ -39,7 +52,7 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
      */
     @Generated
     @JsonProperty(value = "findings")
-    private List<FhirR4Extendible2> findings;
+    private List<RecommendationFinding> findings;
 
     /*
      * The conditional value indicates whether or not the sentence containing the recommendation includes a conditional
@@ -47,7 +60,7 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
      */
     @Generated
     @JsonProperty(value = "isConditional")
-    private boolean isConditional;
+    private final boolean isConditional;
 
     /*
      * The option value indicates whether or not the sentence containing the recommendation includes an optional
@@ -55,7 +68,7 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
      */
     @Generated
     @JsonProperty(value = "isOption")
-    private boolean isOption;
+    private final boolean isOption;
 
     /*
      * The guideline value indicates whether or not the recommendation is part of a guideline section that compiles all
@@ -63,7 +76,7 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
      */
     @Generated
     @JsonProperty(value = "isGuideline")
-    private boolean isGuideline;
+    private final boolean isGuideline;
 
     /*
      * Hedging refers to ambiguous, vague or imprecise language within the sentence of the recommendation. Keywords for
@@ -71,14 +84,14 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
      */
     @Generated
     @JsonProperty(value = "isHedging")
-    private boolean isHedging;
+    private final boolean isHedging;
 
     /*
      * The procedure recommendation can be a generic procedure or an imaging procedure.
      */
     @Generated
     @JsonProperty(value = "recommendedProcedure")
-    private ProcedureRecommendation recommendedProcedure;
+    private final ProcedureRecommendation recommendedProcedure;
 
     /**
      * Creates an instance of FollowupRecommendationInference class.
@@ -103,8 +116,19 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the effectiveDateTime property: Date and time are displayed when the procedure is recommended to be done at
-     * a specific point in time.
+     * Get the kind property: Discriminator property for RadiologyInsightsInference.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public RadiologyInsightsInferenceType getKind() {
+        return this.kind;
+    }
+
+    /**
+     * Get the effectiveDateTime property: Date and time are displayed when the procedure is recommended to be done at a
+     * specific point in time.
      *
      * @return the effectiveDateTime value.
      */
@@ -130,7 +154,7 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
      * @return the findings value.
      */
     @Generated
-    public List<FhirR4Extendible2> getFindings() {
+    public List<RecommendationFinding> getFindings() {
         return this.findings;
     }
 

@@ -11,14 +11,14 @@ public final class SalesforceServiceCloudObjectDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SalesforceServiceCloudObjectDatasetTypeProperties model
-            = BinaryData.fromString("{\"objectApiName\":\"dataflmsy\"}")
+            = BinaryData.fromString("{\"objectApiName\":\"dataml\"}")
                 .toObject(SalesforceServiceCloudObjectDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SalesforceServiceCloudObjectDatasetTypeProperties model
-            = new SalesforceServiceCloudObjectDatasetTypeProperties().withObjectApiName("dataflmsy");
+            = new SalesforceServiceCloudObjectDatasetTypeProperties().withObjectApiName("dataml");
         model = BinaryData.fromObject(model).toObject(SalesforceServiceCloudObjectDatasetTypeProperties.class);
     }
 }

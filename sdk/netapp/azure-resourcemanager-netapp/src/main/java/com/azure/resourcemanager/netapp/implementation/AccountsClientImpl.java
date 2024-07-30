@@ -35,7 +35,6 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.AccountsClient;
 import com.azure.resourcemanager.netapp.fluent.models.NetAppAccountInner;
-import com.azure.resourcemanager.netapp.models.EncryptionMigrationRequest;
 import com.azure.resourcemanager.netapp.models.NetAppAccountList;
 import com.azure.resourcemanager.netapp.models.NetAppAccountPatch;
 import java.nio.ByteBuffer;
@@ -109,14 +108,14 @@ public final class AccountsClientImpl implements AccountsClient {
             @QueryParam("api-version") String apiVersion, @BodyParam("application/json") NetAppAccountInner body,
             @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}")
@@ -128,25 +127,14 @@ public final class AccountsClientImpl implements AccountsClient {
             @QueryParam("api-version") String apiVersion, @BodyParam("application/json") NetAppAccountPatch body,
             @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/renewCredentials")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> renewCredentials(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/migrateEncryption")
-        @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> migrateEncryptionKey(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") EncryptionMigrationRequest body, @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -833,9 +821,10 @@ public final class AccountsClientImpl implements AccountsClient {
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, accountName, this.client.getApiVersion(), context))
+                resourceGroupName, accountName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -870,9 +859,10 @@ public final class AccountsClientImpl implements AccountsClient {
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, this.client.getApiVersion(), context);
+            accountName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1300,9 +1290,10 @@ public final class AccountsClientImpl implements AccountsClient {
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.renewCredentials(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, accountName, this.client.getApiVersion(), context))
+                resourceGroupName, accountName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1338,9 +1329,10 @@ public final class AccountsClientImpl implements AccountsClient {
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.renewCredentials(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, this.client.getApiVersion(), context);
+            accountName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1501,308 +1493,9 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * Migrate volumes encryption key source.
-     * 
-     * Migrates all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key Vault).
-     * Operation fails if targeted volumes share encryption sibling set with volumes from another account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param body The required parameters to perform encryption migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> migrateEncryptionKeyWithResponseAsync(String resourceGroupName,
-        String accountName, EncryptionMigrationRequest body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (body != null) {
-            body.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.migrateEncryptionKey(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                    resourceGroupName, accountName, this.client.getApiVersion(), body, accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Migrate volumes encryption key source.
-     * 
-     * Migrates all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key Vault).
-     * Operation fails if targeted volumes share encryption sibling set with volumes from another account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param body The required parameters to perform encryption migration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> migrateEncryptionKeyWithResponseAsync(String resourceGroupName,
-        String accountName, EncryptionMigrationRequest body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (body != null) {
-            body.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.migrateEncryptionKey(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            resourceGroupName, accountName, this.client.getApiVersion(), body, accept, context);
-    }
-
-    /**
-     * Migrate volumes encryption key source.
-     * 
-     * Migrates all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key Vault).
-     * Operation fails if targeted volumes share encryption sibling set with volumes from another account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param body The required parameters to perform encryption migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginMigrateEncryptionKeyAsync(String resourceGroupName,
-        String accountName, EncryptionMigrationRequest body) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = migrateEncryptionKeyWithResponseAsync(resourceGroupName, accountName, body);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
-    }
-
-    /**
-     * Migrate volumes encryption key source.
-     * 
-     * Migrates all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key Vault).
-     * Operation fails if targeted volumes share encryption sibling set with volumes from another account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginMigrateEncryptionKeyAsync(String resourceGroupName,
-        String accountName) {
-        final EncryptionMigrationRequest body = null;
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = migrateEncryptionKeyWithResponseAsync(resourceGroupName, accountName, body);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
-    }
-
-    /**
-     * Migrate volumes encryption key source.
-     * 
-     * Migrates all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key Vault).
-     * Operation fails if targeted volumes share encryption sibling set with volumes from another account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param body The required parameters to perform encryption migration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginMigrateEncryptionKeyAsync(String resourceGroupName,
-        String accountName, EncryptionMigrationRequest body, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = migrateEncryptionKeyWithResponseAsync(resourceGroupName, accountName, body, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Migrate volumes encryption key source.
-     * 
-     * Migrates all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key Vault).
-     * Operation fails if targeted volumes share encryption sibling set with volumes from another account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginMigrateEncryptionKey(String resourceGroupName, String accountName) {
-        final EncryptionMigrationRequest body = null;
-        return this.beginMigrateEncryptionKeyAsync(resourceGroupName, accountName, body).getSyncPoller();
-    }
-
-    /**
-     * Migrate volumes encryption key source.
-     * 
-     * Migrates all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key Vault).
-     * Operation fails if targeted volumes share encryption sibling set with volumes from another account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param body The required parameters to perform encryption migration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginMigrateEncryptionKey(String resourceGroupName, String accountName,
-        EncryptionMigrationRequest body, Context context) {
-        return this.beginMigrateEncryptionKeyAsync(resourceGroupName, accountName, body, context).getSyncPoller();
-    }
-
-    /**
-     * Migrate volumes encryption key source.
-     * 
-     * Migrates all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key Vault).
-     * Operation fails if targeted volumes share encryption sibling set with volumes from another account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param body The required parameters to perform encryption migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> migrateEncryptionKeyAsync(String resourceGroupName, String accountName,
-        EncryptionMigrationRequest body) {
-        return beginMigrateEncryptionKeyAsync(resourceGroupName, accountName, body).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Migrate volumes encryption key source.
-     * 
-     * Migrates all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key Vault).
-     * Operation fails if targeted volumes share encryption sibling set with volumes from another account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> migrateEncryptionKeyAsync(String resourceGroupName, String accountName) {
-        final EncryptionMigrationRequest body = null;
-        return beginMigrateEncryptionKeyAsync(resourceGroupName, accountName, body).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Migrate volumes encryption key source.
-     * 
-     * Migrates all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key Vault).
-     * Operation fails if targeted volumes share encryption sibling set with volumes from another account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param body The required parameters to perform encryption migration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> migrateEncryptionKeyAsync(String resourceGroupName, String accountName,
-        EncryptionMigrationRequest body, Context context) {
-        return beginMigrateEncryptionKeyAsync(resourceGroupName, accountName, body, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Migrate volumes encryption key source.
-     * 
-     * Migrates all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key Vault).
-     * Operation fails if targeted volumes share encryption sibling set with volumes from another account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void migrateEncryptionKey(String resourceGroupName, String accountName) {
-        final EncryptionMigrationRequest body = null;
-        migrateEncryptionKeyAsync(resourceGroupName, accountName, body).block();
-    }
-
-    /**
-     * Migrate volumes encryption key source.
-     * 
-     * Migrates all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key Vault).
-     * Operation fails if targeted volumes share encryption sibling set with volumes from another account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param body The required parameters to perform encryption migration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void migrateEncryptionKey(String resourceGroupName, String accountName, EncryptionMigrationRequest body,
-        Context context) {
-        migrateEncryptionKeyAsync(resourceGroupName, accountName, body, context).block();
-    }
-
-    /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1830,9 +1523,7 @@ public final class AccountsClientImpl implements AccountsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1860,9 +1551,7 @@ public final class AccountsClientImpl implements AccountsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1888,9 +1577,7 @@ public final class AccountsClientImpl implements AccountsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

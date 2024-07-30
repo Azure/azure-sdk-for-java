@@ -8,25 +8,27 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerservicefleet.fluent.models.FleetMemberInner;
 
-/** An immutable client-side representation of FleetMember. */
+/**
+ * An immutable client-side representation of FleetMember.
+ */
 public interface FleetMember {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
@@ -36,14 +38,14 @@ public interface FleetMember {
      * normal etag convention. Entity tags are used for comparing two or more entities from the same requested resource.
      * HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26),
      * and If-Range (section 14.27) header fields.
-     *
+     * 
      * @return the etag value.
      */
     String etag();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
@@ -52,55 +54,63 @@ public interface FleetMember {
      * Gets the clusterResourceId property: The ARM resource id of the cluster that joins the Fleet. Must be a valid
      * Azure resource id. e.g.:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{clusterName}'.
-     *
+     * 
      * @return the clusterResourceId value.
      */
     String clusterResourceId();
 
     /**
      * Gets the group property: The group this member belongs to for multi-cluster update management.
-     *
+     * 
      * @return the group value.
      */
     String group();
 
     /**
      * Gets the provisioningState property: The status of the last operation.
-     *
+     * 
      * @return the provisioningState value.
      */
     FleetMemberProvisioningState provisioningState();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.containerservicefleet.fluent.models.FleetMemberInner object.
-     *
+     * 
      * @return the inner object.
      */
     FleetMemberInner innerModel();
 
-    /** The entirety of the FleetMember definition. */
+    /**
+     * The entirety of the FleetMember definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The FleetMember definition stages. */
+    /**
+     * The FleetMember definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the FleetMember definition. */
+        /**
+         * The first stage of the FleetMember definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the FleetMember definition allowing to specify parent resource. */
+        /**
+         * The stage of the FleetMember definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, fleetName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param fleetName The name of the Fleet resource.
              * @return the next definition stage.
@@ -112,69 +122,74 @@ public interface FleetMember {
          * The stage of the FleetMember definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithClusterResourceId,
-                DefinitionStages.WithGroup,
-                DefinitionStages.WithIfMatch,
-                DefinitionStages.WithIfNoneMatch {
+        interface WithCreate extends DefinitionStages.WithClusterResourceId, DefinitionStages.WithGroup,
+            DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             FleetMember create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             FleetMember create(Context context);
         }
 
-        /** The stage of the FleetMember definition allowing to specify clusterResourceId. */
+        /**
+         * The stage of the FleetMember definition allowing to specify clusterResourceId.
+         */
         interface WithClusterResourceId {
             /**
              * Specifies the clusterResourceId property: The ARM resource id of the cluster that joins the Fleet. Must
              * be a valid Azure resource id. e.g.:
              * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{clusterName}'..
-             *
+             * 
              * @param clusterResourceId The ARM resource id of the cluster that joins the Fleet. Must be a valid Azure
-             *     resource id. e.g.:
-             *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{clusterName}'.
+             * resource id. e.g.:
+             * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{clusterName}'.
              * @return the next definition stage.
              */
             WithCreate withClusterResourceId(String clusterResourceId);
         }
 
-        /** The stage of the FleetMember definition allowing to specify group. */
+        /**
+         * The stage of the FleetMember definition allowing to specify group.
+         */
         interface WithGroup {
             /**
              * Specifies the group property: The group this member belongs to for multi-cluster update management..
-             *
+             * 
              * @param group The group this member belongs to for multi-cluster update management.
              * @return the next definition stage.
              */
             WithCreate withGroup(String group);
         }
 
-        /** The stage of the FleetMember definition allowing to specify ifMatch. */
+        /**
+         * The stage of the FleetMember definition allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: The request should only proceed if an entity matches this string..
-             *
+             * 
              * @param ifMatch The request should only proceed if an entity matches this string.
              * @return the next definition stage.
              */
             WithCreate withIfMatch(String ifMatch);
         }
 
-        /** The stage of the FleetMember definition allowing to specify ifNoneMatch. */
+        /**
+         * The stage of the FleetMember definition allowing to specify ifNoneMatch.
+         */
         interface WithIfNoneMatch {
             /**
              * Specifies the ifNoneMatch property: The request should only proceed if no entity matches this string..
-             *
+             * 
              * @param ifNoneMatch The request should only proceed if no entity matches this string.
              * @return the next definition stage.
              */
@@ -184,47 +199,55 @@ public interface FleetMember {
 
     /**
      * Begins update for the FleetMember resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     FleetMember.Update update();
 
-    /** The template for FleetMember update. */
+    /**
+     * The template for FleetMember update.
+     */
     interface Update extends UpdateStages.WithGroup, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         FleetMember apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         FleetMember apply(Context context);
     }
 
-    /** The FleetMember update stages. */
+    /**
+     * The FleetMember update stages.
+     */
     interface UpdateStages {
-        /** The stage of the FleetMember update allowing to specify group. */
+        /**
+         * The stage of the FleetMember update allowing to specify group.
+         */
         interface WithGroup {
             /**
              * Specifies the group property: The group this member belongs to for multi-cluster update management..
-             *
+             * 
              * @param group The group this member belongs to for multi-cluster update management.
              * @return the next definition stage.
              */
             Update withGroup(String group);
         }
 
-        /** The stage of the FleetMember update allowing to specify ifMatch. */
+        /**
+         * The stage of the FleetMember update allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: The request should only proceed if an entity matches this string..
-             *
+             * 
              * @param ifMatch The request should only proceed if an entity matches this string.
              * @return the next definition stage.
              */
@@ -234,14 +257,14 @@ public interface FleetMember {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     FleetMember refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

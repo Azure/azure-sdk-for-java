@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Defines modifiable attributes of an Experiment. */
+/**
+ * Defines modifiable attributes of an Experiment.
+ */
 @Fluent
 public final class ExperimentUpdateModel {
     /*
@@ -26,13 +28,15 @@ public final class ExperimentUpdateModel {
     @JsonProperty(value = "properties")
     private ExperimentUpdateProperties innerProperties;
 
-    /** Creates an instance of ExperimentUpdateModel class. */
+    /**
+     * Creates an instance of ExperimentUpdateModel class.
+     */
     public ExperimentUpdateModel() {
     }
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -41,7 +45,7 @@ public final class ExperimentUpdateModel {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ExperimentUpdateModel object itself.
      */
@@ -52,7 +56,7 @@ public final class ExperimentUpdateModel {
 
     /**
      * Get the innerProperties property: The properties of a Profile.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ExperimentUpdateProperties innerProperties() {
@@ -61,7 +65,7 @@ public final class ExperimentUpdateModel {
 
     /**
      * Get the description property: The description of the intent or details of the Experiment.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -70,7 +74,7 @@ public final class ExperimentUpdateModel {
 
     /**
      * Set the description property: The description of the intent or details of the Experiment.
-     *
+     * 
      * @param description the description value to set.
      * @return the ExperimentUpdateModel object itself.
      */
@@ -84,7 +88,7 @@ public final class ExperimentUpdateModel {
 
     /**
      * Get the enabledState property: The state of the Experiment.
-     *
+     * 
      * @return the enabledState value.
      */
     public State enabledState() {
@@ -93,7 +97,7 @@ public final class ExperimentUpdateModel {
 
     /**
      * Set the enabledState property: The state of the Experiment.
-     *
+     * 
      * @param enabledState the enabledState value to set.
      * @return the ExperimentUpdateModel object itself.
      */
@@ -107,7 +111,7 @@ public final class ExperimentUpdateModel {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

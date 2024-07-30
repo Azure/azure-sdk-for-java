@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -19,9 +19,9 @@ import java.util.Map;
 @Fluent
 public final class RedirectIncompatibleRowSettings {
     /*
-     * Name of the Azure Storage, Storage SAS, or Azure Data Lake Store linked service used for redirecting
-     * incompatible row. Must be specified if redirectIncompatibleRowSettings is specified. Type: string (or Expression
-     * with resultType string).
+     * Name of the Azure Storage, Storage SAS, or Azure Data Lake Store linked service used for redirecting incompatible
+     * row. Must be specified if redirectIncompatibleRowSettings is specified. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "linkedServiceName", required = true)
     private Object linkedServiceName;
@@ -46,8 +46,8 @@ public final class RedirectIncompatibleRowSettings {
 
     /**
      * Get the linkedServiceName property: Name of the Azure Storage, Storage SAS, or Azure Data Lake Store linked
-     * service used for redirecting incompatible row. Must be specified if redirectIncompatibleRowSettings is
-     * specified. Type: string (or Expression with resultType string).
+     * service used for redirecting incompatible row. Must be specified if redirectIncompatibleRowSettings is specified.
+     * Type: string (or Expression with resultType string).
      * 
      * @return the linkedServiceName value.
      */
@@ -57,8 +57,8 @@ public final class RedirectIncompatibleRowSettings {
 
     /**
      * Set the linkedServiceName property: Name of the Azure Storage, Storage SAS, or Azure Data Lake Store linked
-     * service used for redirecting incompatible row. Must be specified if redirectIncompatibleRowSettings is
-     * specified. Type: string (or Expression with resultType string).
+     * service used for redirecting incompatible row. Must be specified if redirectIncompatibleRowSettings is specified.
+     * Type: string (or Expression with resultType string).
      * 
      * @param linkedServiceName the linkedServiceName value to set.
      * @return the RedirectIncompatibleRowSettings object itself.
@@ -114,7 +114,7 @@ public final class RedirectIncompatibleRowSettings {
     @JsonAnySetter
     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }
@@ -126,8 +126,9 @@ public final class RedirectIncompatibleRowSettings {
      */
     public void validate() {
         if (linkedServiceName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property linkedServiceName in model RedirectIncompatibleRowSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property linkedServiceName in model RedirectIncompatibleRowSettings"));
         }
     }
 

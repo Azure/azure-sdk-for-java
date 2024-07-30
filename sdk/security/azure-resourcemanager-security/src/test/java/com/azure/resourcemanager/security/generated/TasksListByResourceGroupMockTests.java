@@ -6,50 +6,32 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.SecurityTask;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class TasksListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"state\":\"ynqjgsat\",\"creationTimeUtc\":\"2021-03-10T12:36:24Z\",\"securityTaskParameters\":{\"name\":\"bgngcrusxhirc\",\"\":{\"lkvuznadvh\":\"datavsvkkjbjolpyo\",\"gowxxbhtp\":\"datalieo\"}},\"lastStateChangeTimeUtc\":\"2021-06-27T21:00:34Z\",\"subState\":\"qe\"},\"id\":\"qwtqszzgyksik\",\"name\":\"wanvmwdvgjqcrbko\",\"type\":\"pnbn\"}]}";
+            = "{\"value\":[{\"properties\":{\"state\":\"cucrcm\",\"creationTimeUtc\":\"2021-08-15T10:16:28Z\",\"securityTaskParameters\":{\"name\":\"qjiwifhbksldttoh\",\"\":{\"tpmglxkoikmtr\":\"datanaihtgsiqikvllr\"}},\"lastStateChangeTimeUtc\":\"2021-04-01T15:07:30Z\",\"subState\":\"kzawbunmpaklwzlw\"},\"id\":\"epr\",\"name\":\"ejzltka\",\"type\":\"zfjsxscbd\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<SecurityTask> response = manager.tasks().listByResourceGroup("uvigv", "ghfrbzakpjtcq",
-            "aqpojpsucmximc", com.azure.core.util.Context.NONE);
+        PagedIterable<SecurityTask> response = manager.tasks()
+            .listByResourceGroup("nqliwkmzoj", "etyalht", "mknazgbjbhrpgiq", com.azure.core.util.Context.NONE);
 
     }
 }

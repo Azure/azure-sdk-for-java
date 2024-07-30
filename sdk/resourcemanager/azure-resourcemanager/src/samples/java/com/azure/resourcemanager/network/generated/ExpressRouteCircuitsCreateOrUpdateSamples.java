@@ -18,7 +18,7 @@ import java.util.Arrays;
 public final class ExpressRouteCircuitsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/ExpressRouteCircuitCreate.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ExpressRouteCircuitCreate.
      * json
      */
     /**
@@ -27,19 +27,27 @@ public final class ExpressRouteCircuitsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createExpressRouteCircuit(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getExpressRouteCircuits().createOrUpdate("rg1", "circuitName",
-            new ExpressRouteCircuitInner().withLocation("Brazil South")
-                .withSku(new ExpressRouteCircuitSku().withName("Standard_MeteredData")
-                    .withTier(ExpressRouteCircuitSkuTier.STANDARD)
-                    .withFamily(ExpressRouteCircuitSkuFamily.METERED_DATA))
-                .withAllowClassicOperations(false).withAuthorizations(Arrays.asList()).withPeerings(Arrays.asList())
-                .withServiceProviderProperties(new ExpressRouteCircuitServiceProviderProperties()
-                    .withServiceProviderName("Equinix").withPeeringLocation("Silicon Valley").withBandwidthInMbps(200)),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getExpressRouteCircuits()
+            .createOrUpdate("rg1", "circuitName",
+                new ExpressRouteCircuitInner().withLocation("Brazil South")
+                    .withSku(new ExpressRouteCircuitSku().withName("Standard_MeteredData")
+                        .withTier(ExpressRouteCircuitSkuTier.STANDARD)
+                        .withFamily(ExpressRouteCircuitSkuFamily.METERED_DATA))
+                    .withAllowClassicOperations(false)
+                    .withAuthorizations(Arrays.asList())
+                    .withPeerings(Arrays.asList())
+                    .withServiceProviderProperties(
+                        new ExpressRouteCircuitServiceProviderProperties().withServiceProviderName("Equinix")
+                            .withPeeringLocation("Silicon Valley")
+                            .withBandwidthInMbps(200)),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * ExpressRouteCircuitCreateOnExpressRoutePort.json
      */
     /**
@@ -49,13 +57,18 @@ public final class ExpressRouteCircuitsCreateOrUpdateSamples {
      */
     public static void
         createExpressRouteCircuitOnExpressRoutePort(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getExpressRouteCircuits()
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getExpressRouteCircuits()
             .createOrUpdate("rg1", "expressRouteCircuit1", new ExpressRouteCircuitInner().withLocation("westus")
                 .withSku(new ExpressRouteCircuitSku().withName("Premium_MeteredData")
-                    .withTier(ExpressRouteCircuitSkuTier.PREMIUM).withFamily(ExpressRouteCircuitSkuFamily.METERED_DATA))
+                    .withTier(ExpressRouteCircuitSkuTier.PREMIUM)
+                    .withFamily(ExpressRouteCircuitSkuFamily.METERED_DATA))
                 .withExpressRoutePort(new SubResource().withId(
                     "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/expressRoutePorts/portName"))
-                .withBandwidthInGbps(10.0F).withAuthorizationKey("fakeTokenPlaceholder"),
-                com.azure.core.util.Context.NONE);
+                .withBandwidthInGbps(10.0F)
+                .withAuthorizationKey("fakeTokenPlaceholder")
+                .withEnableDirectPortRateLimit(false), com.azure.core.util.Context.NONE);
     }
 }

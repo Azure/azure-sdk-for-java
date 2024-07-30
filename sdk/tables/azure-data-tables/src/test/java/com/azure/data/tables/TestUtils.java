@@ -3,6 +3,7 @@
 
 package com.azure.data.tables;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
@@ -18,10 +19,13 @@ import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.models.TestProxyRequestMatcher.TestProxyRequestMatcherType;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.data.tables.models.TableServiceProperties;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -57,6 +61,35 @@ public final class TestUtils {
         return isPlaybackMode
             ? "DefaultEndpointsProtocol=https;AccountName=dummyAccount;AccountKey=xyzDummy;EndpointSuffix=core.windows.net"
             : Configuration.getGlobalConfiguration().get("TABLES_CONNECTION_STRING");
+    }
+
+    /**
+     * Retrieve the appropriate TokenCredential based on the test mode.
+     *
+     * @param interceptorManager the interceptor manager
+     * @return The appropriate token credential
+     */
+    public static TokenCredential getTestTokenCredential(InterceptorManager interceptorManager) {
+        if (interceptorManager.isLiveMode()) {
+            return new AzurePowerShellCredentialBuilder().build();
+        } else if (interceptorManager.isRecordMode()) {
+            return new DefaultAzureCredentialBuilder().build();
+        } else {
+            return new MockTokenCredential();
+        }
+    }
+
+    /**
+     * Gets the endpoint for running tests.
+     *
+     * @param isPlaybackMode {@code true} if the code is not running against a live service. false otherwise.
+     *
+     * @return The corresponding endpoint.
+     */
+    public static String getEndpoint(boolean isPlaybackMode) {
+        return isPlaybackMode
+            ? "https://dummyAccount.table.core.windows.net/"
+            : Configuration.getGlobalConfiguration().get("TABLES_ENDPOINT");
     }
 
     public static HttpRequest request(String url) throws MalformedURLException {
@@ -199,8 +232,11 @@ public final class TestUtils {
 
     static boolean isCosmosTest() {
         Configuration globalConfiguration = Configuration.getGlobalConfiguration();
-        return globalConfiguration.get("TABLES_CONNECTION_STRING") != null
-            && globalConfiguration.get("TABLES_CONNECTION_STRING").contains("cosmos.azure.com");
+
+        return (globalConfiguration.get("TABLES_CONNECTION_STRING") != null
+            && globalConfiguration.get("TABLES_CONNECTION_STRING").contains("cosmos.azure.com")) || (
+            globalConfiguration.get("TABLES_ENDPOINT") != null
+                && globalConfiguration.get("TABLES_ENDPOINT").contains("cosmos.azure.com"));
     }
 
     public static void addTestProxyTestSanitizersAndMatchers(InterceptorManager interceptorManager) {

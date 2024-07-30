@@ -21,11 +21,13 @@ public final class IntegrationRuntimesCreateLinkedIntegrationRuntimeSamples {
      */
     public static void integrationRuntimesCreateLinkedIntegrationRuntime(
         com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimes().createLinkedIntegrationRuntimeWithResponse("exampleResourceGroup",
-            "exampleFactoryName", "exampleIntegrationRuntime",
-            new CreateLinkedIntegrationRuntimeRequest().withName("bfa92911-9fb6-4fbe-8f23-beae87bc1c83")
-                .withSubscriptionId("061774c7-4b5a-4159-a55b-365581830283")
-                .withDataFactoryName("e9955d6d-56ea-4be3-841c-52a12c1a9981").withDataFactoryLocation("West US"),
-            com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes()
+            .createLinkedIntegrationRuntimeWithResponse("exampleResourceGroup", "exampleFactoryName",
+                "exampleIntegrationRuntime",
+                new CreateLinkedIntegrationRuntimeRequest().withName("bfa92911-9fb6-4fbe-8f23-beae87bc1c83")
+                    .withSubscriptionId("061774c7-4b5a-4159-a55b-365581830283")
+                    .withDataFactoryName("e9955d6d-56ea-4be3-841c-52a12c1a9981")
+                    .withDataFactoryLocation("West US"),
+                com.azure.core.util.Context.NONE);
     }
 }

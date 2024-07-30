@@ -7,23 +7,27 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The object representing the policy for taking backups on an account.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = BackupPolicy.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = BackupPolicy.class, visible = true)
 @JsonTypeName("BackupPolicy")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Periodic", value = PeriodicModeBackupPolicy.class),
     @JsonSubTypes.Type(name = "Continuous", value = ContinuousModeBackupPolicy.class) })
 @Fluent
 public class BackupPolicy {
+    /*
+     * Describes the mode of backups.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private BackupPolicyType type;
+
     /*
      * The object representing the state of the migration between the backup policies.
      */
@@ -34,6 +38,16 @@ public class BackupPolicy {
      * Creates an instance of BackupPolicy class.
      */
     public BackupPolicy() {
+        this.type = BackupPolicyType.fromString("BackupPolicy");
+    }
+
+    /**
+     * Get the type property: Describes the mode of backups.
+     * 
+     * @return the type value.
+     */
+    public BackupPolicyType type() {
+        return this.type;
     }
 
     /**

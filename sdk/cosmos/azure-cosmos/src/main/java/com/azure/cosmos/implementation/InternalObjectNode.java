@@ -2,16 +2,19 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.type.MapType;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class InternalObjectNode extends Resource {
 
@@ -105,47 +108,55 @@ public class InternalObjectNode extends Resource {
         }
     }
 
-    public static ByteBuffer serializeJsonToByteBuffer(Object cosmosItem, ObjectMapper objectMapper, String trackingId) {
+    public static ByteBuffer serializeJsonToByteBuffer(
+        Object cosmosItem,
+        CosmosItemSerializer itemSerializer,
+        String trackingId,
+        boolean isIdValidationEnabled) {
+
+        checkNotNull(itemSerializer, "Argument 'itemSerializer' must not be null.");
         if (cosmosItem instanceof InternalObjectNode) {
             InternalObjectNode internalObjectNode = ((InternalObjectNode) cosmosItem);
+            Consumer<Map<String, Object>> onAfterSerialization = null;
             if (trackingId != null) {
-                internalObjectNode.set(Constants.Properties.TRACKING_ID, trackingId);
+                onAfterSerialization = (node) -> node.put(Constants.Properties.TRACKING_ID, trackingId);
             }
-            return internalObjectNode.serializeJsonToByteBuffer();
+            return internalObjectNode.serializeJsonToByteBuffer(itemSerializer, onAfterSerialization, isIdValidationEnabled);
         } else if (cosmosItem instanceof Document) {
             Document doc = (Document) cosmosItem;
+            Consumer<Map<String, Object>> onAfterSerialization = null;
             if (trackingId != null) {
-                doc.set(Constants.Properties.TRACKING_ID, trackingId);
+                onAfterSerialization = (node) -> node.put(Constants.Properties.TRACKING_ID, trackingId);
             }
-            return ModelBridgeInternal.serializeJsonToByteBuffer(doc);
+            return doc.serializeJsonToByteBuffer(itemSerializer, onAfterSerialization, isIdValidationEnabled);
         } else if (cosmosItem instanceof ObjectNode) {
             ObjectNode objectNode = (ObjectNode)cosmosItem;
+            Consumer<Map<String, Object>> onAfterSerialization = null;
             if (trackingId != null) {
-                objectNode.put(Constants.Properties.TRACKING_ID, trackingId);
+                onAfterSerialization = (node) -> node.put(Constants.Properties.TRACKING_ID, trackingId);
             }
-            return (new InternalObjectNode(objectNode).serializeJsonToByteBuffer());
+            return (new InternalObjectNode(objectNode).serializeJsonToByteBuffer(itemSerializer, onAfterSerialization, isIdValidationEnabled));
         } else if (cosmosItem instanceof byte[]) {
             if (trackingId != null) {
                 InternalObjectNode internalObjectNode = new InternalObjectNode((byte[]) cosmosItem);
-                internalObjectNode.set(Constants.Properties.TRACKING_ID, trackingId);
-                return internalObjectNode.serializeJsonToByteBuffer();
+                return internalObjectNode.serializeJsonToByteBuffer(
+                    itemSerializer,
+                    (node) -> node.put(Constants.Properties.TRACKING_ID, trackingId),
+                    isIdValidationEnabled);
             }
             return ByteBuffer.wrap((byte[]) cosmosItem);
         } else {
-            Object effectivePayload = cosmosItem;
+            Consumer<Map<String, Object>> onAfterSerialization = null;
             if (trackingId != null) {
-                MapType mapType = objectMapper.getTypeFactory().constructMapType(LinkedHashMap.class,
-                    String.class, Object.class);
-                LinkedHashMap<String, Object> node = objectMapper.convertValue(cosmosItem, mapType);
-                node.put(Constants.Properties.TRACKING_ID, trackingId);
-                effectivePayload = node;
+                onAfterSerialization = (node) -> node.put(Constants.Properties.TRACKING_ID, trackingId);
             }
-            return Utils.serializeJsonToByteBuffer(objectMapper, effectivePayload);
+
+            return Utils.serializeJsonToByteBuffer(itemSerializer, cosmosItem, onAfterSerialization, isIdValidationEnabled);
         }
     }
 
     static <T> List<T> getTypedResultsFromV2Results(List<Document> results, Class<T> klass) {
-        return results.stream().map(document -> ModelBridgeInternal.toObjectFromJsonSerializable(document, klass))
+        return results.stream().map(document -> document.toObject(klass))
                       .collect(Collectors.toList());
     }
 

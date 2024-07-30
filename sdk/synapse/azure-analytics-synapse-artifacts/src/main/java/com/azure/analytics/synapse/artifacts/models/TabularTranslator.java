@@ -5,69 +5,56 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * A copy activity tabular translator.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("TabularTranslator")
 @Fluent
 public final class TabularTranslator extends CopyTranslator {
     /*
-     * Column mappings. Example: "UserId: MyUserId, Group: MyGroup, Name: MyName" Type: string (or Expression with
-     * resultType string). This property will be retired. Please use mappings property.
+     * Copy translator type.
      */
-    @JsonProperty(value = "columnMappings")
+    private String type = "TabularTranslator";
+
+    /*
+     * Column mappings. Example: "UserId: MyUserId, Group: MyGroup, Name: MyName" Type: string (or Expression with resultType string). This property will be retired. Please use mappings property.
+     */
     private Object columnMappings;
 
     /*
-     * The schema mapping to map between tabular data and hierarchical data. Example: {"Column1": "$.Column1",
-     * "Column2": "$.Column2.Property1", "Column3": "$.Column2.Property2"}. Type: object (or Expression with resultType
-     * object). This property will be retired. Please use mappings property.
+     * The schema mapping to map between tabular data and hierarchical data. Example: {"Column1": "$.Column1", "Column2": "$.Column2.Property1", "Column3": "$.Column2.Property2"}. Type: object (or Expression with resultType object). This property will be retired. Please use mappings property.
      */
-    @JsonProperty(value = "schemaMapping")
     private Object schemaMapping;
 
     /*
-     * The JSON Path of the Nested Array that is going to do cross-apply. Type: object (or Expression with resultType
-     * object).
+     * The JSON Path of the Nested Array that is going to do cross-apply. Type: object (or Expression with resultType object).
      */
-    @JsonProperty(value = "collectionReference")
     private Object collectionReference;
 
     /*
-     * Whether to map complex (array and object) values to simple strings in json format. Type: boolean (or Expression
-     * with resultType boolean).
+     * Whether to map complex (array and object) values to simple strings in json format. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "mapComplexValuesToString")
     private Object mapComplexValuesToString;
 
     /*
-     * Column mappings with logical types. Tabular->tabular example:
-     * [{"source":{"name":"CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}},{"source":{
-     * "name":"CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}].
-     * Hierarchical->tabular example:
-     * [{"source":{"path":"$.CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}},{"source":{
-     * "path":"$.CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}].
-     * Type: object (or Expression with resultType object).
+     * Column mappings with logical types. Tabular->tabular example: [{"source":{"name":"CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}},{"source":{"name":"CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}].  Hierarchical->tabular example: [{"source":{"path":"$.CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}},{"source":{"path":"$.CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}]. Type: object (or Expression with resultType object).
      */
-    @JsonProperty(value = "mappings")
     private Object mappings;
 
     /*
-     * Whether to enable the advanced type conversion feature in the Copy activity. Type: boolean (or Expression with
-     * resultType boolean).
+     * Whether to enable the advanced type conversion feature in the Copy activity. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "typeConversion")
     private Object typeConversion;
 
     /*
      * Type conversion settings
      */
-    @JsonProperty(value = "typeConversionSettings")
     private TypeConversionSettings typeConversionSettings;
 
     /**
@@ -77,9 +64,18 @@ public final class TabularTranslator extends CopyTranslator {
     }
 
     /**
-     * Get the columnMappings property: Column mappings. Example: "UserId: MyUserId, Group: MyGroup, Name: MyName"
-     * Type: string (or Expression with resultType string). This property will be retired. Please use mappings
-     * property.
+     * Get the type property: Copy translator type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * Get the columnMappings property: Column mappings. Example: "UserId: MyUserId, Group: MyGroup, Name: MyName" Type:
+     * string (or Expression with resultType string). This property will be retired. Please use mappings property.
      * 
      * @return the columnMappings value.
      */
@@ -88,9 +84,8 @@ public final class TabularTranslator extends CopyTranslator {
     }
 
     /**
-     * Set the columnMappings property: Column mappings. Example: "UserId: MyUserId, Group: MyGroup, Name: MyName"
-     * Type: string (or Expression with resultType string). This property will be retired. Please use mappings
-     * property.
+     * Set the columnMappings property: Column mappings. Example: "UserId: MyUserId, Group: MyGroup, Name: MyName" Type:
+     * string (or Expression with resultType string). This property will be retired. Please use mappings property.
      * 
      * @param columnMappings the columnMappings value to set.
      * @return the TabularTranslator object itself.
@@ -236,5 +231,73 @@ public final class TabularTranslator extends CopyTranslator {
     public TabularTranslator setTypeConversionSettings(TypeConversionSettings typeConversionSettings) {
         this.typeConversionSettings = typeConversionSettings;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("columnMappings", this.columnMappings);
+        jsonWriter.writeUntypedField("schemaMapping", this.schemaMapping);
+        jsonWriter.writeUntypedField("collectionReference", this.collectionReference);
+        jsonWriter.writeUntypedField("mapComplexValuesToString", this.mapComplexValuesToString);
+        jsonWriter.writeUntypedField("mappings", this.mappings);
+        jsonWriter.writeUntypedField("typeConversion", this.typeConversion);
+        jsonWriter.writeJsonField("typeConversionSettings", this.typeConversionSettings);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TabularTranslator from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TabularTranslator if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TabularTranslator.
+     */
+    public static TabularTranslator fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TabularTranslator deserializedTabularTranslator = new TabularTranslator();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedTabularTranslator.type = reader.getString();
+                } else if ("columnMappings".equals(fieldName)) {
+                    deserializedTabularTranslator.columnMappings = reader.readUntyped();
+                } else if ("schemaMapping".equals(fieldName)) {
+                    deserializedTabularTranslator.schemaMapping = reader.readUntyped();
+                } else if ("collectionReference".equals(fieldName)) {
+                    deserializedTabularTranslator.collectionReference = reader.readUntyped();
+                } else if ("mapComplexValuesToString".equals(fieldName)) {
+                    deserializedTabularTranslator.mapComplexValuesToString = reader.readUntyped();
+                } else if ("mappings".equals(fieldName)) {
+                    deserializedTabularTranslator.mappings = reader.readUntyped();
+                } else if ("typeConversion".equals(fieldName)) {
+                    deserializedTabularTranslator.typeConversion = reader.readUntyped();
+                } else if ("typeConversionSettings".equals(fieldName)) {
+                    deserializedTabularTranslator.typeConversionSettings = TypeConversionSettings.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedTabularTranslator.setAdditionalProperties(additionalProperties);
+
+            return deserializedTabularTranslator;
+        });
     }
 }

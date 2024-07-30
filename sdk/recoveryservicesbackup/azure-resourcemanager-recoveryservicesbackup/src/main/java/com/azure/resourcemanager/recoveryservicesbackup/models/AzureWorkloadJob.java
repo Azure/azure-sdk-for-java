@@ -6,6 +6,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.Duration;
@@ -15,10 +16,17 @@ import java.util.List;
 /**
  * Azure storage specific job.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "jobType", defaultImpl = AzureWorkloadJob.class, visible = true)
 @JsonTypeName("AzureWorkloadJob")
 @Fluent
 public final class AzureWorkloadJob extends Job {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "jobType", required = true)
+    private String jobType = "AzureWorkloadJob";
+
     /*
      * Workload type of the job
      */
@@ -53,6 +61,17 @@ public final class AzureWorkloadJob extends Job {
      * Creates an instance of AzureWorkloadJob class.
      */
     public AzureWorkloadJob() {
+    }
+
+    /**
+     * Get the jobType property: This property will be used as the discriminator for deciding the specific types in the
+     * polymorphic chain of types.
+     * 
+     * @return the jobType value.
+     */
+    @Override
+    public String jobType() {
+        return this.jobType;
     }
 
     /**

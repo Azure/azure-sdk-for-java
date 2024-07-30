@@ -11,9 +11,7 @@ import com.azure.resourcemanager.security.models.SettingName;
  */
 public final class DefenderForStorageGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2022-12-01-preview/examples/DefenderForStorage
-     * /GetDefenderForStorageSettings_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-12-01-preview/examples/DefenderForStorage/GetDefenderForStorageSettings_example.json
      */
     /**
      * Sample code: Gets the Defender for Storage settings for the specified resource.
@@ -22,8 +20,9 @@ public final class DefenderForStorageGetSamples {
      */
     public static void getsTheDefenderForStorageSettingsForTheSpecifiedResource(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.defenderForStorages().getWithResponse(
-            "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Storage/storageAccounts/samplestorageaccount",
-            SettingName.CURRENT, com.azure.core.util.Context.NONE);
+        manager.defenderForStorages()
+            .getWithResponse(
+                "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Storage/storageAccounts/samplestorageaccount",
+                SettingName.CURRENT, com.azure.core.util.Context.NONE);
     }
 }

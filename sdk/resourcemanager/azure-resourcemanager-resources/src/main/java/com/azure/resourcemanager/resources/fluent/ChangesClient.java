@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.resources.fluent.models.ChangeResourceResultInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ChangesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ChangesClient.
+ */
 public interface ChangesClient {
     /**
      * Obtains a list of change resources from the past 14 days for the target resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceProviderNamespace The name of the resource provider namespace.
      * @param resourceType The name of the resource type.
@@ -30,17 +32,12 @@ public interface ChangesClient {
      * @return the list of resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ChangeResourceResultInner> listAsync(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String resourceType,
-        String resourceName,
-        Long top,
-        String skipToken);
+    PagedFlux<ChangeResourceResultInner> listAsync(String resourceGroupName, String resourceProviderNamespace,
+        String resourceType, String resourceName, Long top, String skipToken);
 
     /**
      * Obtains a list of change resources from the past 14 days for the target resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceProviderNamespace The name of the resource provider namespace.
      * @param resourceType The name of the resource type.
@@ -51,12 +48,12 @@ public interface ChangesClient {
      * @return the list of resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ChangeResourceResultInner> listAsync(
-        String resourceGroupName, String resourceProviderNamespace, String resourceType, String resourceName);
+    PagedFlux<ChangeResourceResultInner> listAsync(String resourceGroupName, String resourceProviderNamespace,
+        String resourceType, String resourceName);
 
     /**
      * Obtains a list of change resources from the past 14 days for the target resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceProviderNamespace The name of the resource provider namespace.
      * @param resourceType The name of the resource type.
@@ -67,12 +64,12 @@ public interface ChangesClient {
      * @return the list of resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ChangeResourceResultInner> list(
-        String resourceGroupName, String resourceProviderNamespace, String resourceType, String resourceName);
+    PagedIterable<ChangeResourceResultInner> list(String resourceGroupName, String resourceProviderNamespace,
+        String resourceType, String resourceName);
 
     /**
      * Obtains a list of change resources from the past 14 days for the target resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceProviderNamespace The name of the resource provider namespace.
      * @param resourceType The name of the resource type.
@@ -86,18 +83,12 @@ public interface ChangesClient {
      * @return the list of resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ChangeResourceResultInner> list(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String resourceType,
-        String resourceName,
-        Long top,
-        String skipToken,
-        Context context);
+    PagedIterable<ChangeResourceResultInner> list(String resourceGroupName, String resourceProviderNamespace,
+        String resourceType, String resourceName, Long top, String skipToken, Context context);
 
     /**
      * Obtains the specified change resource for the target resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceProviderNamespace The name of the resource provider namespace.
      * @param resourceType The name of the resource type.
@@ -109,16 +100,12 @@ public interface ChangesClient {
      * @return change Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ChangeResourceResultInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String resourceType,
-        String resourceName,
-        String changeResourceId);
+    Mono<Response<ChangeResourceResultInner>> getWithResponseAsync(String resourceGroupName,
+        String resourceProviderNamespace, String resourceType, String resourceName, String changeResourceId);
 
     /**
      * Obtains the specified change resource for the target resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceProviderNamespace The name of the resource provider namespace.
      * @param resourceType The name of the resource type.
@@ -130,16 +117,12 @@ public interface ChangesClient {
      * @return change Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ChangeResourceResultInner> getAsync(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String resourceType,
-        String resourceName,
-        String changeResourceId);
+    Mono<ChangeResourceResultInner> getAsync(String resourceGroupName, String resourceProviderNamespace,
+        String resourceType, String resourceName, String changeResourceId);
 
     /**
      * Obtains the specified change resource for the target resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceProviderNamespace The name of the resource provider namespace.
      * @param resourceType The name of the resource type.
@@ -152,17 +135,12 @@ public interface ChangesClient {
      * @return change Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ChangeResourceResultInner> getWithResponse(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String resourceType,
-        String resourceName,
-        String changeResourceId,
-        Context context);
+    Response<ChangeResourceResultInner> getWithResponse(String resourceGroupName, String resourceProviderNamespace,
+        String resourceType, String resourceName, String changeResourceId, Context context);
 
     /**
      * Obtains the specified change resource for the target resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceProviderNamespace The name of the resource provider namespace.
      * @param resourceType The name of the resource type.
@@ -174,10 +152,6 @@ public interface ChangesClient {
      * @return change Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ChangeResourceResultInner get(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String resourceType,
-        String resourceName,
-        String changeResourceId);
+    ChangeResourceResultInner get(String resourceGroupName, String resourceProviderNamespace, String resourceType,
+        String resourceName, String changeResourceId);
 }

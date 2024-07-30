@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ProblemClassificationsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProblemClassificationsListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"id\":\"ypininm\",\"name\":\"huyb\",\"type\":\"podepoo\",\"properties\":{\"displayName\":\"uvamiheognarxzxt\",\"secondaryConsentEnabled\":[{\"description\":\"usivye\",\"type\":\"ciqihnhung\"}]}},{\"id\":\"jzrnf\",\"name\":\"xgispemvtzfkufu\",\"type\":\"jofxqe\",\"properties\":{\"displayName\":\"aeqjhqjbasvms\",\"secondaryConsentEnabled\":[{\"description\":\"lngsntnbybkzgcwr\",\"type\":\"lxxwrljdouskc\"},{\"description\":\"kocrcjdkwtnhx\",\"type\":\"jbiksqrglssai\"},{\"description\":\"p\",\"type\":\"nzl\"},{\"description\":\"fmppe\",\"type\":\"vmgxsab\"}]}},{\"id\":\"qduujitcjczdz\",\"name\":\"ndhkrw\",\"type\":\"appd\",\"properties\":{\"displayName\":\"kvwrwjfeu\",\"secondaryConsentEnabled\":[{\"description\":\"tjelt\",\"type\":\"ldhugjzzdatqxh\"},{\"description\":\"dgeablgphu\",\"type\":\"cndvkaozwyiftyhx\"}]}}]}")
-                .toObject(ProblemClassificationsListResult.class);
+        ProblemClassificationsListResult model = BinaryData.fromString(
+            "{\"value\":[{\"id\":\"ypininm\",\"name\":\"huyb\",\"type\":\"podepoo\",\"properties\":{\"displayName\":\"uvamiheognarxzxt\",\"secondaryConsentEnabled\":[{\"description\":\"usivye\",\"type\":\"ciqihnhung\"}]}},{\"id\":\"jzrnf\",\"name\":\"xgispemvtzfkufu\",\"type\":\"jofxqe\",\"properties\":{\"displayName\":\"aeqjhqjbasvms\",\"secondaryConsentEnabled\":[{\"description\":\"lngsntnbybkzgcwr\",\"type\":\"lxxwrljdouskc\"},{\"description\":\"kocrcjdkwtnhx\",\"type\":\"jbiksqrglssai\"},{\"description\":\"p\",\"type\":\"nzl\"},{\"description\":\"fmppe\",\"type\":\"vmgxsab\"}]}},{\"id\":\"qduujitcjczdz\",\"name\":\"ndhkrw\",\"type\":\"appd\",\"properties\":{\"displayName\":\"kvwrwjfeu\",\"secondaryConsentEnabled\":[{\"description\":\"tjelt\",\"type\":\"ldhugjzzdatqxh\"},{\"description\":\"dgeablgphu\",\"type\":\"cndvkaozwyiftyhx\"}]}}]}")
+            .toObject(ProblemClassificationsListResult.class);
         Assertions.assertEquals("uvamiheognarxzxt", model.value().get(0).displayName());
         Assertions.assertEquals("usivye", model.value().get(0).secondaryConsentEnabled().get(0).description());
         Assertions.assertEquals("ciqihnhung", model.value().get(0).secondaryConsentEnabled().get(0).type());
@@ -26,45 +24,23 @@ public final class ProblemClassificationsListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProblemClassificationsListResult model =
-            new ProblemClassificationsListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ProblemClassificationInner()
-                                .withDisplayName("uvamiheognarxzxt")
-                                .withSecondaryConsentEnabled(
-                                    Arrays
-                                        .asList(
-                                            new SecondaryConsentEnabled()
-                                                .withDescription("usivye")
-                                                .withType("ciqihnhung"))),
-                            new ProblemClassificationInner()
-                                .withDisplayName("aeqjhqjbasvms")
-                                .withSecondaryConsentEnabled(
-                                    Arrays
-                                        .asList(
-                                            new SecondaryConsentEnabled()
-                                                .withDescription("lngsntnbybkzgcwr")
-                                                .withType("lxxwrljdouskc"),
-                                            new SecondaryConsentEnabled()
-                                                .withDescription("kocrcjdkwtnhx")
-                                                .withType("jbiksqrglssai"),
-                                            new SecondaryConsentEnabled().withDescription("p").withType("nzl"),
-                                            new SecondaryConsentEnabled()
-                                                .withDescription("fmppe")
-                                                .withType("vmgxsab"))),
-                            new ProblemClassificationInner()
-                                .withDisplayName("kvwrwjfeu")
-                                .withSecondaryConsentEnabled(
-                                    Arrays
-                                        .asList(
-                                            new SecondaryConsentEnabled()
-                                                .withDescription("tjelt")
-                                                .withType("ldhugjzzdatqxh"),
-                                            new SecondaryConsentEnabled()
-                                                .withDescription("dgeablgphu")
-                                                .withType("cndvkaozwyiftyhx")))));
+        ProblemClassificationsListResult model
+            = new ProblemClassificationsListResult()
+                .withValue(Arrays.asList(
+                    new ProblemClassificationInner().withDisplayName("uvamiheognarxzxt")
+                        .withSecondaryConsentEnabled(Arrays
+                            .asList(new SecondaryConsentEnabled().withDescription("usivye").withType("ciqihnhung"))),
+                    new ProblemClassificationInner().withDisplayName("aeqjhqjbasvms")
+                        .withSecondaryConsentEnabled(Arrays.asList(
+                            new SecondaryConsentEnabled().withDescription("lngsntnbybkzgcwr").withType("lxxwrljdouskc"),
+                            new SecondaryConsentEnabled().withDescription("kocrcjdkwtnhx").withType("jbiksqrglssai"),
+                            new SecondaryConsentEnabled().withDescription("p").withType("nzl"),
+                            new SecondaryConsentEnabled().withDescription("fmppe").withType("vmgxsab"))),
+                    new ProblemClassificationInner().withDisplayName("kvwrwjfeu")
+                        .withSecondaryConsentEnabled(Arrays.asList(
+                            new SecondaryConsentEnabled().withDescription("tjelt").withType("ldhugjzzdatqxh"),
+                            new SecondaryConsentEnabled().withDescription("dgeablgphu")
+                                .withType("cndvkaozwyiftyhx")))));
         model = BinaryData.fromObject(model).toObject(ProblemClassificationsListResult.class);
         Assertions.assertEquals("uvamiheognarxzxt", model.value().get(0).displayName());
         Assertions.assertEquals("usivye", model.value().get(0).secondaryConsentEnabled().get(0).description());

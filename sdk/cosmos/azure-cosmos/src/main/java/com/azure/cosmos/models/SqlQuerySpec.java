@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -90,7 +91,7 @@ public final class SqlQuerySpec {
      * @return the SqlQuerySpec.
      */
     public SqlQuerySpec setQueryText(String queryText) {
-        this.jsonSerializable.set("query", queryText);
+        this.jsonSerializable.set("query", queryText, CosmosItemSerializer.DEFAULT_SERIALIZER);
         return this;
     }
 
@@ -128,7 +129,7 @@ public final class SqlQuerySpec {
         boolean defaultParameters = (this.parameters != null && this.parameters.size() != 0);
 
         if (defaultParameters) {
-            this.jsonSerializable.set("parameters", this.parameters);
+            this.jsonSerializable.set("parameters", this.parameters, CosmosItemSerializer.DEFAULT_SERIALIZER);
         } else {
             this.jsonSerializable.remove("parameters");
         }

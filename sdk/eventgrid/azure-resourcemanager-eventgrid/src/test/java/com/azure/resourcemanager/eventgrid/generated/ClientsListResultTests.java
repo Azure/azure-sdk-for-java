@@ -8,8 +8,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.eventgrid.fluent.models.ClientInner;
 import com.azure.resourcemanager.eventgrid.models.ClientCertificateAuthentication;
 import com.azure.resourcemanager.eventgrid.models.ClientCertificateValidationScheme;
-import com.azure.resourcemanager.eventgrid.models.ClientState;
 import com.azure.resourcemanager.eventgrid.models.ClientsListResult;
+import com.azure.resourcemanager.eventgrid.models.ClientState;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,31 +37,37 @@ public final class ClientsListResultTests {
             = new ClientsListResult()
                 .withValue(
                     Arrays.asList(
-                        new ClientInner().withDescription("pjhvmdajvnys").withAuthenticationName("nqecanoaeup")
+                        new ClientInner().withDescription("pjhvmdajvnys")
+                            .withAuthenticationName("nqecanoaeup")
                             .withClientCertificateAuthentication(new ClientCertificateAuthentication()
                                 .withValidationScheme(
                                     ClientCertificateValidationScheme.EMAIL_MATCHES_AUTHENTICATION_NAME)
                                 .withAllowedThumbprints(Arrays.asList("rpmopjmc", "atuokthfuiu")))
-                            .withState(ClientState.DISABLED).withAttributes(mapOf("ozmyzydagfu", "datacpkvxodp")),
-                        new ClientInner().withDescription("ocfs").withAuthenticationName("s")
+                            .withState(ClientState.DISABLED)
+                            .withAttributes(mapOf("ozmyzydagfu", "datacpkvxodp")),
+                        new ClientInner().withDescription("ocfs")
+                            .withAuthenticationName("s")
                             .withClientCertificateAuthentication(new ClientCertificateAuthentication()
                                 .withValidationScheme(ClientCertificateValidationScheme.DNS_MATCHES_AUTHENTICATION_NAME)
                                 .withAllowedThumbprints(Arrays.asList("tki", "uxh", "yudxorrqnbp")))
                             .withState(ClientState.DISABLED)
                             .withAttributes(mapOf("qrvkdv", "datai", "vvdfwatkpnpul", "datasllr", "wiqzbqjvsovmyo",
                                 "dataxxbczwtr", "zdobpxjmflbvvnch", "dataacspkwl")),
-                        new ClientInner().withDescription("sauuimj").withAuthenticationName("xieduugidyjrr")
+                        new ClientInner().withDescription("sauuimj")
+                            .withAuthenticationName("xieduugidyjrr")
                             .withClientCertificateAuthentication(new ClientCertificateAuthentication()
                                 .withValidationScheme(ClientCertificateValidationScheme.URI_MATCHES_AUTHENTICATION_NAME)
                                 .withAllowedThumbprints(Arrays.asList("v", "xc", "onpc", "hocohslkev")))
                             .withState(ClientState.ENABLED)
                             .withAttributes(mapOf("ithlvmezyvshxm", "datafbuhfmvfaxkffe", "gigr", "datasbbzo")),
-                        new ClientInner().withDescription("knvudwtiukb").withAuthenticationName("ngkpocipazy")
+                        new ClientInner().withDescription("knvudwtiukb")
+                            .withAuthenticationName("ngkpocipazy")
                             .withClientCertificateAuthentication(new ClientCertificateAuthentication()
                                 .withValidationScheme(ClientCertificateValidationScheme.URI_MATCHES_AUTHENTICATION_NAME)
                                 .withAllowedThumbprints(Arrays.asList("g")))
-                            .withState(ClientState.ENABLED).withAttributes(mapOf("zntypmrb", "datacgygev",
-                                "ydnfyhxdeoejz", "dataizcdrqjsd", "jttgzf", "datacwif"))))
+                            .withState(ClientState.ENABLED)
+                            .withAttributes(mapOf("zntypmrb", "datacgygev", "ydnfyhxdeoejz", "dataizcdrqjsd", "jttgzf",
+                                "datacwif"))))
                 .withNextLink("hwankixzbinjepu");
         model = BinaryData.fromObject(model).toObject(ClientsListResult.class);
         Assertions.assertEquals("pjhvmdajvnys", model.value().get(0).description());

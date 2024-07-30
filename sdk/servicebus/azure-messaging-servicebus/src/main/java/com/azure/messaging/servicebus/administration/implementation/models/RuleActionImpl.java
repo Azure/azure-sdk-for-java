@@ -8,6 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
 import javax.xml.stream.XMLStreamException;
 
@@ -22,10 +23,25 @@ public class RuleActionImpl implements XmlSerializable<RuleActionImpl> {
     private static final String WWW_W3_ORG_TWO_ZERO_ZERO_ONE_XMLSCHEMA_INSTANCE
         = "http://www.w3.org/2001/XMLSchema-instance";
 
+    /*
+     * The type property.
+     */
+    private String type;
+
     /**
      * Creates an instance of RuleAction class.
      */
     public RuleActionImpl() {
+        this.type = "RuleAction";
+    }
+
+    /**
+     * Get the type property: The type property.
+     * 
+     * @return the type value.
+     */
+    public String getType() {
+        return this.type;
     }
 
     @Override
@@ -39,7 +55,7 @@ public class RuleActionImpl implements XmlSerializable<RuleActionImpl> {
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeNamespace(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT);
         xmlWriter.writeNamespace("xsi", WWW_W3_ORG_TWO_ZERO_ZERO_ONE_XMLSCHEMA_INSTANCE);
-        xmlWriter.writeStringAttribute(WWW_W3_ORG_TWO_ZERO_ZERO_ONE_XMLSCHEMA_INSTANCE, "type", "RuleAction");
+        xmlWriter.writeStringAttribute(WWW_W3_ORG_TWO_ZERO_ZERO_ONE_XMLSCHEMA_INSTANCE, "type", this.type);
         return xmlWriter.writeEndElement();
     }
 
@@ -49,7 +65,6 @@ public class RuleActionImpl implements XmlSerializable<RuleActionImpl> {
      * @param xmlReader The XmlReader being read.
      * @return An instance of RuleAction if the XmlReader was pointing to an instance of it, or null if it was pointing
      * to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
      * @throws XMLStreamException If an error occurs while reading the RuleAction.
      */
     public static RuleActionImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
@@ -64,7 +79,6 @@ public class RuleActionImpl implements XmlSerializable<RuleActionImpl> {
      * cases where the model can deserialize from different root element names.
      * @return An instance of RuleAction if the XmlReader was pointing to an instance of it, or null if it was pointing
      * to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
      * @throws XMLStreamException If an error occurs while reading the RuleAction.
      */
     public static RuleActionImpl fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
@@ -79,10 +93,22 @@ public class RuleActionImpl implements XmlSerializable<RuleActionImpl> {
             } else if ("EmptyRuleAction".equals(discriminatorValue)) {
                 return EmptyRuleActionImpl.fromXml(reader, finalRootElementName);
             } else {
-                throw new IllegalStateException(
-                    "Discriminator field 'type' didn't match one of the expected values 'SqlRuleAction', or 'EmptyRuleAction'. It was: '"
-                        + discriminatorValue + "'.");
+                return fromXmlInternal(reader, finalRootElementName);
             }
+        });
+    }
+
+    static RuleActionImpl fromXmlInternal(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Action" : rootElementName;
+        return xmlReader.readObject(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, finalRootElementName, reader -> {
+            RuleActionImpl deserializedRuleAction = new RuleActionImpl();
+            deserializedRuleAction.type
+                = reader.getStringAttribute(WWW_W3_ORG_TWO_ZERO_ZERO_ONE_XMLSCHEMA_INSTANCE, "type");
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                reader.skipElement();
+            }
+
+            return deserializedRuleAction;
         });
     }
 }

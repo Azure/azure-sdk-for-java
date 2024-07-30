@@ -7,7 +7,9 @@ package com.azure.resourcemanager.resources.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Deployment What-If operation settings. */
+/**
+ * Deployment What-If operation settings.
+ */
 @Fluent
 public final class DeploymentWhatIfSettings {
     /*
@@ -16,13 +18,15 @@ public final class DeploymentWhatIfSettings {
     @JsonProperty(value = "resultFormat")
     private WhatIfResultFormat resultFormat;
 
-    /** Creates an instance of DeploymentWhatIfSettings class. */
+    /**
+     * Creates an instance of DeploymentWhatIfSettings class.
+     */
     public DeploymentWhatIfSettings() {
     }
 
     /**
      * Get the resultFormat property: The format of the What-If results.
-     *
+     * 
      * @return the resultFormat value.
      */
     public WhatIfResultFormat resultFormat() {
@@ -31,7 +35,7 @@ public final class DeploymentWhatIfSettings {
 
     /**
      * Set the resultFormat property: The format of the What-If results.
-     *
+     * 
      * @param resultFormat the resultFormat value to set.
      * @return the DeploymentWhatIfSettings object itself.
      */
@@ -42,7 +46,7 @@ public final class DeploymentWhatIfSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

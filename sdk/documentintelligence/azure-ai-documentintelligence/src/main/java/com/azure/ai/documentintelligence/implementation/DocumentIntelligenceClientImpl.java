@@ -5,6 +5,7 @@
 package com.azure.ai.documentintelligence.implementation;
 
 import com.azure.ai.documentintelligence.DocumentIntelligenceServiceVersion;
+import com.azure.ai.documentintelligence.models.AnalyzeResult;
 import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
@@ -33,10 +34,8 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.polling.DefaultPollingStrategy;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingStrategyOptions;
-import com.azure.core.util.polling.SyncDefaultPollingStrategy;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -151,8 +150,8 @@ public final class DocumentIntelligenceClientImpl {
     }
 
     /**
-     * The interface defining all the services for DocumentIntelligenceClient to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for DocumentIntelligenceClient to be used by the proxy service to perform
+     * REST calls.
      */
     @Host("{endpoint}/documentintelligence")
     @ServiceInterface(name = "DocumentIntelligence")
@@ -204,61 +203,27 @@ public final class DocumentIntelligenceClientImpl {
 
     /**
      * Analyzes document with document model.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>pages</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>List of 1-based page numbers to analyze. Ex. "1-3,5,7-9"</td>
-     * </tr>
-     * <tr>
-     * <td>locale</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Locale hint for text recognition and document analysis. Value may contain only
-     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td>
-     * </tr>
-     * <tr>
-     * <td>stringIndexType</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint",
-     * "utf16CodeUnit".</td>
-     * </tr>
-     * <tr>
-     * <td>features</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>List of optional analysis features. In the form of "," separated string.</td>
-     * </tr>
-     * <tr>
-     * <td>queryFields</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber". In the form of "," separated
-     * string.</td>
-     * </tr>
-     * <tr>
-     * <td>outputContentFormat</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Format of the analyze result top-level content. Allowed values: "text", "markdown".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
+     * "1-3,5,7-9"</td></tr>
+     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
+     * may contain only
+     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
+     * "," separated string.</td></tr>
+     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
+     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
+     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
+     * Allowed values: "text", "markdown".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -290,61 +255,27 @@ public final class DocumentIntelligenceClientImpl {
 
     /**
      * Analyzes document with document model.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>pages</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>List of 1-based page numbers to analyze. Ex. "1-3,5,7-9"</td>
-     * </tr>
-     * <tr>
-     * <td>locale</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Locale hint for text recognition and document analysis. Value may contain only
-     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td>
-     * </tr>
-     * <tr>
-     * <td>stringIndexType</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint",
-     * "utf16CodeUnit".</td>
-     * </tr>
-     * <tr>
-     * <td>features</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>List of optional analysis features. In the form of "," separated string.</td>
-     * </tr>
-     * <tr>
-     * <td>queryFields</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber". In the form of "," separated
-     * string.</td>
-     * </tr>
-     * <tr>
-     * <td>outputContentFormat</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Format of the analyze result top-level content. Allowed values: "text", "markdown".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
+     * "1-3,5,7-9"</td></tr>
+     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
+     * may contain only
+     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
+     * "," separated string.</td></tr>
+     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
+     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
+     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
+     * Allowed values: "text", "markdown".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -376,61 +307,27 @@ public final class DocumentIntelligenceClientImpl {
 
     /**
      * Analyzes document with document model.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>pages</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>List of 1-based page numbers to analyze. Ex. "1-3,5,7-9"</td>
-     * </tr>
-     * <tr>
-     * <td>locale</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Locale hint for text recognition and document analysis. Value may contain only
-     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td>
-     * </tr>
-     * <tr>
-     * <td>stringIndexType</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint",
-     * "utf16CodeUnit".</td>
-     * </tr>
-     * <tr>
-     * <td>features</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>List of optional analysis features. In the form of "," separated string.</td>
-     * </tr>
-     * <tr>
-     * <td>queryFields</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber". In the form of "," separated
-     * string.</td>
-     * </tr>
-     * <tr>
-     * <td>outputContentFormat</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Format of the analyze result top-level content. Allowed values: "text", "markdown".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
+     * "1-3,5,7-9"</td></tr>
+     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
+     * may contain only
+     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
+     * "," separated string.</td></tr>
+     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
+     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
+     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
+     * Allowed values: "text", "markdown".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -450,71 +347,40 @@ public final class DocumentIntelligenceClientImpl {
     public PollerFlux<BinaryData, BinaryData> beginAnalyzeDocumentAsync(String modelId, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.analyzeDocumentWithResponseAsync(modelId, requestOptions),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
+            new com.azure.ai.documentintelligence.implementation.OperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "analyzeResult"),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Analyzes document with document model.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>pages</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>List of 1-based page numbers to analyze. Ex. "1-3,5,7-9"</td>
-     * </tr>
-     * <tr>
-     * <td>locale</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Locale hint for text recognition and document analysis. Value may contain only
-     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td>
-     * </tr>
-     * <tr>
-     * <td>stringIndexType</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint",
-     * "utf16CodeUnit".</td>
-     * </tr>
-     * <tr>
-     * <td>features</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>List of optional analysis features. In the form of "," separated string.</td>
-     * </tr>
-     * <tr>
-     * <td>queryFields</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber". In the form of "," separated
-     * string.</td>
-     * </tr>
-     * <tr>
-     * <td>outputContentFormat</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Format of the analyze result top-level content. Allowed values: "text", "markdown".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
+     * "1-3,5,7-9"</td></tr>
+     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
+     * may contain only
+     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
+     * "," separated string.</td></tr>
+     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
+     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
+     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
+     * Allowed values: "text", "markdown".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -534,71 +400,40 @@ public final class DocumentIntelligenceClientImpl {
     public SyncPoller<BinaryData, BinaryData> beginAnalyzeDocument(String modelId, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.analyzeDocumentWithResponse(modelId, requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
+            new com.azure.ai.documentintelligence.implementation.SyncOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "analyzeResult"),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Analyzes document with document model.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>pages</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>List of 1-based page numbers to analyze. Ex. "1-3,5,7-9"</td>
-     * </tr>
-     * <tr>
-     * <td>locale</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Locale hint for text recognition and document analysis. Value may contain only
-     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td>
-     * </tr>
-     * <tr>
-     * <td>stringIndexType</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint",
-     * "utf16CodeUnit".</td>
-     * </tr>
-     * <tr>
-     * <td>features</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>List of optional analysis features. In the form of "," separated string.</td>
-     * </tr>
-     * <tr>
-     * <td>queryFields</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber". In the form of "," separated
-     * string.</td>
-     * </tr>
-     * <tr>
-     * <td>outputContentFormat</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Format of the analyze result top-level content. Allowed values: "text", "markdown".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
+     * "1-3,5,7-9"</td></tr>
+     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
+     * may contain only
+     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
+     * "," separated string.</td></tr>
+     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
+     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
+     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
+     * Allowed values: "text", "markdown".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -615,76 +450,45 @@ public final class DocumentIntelligenceClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> beginAnalyzeDocumentWithModelAsync(String modelId,
+    public PollerFlux<AnalyzeResultOperation, AnalyzeResult> beginAnalyzeDocumentWithModelAsync(String modelId,
         RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.analyzeDocumentWithResponseAsync(modelId, requestOptions),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
+            new com.azure.ai.documentintelligence.implementation.OperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "analyzeResult"),
             TypeReference.createInstance(AnalyzeResultOperation.class),
-            TypeReference.createInstance(AnalyzeResultOperation.class));
+            TypeReference.createInstance(AnalyzeResult.class));
     }
 
     /**
      * Analyzes document with document model.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>pages</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>List of 1-based page numbers to analyze. Ex. "1-3,5,7-9"</td>
-     * </tr>
-     * <tr>
-     * <td>locale</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Locale hint for text recognition and document analysis. Value may contain only
-     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td>
-     * </tr>
-     * <tr>
-     * <td>stringIndexType</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint",
-     * "utf16CodeUnit".</td>
-     * </tr>
-     * <tr>
-     * <td>features</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>List of optional analysis features. In the form of "," separated string.</td>
-     * </tr>
-     * <tr>
-     * <td>queryFields</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber". In the form of "," separated
-     * string.</td>
-     * </tr>
-     * <tr>
-     * <td>outputContentFormat</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Format of the analyze result top-level content. Allowed values: "text", "markdown".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
+     * "1-3,5,7-9"</td></tr>
+     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
+     * may contain only
+     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
+     * "," separated string.</td></tr>
+     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
+     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
+     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
+     * Allowed values: "text", "markdown".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -701,50 +505,36 @@ public final class DocumentIntelligenceClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> beginAnalyzeDocumentWithModel(String modelId,
+    public SyncPoller<AnalyzeResultOperation, AnalyzeResult> beginAnalyzeDocumentWithModel(String modelId,
         RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.analyzeDocumentWithResponse(modelId, requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
+            new com.azure.ai.documentintelligence.implementation.SyncOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "analyzeResult"),
             TypeReference.createInstance(AnalyzeResultOperation.class),
-            TypeReference.createInstance(AnalyzeResultOperation.class));
+            TypeReference.createInstance(AnalyzeResult.class));
     }
 
     /**
      * Classifies document with document classifier.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>stringIndexType</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint",
-     * "utf16CodeUnit".</td>
-     * </tr>
-     * <tr>
-     * <td>split</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Document splitting mode. Allowed values: "auto", "none", "perPage".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
+     * "perPage".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -773,35 +563,18 @@ public final class DocumentIntelligenceClientImpl {
 
     /**
      * Classifies document with document classifier.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>stringIndexType</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint",
-     * "utf16CodeUnit".</td>
-     * </tr>
-     * <tr>
-     * <td>split</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Document splitting mode. Allowed values: "auto", "none", "perPage".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
+     * "perPage".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -829,35 +602,18 @@ public final class DocumentIntelligenceClientImpl {
 
     /**
      * Classifies document with document classifier.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>stringIndexType</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint",
-     * "utf16CodeUnit".</td>
-     * </tr>
-     * <tr>
-     * <td>split</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Document splitting mode. Allowed values: "auto", "none", "perPage".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
+     * "perPage".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -879,45 +635,31 @@ public final class DocumentIntelligenceClientImpl {
         BinaryData classifyRequest, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.classifyDocumentWithResponseAsync(classifierId, classifyRequest, requestOptions),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
+            new com.azure.ai.documentintelligence.implementation.OperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "analyzeResult"),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Classifies document with document classifier.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>stringIndexType</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint",
-     * "utf16CodeUnit".</td>
-     * </tr>
-     * <tr>
-     * <td>split</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Document splitting mode. Allowed values: "auto", "none", "perPage".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
+     * "perPage".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -939,45 +681,31 @@ public final class DocumentIntelligenceClientImpl {
         RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.classifyDocumentWithResponse(classifierId, classifyRequest, requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
+            new com.azure.ai.documentintelligence.implementation.SyncOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "analyzeResult"),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Classifies document with document classifier.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>stringIndexType</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint",
-     * "utf16CodeUnit".</td>
-     * </tr>
-     * <tr>
-     * <td>split</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Document splitting mode. Allowed values: "auto", "none", "perPage".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
+     * "perPage".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -995,50 +723,36 @@ public final class DocumentIntelligenceClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> beginClassifyDocumentWithModelAsync(
-        String classifierId, BinaryData classifyRequest, RequestOptions requestOptions) {
+    public PollerFlux<AnalyzeResultOperation, AnalyzeResult> beginClassifyDocumentWithModelAsync(String classifierId,
+        BinaryData classifyRequest, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.classifyDocumentWithResponseAsync(classifierId, classifyRequest, requestOptions),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
+            new com.azure.ai.documentintelligence.implementation.OperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "analyzeResult"),
             TypeReference.createInstance(AnalyzeResultOperation.class),
-            TypeReference.createInstance(AnalyzeResultOperation.class));
+            TypeReference.createInstance(AnalyzeResult.class));
     }
 
     /**
      * Classifies document with document classifier.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>stringIndexType</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint",
-     * "utf16CodeUnit".</td>
-     * </tr>
-     * <tr>
-     * <td>split</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Document splitting mode. Allowed values: "auto", "none", "perPage".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
+     * "perPage".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -1056,16 +770,19 @@ public final class DocumentIntelligenceClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation>
-        beginClassifyDocumentWithModel(String classifierId, BinaryData classifyRequest, RequestOptions requestOptions) {
+    public SyncPoller<AnalyzeResultOperation, AnalyzeResult> beginClassifyDocumentWithModel(String classifierId,
+        BinaryData classifyRequest, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.classifyDocumentWithResponse(classifierId, classifyRequest, requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
+            new com.azure.ai.documentintelligence.implementation.SyncOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "analyzeResult"),
             TypeReference.createInstance(AnalyzeResultOperation.class),
-            TypeReference.createInstance(AnalyzeResultOperation.class));
+            TypeReference.createInstance(AnalyzeResult.class));
     }
 }

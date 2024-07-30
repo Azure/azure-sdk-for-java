@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class PreconfiguredEndpointListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PreconfiguredEndpointList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"description\":\"doaon\",\"endpoint\":\"jcntuj\",\"endpointType\":\"AFD\",\"backend\":\"ed\"},\"location\":\"twwaezkojvdcpzf\",\"tags\":{\"x\":\"uicybxarzgszuf\",\"khazxkhnzbonlwn\":\"iqopidoamciod\",\"szzcmrvexztv\":\"oegokdwbwh\",\"gsfraoyzkoow\":\"t\"},\"id\":\"lmnguxaw\",\"name\":\"aldsy\",\"type\":\"uximerqfobw\"},{\"properties\":{\"description\":\"kby\",\"endpoint\":\"t\",\"endpointType\":\"ATM\",\"backend\":\"pagmhrskdsnf\"},\"location\":\"sd\",\"tags\":{\"zev\":\"gtdlmk\",\"ewpusdsttwvogvb\":\"l\",\"m\":\"ejdcngqqmoakuf\"},\"id\":\"zr\",\"name\":\"rdgrtw\",\"type\":\"enuuzkopbm\"}],\"nextLink\":\"rfdwoyu\"}")
-                .toObject(PreconfiguredEndpointList.class);
-        Assertions.assertEquals("rfdwoyu", model.nextLink());
+        PreconfiguredEndpointList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"description\":\"zudhcxg\",\"endpoint\":\"oyxcdyuib\",\"endpointType\":\"AFD\",\"backend\":\"nbzydvfvfcj\"},\"location\":\"aeoisrvh\",\"tags\":{\"fukiscvwmzhw\":\"r\",\"nzeyqxtjj\":\"lefaxvxilcbtgn\",\"vodggxdbee\":\"zqlqhyc\"},\"id\":\"mieknlraria\",\"name\":\"wiuagydwqf\",\"type\":\"ylyrfgiagtco\"}],\"nextLink\":\"cqwogfnzjvusfzl\"}")
+            .toObject(PreconfiguredEndpointList.class);
+        Assertions.assertEquals("cqwogfnzjvusfzl", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PreconfiguredEndpointList model = new PreconfiguredEndpointList().withNextLink("rfdwoyu");
+        PreconfiguredEndpointList model = new PreconfiguredEndpointList().withNextLink("cqwogfnzjvusfzl");
         model = BinaryData.fromObject(model).toObject(PreconfiguredEndpointList.class);
-        Assertions.assertEquals("rfdwoyu", model.nextLink());
+        Assertions.assertEquals("cqwogfnzjvusfzl", model.nextLink());
     }
 }

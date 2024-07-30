@@ -7,6 +7,7 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.datafactory.fluent.models.DynamicsEntityDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,10 +16,17 @@ import java.util.Map;
 /**
  * The Dynamics entity dataset.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = DynamicsEntityDataset.class, visible = true)
 @JsonTypeName("DynamicsEntity")
 @Fluent
 public final class DynamicsEntityDataset extends Dataset {
+    /*
+     * Type of dataset.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "DynamicsEntity";
+
     /*
      * Dynamics entity dataset properties.
      */
@@ -29,6 +37,16 @@ public final class DynamicsEntityDataset extends Dataset {
      * Creates an instance of DynamicsEntityDataset class.
      */
     public DynamicsEntityDataset() {
+    }
+
+    /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -104,8 +122,7 @@ public final class DynamicsEntityDataset extends Dataset {
     }
 
     /**
-     * Get the entityName property: The logical name of the entity. Type: string (or Expression with resultType
-     * string).
+     * Get the entityName property: The logical name of the entity. Type: string (or Expression with resultType string).
      * 
      * @return the entityName value.
      */
@@ -114,8 +131,7 @@ public final class DynamicsEntityDataset extends Dataset {
     }
 
     /**
-     * Set the entityName property: The logical name of the entity. Type: string (or Expression with resultType
-     * string).
+     * Set the entityName property: The logical name of the entity. Type: string (or Expression with resultType string).
      * 
      * @param entityName the entityName value to set.
      * @return the DynamicsEntityDataset object itself.

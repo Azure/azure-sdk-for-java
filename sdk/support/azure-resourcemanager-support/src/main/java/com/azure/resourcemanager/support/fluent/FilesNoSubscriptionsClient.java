@@ -12,11 +12,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.support.fluent.models.FileDetailsInner;
 import com.azure.resourcemanager.support.models.UploadFile;
 
-/** An instance of this class provides access to all the operations defined in FilesNoSubscriptionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FilesNoSubscriptionsClient.
+ */
 public interface FilesNoSubscriptionsClient {
     /**
      * Lists all the Files information under a workspace for an Azure subscription.
-     *
+     * 
      * @param fileWorkspaceName File Workspace Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -28,7 +30,7 @@ public interface FilesNoSubscriptionsClient {
 
     /**
      * Lists all the Files information under a workspace for an Azure subscription.
-     *
+     * 
      * @param fileWorkspaceName File Workspace Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -41,7 +43,7 @@ public interface FilesNoSubscriptionsClient {
 
     /**
      * Returns details of a specific file in a work space.
-     *
+     * 
      * @param fileWorkspaceName File Workspace Name.
      * @param fileName File Name.
      * @param context The context to associate with this operation.
@@ -55,7 +57,7 @@ public interface FilesNoSubscriptionsClient {
 
     /**
      * Returns details of a specific file in a work space.
-     *
+     * 
      * @param fileWorkspaceName File Workspace Name.
      * @param fileName File Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -68,7 +70,7 @@ public interface FilesNoSubscriptionsClient {
 
     /**
      * Creates a new file under a workspace.
-     *
+     * 
      * @param fileWorkspaceName File workspace name.
      * @param fileName File name.
      * @param createFileParameters Create file object.
@@ -79,12 +81,12 @@ public interface FilesNoSubscriptionsClient {
      * @return object that represents File Details resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FileDetailsInner> createWithResponse(
-        String fileWorkspaceName, String fileName, FileDetailsInner createFileParameters, Context context);
+    Response<FileDetailsInner> createWithResponse(String fileWorkspaceName, String fileName,
+        FileDetailsInner createFileParameters, Context context);
 
     /**
      * Creates a new file under a workspace.
-     *
+     * 
      * @param fileWorkspaceName File workspace name.
      * @param fileName File name.
      * @param createFileParameters Create file object.
@@ -98,7 +100,7 @@ public interface FilesNoSubscriptionsClient {
 
     /**
      * This API allows you to upload content to a file.
-     *
+     * 
      * @param fileWorkspaceName File WorkspaceName.
      * @param fileName File Name.
      * @param uploadFile UploadFile object.
@@ -109,12 +111,12 @@ public interface FilesNoSubscriptionsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> uploadWithResponse(
-        String fileWorkspaceName, String fileName, UploadFile uploadFile, Context context);
+    Response<Void> uploadWithResponse(String fileWorkspaceName, String fileName, UploadFile uploadFile,
+        Context context);
 
     /**
      * This API allows you to upload content to a file.
-     *
+     * 
      * @param fileWorkspaceName File WorkspaceName.
      * @param fileName File Name.
      * @param uploadFile UploadFile object.

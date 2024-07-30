@@ -76,9 +76,9 @@ public final class ExposureControlsImpl implements ExposureControls {
 
     public Response<ExposureControlBatchResponse> queryFeatureValuesByFactoryWithResponse(String resourceGroupName,
         String factoryName, ExposureControlBatchRequest exposureControlBatchRequest, Context context) {
-        Response<ExposureControlBatchResponseInner> inner
-            = this.serviceClient().queryFeatureValuesByFactoryWithResponse(resourceGroupName, factoryName,
-                exposureControlBatchRequest, context);
+        Response<ExposureControlBatchResponseInner> inner = this.serviceClient()
+            .queryFeatureValuesByFactoryWithResponse(resourceGroupName, factoryName, exposureControlBatchRequest,
+                context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ExposureControlBatchResponseImpl(inner.getValue(), this.manager()));
@@ -89,8 +89,8 @@ public final class ExposureControlsImpl implements ExposureControls {
 
     public ExposureControlBatchResponse queryFeatureValuesByFactory(String resourceGroupName, String factoryName,
         ExposureControlBatchRequest exposureControlBatchRequest) {
-        ExposureControlBatchResponseInner inner = this.serviceClient().queryFeatureValuesByFactory(resourceGroupName,
-            factoryName, exposureControlBatchRequest);
+        ExposureControlBatchResponseInner inner = this.serviceClient()
+            .queryFeatureValuesByFactory(resourceGroupName, factoryName, exposureControlBatchRequest);
         if (inner != null) {
             return new ExposureControlBatchResponseImpl(inner, this.manager());
         } else {

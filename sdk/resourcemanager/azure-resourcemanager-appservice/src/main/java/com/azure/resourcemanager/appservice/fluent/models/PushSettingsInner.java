@@ -95,7 +95,7 @@ public final class PushSettingsInner extends ProxyOnlyResource {
      * Get the tagsRequiringAuth property: Gets or sets a JSON string containing a list of tags that require user
      * authentication to be used in the push registration endpoint.
      * Tags can consist of alphanumeric characters and the following:
-     * '_', '@', '#', '.', ':', '-'.
+     * '_', '&#064;', '#', '.', ':', '-'.
      * Validation should be performed at the PushRequestHandler.
      * 
      * @return the tagsRequiringAuth value.
@@ -108,7 +108,7 @@ public final class PushSettingsInner extends ProxyOnlyResource {
      * Set the tagsRequiringAuth property: Gets or sets a JSON string containing a list of tags that require user
      * authentication to be used in the push registration endpoint.
      * Tags can consist of alphanumeric characters and the following:
-     * '_', '@', '#', '.', ':', '-'.
+     * '_', '&#064;', '#', '.', ':', '-'.
      * Validation should be performed at the PushRequestHandler.
      * 
      * @param tagsRequiringAuth the tagsRequiringAuth value to set.

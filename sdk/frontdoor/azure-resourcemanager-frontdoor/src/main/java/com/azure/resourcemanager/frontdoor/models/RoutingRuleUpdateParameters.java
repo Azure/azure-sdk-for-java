@@ -9,7 +9,9 @@ import com.azure.core.management.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Routing rules to apply to an endpoint. */
+/**
+ * Routing rules to apply to an endpoint.
+ */
 @Fluent
 public class RoutingRuleUpdateParameters {
     /*
@@ -54,13 +56,15 @@ public class RoutingRuleUpdateParameters {
     @JsonProperty(value = "webApplicationFirewallPolicyLink")
     private RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink;
 
-    /** Creates an instance of RoutingRuleUpdateParameters class. */
+    /**
+     * Creates an instance of RoutingRuleUpdateParameters class.
+     */
     public RoutingRuleUpdateParameters() {
     }
 
     /**
      * Get the frontendEndpoints property: Frontend endpoints associated with this rule.
-     *
+     * 
      * @return the frontendEndpoints value.
      */
     public List<SubResource> frontendEndpoints() {
@@ -69,7 +73,7 @@ public class RoutingRuleUpdateParameters {
 
     /**
      * Set the frontendEndpoints property: Frontend endpoints associated with this rule.
-     *
+     * 
      * @param frontendEndpoints the frontendEndpoints value to set.
      * @return the RoutingRuleUpdateParameters object itself.
      */
@@ -80,7 +84,7 @@ public class RoutingRuleUpdateParameters {
 
     /**
      * Get the acceptedProtocols property: Protocol schemes to match for this rule.
-     *
+     * 
      * @return the acceptedProtocols value.
      */
     public List<FrontDoorProtocol> acceptedProtocols() {
@@ -89,7 +93,7 @@ public class RoutingRuleUpdateParameters {
 
     /**
      * Set the acceptedProtocols property: Protocol schemes to match for this rule.
-     *
+     * 
      * @param acceptedProtocols the acceptedProtocols value to set.
      * @return the RoutingRuleUpdateParameters object itself.
      */
@@ -100,7 +104,7 @@ public class RoutingRuleUpdateParameters {
 
     /**
      * Get the patternsToMatch property: The route patterns of the rule.
-     *
+     * 
      * @return the patternsToMatch value.
      */
     public List<String> patternsToMatch() {
@@ -109,7 +113,7 @@ public class RoutingRuleUpdateParameters {
 
     /**
      * Set the patternsToMatch property: The route patterns of the rule.
-     *
+     * 
      * @param patternsToMatch the patternsToMatch value to set.
      * @return the RoutingRuleUpdateParameters object itself.
      */
@@ -120,7 +124,7 @@ public class RoutingRuleUpdateParameters {
 
     /**
      * Get the enabledState property: Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'.
-     *
+     * 
      * @return the enabledState value.
      */
     public RoutingRuleEnabledState enabledState() {
@@ -129,7 +133,7 @@ public class RoutingRuleUpdateParameters {
 
     /**
      * Set the enabledState property: Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'.
-     *
+     * 
      * @param enabledState the enabledState value to set.
      * @return the RoutingRuleUpdateParameters object itself.
      */
@@ -140,7 +144,7 @@ public class RoutingRuleUpdateParameters {
 
     /**
      * Get the routeConfiguration property: A reference to the routing configuration.
-     *
+     * 
      * @return the routeConfiguration value.
      */
     public RouteConfiguration routeConfiguration() {
@@ -149,7 +153,7 @@ public class RoutingRuleUpdateParameters {
 
     /**
      * Set the routeConfiguration property: A reference to the routing configuration.
-     *
+     * 
      * @param routeConfiguration the routeConfiguration value to set.
      * @return the RoutingRuleUpdateParameters object itself.
      */
@@ -160,7 +164,7 @@ public class RoutingRuleUpdateParameters {
 
     /**
      * Get the rulesEngine property: A reference to a specific Rules Engine Configuration to apply to this route.
-     *
+     * 
      * @return the rulesEngine value.
      */
     public SubResource rulesEngine() {
@@ -169,7 +173,7 @@ public class RoutingRuleUpdateParameters {
 
     /**
      * Set the rulesEngine property: A reference to a specific Rules Engine Configuration to apply to this route.
-     *
+     * 
      * @param rulesEngine the rulesEngine value to set.
      * @return the RoutingRuleUpdateParameters object itself.
      */
@@ -181,7 +185,7 @@ public class RoutingRuleUpdateParameters {
     /**
      * Get the webApplicationFirewallPolicyLink property: Defines the Web Application Firewall policy for each routing
      * rule (if applicable).
-     *
+     * 
      * @return the webApplicationFirewallPolicyLink value.
      */
     public RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink() {
@@ -191,7 +195,7 @@ public class RoutingRuleUpdateParameters {
     /**
      * Set the webApplicationFirewallPolicyLink property: Defines the Web Application Firewall policy for each routing
      * rule (if applicable).
-     *
+     * 
      * @param webApplicationFirewallPolicyLink the webApplicationFirewallPolicyLink value to set.
      * @return the RoutingRuleUpdateParameters object itself.
      */
@@ -203,7 +207,7 @@ public class RoutingRuleUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

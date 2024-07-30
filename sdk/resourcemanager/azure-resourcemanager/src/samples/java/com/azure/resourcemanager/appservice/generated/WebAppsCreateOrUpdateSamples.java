@@ -4,8 +4,24 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
+import com.azure.resourcemanager.appservice.fluent.models.SiteConfigInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
+import com.azure.resourcemanager.appservice.models.AuthenticationType;
 import com.azure.resourcemanager.appservice.models.CloningInfo;
+import com.azure.resourcemanager.appservice.models.FunctionAppConfig;
+import com.azure.resourcemanager.appservice.models.FunctionsAlwaysReadyConfig;
+import com.azure.resourcemanager.appservice.models.FunctionsDeployment;
+import com.azure.resourcemanager.appservice.models.FunctionsDeploymentStorage;
+import com.azure.resourcemanager.appservice.models.FunctionsDeploymentStorageAuthentication;
+import com.azure.resourcemanager.appservice.models.FunctionsDeploymentStorageType;
+import com.azure.resourcemanager.appservice.models.FunctionsRuntime;
+import com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency;
+import com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggers;
+import com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp;
+import com.azure.resourcemanager.appservice.models.NameValuePair;
+import com.azure.resourcemanager.appservice.models.RuntimeName;
+
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,41 +30,125 @@ import java.util.Map;
  */
 public final class WebAppsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/CreateOrUpdateWebApp.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/CreateOrUpdateFunctionAppFlexConsumptionWithDetails.json
      */
     /**
-     * Sample code: Create or Update web app.
-     * 
+     * Sample code: Create or Update Flex Consumption function app with details.
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createOrUpdateWebApp(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getWebApps().createOrUpdate("testrg123", "sitef6141",
-            new SiteInner().withLocation("East US").withKind("app").withServerFarmId(
-                "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/serverfarms/DefaultAsp"),
-            com.azure.core.util.Context.NONE);
+    public static void
+        createOrUpdateFlexConsumptionFunctionAppWithDetails(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getWebApps()
+            .createOrUpdate("testrg123", "sitef6141", new SiteInner().withLocation("East US")
+                .withKind("functionapp,linux")
+                .withSiteConfig(new SiteConfigInner().withAppSettings(Arrays.asList(new NameValuePair()
+                    .withName("AzureWebJobsStorage")
+                    .withValue(
+                        "DefaultEndpointsProtocol=https;AccountName=StorageAccountName;AccountKey=Sanitized;EndpointSuffix=core.windows.net"),
+                    new NameValuePair().withName("APPLICATIONINSIGHTS_CONNECTION_STRING")
+                        .withValue("InstrumentationKey=Sanitized;IngestionEndpoint=Sanitized;LiveEndpoint=Sanitized"))))
+                .withFunctionAppConfig(new FunctionAppConfig()
+                    .withDeployment(new FunctionsDeployment().withStorage(
+                        new FunctionsDeploymentStorage().withType(FunctionsDeploymentStorageType.BLOB_CONTAINER)
+                            .withValue("https://storageAccountName.blob.core.windows.net/containername")
+                            .withAuthentication(new FunctionsDeploymentStorageAuthentication()
+                                .withType(AuthenticationType.STORAGE_ACCOUNT_CONNECTION_STRING)
+                                .withStorageAccountConnectionStringName("TheAppSettingName"))))
+                    .withRuntime(new FunctionsRuntime().withName(RuntimeName.PYTHON).withVersion("3.11"))
+                    .withScaleAndConcurrency(new FunctionsScaleAndConcurrency()
+                        .withAlwaysReady(
+                            Arrays.asList(new FunctionsAlwaysReadyConfig().withName("http").withInstanceCount(2.0F)))
+                        .withMaximumInstanceCount(100.0F)
+                        .withInstanceMemoryMB(2048.0F)
+                        .withTriggers(new FunctionsScaleAndConcurrencyTriggers().withHttp(
+                            new FunctionsScaleAndConcurrencyTriggersHttp().withPerInstanceConcurrency(16.0F))))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/CloneWebApp.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/CreateOrUpdateFunctionAppFlexConsumption.json
+     */
+    /**
+     * Sample code: Create or Update Flex Consumption function app.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createOrUpdateFlexConsumptionFunctionApp(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getWebApps()
+            .createOrUpdate("testrg123", "sitef6141", new SiteInner().withLocation("East US")
+                .withKind("functionapp,linux")
+                .withSiteConfig(new SiteConfigInner().withAppSettings(Arrays.asList(new NameValuePair()
+                    .withName("AzureWebJobsStorage")
+                    .withValue(
+                        "DefaultEndpointsProtocol=https;AccountName=StorageAccountName;AccountKey=Sanitized;EndpointSuffix=core.windows.net"),
+                    new NameValuePair().withName("APPLICATIONINSIGHTS_CONNECTION_STRING")
+                        .withValue("InstrumentationKey=Sanitized;IngestionEndpoint=Sanitized;LiveEndpoint=Sanitized"))))
+                .withFunctionAppConfig(new FunctionAppConfig()
+                    .withDeployment(new FunctionsDeployment().withStorage(
+                        new FunctionsDeploymentStorage().withType(FunctionsDeploymentStorageType.BLOB_CONTAINER)
+                            .withValue("https://storageAccountName.blob.core.windows.net/containername")
+                            .withAuthentication(new FunctionsDeploymentStorageAuthentication()
+                                .withType(AuthenticationType.STORAGE_ACCOUNT_CONNECTION_STRING)
+                                .withStorageAccountConnectionStringName("TheAppSettingName"))))
+                    .withRuntime(new FunctionsRuntime().withName(RuntimeName.PYTHON).withVersion("3.11"))
+                    .withScaleAndConcurrency(new FunctionsScaleAndConcurrency().withMaximumInstanceCount(100.0F)
+                        .withInstanceMemoryMB(2048.0F))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/CreateOrUpdateWebApp.json
+     */
+    /**
+     * Sample code: Create or Update web app.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createOrUpdateWebApp(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getWebApps()
+            .createOrUpdate("testrg123", "sitef6141", new SiteInner().withLocation("East US")
+                .withKind("app")
+                .withServerFarmId(
+                    "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/serverfarms/DefaultAsp"),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/CloneWebApp.json
      */
     /**
      * Sample code: Clone web app.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cloneWebApp(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getWebApps().createOrUpdate("testrg123", "sitef6141",
-            new SiteInner().withLocation("East US").withKind("app").withCloningInfo(new CloningInfo()
-                .withOverwrite(false).withCloneCustomHostNames(true).withCloneSourceControl(true)
-                .withSourceWebAppId(
-                    "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg456/providers/Microsoft.Web/sites/srcsiteg478")
-                .withSourceWebAppLocation("West Europe")
-                .withHostingEnvironment(
-                    "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg456/providers/Microsoft.Web/hostingenvironments/aseforsites")
-                .withAppSettingsOverrides(mapOf("Setting1", "NewValue1", "Setting3", "NewValue5"))
-                .withConfigureLoadBalancing(false)),
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getWebApps()
+            .createOrUpdate("testrg123", "sitef6141", new SiteInner().withLocation("East US")
+                .withKind("app")
+                .withCloningInfo(new CloningInfo().withOverwrite(false)
+                    .withCloneCustomHostNames(true)
+                    .withCloneSourceControl(true)
+                    .withSourceWebAppId(
+                        "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg456/providers/Microsoft.Web/sites/srcsiteg478")
+                    .withSourceWebAppLocation("West Europe")
+                    .withHostingEnvironment(
+                        "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg456/providers/Microsoft.Web/hostingenvironments/aseforsites")
+                    .withAppSettingsOverrides(mapOf("Setting1", "NewValue1", "Setting3", "NewValue5"))
+                    .withConfigureLoadBalancing(false)),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

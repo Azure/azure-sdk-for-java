@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.fluent.models.ConnectionSharedKeyInner;
  */
 public final class VirtualNetworkGatewayConnectionsSetSharedKeySamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * VirtualNetworkGatewayConnectionSetSharedKey.json
      */
     /**
@@ -21,7 +21,11 @@ public final class VirtualNetworkGatewayConnectionsSetSharedKeySamples {
      */
     public static void
         setVirtualNetworkGatewayConnectionSharedKey(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualNetworkGatewayConnections().setSharedKey("rg1", "connS2S",
-            new ConnectionSharedKeyInner().withValue("AzureAbc123"), com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworkGatewayConnections()
+            .setSharedKey("rg1", "connS2S", new ConnectionSharedKeyInner().withValue("AzureAbc123"),
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -56,12 +56,20 @@ parameters:
     displayName: 'azure-sdk-template-three'
     type: boolean
     default: true
+  # Switch to canary to test canary 1es branch. 1es template validation will set this parameter
+  # to canary on run.
+  - name: oneESTemplateTag
+    type: string
+    default: release
+    values:
+      - release
+      - canary
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
+    oneESTemplateTag: ${{ parameters.oneESTemplateTag }}
     ServiceDirectory: template
-    EnableBatchRelease: true
     ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
     # If you're copying template for a new pipeline, remove this variable. It is only valid for the template pipeline.
     TestPipeline: true

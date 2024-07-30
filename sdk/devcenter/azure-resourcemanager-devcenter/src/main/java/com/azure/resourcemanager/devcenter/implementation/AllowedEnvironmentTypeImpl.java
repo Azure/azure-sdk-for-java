@@ -14,8 +14,8 @@ public final class AllowedEnvironmentTypeImpl implements AllowedEnvironmentType 
 
     private final com.azure.resourcemanager.devcenter.DevCenterManager serviceManager;
 
-    AllowedEnvironmentTypeImpl(
-        AllowedEnvironmentTypeInner innerObject, com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
+    AllowedEnvironmentTypeImpl(AllowedEnvironmentTypeInner innerObject,
+        com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

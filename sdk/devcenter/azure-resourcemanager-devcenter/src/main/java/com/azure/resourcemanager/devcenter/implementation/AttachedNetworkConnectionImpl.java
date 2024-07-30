@@ -79,22 +79,18 @@ public final class AttachedNetworkConnectionImpl
     }
 
     public AttachedNetworkConnection create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAttachedNetworks()
-                .createOrUpdate(
-                    resourceGroupName, devCenterName, attachedNetworkConnectionName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAttachedNetworks()
+            .createOrUpdate(resourceGroupName, devCenterName, attachedNetworkConnectionName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public AttachedNetworkConnection create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAttachedNetworks()
-                .createOrUpdate(
-                    resourceGroupName, devCenterName, attachedNetworkConnectionName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAttachedNetworks()
+            .createOrUpdate(resourceGroupName, devCenterName, attachedNetworkConnectionName, this.innerModel(),
+                context);
         return this;
     }
 
@@ -109,53 +105,44 @@ public final class AttachedNetworkConnectionImpl
     }
 
     public AttachedNetworkConnection apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAttachedNetworks()
-                .createOrUpdate(
-                    resourceGroupName, devCenterName, attachedNetworkConnectionName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAttachedNetworks()
+            .createOrUpdate(resourceGroupName, devCenterName, attachedNetworkConnectionName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public AttachedNetworkConnection apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAttachedNetworks()
-                .createOrUpdate(
-                    resourceGroupName, devCenterName, attachedNetworkConnectionName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAttachedNetworks()
+            .createOrUpdate(resourceGroupName, devCenterName, attachedNetworkConnectionName, this.innerModel(),
+                context);
         return this;
     }
 
-    AttachedNetworkConnectionImpl(
-        AttachedNetworkConnectionInner innerObject,
+    AttachedNetworkConnectionImpl(AttachedNetworkConnectionInner innerObject,
         com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.devCenterName = Utils.getValueFromIdByName(innerObject.id(), "devcenters");
-        this.attachedNetworkConnectionName = Utils.getValueFromIdByName(innerObject.id(), "attachednetworks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.devCenterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "devcenters");
+        this.attachedNetworkConnectionName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "attachednetworks");
     }
 
     public AttachedNetworkConnection refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAttachedNetworks()
-                .getByDevCenterWithResponse(
-                    resourceGroupName, devCenterName, attachedNetworkConnectionName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAttachedNetworks()
+            .getByDevCenterWithResponse(resourceGroupName, devCenterName, attachedNetworkConnectionName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AttachedNetworkConnection refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAttachedNetworks()
-                .getByDevCenterWithResponse(resourceGroupName, devCenterName, attachedNetworkConnectionName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAttachedNetworks()
+            .getByDevCenterWithResponse(resourceGroupName, devCenterName, attachedNetworkConnectionName, context)
+            .getValue();
         return this;
     }
 

@@ -11,7 +11,7 @@ public final class ApiCollectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApiCollectionProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Failed\",\"displayName\":\"w\",\"discoveredVia\":\"ggicwnxhtfmcqbs\",\"baseUrl\":\"zp\",\"numberOfApiEndpoints\":2862678429219151655,\"numberOfInactiveApiEndpoints\":7746299996882651297,\"numberOfUnauthenticatedApiEndpoints\":2343244929489490369,\"numberOfExternalApiEndpoints\":4089287937042845095,\"numberOfApiEndpointsWithSensitiveDataExposed\":7802061488071787131,\"sensitivityLabel\":\"hgod\"}")
+            "{\"provisioningState\":\"Updating\",\"displayName\":\"ovmozsayebraz\",\"discoveredVia\":\"lpzbtzuykykipf\",\"baseUrl\":\"yepfn\",\"numberOfApiEndpoints\":2703217900378871776,\"numberOfInactiveApiEndpoints\":3362536922028546926,\"numberOfUnauthenticatedApiEndpoints\":1773202042768243354,\"numberOfExternalApiEndpoints\":3144374551812240182,\"numberOfApiEndpointsWithSensitiveDataExposed\":8903127144257691178,\"sensitivityLabel\":\"qejg\"}")
             .toObject(ApiCollectionProperties.class);
     }
 

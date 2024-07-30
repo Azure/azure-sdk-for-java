@@ -32,7 +32,7 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Updating\",\"privateEndpoint\":{\"id\":\"vcimpev\"},\"groupIds\":[\"b\",\"rrilbywdxsmic\",\"wrwfscjfnyns\"],\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"i\",\"actionsRequired\":\"voqyt\"}},\"etag\":\"yo\",\"id\":\"bblgyavut\",\"name\":\"thjoxoism\",\"type\":\"ksbpimlqoljx\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"n\"},\"groupIds\":[\"ewdjcvbquwrb\"],\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"gohbuffkmrq\",\"actionsRequired\":\"vvhmxtdrj\"}},\"etag\":\"tac\",\"id\":\"ebjvewzcjzn\",\"name\":\"wcpmguaadraufac\",\"type\":\"kahzo\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -50,10 +50,10 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .getWithResponse("cubiipuipw", "qonmacj", "k", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("qybaryeua", "jkqa", "qgzsles", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.APPROVED,
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.REJECTED,
             response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("i", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("gohbuffkmrq", response.privateLinkServiceConnectionState().description());
     }
 }

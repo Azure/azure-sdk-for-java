@@ -1,0 +1,49 @@
+ARG REGISTRY="azsdkengsys.azurecr.io"
+ARG JRE_VERSION="11"
+FROM ${REGISTRY}/java/jdk-mariner-mvn:jdk11-latest as builder
+
+# Do not remove this line. Update ensures container images do not get flagged for out of date and vulnerable distro packages.
+RUN yum -y update
+
+# Add necessary files to the image
+RUN mkdir /stress
+WORKDIR /stress
+
+ADD ./.vscode /stress/.vscode
+ADD ./sdk/tools /stress/sdk/tools
+ADD ./eng /stress/eng
+ADD ./common /stress/common
+ADD ./sdk/parents /stress/sdk/parents
+ADD ./sdk/clientcore /stress/sdk/clientcore
+
+ARG SKIP_CHECKS="-Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests -Dcodesnippet.skip -Dspotless.skip"
+ARG MAVEN_ARGS="-B -V -U -Dhttp.keepAlive=true"
+
+# Build dependencies and stress tests
+RUN --mount=type=cache,target=/root/.m2 \
+mvn -f /stress/eng/code-quality-reports/pom.xml clean install ${SKIP_CHECKS} && \
+mvn -f /stress/common/perf-test-core/pom.xml clean install ${SKIP_CHECKS} && \
+mvn -f /stress/sdk/parents/azure-perf-test-parent/pom.xml clean install ${SKIP_CHECKS} && \
+mvn -f /stress/sdk/tools/pom.xml clean install ${SKIP_CHECKS} && \
+mvn -f /stress/sdk/parents/clientcore-parent/pom.xml clean install ${SKIP_CHECKS} && \
+mvn -f /stress/sdk/clientcore/core-json/pom.xml clean install ${SKIP_CHECKS} && \
+mvn -f /stress/sdk/clientcore/core/pom.xml clean install ${SKIP_CHECKS} && \
+mvn -f /stress/sdk/clientcore/http-jdk-httpclient/pom.xml clean install ${SKIP_CHECKS} && \
+mvn -f /stress/sdk/clientcore/http-okhttp3/pom.xml clean install ${SKIP_CHECKS} && \
+mvn -f /stress/sdk/clientcore/http-stress/pom.xml clean install ${SKIP_CHECKS}
+
+FROM mcr.microsoft.com/openjdk/jdk:${JRE_VERSION}-mariner
+
+# Do not remove this line. Update ensures container images do not get flagged for out of date and vulnerable distro packages.
+RUN yum -y update
+
+# Copy target files from builder image
+WORKDIR /app
+COPY --from=builder /stress/sdk/clientcore/http-stress/target .
+
+# Import test server self-signed certificate
+COPY --from=builder /stress/sdk/clientcore/http-stress/src/main/resources/simplehttpserver.crt ./simplehttpserver.crt
+RUN keytool -import -alias test -file ./simplehttpserver.crt -keystore ${JAVA_HOME}/lib/security/cacerts -noprompt -keypass changeit -storepass changeit
+
+# This is never executed (since job yaml overrides it)
+ENTRYPOINT ["bash"]

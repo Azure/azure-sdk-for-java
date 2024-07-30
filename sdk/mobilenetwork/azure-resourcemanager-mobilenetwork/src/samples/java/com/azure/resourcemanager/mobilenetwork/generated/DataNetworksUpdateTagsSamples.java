@@ -8,22 +8,22 @@ import com.azure.resourcemanager.mobilenetwork.models.DataNetwork;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for DataNetworks UpdateTags. */
+/**
+ * Samples for DataNetworks UpdateTags.
+ */
 public final class DataNetworksUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/DataNetworkUpdateTags.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/DataNetworkUpdateTags.json
      */
     /**
      * Sample code: Update data network tags.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void updateDataNetworkTags(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        DataNetwork resource =
-            manager
-                .dataNetworks()
-                .getWithResponse("rg1", "testMobileNetwork", "testDataNetwork", com.azure.core.util.Context.NONE)
-                .getValue();
+        DataNetwork resource = manager.dataNetworks()
+            .getWithResponse("rg1", "testMobileNetwork", "testDataNetwork", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 

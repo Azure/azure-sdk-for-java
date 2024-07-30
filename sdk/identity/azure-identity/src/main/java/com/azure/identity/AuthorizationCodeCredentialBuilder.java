@@ -13,7 +13,7 @@ import java.net.URISyntaxException;
  * <p>Fluent credential builder for instantiating a {@link AuthorizationCodeCredential}.</p>
  *
  * <p>Authorization Code authentication in Azure is a type of authentication mechanism that allows users to
- * authenticate with <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>
+ * authenticate with <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a>
  * and obtain an authorization code that can be used to request an access token to access
  * Azure resources. It is a widely used authentication mechanism and is supported by a wide range of Azure services
  * and applications. It provides a secure and scalable way to authenticate users and grant them access to Azure

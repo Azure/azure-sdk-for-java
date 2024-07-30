@@ -19,38 +19,36 @@ public final class MongoDbCollectionDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MongoDbCollectionDataset model = BinaryData.fromString(
-            "{\"type\":\"MongoDbCollection\",\"typeProperties\":{\"collectionName\":\"datad\"},\"description\":\"sjqb\",\"structure\":\"dataqmxv\",\"schema\":\"datariwbwggij\",\"linkedServiceName\":{\"referenceName\":\"spzjn\",\"parameters\":{\"htrgz\":\"dataikwsbzrhdugq\",\"jfhrjhiycbause\":\"dataru\",\"ihvtuwyjsqw\":\"datanczk\",\"oszjgz\":\"datas\"}},\"parameters\":{\"hczavojmsl\":{\"type\":\"String\",\"defaultValue\":\"datayskwwun\"},\"uqalpcufjjfxt\":{\"type\":\"Array\",\"defaultValue\":\"datacukvbljpxprrvchy\"},\"rcwbaae\":{\"type\":\"Object\",\"defaultValue\":\"dataqdstahhhsaaxxsri\"},\"xwoqotiiqbgpasr\":{\"type\":\"Bool\",\"defaultValue\":\"dataef\"}},\"annotations\":[\"datatistyikjhorlx\",\"datapypkennycntrq\",\"dataxwtdmbqjtsuhqh\"],\"folder\":{\"name\":\"tdyqav\"},\"\":{\"npaami\":\"dataqmzxsyaks\",\"hvwt\":\"datawb\",\"kiy\":\"datapbgchcgsfzhb\",\"cfferznzc\":\"dataqbjsdjpgxeysgw\"}}")
+            "{\"type\":\"MongoDbCollection\",\"typeProperties\":{\"collectionName\":\"datakgenjqnnpjwkosn\"},\"description\":\"igfoujjcxgdqmr\",\"structure\":\"datan\",\"schema\":\"datawopswnyinxuprrx\",\"linkedServiceName\":{\"referenceName\":\"xwjezbfqployu\",\"parameters\":{\"svjmnsvujnjk\":\"datacpvuft\",\"se\":\"datavolefcj\",\"otfbjampqoclann\":\"datakdb\",\"zstrktgvpatrg\":\"dataxynlsuqb\"}},\"parameters\":{\"fhok\":{\"type\":\"Object\",\"defaultValue\":\"datai\"},\"uookrjfls\":{\"type\":\"SecureString\",\"defaultValue\":\"dataculwkqic\"},\"pqsdoc\":{\"type\":\"Array\",\"defaultValue\":\"datajbt\"},\"cdsgxceluji\":{\"type\":\"Array\",\"defaultValue\":\"datapujzfl\"}},\"annotations\":[\"datalu\",\"datanxhfwlfxzfwu\"],\"folder\":{\"name\":\"pc\"},\"\":{\"gsytqpdzfyxcn\":\"datacexkgrvfpsjdm\",\"qfbifo\":\"dataawoxcgzbe\",\"zqjkrf\":\"datafjxdwdrp\",\"pgayiawohfmhnnzm\":\"databwotfcuuugtji\"}}")
             .toObject(MongoDbCollectionDataset.class);
-        Assertions.assertEquals("sjqb", model.description());
-        Assertions.assertEquals("spzjn", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("hczavojmsl").type());
-        Assertions.assertEquals("tdyqav", model.folder().name());
+        Assertions.assertEquals("igfoujjcxgdqmr", model.description());
+        Assertions.assertEquals("xwjezbfqployu", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("fhok").type());
+        Assertions.assertEquals("pc", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MongoDbCollectionDataset model
-            = new MongoDbCollectionDataset().withDescription("sjqb").withStructure("dataqmxv")
-                .withSchema("datariwbwggij")
-                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("spzjn")
-                    .withParameters(mapOf("htrgz", "dataikwsbzrhdugq", "jfhrjhiycbause", "dataru", "ihvtuwyjsqw",
-                        "datanczk", "oszjgz", "datas")))
-                .withParameters(mapOf("hczavojmsl",
-                    new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datayskwwun"),
-                    "uqalpcufjjfxt",
-                    new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datacukvbljpxprrvchy"),
-                    "rcwbaae",
-                    new ParameterSpecification().withType(ParameterType.OBJECT)
-                        .withDefaultValue("dataqdstahhhsaaxxsri"),
-                    "xwoqotiiqbgpasr",
-                    new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("dataef")))
-                .withAnnotations(Arrays.asList("datatistyikjhorlx", "datapypkennycntrq", "dataxwtdmbqjtsuhqh"))
-                .withFolder(new DatasetFolder().withName("tdyqav")).withCollectionName("datad");
+        MongoDbCollectionDataset model = new MongoDbCollectionDataset().withDescription("igfoujjcxgdqmr")
+            .withStructure("datan")
+            .withSchema("datawopswnyinxuprrx")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("xwjezbfqployu")
+                .withParameters(mapOf("svjmnsvujnjk", "datacpvuft", "se", "datavolefcj", "otfbjampqoclann", "datakdb",
+                    "zstrktgvpatrg", "dataxynlsuqb")))
+            .withParameters(mapOf("fhok",
+                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datai"), "uookrjfls",
+                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("dataculwkqic"),
+                "pqsdoc", new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datajbt"),
+                "cdsgxceluji",
+                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datapujzfl")))
+            .withAnnotations(Arrays.asList("datalu", "datanxhfwlfxzfwu"))
+            .withFolder(new DatasetFolder().withName("pc"))
+            .withCollectionName("datakgenjqnnpjwkosn");
         model = BinaryData.fromObject(model).toObject(MongoDbCollectionDataset.class);
-        Assertions.assertEquals("sjqb", model.description());
-        Assertions.assertEquals("spzjn", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("hczavojmsl").type());
-        Assertions.assertEquals("tdyqav", model.folder().name());
+        Assertions.assertEquals("igfoujjcxgdqmr", model.description());
+        Assertions.assertEquals("xwjezbfqployu", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("fhok").type());
+        Assertions.assertEquals("pc", model.folder().name());
     }
 
     // Use "Map.of" if available

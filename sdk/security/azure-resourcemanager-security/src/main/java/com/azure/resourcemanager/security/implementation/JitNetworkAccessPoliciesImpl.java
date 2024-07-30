@@ -99,8 +99,8 @@ public final class JitNetworkAccessPoliciesImpl implements JitNetworkAccessPolic
 
     public Response<Void> deleteWithResponse(String resourceGroupName, String ascLocation,
         String jitNetworkAccessPolicyName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, ascLocation, jitNetworkAccessPolicyName,
-            context);
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, context);
     }
 
     public void delete(String resourceGroupName, String ascLocation, String jitNetworkAccessPolicyName) {
@@ -109,8 +109,8 @@ public final class JitNetworkAccessPoliciesImpl implements JitNetworkAccessPolic
 
     public Response<JitNetworkAccessRequest> initiateWithResponse(String resourceGroupName, String ascLocation,
         String jitNetworkAccessPolicyName, JitNetworkAccessPolicyInitiateRequest body, Context context) {
-        Response<JitNetworkAccessRequestInner> inner = this.serviceClient().initiateWithResponse(resourceGroupName,
-            ascLocation, jitNetworkAccessPolicyName, body, context);
+        Response<JitNetworkAccessRequestInner> inner = this.serviceClient()
+            .initiateWithResponse(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, body, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new JitNetworkAccessRequestImpl(inner.getValue(), this.manager()));

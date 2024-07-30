@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.DocumentDbCollectionDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,21 @@ import java.util.Map;
 /**
  * Microsoft Azure Document Database Collection dataset.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = DocumentDbCollectionDataset.class,
+    visible = true)
 @JsonTypeName("DocumentDbCollection")
 @Fluent
 public final class DocumentDbCollectionDataset extends Dataset {
+    /*
+     * Type of dataset.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "DocumentDbCollection";
+
     /*
      * DocumentDB Collection dataset properties.
      */
@@ -31,6 +43,16 @@ public final class DocumentDbCollectionDataset extends Dataset {
      * Creates an instance of DocumentDbCollectionDataset class.
      */
     public DocumentDbCollectionDataset() {
+    }
+
+    /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -139,8 +161,9 @@ public final class DocumentDbCollectionDataset extends Dataset {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model DocumentDbCollectionDataset"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model DocumentDbCollectionDataset"));
         } else {
             innerTypeProperties().validate();
         }

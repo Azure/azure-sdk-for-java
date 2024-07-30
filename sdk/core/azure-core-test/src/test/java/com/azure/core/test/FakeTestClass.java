@@ -23,6 +23,7 @@ public final class FakeTestClass {
 
     }
 
+    @SuppressWarnings("deprecation")
     @DoNotRecord(skipInPlayback = true)
     public void testWithDoNotRecordSkipInPlayback() {
     }

@@ -18,7 +18,8 @@ public final class FactoriesGetByResourceGroupSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void factoriesGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.factories().getByResourceGroupWithResponse("exampleResourceGroup", "exampleFactoryName", null,
-            com.azure.core.util.Context.NONE);
+        manager.factories()
+            .getByResourceGroupWithResponse("exampleResourceGroup", "exampleFactoryName", null,
+                com.azure.core.util.Context.NONE);
     }
 }

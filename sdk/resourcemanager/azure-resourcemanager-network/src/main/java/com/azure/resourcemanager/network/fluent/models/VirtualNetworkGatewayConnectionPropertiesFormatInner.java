@@ -690,8 +690,9 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner {
      */
     public void validate() {
         if (virtualNetworkGateway1() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property virtualNetworkGateway1 in model VirtualNetworkGatewayConnectionPropertiesFormatInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property virtualNetworkGateway1 in model VirtualNetworkGatewayConnectionPropertiesFormatInner"));
         } else {
             virtualNetworkGateway1().validate();
         }
@@ -702,8 +703,9 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner {
             localNetworkGateway2().validate();
         }
         if (connectionType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property connectionType in model VirtualNetworkGatewayConnectionPropertiesFormatInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property connectionType in model VirtualNetworkGatewayConnectionPropertiesFormatInner"));
         }
         if (tunnelConnectionStatus() != null) {
             tunnelConnectionStatus().forEach(e -> e.validate());

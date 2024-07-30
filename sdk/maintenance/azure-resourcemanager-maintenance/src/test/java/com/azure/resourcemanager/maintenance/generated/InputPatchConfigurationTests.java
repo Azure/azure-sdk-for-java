@@ -15,46 +15,39 @@ import org.junit.jupiter.api.Assertions;
 public final class InputPatchConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InputPatchConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"rebootSetting\":\"Never\",\"windowsParameters\":{\"kbNumbersToExclude\":[\"lzu\"],\"kbNumbersToInclude\":[\"fwnfnb\"],\"classificationsToInclude\":[\"ionle\",\"x\"],\"excludeKbsRequiringReboot\":false},\"linuxParameters\":{\"packageNameMasksToExclude\":[\"xdpnqbqq\",\"xrjfeallnwsub\",\"snjampmng\"],\"packageNameMasksToInclude\":[\"c\",\"aqw\"],\"classificationsToInclude\":[\"hcbonqvpkvlr\",\"njeaseipheofloke\",\"y\",\"enjbdlwtgrhp\"]}}")
-                .toObject(InputPatchConfiguration.class);
+        InputPatchConfiguration model = BinaryData.fromString(
+            "{\"rebootSetting\":\"Never\",\"windowsParameters\":{\"kbNumbersToExclude\":[\"w\",\"ujjugwdkcglh\",\"lazjdyggdtjixhbk\",\"ofqweykhmenevfye\"],\"kbNumbersToInclude\":[\"hybcibv\",\"vdcsitynn\"],\"classificationsToInclude\":[\"dectehfiqsc\",\"eypvhezrkg\",\"hcjrefovgmk\",\"sle\"],\"excludeKbsRequiringReboot\":true},\"linuxParameters\":{\"packageNameMasksToExclude\":[\"jpkcattpng\",\"cr\",\"czsqpjhvm\",\"ajvnysounqe\"],\"packageNameMasksToInclude\":[\"oaeupfhyhltrpmo\"],\"classificationsToInclude\":[\"cma\",\"u\",\"kthfui\",\"aodsfcpkv\"]}}")
+            .toObject(InputPatchConfiguration.class);
         Assertions.assertEquals(RebootOptions.NEVER, model.rebootSetting());
-        Assertions.assertEquals("lzu", model.windowsParameters().kbNumbersToExclude().get(0));
-        Assertions.assertEquals("fwnfnb", model.windowsParameters().kbNumbersToInclude().get(0));
-        Assertions.assertEquals("ionle", model.windowsParameters().classificationsToInclude().get(0));
-        Assertions.assertEquals(false, model.windowsParameters().excludeKbsRequiringReboot());
-        Assertions.assertEquals("xdpnqbqq", model.linuxParameters().packageNameMasksToExclude().get(0));
-        Assertions.assertEquals("c", model.linuxParameters().packageNameMasksToInclude().get(0));
-        Assertions.assertEquals("hcbonqvpkvlr", model.linuxParameters().classificationsToInclude().get(0));
+        Assertions.assertEquals("w", model.windowsParameters().kbNumbersToExclude().get(0));
+        Assertions.assertEquals("hybcibv", model.windowsParameters().kbNumbersToInclude().get(0));
+        Assertions.assertEquals("dectehfiqsc", model.windowsParameters().classificationsToInclude().get(0));
+        Assertions.assertEquals(true, model.windowsParameters().excludeKbsRequiringReboot());
+        Assertions.assertEquals("jpkcattpng", model.linuxParameters().packageNameMasksToExclude().get(0));
+        Assertions.assertEquals("oaeupfhyhltrpmo", model.linuxParameters().packageNameMasksToInclude().get(0));
+        Assertions.assertEquals("cma", model.linuxParameters().classificationsToInclude().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InputPatchConfiguration model =
-            new InputPatchConfiguration()
-                .withRebootSetting(RebootOptions.NEVER)
-                .withWindowsParameters(
-                    new InputWindowsParameters()
-                        .withKbNumbersToExclude(Arrays.asList("lzu"))
-                        .withKbNumbersToInclude(Arrays.asList("fwnfnb"))
-                        .withClassificationsToInclude(Arrays.asList("ionle", "x"))
-                        .withExcludeKbsRequiringReboot(false))
-                .withLinuxParameters(
-                    new InputLinuxParameters()
-                        .withPackageNameMasksToExclude(Arrays.asList("xdpnqbqq", "xrjfeallnwsub", "snjampmng"))
-                        .withPackageNameMasksToInclude(Arrays.asList("c", "aqw"))
-                        .withClassificationsToInclude(
-                            Arrays.asList("hcbonqvpkvlr", "njeaseipheofloke", "y", "enjbdlwtgrhp")));
+        InputPatchConfiguration model = new InputPatchConfiguration().withRebootSetting(RebootOptions.NEVER)
+            .withWindowsParameters(new InputWindowsParameters()
+                .withKbNumbersToExclude(Arrays.asList("w", "ujjugwdkcglh", "lazjdyggdtjixhbk", "ofqweykhmenevfye"))
+                .withKbNumbersToInclude(Arrays.asList("hybcibv", "vdcsitynn"))
+                .withClassificationsToInclude(Arrays.asList("dectehfiqsc", "eypvhezrkg", "hcjrefovgmk", "sle"))
+                .withExcludeKbsRequiringReboot(true))
+            .withLinuxParameters(new InputLinuxParameters()
+                .withPackageNameMasksToExclude(Arrays.asList("jpkcattpng", "cr", "czsqpjhvm", "ajvnysounqe"))
+                .withPackageNameMasksToInclude(Arrays.asList("oaeupfhyhltrpmo"))
+                .withClassificationsToInclude(Arrays.asList("cma", "u", "kthfui", "aodsfcpkv")));
         model = BinaryData.fromObject(model).toObject(InputPatchConfiguration.class);
         Assertions.assertEquals(RebootOptions.NEVER, model.rebootSetting());
-        Assertions.assertEquals("lzu", model.windowsParameters().kbNumbersToExclude().get(0));
-        Assertions.assertEquals("fwnfnb", model.windowsParameters().kbNumbersToInclude().get(0));
-        Assertions.assertEquals("ionle", model.windowsParameters().classificationsToInclude().get(0));
-        Assertions.assertEquals(false, model.windowsParameters().excludeKbsRequiringReboot());
-        Assertions.assertEquals("xdpnqbqq", model.linuxParameters().packageNameMasksToExclude().get(0));
-        Assertions.assertEquals("c", model.linuxParameters().packageNameMasksToInclude().get(0));
-        Assertions.assertEquals("hcbonqvpkvlr", model.linuxParameters().classificationsToInclude().get(0));
+        Assertions.assertEquals("w", model.windowsParameters().kbNumbersToExclude().get(0));
+        Assertions.assertEquals("hybcibv", model.windowsParameters().kbNumbersToInclude().get(0));
+        Assertions.assertEquals("dectehfiqsc", model.windowsParameters().classificationsToInclude().get(0));
+        Assertions.assertEquals(true, model.windowsParameters().excludeKbsRequiringReboot());
+        Assertions.assertEquals("jpkcattpng", model.linuxParameters().packageNameMasksToExclude().get(0));
+        Assertions.assertEquals("oaeupfhyhltrpmo", model.linuxParameters().packageNameMasksToInclude().get(0));
+        Assertions.assertEquals("cma", model.linuxParameters().classificationsToInclude().get(0));
     }
 }

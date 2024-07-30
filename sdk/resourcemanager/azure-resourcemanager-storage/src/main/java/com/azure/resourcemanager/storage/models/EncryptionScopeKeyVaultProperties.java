@@ -33,14 +33,16 @@ public final class EncryptionScopeKeyVaultProperties {
     @JsonProperty(value = "lastKeyRotationTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastKeyRotationTimestamp;
 
-    /** Creates an instance of EncryptionScopeKeyVaultProperties class. */
+    /**
+     * Creates an instance of EncryptionScopeKeyVaultProperties class.
+     */
     public EncryptionScopeKeyVaultProperties() {
     }
 
     /**
      * Get the keyUri property: The object identifier for a key vault key object. When applied, the encryption scope
      * will use the key referenced by the identifier to enable customer-managed key support on this encryption scope.
-     *
+     * 
      * @return the keyUri value.
      */
     public String keyUri() {
@@ -50,7 +52,7 @@ public final class EncryptionScopeKeyVaultProperties {
     /**
      * Set the keyUri property: The object identifier for a key vault key object. When applied, the encryption scope
      * will use the key referenced by the identifier to enable customer-managed key support on this encryption scope.
-     *
+     * 
      * @param keyUri the keyUri value to set.
      * @return the EncryptionScopeKeyVaultProperties object itself.
      */
@@ -62,7 +64,7 @@ public final class EncryptionScopeKeyVaultProperties {
     /**
      * Get the currentVersionedKeyIdentifier property: The object identifier of the current versioned Key Vault Key in
      * use.
-     *
+     * 
      * @return the currentVersionedKeyIdentifier value.
      */
     public String currentVersionedKeyIdentifier() {
@@ -71,7 +73,7 @@ public final class EncryptionScopeKeyVaultProperties {
 
     /**
      * Get the lastKeyRotationTimestamp property: Timestamp of last rotation of the Key Vault Key.
-     *
+     * 
      * @return the lastKeyRotationTimestamp value.
      */
     public OffsetDateTime lastKeyRotationTimestamp() {
@@ -80,7 +82,7 @@ public final class EncryptionScopeKeyVaultProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

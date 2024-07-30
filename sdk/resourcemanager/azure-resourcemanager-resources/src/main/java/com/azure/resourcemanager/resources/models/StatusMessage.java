@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Operation status message object. */
+/**
+ * Operation status message object.
+ */
 @Fluent
 public final class StatusMessage {
     /*
@@ -19,19 +21,21 @@ public final class StatusMessage {
 
     /*
      * Error Response
-     *
+     * 
      * The error reported by the operation.
      */
     @JsonProperty(value = "error")
     private ManagementError error;
 
-    /** Creates an instance of StatusMessage class. */
+    /**
+     * Creates an instance of StatusMessage class.
+     */
     public StatusMessage() {
     }
 
     /**
      * Get the status property: Status of the deployment operation.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -40,7 +44,7 @@ public final class StatusMessage {
 
     /**
      * Set the status property: Status of the deployment operation.
-     *
+     * 
      * @param status the status value to set.
      * @return the StatusMessage object itself.
      */
@@ -51,9 +55,9 @@ public final class StatusMessage {
 
     /**
      * Get the error property: Error Response
-     *
-     * <p>The error reported by the operation.
-     *
+     * 
+     * The error reported by the operation.
+     * 
      * @return the error value.
      */
     public ManagementError error() {
@@ -62,9 +66,9 @@ public final class StatusMessage {
 
     /**
      * Set the error property: Error Response
-     *
-     * <p>The error reported by the operation.
-     *
+     * 
+     * The error reported by the operation.
+     * 
      * @param error the error value to set.
      * @return the StatusMessage object itself.
      */
@@ -75,7 +79,7 @@ public final class StatusMessage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

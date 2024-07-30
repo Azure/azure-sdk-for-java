@@ -1,14 +1,40 @@
 # Release History
 
-## 1.0.0-beta.49 (Unreleased)
+## 1.0.0-beta.52 (2024-07-12)
 
-### Features Added
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.1` to `1.50.0`.
+
+## 1.0.0-beta.51 (2024-06-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.0` to `1.49.1`.
+
+## 1.0.0-beta.50 (2024-05-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to `1.49.0`.
+
+## 1.0.0-beta.49 (2024-04-05)
 
 ### Breaking Changes
 
-### Bugs Fixed
+- Removed dependency on Jackson Dataformat XML.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to `1.48.0`.
 
 ## 1.0.0-beta.48 (2024-03-01)
 

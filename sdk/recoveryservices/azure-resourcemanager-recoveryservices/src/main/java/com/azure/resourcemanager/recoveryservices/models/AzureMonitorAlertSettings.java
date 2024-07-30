@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservices.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Settings for Azure Monitor based alerts. */
+/**
+ * Settings for Azure Monitor based alerts.
+ */
 @Fluent
 public final class AzureMonitorAlertSettings {
     /*
@@ -16,13 +18,27 @@ public final class AzureMonitorAlertSettings {
     @JsonProperty(value = "alertsForAllJobFailures")
     private AlertsState alertsForAllJobFailures;
 
-    /** Creates an instance of AzureMonitorAlertSettings class. */
+    /*
+     * The alertsForAllReplicationIssues property.
+     */
+    @JsonProperty(value = "alertsForAllReplicationIssues")
+    private AlertsState alertsForAllReplicationIssues;
+
+    /*
+     * The alertsForAllFailoverIssues property.
+     */
+    @JsonProperty(value = "alertsForAllFailoverIssues")
+    private AlertsState alertsForAllFailoverIssues;
+
+    /**
+     * Creates an instance of AzureMonitorAlertSettings class.
+     */
     public AzureMonitorAlertSettings() {
     }
 
     /**
      * Get the alertsForAllJobFailures property: The alertsForAllJobFailures property.
-     *
+     * 
      * @return the alertsForAllJobFailures value.
      */
     public AlertsState alertsForAllJobFailures() {
@@ -31,7 +47,7 @@ public final class AzureMonitorAlertSettings {
 
     /**
      * Set the alertsForAllJobFailures property: The alertsForAllJobFailures property.
-     *
+     * 
      * @param alertsForAllJobFailures the alertsForAllJobFailures value to set.
      * @return the AzureMonitorAlertSettings object itself.
      */
@@ -41,8 +57,48 @@ public final class AzureMonitorAlertSettings {
     }
 
     /**
+     * Get the alertsForAllReplicationIssues property: The alertsForAllReplicationIssues property.
+     * 
+     * @return the alertsForAllReplicationIssues value.
+     */
+    public AlertsState alertsForAllReplicationIssues() {
+        return this.alertsForAllReplicationIssues;
+    }
+
+    /**
+     * Set the alertsForAllReplicationIssues property: The alertsForAllReplicationIssues property.
+     * 
+     * @param alertsForAllReplicationIssues the alertsForAllReplicationIssues value to set.
+     * @return the AzureMonitorAlertSettings object itself.
+     */
+    public AzureMonitorAlertSettings withAlertsForAllReplicationIssues(AlertsState alertsForAllReplicationIssues) {
+        this.alertsForAllReplicationIssues = alertsForAllReplicationIssues;
+        return this;
+    }
+
+    /**
+     * Get the alertsForAllFailoverIssues property: The alertsForAllFailoverIssues property.
+     * 
+     * @return the alertsForAllFailoverIssues value.
+     */
+    public AlertsState alertsForAllFailoverIssues() {
+        return this.alertsForAllFailoverIssues;
+    }
+
+    /**
+     * Set the alertsForAllFailoverIssues property: The alertsForAllFailoverIssues property.
+     * 
+     * @param alertsForAllFailoverIssues the alertsForAllFailoverIssues value to set.
+     * @return the AzureMonitorAlertSettings object itself.
+     */
+    public AzureMonitorAlertSettings withAlertsForAllFailoverIssues(AlertsState alertsForAllFailoverIssues) {
+        this.alertsForAllFailoverIssues = alertsForAllFailoverIssues;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

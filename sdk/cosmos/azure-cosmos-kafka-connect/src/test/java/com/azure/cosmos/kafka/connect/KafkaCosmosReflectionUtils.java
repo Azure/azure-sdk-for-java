@@ -6,7 +6,8 @@ package com.azure.cosmos.kafka.connect;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkTask;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
-import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceOffsetStorageReader;
+import com.azure.cosmos.kafka.connect.implementation.source.IMetadataReader;
+import com.azure.cosmos.kafka.connect.implementation.source.MetadataKafkaStorageManager;
 import com.azure.cosmos.kafka.connect.implementation.source.MetadataMonitorThread;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.kafka.connect.sink.SinkTaskContext;
@@ -30,35 +31,41 @@ public class KafkaCosmosReflectionUtils {
         }
     }
 
-    public static void setCosmosClient(CosmosDBSourceConnector sourceConnector, CosmosAsyncClient cosmosAsyncClient) {
+    public static void setCosmosClient(CosmosSourceConnector sourceConnector, CosmosAsyncClient cosmosAsyncClient) {
         set(sourceConnector, cosmosAsyncClient,"cosmosClient");
     }
 
-    public static void setCosmosSourceConfig(CosmosDBSourceConnector sourceConnector, CosmosSourceConfig sourceConfig) {
+    public static void setCosmosSourceConfig(CosmosSourceConnector sourceConnector, CosmosSourceConfig sourceConfig) {
         set(sourceConnector, sourceConfig,"config");
     }
 
-    public static void setOffsetStorageReader(
-        CosmosDBSourceConnector sourceConnector,
-        CosmosSourceOffsetStorageReader storageReader) {
-        set(sourceConnector, storageReader,"offsetStorageReader");
+    public static void setMetadataReader(
+        CosmosSourceConnector sourceConnector,
+        IMetadataReader metadataReader) {
+        set(sourceConnector, metadataReader,"metadataReader");
+    }
+
+    public static void setKafkaOffsetStorageReader(
+        CosmosSourceConnector sourceConnector,
+        MetadataKafkaStorageManager kafkaOffsetStorageReader) {
+        set(sourceConnector, kafkaOffsetStorageReader,"kafkaOffsetStorageReader");
     }
 
     public static void setMetadataMonitorThread(
-        CosmosDBSourceConnector sourceConnector,
+        CosmosSourceConnector sourceConnector,
         MetadataMonitorThread metadataMonitorThread) {
         set(sourceConnector, metadataMonitorThread,"monitorThread");
     }
 
-    public static CosmosAsyncClient getCosmosClient(CosmosDBSourceConnector sourceConnector) {
+    public static CosmosAsyncClient getCosmosClient(CosmosSourceConnector sourceConnector) {
         return get(sourceConnector,"cosmosClient");
     }
 
-    public static CosmosSourceOffsetStorageReader getSourceOffsetStorageReader(CosmosDBSourceConnector sourceConnector) {
-        return get(sourceConnector,"offsetStorageReader");
+    public static MetadataKafkaStorageManager getKafkaOffsetStorageReader(CosmosSourceConnector sourceConnector) {
+        return get(sourceConnector,"kafkaOffsetStorageReader");
     }
 
-    public static OffsetStorageReader getOffsetStorageReader(CosmosSourceOffsetStorageReader sourceOffsetStorageReader) {
+    public static OffsetStorageReader getOffsetStorageReader(MetadataKafkaStorageManager sourceOffsetStorageReader) {
         return get(sourceOffsetStorageReader,"offsetStorageReader");
     }
 
@@ -68,5 +75,13 @@ public class KafkaCosmosReflectionUtils {
 
     public static CosmosAsyncClient getSinkTaskCosmosClient(CosmosSinkTask sinkTask) {
         return get(sinkTask,"cosmosClient");
+    }
+
+    public static void setConnectorName(CosmosSourceConnector sourceConnector, String connectorName) {
+        set(sourceConnector, connectorName,"connectorName");
+    }
+
+    public static void setConnectorName(CosmosSinkConnector sinkConnector, String connectorName) {
+        set(sinkConnector, connectorName,"connectorName");
     }
 }

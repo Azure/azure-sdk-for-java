@@ -1,6 +1,6 @@
 # Release History
 
-## 12.4.0-beta.2 (Unreleased)
+## 12.5.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,48 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.4.2 (2024-06-13)
+
+### Bugs Fixed
+
+- Fixed [the bug](https://github.com/Azure/azure-sdk-for-java/pull/40392) where the deserialization of TableEntity was inconsistent between `ListEntities` and `getEntity` methods.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
+- Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
+
+## 12.4.1 (2024-05-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
+- Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
+
+## 12.4.0 (2024-04-12)
+
+### Breaking Changes
+
+- Removed `jackson-dataformat-xml` as a dependency.
+
+### Bugs Fixed
+
+- Fixed the issue where `createTableIfNotExists` utilized improper logic for checking for 409 status code.
+
+### Other Changes
+
+- Migrating from Jackson to stream-style serialization.
+
+#### Dependency Updates
+
+- Introducing `azure-xml` version `1.0.0` as a dependency.
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
 
 ## 12.4.0-beta.1 (2024-03-13)
 
@@ -255,7 +297,7 @@
 ## 12.2.0 (2022-02-10)
 
 ### Features added
-- Implemented new traits (micro-interfaces) in `TableClientBuiler` and `TableServiceClientBuilder`. This makes the experience of using client builders more consistent across libraries in the Azure SDK for Java.
+- Implemented new traits (micro-interfaces) in `TableClientBuilder` and `TableServiceClientBuilder`. This makes the experience of using client builders more consistent across libraries in the Azure SDK for Java.
 
 ### Other Changes
 

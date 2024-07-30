@@ -25,8 +25,7 @@ public final class CsmOperationDescriptionProperties {
     }
 
     /**
-     * Get the serviceSpecification property: Resource metrics service provided by Microsoft.Insights resource
-     * provider.
+     * Get the serviceSpecification property: Resource metrics service provided by Microsoft.Insights resource provider.
      * 
      * @return the serviceSpecification value.
      */
@@ -35,8 +34,7 @@ public final class CsmOperationDescriptionProperties {
     }
 
     /**
-     * Set the serviceSpecification property: Resource metrics service provided by Microsoft.Insights resource
-     * provider.
+     * Set the serviceSpecification property: Resource metrics service provided by Microsoft.Insights resource provider.
      * 
      * @param serviceSpecification the serviceSpecification value to set.
      * @return the CsmOperationDescriptionProperties object itself.

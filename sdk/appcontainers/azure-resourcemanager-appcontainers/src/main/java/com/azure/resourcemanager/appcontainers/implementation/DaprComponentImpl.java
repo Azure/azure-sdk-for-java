@@ -5,9 +5,11 @@
 package com.azure.resourcemanager.appcontainers.implementation;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.DaprComponentInner;
 import com.azure.resourcemanager.appcontainers.models.DaprComponent;
+import com.azure.resourcemanager.appcontainers.models.DaprComponentServiceBinding;
 import com.azure.resourcemanager.appcontainers.models.DaprMetadata;
 import com.azure.resourcemanager.appcontainers.models.DaprSecretsCollection;
 import com.azure.resourcemanager.appcontainers.models.Secret;
@@ -29,6 +31,10 @@ public final class DaprComponentImpl implements DaprComponent, DaprComponent.Def
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String componentType() {
@@ -78,6 +84,15 @@ public final class DaprComponentImpl implements DaprComponent, DaprComponent.Def
         }
     }
 
+    public List<DaprComponentServiceBinding> serviceComponentBind() {
+        List<DaprComponentServiceBinding> inner = this.innerModel().serviceComponentBind();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
     public String resourceGroupName() {
         return resourceGroupName;
     }
@@ -96,32 +111,28 @@ public final class DaprComponentImpl implements DaprComponent, DaprComponent.Def
 
     private String componentName;
 
-    public DaprComponentImpl withExistingConnectedEnvironment(
-        String resourceGroupName, String connectedEnvironmentName) {
+    public DaprComponentImpl withExistingConnectedEnvironment(String resourceGroupName,
+        String connectedEnvironmentName) {
         this.resourceGroupName = resourceGroupName;
         this.connectedEnvironmentName = connectedEnvironmentName;
         return this;
     }
 
     public DaprComponent create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectedEnvironmentsDaprComponents()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, connectedEnvironmentName, componentName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedEnvironmentsDaprComponents()
+            .createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName, componentName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public DaprComponent create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectedEnvironmentsDaprComponents()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, connectedEnvironmentName, componentName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedEnvironmentsDaprComponents()
+            .createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName, componentName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
@@ -136,66 +147,56 @@ public final class DaprComponentImpl implements DaprComponent, DaprComponent.Def
     }
 
     public DaprComponent apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectedEnvironmentsDaprComponents()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, connectedEnvironmentName, componentName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedEnvironmentsDaprComponents()
+            .createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName, componentName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public DaprComponent apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectedEnvironmentsDaprComponents()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, connectedEnvironmentName, componentName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedEnvironmentsDaprComponents()
+            .createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName, componentName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
-    DaprComponentImpl(
-        DaprComponentInner innerObject,
+    DaprComponentImpl(DaprComponentInner innerObject,
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.connectedEnvironmentName = Utils.getValueFromIdByName(innerObject.id(), "connectedEnvironments");
-        this.componentName = Utils.getValueFromIdByName(innerObject.id(), "daprComponents");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.connectedEnvironmentName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "connectedEnvironments");
+        this.componentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "daprComponents");
     }
 
     public DaprComponent refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectedEnvironmentsDaprComponents()
-                .getWithResponse(resourceGroupName, connectedEnvironmentName, componentName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedEnvironmentsDaprComponents()
+            .getWithResponse(resourceGroupName, connectedEnvironmentName, componentName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DaprComponent refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectedEnvironmentsDaprComponents()
-                .getWithResponse(resourceGroupName, connectedEnvironmentName, componentName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedEnvironmentsDaprComponents()
+            .getWithResponse(resourceGroupName, connectedEnvironmentName, componentName, context)
+            .getValue();
         return this;
     }
 
     public Response<DaprSecretsCollection> listSecretsWithResponse(Context context) {
-        return serviceManager
-            .connectedEnvironmentsDaprComponents()
+        return serviceManager.connectedEnvironmentsDaprComponents()
             .listSecretsWithResponse(resourceGroupName, connectedEnvironmentName, componentName, context);
     }
 
     public DaprSecretsCollection listSecrets() {
-        return serviceManager
-            .connectedEnvironmentsDaprComponents()
+        return serviceManager.connectedEnvironmentsDaprComponents()
             .listSecrets(resourceGroupName, connectedEnvironmentName, componentName);
     }
 
@@ -236,6 +237,11 @@ public final class DaprComponentImpl implements DaprComponent, DaprComponent.Def
 
     public DaprComponentImpl withScopes(List<String> scopes) {
         this.innerModel().withScopes(scopes);
+        return this;
+    }
+
+    public DaprComponentImpl withServiceComponentBind(List<DaprComponentServiceBinding> serviceComponentBind) {
+        this.innerModel().withServiceComponentBind(serviceComponentBind);
         return this;
     }
 }

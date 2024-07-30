@@ -20,21 +20,17 @@ public final class ConfigurationAssignmentsForSubscriptionsImpl implements Confi
 
     private final com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager;
 
-    public ConfigurationAssignmentsForSubscriptionsImpl(
-        ConfigurationAssignmentsForSubscriptionsClient innerClient,
+    public ConfigurationAssignmentsForSubscriptionsImpl(ConfigurationAssignmentsForSubscriptionsClient innerClient,
         com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public Response<ConfigurationAssignment> getWithResponse(String configurationAssignmentName, Context context) {
-        Response<ConfigurationAssignmentInner> inner =
-            this.serviceClient().getWithResponse(configurationAssignmentName, context);
+        Response<ConfigurationAssignmentInner> inner
+            = this.serviceClient().getWithResponse(configurationAssignmentName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ConfigurationAssignmentImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -51,13 +47,10 @@ public final class ConfigurationAssignmentsForSubscriptionsImpl implements Confi
     }
 
     public Response<ConfigurationAssignment> deleteWithResponse(String configurationAssignmentName, Context context) {
-        Response<ConfigurationAssignmentInner> inner =
-            this.serviceClient().deleteWithResponse(configurationAssignmentName, context);
+        Response<ConfigurationAssignmentInner> inner
+            = this.serviceClient().deleteWithResponse(configurationAssignmentName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ConfigurationAssignmentImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -74,57 +67,37 @@ public final class ConfigurationAssignmentsForSubscriptionsImpl implements Confi
     }
 
     public ConfigurationAssignment getById(String id) {
-        String configurationAssignmentName = Utils.getValueFromIdByName(id, "configurationAssignments");
+        String configurationAssignmentName = ResourceManagerUtils.getValueFromIdByName(id, "configurationAssignments");
         if (configurationAssignmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'configurationAssignments'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'configurationAssignments'.", id)));
         }
         return this.getWithResponse(configurationAssignmentName, Context.NONE).getValue();
     }
 
     public Response<ConfigurationAssignment> getByIdWithResponse(String id, Context context) {
-        String configurationAssignmentName = Utils.getValueFromIdByName(id, "configurationAssignments");
+        String configurationAssignmentName = ResourceManagerUtils.getValueFromIdByName(id, "configurationAssignments");
         if (configurationAssignmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'configurationAssignments'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'configurationAssignments'.", id)));
         }
         return this.getWithResponse(configurationAssignmentName, context);
     }
 
     public ConfigurationAssignment deleteById(String id) {
-        String configurationAssignmentName = Utils.getValueFromIdByName(id, "configurationAssignments");
+        String configurationAssignmentName = ResourceManagerUtils.getValueFromIdByName(id, "configurationAssignments");
         if (configurationAssignmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'configurationAssignments'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'configurationAssignments'.", id)));
         }
         return this.deleteWithResponse(configurationAssignmentName, Context.NONE).getValue();
     }
 
     public Response<ConfigurationAssignment> deleteByIdWithResponse(String id, Context context) {
-        String configurationAssignmentName = Utils.getValueFromIdByName(id, "configurationAssignments");
+        String configurationAssignmentName = ResourceManagerUtils.getValueFromIdByName(id, "configurationAssignments");
         if (configurationAssignmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'configurationAssignments'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'configurationAssignments'.", id)));
         }
         return this.deleteWithResponse(configurationAssignmentName, context);
     }

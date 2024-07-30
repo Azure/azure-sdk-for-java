@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.mysqlflexibleserver.generated;
 
-/** Samples for FirewallRules CreateOrUpdate. */
+/**
+ * Samples for FirewallRules CreateOrUpdate.
+ */
 public final class FirewallRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Firewall/preview/2021-12-01-preview/examples/FirewallRuleCreate.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Firewall/preview/2023-06-01-preview/examples/FirewallRuleCreate.json
      */
     /**
      * Sample code: Create a firewall rule.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void createAFirewallRule(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager
-            .firewallRules()
+        manager.firewallRules()
             .define("rule1")
             .withExistingFlexibleServer("TestGroup", "testserver")
             .withStartIpAddress("0.0.0.0")

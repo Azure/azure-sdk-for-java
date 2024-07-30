@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class PrivateLinkServicesGetPrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * PrivateLinkServiceGetPrivateEndpointConnection.json
      */
     /**
@@ -18,7 +18,11 @@ public final class PrivateLinkServicesGetPrivateEndpointConnectionSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getPrivateEndPointConnection(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getPrivateLinkServices().getPrivateEndpointConnectionWithResponse(
-            "rg1", "testPls", "testPlePeConnection", null, com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getPrivateLinkServices()
+            .getPrivateEndpointConnectionWithResponse("rg1", "testPls", "testPlePeConnection", null,
+                com.azure.core.util.Context.NONE);
     }
 }

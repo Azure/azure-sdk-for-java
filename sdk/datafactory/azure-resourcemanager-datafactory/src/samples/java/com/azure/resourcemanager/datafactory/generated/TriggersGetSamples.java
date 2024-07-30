@@ -18,7 +18,8 @@ public final class TriggersGetSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void triggersGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.triggers().getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleTrigger", null,
-            com.azure.core.util.Context.NONE);
+        manager.triggers()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleTrigger", null,
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -12,21 +12,22 @@ public final class StorageQueueEventSubscriptionDestinationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageQueueEventSubscriptionDestinationProperties model = BinaryData.fromString(
-            "{\"resourceId\":\"tvegwqiukvzwy\",\"queueName\":\"tthaokgkskj\",\"queueMessageTimeToLiveInSeconds\":1883481516048122115}")
+            "{\"resourceId\":\"snlaimoux\",\"queueName\":\"sqmu\",\"queueMessageTimeToLiveInSeconds\":2937834527529214478}")
             .toObject(StorageQueueEventSubscriptionDestinationProperties.class);
-        Assertions.assertEquals("tvegwqiukvzwy", model.resourceId());
-        Assertions.assertEquals("tthaokgkskj", model.queueName());
-        Assertions.assertEquals(1883481516048122115L, model.queueMessageTimeToLiveInSeconds());
+        Assertions.assertEquals("snlaimoux", model.resourceId());
+        Assertions.assertEquals("sqmu", model.queueName());
+        Assertions.assertEquals(2937834527529214478L, model.queueMessageTimeToLiveInSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StorageQueueEventSubscriptionDestinationProperties model
-            = new StorageQueueEventSubscriptionDestinationProperties().withResourceId("tvegwqiukvzwy")
-                .withQueueName("tthaokgkskj").withQueueMessageTimeToLiveInSeconds(1883481516048122115L);
+            = new StorageQueueEventSubscriptionDestinationProperties().withResourceId("snlaimoux")
+                .withQueueName("sqmu")
+                .withQueueMessageTimeToLiveInSeconds(2937834527529214478L);
         model = BinaryData.fromObject(model).toObject(StorageQueueEventSubscriptionDestinationProperties.class);
-        Assertions.assertEquals("tvegwqiukvzwy", model.resourceId());
-        Assertions.assertEquals("tthaokgkskj", model.queueName());
-        Assertions.assertEquals(1883481516048122115L, model.queueMessageTimeToLiveInSeconds());
+        Assertions.assertEquals("snlaimoux", model.resourceId());
+        Assertions.assertEquals("sqmu", model.queueName());
+        Assertions.assertEquals(2937834527529214478L, model.queueMessageTimeToLiveInSeconds());
     }
 }

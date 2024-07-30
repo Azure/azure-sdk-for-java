@@ -9,10 +9,10 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestBase;
-import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.resourcemanager.batch.models.AccountKeyType;
 import com.azure.resourcemanager.batch.models.Application;
 import com.azure.resourcemanager.batch.models.ApplicationPackage;
@@ -20,12 +20,13 @@ import com.azure.resourcemanager.batch.models.AutoStorageBaseProperties;
 import com.azure.resourcemanager.batch.models.BatchAccount;
 import com.azure.resourcemanager.batch.models.BatchAccountKeys;
 import com.azure.resourcemanager.batch.models.BatchAccountRegenerateKeyParameters;
-import com.azure.resourcemanager.batch.models.CloudServiceConfiguration;
 import com.azure.resourcemanager.batch.models.ComputeNodeDeallocationOption;
 import com.azure.resourcemanager.batch.models.DeploymentConfiguration;
 import com.azure.resourcemanager.batch.models.FixedScaleSettings;
+import com.azure.resourcemanager.batch.models.ImageReference;
 import com.azure.resourcemanager.batch.models.Pool;
 import com.azure.resourcemanager.batch.models.ScaleSettings;
+import com.azure.resourcemanager.batch.models.VirtualMachineConfiguration;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
@@ -53,11 +54,11 @@ public class BatchTests extends TestBase {
     public void beforeTest() {
         batchManager = BatchManager
             .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
+            .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
         storageManager = StorageManager
             .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
+            .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
         testEnv = !CoreUtils.isNullOrEmpty(testResourceGroup);
@@ -78,7 +79,7 @@ public class BatchTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testCreateBatchAccount() {
         StorageAccount storageAccount = null;
         BatchAccount account = null;
@@ -120,7 +121,7 @@ public class BatchTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testCRUDBatchAccount() {
         BatchAccount account = null;
         StorageAccount storageAccount = null;
@@ -176,7 +177,7 @@ public class BatchTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testCRUDBatchApplication() {
         StorageAccount storageAccount = null;
         BatchAccount account = null;
@@ -252,7 +253,7 @@ public class BatchTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testCRUDBatchPool() {
         BatchAccount account = null;
         Pool pool = null;
@@ -276,8 +277,11 @@ public class BatchTests extends TestBase {
                 .withDisplayName(poolDisplayName)
                 .withDeploymentConfiguration(
                     new DeploymentConfiguration()
-                        .withCloudServiceConfiguration(
-                            new CloudServiceConfiguration().withOsFamily("4")))
+                        .withVirtualMachineConfiguration(
+                            new VirtualMachineConfiguration()
+                                .withImageReference(new ImageReference().withPublisher("Canonical")
+                                    .withOffer("UbuntuServer").withSku("18.04-LTS").withVersion("latest"))
+                                .withNodeAgentSkuId("batch.node.ubuntu 18.04")))
                 .withScaleSettings(
                     new ScaleSettings()
                         .withFixedScale(

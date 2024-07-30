@@ -115,8 +115,8 @@ public final class StorageMigrationOptions extends ProxyOnlyResource {
     }
 
     /**
-     * Get the blockWriteAccessToSite property: &lt;code&gt;true&lt;/code&gt; if the app should be read only during
-     * copy operation; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * Get the blockWriteAccessToSite property: &lt;code&gt;true&lt;/code&gt; if the app should be read only during copy
+     * operation; otherwise, &lt;code&gt;false&lt;/code&gt;.
      * 
      * @return the blockWriteAccessToSite value.
      */
@@ -125,8 +125,8 @@ public final class StorageMigrationOptions extends ProxyOnlyResource {
     }
 
     /**
-     * Set the blockWriteAccessToSite property: &lt;code&gt;true&lt;/code&gt; if the app should be read only during
-     * copy operation; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * Set the blockWriteAccessToSite property: &lt;code&gt;true&lt;/code&gt; if the app should be read only during copy
+     * operation; otherwise, &lt;code&gt;false&lt;/code&gt;.
      * 
      * @param blockWriteAccessToSite the blockWriteAccessToSite value to set.
      * @return the StorageMigrationOptions object itself.

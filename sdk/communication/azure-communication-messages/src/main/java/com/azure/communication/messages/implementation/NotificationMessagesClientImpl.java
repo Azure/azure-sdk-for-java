@@ -32,12 +32,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.OffsetDateTime;
-import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 /**
@@ -147,8 +147,8 @@ public final class NotificationMessagesClientImpl {
     }
 
     /**
-     * The interface defining all the services for NotificationMessagesClient to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for NotificationMessagesClient to be used by the proxy service to perform
+     * REST calls.
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "NotificationMessages")
@@ -198,45 +198,29 @@ public final class NotificationMessagesClientImpl {
 
     /**
      * Sends a notification message from Business to User.
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>repeatability-request-id</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Repeatability request ID header</td>
-     * </tr>
-     * <tr>
-     * <td>repeatability-first-sent</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Repeatability first sent header as HTTP-date</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>repeatability-request-id</td><td>String</td><td>No</td><td>Repeatability request ID header</td></tr>
+     * <tr><td>repeatability-first-sent</td><td>String</td><td>No</td><td>Repeatability first sent header as
+     * HTTP-date</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
+     *     kind: String(text/image/template) (Required)
      *     channelRegistrationId: String (Required)
      *     to (Required): [
      *         String (Required)
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     receipts (Required): [
@@ -262,18 +246,17 @@ public final class NotificationMessagesClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-        String repeatabilityRequestId = UUID.randomUUID().toString();
-        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getHeaders().get(HttpHeaderName.fromString("repeatability-request-id")) == null) {
-                requestLocal.getHeaders().set(HttpHeaderName.fromString("repeatability-request-id"),
-                    repeatabilityRequestId);
+                requestLocal.getHeaders()
+                    .set(HttpHeaderName.fromString("repeatability-request-id"), CoreUtils.randomUuid().toString());
             }
         });
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getHeaders().get(HttpHeaderName.fromString("repeatability-first-sent")) == null) {
-                requestLocal.getHeaders().set(HttpHeaderName.fromString("repeatability-first-sent"),
-                    repeatabilityFirstSent);
+                requestLocal.getHeaders()
+                    .set(HttpHeaderName.fromString("repeatability-first-sent"),
+                        DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()));
             }
         });
         return FluxUtil.withContext(context -> service.send(this.getEndpoint(), this.getServiceVersion().getVersion(),
@@ -282,45 +265,29 @@ public final class NotificationMessagesClientImpl {
 
     /**
      * Sends a notification message from Business to User.
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>repeatability-request-id</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Repeatability request ID header</td>
-     * </tr>
-     * <tr>
-     * <td>repeatability-first-sent</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Repeatability first sent header as HTTP-date</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>repeatability-request-id</td><td>String</td><td>No</td><td>Repeatability request ID header</td></tr>
+     * <tr><td>repeatability-first-sent</td><td>String</td><td>No</td><td>Repeatability first sent header as
+     * HTTP-date</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
+     *     kind: String(text/image/template) (Required)
      *     channelRegistrationId: String (Required)
      *     to (Required): [
      *         String (Required)
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     receipts (Required): [
@@ -344,18 +311,17 @@ public final class NotificationMessagesClientImpl {
     public Response<BinaryData> sendWithResponse(BinaryData notificationContent, RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-        String repeatabilityRequestId = UUID.randomUUID().toString();
-        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getHeaders().get(HttpHeaderName.fromString("repeatability-request-id")) == null) {
-                requestLocal.getHeaders().set(HttpHeaderName.fromString("repeatability-request-id"),
-                    repeatabilityRequestId);
+                requestLocal.getHeaders()
+                    .set(HttpHeaderName.fromString("repeatability-request-id"), CoreUtils.randomUuid().toString());
             }
         });
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getHeaders().get(HttpHeaderName.fromString("repeatability-first-sent")) == null) {
-                requestLocal.getHeaders().set(HttpHeaderName.fromString("repeatability-first-sent"),
-                    repeatabilityFirstSent);
+                requestLocal.getHeaders()
+                    .set(HttpHeaderName.fromString("repeatability-first-sent"),
+                        DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()));
             }
         });
         return service.sendSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, notificationContent,
@@ -364,9 +330,8 @@ public final class NotificationMessagesClientImpl {
 
     /**
      * Download the Media payload from a User to Business message.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * BinaryData
      * }</pre>
@@ -388,9 +353,8 @@ public final class NotificationMessagesClientImpl {
 
     /**
      * Download the Media payload from a User to Business message.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * BinaryData
      * }</pre>

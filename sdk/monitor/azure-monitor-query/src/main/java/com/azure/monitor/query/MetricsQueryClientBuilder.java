@@ -24,9 +24,27 @@ import com.azure.monitor.query.implementation.metricsdefinitions.MetricsDefiniti
 import com.azure.monitor.query.implementation.metricsnamespaces.MetricsNamespacesClientImplBuilder;
 
 /**
- * Fluent builder for creating instances of {@link MetricsQueryClient} and {@link MetricsQueryAsyncClient}.
+ * <p>Fluent builder for creating instances of {@link MetricsQueryClient} and {@link MetricsQueryAsyncClient}.</p>
  *
- * <p><strong>Instantiating an asynchronous Metrics query Client</strong></p>
+ * <p>
+ *     The MetricsQueryClientBuilder is responsible for authenticating a building instances of {@link MetricsQueryClient} and
+ *     {@link MetricsQueryAsyncClient}. Customizations can be applied to clients through the builder using the various options
+ *     available.
+ * </p>
+ *
+ * <h2>Getting Started</h2>
+ *
+ * <p>
+ *     To create instances of the clients, sufficient authentication credentials are required. {@link TokenCredential} is
+ *     a common form of authentication. The resource / workspace is not required for client creation, but the authentication
+ *     credentials must have access to the resources / workspaces utilized by the client.
+ * </p>
+ *
+ * <h3>Client Builder Usage</h3>
+ *
+ * <p>
+ *     The following sample shows instantiating an asynchronous Metrics query Client using Token Credential
+ * </p>
  *
  * <!-- src_embed com.azure.monitor.query.MetricsQueryAsyncClient.instantiation -->
  * <pre>
@@ -36,7 +54,9 @@ import com.azure.monitor.query.implementation.metricsnamespaces.MetricsNamespace
  * </pre>
  * <!-- end com.azure.monitor.query.MetricsQueryAsyncClient.instantiation -->
  *
- * <p><strong>Instantiating a synchronous Metrics query Client</strong></p>
+ * <p>
+ *     The following sample shows instantiating a synchronous Metrics query Client using Token Credential
+ * </p>
  *
  * <!-- src_embed com.azure.monitor.query.MetricsQueryClient.instantiation -->
  * <pre>
@@ -45,6 +65,15 @@ import com.azure.monitor.query.implementation.metricsnamespaces.MetricsNamespace
  *         .buildClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.monitor.query.MetricsQueryClient.instantiation -->
+ *
+ * <p>
+ *     For more information about the other types of credentials that can be used to authenticate your client, please see
+ *     this documentation: <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">Azure Identity</a>
+ * </p>
+ *
+ * @see com.azure.monitor.query
+ * @see MetricsQueryClient
+ * @see MetricsQueryAsyncClient
  */
 @ServiceClientBuilder(serviceClients = {MetricsQueryClient.class, MetricsQueryAsyncClient.class})
 public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQueryClientBuilder>,
@@ -59,6 +88,11 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
     private final AzureMonitorMetricBatchBuilder innerMetricsBatchBuilder = new AzureMonitorMetricBatchBuilder();
     private final ClientLogger logger = new ClientLogger(MetricsQueryClientBuilder.class);
     private MetricsQueryServiceVersion serviceVersion;
+
+    /**
+     * Creates an instance of MetricsQueryClientBuilder.
+     */
+    public MetricsQueryClientBuilder() { }
 
     /**
      * Sets the metrics query endpoint.

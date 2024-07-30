@@ -10,7 +10,9 @@ import com.azure.resourcemanager.resources.models.ResourceSelector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The policy exemption properties for Patch request. */
+/**
+ * The policy exemption properties for Patch request.
+ */
 @Fluent
 public final class PolicyExemptionUpdateProperties {
     /*
@@ -25,13 +27,15 @@ public final class PolicyExemptionUpdateProperties {
     @JsonProperty(value = "assignmentScopeValidation")
     private AssignmentScopeValidation assignmentScopeValidation;
 
-    /** Creates an instance of PolicyExemptionUpdateProperties class. */
+    /**
+     * Creates an instance of PolicyExemptionUpdateProperties class.
+     */
     public PolicyExemptionUpdateProperties() {
     }
 
     /**
      * Get the resourceSelectors property: The resource selector list to filter policies by resource properties.
-     *
+     * 
      * @return the resourceSelectors value.
      */
     public List<ResourceSelector> resourceSelectors() {
@@ -40,7 +44,7 @@ public final class PolicyExemptionUpdateProperties {
 
     /**
      * Set the resourceSelectors property: The resource selector list to filter policies by resource properties.
-     *
+     * 
      * @param resourceSelectors the resourceSelectors value to set.
      * @return the PolicyExemptionUpdateProperties object itself.
      */
@@ -52,7 +56,7 @@ public final class PolicyExemptionUpdateProperties {
     /**
      * Get the assignmentScopeValidation property: The option whether validate the exemption is at or under the
      * assignment scope.
-     *
+     * 
      * @return the assignmentScopeValidation value.
      */
     public AssignmentScopeValidation assignmentScopeValidation() {
@@ -62,19 +66,19 @@ public final class PolicyExemptionUpdateProperties {
     /**
      * Set the assignmentScopeValidation property: The option whether validate the exemption is at or under the
      * assignment scope.
-     *
+     * 
      * @param assignmentScopeValidation the assignmentScopeValidation value to set.
      * @return the PolicyExemptionUpdateProperties object itself.
      */
-    public PolicyExemptionUpdateProperties withAssignmentScopeValidation(
-        AssignmentScopeValidation assignmentScopeValidation) {
+    public PolicyExemptionUpdateProperties
+        withAssignmentScopeValidation(AssignmentScopeValidation assignmentScopeValidation) {
         this.assignmentScopeValidation = assignmentScopeValidation;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

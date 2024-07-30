@@ -18,7 +18,8 @@ public final class TriggersUnsubscribeFromEventsSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void triggersUnsubscribeFromEvents(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.triggers().unsubscribeFromEvents("exampleResourceGroup", "exampleFactoryName", "exampleTrigger",
-            com.azure.core.util.Context.NONE);
+        manager.triggers()
+            .unsubscribeFromEvents("exampleResourceGroup", "exampleFactoryName", "exampleTrigger",
+                com.azure.core.util.Context.NONE);
     }
 }

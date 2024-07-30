@@ -20,7 +20,7 @@ public final class PatientRecord {
      */
     @Generated
     @JsonProperty(value = "id")
-    private String id;
+    private final String id;
 
     /*
      * Patient structured information, including demographics and known structured clinical information.

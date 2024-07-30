@@ -6,55 +6,37 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.EventType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class TopicTypesListEventTypesMockTests {
     @Test
     public void testListEventTypes() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"onbz\",\"description\":\"nfzyviiwsuanz\",\"schemaUrl\":\"syuifkzqqhbtflo\",\"isInDefaultSet\":true},\"id\":\"kfbeoi\",\"name\":\"pjpngvyvuo\",\"type\":\"kdlpsxntugfwim\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"ufzg\",\"description\":\"rblwalao\",\"schemaUrl\":\"nqebaotbptgc\",\"isInDefaultSet\":true},\"id\":\"nxxrwqfmd\",\"name\":\"ecvtamqwzmno\",\"type\":\"fe\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        EventGridManager manager = EventGridManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        EventGridManager manager = EventGridManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<EventType> response
-            = manager.topicTypes().listEventTypes("wsunjzijaciwmmpd", com.azure.core.util.Context.NONE);
+            = manager.topicTypes().listEventTypes("xpjhcfaaradci", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("onbz", response.iterator().next().displayName());
-        Assertions.assertEquals("nfzyviiwsuanz", response.iterator().next().description());
-        Assertions.assertEquals("syuifkzqqhbtflo", response.iterator().next().schemaUrl());
+        Assertions.assertEquals("ufzg", response.iterator().next().displayName());
+        Assertions.assertEquals("rblwalao", response.iterator().next().description());
+        Assertions.assertEquals("nqebaotbptgc", response.iterator().next().schemaUrl());
         Assertions.assertEquals(true, response.iterator().next().isInDefaultSet());
     }
 }

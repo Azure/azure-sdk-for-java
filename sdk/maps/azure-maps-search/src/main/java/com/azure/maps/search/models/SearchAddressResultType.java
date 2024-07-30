@@ -5,43 +5,70 @@
 package com.azure.maps.search.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** One of: * POI * Street * Geography * Point Address * Address Range * Cross Street. */
+/**
+ * One of:
+ * * POI
+ * * Street
+ * * Geography
+ * * Point Address
+ * * Address Range
+ * * Cross Street.
+ */
 public final class SearchAddressResultType extends ExpandableStringEnum<SearchAddressResultType> {
-    /** Static value POI for SearchAddressResultType. */
+    /**
+     * Static value POI for SearchAddressResultType.
+     */
     public static final SearchAddressResultType POI = fromString("POI");
 
-    /** Static value Street for SearchAddressResultType. */
+    /**
+     * Static value Street for SearchAddressResultType.
+     */
     public static final SearchAddressResultType STREET = fromString("Street");
 
-    /** Static value Geography for SearchAddressResultType. */
+    /**
+     * Static value Geography for SearchAddressResultType.
+     */
     public static final SearchAddressResultType GEOGRAPHY = fromString("Geography");
 
-    /** Static value Point Address for SearchAddressResultType. */
+    /**
+     * Static value Point Address for SearchAddressResultType.
+     */
     public static final SearchAddressResultType POINT_ADDRESS = fromString("Point Address");
 
-    /** Static value Address Range for SearchAddressResultType. */
+    /**
+     * Static value Address Range for SearchAddressResultType.
+     */
     public static final SearchAddressResultType ADDRESS_RANGE = fromString("Address Range");
 
-    /** Static value Cross Street for SearchAddressResultType. */
+    /**
+     * Static value Cross Street for SearchAddressResultType.
+     */
     public static final SearchAddressResultType CROSS_STREET = fromString("Cross Street");
 
     /**
+     * Creates a new instance of SearchAddressResultType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SearchAddressResultType() {
+    }
+
+    /**
      * Creates or finds a SearchAddressResultType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SearchAddressResultType.
      */
-    @JsonCreator
     public static SearchAddressResultType fromString(String name) {
         return fromString(name, SearchAddressResultType.class);
     }
 
     /**
      * Gets known SearchAddressResultType values.
-     *
+     * 
      * @return known SearchAddressResultType values.
      */
     public static Collection<SearchAddressResultType> values() {

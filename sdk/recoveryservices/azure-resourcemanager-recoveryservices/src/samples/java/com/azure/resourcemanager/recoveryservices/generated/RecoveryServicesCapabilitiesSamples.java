@@ -10,31 +10,26 @@ import com.azure.resourcemanager.recoveryservices.models.ResourceCapabilities;
 import com.azure.resourcemanager.recoveryservices.models.VaultSubResourceType;
 import java.util.Arrays;
 
-/** Samples for RecoveryServices Capabilities. */
+/**
+ * Samples for RecoveryServices Capabilities.
+ */
 public final class RecoveryServicesCapabilitiesSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/Capabilities.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/Capabilities.json
      */
     /**
      * Sample code: Capabilities for Microsoft.RecoveryServices/Vaults.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
     public static void capabilitiesForMicrosoftRecoveryServicesVaults(
         com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        manager
-            .recoveryServices()
-            .capabilitiesWithResponse(
-                "westus",
-                new ResourceCapabilities()
-                    .withType("Microsoft.RecoveryServices/Vaults")
-                    .withProperties(
-                        new CapabilitiesProperties()
-                            .withDnsZones(
-                                Arrays
-                                    .asList(
-                                        new DnsZone().withSubResource(VaultSubResourceType.AZURE_BACKUP),
-                                        new DnsZone().withSubResource(VaultSubResourceType.AZURE_SITE_RECOVERY)))),
+        manager.recoveryServices()
+            .capabilitiesWithResponse("westus",
+                new ResourceCapabilities().withType("Microsoft.RecoveryServices/Vaults")
+                    .withProperties(new CapabilitiesProperties()
+                        .withDnsZones(Arrays.asList(new DnsZone().withSubResource(VaultSubResourceType.AZURE_BACKUP),
+                            new DnsZone().withSubResource(VaultSubResourceType.AZURE_SITE_RECOVERY)))),
                 com.azure.core.util.Context.NONE);
     }
 }

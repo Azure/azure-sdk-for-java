@@ -91,8 +91,8 @@ public final class LoadBalancingRulePropertiesFormat {
     private Boolean enableTcpReset;
 
     /*
-     * Configures SNAT for the VMs in the backend pool to use the publicIP address specified in the frontend of the
-     * load balancing rule.
+     * Configures SNAT for the VMs in the backend pool to use the publicIP address specified in the frontend of the load
+     * balancing rule.
      */
     @JsonProperty(value = "disableOutboundSnat")
     private Boolean disableOutboundSnat;
@@ -344,8 +344,8 @@ public final class LoadBalancingRulePropertiesFormat {
     }
 
     /**
-     * Get the disableOutboundSnat property: Configures SNAT for the VMs in the backend pool to use the publicIP
-     * address specified in the frontend of the load balancing rule.
+     * Get the disableOutboundSnat property: Configures SNAT for the VMs in the backend pool to use the publicIP address
+     * specified in the frontend of the load balancing rule.
      * 
      * @return the disableOutboundSnat value.
      */
@@ -354,8 +354,8 @@ public final class LoadBalancingRulePropertiesFormat {
     }
 
     /**
-     * Set the disableOutboundSnat property: Configures SNAT for the VMs in the backend pool to use the publicIP
-     * address specified in the frontend of the load balancing rule.
+     * Set the disableOutboundSnat property: Configures SNAT for the VMs in the backend pool to use the publicIP address
+     * specified in the frontend of the load balancing rule.
      * 
      * @param disableOutboundSnat the disableOutboundSnat value to set.
      * @return the LoadBalancingRulePropertiesFormat object itself.
@@ -381,8 +381,9 @@ public final class LoadBalancingRulePropertiesFormat {
      */
     public void validate() {
         if (protocol() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property protocol in model LoadBalancingRulePropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property protocol in model LoadBalancingRulePropertiesFormat"));
         }
     }
 

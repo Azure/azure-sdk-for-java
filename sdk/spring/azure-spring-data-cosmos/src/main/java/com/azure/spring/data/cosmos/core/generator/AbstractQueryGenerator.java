@@ -226,7 +226,10 @@ public abstract class AbstractQueryGenerator {
     @NonNull
     private Pair<String, List<Pair<String, Object>>> generateQueryBody(@NonNull CosmosQuery query, @NonNull final AtomicInteger counter) {
         final List<Pair<String, Object>> parameters = new ArrayList<>();
-        String queryString = this.generateQueryBody(query.getCriteria(), parameters, counter);
+        String queryString = "";
+        if (query.getCriteria() != null) {
+            queryString = this.generateQueryBody(query.getCriteria(), parameters, counter);
+        }
 
         if (StringUtils.hasText(queryString)) {
             queryString = String.join(" ", "WHERE", queryString);

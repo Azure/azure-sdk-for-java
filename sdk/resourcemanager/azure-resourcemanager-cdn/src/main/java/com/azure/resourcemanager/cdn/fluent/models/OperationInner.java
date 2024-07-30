@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cdn.models.OperationDisplay;
 import com.azure.resourcemanager.cdn.models.ServiceSpecification;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** CDN REST API operation. */
+/**
+ * CDN REST API operation.
+ */
 @Fluent
 public final class OperationInner {
     /*
@@ -42,13 +44,15 @@ public final class OperationInner {
     @JsonProperty(value = "properties")
     private OperationProperties innerOperationProperties;
 
-    /** Creates an instance of OperationInner class. */
+    /**
+     * Creates an instance of OperationInner class.
+     */
     public OperationInner() {
     }
 
     /**
      * Get the name property: Operation name: {provider}/{resource}/{operation}.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -57,7 +61,7 @@ public final class OperationInner {
 
     /**
      * Get the isDataAction property: Indicates whether the operation is a data action.
-     *
+     * 
      * @return the isDataAction value.
      */
     public Boolean isDataAction() {
@@ -66,7 +70,7 @@ public final class OperationInner {
 
     /**
      * Set the isDataAction property: Indicates whether the operation is a data action.
-     *
+     * 
      * @param isDataAction the isDataAction value to set.
      * @return the OperationInner object itself.
      */
@@ -77,7 +81,7 @@ public final class OperationInner {
 
     /**
      * Get the display property: The object that represents the operation.
-     *
+     * 
      * @return the display value.
      */
     public OperationDisplay display() {
@@ -86,7 +90,7 @@ public final class OperationInner {
 
     /**
      * Set the display property: The object that represents the operation.
-     *
+     * 
      * @param display the display value to set.
      * @return the OperationInner object itself.
      */
@@ -97,7 +101,7 @@ public final class OperationInner {
 
     /**
      * Get the origin property: The origin of operations.
-     *
+     * 
      * @return the origin value.
      */
     public String origin() {
@@ -106,7 +110,7 @@ public final class OperationInner {
 
     /**
      * Get the innerOperationProperties property: Properties of operation, include metric specifications.
-     *
+     * 
      * @return the innerOperationProperties value.
      */
     private OperationProperties innerOperationProperties() {
@@ -115,7 +119,7 @@ public final class OperationInner {
 
     /**
      * Get the serviceSpecification property: One property of operation, include metric specifications.
-     *
+     * 
      * @return the serviceSpecification value.
      */
     public ServiceSpecification serviceSpecification() {
@@ -124,7 +128,7 @@ public final class OperationInner {
 
     /**
      * Set the serviceSpecification property: One property of operation, include metric specifications.
-     *
+     * 
      * @param serviceSpecification the serviceSpecification value to set.
      * @return the OperationInner object itself.
      */
@@ -138,7 +142,7 @@ public final class OperationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

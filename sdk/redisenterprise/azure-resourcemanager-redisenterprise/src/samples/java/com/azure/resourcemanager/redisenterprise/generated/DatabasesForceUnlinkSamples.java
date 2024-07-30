@@ -12,8 +12,7 @@ import java.util.Arrays;
  */
 public final class DatabasesForceUnlinkSamples {
     /*
-     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2023-11-01/examples/
-     * RedisEnterpriseDatabasesForceUnlink.json
+     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2024-03-01-preview/examples/RedisEnterpriseDatabasesForceUnlink.json
      */
     /**
      * Sample code: How to unlink a database during a regional outage.
@@ -22,8 +21,9 @@ public final class DatabasesForceUnlinkSamples {
      */
     public static void howToUnlinkADatabaseDuringARegionalOutage(
         com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
-        manager.databases().forceUnlink("rg1", "cache1", "default", new ForceUnlinkParameters().withIds(Arrays.asList(
-            "/subscriptions/subid2/resourceGroups/rg2/providers/Microsoft.Cache/redisEnterprise/cache2/databases/default")),
-            com.azure.core.util.Context.NONE);
+        manager.databases()
+            .forceUnlink("rg1", "cache1", "default", new ForceUnlinkParameters().withIds(Arrays.asList(
+                "/subscriptions/subid2/resourceGroups/rg2/providers/Microsoft.Cache/redisEnterprise/cache2/databases/default")),
+                com.azure.core.util.Context.NONE);
     }
 }

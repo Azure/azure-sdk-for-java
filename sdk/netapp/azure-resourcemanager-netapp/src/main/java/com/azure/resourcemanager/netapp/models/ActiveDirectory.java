@@ -5,100 +5,90 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Active Directory.
  */
 @Fluent
-public final class ActiveDirectory {
+public final class ActiveDirectory implements JsonSerializable<ActiveDirectory> {
     /*
      * Id of the Active Directory
      */
-    @JsonProperty(value = "activeDirectoryId")
     private String activeDirectoryId;
 
     /*
      * A domain user account with permission to create machine accounts
      */
-    @JsonProperty(value = "username")
     private String username;
 
     /*
      * Plain text password of Active Directory domain administrator, value is masked in the response
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /*
      * Name of the Active Directory domain
      */
-    @JsonProperty(value = "domain")
     private String domain;
 
     /*
      * Comma separated list of DNS server IP addresses (IPv4 only) for the Active Directory domain
      */
-    @JsonProperty(value = "dns")
     private String dns;
 
     /*
      * Status of the Active Directory
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ActiveDirectoryStatus status;
 
     /*
      * Any details in regards to the Status of the Active Directory
      */
-    @JsonProperty(value = "statusDetails", access = JsonProperty.Access.WRITE_ONLY)
     private String statusDetails;
 
     /*
      * NetBIOS name of the SMB server. This name will be registered as a computer account in the AD and used to mount
      * volumes
      */
-    @JsonProperty(value = "smbServerName")
     private String smbServerName;
 
     /*
      * The Organizational Unit (OU) within the Windows Active Directory
      */
-    @JsonProperty(value = "organizationalUnit")
     private String organizationalUnit;
 
     /*
      * The Active Directory site the service will limit Domain Controller discovery to
      */
-    @JsonProperty(value = "site")
     private String site;
 
     /*
      * Users to be added to the Built-in Backup Operator active directory group. A list of unique usernames without
      * domain specifier
      */
-    @JsonProperty(value = "backupOperators")
     private List<String> backupOperators;
 
     /*
      * Users to be added to the Built-in Administrators active directory group. A list of unique usernames without
      * domain specifier
      */
-    @JsonProperty(value = "administrators")
     private List<String> administrators;
 
     /*
      * kdc server IP addresses for the active directory machine. This optional parameter is used only while creating
      * kerberos volume.
      */
-    @JsonProperty(value = "kdcIP")
     private String kdcIp;
 
     /*
      * Name of the active directory machine. This optional parameter is used only while creating kerberos volume
      */
-    @JsonProperty(value = "adName")
     private String adName;
 
     /*
@@ -106,57 +96,48 @@ public final class ActiveDirectory {
      * Certificate Service's self-signed root CA certificate, this optional parameter is used only for dual protocol
      * with LDAP user-mapping volumes.
      */
-    @JsonProperty(value = "serverRootCACertificate")
     private String serverRootCACertificate;
 
     /*
      * If enabled, AES encryption will be enabled for SMB communication.
      */
-    @JsonProperty(value = "aesEncryption")
     private Boolean aesEncryption;
 
     /*
      * Specifies whether or not the LDAP traffic needs to be signed.
      */
-    @JsonProperty(value = "ldapSigning")
     private Boolean ldapSigning;
 
     /*
      * Domain Users in the Active directory to be given SeSecurityPrivilege privilege (Needed for SMB Continuously
      * available shares for SQL). A list of unique usernames without domain specifier
      */
-    @JsonProperty(value = "securityOperators")
     private List<String> securityOperators;
 
     /*
      * Specifies whether or not the LDAP traffic needs to be secured via TLS.
      */
-    @JsonProperty(value = "ldapOverTLS")
     private Boolean ldapOverTls;
 
     /*
      * If enabled, NFS client local users can also (in addition to LDAP users) access the NFS volumes.
      */
-    @JsonProperty(value = "allowLocalNfsUsersWithLdap")
     private Boolean allowLocalNfsUsersWithLdap;
 
     /*
      * If enabled, Traffic between the SMB server to Domain Controller (DC) will be encrypted.
      */
-    @JsonProperty(value = "encryptDCConnections")
     private Boolean encryptDCConnections;
 
     /*
      * LDAP Search scope options
      */
-    @JsonProperty(value = "ldapSearchScope")
     private LdapSearchScopeOpt ldapSearchScope;
 
     /*
      * Comma separated list of IPv4 addresses of preferred servers for LDAP client. At most two comma separated IPv4
      * addresses can be passed.
      */
-    @JsonProperty(value = "preferredServersForLdapClient")
     private String preferredServersForLdapClient;
 
     /**
@@ -394,8 +375,8 @@ public final class ActiveDirectory {
     }
 
     /**
-     * Get the kdcIp property: kdc server IP addresses for the active directory machine. This optional parameter is
-     * used only while creating kerberos volume.
+     * Get the kdcIp property: kdc server IP addresses for the active directory machine. This optional parameter is used
+     * only while creating kerberos volume.
      * 
      * @return the kdcIp value.
      */
@@ -404,8 +385,8 @@ public final class ActiveDirectory {
     }
 
     /**
-     * Set the kdcIp property: kdc server IP addresses for the active directory machine. This optional parameter is
-     * used only while creating kerberos volume.
+     * Set the kdcIp property: kdc server IP addresses for the active directory machine. This optional parameter is used
+     * only while creating kerberos volume.
      * 
      * @param kdcIp the kdcIp value to set.
      * @return the ActiveDirectory object itself.
@@ -439,8 +420,8 @@ public final class ActiveDirectory {
 
     /**
      * Get the serverRootCACertificate property: When LDAP over SSL/TLS is enabled, the LDAP client is required to have
-     * base64 encoded Active Directory Certificate Service's self-signed root CA certificate, this optional parameter
-     * is used only for dual protocol with LDAP user-mapping volumes.
+     * base64 encoded Active Directory Certificate Service's self-signed root CA certificate, this optional parameter is
+     * used only for dual protocol with LDAP user-mapping volumes.
      * 
      * @return the serverRootCACertificate value.
      */
@@ -450,8 +431,8 @@ public final class ActiveDirectory {
 
     /**
      * Set the serverRootCACertificate property: When LDAP over SSL/TLS is enabled, the LDAP client is required to have
-     * base64 encoded Active Directory Certificate Service's self-signed root CA certificate, this optional parameter
-     * is used only for dual protocol with LDAP user-mapping volumes.
+     * base64 encoded Active Directory Certificate Service's self-signed root CA certificate, this optional parameter is
+     * used only for dual protocol with LDAP user-mapping volumes.
      * 
      * @param serverRootCACertificate the serverRootCACertificate value to set.
      * @return the ActiveDirectory object itself.
@@ -640,5 +621,111 @@ public final class ActiveDirectory {
         if (ldapSearchScope() != null) {
             ldapSearchScope().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("activeDirectoryId", this.activeDirectoryId);
+        jsonWriter.writeStringField("username", this.username);
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeStringField("domain", this.domain);
+        jsonWriter.writeStringField("dns", this.dns);
+        jsonWriter.writeStringField("smbServerName", this.smbServerName);
+        jsonWriter.writeStringField("organizationalUnit", this.organizationalUnit);
+        jsonWriter.writeStringField("site", this.site);
+        jsonWriter.writeArrayField("backupOperators", this.backupOperators,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("administrators", this.administrators,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("kdcIP", this.kdcIp);
+        jsonWriter.writeStringField("adName", this.adName);
+        jsonWriter.writeStringField("serverRootCACertificate", this.serverRootCACertificate);
+        jsonWriter.writeBooleanField("aesEncryption", this.aesEncryption);
+        jsonWriter.writeBooleanField("ldapSigning", this.ldapSigning);
+        jsonWriter.writeArrayField("securityOperators", this.securityOperators,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("ldapOverTLS", this.ldapOverTls);
+        jsonWriter.writeBooleanField("allowLocalNfsUsersWithLdap", this.allowLocalNfsUsersWithLdap);
+        jsonWriter.writeBooleanField("encryptDCConnections", this.encryptDCConnections);
+        jsonWriter.writeJsonField("ldapSearchScope", this.ldapSearchScope);
+        jsonWriter.writeStringField("preferredServersForLdapClient", this.preferredServersForLdapClient);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActiveDirectory from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActiveDirectory if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ActiveDirectory.
+     */
+    public static ActiveDirectory fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActiveDirectory deserializedActiveDirectory = new ActiveDirectory();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("activeDirectoryId".equals(fieldName)) {
+                    deserializedActiveDirectory.activeDirectoryId = reader.getString();
+                } else if ("username".equals(fieldName)) {
+                    deserializedActiveDirectory.username = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedActiveDirectory.password = reader.getString();
+                } else if ("domain".equals(fieldName)) {
+                    deserializedActiveDirectory.domain = reader.getString();
+                } else if ("dns".equals(fieldName)) {
+                    deserializedActiveDirectory.dns = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedActiveDirectory.status = ActiveDirectoryStatus.fromString(reader.getString());
+                } else if ("statusDetails".equals(fieldName)) {
+                    deserializedActiveDirectory.statusDetails = reader.getString();
+                } else if ("smbServerName".equals(fieldName)) {
+                    deserializedActiveDirectory.smbServerName = reader.getString();
+                } else if ("organizationalUnit".equals(fieldName)) {
+                    deserializedActiveDirectory.organizationalUnit = reader.getString();
+                } else if ("site".equals(fieldName)) {
+                    deserializedActiveDirectory.site = reader.getString();
+                } else if ("backupOperators".equals(fieldName)) {
+                    List<String> backupOperators = reader.readArray(reader1 -> reader1.getString());
+                    deserializedActiveDirectory.backupOperators = backupOperators;
+                } else if ("administrators".equals(fieldName)) {
+                    List<String> administrators = reader.readArray(reader1 -> reader1.getString());
+                    deserializedActiveDirectory.administrators = administrators;
+                } else if ("kdcIP".equals(fieldName)) {
+                    deserializedActiveDirectory.kdcIp = reader.getString();
+                } else if ("adName".equals(fieldName)) {
+                    deserializedActiveDirectory.adName = reader.getString();
+                } else if ("serverRootCACertificate".equals(fieldName)) {
+                    deserializedActiveDirectory.serverRootCACertificate = reader.getString();
+                } else if ("aesEncryption".equals(fieldName)) {
+                    deserializedActiveDirectory.aesEncryption = reader.getNullable(JsonReader::getBoolean);
+                } else if ("ldapSigning".equals(fieldName)) {
+                    deserializedActiveDirectory.ldapSigning = reader.getNullable(JsonReader::getBoolean);
+                } else if ("securityOperators".equals(fieldName)) {
+                    List<String> securityOperators = reader.readArray(reader1 -> reader1.getString());
+                    deserializedActiveDirectory.securityOperators = securityOperators;
+                } else if ("ldapOverTLS".equals(fieldName)) {
+                    deserializedActiveDirectory.ldapOverTls = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowLocalNfsUsersWithLdap".equals(fieldName)) {
+                    deserializedActiveDirectory.allowLocalNfsUsersWithLdap = reader.getNullable(JsonReader::getBoolean);
+                } else if ("encryptDCConnections".equals(fieldName)) {
+                    deserializedActiveDirectory.encryptDCConnections = reader.getNullable(JsonReader::getBoolean);
+                } else if ("ldapSearchScope".equals(fieldName)) {
+                    deserializedActiveDirectory.ldapSearchScope = LdapSearchScopeOpt.fromJson(reader);
+                } else if ("preferredServersForLdapClient".equals(fieldName)) {
+                    deserializedActiveDirectory.preferredServersForLdapClient = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActiveDirectory;
+        });
     }
 }

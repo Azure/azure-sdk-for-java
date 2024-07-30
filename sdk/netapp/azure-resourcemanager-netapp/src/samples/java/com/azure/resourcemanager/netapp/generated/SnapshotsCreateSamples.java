@@ -10,7 +10,7 @@ package com.azure.resourcemanager.netapp.generated;
 public final class SnapshotsCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/Snapshots_Create.json
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/Snapshots_Create.json
      */
     /**
      * Sample code: Snapshots_Create.
@@ -18,7 +18,10 @@ public final class SnapshotsCreateSamples {
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void snapshotsCreate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.snapshots().define("snapshot1").withRegion("eastus")
-            .withExistingVolume("myRG", "account1", "pool1", "volume1").create();
+        manager.snapshots()
+            .define("snapshot1")
+            .withRegion("eastus")
+            .withExistingVolume("myRG", "account1", "pool1", "volume1")
+            .create();
     }
 }

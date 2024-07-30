@@ -165,7 +165,7 @@ public final class NetworkSecurityPerimeterProfileAccessRule {
      * 
      * @return the subscriptions value.
      */
-    public List<String> subscriptions() {
+    public List<NetworkSecurityPerimeterSubscription> subscriptions() {
         return this.innerProperties() == null ? null : this.innerProperties().subscriptions();
     }
 
@@ -175,7 +175,8 @@ public final class NetworkSecurityPerimeterProfileAccessRule {
      * @param subscriptions the subscriptions value to set.
      * @return the NetworkSecurityPerimeterProfileAccessRule object itself.
      */
-    public NetworkSecurityPerimeterProfileAccessRule withSubscriptions(List<String> subscriptions) {
+    public NetworkSecurityPerimeterProfileAccessRule
+        withSubscriptions(List<NetworkSecurityPerimeterSubscription> subscriptions) {
         if (this.innerProperties() == null) {
             this.innerProperties = new NetworkSecurityPerimeterProfileAccessRuleProperties();
         }

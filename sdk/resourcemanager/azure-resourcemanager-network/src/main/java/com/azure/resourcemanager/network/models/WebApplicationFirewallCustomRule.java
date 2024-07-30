@@ -287,12 +287,14 @@ public final class WebApplicationFirewallCustomRule {
      */
     public void validate() {
         if (ruleType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property ruleType in model WebApplicationFirewallCustomRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property ruleType in model WebApplicationFirewallCustomRule"));
         }
         if (matchConditions() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property matchConditions in model WebApplicationFirewallCustomRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property matchConditions in model WebApplicationFirewallCustomRule"));
         } else {
             matchConditions().forEach(e -> e.validate());
         }
@@ -300,8 +302,9 @@ public final class WebApplicationFirewallCustomRule {
             groupByUserSession().forEach(e -> e.validate());
         }
         if (action() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property action in model WebApplicationFirewallCustomRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property action in model WebApplicationFirewallCustomRule"));
         }
     }
 

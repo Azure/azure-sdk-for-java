@@ -7,20 +7,19 @@ package com.azure.resourcemanager.mobilenetwork.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Static IP configuration for a SIM, scoped to a particular attached data network and slice. */
+/**
+ * Static IP configuration for a SIM, scoped to a particular attached data network and slice.
+ */
 @Fluent
 public final class SimStaticIpProperties {
     /*
-     * The attached data network on which the static IP address will be used. The combination of attached data network
-     * and slice defines the network scope of the IP address. The attached data network must be in the same location as
-     * the SIM.
+     * The attached data network on which the static IP address will be used. The combination of attached data network and slice defines the network scope of the IP address. The attached data network must be in the same location as the SIM.
      */
     @JsonProperty(value = "attachedDataNetwork")
     private AttachedDataNetworkResourceId attachedDataNetwork;
 
     /*
-     * The network slice on which the static IP address will be used. The combination of attached data network and
-     * slice defines the network scope of the IP address. The slice must be in the same location as the SIM.
+     * The network slice on which the static IP address will be used. The combination of attached data network and slice defines the network scope of the IP address. The slice must be in the same location as the SIM.
      */
     @JsonProperty(value = "slice")
     private SliceResourceId slice;
@@ -31,7 +30,9 @@ public final class SimStaticIpProperties {
     @JsonProperty(value = "staticIp")
     private SimStaticIpPropertiesStaticIp staticIp;
 
-    /** Creates an instance of SimStaticIpProperties class. */
+    /**
+     * Creates an instance of SimStaticIpProperties class.
+     */
     public SimStaticIpProperties() {
     }
 
@@ -39,7 +40,7 @@ public final class SimStaticIpProperties {
      * Get the attachedDataNetwork property: The attached data network on which the static IP address will be used. The
      * combination of attached data network and slice defines the network scope of the IP address. The attached data
      * network must be in the same location as the SIM.
-     *
+     * 
      * @return the attachedDataNetwork value.
      */
     public AttachedDataNetworkResourceId attachedDataNetwork() {
@@ -50,7 +51,7 @@ public final class SimStaticIpProperties {
      * Set the attachedDataNetwork property: The attached data network on which the static IP address will be used. The
      * combination of attached data network and slice defines the network scope of the IP address. The attached data
      * network must be in the same location as the SIM.
-     *
+     * 
      * @param attachedDataNetwork the attachedDataNetwork value to set.
      * @return the SimStaticIpProperties object itself.
      */
@@ -63,7 +64,7 @@ public final class SimStaticIpProperties {
      * Get the slice property: The network slice on which the static IP address will be used. The combination of
      * attached data network and slice defines the network scope of the IP address. The slice must be in the same
      * location as the SIM.
-     *
+     * 
      * @return the slice value.
      */
     public SliceResourceId slice() {
@@ -74,7 +75,7 @@ public final class SimStaticIpProperties {
      * Set the slice property: The network slice on which the static IP address will be used. The combination of
      * attached data network and slice defines the network scope of the IP address. The slice must be in the same
      * location as the SIM.
-     *
+     * 
      * @param slice the slice value to set.
      * @return the SimStaticIpProperties object itself.
      */
@@ -85,7 +86,7 @@ public final class SimStaticIpProperties {
 
     /**
      * Get the staticIp property: The static IP configuration for the SIM to use at the defined network scope.
-     *
+     * 
      * @return the staticIp value.
      */
     public SimStaticIpPropertiesStaticIp staticIp() {
@@ -94,7 +95,7 @@ public final class SimStaticIpProperties {
 
     /**
      * Set the staticIp property: The static IP configuration for the SIM to use at the defined network scope.
-     *
+     * 
      * @param staticIp the staticIp value to set.
      * @return the SimStaticIpProperties object itself.
      */
@@ -105,7 +106,7 @@ public final class SimStaticIpProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

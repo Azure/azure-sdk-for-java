@@ -11,13 +11,13 @@ public final class OrcFormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OrcFormat model = BinaryData.fromString(
-            "{\"type\":\"OrcFormat\",\"serializer\":\"dataxp\",\"deserializer\":\"dataiwifhbk\",\"\":{\"h\":\"datattohqclna\",\"tpmglxkoikmtr\":\"datagsiqikvllr\"}}")
+            "{\"type\":\"OrcFormat\",\"serializer\":\"datanrqa\",\"deserializer\":\"datatnndxolousdvr\",\"\":{\"gyc\":\"dataqmawzjdrpizfu\"}}")
             .toObject(OrcFormat.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OrcFormat model = new OrcFormat().withSerializer("dataxp").withDeserializer("dataiwifhbk");
+        OrcFormat model = new OrcFormat().withSerializer("datanrqa").withDeserializer("datatnndxolousdvr");
         model = BinaryData.fromObject(model).toObject(OrcFormat.class);
     }
 }

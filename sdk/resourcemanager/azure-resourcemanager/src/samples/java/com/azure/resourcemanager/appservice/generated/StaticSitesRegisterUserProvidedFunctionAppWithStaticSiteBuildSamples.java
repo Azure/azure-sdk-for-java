@@ -11,8 +11,7 @@ import com.azure.resourcemanager.appservice.fluent.models.StaticSiteUserProvided
  */
 public final class StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
-     * RegisterUserProvidedFunctionAppWithStaticSiteBuild.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/RegisterUserProvidedFunctionAppWithStaticSiteBuild.json
      */
     /**
      * Sample code: Register a user provided function app with a static site build.
@@ -21,11 +20,14 @@ public final class StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuild
      */
     public static void
         registerAUserProvidedFunctionAppWithAStaticSiteBuild(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getStaticSites().registerUserProvidedFunctionAppWithStaticSiteBuild(
-            "rg", "testStaticSite0", "default", "testFunctionApp",
-            new StaticSiteUserProvidedFunctionAppArmResourceInner().withFunctionAppResourceId(
-                "/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testFunctionApp")
-                .withFunctionAppRegion("West US 2"),
-            true, com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getStaticSites()
+            .registerUserProvidedFunctionAppWithStaticSiteBuild("rg", "testStaticSite0", "default", "testFunctionApp",
+                new StaticSiteUserProvidedFunctionAppArmResourceInner().withFunctionAppResourceId(
+                    "/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testFunctionApp")
+                    .withFunctionAppRegion("West US 2"),
+                true, com.azure.core.util.Context.NONE);
     }
 }

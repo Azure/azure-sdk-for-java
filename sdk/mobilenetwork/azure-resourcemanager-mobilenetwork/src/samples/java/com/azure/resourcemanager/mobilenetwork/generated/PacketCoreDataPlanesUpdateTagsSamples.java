@@ -8,23 +8,23 @@ import com.azure.resourcemanager.mobilenetwork.models.PacketCoreDataPlane;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for PacketCoreDataPlanes UpdateTags. */
+/**
+ * Samples for PacketCoreDataPlanes UpdateTags.
+ */
 public final class PacketCoreDataPlanesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreDataPlaneUpdateTags.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreDataPlaneUpdateTags.json
      */
     /**
      * Sample code: Update packet core data plane tags.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void updatePacketCoreDataPlaneTags(
-        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        PacketCoreDataPlane resource =
-            manager
-                .packetCoreDataPlanes()
-                .getWithResponse("rg1", "testPacketCoreCP", "testPacketCoreDP", com.azure.core.util.Context.NONE)
-                .getValue();
+    public static void
+        updatePacketCoreDataPlaneTags(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+        PacketCoreDataPlane resource = manager.packetCoreDataPlanes()
+            .getWithResponse("rg1", "testPacketCoreCP", "testPacketCoreDP", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 

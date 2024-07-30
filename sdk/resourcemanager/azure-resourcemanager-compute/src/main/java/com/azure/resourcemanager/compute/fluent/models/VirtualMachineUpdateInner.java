@@ -15,6 +15,7 @@ import com.azure.resourcemanager.compute.models.HardwareProfile;
 import com.azure.resourcemanager.compute.models.NetworkProfile;
 import com.azure.resourcemanager.compute.models.OSProfile;
 import com.azure.resourcemanager.compute.models.Plan;
+import com.azure.resourcemanager.compute.models.ScheduledEventsPolicy;
 import com.azure.resourcemanager.compute.models.ScheduledEventsProfile;
 import com.azure.resourcemanager.compute.models.SecurityProfile;
 import com.azure.resourcemanager.compute.models.StorageProfile;
@@ -66,10 +67,10 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
     }
 
     /**
-     * Get the plan property: Specifies information about the marketplace image used to create the virtual machine.
-     * This element is only used for marketplace images. Before you can use a marketplace image from an API, you must
-     * enable the image for programmatic use. In the Azure portal, find the marketplace image that you want to use and
-     * then click **Want to deploy programmatically, Get Started -&gt;**. Enter any required information and then click
+     * Get the plan property: Specifies information about the marketplace image used to create the virtual machine. This
+     * element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable
+     * the image for programmatic use. In the Azure portal, find the marketplace image that you want to use and then
+     * click **Want to deploy programmatically, Get Started -&gt;**. Enter any required information and then click
      * **Save**.
      * 
      * @return the plan value.
@@ -79,10 +80,10 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
     }
 
     /**
-     * Set the plan property: Specifies information about the marketplace image used to create the virtual machine.
-     * This element is only used for marketplace images. Before you can use a marketplace image from an API, you must
-     * enable the image for programmatic use. In the Azure portal, find the marketplace image that you want to use and
-     * then click **Want to deploy programmatically, Get Started -&gt;**. Enter any required information and then click
+     * Set the plan property: Specifies information about the marketplace image used to create the virtual machine. This
+     * element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable
+     * the image for programmatic use. In the Azure portal, find the marketplace image that you want to use and then
+     * click **Want to deploy programmatically, Get Started -&gt;**. Enter any required information and then click
      * **Save**.
      * 
      * @param plan the plan value to set.
@@ -175,6 +176,31 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
     }
 
     /**
+     * Get the scheduledEventsPolicy property: Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets
+     * Scheduled Event related configurations for the virtual machine.
+     * 
+     * @return the scheduledEventsPolicy value.
+     */
+    public ScheduledEventsPolicy scheduledEventsPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().scheduledEventsPolicy();
+    }
+
+    /**
+     * Set the scheduledEventsPolicy property: Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets
+     * Scheduled Event related configurations for the virtual machine.
+     * 
+     * @param scheduledEventsPolicy the scheduledEventsPolicy value to set.
+     * @return the VirtualMachineUpdateInner object itself.
+     */
+    public VirtualMachineUpdateInner withScheduledEventsPolicy(ScheduledEventsPolicy scheduledEventsPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withScheduledEventsPolicy(scheduledEventsPolicy);
+        return this;
+    }
+
+    /**
      * Get the storageProfile property: Specifies the storage settings for the virtual machine disks.
      * 
      * @return the storageProfile value.
@@ -223,8 +249,8 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
     }
 
     /**
-     * Get the osProfile property: Specifies the operating system settings used while creating the virtual machine.
-     * Some of the settings cannot be changed once VM is provisioned.
+     * Get the osProfile property: Specifies the operating system settings used while creating the virtual machine. Some
+     * of the settings cannot be changed once VM is provisioned.
      * 
      * @return the osProfile value.
      */
@@ -233,8 +259,8 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
     }
 
     /**
-     * Set the osProfile property: Specifies the operating system settings used while creating the virtual machine.
-     * Some of the settings cannot be changed once VM is provisioned.
+     * Set the osProfile property: Specifies the operating system settings used while creating the virtual machine. Some
+     * of the settings cannot be changed once VM is provisioned.
      * 
      * @param osProfile the osProfile value to set.
      * @return the VirtualMachineUpdateInner object itself.
@@ -360,9 +386,9 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
     /**
      * Get the virtualMachineScaleSet property: Specifies information about the virtual machine scale set that the
      * virtual machine should be assigned to. Virtual machines specified in the same virtual machine scale set are
-     * allocated to different nodes to maximize availability. Currently, a VM can only be added to virtual machine
-     * scale set at creation time. An existing VM cannot be added to a virtual machine scale set. This property cannot
-     * exist along with a non-null properties.availabilitySet reference. Minimum api‐version: 2019‐03‐01.
+     * allocated to different nodes to maximize availability. Currently, a VM can only be added to virtual machine scale
+     * set at creation time. An existing VM cannot be added to a virtual machine scale set. This property cannot exist
+     * along with a non-null properties.availabilitySet reference. Minimum api‐version: 2019‐03‐01.
      * 
      * @return the virtualMachineScaleSet value.
      */
@@ -373,9 +399,9 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
     /**
      * Set the virtualMachineScaleSet property: Specifies information about the virtual machine scale set that the
      * virtual machine should be assigned to. Virtual machines specified in the same virtual machine scale set are
-     * allocated to different nodes to maximize availability. Currently, a VM can only be added to virtual machine
-     * scale set at creation time. An existing VM cannot be added to a virtual machine scale set. This property cannot
-     * exist along with a non-null properties.availabilitySet reference. Minimum api‐version: 2019‐03‐01.
+     * allocated to different nodes to maximize availability. Currently, a VM can only be added to virtual machine scale
+     * set at creation time. An existing VM cannot be added to a virtual machine scale set. This property cannot exist
+     * along with a non-null properties.availabilitySet reference. Minimum api‐version: 2019‐03‐01.
      * 
      * @param virtualMachineScaleSet the virtualMachineScaleSet value to set.
      * @return the VirtualMachineUpdateInner object itself.
@@ -516,8 +542,8 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
     }
 
     /**
-     * Get the hostGroup property: Specifies information about the dedicated host group that the virtual machine
-     * resides in. **Note:** User cannot specify both host and hostGroup properties. Minimum api-version: 2020-06-01.
+     * Get the hostGroup property: Specifies information about the dedicated host group that the virtual machine resides
+     * in. **Note:** User cannot specify both host and hostGroup properties. Minimum api-version: 2020-06-01.
      * 
      * @return the hostGroup value.
      */
@@ -526,8 +552,8 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
     }
 
     /**
-     * Set the hostGroup property: Specifies information about the dedicated host group that the virtual machine
-     * resides in. **Note:** User cannot specify both host and hostGroup properties. Minimum api-version: 2020-06-01.
+     * Set the hostGroup property: Specifies information about the dedicated host group that the virtual machine resides
+     * in. **Note:** User cannot specify both host and hostGroup properties. Minimum api-version: 2020-06-01.
      * 
      * @param hostGroup the hostGroup value to set.
      * @return the VirtualMachineUpdateInner object itself.
@@ -560,10 +586,10 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
 
     /**
      * Get the licenseType property: Specifies that the image or disk that is being used was licensed on-premises.
-     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt;
-     * Windows_Client &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server
-     * operating system are: &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE)
-     * &lt;br&gt;&lt;br&gt; For more information, see [Azure Hybrid Use Benefit for Windows
+     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt; Windows_Client
+     * &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server operating system are:
+     * &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE) &lt;br&gt;&lt;br&gt; For more
+     * information, see [Azure Hybrid Use Benefit for Windows
      * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
      * &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux
      * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) &lt;br&gt;&lt;br&gt;
@@ -577,10 +603,10 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
 
     /**
      * Set the licenseType property: Specifies that the image or disk that is being used was licensed on-premises.
-     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt;
-     * Windows_Client &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server
-     * operating system are: &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE)
-     * &lt;br&gt;&lt;br&gt; For more information, see [Azure Hybrid Use Benefit for Windows
+     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt; Windows_Client
+     * &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server operating system are:
+     * &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE) &lt;br&gt;&lt;br&gt; For more
+     * information, see [Azure Hybrid Use Benefit for Windows
      * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
      * &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux
      * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) &lt;br&gt;&lt;br&gt;
@@ -635,9 +661,9 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
     }
 
     /**
-     * Get the platformFaultDomain property: Specifies the scale set logical fault domain into which the Virtual
-     * Machine will be created. By default, the Virtual Machine will by automatically assigned to a fault domain that
-     * best maintains balance across available fault domains. This is applicable only if the 'virtualMachineScaleSet'
+     * Get the platformFaultDomain property: Specifies the scale set logical fault domain into which the Virtual Machine
+     * will be created. By default, the Virtual Machine will by automatically assigned to a fault domain that best
+     * maintains balance across available fault domains. This is applicable only if the 'virtualMachineScaleSet'
      * property of this Virtual Machine is set. The Virtual Machine Scale Set that is referenced, must have
      * 'platformFaultDomainCount' greater than 1. This property cannot be updated once the Virtual Machine is created.
      * Fault domain assignment can be viewed in the Virtual Machine Instance View. Minimum api‐version: 2020‐12‐01.
@@ -649,9 +675,9 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
     }
 
     /**
-     * Set the platformFaultDomain property: Specifies the scale set logical fault domain into which the Virtual
-     * Machine will be created. By default, the Virtual Machine will by automatically assigned to a fault domain that
-     * best maintains balance across available fault domains. This is applicable only if the 'virtualMachineScaleSet'
+     * Set the platformFaultDomain property: Specifies the scale set logical fault domain into which the Virtual Machine
+     * will be created. By default, the Virtual Machine will by automatically assigned to a fault domain that best
+     * maintains balance across available fault domains. This is applicable only if the 'virtualMachineScaleSet'
      * property of this Virtual Machine is set. The Virtual Machine Scale Set that is referenced, must have
      * 'platformFaultDomainCount' greater than 1. This property cannot be updated once the Virtual Machine is created.
      * Fault domain assignment can be viewed in the Virtual Machine Instance View. Minimum api‐version: 2020‐12‐01.

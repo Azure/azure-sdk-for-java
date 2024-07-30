@@ -6,7 +6,7 @@ package com.azure.ai.openai.impl;
 import com.azure.ai.openai.OpenAIAsyncClient;
 import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
-import com.azure.ai.openai.functions.MyFunctionCallArguments;
+import com.azure.ai.openai.MyFunctionCallArguments;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionFormat;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
@@ -44,10 +44,16 @@ import com.azure.ai.openai.models.SpeechVoice;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.IterableStream;
+import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.io.IOException;
@@ -190,24 +196,20 @@ public final class ReadmeSamples {
         chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
         chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
 
-        IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream("{deploymentOrModelName}",
-            new ChatCompletionsOptions(chatMessages));
-
-        chatCompletionsStream
-            .stream()
-            // Remove .skip(1) when using Non-Azure OpenAI API
-            // Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
-            // TODO: remove .skip(1) when service fix the issue.
-            .skip(1)
-            .forEach(chatCompletions -> {
-                ChatResponseMessage delta = chatCompletions.getChoices().get(0).getDelta();
-                if (delta.getRole() != null) {
-                    System.out.println("Role = " + delta.getRole());
-                }
-                if (delta.getContent() != null) {
-                    System.out.print(delta.getContent());
-                }
-            });
+        client.getChatCompletionsStream("{deploymentOrModelName}", new ChatCompletionsOptions(chatMessages))
+                .forEach(chatCompletions -> {
+                    if (CoreUtils.isNullOrEmpty(chatCompletions.getChoices())) {
+                        return;
+                    }
+                    ChatResponseMessage delta = chatCompletions.getChoices().get(0).getDelta();
+                    if (delta.getRole() != null) {
+                        System.out.println("Role = " + delta.getRole());
+                    }
+                    if (delta.getContent() != null) {
+                        String content = delta.getContent();
+                        System.out.print(content);
+                    }
+                });
         // END: readme-sample-getChatCompletionsStream
     }
 
@@ -220,7 +222,7 @@ public final class ReadmeSamples {
 
         for (EmbeddingItem item : embeddings.getData()) {
             System.out.printf("Index: %d.%n", item.getPromptIndex());
-            for (Double embedding : item.getEmbedding()) {
+            for (Float embedding : item.getEmbedding()) {
                 System.out.printf("%f;", embedding);
             }
         }
@@ -352,4 +354,52 @@ public final class ReadmeSamples {
         Files.write(path, speech.toBytes());
         // END: readme-sample-textToSpeech
     }
+
+    public void enableHttpLogging() {
+        // BEGIN: readme-sample-enablehttplogging
+        OpenAIClient openAIClient = new OpenAIClientBuilder()
+                .endpoint("{endpoint}")
+                .credential(new AzureKeyCredential("{key}"))
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .buildClient();
+        // or
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+        OpenAIClient configurationClientAad = new OpenAIClientBuilder()
+                .credential(credential)
+                .endpoint("{endpoint}")
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .buildClient();
+        // END: readme-sample-enablehttplogging
+    }
+
+    public void troubleshootingExceptions() {
+        OpenAIClient client = new OpenAIClientBuilder()
+                .buildClient();
+        // BEGIN: readme-sample-troubleshootingExceptions
+        List<ChatRequestMessage> chatMessages = new ArrayList<>();
+        chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant. You will talk like a pirate."));
+        chatMessages.add(new ChatRequestUserMessage("Can you help me?"));
+        chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
+        chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
+
+        try {
+            ChatCompletions chatCompletions = client.getChatCompletions("{deploymentOrModelName}",
+                    new ChatCompletionsOptions(chatMessages));
+        } catch (HttpResponseException e) {
+            System.out.println(e.getMessage());
+            // Do something with the exception
+        }
+        // END: readme-sample-troubleshootingExceptions
+
+        OpenAIAsyncClient asyncClient = new OpenAIClientBuilder()
+                .buildAsyncClient();
+        // BEGIN: readme-sample-troubleshootingExceptions-async
+        asyncClient.getChatCompletions("{deploymentOrModelName}", new ChatCompletionsOptions(chatMessages))
+                .doOnSuccess(ignored -> System.out.println("Success!"))
+                .doOnError(
+                        error -> error instanceof ResourceNotFoundException,
+                        error -> System.out.println("Exception: 'getChatCompletions' could not be performed."));
+        // END: readme-sample-troubleshootingExceptions-async
+    }
+
 }

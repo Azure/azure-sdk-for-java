@@ -14,55 +14,79 @@ public final class SsisPackageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SsisPackage model = BinaryData.fromString(
-            "{\"type\":\"Package\",\"folderId\":3556959886109984896,\"projectVersion\":4692852653848740418,\"projectId\":668264090121943233,\"parameters\":[{\"id\":525854716862013224,\"name\":\"ifywxjjylaqhx\",\"description\":\"fdarvjhwgkynxlw\",\"dataType\":\"gotdt\",\"required\":false,\"sensitive\":true,\"designDefaultValue\":\"lh\",\"defaultValue\":\"ybfnkylzrignqlwo\",\"sensitiveDefaultValue\":\"nbjuaiu\",\"valueType\":\"mqcbnk\",\"valueSet\":true,\"variable\":\"i\"}],\"id\":4578072156366697994,\"name\":\"ryywyfcenkbfxqc\",\"description\":\"ggeciradmxokbutb\"}")
+            "{\"type\":\"Package\",\"folderId\":3211289839298869603,\"projectVersion\":515454210949895163,\"projectId\":811846710701875594,\"parameters\":[{\"id\":7450103083846487889,\"name\":\"fjidqod\",\"description\":\"eogavfyihuz\",\"dataType\":\"pwnyfjcypazwiimd\",\"required\":false,\"sensitive\":false,\"designDefaultValue\":\"agrlwpamesitwqa\",\"defaultValue\":\"whuwxkyxi\",\"sensitiveDefaultValue\":\"f\",\"valueType\":\"rnai\",\"valueSet\":true,\"variable\":\"ccprkiyf\"},{\"id\":4424712053033601989,\"name\":\"mydx\",\"description\":\"uqbvfq\",\"dataType\":\"ihirqvvketydga\",\"required\":true,\"sensitive\":false,\"designDefaultValue\":\"gvqxe\",\"defaultValue\":\"rmh\",\"sensitiveDefaultValue\":\"aqgbb\",\"valueType\":\"vihylrxsiyzsyium\",\"valueSet\":true,\"variable\":\"q\"}],\"id\":7199022220193379982,\"name\":\"rn\",\"description\":\"qpkayqivbigdrqg\"}")
             .toObject(SsisPackage.class);
-        Assertions.assertEquals(4578072156366697994L, model.id());
-        Assertions.assertEquals("ryywyfcenkbfxqc", model.name());
-        Assertions.assertEquals("ggeciradmxokbutb", model.description());
-        Assertions.assertEquals(3556959886109984896L, model.folderId());
-        Assertions.assertEquals(4692852653848740418L, model.projectVersion());
-        Assertions.assertEquals(668264090121943233L, model.projectId());
-        Assertions.assertEquals(525854716862013224L, model.parameters().get(0).id());
-        Assertions.assertEquals("ifywxjjylaqhx", model.parameters().get(0).name());
-        Assertions.assertEquals("fdarvjhwgkynxlw", model.parameters().get(0).description());
-        Assertions.assertEquals("gotdt", model.parameters().get(0).dataType());
+        Assertions.assertEquals(7199022220193379982L, model.id());
+        Assertions.assertEquals("rn", model.name());
+        Assertions.assertEquals("qpkayqivbigdrqg", model.description());
+        Assertions.assertEquals(3211289839298869603L, model.folderId());
+        Assertions.assertEquals(515454210949895163L, model.projectVersion());
+        Assertions.assertEquals(811846710701875594L, model.projectId());
+        Assertions.assertEquals(7450103083846487889L, model.parameters().get(0).id());
+        Assertions.assertEquals("fjidqod", model.parameters().get(0).name());
+        Assertions.assertEquals("eogavfyihuz", model.parameters().get(0).description());
+        Assertions.assertEquals("pwnyfjcypazwiimd", model.parameters().get(0).dataType());
         Assertions.assertEquals(false, model.parameters().get(0).required());
-        Assertions.assertEquals(true, model.parameters().get(0).sensitive());
-        Assertions.assertEquals("lh", model.parameters().get(0).designDefaultValue());
-        Assertions.assertEquals("ybfnkylzrignqlwo", model.parameters().get(0).defaultValue());
-        Assertions.assertEquals("nbjuaiu", model.parameters().get(0).sensitiveDefaultValue());
-        Assertions.assertEquals("mqcbnk", model.parameters().get(0).valueType());
+        Assertions.assertEquals(false, model.parameters().get(0).sensitive());
+        Assertions.assertEquals("agrlwpamesitwqa", model.parameters().get(0).designDefaultValue());
+        Assertions.assertEquals("whuwxkyxi", model.parameters().get(0).defaultValue());
+        Assertions.assertEquals("f", model.parameters().get(0).sensitiveDefaultValue());
+        Assertions.assertEquals("rnai", model.parameters().get(0).valueType());
         Assertions.assertEquals(true, model.parameters().get(0).valueSet());
-        Assertions.assertEquals("i", model.parameters().get(0).variable());
+        Assertions.assertEquals("ccprkiyf", model.parameters().get(0).variable());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SsisPackage model = new SsisPackage().withId(4578072156366697994L).withName("ryywyfcenkbfxqc")
-            .withDescription("ggeciradmxokbutb").withFolderId(3556959886109984896L)
-            .withProjectVersion(4692852653848740418L).withProjectId(668264090121943233L)
-            .withParameters(Arrays.asList(new SsisParameter().withId(525854716862013224L).withName("ifywxjjylaqhx")
-                .withDescription("fdarvjhwgkynxlw").withDataType("gotdt").withRequired(false).withSensitive(true)
-                .withDesignDefaultValue("lh").withDefaultValue("ybfnkylzrignqlwo").withSensitiveDefaultValue("nbjuaiu")
-                .withValueType("mqcbnk").withValueSet(true).withVariable("i")));
+        SsisPackage model = new SsisPackage().withId(7199022220193379982L)
+            .withName("rn")
+            .withDescription("qpkayqivbigdrqg")
+            .withFolderId(3211289839298869603L)
+            .withProjectVersion(515454210949895163L)
+            .withProjectId(811846710701875594L)
+            .withParameters(Arrays.asList(
+                new SsisParameter().withId(7450103083846487889L)
+                    .withName("fjidqod")
+                    .withDescription("eogavfyihuz")
+                    .withDataType("pwnyfjcypazwiimd")
+                    .withRequired(false)
+                    .withSensitive(false)
+                    .withDesignDefaultValue("agrlwpamesitwqa")
+                    .withDefaultValue("whuwxkyxi")
+                    .withSensitiveDefaultValue("f")
+                    .withValueType("rnai")
+                    .withValueSet(true)
+                    .withVariable("ccprkiyf"),
+                new SsisParameter().withId(4424712053033601989L)
+                    .withName("mydx")
+                    .withDescription("uqbvfq")
+                    .withDataType("ihirqvvketydga")
+                    .withRequired(true)
+                    .withSensitive(false)
+                    .withDesignDefaultValue("gvqxe")
+                    .withDefaultValue("rmh")
+                    .withSensitiveDefaultValue("aqgbb")
+                    .withValueType("vihylrxsiyzsyium")
+                    .withValueSet(true)
+                    .withVariable("q")));
         model = BinaryData.fromObject(model).toObject(SsisPackage.class);
-        Assertions.assertEquals(4578072156366697994L, model.id());
-        Assertions.assertEquals("ryywyfcenkbfxqc", model.name());
-        Assertions.assertEquals("ggeciradmxokbutb", model.description());
-        Assertions.assertEquals(3556959886109984896L, model.folderId());
-        Assertions.assertEquals(4692852653848740418L, model.projectVersion());
-        Assertions.assertEquals(668264090121943233L, model.projectId());
-        Assertions.assertEquals(525854716862013224L, model.parameters().get(0).id());
-        Assertions.assertEquals("ifywxjjylaqhx", model.parameters().get(0).name());
-        Assertions.assertEquals("fdarvjhwgkynxlw", model.parameters().get(0).description());
-        Assertions.assertEquals("gotdt", model.parameters().get(0).dataType());
+        Assertions.assertEquals(7199022220193379982L, model.id());
+        Assertions.assertEquals("rn", model.name());
+        Assertions.assertEquals("qpkayqivbigdrqg", model.description());
+        Assertions.assertEquals(3211289839298869603L, model.folderId());
+        Assertions.assertEquals(515454210949895163L, model.projectVersion());
+        Assertions.assertEquals(811846710701875594L, model.projectId());
+        Assertions.assertEquals(7450103083846487889L, model.parameters().get(0).id());
+        Assertions.assertEquals("fjidqod", model.parameters().get(0).name());
+        Assertions.assertEquals("eogavfyihuz", model.parameters().get(0).description());
+        Assertions.assertEquals("pwnyfjcypazwiimd", model.parameters().get(0).dataType());
         Assertions.assertEquals(false, model.parameters().get(0).required());
-        Assertions.assertEquals(true, model.parameters().get(0).sensitive());
-        Assertions.assertEquals("lh", model.parameters().get(0).designDefaultValue());
-        Assertions.assertEquals("ybfnkylzrignqlwo", model.parameters().get(0).defaultValue());
-        Assertions.assertEquals("nbjuaiu", model.parameters().get(0).sensitiveDefaultValue());
-        Assertions.assertEquals("mqcbnk", model.parameters().get(0).valueType());
+        Assertions.assertEquals(false, model.parameters().get(0).sensitive());
+        Assertions.assertEquals("agrlwpamesitwqa", model.parameters().get(0).designDefaultValue());
+        Assertions.assertEquals("whuwxkyxi", model.parameters().get(0).defaultValue());
+        Assertions.assertEquals("f", model.parameters().get(0).sensitiveDefaultValue());
+        Assertions.assertEquals("rnai", model.parameters().get(0).valueType());
         Assertions.assertEquals(true, model.parameters().get(0).valueSet());
-        Assertions.assertEquals("i", model.parameters().get(0).variable());
+        Assertions.assertEquals("ccprkiyf", model.parameters().get(0).variable());
     }
 }

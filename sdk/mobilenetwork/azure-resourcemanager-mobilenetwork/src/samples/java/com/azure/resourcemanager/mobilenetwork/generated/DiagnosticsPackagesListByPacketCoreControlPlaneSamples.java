@@ -4,20 +4,21 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-/** Samples for DiagnosticsPackages ListByPacketCoreControlPlane. */
+/**
+ * Samples for DiagnosticsPackages ListByPacketCoreControlPlane.
+ */
 public final class DiagnosticsPackagesListByPacketCoreControlPlaneSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/DiagnosticsPackageListByPacketCoreControlPlane.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/DiagnosticsPackageListByPacketCoreControlPlane.json
      */
     /**
      * Sample code: List diagnostics packages under a packet core control plane.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void listDiagnosticsPackagesUnderAPacketCoreControlPlane(
         com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .diagnosticsPackages()
+        manager.diagnosticsPackages()
             .listByPacketCoreControlPlane("rg1", "TestPacketCoreCP", com.azure.core.util.Context.NONE);
     }
 }

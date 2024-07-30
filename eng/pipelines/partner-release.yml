@@ -11,73 +11,90 @@ parameters:
   type: boolean
   default: true
 
-resources:
-  repositories:
-    - repository: azure-sdk-build-tools
-      type: git
-      name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20230829.1
+extends:
+  template: /eng/pipelines/templates/stages/1es-redirect.yml
+  parameters:
+    stages:
+      - stage:
+        displayName: 'Partner Release'
+        variables:
+          - name: Artifacts
+            value: $(Pipeline.Workspace)/artifacts
+          - name: EsrpArtifacts
+            value: $(Build.SourcesDirectory)/packages-esrp
+          - template: /eng/pipelines/templates/variables/image.yml
+        jobs:
+        - job: Signing
+          pool:
+            name: $(WINDOWSPOOL)
+            image: $(WINDOWSVMIMAGE)
+            os: windows
+          steps:
+          - checkout: azure-sdk-build-tools
+            path: azure-sdk-build-tools
 
-variables:
-  BuildToolScripts: $(Pipeline.Workspace)/azure-sdk-build-tools/scripts
-  Artifacts: $(Pipeline.Workspace)/artifacts
-  EsrpArtifacts: $(Pipeline.Workspace)/packages-esrp
+          - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
 
-jobs:
-- job: Signing
-  pool:
-    name: $(WINDOWSPOOL)
-    vmImage: $(WINDOWSVMIMAGE)
-    os: windows
-  steps:
-  - checkout: azure-sdk-build-tools
-    path: azure-sdk-build-tools
+          - task: AzurePowerShell@5
+            displayName: 'Copy from azuresdkpartnerdrops'
+            condition: and(succeeded(), ne(variables['SkipCopyFromPartnerDrops'], 'true'))
+            inputs:
+              azureSubscription: 'azuresdkpartnerdrops - Storage Partner Drops'
+              ScriptType: 'InlineScript'
+              azurePowerShellVersion: LatestVersion 
+              pwsh: true
+              Inline: |
+                echo "azcopy copy 'https://azuresdkpartnerdrops.blob.core.windows.net/drops/${{ parameters.BlobPath }}/*' '$(Artifacts)' --recursive=true"
+                azcopy copy 'https://azuresdkpartnerdrops.blob.core.windows.net/drops/${{ parameters.BlobPath }}/*' '$(Artifacts)' --recursive=true
+                $copiedFiles = (dir '$(Artifacts)' -r | % { $_.FullName })
+                echo "Copied files: $copiedFiles"
+                if (!$copiedFiles) { 
+                  echo "Failed to copy any files from 'https://azuresdkpartnerdrops.blob.core.windows.net/drops/${{ parameters.BlobPath }}/*' please double check they exist"
+                  exit 1
+                }
+            env: 
+              AZCOPY_AUTO_LOGIN_TYPE: 'PSCRED'
 
-  - task: PowerShell@2
-    displayName: 'Download packages from blob storage'
-    inputs:
-      targetType: filePath
-      filePath: '$(BuildToolScripts)/copy-from-azuresdkpartnerdrops.ps1'
-      arguments: '$(Artifacts) ${{ parameters.BlobPath }} $(azuresdkpartnerdrops-access-key)'
+          - template: tools/java-esrp-signing/java-esrp-signing.yml@azure-sdk-build-tools
+            parameters:
+              ArtifactDirectory: $(Artifacts)
 
-  - template: tools/java-esrp-signing/java-esrp-signing.yml@azure-sdk-build-tools
-    parameters:
-      ArtifactDirectory: $(Artifacts)
+          - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+            parameters:
+              ArtifactName: packages-signed
+              ArtifactPath: $(Artifacts)
 
-  - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
-    parameters:
-      ArtifactName: packages-signed
-      ArtifactPath: $(Artifacts)
-- job: Release
-  dependsOn: Signing
-  pool:
-    name: $(WINDOWSPOOL)
-    vmImage: $(WINDOWSVMIMAGE)
-    os: windows
-  steps:
-  - checkout: self
-    path: azure-sdk-for-java
+        - job: Release
+          dependsOn: Signing
+          pool:
+            name: $(WINDOWSPOOL)
+            image: $(WINDOWSVMIMAGE)
+            os: windows
+          steps:
+          - checkout: self
+            path: azure-sdk-for-java
 
-  - checkout: azure-sdk-build-tools
-    path: azure-sdk-build-tools
+          - checkout: azure-sdk-build-tools
+            path: azure-sdk-build-tools
 
-  - download: current
-    displayName: Download Signed Artifacts
-    artifact: packages-signed
+          - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
 
-  - template: tools/gpg/gpg.yml@azure-sdk-build-tools
+          - download: current
+            displayName: Download Signed Artifacts
+            artifact: packages-signed
 
-  - template: /eng/pipelines/templates/steps/java-publishing.yml
-    parameters:
-      ArtifactDirectory: $(Pipeline.Workspace)/packages-signed
-      OutputDirectory: $(EsrpArtifacts)
-      Target: EsrpRelease
-      BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
-      JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
-      ShouldPublish: ${{ parameters.ShouldPublish }}
-      StageOnly: false
+          - template: tools/gpg/gpg.yml@azure-sdk-build-tools
 
-  - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
-    parameters:
-      ArtifactName: packages-esrp-$(System.JobAttempt)
-      ArtifactPath: $(EsrpArtifacts)
+          - template: /eng/pipelines/templates/steps/java-publishing.yml
+            parameters:
+              ArtifactDirectory: $(Pipeline.Workspace)/packages-signed
+              OutputDirectory: $(EsrpArtifacts)
+              Target: EsrpRelease
+              JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+              ShouldPublish: ${{ parameters.ShouldPublish }}
+              StageOnly: false
+
+          - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+            parameters:
+              ArtifactName: packages-esrp-$(System.JobAttempt)
+              ArtifactPath: $(EsrpArtifacts)

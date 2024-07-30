@@ -9,7 +9,9 @@ import com.azure.resourcemanager.resources.models.ProviderPermission;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of provider permissions. */
+/**
+ * List of provider permissions.
+ */
 @Fluent
 public final class ProviderPermissionListResultInner {
     /*
@@ -24,13 +26,15 @@ public final class ProviderPermissionListResultInner {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ProviderPermissionListResultInner class. */
+    /**
+     * Creates an instance of ProviderPermissionListResultInner class.
+     */
     public ProviderPermissionListResultInner() {
     }
 
     /**
      * Get the value property: An array of provider permissions.
-     *
+     * 
      * @return the value value.
      */
     public List<ProviderPermission> value() {
@@ -39,7 +43,7 @@ public final class ProviderPermissionListResultInner {
 
     /**
      * Set the value property: An array of provider permissions.
-     *
+     * 
      * @param value the value value to set.
      * @return the ProviderPermissionListResultInner object itself.
      */
@@ -50,7 +54,7 @@ public final class ProviderPermissionListResultInner {
 
     /**
      * Get the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ProviderPermissionListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

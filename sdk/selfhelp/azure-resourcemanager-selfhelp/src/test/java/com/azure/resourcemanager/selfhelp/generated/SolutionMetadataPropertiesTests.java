@@ -12,7 +12,7 @@ public final class SolutionMetadataPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SolutionMetadataProperties model = BinaryData.fromString(
-            "{\"solutionId\":\"qqwx\",\"solutionType\":\"Solutions\",\"description\":\"al\",\"requiredInputs\":[\"sub\",\"snjampmng\",\"zscxaqwo\"]}")
+            "{\"solutionId\":\"qqwx\",\"solutionType\":\"Troubleshooters\",\"description\":\"al\",\"requiredInputs\":[\"sub\",\"snjampmng\",\"zscxaqwo\"]}")
             .toObject(SolutionMetadataProperties.class);
         Assertions.assertEquals("qqwx", model.solutionId());
     }

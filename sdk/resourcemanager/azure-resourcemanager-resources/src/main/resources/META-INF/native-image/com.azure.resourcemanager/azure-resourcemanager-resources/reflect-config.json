@@ -414,6 +414,11 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.resources.models.ExportTemplateOutputFormat",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.resources.models.TagsPatchOperation",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,

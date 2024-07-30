@@ -9,7 +9,9 @@ import com.azure.resourcemanager.hdinsight.containers.fluent.models.ClusterVersi
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Represents a list of cluster versions. */
+/**
+ * Represents a list of cluster versions.
+ */
 @Fluent
 public final class ClusterVersionsListResult {
     /*
@@ -24,13 +26,15 @@ public final class ClusterVersionsListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ClusterVersionsListResult class. */
+    /**
+     * Creates an instance of ClusterVersionsListResult class.
+     */
     public ClusterVersionsListResult() {
     }
 
     /**
      * Get the value property: The list of cluster versions.
-     *
+     * 
      * @return the value value.
      */
     public List<ClusterVersionInner> value() {
@@ -39,7 +43,7 @@ public final class ClusterVersionsListResult {
 
     /**
      * Set the value property: The list of cluster versions.
-     *
+     * 
      * @param value the value value to set.
      * @return the ClusterVersionsListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class ClusterVersionsListResult {
 
     /**
      * Get the nextLink property: The link (url) to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ClusterVersionsListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

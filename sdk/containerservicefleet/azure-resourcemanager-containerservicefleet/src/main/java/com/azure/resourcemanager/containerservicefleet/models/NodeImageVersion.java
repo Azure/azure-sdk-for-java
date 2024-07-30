@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservicefleet.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The node upgrade image version. */
+/**
+ * The node upgrade image version.
+ */
 @Immutable
 public final class NodeImageVersion {
     /*
@@ -16,14 +18,16 @@ public final class NodeImageVersion {
     @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
-    /** Creates an instance of NodeImageVersion class. */
+    /**
+     * Creates an instance of NodeImageVersion class.
+     */
     public NodeImageVersion() {
     }
 
     /**
      * Get the version property: The image version to upgrade the nodes to (e.g.,
      * 'AKSUbuntu-1804gen2containerd-2022.12.13').
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -32,7 +36,7 @@ public final class NodeImageVersion {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

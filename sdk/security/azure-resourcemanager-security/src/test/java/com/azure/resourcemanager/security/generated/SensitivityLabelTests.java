@@ -24,8 +24,11 @@ public final class SensitivityLabelTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SensitivityLabel model = new SensitivityLabel().withDisplayName("bjnpg").withDescription("ftadehxnltyfs")
-            .withRank(Rank.HIGH).withOrder(1752385169).withEnabled(false);
+        SensitivityLabel model = new SensitivityLabel().withDisplayName("bjnpg")
+            .withDescription("ftadehxnltyfs")
+            .withRank(Rank.HIGH)
+            .withOrder(1752385169)
+            .withEnabled(false);
         model = BinaryData.fromObject(model).toObject(SensitivityLabel.class);
         Assertions.assertEquals("bjnpg", model.displayName());
         Assertions.assertEquals("ftadehxnltyfs", model.description());

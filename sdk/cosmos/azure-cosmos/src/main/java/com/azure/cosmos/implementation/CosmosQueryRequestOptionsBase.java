@@ -6,24 +6,27 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosRequestOptions;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
-import com.fasterxml.jackson.databind.JsonNode;
 
 import java.time.Duration;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
-import java.util.function.Function;
 
 /**
  * Specifies the options associated with readMany methods
  * in the Azure Cosmos DB database service.
  */
-public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequestOptionsBase<?>> {
+public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequestOptionsBase<?>> implements OverridableRequestOptions {
     private final static ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.CosmosDiagnosticsThresholdsAccessor thresholdsAccessor =
         ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.getCosmosAsyncClientAccessor();
 
@@ -39,9 +42,11 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
     private Map<String, String> customOptions;
     private boolean indexMetricsEnabled;
     private UUID correlationActivityId;
-    private Function<JsonNode, ?> itemFactoryMethod;
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
     private List<String> excludeRegions;
+    private CosmosItemSerializer customSerializer;
+    private Set<String> keywordIdentifiers;
+    private static final Set<String> EMPTY_KEYWORD_IDENTIFIERS = Collections.unmodifiableSet(new HashSet<>());
 
     /**
      * Instantiates a new query request options.
@@ -68,11 +73,12 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
         this.customOptions = options.customOptions;
         this.indexMetricsEnabled = options.indexMetricsEnabled;
         this.correlationActivityId = options.correlationActivityId;
-        this.itemFactoryMethod = options.itemFactoryMethod;
         this.thresholds = options.thresholds;
         this.cosmosEndToEndOperationLatencyPolicyConfig = options.cosmosEndToEndOperationLatencyPolicyConfig;
         this.excludeRegions = options.excludeRegions;
         this.properties = options.properties;
+        this.customSerializer = options.customSerializer;
+        this.keywordIdentifiers = options.keywordIdentifiers;
     }
 
     public void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -188,7 +194,8 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
      *
      * @return return set ResponseContinuationTokenLimitInKb, or 0 if not set
      */
-    public int getResponseContinuationTokenLimitInKb() {
+    @Override
+    public Integer getResponseContinuationTokenLimitInKb() {
         return responseContinuationTokenLimitInKb;
     }
 
@@ -224,6 +231,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
      *
      * @return a list of excluded regions
      * */
+    @Override
     public List<String> getExcludedRegions() {
         if (this.excludeRegions == null) {
             return null;
@@ -236,7 +244,8 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
      *
      * @return whether to enable populate query metrics (default: true)
      */
-    public boolean isQueryMetricsEnabled() {
+    @Override
+    public Boolean isQueryMetricsEnabled() {
         return queryMetricsEnabled;
     }
 
@@ -278,6 +287,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
      * Get throughput control group name.
      * @return The throughput control group name.
      */
+    @Override
     public String getThroughputControlGroupName() {
         return this.throughputControlGroupName;
     }
@@ -372,7 +382,8 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
      *
      * @return indexMetricsEnabled (default: false)
      */
-    public boolean isIndexMetricsEnabled() {
+    @Override
+    public Boolean isIndexMetricsEnabled() {
         return indexMetricsEnabled;
     }
 
@@ -419,27 +430,63 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
         return this.customOptions;
     }
 
-    public Function<JsonNode, ?> getItemFactoryMethod() { return this.itemFactoryMethod; }
-
-    @SuppressWarnings("unchecked")
-    public <T> Function<JsonNode, T> getItemFactoryMethod(Class<T> classOfT) {
-
-        return (Function<JsonNode, T>)this.itemFactoryMethod;
+    @Override
+    public CosmosDiagnosticsThresholds getDiagnosticsThresholds() {
+        return this.thresholds;
     }
 
+    @Override
+    public CosmosEndToEndOperationLatencyPolicyConfig getCosmosEndToEndLatencyPolicyConfig() {
+        return cosmosEndToEndOperationLatencyPolicyConfig;
+    }
+
+    /**
+     * Gets the custom item serializer defined for this instance of request options
+     * @return the custom item serializer
+     */
+    public CosmosItemSerializer getCustomItemSerializer() {
+        return this.customSerializer;
+    }
+
+    /**
+     * Allows specifying a custom item serializer to be used for this operation. If the serializer
+     * on the request options is null, the serializer on CosmosClientBuilder is used. If both serializers
+     * are null (the default), an internal Jackson ObjectMapper is ued for serialization/deserialization.
+     * @param customItemSerializer the custom item serializer for this operation
+     * @return  the CosmosItemRequestOptions.
+     */
     @SuppressWarnings("unchecked")
-    public T setItemFactoryMethod(Function<JsonNode, ?> factoryMethod) {
-        this.itemFactoryMethod = factoryMethod;
+    public T setCustomItemSerializer(CosmosItemSerializer customItemSerializer) {
+        this.customSerializer = customItemSerializer;
 
         return (T)this;
     }
 
-    public CosmosDiagnosticsThresholds getThresholds() {
-        return this.thresholds;
+    public void setKeywordIdentifiers(Set<String> keywordIdentifiers) {
+        if (keywordIdentifiers != null) {
+            this.keywordIdentifiers = Collections.unmodifiableSet(keywordIdentifiers);
+        } else {
+            this.keywordIdentifiers = EMPTY_KEYWORD_IDENTIFIERS;
+        }
     }
 
-    public CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyConfig() {
-        return cosmosEndToEndOperationLatencyPolicyConfig;
+    @Override
+    public Set<String> getKeywordIdentifiers() {
+        return this.keywordIdentifiers;
+    }
+
+    @Override
+    public void override(CosmosRequestOptions cosmosRequestOptions) {
+        this.consistencyLevel = overrideOption(cosmosRequestOptions.getConsistencyLevel(), this.consistencyLevel);
+        this.throughputControlGroupName = overrideOption(cosmosRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
+        this.dedicatedGatewayRequestOptions = overrideOption(cosmosRequestOptions.getDedicatedGatewayRequestOptions(), this.dedicatedGatewayRequestOptions);
+        this.cosmosEndToEndOperationLatencyPolicyConfig = overrideOption(cosmosRequestOptions.getCosmosEndToEndLatencyPolicyConfig(), this.cosmosEndToEndOperationLatencyPolicyConfig);
+        this.excludeRegions = overrideOption(cosmosRequestOptions.getExcludedRegions(), this.excludeRegions);
+        this.thresholds = overrideOption(cosmosRequestOptions.getDiagnosticsThresholds(), this.thresholds);
+        this.indexMetricsEnabled = overrideOption(cosmosRequestOptions.isIndexMetricsEnabled(), this.indexMetricsEnabled);
+        this.queryMetricsEnabled = overrideOption(cosmosRequestOptions.isQueryMetricsEnabled(), this.queryMetricsEnabled);
+        this.responseContinuationTokenLimitInKb = overrideOption(cosmosRequestOptions.getResponseContinuationTokenLimitInKb(), this.responseContinuationTokenLimitInKb);
+        this.keywordIdentifiers = overrideOption(cosmosRequestOptions.getKeywordIdentifiers(), this.keywordIdentifiers);
     }
 
     public RequestOptions applyToRequestOptions(RequestOptions requestOptions) {
@@ -452,7 +499,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
             requestOptions.setDiagnosticsThresholds(this.thresholds);
         }
         requestOptions.setCosmosEndToEndLatencyPolicyConfig(this.cosmosEndToEndOperationLatencyPolicyConfig);
-        requestOptions.setExcludeRegions(this.excludeRegions);
+        requestOptions.setExcludedRegions(this.excludeRegions);
 
         if (this.customOptions != null) {
             for(Map.Entry<String, String> entry : this.customOptions.entrySet()) {

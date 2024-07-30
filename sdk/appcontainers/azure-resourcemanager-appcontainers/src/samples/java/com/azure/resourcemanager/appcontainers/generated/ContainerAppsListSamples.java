@@ -4,18 +4,21 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-/** Samples for ContainerApps List. */
+/**
+ * Samples for ContainerApps List.
+ */
 public final class ContainerAppsListSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/ContainerApps_ListBySubscription.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
+     * ContainerApps_ListBySubscription.json
      */
     /**
      * Sample code: List Container Apps by subscription.
-     *
+     * 
      * @param manager Entry point to ContainerAppsApiManager.
      */
-    public static void listContainerAppsBySubscription(
-        com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
+    public static void
+        listContainerAppsBySubscription(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
         manager.containerApps().list(com.azure.core.util.Context.NONE);
     }
 }

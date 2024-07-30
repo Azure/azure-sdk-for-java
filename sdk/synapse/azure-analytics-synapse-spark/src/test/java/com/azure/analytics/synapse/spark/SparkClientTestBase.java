@@ -82,7 +82,7 @@ public abstract class SparkClientTestBase extends TestProxyTestBase {
         policies.add(new AddDatePolicy());
 
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(new BearerTokenAuthenticationPolicy(credential, SparkClientBuilder.DEFAULT_SCOPES));
+        policies.add(new BearerTokenAuthenticationPolicy(credential, "https://dev.azuresynapse.net/.default"));
 
         policies.add(new RetryPolicy());
 
@@ -97,6 +97,10 @@ public abstract class SparkClientTestBase extends TestProxyTestBase {
 
         if (interceptorManager.isRecordMode()) {
             policies.add(interceptorManager.getRecordPolicy());
+        }
+
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.removeSanitizers("AZSDK3425", "AZSDK3430");
         }
 
         HttpPipeline pipeline = new HttpPipelineBuilder()

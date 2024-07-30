@@ -13,18 +13,18 @@ public final class CategoryConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CategoryConfiguration model
-            = BinaryData.fromString("{\"minimumSeverityLevel\":\"wzdvpiwh\",\"category\":\"Dependencies\"}")
+            = BinaryData.fromString("{\"minimumSeverityLevel\":\"abvoyngsuxxcz\",\"category\":\"IaC\"}")
                 .toObject(CategoryConfiguration.class);
-        Assertions.assertEquals("wzdvpiwh", model.minimumSeverityLevel());
-        Assertions.assertEquals(RuleCategory.DEPENDENCIES, model.category());
+        Assertions.assertEquals("abvoyngsuxxcz", model.minimumSeverityLevel());
+        Assertions.assertEquals(RuleCategory.IAC, model.category());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CategoryConfiguration model
-            = new CategoryConfiguration().withMinimumSeverityLevel("wzdvpiwh").withCategory(RuleCategory.DEPENDENCIES);
+            = new CategoryConfiguration().withMinimumSeverityLevel("abvoyngsuxxcz").withCategory(RuleCategory.IAC);
         model = BinaryData.fromObject(model).toObject(CategoryConfiguration.class);
-        Assertions.assertEquals("wzdvpiwh", model.minimumSeverityLevel());
-        Assertions.assertEquals(RuleCategory.DEPENDENCIES, model.category());
+        Assertions.assertEquals("abvoyngsuxxcz", model.minimumSeverityLevel());
+        Assertions.assertEquals(RuleCategory.IAC, model.category());
     }
 }

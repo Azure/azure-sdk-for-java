@@ -1,6 +1,6 @@
 # Release History
 
-## 7.16.0-beta.2 (Unreleased)
+## 7.18.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,48 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 7.17.1 (2024-06-22)
+
+### Features Added
+
+- Setting the v2 stack as the default for "Synchronous Receiver Client".
+
+### Bugs Fixed
+
+- Fixes the sender API that takes `Iterable` to not drop messages that cannot be fit in the batch. ([#40462](https://github.com/Azure/azure-sdk-for-java/pull/40462))
+- Fixed issue where the scheduled enqueue time was not cleared when creating a new message from a received message.([#44585](https://github.com/Azure/azure-sdk-for-net/pull/44585)) 
+
+## 7.18.0-beta.1 (2024-05-15)
+
+### Features Added
+
+- Added the support for batch-delete APIs in Receiver client.
+
+## 7.17.0 (2024-05-06)
+
+### Bugs Fixed
+
+- Fixes the session message disposition to use management node as fall back. ([#39913](https://github.com/Azure/azure-sdk-for-java/issues/39913))
+- Fixes the session processor idle timeout to fall back to RetryOptions::tryTimeout. ([#39993](https://github.com/Azure/azure-sdk-for-java/issues/39993))
+
+## 7.16.0 (2024-04-22)
+
+### Features Added
+
+- Setting the v2 stack as the default for "Session Processor Client" and "Session Reactor Receiver Client". ([39750](https://github.com/Azure/azure-sdk-for-java/pull/39750))
+
+### Bugs Fixed
+
+- Fixes the ServiceBusProcessorClient to signal intermediate errors to the processor handler. ([#39669](https://github.com/Azure/azure-sdk-for-java/issues/39669))
+- Fixes the issue of not creating default rule when creating subscription. ([37856](https://github.com/Azure/azure-sdk-for-java/issues/37856))
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.47.0` to `1.48.0`.
+- Upgraded `azure-core-amqp` from `2.9.2` to `2.9.3`.
+- Upgraded `azure-identity` from `1.11.2` to `1.12.0`.
 
 ## 7.16.0-beta.1 (2024-03-14)
 
@@ -708,7 +750,7 @@ Fixed the issue that the second call of `ServiceBusReceiverClient.complete` is s
 Version 7.0.0-beta.1 is a beta of our efforts in creating a client library that is developer-friendly, idiomatic
 to the Java ecosystem, and as consistent across different languages and platforms as possible. The principles that guide
 our efforts can be found in the [Azure SDK Design Guidelines for
-.Java](https://azuresdkspecs.z5.web.core.windows.net/JavaSpec.html).
+.Java](https://aka.ms/azsdk/guide/java).
 
 ### Features
 

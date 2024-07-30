@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A policy that specifies the delivery rules to be used for an endpoint. */
+/**
+ * A policy that specifies the delivery rules to be used for an endpoint.
+ */
 @Fluent
 public final class EndpointPropertiesUpdateParametersDeliveryPolicy {
     /*
@@ -24,13 +26,15 @@ public final class EndpointPropertiesUpdateParametersDeliveryPolicy {
     @JsonProperty(value = "rules", required = true)
     private List<DeliveryRule> rules;
 
-    /** Creates an instance of EndpointPropertiesUpdateParametersDeliveryPolicy class. */
+    /**
+     * Creates an instance of EndpointPropertiesUpdateParametersDeliveryPolicy class.
+     */
     public EndpointPropertiesUpdateParametersDeliveryPolicy() {
     }
 
     /**
      * Get the description property: User-friendly description of the policy.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -39,7 +43,7 @@ public final class EndpointPropertiesUpdateParametersDeliveryPolicy {
 
     /**
      * Set the description property: User-friendly description of the policy.
-     *
+     * 
      * @param description the description value to set.
      * @return the EndpointPropertiesUpdateParametersDeliveryPolicy object itself.
      */
@@ -50,7 +54,7 @@ public final class EndpointPropertiesUpdateParametersDeliveryPolicy {
 
     /**
      * Get the rules property: A list of the delivery rules.
-     *
+     * 
      * @return the rules value.
      */
     public List<DeliveryRule> rules() {
@@ -59,7 +63,7 @@ public final class EndpointPropertiesUpdateParametersDeliveryPolicy {
 
     /**
      * Set the rules property: A list of the delivery rules.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the EndpointPropertiesUpdateParametersDeliveryPolicy object itself.
      */
@@ -70,15 +74,13 @@ public final class EndpointPropertiesUpdateParametersDeliveryPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (rules() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property rules in model EndpointPropertiesUpdateParametersDeliveryPolicy"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property rules in model EndpointPropertiesUpdateParametersDeliveryPolicy"));
         } else {
             rules().forEach(e -> e.validate());
         }

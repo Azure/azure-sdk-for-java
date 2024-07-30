@@ -6,6 +6,7 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -13,20 +14,27 @@ import java.util.List;
 /**
  * Sftp write settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = SftpWriteSettings.class, visible = true)
 @JsonTypeName("SftpWriteSettings")
 @Fluent
 public final class SftpWriteSettings extends StoreWriteSettings {
     /*
-     * Specifies the timeout for writing each chunk to SFTP server. Default value: 01:00:00 (one hour). Type: string
-     * (or Expression with resultType string).
+     * The write setting type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "SftpWriteSettings";
+
+    /*
+     * Specifies the timeout for writing each chunk to SFTP server. Default value: 01:00:00 (one hour). Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "operationTimeout")
     private Object operationTimeout;
 
     /*
-     * Upload to temporary file(s) and rename. Disable this option if your SFTP server doesn't support rename
-     * operation. Type: boolean (or Expression with resultType boolean).
+     * Upload to temporary file(s) and rename. Disable this option if your SFTP server doesn't support rename operation.
+     * Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "useTempFileRename")
     private Object useTempFileRename;
@@ -35,6 +43,16 @@ public final class SftpWriteSettings extends StoreWriteSettings {
      * Creates an instance of SftpWriteSettings class.
      */
     public SftpWriteSettings() {
+    }
+
+    /**
+     * Get the type property: The write setting type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

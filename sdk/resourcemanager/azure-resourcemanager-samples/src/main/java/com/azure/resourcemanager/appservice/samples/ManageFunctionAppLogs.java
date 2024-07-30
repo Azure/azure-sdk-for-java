@@ -8,6 +8,8 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.resourcemanager.appservice.fluent.models.CsmPublishingCredentialsPoliciesEntityProperties;
+import com.azure.resourcemanager.appservice.models.FtpsState;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.LogLevel;
 import com.azure.core.management.Region;
@@ -61,10 +63,22 @@ public final class ManageFunctionAppLogs {
                         .withLogLevel(LogLevel.VERBOSE)
                         .withApplicationLogsStoredOnFileSystem()
                         .attach()
+                    .withFtpsState(FtpsState.ALL_ALLOWED)
                     .create();
 
             System.out.println("Created function app " + app.name());
             Utils.print(app);
+
+            app.manager().resourceManager().genericResources().define("ftp")
+                .withRegion(app.regionName())
+                .withExistingResourceGroup(app.resourceGroupName())
+                .withResourceType("basicPublishingCredentialsPolicies")
+                .withProviderNamespace("Microsoft.Web")
+                .withoutPlan()
+                .withParentResourcePath("sites/" + app.name())
+                .withApiVersion("2023-01-01")
+                .withProperties(new CsmPublishingCredentialsPoliciesEntityProperties().withAllow(true))
+                .create();
 
             //============================================================
             // Deploy to app 1 through FTP

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.frontdoor.models.EndpointType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Defines the properties of a preconfigured endpoint. */
+/**
+ * Defines the properties of a preconfigured endpoint.
+ */
 @Fluent
 public final class PreconfiguredEndpointInner extends Resource {
     /*
@@ -19,27 +21,33 @@ public final class PreconfiguredEndpointInner extends Resource {
     @JsonProperty(value = "properties")
     private PreconfiguredEndpointProperties innerProperties;
 
-    /** Creates an instance of PreconfiguredEndpointInner class. */
+    /**
+     * Creates an instance of PreconfiguredEndpointInner class.
+     */
     public PreconfiguredEndpointInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of a preconfiguredEndpoint.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PreconfiguredEndpointProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PreconfiguredEndpointInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PreconfiguredEndpointInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -48,7 +56,7 @@ public final class PreconfiguredEndpointInner extends Resource {
 
     /**
      * Get the description property: The description of the endpoint.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -57,7 +65,7 @@ public final class PreconfiguredEndpointInner extends Resource {
 
     /**
      * Set the description property: The description of the endpoint.
-     *
+     * 
      * @param description the description value to set.
      * @return the PreconfiguredEndpointInner object itself.
      */
@@ -71,7 +79,7 @@ public final class PreconfiguredEndpointInner extends Resource {
 
     /**
      * Get the endpoint property: The endpoint that is preconfigured.
-     *
+     * 
      * @return the endpoint value.
      */
     public String endpoint() {
@@ -80,7 +88,7 @@ public final class PreconfiguredEndpointInner extends Resource {
 
     /**
      * Set the endpoint property: The endpoint that is preconfigured.
-     *
+     * 
      * @param endpoint the endpoint value to set.
      * @return the PreconfiguredEndpointInner object itself.
      */
@@ -94,7 +102,7 @@ public final class PreconfiguredEndpointInner extends Resource {
 
     /**
      * Get the endpointType property: The type of endpoint.
-     *
+     * 
      * @return the endpointType value.
      */
     public EndpointType endpointType() {
@@ -103,7 +111,7 @@ public final class PreconfiguredEndpointInner extends Resource {
 
     /**
      * Set the endpointType property: The type of endpoint.
-     *
+     * 
      * @param endpointType the endpointType value to set.
      * @return the PreconfiguredEndpointInner object itself.
      */
@@ -117,7 +125,7 @@ public final class PreconfiguredEndpointInner extends Resource {
 
     /**
      * Get the backend property: The preconfigured endpoint backend.
-     *
+     * 
      * @return the backend value.
      */
     public String backend() {
@@ -126,7 +134,7 @@ public final class PreconfiguredEndpointInner extends Resource {
 
     /**
      * Set the backend property: The preconfigured endpoint backend.
-     *
+     * 
      * @param backend the backend value to set.
      * @return the PreconfiguredEndpointInner object itself.
      */
@@ -140,7 +148,7 @@ public final class PreconfiguredEndpointInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

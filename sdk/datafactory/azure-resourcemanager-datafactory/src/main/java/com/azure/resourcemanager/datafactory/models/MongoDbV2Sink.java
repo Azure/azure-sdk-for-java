@@ -6,20 +6,28 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity MongoDB sink.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = MongoDbV2Sink.class, visible = true)
 @JsonTypeName("MongoDbV2Sink")
 @Fluent
 public final class MongoDbV2Sink extends CopySink {
     /*
-     * Specifies whether the document with same key to be overwritten (upsert) rather than throw exception (insert).
-     * The default value is "insert". Type: string (or Expression with resultType string). Type: string (or Expression
-     * with resultType string).
+     * Copy sink type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "MongoDbV2Sink";
+
+    /*
+     * Specifies whether the document with same key to be overwritten (upsert) rather than throw exception (insert). The
+     * default value is "insert". Type: string (or Expression with resultType string). Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "writeBehavior")
     private Object writeBehavior;
@@ -28,6 +36,16 @@ public final class MongoDbV2Sink extends CopySink {
      * Creates an instance of MongoDbV2Sink class.
      */
     public MongoDbV2Sink() {
+    }
+
+    /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

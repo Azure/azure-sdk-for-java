@@ -6,16 +6,28 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Simple policy retention.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "retentionPolicyType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "retentionPolicyType",
+    defaultImpl = SimpleRetentionPolicy.class,
+    visible = true)
 @JsonTypeName("SimpleRetentionPolicy")
 @Fluent
 public final class SimpleRetentionPolicy extends RetentionPolicy {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "retentionPolicyType", required = true)
+    private String retentionPolicyType = "SimpleRetentionPolicy";
+
     /*
      * Retention duration of the protection policy.
      */
@@ -26,6 +38,17 @@ public final class SimpleRetentionPolicy extends RetentionPolicy {
      * Creates an instance of SimpleRetentionPolicy class.
      */
     public SimpleRetentionPolicy() {
+    }
+
+    /**
+     * Get the retentionPolicyType property: This property will be used as the discriminator for deciding the specific
+     * types in the polymorphic chain of types.
+     * 
+     * @return the retentionPolicyType value.
+     */
+    @Override
+    public String retentionPolicyType() {
+        return this.retentionPolicyType;
     }
 
     /**

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.resources.fluent.models.TagDetailsInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of subscription tags. */
+/**
+ * List of subscription tags.
+ */
 @Fluent
 public final class TagsListResult {
     /*
@@ -24,13 +26,15 @@ public final class TagsListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of TagsListResult class. */
+    /**
+     * Creates an instance of TagsListResult class.
+     */
     public TagsListResult() {
     }
 
     /**
      * Get the value property: An array of tags.
-     *
+     * 
      * @return the value value.
      */
     public List<TagDetailsInner> value() {
@@ -39,7 +43,7 @@ public final class TagsListResult {
 
     /**
      * Set the value property: An array of tags.
-     *
+     * 
      * @param value the value value to set.
      * @return the TagsListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class TagsListResult {
 
     /**
      * Get the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class TagsListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

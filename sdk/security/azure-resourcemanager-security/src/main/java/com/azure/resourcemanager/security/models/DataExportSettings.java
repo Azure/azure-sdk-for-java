@@ -8,16 +8,24 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.security.fluent.models.DataExportSettingProperties;
 import com.azure.resourcemanager.security.fluent.models.SettingInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Represents a data export setting.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = DataExportSettings.class, visible = true)
 @JsonTypeName("DataExportSettings")
 @Fluent
 public final class DataExportSettings extends SettingInner {
+    /*
+     * the kind of the settings string
+     */
+    @JsonTypeId
+    @JsonProperty(value = "kind", required = true)
+    private SettingKind kind = SettingKind.DATA_EXPORT_SETTINGS;
+
     /*
      * Data export setting data
      */
@@ -28,6 +36,16 @@ public final class DataExportSettings extends SettingInner {
      * Creates an instance of DataExportSettings class.
      */
     public DataExportSettings() {
+    }
+
+    /**
+     * Get the kind property: the kind of the settings string.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public SettingKind kind() {
+        return this.kind;
     }
 
     /**

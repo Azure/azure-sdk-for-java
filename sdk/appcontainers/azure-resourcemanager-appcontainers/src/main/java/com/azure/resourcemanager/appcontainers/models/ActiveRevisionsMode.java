@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -15,15 +14,19 @@ import java.util.Collection;
  * default.&lt;/item&gt;&lt;/list&gt;.
  */
 public final class ActiveRevisionsMode extends ExpandableStringEnum<ActiveRevisionsMode> {
-    /** Static value Multiple for ActiveRevisionsMode. */
+    /**
+     * Static value Multiple for ActiveRevisionsMode.
+     */
     public static final ActiveRevisionsMode MULTIPLE = fromString("Multiple");
 
-    /** Static value Single for ActiveRevisionsMode. */
+    /**
+     * Static value Single for ActiveRevisionsMode.
+     */
     public static final ActiveRevisionsMode SINGLE = fromString("Single");
 
     /**
      * Creates a new instance of ActiveRevisionsMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -32,18 +35,17 @@ public final class ActiveRevisionsMode extends ExpandableStringEnum<ActiveRevisi
 
     /**
      * Creates or finds a ActiveRevisionsMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ActiveRevisionsMode.
      */
-    @JsonCreator
     public static ActiveRevisionsMode fromString(String name) {
         return fromString(name, ActiveRevisionsMode.class);
     }
 
     /**
      * Gets known ActiveRevisionsMode values.
-     *
+     * 
      * @return known ActiveRevisionsMode values.
      */
     public static Collection<ActiveRevisionsMode> values() {

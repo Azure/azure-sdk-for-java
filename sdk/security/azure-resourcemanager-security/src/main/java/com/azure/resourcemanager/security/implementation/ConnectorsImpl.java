@@ -11,8 +11,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.ConnectorsClient;
 import com.azure.resourcemanager.security.fluent.models.ConnectorSettingInner;
-import com.azure.resourcemanager.security.models.ConnectorSetting;
 import com.azure.resourcemanager.security.models.Connectors;
+import com.azure.resourcemanager.security.models.ConnectorSetting;
 
 public final class ConnectorsImpl implements Connectors {
     private static final ClientLogger LOGGER = new ClientLogger(ConnectorsImpl.class);

@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class SubnetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Subnet model = BinaryData.fromString("{\"addressPrefix\":\"q\"}").toObject(Subnet.class);
-        Assertions.assertEquals("q", model.addressPrefix());
+        Subnet model = BinaryData.fromString("{\"addressPrefix\":\"fsnkymuctq\"}").toObject(Subnet.class);
+        Assertions.assertEquals("fsnkymuctq", model.addressPrefix());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Subnet model = new Subnet().withAddressPrefix("q");
+        Subnet model = new Subnet().withAddressPrefix("fsnkymuctq");
         model = BinaryData.fromObject(model).toObject(Subnet.class);
-        Assertions.assertEquals("q", model.addressPrefix());
+        Assertions.assertEquals("fsnkymuctq", model.addressPrefix());
     }
 }

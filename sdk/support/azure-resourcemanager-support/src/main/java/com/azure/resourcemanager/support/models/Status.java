@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Status to be updated on the ticket. */
+/**
+ * Status to be updated on the ticket.
+ */
 public final class Status extends ExpandableStringEnum<Status> {
-    /** Static value open for Status. */
+    /**
+     * Static value open for Status.
+     */
     public static final Status OPEN = fromString("open");
 
-    /** Static value closed for Status. */
+    /**
+     * Static value closed for Status.
+     */
     public static final Status CLOSED = fromString("closed");
 
     /**
      * Creates a new instance of Status value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class Status extends ExpandableStringEnum<Status> {
 
     /**
      * Creates or finds a Status from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Status.
      */
@@ -38,7 +44,7 @@ public final class Status extends ExpandableStringEnum<Status> {
 
     /**
      * Gets known Status values.
-     *
+     * 
      * @return known Status values.
      */
     public static Collection<Status> values() {

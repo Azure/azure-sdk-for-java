@@ -16,8 +16,7 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class ServerThreatProtectionProperties {
     /*
-     * Specifies the state of the Threat Protection, whether it is enabled or disabled or a state has not been applied
-     * yet on the specific server.
+     * Specifies the state of the Threat Protection, whether it is enabled or disabled or a state has not been applied yet on the specific server.
      */
     @JsonProperty(value = "state", required = true)
     private ThreatProtectionState state;
@@ -72,8 +71,9 @@ public final class ServerThreatProtectionProperties {
      */
     public void validate() {
         if (state() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property state in model ServerThreatProtectionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property state in model ServerThreatProtectionProperties"));
         }
     }
 

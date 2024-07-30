@@ -13,18 +13,19 @@ public final class AmlFilesystemCheckSubnetErrorFilesystemSubnetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AmlFilesystemCheckSubnetErrorFilesystemSubnet model
-            = BinaryData.fromString("{\"status\":\"Ok\",\"message\":\"c\"}")
+            = BinaryData.fromString("{\"status\":\"Ok\",\"message\":\"uvcc\"}")
                 .toObject(AmlFilesystemCheckSubnetErrorFilesystemSubnet.class);
         Assertions.assertEquals(FilesystemSubnetStatusType.OK, model.status());
-        Assertions.assertEquals("c", model.message());
+        Assertions.assertEquals("uvcc", model.message());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AmlFilesystemCheckSubnetErrorFilesystemSubnet model = new AmlFilesystemCheckSubnetErrorFilesystemSubnet()
-            .withStatus(FilesystemSubnetStatusType.OK).withMessage("c");
+        AmlFilesystemCheckSubnetErrorFilesystemSubnet model
+            = new AmlFilesystemCheckSubnetErrorFilesystemSubnet().withStatus(FilesystemSubnetStatusType.OK)
+                .withMessage("uvcc");
         model = BinaryData.fromObject(model).toObject(AmlFilesystemCheckSubnetErrorFilesystemSubnet.class);
         Assertions.assertEquals(FilesystemSubnetStatusType.OK, model.status());
-        Assertions.assertEquals("c", model.message());
+        Assertions.assertEquals("uvcc", model.message());
     }
 }

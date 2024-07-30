@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.cosmos.fluent.models.ServiceResourceCreateUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Parameters for Create or Update Request for ServiceResource.
+ * Parameters for Create or Update request for ServiceResource.
  */
 @Fluent
 public final class ServiceResourceCreateUpdateParameters {
@@ -17,7 +16,7 @@ public final class ServiceResourceCreateUpdateParameters {
      * Properties in ServiceResourceCreateUpdateParameters.
      */
     @JsonProperty(value = "properties")
-    private ServiceResourceCreateUpdateProperties innerProperties;
+    private ServiceResourceCreateUpdateProperties properties;
 
     /**
      * Creates an instance of ServiceResourceCreateUpdateParameters class.
@@ -26,80 +25,22 @@ public final class ServiceResourceCreateUpdateParameters {
     }
 
     /**
-     * Get the innerProperties property: Properties in ServiceResourceCreateUpdateParameters.
+     * Get the properties property: Properties in ServiceResourceCreateUpdateParameters.
      * 
-     * @return the innerProperties value.
+     * @return the properties value.
      */
-    private ServiceResourceCreateUpdateProperties innerProperties() {
-        return this.innerProperties;
+    public ServiceResourceCreateUpdateProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Get the instanceSize property: Instance type for the service.
+     * Set the properties property: Properties in ServiceResourceCreateUpdateParameters.
      * 
-     * @return the instanceSize value.
-     */
-    public ServiceSize instanceSize() {
-        return this.innerProperties() == null ? null : this.innerProperties().instanceSize();
-    }
-
-    /**
-     * Set the instanceSize property: Instance type for the service.
-     * 
-     * @param instanceSize the instanceSize value to set.
+     * @param properties the properties value to set.
      * @return the ServiceResourceCreateUpdateParameters object itself.
      */
-    public ServiceResourceCreateUpdateParameters withInstanceSize(ServiceSize instanceSize) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ServiceResourceCreateUpdateProperties();
-        }
-        this.innerProperties().withInstanceSize(instanceSize);
-        return this;
-    }
-
-    /**
-     * Get the instanceCount property: Instance count for the service.
-     * 
-     * @return the instanceCount value.
-     */
-    public Integer instanceCount() {
-        return this.innerProperties() == null ? null : this.innerProperties().instanceCount();
-    }
-
-    /**
-     * Set the instanceCount property: Instance count for the service.
-     * 
-     * @param instanceCount the instanceCount value to set.
-     * @return the ServiceResourceCreateUpdateParameters object itself.
-     */
-    public ServiceResourceCreateUpdateParameters withInstanceCount(Integer instanceCount) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ServiceResourceCreateUpdateProperties();
-        }
-        this.innerProperties().withInstanceCount(instanceCount);
-        return this;
-    }
-
-    /**
-     * Get the serviceType property: ServiceType for the service.
-     * 
-     * @return the serviceType value.
-     */
-    public ServiceType serviceType() {
-        return this.innerProperties() == null ? null : this.innerProperties().serviceType();
-    }
-
-    /**
-     * Set the serviceType property: ServiceType for the service.
-     * 
-     * @param serviceType the serviceType value to set.
-     * @return the ServiceResourceCreateUpdateParameters object itself.
-     */
-    public ServiceResourceCreateUpdateParameters withServiceType(ServiceType serviceType) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ServiceResourceCreateUpdateProperties();
-        }
-        this.innerProperties().withServiceType(serviceType);
+    public ServiceResourceCreateUpdateParameters withProperties(ServiceResourceCreateUpdateProperties properties) {
+        this.properties = properties;
         return this;
     }
 
@@ -109,8 +50,8 @@ public final class ServiceResourceCreateUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

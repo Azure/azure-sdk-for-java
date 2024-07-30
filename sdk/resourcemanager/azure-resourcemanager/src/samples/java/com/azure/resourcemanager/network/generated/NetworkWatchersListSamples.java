@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class NetworkWatchersListSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkWatcherListAll.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkWatcherListAll.json
      */
     /**
      * Sample code: List all network watchers.

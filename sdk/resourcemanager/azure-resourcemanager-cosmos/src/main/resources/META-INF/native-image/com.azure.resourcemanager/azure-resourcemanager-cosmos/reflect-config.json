@@ -1469,7 +1469,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.cosmos.fluent.models.ServiceResourceCreateUpdateProperties",
+  "name" : "com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateProperties",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -1509,6 +1509,16 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.cosmos.models.DataTransferServiceResourceCreateUpdateParameters",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.cosmos.models.SqlDedicatedGatewayServiceResourceCreateUpdateParameters",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.cosmos.models.SqlDedicatedGatewayServiceResourceProperties",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -1529,12 +1539,22 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.cosmos.models.GraphApiComputeServiceResourceCreateUpdateParameters",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.cosmos.models.MaterializedViewsBuilderServiceResourceProperties",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.cosmos.models.MaterializedViewsBuilderRegionalServiceResource",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.cosmos.models.MaterializedViewsBuilderServiceResourceCreateUpdateParameters",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -1679,6 +1699,11 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.cosmos.models.AzureConnectionType",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.cosmos.models.ManagedCassandraResourceIdentityType",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -1725,6 +1750,11 @@
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.cosmos.models.ContinuousTier",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.cosmos.models.DedicatedGatewayType",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.compute.models.InstanceViewTypes;
 public final class DedicatedHostsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * dedicatedHostExamples/DedicatedHost_Get.json
      */
     /**
@@ -21,7 +21,11 @@ public final class DedicatedHostsGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getADedicatedHost(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDedicatedHosts().getWithResponse("myResourceGroup",
-            "myDedicatedHostGroup", "myHost", InstanceViewTypes.INSTANCE_VIEW, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHosts()
+            .getWithResponse("myResourceGroup", "myDedicatedHostGroup", "myHost", InstanceViewTypes.INSTANCE_VIEW,
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -19,8 +19,7 @@ public final class TargetDiskNetworkAccessSettings {
     private TargetDiskNetworkAccessOption targetDiskNetworkAccessOption;
 
     /*
-     * Gets or sets the ARM resource ID of the target disk access to be used when TargetDiskNetworkAccessOption is set
-     * to TargetDiskNetworkAccessOption.UseNew
+     * Gets or sets the ARM resource ID of the target disk access to be used when TargetDiskNetworkAccessOption is set to TargetDiskNetworkAccessOption.UseNew
      */
     @JsonProperty(value = "targetDiskAccessId")
     private String targetDiskAccessId;

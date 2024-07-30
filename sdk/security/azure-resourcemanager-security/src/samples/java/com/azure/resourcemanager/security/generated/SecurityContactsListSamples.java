@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class SecurityContactsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/SecurityContacts/
-     * GetSecurityContactsSubscription_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/SecurityContacts/GetSecurityContactsSubscription_example.json
      */
     /**
      * Sample code: List security contact data.

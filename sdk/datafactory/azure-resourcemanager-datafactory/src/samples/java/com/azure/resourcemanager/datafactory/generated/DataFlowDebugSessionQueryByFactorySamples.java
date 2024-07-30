@@ -19,7 +19,7 @@ public final class DataFlowDebugSessionQueryByFactorySamples {
      */
     public static void
         dataFlowDebugSessionQueryByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.dataFlowDebugSessions().queryByFactory("exampleResourceGroup", "exampleFactoryName",
-            com.azure.core.util.Context.NONE);
+        manager.dataFlowDebugSessions()
+            .queryByFactory("exampleResourceGroup", "exampleFactoryName", com.azure.core.util.Context.NONE);
     }
 }

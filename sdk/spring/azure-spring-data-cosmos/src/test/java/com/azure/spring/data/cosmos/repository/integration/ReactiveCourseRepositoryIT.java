@@ -6,7 +6,9 @@ import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.ReactiveIntegrationTestCollectionManager;
+import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
 import com.azure.spring.data.cosmos.common.TestConstants;
+import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Course;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
@@ -34,6 +36,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -70,6 +74,13 @@ public class ReactiveCourseRepositoryIT {
 
     @Autowired
     private ReactiveCourseRepository repository;
+
+    @Autowired
+    private CosmosConfig cosmosConfig;
+
+    @Autowired
+    private ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils;
+
     private CosmosEntityInformation<Course, ?> entityInformation;
 
     CosmosPatchOperations patchSetOperation = CosmosPatchOperations
@@ -377,5 +388,72 @@ public class ReactiveCourseRepositoryIT {
         Mono<Course> patchedCourse = repository.save(COURSE_ID_1, new PartitionKey(DEPARTMENT_NAME_3), Course.class, patchSetOperation, options);
         StepVerifier.create(patchedCourse).expectErrorMatches(ex -> ex instanceof CosmosAccessException &&
             ((CosmosAccessException) ex).getCosmosException().getStatusCode() == TestConstants.PRECONDITION_FAILED_STATUS_CODE).verify();
+    }
+
+    @Test
+    public void queryDatabaseWithQueryMetricsEnabled() {
+        // Test flag is true
+        assertThat(cosmosConfig.isQueryMetricsEnabled()).isTrue();
+
+        // Make sure a query runs
+        final Flux<Course> allFlux = repository.findAll();
+        StepVerifier.create(allFlux).expectNextCount(4).verifyComplete();
+
+        String queryDiagnostics = responseDiagnosticsTestUtils.getCosmosDiagnostics().toString();
+        assertThat(queryDiagnostics).contains("retrievedDocumentCount");
+        assertThat(queryDiagnostics).contains("queryPreparationTimes");
+        assertThat(queryDiagnostics).contains("runtimeExecutionTimes");
+        assertThat(queryDiagnostics).contains("fetchExecutionRanges");
+    }
+
+    @Test
+    public void queryDatabaseWithIndexMetricsEnabled() {
+        // Test flag is true
+        assertThat(cosmosConfig.isIndexMetricsEnabled()).isTrue();
+
+        // Make sure a query runs
+        final Flux<Course> allFlux = repository.findAll();
+        StepVerifier.create(allFlux).expectNextCount(4).verifyComplete();
+
+        String queryDiagnostics = responseDiagnosticsTestUtils.getCosmosDiagnostics().toString();
+
+        assertThat(queryDiagnostics).contains("\"indexUtilizationInfo\"");
+        assertThat(queryDiagnostics).contains("\"UtilizedSingleIndexes\"");
+        assertThat(queryDiagnostics).contains("\"PotentialSingleIndexes\"");
+        assertThat(queryDiagnostics).contains("\"UtilizedCompositeIndexes\"");
+        assertThat(queryDiagnostics).contains("\"PotentialCompositeIndexes\"");
+    }
+
+    @Test
+    public void testFindAllByStreetNotNull() {
+        Course TEST_COURSE_TEMP = new Course(COURSE_ID_5, null, DEPARTMENT_NAME_1);
+        final Mono<Course> saveFlux = repository.save(TEST_COURSE_TEMP);
+        StepVerifier.create(saveFlux).expectNextMatches(course -> {
+            if (course.getCourseId().equals(COURSE_ID_5)) {
+                return true;
+            }
+            return false;
+        }).verifyComplete();
+        final Flux<Course> result = repository.findAllByNameNotNull();
+        StepVerifier.create(result)
+            .expectNext(COURSE_1)
+            .expectNext(COURSE_2)
+            .expectNext(COURSE_3)
+            .expectNext(COURSE_4).verifyComplete();
+
+    }
+
+    @Test
+    public void testCountByStreetNotNull() {
+        Course TEST_COURSE_TEMP = new Course(COURSE_ID_5, null, DEPARTMENT_NAME_1);
+        final Mono<Course> saveFlux = repository.save(TEST_COURSE_TEMP);
+        StepVerifier.create(saveFlux).expectNextMatches(course -> {
+            if (course.getCourseId().equals(COURSE_ID_5)) {
+                return true;
+            }
+            return false;
+        }).verifyComplete();
+        final Mono<Long> result = repository.countByNameNotNull();
+        StepVerifier.create(result).expectNext(4L).verifyComplete();
     }
 }

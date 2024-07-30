@@ -12,15 +12,15 @@ public final class OperationStatusJobExtendedInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationStatusJobExtendedInfo model
-            = BinaryData.fromString("{\"objectType\":\"OperationStatusJobExtendedInfo\",\"jobId\":\"mrhbguzozkye\"}")
+            = BinaryData.fromString("{\"objectType\":\"OperationStatusJobExtendedInfo\",\"jobId\":\"yvqkxr\"}")
                 .toObject(OperationStatusJobExtendedInfo.class);
-        Assertions.assertEquals("mrhbguzozkye", model.jobId());
+        Assertions.assertEquals("yvqkxr", model.jobId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationStatusJobExtendedInfo model = new OperationStatusJobExtendedInfo().withJobId("mrhbguzozkye");
+        OperationStatusJobExtendedInfo model = new OperationStatusJobExtendedInfo().withJobId("yvqkxr");
         model = BinaryData.fromObject(model).toObject(OperationStatusJobExtendedInfo.class);
-        Assertions.assertEquals("mrhbguzozkye", model.jobId());
+        Assertions.assertEquals("yvqkxr", model.jobId());
     }
 }

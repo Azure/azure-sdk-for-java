@@ -7,200 +7,179 @@ package com.azure.storage.file.datalake.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
 import java.time.OffsetDateTime;
+import java.util.Objects;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
-/** Properties of a blob. */
-@JacksonXmlRootElement(localName = "Properties")
+/**
+ * Properties of a blob.
+ */
 @Fluent
-public final class BlobPropertiesInternal {
+public final class BlobPropertiesInternal implements XmlSerializable<BlobPropertiesInternal> {
     /*
      * The Creation-Time property.
      */
-    @JsonProperty(value = "Creation-Time")
     private DateTimeRfc1123 creationTime;
 
     /*
      * The Last-Modified property.
      */
-    @JsonProperty(value = "Last-Modified", required = true)
     private DateTimeRfc1123 lastModified;
 
     /*
      * The Etag property.
      */
-    @JsonProperty(value = "Etag", required = true)
     private String etag;
 
     /*
      * Size in bytes
      */
-    @JsonProperty(value = "Content-Length")
     private Long contentLength;
 
     /*
      * The Content-Type property.
      */
-    @JsonProperty(value = "Content-Type")
     private String contentType;
 
     /*
      * The Content-Encoding property.
      */
-    @JsonProperty(value = "Content-Encoding")
     private String contentEncoding;
 
     /*
      * The Content-Language property.
      */
-    @JsonProperty(value = "Content-Language")
     private String contentLanguage;
 
     /*
      * The Content-MD5 property.
      */
-    @JsonProperty(value = "Content-MD5")
     private byte[] contentMD5;
 
     /*
      * The Content-Disposition property.
      */
-    @JsonProperty(value = "Content-Disposition")
     private String contentDisposition;
 
     /*
      * The Cache-Control property.
      */
-    @JsonProperty(value = "Cache-Control")
     private String cacheControl;
 
     /*
      * The x-ms-blob-sequence-number property.
      */
-    @JsonProperty(value = "x-ms-blob-sequence-number")
     private Long blobSequenceNumber;
 
     /*
      * The CopyId property.
      */
-    @JsonProperty(value = "CopyId")
     private String copyId;
 
     /*
      * The CopySource property.
      */
-    @JsonProperty(value = "CopySource")
     private String copySource;
 
     /*
      * The CopyProgress property.
      */
-    @JsonProperty(value = "CopyProgress")
     private String copyProgress;
 
     /*
      * The CopyCompletionTime property.
      */
-    @JsonProperty(value = "CopyCompletionTime")
     private DateTimeRfc1123 copyCompletionTime;
 
     /*
      * The CopyStatusDescription property.
      */
-    @JsonProperty(value = "CopyStatusDescription")
     private String copyStatusDescription;
 
     /*
      * The ServerEncrypted property.
      */
-    @JsonProperty(value = "ServerEncrypted")
     private Boolean serverEncrypted;
 
     /*
      * The IncrementalCopy property.
      */
-    @JsonProperty(value = "IncrementalCopy")
     private Boolean incrementalCopy;
 
     /*
      * The DestinationSnapshot property.
      */
-    @JsonProperty(value = "DestinationSnapshot")
     private String destinationSnapshot;
 
     /*
      * The DeletedTime property.
      */
-    @JsonProperty(value = "DeletedTime")
     private DateTimeRfc1123 deletedTime;
 
     /*
      * The RemainingRetentionDays property.
      */
-    @JsonProperty(value = "RemainingRetentionDays")
     private Integer remainingRetentionDays;
 
     /*
      * The AccessTierInferred property.
      */
-    @JsonProperty(value = "AccessTierInferred")
     private Boolean accessTierInferred;
 
     /*
      * The CustomerProvidedKeySha256 property.
      */
-    @JsonProperty(value = "CustomerProvidedKeySha256")
     private String customerProvidedKeySha256;
 
     /*
      * The name of the encryption scope under which the blob is encrypted.
      */
-    @JsonProperty(value = "EncryptionScope")
     private String encryptionScope;
 
     /*
      * The AccessTierChangeTime property.
      */
-    @JsonProperty(value = "AccessTierChangeTime")
     private DateTimeRfc1123 accessTierChangeTime;
 
     /*
      * The TagCount property.
      */
-    @JsonProperty(value = "TagCount")
     private Integer tagCount;
 
     /*
      * The Expiry-Time property.
      */
-    @JsonProperty(value = "Expiry-Time")
     private DateTimeRfc1123 expiresOn;
 
     /*
      * The Sealed property.
      */
-    @JsonProperty(value = "Sealed")
     private Boolean isSealed;
 
     /*
      * The LastAccessTime property.
      */
-    @JsonProperty(value = "LastAccessTime")
     private DateTimeRfc1123 lastAccessedOn;
 
     /*
      * The DeleteTime property.
      */
-    @JsonProperty(value = "DeleteTime")
     private DateTimeRfc1123 deleteTime;
 
-    /** Creates an instance of BlobPropertiesInternal class. */
-    public BlobPropertiesInternal() {}
+    /**
+     * Creates an instance of BlobPropertiesInternal class.
+     */
+    public BlobPropertiesInternal() {
+    }
 
     /**
      * Get the creationTime property: The Creation-Time property.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime getCreationTime() {
@@ -212,7 +191,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Set the creationTime property: The Creation-Time property.
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the BlobPropertiesInternal object itself.
      */
@@ -227,7 +206,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Get the lastModified property: The Last-Modified property.
-     *
+     * 
      * @return the lastModified value.
      */
     public OffsetDateTime getLastModified() {
@@ -239,7 +218,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Set the lastModified property: The Last-Modified property.
-     *
+     * 
      * @param lastModified the lastModified value to set.
      * @return the BlobPropertiesInternal object itself.
      */
@@ -254,7 +233,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Get the etag property: The Etag property.
-     *
+     * 
      * @return the etag value.
      */
     public String getEtag() {
@@ -263,7 +242,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Set the etag property: The Etag property.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the BlobPropertiesInternal object itself.
      */
@@ -274,7 +253,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Get the contentLength property: Size in bytes.
-     *
+     * 
      * @return the contentLength value.
      */
     public Long getContentLength() {
@@ -283,7 +262,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Set the contentLength property: Size in bytes.
-     *
+     * 
      * @param contentLength the contentLength value to set.
      * @return the BlobPropertiesInternal object itself.
      */
@@ -294,7 +273,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Get the contentType property: The Content-Type property.
-     *
+     * 
      * @return the contentType value.
      */
     public String getContentType() {
@@ -303,7 +282,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Set the contentType property: The Content-Type property.
-     *
+     * 
      * @param contentType the contentType value to set.
      * @return the BlobPropertiesInternal object itself.
      */
@@ -314,7 +293,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Get the contentEncoding property: The Content-Encoding property.
-     *
+     * 
      * @return the contentEncoding value.
      */
     public String getContentEncoding() {
@@ -323,7 +302,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Set the contentEncoding property: The Content-Encoding property.
-     *
+     * 
      * @param contentEncoding the contentEncoding value to set.
      * @return the BlobPropertiesInternal object itself.
      */
@@ -334,7 +313,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Get the contentLanguage property: The Content-Language property.
-     *
+     * 
      * @return the contentLanguage value.
      */
     public String getContentLanguage() {
@@ -343,7 +322,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Set the contentLanguage property: The Content-Language property.
-     *
+     * 
      * @param contentLanguage the contentLanguage value to set.
      * @return the BlobPropertiesInternal object itself.
      */
@@ -354,7 +333,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Get the contentMD5 property: The Content-MD5 property.
-     *
+     * 
      * @return the contentMD5 value.
      */
     public byte[] getContentMD5() {
@@ -363,7 +342,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Set the contentMD5 property: The Content-MD5 property.
-     *
+     * 
      * @param contentMD5 the contentMD5 value to set.
      * @return the BlobPropertiesInternal object itself.
      */
@@ -374,7 +353,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Get the contentDisposition property: The Content-Disposition property.
-     *
+     * 
      * @return the contentDisposition value.
      */
     public String getContentDisposition() {
@@ -383,7 +362,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Set the contentDisposition property: The Content-Disposition property.
-     *
+     * 
      * @param contentDisposition the contentDisposition value to set.
      * @return the BlobPropertiesInternal object itself.
      */
@@ -394,7 +373,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Get the cacheControl property: The Cache-Control property.
-     *
+     * 
      * @return the cacheControl value.
      */
     public String getCacheControl() {
@@ -403,7 +382,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Set the cacheControl property: The Cache-Control property.
-     *
+     * 
      * @param cacheControl the cacheControl value to set.
      * @return the BlobPropertiesInternal object itself.
      */
@@ -414,7 +393,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Get the blobSequenceNumber property: The x-ms-blob-sequence-number property.
-     *
+     * 
      * @return the blobSequenceNumber value.
      */
     public Long getBlobSequenceNumber() {
@@ -423,7 +402,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Set the blobSequenceNumber property: The x-ms-blob-sequence-number property.
-     *
+     * 
      * @param blobSequenceNumber the blobSequenceNumber value to set.
      * @return the BlobPropertiesInternal object itself.
      */
@@ -434,7 +413,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Get the copyId property: The CopyId property.
-     *
+     * 
      * @return the copyId value.
      */
     public String getCopyId() {
@@ -443,7 +422,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Set the copyId property: The CopyId property.
-     *
+     * 
      * @param copyId the copyId value to set.
      * @return the BlobPropertiesInternal object itself.
      */
@@ -454,7 +433,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Get the copySource property: The CopySource property.
-     *
+     * 
      * @return the copySource value.
      */
     public String getCopySource() {
@@ -463,7 +442,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Set the copySource property: The CopySource property.
-     *
+     * 
      * @param copySource the copySource value to set.
      * @return the BlobPropertiesInternal object itself.
      */
@@ -474,7 +453,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Get the copyProgress property: The CopyProgress property.
-     *
+     * 
      * @return the copyProgress value.
      */
     public String getCopyProgress() {
@@ -483,7 +462,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Set the copyProgress property: The CopyProgress property.
-     *
+     * 
      * @param copyProgress the copyProgress value to set.
      * @return the BlobPropertiesInternal object itself.
      */
@@ -494,7 +473,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Get the copyCompletionTime property: The CopyCompletionTime property.
-     *
+     * 
      * @return the copyCompletionTime value.
      */
     public OffsetDateTime getCopyCompletionTime() {
@@ -506,7 +485,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Set the copyCompletionTime property: The CopyCompletionTime property.
-     *
+     * 
      * @param copyCompletionTime the copyCompletionTime value to set.
      * @return the BlobPropertiesInternal object itself.
      */
@@ -521,7 +500,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Get the copyStatusDescription property: The CopyStatusDescription property.
-     *
+     * 
      * @return the copyStatusDescription value.
      */
     public String getCopyStatusDescription() {
@@ -530,7 +509,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Set the copyStatusDescription property: The CopyStatusDescription property.
-     *
+     * 
      * @param copyStatusDescription the copyStatusDescription value to set.
      * @return the BlobPropertiesInternal object itself.
      */
@@ -541,7 +520,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Get the serverEncrypted property: The ServerEncrypted property.
-     *
+     * 
      * @return the serverEncrypted value.
      */
     public Boolean isServerEncrypted() {
@@ -550,7 +529,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Set the serverEncrypted property: The ServerEncrypted property.
-     *
+     * 
      * @param serverEncrypted the serverEncrypted value to set.
      * @return the BlobPropertiesInternal object itself.
      */
@@ -561,7 +540,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Get the incrementalCopy property: The IncrementalCopy property.
-     *
+     * 
      * @return the incrementalCopy value.
      */
     public Boolean isIncrementalCopy() {
@@ -570,7 +549,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Set the incrementalCopy property: The IncrementalCopy property.
-     *
+     * 
      * @param incrementalCopy the incrementalCopy value to set.
      * @return the BlobPropertiesInternal object itself.
      */
@@ -581,7 +560,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Get the destinationSnapshot property: The DestinationSnapshot property.
-     *
+     * 
      * @return the destinationSnapshot value.
      */
     public String getDestinationSnapshot() {
@@ -590,7 +569,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Set the destinationSnapshot property: The DestinationSnapshot property.
-     *
+     * 
      * @param destinationSnapshot the destinationSnapshot value to set.
      * @return the BlobPropertiesInternal object itself.
      */
@@ -601,7 +580,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Get the deletedTime property: The DeletedTime property.
-     *
+     * 
      * @return the deletedTime value.
      */
     public OffsetDateTime getDeletedTime() {
@@ -613,7 +592,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Set the deletedTime property: The DeletedTime property.
-     *
+     * 
      * @param deletedTime the deletedTime value to set.
      * @return the BlobPropertiesInternal object itself.
      */
@@ -628,7 +607,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Get the remainingRetentionDays property: The RemainingRetentionDays property.
-     *
+     * 
      * @return the remainingRetentionDays value.
      */
     public Integer getRemainingRetentionDays() {
@@ -637,7 +616,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Set the remainingRetentionDays property: The RemainingRetentionDays property.
-     *
+     * 
      * @param remainingRetentionDays the remainingRetentionDays value to set.
      * @return the BlobPropertiesInternal object itself.
      */
@@ -648,7 +627,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Get the accessTierInferred property: The AccessTierInferred property.
-     *
+     * 
      * @return the accessTierInferred value.
      */
     public Boolean isAccessTierInferred() {
@@ -657,7 +636,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Set the accessTierInferred property: The AccessTierInferred property.
-     *
+     * 
      * @param accessTierInferred the accessTierInferred value to set.
      * @return the BlobPropertiesInternal object itself.
      */
@@ -668,7 +647,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Get the customerProvidedKeySha256 property: The CustomerProvidedKeySha256 property.
-     *
+     * 
      * @return the customerProvidedKeySha256 value.
      */
     public String getCustomerProvidedKeySha256() {
@@ -677,7 +656,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Set the customerProvidedKeySha256 property: The CustomerProvidedKeySha256 property.
-     *
+     * 
      * @param customerProvidedKeySha256 the customerProvidedKeySha256 value to set.
      * @return the BlobPropertiesInternal object itself.
      */
@@ -688,7 +667,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Get the encryptionScope property: The name of the encryption scope under which the blob is encrypted.
-     *
+     * 
      * @return the encryptionScope value.
      */
     public String getEncryptionScope() {
@@ -697,7 +676,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Set the encryptionScope property: The name of the encryption scope under which the blob is encrypted.
-     *
+     * 
      * @param encryptionScope the encryptionScope value to set.
      * @return the BlobPropertiesInternal object itself.
      */
@@ -708,7 +687,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Get the accessTierChangeTime property: The AccessTierChangeTime property.
-     *
+     * 
      * @return the accessTierChangeTime value.
      */
     public OffsetDateTime getAccessTierChangeTime() {
@@ -720,7 +699,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Set the accessTierChangeTime property: The AccessTierChangeTime property.
-     *
+     * 
      * @param accessTierChangeTime the accessTierChangeTime value to set.
      * @return the BlobPropertiesInternal object itself.
      */
@@ -735,7 +714,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Get the tagCount property: The TagCount property.
-     *
+     * 
      * @return the tagCount value.
      */
     public Integer getTagCount() {
@@ -744,7 +723,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Set the tagCount property: The TagCount property.
-     *
+     * 
      * @param tagCount the tagCount value to set.
      * @return the BlobPropertiesInternal object itself.
      */
@@ -755,7 +734,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Get the expiresOn property: The Expiry-Time property.
-     *
+     * 
      * @return the expiresOn value.
      */
     public OffsetDateTime getExpiresOn() {
@@ -767,7 +746,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Set the expiresOn property: The Expiry-Time property.
-     *
+     * 
      * @param expiresOn the expiresOn value to set.
      * @return the BlobPropertiesInternal object itself.
      */
@@ -782,7 +761,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Get the isSealed property: The Sealed property.
-     *
+     * 
      * @return the isSealed value.
      */
     public Boolean isSealed() {
@@ -791,7 +770,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Set the isSealed property: The Sealed property.
-     *
+     * 
      * @param isSealed the isSealed value to set.
      * @return the BlobPropertiesInternal object itself.
      */
@@ -802,7 +781,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Get the lastAccessedOn property: The LastAccessTime property.
-     *
+     * 
      * @return the lastAccessedOn value.
      */
     public OffsetDateTime getLastAccessedOn() {
@@ -814,7 +793,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Set the lastAccessedOn property: The LastAccessTime property.
-     *
+     * 
      * @param lastAccessedOn the lastAccessedOn value to set.
      * @return the BlobPropertiesInternal object itself.
      */
@@ -829,7 +808,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Get the deleteTime property: The DeleteTime property.
-     *
+     * 
      * @return the deleteTime value.
      */
     public OffsetDateTime getDeleteTime() {
@@ -841,7 +820,7 @@ public final class BlobPropertiesInternal {
 
     /**
      * Set the deleteTime property: The DeleteTime property.
-     *
+     * 
      * @param deleteTime the deleteTime value to set.
      * @return the BlobPropertiesInternal object itself.
      */
@@ -852,5 +831,154 @@ public final class BlobPropertiesInternal {
             this.deleteTime = new DateTimeRfc1123(deleteTime);
         }
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Properties" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        xmlWriter.writeStringElement("Creation-Time", Objects.toString(this.creationTime, null));
+        xmlWriter.writeStringElement("Last-Modified", Objects.toString(this.lastModified, null));
+        xmlWriter.writeStringElement("Etag", this.etag);
+        xmlWriter.writeNumberElement("Content-Length", this.contentLength);
+        xmlWriter.writeStringElement("Content-Type", this.contentType);
+        xmlWriter.writeStringElement("Content-Encoding", this.contentEncoding);
+        xmlWriter.writeStringElement("Content-Language", this.contentLanguage);
+        xmlWriter.writeBinaryElement("Content-MD5", this.contentMD5);
+        xmlWriter.writeStringElement("Content-Disposition", this.contentDisposition);
+        xmlWriter.writeStringElement("Cache-Control", this.cacheControl);
+        xmlWriter.writeNumberElement("x-ms-blob-sequence-number", this.blobSequenceNumber);
+        xmlWriter.writeStringElement("CopyId", this.copyId);
+        xmlWriter.writeStringElement("CopySource", this.copySource);
+        xmlWriter.writeStringElement("CopyProgress", this.copyProgress);
+        xmlWriter.writeStringElement("CopyCompletionTime", Objects.toString(this.copyCompletionTime, null));
+        xmlWriter.writeStringElement("CopyStatusDescription", this.copyStatusDescription);
+        xmlWriter.writeBooleanElement("ServerEncrypted", this.serverEncrypted);
+        xmlWriter.writeBooleanElement("IncrementalCopy", this.incrementalCopy);
+        xmlWriter.writeStringElement("DestinationSnapshot", this.destinationSnapshot);
+        xmlWriter.writeStringElement("DeletedTime", Objects.toString(this.deletedTime, null));
+        xmlWriter.writeNumberElement("RemainingRetentionDays", this.remainingRetentionDays);
+        xmlWriter.writeBooleanElement("AccessTierInferred", this.accessTierInferred);
+        xmlWriter.writeStringElement("CustomerProvidedKeySha256", this.customerProvidedKeySha256);
+        xmlWriter.writeStringElement("EncryptionScope", this.encryptionScope);
+        xmlWriter.writeStringElement("AccessTierChangeTime", Objects.toString(this.accessTierChangeTime, null));
+        xmlWriter.writeNumberElement("TagCount", this.tagCount);
+        xmlWriter.writeStringElement("Expiry-Time", Objects.toString(this.expiresOn, null));
+        xmlWriter.writeBooleanElement("Sealed", this.isSealed);
+        xmlWriter.writeStringElement("LastAccessTime", Objects.toString(this.lastAccessedOn, null));
+        xmlWriter.writeStringElement("DeleteTime", Objects.toString(this.deleteTime, null));
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of BlobPropertiesInternal from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of BlobPropertiesInternal if the XmlReader was pointing to an instance of it, or null if it
+     * was pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the BlobPropertiesInternal.
+     */
+    public static BlobPropertiesInternal fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of BlobPropertiesInternal from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     * cases where the model can deserialize from different root element names.
+     * @return An instance of BlobPropertiesInternal if the XmlReader was pointing to an instance of it, or null if it
+     * was pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the BlobPropertiesInternal.
+     */
+    public static BlobPropertiesInternal fromXml(XmlReader xmlReader, String rootElementName)
+        throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Properties" : rootElementName;
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            BlobPropertiesInternal deserializedBlobPropertiesInternal = new BlobPropertiesInternal();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
+
+                if ("Creation-Time".equals(elementName.getLocalPart())) {
+                    deserializedBlobPropertiesInternal.creationTime = reader.getNullableElement(DateTimeRfc1123::new);
+                } else if ("Last-Modified".equals(elementName.getLocalPart())) {
+                    deserializedBlobPropertiesInternal.lastModified = reader.getNullableElement(DateTimeRfc1123::new);
+                } else if ("Etag".equals(elementName.getLocalPart())) {
+                    deserializedBlobPropertiesInternal.etag = reader.getStringElement();
+                } else if ("Content-Length".equals(elementName.getLocalPart())) {
+                    deserializedBlobPropertiesInternal.contentLength = reader.getNullableElement(Long::parseLong);
+                } else if ("Content-Type".equals(elementName.getLocalPart())) {
+                    deserializedBlobPropertiesInternal.contentType = reader.getStringElement();
+                } else if ("Content-Encoding".equals(elementName.getLocalPart())) {
+                    deserializedBlobPropertiesInternal.contentEncoding = reader.getStringElement();
+                } else if ("Content-Language".equals(elementName.getLocalPart())) {
+                    deserializedBlobPropertiesInternal.contentLanguage = reader.getStringElement();
+                } else if ("Content-MD5".equals(elementName.getLocalPart())) {
+                    deserializedBlobPropertiesInternal.contentMD5 = reader.getBinaryElement();
+                } else if ("Content-Disposition".equals(elementName.getLocalPart())) {
+                    deserializedBlobPropertiesInternal.contentDisposition = reader.getStringElement();
+                } else if ("Cache-Control".equals(elementName.getLocalPart())) {
+                    deserializedBlobPropertiesInternal.cacheControl = reader.getStringElement();
+                } else if ("x-ms-blob-sequence-number".equals(elementName.getLocalPart())) {
+                    deserializedBlobPropertiesInternal.blobSequenceNumber = reader.getNullableElement(Long::parseLong);
+                } else if ("CopyId".equals(elementName.getLocalPart())) {
+                    deserializedBlobPropertiesInternal.copyId = reader.getStringElement();
+                } else if ("CopySource".equals(elementName.getLocalPart())) {
+                    deserializedBlobPropertiesInternal.copySource = reader.getStringElement();
+                } else if ("CopyProgress".equals(elementName.getLocalPart())) {
+                    deserializedBlobPropertiesInternal.copyProgress = reader.getStringElement();
+                } else if ("CopyCompletionTime".equals(elementName.getLocalPart())) {
+                    deserializedBlobPropertiesInternal.copyCompletionTime
+                        = reader.getNullableElement(DateTimeRfc1123::new);
+                } else if ("CopyStatusDescription".equals(elementName.getLocalPart())) {
+                    deserializedBlobPropertiesInternal.copyStatusDescription = reader.getStringElement();
+                } else if ("ServerEncrypted".equals(elementName.getLocalPart())) {
+                    deserializedBlobPropertiesInternal.serverEncrypted
+                        = reader.getNullableElement(Boolean::parseBoolean);
+                } else if ("IncrementalCopy".equals(elementName.getLocalPart())) {
+                    deserializedBlobPropertiesInternal.incrementalCopy
+                        = reader.getNullableElement(Boolean::parseBoolean);
+                } else if ("DestinationSnapshot".equals(elementName.getLocalPart())) {
+                    deserializedBlobPropertiesInternal.destinationSnapshot = reader.getStringElement();
+                } else if ("DeletedTime".equals(elementName.getLocalPart())) {
+                    deserializedBlobPropertiesInternal.deletedTime = reader.getNullableElement(DateTimeRfc1123::new);
+                } else if ("RemainingRetentionDays".equals(elementName.getLocalPart())) {
+                    deserializedBlobPropertiesInternal.remainingRetentionDays
+                        = reader.getNullableElement(Integer::parseInt);
+                } else if ("AccessTierInferred".equals(elementName.getLocalPart())) {
+                    deserializedBlobPropertiesInternal.accessTierInferred
+                        = reader.getNullableElement(Boolean::parseBoolean);
+                } else if ("CustomerProvidedKeySha256".equals(elementName.getLocalPart())) {
+                    deserializedBlobPropertiesInternal.customerProvidedKeySha256 = reader.getStringElement();
+                } else if ("EncryptionScope".equals(elementName.getLocalPart())) {
+                    deserializedBlobPropertiesInternal.encryptionScope = reader.getStringElement();
+                } else if ("AccessTierChangeTime".equals(elementName.getLocalPart())) {
+                    deserializedBlobPropertiesInternal.accessTierChangeTime
+                        = reader.getNullableElement(DateTimeRfc1123::new);
+                } else if ("TagCount".equals(elementName.getLocalPart())) {
+                    deserializedBlobPropertiesInternal.tagCount = reader.getNullableElement(Integer::parseInt);
+                } else if ("Expiry-Time".equals(elementName.getLocalPart())) {
+                    deserializedBlobPropertiesInternal.expiresOn = reader.getNullableElement(DateTimeRfc1123::new);
+                } else if ("Sealed".equals(elementName.getLocalPart())) {
+                    deserializedBlobPropertiesInternal.isSealed = reader.getNullableElement(Boolean::parseBoolean);
+                } else if ("LastAccessTime".equals(elementName.getLocalPart())) {
+                    deserializedBlobPropertiesInternal.lastAccessedOn = reader.getNullableElement(DateTimeRfc1123::new);
+                } else if ("DeleteTime".equals(elementName.getLocalPart())) {
+                    deserializedBlobPropertiesInternal.deleteTime = reader.getNullableElement(DateTimeRfc1123::new);
+                } else {
+                    reader.skipElement();
+                }
+            }
+
+            return deserializedBlobPropertiesInternal;
+        });
     }
 }

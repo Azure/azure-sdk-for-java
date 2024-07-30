@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -20,8 +21,8 @@ public final class Action {
     private RouteMapActionType type;
 
     /*
-     * List of parameters relevant to the action.For instance if type is drop then parameters has list of prefixes to
-     * be dropped.If type is add, parameters would have list of ASN numbers to be added
+     * List of parameters relevant to the action.For instance if type is drop then parameters has list of prefixes to be
+     * dropped.If type is add, parameters would have list of ASN numbers to be added
      */
     @JsonProperty(value = "parameters")
     private List<Parameter> parameters;
@@ -34,7 +35,7 @@ public final class Action {
 
     /**
      * Get the type property: Type of action to be taken. Supported types are 'Remove', 'Add', 'Replace', and 'Drop.'.
-     * 
+     *
      * @return the type value.
      */
     public RouteMapActionType type() {
@@ -43,7 +44,7 @@ public final class Action {
 
     /**
      * Set the type property: Type of action to be taken. Supported types are 'Remove', 'Add', 'Replace', and 'Drop.'.
-     * 
+     *
      * @param type the type value to set.
      * @return the Action object itself.
      */
@@ -56,7 +57,7 @@ public final class Action {
      * Get the parameters property: List of parameters relevant to the action.For instance if type is drop then
      * parameters has list of prefixes to be dropped.If type is add, parameters would have list of ASN numbers to be
      * added.
-     * 
+     *
      * @return the parameters value.
      */
     public List<Parameter> parameters() {
@@ -67,7 +68,7 @@ public final class Action {
      * Set the parameters property: List of parameters relevant to the action.For instance if type is drop then
      * parameters has list of prefixes to be dropped.If type is add, parameters would have list of ASN numbers to be
      * added.
-     * 
+     *
      * @param parameters the parameters value to set.
      * @return the Action object itself.
      */
@@ -78,7 +79,7 @@ public final class Action {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -12,17 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class UsagesObjectTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UsagesObject model = BinaryData.fromString("{\"value\":1667898231,\"usagesType\":\"Individual\"}")
-            .toObject(UsagesObject.class);
-        Assertions.assertEquals(1667898231, model.value());
-        Assertions.assertEquals(UsagesTypes.INDIVIDUAL, model.usagesType());
+        UsagesObject model
+            = BinaryData.fromString("{\"value\":1340454664,\"usagesType\":\"Combined\"}").toObject(UsagesObject.class);
+        Assertions.assertEquals(1340454664, model.value());
+        Assertions.assertEquals(UsagesTypes.COMBINED, model.usagesType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UsagesObject model = new UsagesObject().withValue(1667898231).withUsagesType(UsagesTypes.INDIVIDUAL);
+        UsagesObject model = new UsagesObject().withValue(1340454664).withUsagesType(UsagesTypes.COMBINED);
         model = BinaryData.fromObject(model).toObject(UsagesObject.class);
-        Assertions.assertEquals(1667898231, model.value());
-        Assertions.assertEquals(UsagesTypes.INDIVIDUAL, model.usagesType());
+        Assertions.assertEquals(1340454664, model.value());
+        Assertions.assertEquals(UsagesTypes.COMBINED, model.usagesType());
     }
 }

@@ -34,8 +34,8 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.eventgrid.fluent.PartnerRegistrationsClient;
 import com.azure.resourcemanager.eventgrid.fluent.models.PartnerRegistrationInner;
-import com.azure.resourcemanager.eventgrid.models.PartnerRegistrationUpdateParameters;
 import com.azure.resourcemanager.eventgrid.models.PartnerRegistrationsListResult;
+import com.azure.resourcemanager.eventgrid.models.PartnerRegistrationUpdateParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -66,8 +66,8 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
     }
 
     /**
-     * The interface defining all the services for EventGridManagementClientPartnerRegistrations to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for EventGridManagementClientPartnerRegistrations to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "EventGridManagementC")
@@ -508,7 +508,8 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
     private Mono<PartnerRegistrationInner> createOrUpdateAsync(String resourceGroupName, String partnerRegistrationName,
         PartnerRegistrationInner partnerRegistrationInfo, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationInfo, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

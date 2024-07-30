@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Galleries. */
+/**
+ * Resource collection API of Galleries.
+ */
 public interface Galleries {
     /**
      * Lists galleries for a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface Galleries {
 
     /**
      * Lists galleries for a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -34,12 +36,12 @@ public interface Galleries {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of the gallery list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Gallery> listByDevCenter(
-        String resourceGroupName, String devCenterName, Integer top, Context context);
+    PagedIterable<Gallery> listByDevCenter(String resourceGroupName, String devCenterName, Integer top,
+        Context context);
 
     /**
      * Gets a gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
@@ -49,12 +51,12 @@ public interface Galleries {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a gallery along with {@link Response}.
      */
-    Response<Gallery> getWithResponse(
-        String resourceGroupName, String devCenterName, String galleryName, Context context);
+    Response<Gallery> getWithResponse(String resourceGroupName, String devCenterName, String galleryName,
+        Context context);
 
     /**
      * Gets a gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
@@ -67,7 +69,7 @@ public interface Galleries {
 
     /**
      * Deletes a gallery resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
@@ -79,7 +81,7 @@ public interface Galleries {
 
     /**
      * Deletes a gallery resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
@@ -92,7 +94,7 @@ public interface Galleries {
 
     /**
      * Gets a gallery.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -103,7 +105,7 @@ public interface Galleries {
 
     /**
      * Gets a gallery.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -115,7 +117,7 @@ public interface Galleries {
 
     /**
      * Deletes a gallery resource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -125,7 +127,7 @@ public interface Galleries {
 
     /**
      * Deletes a gallery resource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -136,7 +138,7 @@ public interface Galleries {
 
     /**
      * Begins definition for a new Gallery resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Gallery definition.
      */

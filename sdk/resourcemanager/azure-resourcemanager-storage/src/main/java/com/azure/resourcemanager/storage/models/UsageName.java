@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storage.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The usage names that can be used; currently limited to StorageAccount. */
+/**
+ * The usage names that can be used; currently limited to StorageAccount.
+ */
 @Immutable
 public final class UsageName {
     /*
@@ -22,13 +24,15 @@ public final class UsageName {
     @JsonProperty(value = "localizedValue", access = JsonProperty.Access.WRITE_ONLY)
     private String localizedValue;
 
-    /** Creates an instance of UsageName class. */
+    /**
+     * Creates an instance of UsageName class.
+     */
     public UsageName() {
     }
 
     /**
      * Get the value property: Gets a string describing the resource name.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -37,7 +41,7 @@ public final class UsageName {
 
     /**
      * Get the localizedValue property: Gets a localized string describing the resource name.
-     *
+     * 
      * @return the localizedValue value.
      */
     public String localizedValue() {
@@ -46,7 +50,7 @@ public final class UsageName {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

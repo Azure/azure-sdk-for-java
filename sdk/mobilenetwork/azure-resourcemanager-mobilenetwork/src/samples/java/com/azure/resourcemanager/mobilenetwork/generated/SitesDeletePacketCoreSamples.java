@@ -7,29 +7,24 @@ package com.azure.resourcemanager.mobilenetwork.generated;
 import com.azure.resourcemanager.mobilenetwork.models.PacketCoreControlPlaneResourceId;
 import com.azure.resourcemanager.mobilenetwork.models.SiteDeletePacketCore;
 
-/** Samples for Sites DeletePacketCore. */
+/**
+ * Samples for Sites DeletePacketCore.
+ */
 public final class SitesDeletePacketCoreSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SiteDeletePacketCore.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SiteDeletePacketCore.json
      */
     /**
      * Sample code: Delete packet core in mobile network site.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void deletePacketCoreInMobileNetworkSite(
-        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .sites()
-            .deletePacketCore(
-                "rg1",
-                "testMobileNetwork",
-                "testSite",
-                new SiteDeletePacketCore()
-                    .withPacketCore(
-                        new PacketCoreControlPlaneResourceId()
-                            .withId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP")),
+    public static void
+        deletePacketCoreInMobileNetworkSite(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+        manager.sites()
+            .deletePacketCore("rg1", "testMobileNetwork", "testSite",
+                new SiteDeletePacketCore().withPacketCore(new PacketCoreControlPlaneResourceId().withId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP")),
                 com.azure.core.util.Context.NONE);
     }
 }

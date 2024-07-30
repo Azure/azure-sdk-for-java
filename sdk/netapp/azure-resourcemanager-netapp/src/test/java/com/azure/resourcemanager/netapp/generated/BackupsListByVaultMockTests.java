@@ -6,55 +6,37 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.Backup;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class BackupsListByVaultMockTests {
     @Test
     public void testListByVault() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"backupId\":\"tuxuuyilflq\",\"creationDate\":\"2021-01-23T22:11:32Z\",\"provisioningState\":\"vrehmrnjhvsujzt\",\"size\":4221894519881278297,\"label\":\"jtwhauunf\",\"backupType\":\"Manual\",\"failureReason\":\"letlx\",\"volumeResourceId\":\"mr\",\"useExistingSnapshot\":false,\"snapshotName\":\"uifamowaziynknlq\",\"backupPolicyResourceId\":\"dvpiwh\"},\"id\":\"szdtmaajquh\",\"name\":\"xylrjvmtygjbmz\",\"type\":\"ospspshckf\"}]}";
+            = "{\"value\":[{\"properties\":{\"backupId\":\"rrouuxvnsasbcry\",\"creationDate\":\"2021-09-19T01:53:42Z\",\"provisioningState\":\"zrxklobd\",\"size\":265467730720390113,\"label\":\"mkmlmvevfx\",\"backupType\":\"Manual\",\"failureReason\":\"hbzxli\",\"volumeResourceId\":\"hrdd\",\"useExistingSnapshot\":false,\"snapshotName\":\"xqbawpc\",\"backupPolicyResourceId\":\"nzqcy\"},\"id\":\"apqofyuicdhz\",\"name\":\"dyb\",\"type\":\"wgbdvibidmhmwffp\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        NetAppFilesManager manager = NetAppFilesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        NetAppFilesManager manager = NetAppFilesManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        PagedIterable<Backup> response = manager.backups()
+            .listByVault("napxbannovv", "xc", "ytprwnwvroev", "tlyo", com.azure.core.util.Context.NONE);
 
-        PagedIterable<Backup> response = manager.backups().listByVault("fbkgozxwopdby", "p", "zqaclna",
-            "xbiygnugjknfsmf", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("jtwhauunf", response.iterator().next().label());
-        Assertions.assertEquals("mr", response.iterator().next().volumeResourceId());
+        Assertions.assertEquals("mkmlmvevfx", response.iterator().next().label());
+        Assertions.assertEquals("hrdd", response.iterator().next().volumeResourceId());
         Assertions.assertEquals(false, response.iterator().next().useExistingSnapshot());
-        Assertions.assertEquals("uifamowaziynknlq", response.iterator().next().snapshotName());
+        Assertions.assertEquals("xqbawpc", response.iterator().next().snapshotName());
     }
 }

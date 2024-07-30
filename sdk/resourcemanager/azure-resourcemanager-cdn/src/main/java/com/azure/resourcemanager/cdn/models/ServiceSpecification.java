@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** One property of operation, include log specifications. */
+/**
+ * One property of operation, include log specifications.
+ */
 @Fluent
 public final class ServiceSpecification {
     /*
@@ -23,13 +25,15 @@ public final class ServiceSpecification {
     @JsonProperty(value = "metricSpecifications")
     private List<MetricSpecification> metricSpecifications;
 
-    /** Creates an instance of ServiceSpecification class. */
+    /**
+     * Creates an instance of ServiceSpecification class.
+     */
     public ServiceSpecification() {
     }
 
     /**
      * Get the logSpecifications property: Log specifications of operation.
-     *
+     * 
      * @return the logSpecifications value.
      */
     public List<LogSpecification> logSpecifications() {
@@ -38,7 +42,7 @@ public final class ServiceSpecification {
 
     /**
      * Set the logSpecifications property: Log specifications of operation.
-     *
+     * 
      * @param logSpecifications the logSpecifications value to set.
      * @return the ServiceSpecification object itself.
      */
@@ -49,7 +53,7 @@ public final class ServiceSpecification {
 
     /**
      * Get the metricSpecifications property: Metric specifications of operation.
-     *
+     * 
      * @return the metricSpecifications value.
      */
     public List<MetricSpecification> metricSpecifications() {
@@ -58,7 +62,7 @@ public final class ServiceSpecification {
 
     /**
      * Set the metricSpecifications property: Metric specifications of operation.
-     *
+     * 
      * @param metricSpecifications the metricSpecifications value to set.
      * @return the ServiceSpecification object itself.
      */
@@ -69,7 +73,7 @@ public final class ServiceSpecification {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,28 +8,44 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.security.models.AlertSyncSettings;
 import com.azure.resourcemanager.security.models.DataExportSettings;
+import com.azure.resourcemanager.security.models.SettingKind;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The kind of the security setting.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "kind",
-    defaultImpl = SettingInner.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = SettingInner.class, visible = true)
 @JsonTypeName("Setting")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "DataExportSettings", value = DataExportSettings.class),
     @JsonSubTypes.Type(name = "AlertSyncSettings", value = AlertSyncSettings.class) })
 @Immutable
 public class SettingInner extends ProxyResource {
+    /*
+     * the kind of the settings string
+     */
+    @JsonTypeId
+    @JsonProperty(value = "kind", required = true)
+    private SettingKind kind;
+
     /**
      * Creates an instance of SettingInner class.
      */
     public SettingInner() {
+        this.kind = SettingKind.fromString("Setting");
+    }
+
+    /**
+     * Get the kind property: the kind of the settings string.
+     * 
+     * @return the kind value.
+     */
+    public SettingKind kind() {
+        return this.kind;
     }
 
     /**

@@ -12,18 +12,15 @@ import java.util.Arrays;
 public final class LatencyScorecardPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LatencyScorecardProperties model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"erqwkyhkobopg\",\"name\":\"dkow\",\"description\":\"bqpc\",\"endpointA\":\"kbwcc\",\"endpointB\":\"jvcdwxlpqekf\",\"startDateTimeUTC\":\"2021-08-06T20:29:45Z\",\"endDateTimeUTC\":\"2021-05-12T04:10:49Z\",\"country\":\"syingwfqatmtdht\",\"latencyMetrics\":[{\"name\":\"pgikdgszywkb\",\"endDateTimeUTC\":\"ryuzh\",\"aValue\":12.210905,\"bValue\":71.055046,\"delta\":45.730103,\"deltaPercent\":79.60526,\"aCLower95CI\":91.33896,\"aHUpper95CI\":1.2628138,\"bCLower95CI\":65.84219,\"bUpper95CI\":8.839816},{\"name\":\"goupmfiibfg\",\"endDateTimeUTC\":\"ioolvrwxkvtkkgll\",\"aValue\":57.97699,\"bValue\":59.871067,\"delta\":52.434147,\"deltaPercent\":59.066463,\"aCLower95CI\":62.143303,\"aHUpper95CI\":76.852425,\"bCLower95CI\":84.204346,\"bUpper95CI\":83.95235}]}")
-                .toObject(LatencyScorecardProperties.class);
+        LatencyScorecardProperties model = BinaryData.fromString(
+            "{\"id\":\"dvjdhttza\",\"name\":\"edxihchrphkmcrj\",\"description\":\"nsdfzpbgtgky\",\"endpointA\":\"dgh\",\"endpointB\":\"euutlwxezwzh\",\"startDateTimeUTC\":\"2021-10-29T09:06Z\",\"endDateTimeUTC\":\"2021-09-18T08:14:23Z\",\"country\":\"hh\",\"latencyMetrics\":[{\"name\":\"ehgpp\",\"endDateTimeUTC\":\"ifhpf\",\"aValue\":93.903366,\"bValue\":36.54407,\"delta\":33.805878,\"deltaPercent\":81.09743,\"aCLower95CI\":54.42357,\"aHUpper95CI\":43.48775,\"bCLower95CI\":82.11186,\"bUpper95CI\":38.771828},{\"name\":\"dltug\",\"endDateTimeUTC\":\"esmkssjhoiftxfkf\",\"aValue\":17.55079,\"bValue\":54.436035,\"delta\":19.466824,\"deltaPercent\":18.691397,\"aCLower95CI\":80.17824,\"aHUpper95CI\":56.52645,\"bCLower95CI\":48.5814,\"bUpper95CI\":88.57164}]}")
+            .toObject(LatencyScorecardProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LatencyScorecardProperties model =
-            new LatencyScorecardProperties()
-                .withLatencyMetrics(Arrays.asList(new LatencyMetric(), new LatencyMetric()));
+        LatencyScorecardProperties model = new LatencyScorecardProperties()
+            .withLatencyMetrics(Arrays.asList(new LatencyMetric(), new LatencyMetric()));
         model = BinaryData.fromObject(model).toObject(LatencyScorecardProperties.class);
     }
 }

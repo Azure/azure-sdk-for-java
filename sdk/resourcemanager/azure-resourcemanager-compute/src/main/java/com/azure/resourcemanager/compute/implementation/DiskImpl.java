@@ -20,6 +20,7 @@ import com.azure.resourcemanager.compute.models.EncryptionType;
 import com.azure.resourcemanager.compute.models.GrantAccessData;
 import com.azure.resourcemanager.compute.models.HyperVGeneration;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
+import com.azure.resourcemanager.compute.models.PublicNetworkAccess;
 import com.azure.resourcemanager.compute.models.Snapshot;
 import com.azure.resourcemanager.compute.fluent.models.DiskInner;
 import com.azure.resourcemanager.compute.models.SnapshotSkuType;
@@ -151,6 +152,11 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
     @Override
     public HyperVGeneration hyperVGeneration() {
         return this.innerModel().hyperVGeneration();
+    }
+
+    @Override
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerModel().publicNetworkAccess();
     }
 
     @Override
@@ -472,6 +478,18 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
     @Override
     public DiskImpl withHyperVGeneration(HyperVGeneration hyperVGeneration) {
         this.innerModel().withHyperVGeneration(hyperVGeneration);
+        return this;
+    }
+
+    @Override
+    public DiskImpl enablePublicNetworkAccess() {
+        this.innerModel().withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
+        return this;
+    }
+
+    @Override
+    public DiskImpl disablePublicNetworkAccess() {
+        this.innerModel().withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
         return this;
     }
 }

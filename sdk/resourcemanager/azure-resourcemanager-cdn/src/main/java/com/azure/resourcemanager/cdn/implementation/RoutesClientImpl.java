@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RoutesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RoutesClient.
+ */
 public final class RoutesClientImpl implements RoutesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final RoutesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CdnManagementClientImpl client;
 
     /**
      * Initializes an instance of RoutesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     RoutesClientImpl(CdnManagementClientImpl client) {
@@ -65,119 +71,84 @@ public final class RoutesClientImpl implements RoutesClient {
     @Host("{$host}")
     @ServiceInterface(name = "CdnManagementClientR")
     public interface RoutesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}/routes")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}/routes")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RouteListResult>> listByEndpoint(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("endpointName") String endpointName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RouteListResult>> listByEndpoint(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @PathParam("endpointName") String endpointName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}/routes/{routeName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}/routes/{routeName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RouteInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("endpointName") String endpointName,
-            @PathParam("routeName") String routeName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RouteInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @PathParam("endpointName") String endpointName, @PathParam("routeName") String routeName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}/routes/{routeName}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}/routes/{routeName}")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("endpointName") String endpointName,
-            @PathParam("routeName") String routeName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") RouteInner route,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @PathParam("endpointName") String endpointName, @PathParam("routeName") String routeName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") RouteInner route, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}/routes/{routeName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}/routes/{routeName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("endpointName") String endpointName,
-            @PathParam("routeName") String routeName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @PathParam("endpointName") String endpointName, @PathParam("routeName") String routeName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") RouteUpdateParameters routeUpdateProperties,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}/routes/{routeName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}/routes/{routeName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("endpointName") String endpointName,
-            @PathParam("routeName") String routeName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @PathParam("endpointName") String endpointName, @PathParam("routeName") String routeName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RouteListResult>> listByEndpointNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists all of the existing origins within a profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list routes along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return result of the request to list routes along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RouteInner>> listByEndpointSinglePageAsync(
-        String resourceGroupName, String profileName, String endpointName) {
+    private Mono<PagedResponse<RouteInner>> listByEndpointSinglePageAsync(String resourceGroupName, String profileName,
+        String endpointName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -190,59 +161,38 @@ public final class RoutesClientImpl implements RoutesClient {
             return Mono.error(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByEndpoint(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            endpointName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<RouteInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByEndpoint(this.client.getEndpoint(), resourceGroupName, profileName,
+                endpointName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<RouteInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all of the existing origins within a profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list routes along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return result of the request to list routes along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RouteInner>> listByEndpointSinglePageAsync(
-        String resourceGroupName, String profileName, String endpointName, Context context) {
+    private Mono<PagedResponse<RouteInner>> listByEndpointSinglePageAsync(String resourceGroupName, String profileName,
+        String endpointName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -255,40 +205,24 @@ public final class RoutesClientImpl implements RoutesClient {
             return Mono.error(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByEndpoint(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                endpointName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByEndpoint(this.client.getEndpoint(), resourceGroupName, profileName, endpointName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all of the existing origins within a profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -296,19 +230,18 @@ public final class RoutesClientImpl implements RoutesClient {
      * @return result of the request to list routes as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RouteInner> listByEndpointAsync(
-        String resourceGroupName, String profileName, String endpointName) {
-        return new PagedFlux<>(
-            () -> listByEndpointSinglePageAsync(resourceGroupName, profileName, endpointName),
+    public PagedFlux<RouteInner> listByEndpointAsync(String resourceGroupName, String profileName,
+        String endpointName) {
+        return new PagedFlux<>(() -> listByEndpointSinglePageAsync(resourceGroupName, profileName, endpointName),
             nextLink -> listByEndpointNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all of the existing origins within a profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -317,8 +250,8 @@ public final class RoutesClientImpl implements RoutesClient {
      * @return result of the request to list routes as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RouteInner> listByEndpointAsync(
-        String resourceGroupName, String profileName, String endpointName, Context context) {
+    private PagedFlux<RouteInner> listByEndpointAsync(String resourceGroupName, String profileName, String endpointName,
+        Context context) {
         return new PagedFlux<>(
             () -> listByEndpointSinglePageAsync(resourceGroupName, profileName, endpointName, context),
             nextLink -> listByEndpointNextSinglePageAsync(nextLink, context));
@@ -326,10 +259,10 @@ public final class RoutesClientImpl implements RoutesClient {
 
     /**
      * Lists all of the existing origins within a profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -343,10 +276,10 @@ public final class RoutesClientImpl implements RoutesClient {
 
     /**
      * Lists all of the existing origins within a profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -355,34 +288,32 @@ public final class RoutesClientImpl implements RoutesClient {
      * @return result of the request to list routes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RouteInner> listByEndpoint(
-        String resourceGroupName, String profileName, String endpointName, Context context) {
+    public PagedIterable<RouteInner> listByEndpoint(String resourceGroupName, String profileName, String endpointName,
+        Context context) {
         return new PagedIterable<>(listByEndpointAsync(resourceGroupName, profileName, endpointName, context));
     }
 
     /**
      * Gets an existing route with the specified route name under the specified subscription, resource group, profile,
      * and AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing route with the specified route name under the specified subscription, resource group,
-     *     profile, and AzureFrontDoor endpoint along with {@link Response} on successful completion of {@link Mono}.
+     * profile, and AzureFrontDoor endpoint along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouteInner>> getWithResponseAsync(
-        String resourceGroupName, String profileName, String endpointName, String routeName) {
+    public Mono<Response<RouteInner>> getWithResponseAsync(String resourceGroupName, String profileName,
+        String endpointName, String routeName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -398,36 +329,23 @@ public final class RoutesClientImpl implements RoutesClient {
             return Mono.error(new IllegalArgumentException("Parameter routeName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            endpointName,
-                            routeName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, profileName, endpointName,
+                routeName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets an existing route with the specified route name under the specified subscription, resource group, profile,
      * and AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @param context The context to associate with this operation.
@@ -435,16 +353,14 @@ public final class RoutesClientImpl implements RoutesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing route with the specified route name under the specified subscription, resource group,
-     *     profile, and AzureFrontDoor endpoint along with {@link Response} on successful completion of {@link Mono}.
+     * profile, and AzureFrontDoor endpoint along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RouteInner>> getWithResponseAsync(
-        String resourceGroupName, String profileName, String endpointName, String routeName, Context context) {
+    private Mono<Response<RouteInner>> getWithResponseAsync(String resourceGroupName, String profileName,
+        String endpointName, String routeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -460,44 +376,33 @@ public final class RoutesClientImpl implements RoutesClient {
             return Mono.error(new IllegalArgumentException("Parameter routeName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                endpointName,
-                routeName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, profileName, endpointName, routeName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets an existing route with the specified route name under the specified subscription, resource group, profile,
      * and AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing route with the specified route name under the specified subscription, resource group,
-     *     profile, and AzureFrontDoor endpoint on successful completion of {@link Mono}.
+     * profile, and AzureFrontDoor endpoint on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouteInner> getAsync(
-        String resourceGroupName, String profileName, String endpointName, String routeName) {
+    public Mono<RouteInner> getAsync(String resourceGroupName, String profileName, String endpointName,
+        String routeName) {
         return getWithResponseAsync(resourceGroupName, profileName, endpointName, routeName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -505,10 +410,10 @@ public final class RoutesClientImpl implements RoutesClient {
     /**
      * Gets an existing route with the specified route name under the specified subscription, resource group, profile,
      * and AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @param context The context to associate with this operation.
@@ -516,28 +421,28 @@ public final class RoutesClientImpl implements RoutesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing route with the specified route name under the specified subscription, resource group,
-     *     profile, and AzureFrontDoor endpoint along with {@link Response}.
+     * profile, and AzureFrontDoor endpoint along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouteInner> getWithResponse(
-        String resourceGroupName, String profileName, String endpointName, String routeName, Context context) {
+    public Response<RouteInner> getWithResponse(String resourceGroupName, String profileName, String endpointName,
+        String routeName, Context context) {
         return getWithResponseAsync(resourceGroupName, profileName, endpointName, routeName, context).block();
     }
 
     /**
      * Gets an existing route with the specified route name under the specified subscription, resource group, profile,
      * and AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing route with the specified route name under the specified subscription, resource group,
-     *     profile, and AzureFrontDoor endpoint.
+     * profile, and AzureFrontDoor endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RouteInner get(String resourceGroupName, String profileName, String endpointName, String routeName) {
@@ -547,10 +452,10 @@ public final class RoutesClientImpl implements RoutesClient {
     /**
      * Creates a new route with the specified route name under the specified subscription, resource group, profile, and
      * AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @param route Route properties.
@@ -558,16 +463,14 @@ public final class RoutesClientImpl implements RoutesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly Routes name mapping to the any Routes or secret related information along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String profileName, String endpointName, String routeName, RouteInner route) {
+    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String profileName,
+        String endpointName, String routeName, RouteInner route) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -583,10 +486,8 @@ public final class RoutesClientImpl implements RoutesClient {
             return Mono.error(new IllegalArgumentException("Parameter routeName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (route == null) {
             return Mono.error(new IllegalArgumentException("Parameter route is required and cannot be null."));
@@ -596,29 +497,18 @@ public final class RoutesClientImpl implements RoutesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            endpointName,
-                            routeName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            route,
-                            accept,
-                            context))
+                context -> service.create(this.client.getEndpoint(), resourceGroupName, profileName, endpointName,
+                    routeName, this.client.getSubscriptionId(), this.client.getApiVersion(), route, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a new route with the specified route name under the specified subscription, resource group, profile, and
      * AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @param route Route properties.
@@ -627,21 +517,14 @@ public final class RoutesClientImpl implements RoutesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly Routes name mapping to the any Routes or secret related information along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String routeName,
-        RouteInner route,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String profileName,
+        String endpointName, String routeName, RouteInner route, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -657,10 +540,8 @@ public final class RoutesClientImpl implements RoutesClient {
             return Mono.error(new IllegalArgumentException("Parameter routeName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (route == null) {
             return Mono.error(new IllegalArgumentException("Parameter route is required and cannot be null."));
@@ -669,27 +550,17 @@ public final class RoutesClientImpl implements RoutesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                endpointName,
-                routeName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                route,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), resourceGroupName, profileName, endpointName, routeName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), route, accept, context);
     }
 
     /**
      * Creates a new route with the specified route name under the specified subscription, resource group, profile, and
      * AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @param route Route properties.
@@ -697,26 +568,24 @@ public final class RoutesClientImpl implements RoutesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of friendly Routes name mapping to the any Routes or secret related
-     *     information.
+     * information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<RouteInner>, RouteInner> beginCreateAsync(
-        String resourceGroupName, String profileName, String endpointName, String routeName, RouteInner route) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, profileName, endpointName, routeName, route);
-        return this
-            .client
-            .<RouteInner, RouteInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RouteInner.class, RouteInner.class, this.client.getContext());
+    public PollerFlux<PollResult<RouteInner>, RouteInner> beginCreateAsync(String resourceGroupName, String profileName,
+        String endpointName, String routeName, RouteInner route) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, profileName, endpointName, routeName, route);
+        return this.client.<RouteInner, RouteInner>getLroResult(mono, this.client.getHttpPipeline(), RouteInner.class,
+            RouteInner.class, this.client.getContext());
     }
 
     /**
      * Creates a new route with the specified route name under the specified subscription, resource group, profile, and
      * AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @param route Route properties.
@@ -725,32 +594,25 @@ public final class RoutesClientImpl implements RoutesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of friendly Routes name mapping to the any Routes or secret related
-     *     information.
+     * information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<RouteInner>, RouteInner> beginCreateAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String routeName,
-        RouteInner route,
-        Context context) {
+    private PollerFlux<PollResult<RouteInner>, RouteInner> beginCreateAsync(String resourceGroupName,
+        String profileName, String endpointName, String routeName, RouteInner route, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, profileName, endpointName, routeName, route, context);
-        return this
-            .client
-            .<RouteInner, RouteInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RouteInner.class, RouteInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, profileName, endpointName, routeName, route, context);
+        return this.client.<RouteInner, RouteInner>getLroResult(mono, this.client.getHttpPipeline(), RouteInner.class,
+            RouteInner.class, context);
     }
 
     /**
      * Creates a new route with the specified route name under the specified subscription, resource group, profile, and
      * AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @param route Route properties.
@@ -758,21 +620,21 @@ public final class RoutesClientImpl implements RoutesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of friendly Routes name mapping to the any Routes or secret related
-     *     information.
+     * information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<RouteInner>, RouteInner> beginCreate(
-        String resourceGroupName, String profileName, String endpointName, String routeName, RouteInner route) {
+    public SyncPoller<PollResult<RouteInner>, RouteInner> beginCreate(String resourceGroupName, String profileName,
+        String endpointName, String routeName, RouteInner route) {
         return this.beginCreateAsync(resourceGroupName, profileName, endpointName, routeName, route).getSyncPoller();
     }
 
     /**
      * Creates a new route with the specified route name under the specified subscription, resource group, profile, and
      * AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @param route Route properties.
@@ -781,28 +643,22 @@ public final class RoutesClientImpl implements RoutesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of friendly Routes name mapping to the any Routes or secret related
-     *     information.
+     * information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<RouteInner>, RouteInner> beginCreate(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String routeName,
-        RouteInner route,
-        Context context) {
-        return this
-            .beginCreateAsync(resourceGroupName, profileName, endpointName, routeName, route, context)
+    public SyncPoller<PollResult<RouteInner>, RouteInner> beginCreate(String resourceGroupName, String profileName,
+        String endpointName, String routeName, RouteInner route, Context context) {
+        return this.beginCreateAsync(resourceGroupName, profileName, endpointName, routeName, route, context)
             .getSyncPoller();
     }
 
     /**
      * Creates a new route with the specified route name under the specified subscription, resource group, profile, and
      * AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @param route Route properties.
@@ -810,23 +666,22 @@ public final class RoutesClientImpl implements RoutesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly Routes name mapping to the any Routes or secret related information on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouteInner> createAsync(
-        String resourceGroupName, String profileName, String endpointName, String routeName, RouteInner route) {
-        return beginCreateAsync(resourceGroupName, profileName, endpointName, routeName, route)
-            .last()
+    public Mono<RouteInner> createAsync(String resourceGroupName, String profileName, String endpointName,
+        String routeName, RouteInner route) {
+        return beginCreateAsync(resourceGroupName, profileName, endpointName, routeName, route).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a new route with the specified route name under the specified subscription, resource group, profile, and
      * AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @param route Route properties.
@@ -835,28 +690,22 @@ public final class RoutesClientImpl implements RoutesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly Routes name mapping to the any Routes or secret related information on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RouteInner> createAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String routeName,
-        RouteInner route,
-        Context context) {
-        return beginCreateAsync(resourceGroupName, profileName, endpointName, routeName, route, context)
-            .last()
+    private Mono<RouteInner> createAsync(String resourceGroupName, String profileName, String endpointName,
+        String routeName, RouteInner route, Context context) {
+        return beginCreateAsync(resourceGroupName, profileName, endpointName, routeName, route, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a new route with the specified route name under the specified subscription, resource group, profile, and
      * AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @param route Route properties.
@@ -866,18 +715,18 @@ public final class RoutesClientImpl implements RoutesClient {
      * @return friendly Routes name mapping to the any Routes or secret related information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouteInner create(
-        String resourceGroupName, String profileName, String endpointName, String routeName, RouteInner route) {
+    public RouteInner create(String resourceGroupName, String profileName, String endpointName, String routeName,
+        RouteInner route) {
         return createAsync(resourceGroupName, profileName, endpointName, routeName, route).block();
     }
 
     /**
      * Creates a new route with the specified route name under the specified subscription, resource group, profile, and
      * AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @param route Route properties.
@@ -888,23 +737,18 @@ public final class RoutesClientImpl implements RoutesClient {
      * @return friendly Routes name mapping to the any Routes or secret related information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouteInner create(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String routeName,
-        RouteInner route,
-        Context context) {
+    public RouteInner create(String resourceGroupName, String profileName, String endpointName, String routeName,
+        RouteInner route, Context context) {
         return createAsync(resourceGroupName, profileName, endpointName, routeName, route, context).block();
     }
 
     /**
      * Updates an existing route with the specified route name under the specified subscription, resource group,
      * profile, and AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @param routeUpdateProperties Route update properties.
@@ -912,20 +756,14 @@ public final class RoutesClientImpl implements RoutesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly Routes name mapping to the any Routes or secret related information along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String routeName,
-        RouteUpdateParameters routeUpdateProperties) {
+    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String profileName,
+        String endpointName, String routeName, RouteUpdateParameters routeUpdateProperties) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -941,10 +779,8 @@ public final class RoutesClientImpl implements RoutesClient {
             return Mono.error(new IllegalArgumentException("Parameter routeName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (routeUpdateProperties == null) {
             return Mono
@@ -954,30 +790,19 @@ public final class RoutesClientImpl implements RoutesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            endpointName,
-                            routeName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            routeUpdateProperties,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, profileName,
+                endpointName, routeName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+                routeUpdateProperties, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates an existing route with the specified route name under the specified subscription, resource group,
      * profile, and AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @param routeUpdateProperties Route update properties.
@@ -986,21 +811,14 @@ public final class RoutesClientImpl implements RoutesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly Routes name mapping to the any Routes or secret related information along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String routeName,
-        RouteUpdateParameters routeUpdateProperties,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String profileName,
+        String endpointName, String routeName, RouteUpdateParameters routeUpdateProperties, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1016,10 +834,8 @@ public final class RoutesClientImpl implements RoutesClient {
             return Mono.error(new IllegalArgumentException("Parameter routeName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (routeUpdateProperties == null) {
             return Mono
@@ -1029,27 +845,17 @@ public final class RoutesClientImpl implements RoutesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                endpointName,
-                routeName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                routeUpdateProperties,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, profileName, endpointName, routeName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), routeUpdateProperties, accept, context);
     }
 
     /**
      * Updates an existing route with the specified route name under the specified subscription, resource group,
      * profile, and AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @param routeUpdateProperties Route update properties.
@@ -1057,30 +863,24 @@ public final class RoutesClientImpl implements RoutesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of friendly Routes name mapping to the any Routes or secret related
-     *     information.
+     * information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<RouteInner>, RouteInner> beginUpdateAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String routeName,
-        RouteUpdateParameters routeUpdateProperties) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, profileName, endpointName, routeName, routeUpdateProperties);
-        return this
-            .client
-            .<RouteInner, RouteInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RouteInner.class, RouteInner.class, this.client.getContext());
+    public PollerFlux<PollResult<RouteInner>, RouteInner> beginUpdateAsync(String resourceGroupName, String profileName,
+        String endpointName, String routeName, RouteUpdateParameters routeUpdateProperties) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, profileName, endpointName, routeName, routeUpdateProperties);
+        return this.client.<RouteInner, RouteInner>getLroResult(mono, this.client.getHttpPipeline(), RouteInner.class,
+            RouteInner.class, this.client.getContext());
     }
 
     /**
      * Updates an existing route with the specified route name under the specified subscription, resource group,
      * profile, and AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @param routeUpdateProperties Route update properties.
@@ -1089,33 +889,26 @@ public final class RoutesClientImpl implements RoutesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of friendly Routes name mapping to the any Routes or secret related
-     *     information.
+     * information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<RouteInner>, RouteInner> beginUpdateAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String routeName,
-        RouteUpdateParameters routeUpdateProperties,
+    private PollerFlux<PollResult<RouteInner>, RouteInner> beginUpdateAsync(String resourceGroupName,
+        String profileName, String endpointName, String routeName, RouteUpdateParameters routeUpdateProperties,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, profileName, endpointName, routeName, routeUpdateProperties, context);
-        return this
-            .client
-            .<RouteInner, RouteInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RouteInner.class, RouteInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, profileName, endpointName,
+            routeName, routeUpdateProperties, context);
+        return this.client.<RouteInner, RouteInner>getLroResult(mono, this.client.getHttpPipeline(), RouteInner.class,
+            RouteInner.class, context);
     }
 
     /**
      * Updates an existing route with the specified route name under the specified subscription, resource group,
      * profile, and AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @param routeUpdateProperties Route update properties.
@@ -1123,27 +916,22 @@ public final class RoutesClientImpl implements RoutesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of friendly Routes name mapping to the any Routes or secret related
-     *     information.
+     * information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<RouteInner>, RouteInner> beginUpdate(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String routeName,
-        RouteUpdateParameters routeUpdateProperties) {
-        return this
-            .beginUpdateAsync(resourceGroupName, profileName, endpointName, routeName, routeUpdateProperties)
+    public SyncPoller<PollResult<RouteInner>, RouteInner> beginUpdate(String resourceGroupName, String profileName,
+        String endpointName, String routeName, RouteUpdateParameters routeUpdateProperties) {
+        return this.beginUpdateAsync(resourceGroupName, profileName, endpointName, routeName, routeUpdateProperties)
             .getSyncPoller();
     }
 
     /**
      * Updates an existing route with the specified route name under the specified subscription, resource group,
      * profile, and AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @param routeUpdateProperties Route update properties.
@@ -1152,16 +940,11 @@ public final class RoutesClientImpl implements RoutesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of friendly Routes name mapping to the any Routes or secret related
-     *     information.
+     * information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<RouteInner>, RouteInner> beginUpdate(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String routeName,
-        RouteUpdateParameters routeUpdateProperties,
-        Context context) {
+    public SyncPoller<PollResult<RouteInner>, RouteInner> beginUpdate(String resourceGroupName, String profileName,
+        String endpointName, String routeName, RouteUpdateParameters routeUpdateProperties, Context context) {
         return this
             .beginUpdateAsync(resourceGroupName, profileName, endpointName, routeName, routeUpdateProperties, context)
             .getSyncPoller();
@@ -1170,10 +953,10 @@ public final class RoutesClientImpl implements RoutesClient {
     /**
      * Updates an existing route with the specified route name under the specified subscription, resource group,
      * profile, and AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @param routeUpdateProperties Route update properties.
@@ -1181,27 +964,22 @@ public final class RoutesClientImpl implements RoutesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly Routes name mapping to the any Routes or secret related information on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouteInner> updateAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String routeName,
-        RouteUpdateParameters routeUpdateProperties) {
-        return beginUpdateAsync(resourceGroupName, profileName, endpointName, routeName, routeUpdateProperties)
-            .last()
+    public Mono<RouteInner> updateAsync(String resourceGroupName, String profileName, String endpointName,
+        String routeName, RouteUpdateParameters routeUpdateProperties) {
+        return beginUpdateAsync(resourceGroupName, profileName, endpointName, routeName, routeUpdateProperties).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates an existing route with the specified route name under the specified subscription, resource group,
      * profile, and AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @param routeUpdateProperties Route update properties.
@@ -1210,28 +988,22 @@ public final class RoutesClientImpl implements RoutesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly Routes name mapping to the any Routes or secret related information on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RouteInner> updateAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String routeName,
-        RouteUpdateParameters routeUpdateProperties,
-        Context context) {
+    private Mono<RouteInner> updateAsync(String resourceGroupName, String profileName, String endpointName,
+        String routeName, RouteUpdateParameters routeUpdateProperties, Context context) {
         return beginUpdateAsync(resourceGroupName, profileName, endpointName, routeName, routeUpdateProperties, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates an existing route with the specified route name under the specified subscription, resource group,
      * profile, and AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @param routeUpdateProperties Route update properties.
@@ -1241,11 +1013,7 @@ public final class RoutesClientImpl implements RoutesClient {
      * @return friendly Routes name mapping to the any Routes or secret related information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouteInner update(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String routeName,
+    public RouteInner update(String resourceGroupName, String profileName, String endpointName, String routeName,
         RouteUpdateParameters routeUpdateProperties) {
         return updateAsync(resourceGroupName, profileName, endpointName, routeName, routeUpdateProperties).block();
     }
@@ -1253,10 +1021,10 @@ public final class RoutesClientImpl implements RoutesClient {
     /**
      * Updates an existing route with the specified route name under the specified subscription, resource group,
      * profile, and AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @param routeUpdateProperties Route update properties.
@@ -1267,13 +1035,8 @@ public final class RoutesClientImpl implements RoutesClient {
      * @return friendly Routes name mapping to the any Routes or secret related information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouteInner update(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String routeName,
-        RouteUpdateParameters routeUpdateProperties,
-        Context context) {
+    public RouteInner update(String resourceGroupName, String profileName, String endpointName, String routeName,
+        RouteUpdateParameters routeUpdateProperties, Context context) {
         return updateAsync(resourceGroupName, profileName, endpointName, routeName, routeUpdateProperties, context)
             .block();
     }
@@ -1281,10 +1044,10 @@ public final class RoutesClientImpl implements RoutesClient {
     /**
      * Deletes an existing route with the specified route name under the specified subscription, resource group,
      * profile, and AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1293,13 +1056,11 @@ public final class RoutesClientImpl implements RoutesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String profileName, String endpointName, String routeName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String profileName,
+        String endpointName, String routeName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1315,36 +1076,23 @@ public final class RoutesClientImpl implements RoutesClient {
             return Mono.error(new IllegalArgumentException("Parameter routeName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            endpointName,
-                            routeName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, profileName,
+                endpointName, routeName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes an existing route with the specified route name under the specified subscription, resource group,
      * profile, and AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @param context The context to associate with this operation.
@@ -1354,13 +1102,11 @@ public final class RoutesClientImpl implements RoutesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String profileName, String endpointName, String routeName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String profileName,
+        String endpointName, String routeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1376,33 +1122,22 @@ public final class RoutesClientImpl implements RoutesClient {
             return Mono.error(new IllegalArgumentException("Parameter routeName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                endpointName,
-                routeName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, profileName, endpointName, routeName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes an existing route with the specified route name under the specified subscription, resource group,
      * profile, and AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1411,23 +1146,21 @@ public final class RoutesClientImpl implements RoutesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String profileName, String endpointName, String routeName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, profileName, endpointName, routeName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String profileName,
+        String endpointName, String routeName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, profileName, endpointName, routeName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes an existing route with the specified route name under the specified subscription, resource group,
      * profile, and AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @param context The context to associate with this operation.
@@ -1437,23 +1170,22 @@ public final class RoutesClientImpl implements RoutesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String profileName, String endpointName, String routeName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String profileName,
+        String endpointName, String routeName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, profileName, endpointName, routeName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, profileName, endpointName, routeName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes an existing route with the specified route name under the specified subscription, resource group,
      * profile, and AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1462,18 +1194,18 @@ public final class RoutesClientImpl implements RoutesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String profileName, String endpointName, String routeName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName,
+        String endpointName, String routeName) {
         return this.beginDeleteAsync(resourceGroupName, profileName, endpointName, routeName).getSyncPoller();
     }
 
     /**
      * Deletes an existing route with the specified route name under the specified subscription, resource group,
      * profile, and AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @param context The context to associate with this operation.
@@ -1483,18 +1215,18 @@ public final class RoutesClientImpl implements RoutesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String profileName, String endpointName, String routeName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName,
+        String endpointName, String routeName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, profileName, endpointName, routeName, context).getSyncPoller();
     }
 
     /**
      * Deletes an existing route with the specified route name under the specified subscription, resource group,
      * profile, and AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1504,18 +1236,17 @@ public final class RoutesClientImpl implements RoutesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String profileName, String endpointName, String routeName) {
-        return beginDeleteAsync(resourceGroupName, profileName, endpointName, routeName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, profileName, endpointName, routeName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an existing route with the specified route name under the specified subscription, resource group,
      * profile, and AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @param context The context to associate with this operation.
@@ -1525,20 +1256,19 @@ public final class RoutesClientImpl implements RoutesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String profileName, String endpointName, String routeName, Context context) {
-        return beginDeleteAsync(resourceGroupName, profileName, endpointName, routeName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String profileName, String endpointName, String routeName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, profileName, endpointName, routeName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an existing route with the specified route name under the specified subscription, resource group,
      * profile, and AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1553,10 +1283,10 @@ public final class RoutesClientImpl implements RoutesClient {
     /**
      * Deletes an existing route with the specified route name under the specified subscription, resource group,
      * profile, and AzureFrontDoor endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param routeName Name of the routing rule.
      * @param context The context to associate with this operation.
@@ -1565,21 +1295,22 @@ public final class RoutesClientImpl implements RoutesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String profileName, String endpointName, String routeName, Context context) {
+    public void delete(String resourceGroupName, String profileName, String endpointName, String routeName,
+        Context context) {
         deleteAsync(resourceGroupName, profileName, endpointName, routeName, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list routes along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return result of the request to list routes along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RouteInner>> listByEndpointNextSinglePageAsync(String nextLink) {
@@ -1587,37 +1318,29 @@ public final class RoutesClientImpl implements RoutesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByEndpointNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<RouteInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<RouteInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list routes along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return result of the request to list routes along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RouteInner>> listByEndpointNextSinglePageAsync(String nextLink, Context context) {
@@ -1625,23 +1348,13 @@ public final class RoutesClientImpl implements RoutesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByEndpointNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByEndpointNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

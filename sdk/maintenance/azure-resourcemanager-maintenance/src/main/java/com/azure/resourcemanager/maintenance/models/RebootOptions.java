@@ -13,18 +13,24 @@ import java.util.Collection;
  * after the patch operation is completed.
  */
 public final class RebootOptions extends ExpandableStringEnum<RebootOptions> {
-    /** Static value IfRequired for RebootOptions. */
+    /**
+     * Static value IfRequired for RebootOptions.
+     */
     public static final RebootOptions IF_REQUIRED = fromString("IfRequired");
 
-    /** Static value Never for RebootOptions. */
+    /**
+     * Static value Never for RebootOptions.
+     */
     public static final RebootOptions NEVER = fromString("Never");
 
-    /** Static value Always for RebootOptions. */
+    /**
+     * Static value Always for RebootOptions.
+     */
     public static final RebootOptions ALWAYS = fromString("Always");
 
     /**
      * Creates a new instance of RebootOptions value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +39,7 @@ public final class RebootOptions extends ExpandableStringEnum<RebootOptions> {
 
     /**
      * Creates or finds a RebootOptions from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RebootOptions.
      */
@@ -44,7 +50,7 @@ public final class RebootOptions extends ExpandableStringEnum<RebootOptions> {
 
     /**
      * Gets known RebootOptions values.
-     *
+     * 
      * @return known RebootOptions values.
      */
     public static Collection<RebootOptions> values() {

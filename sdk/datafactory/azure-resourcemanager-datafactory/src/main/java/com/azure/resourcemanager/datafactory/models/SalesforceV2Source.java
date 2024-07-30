@@ -6,21 +6,39 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity Salesforce V2 source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = SalesforceV2Source.class, visible = true)
 @JsonTypeName("SalesforceV2Source")
 @Fluent
 public final class SalesforceV2Source extends TabularSource {
     /*
-     * Database query. Type: string (or Expression with resultType string).
+     * Copy source type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "SalesforceV2Source";
+
+    /*
+     * Deprecating, please use 'query' property instead. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "SOQLQuery")
     private Object soqlQuery;
+
+    /*
+     * You can only use Salesforce Object Query Language (SOQL) query with limitations. For SOQL limitations, see this
+     * article:
+     * https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/queries.htm#SOQL%20Considerations.
+     * If query is not specified, all the data of the Salesforce object specified in ObjectApiName/reportId in dataset
+     * will be retrieved. Type: string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "query")
+    private Object query;
 
     /*
      * This property control whether query result contains Deleted objects. Default is false. Type: boolean (or
@@ -36,7 +54,18 @@ public final class SalesforceV2Source extends TabularSource {
     }
 
     /**
-     * Get the soqlQuery property: Database query. Type: string (or Expression with resultType string).
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the soqlQuery property: Deprecating, please use 'query' property instead. Type: string (or Expression with
+     * resultType string).
      * 
      * @return the soqlQuery value.
      */
@@ -45,13 +74,42 @@ public final class SalesforceV2Source extends TabularSource {
     }
 
     /**
-     * Set the soqlQuery property: Database query. Type: string (or Expression with resultType string).
+     * Set the soqlQuery property: Deprecating, please use 'query' property instead. Type: string (or Expression with
+     * resultType string).
      * 
      * @param soqlQuery the soqlQuery value to set.
      * @return the SalesforceV2Source object itself.
      */
     public SalesforceV2Source withSoqlQuery(Object soqlQuery) {
         this.soqlQuery = soqlQuery;
+        return this;
+    }
+
+    /**
+     * Get the query property: You can only use Salesforce Object Query Language (SOQL) query with limitations. For SOQL
+     * limitations, see this article:
+     * https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/queries.htm#SOQL%20Considerations.
+     * If query is not specified, all the data of the Salesforce object specified in ObjectApiName/reportId in dataset
+     * will be retrieved. Type: string (or Expression with resultType string).
+     * 
+     * @return the query value.
+     */
+    public Object query() {
+        return this.query;
+    }
+
+    /**
+     * Set the query property: You can only use Salesforce Object Query Language (SOQL) query with limitations. For SOQL
+     * limitations, see this article:
+     * https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/queries.htm#SOQL%20Considerations.
+     * If query is not specified, all the data of the Salesforce object specified in ObjectApiName/reportId in dataset
+     * will be retrieved. Type: string (or Expression with resultType string).
+     * 
+     * @param query the query value to set.
+     * @return the SalesforceV2Source object itself.
+     */
+    public SalesforceV2Source withQuery(Object query) {
+        this.query = query;
         return this;
     }
 

@@ -12,23 +12,25 @@ import org.junit.jupiter.api.Assertions;
 public final class ProtectionModeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProtectionMode model = BinaryData
-            .fromString("{\"exe\":\"Enforce\",\"msi\":\"None\",\"script\":\"Enforce\",\"executable\":\"None\"}")
-            .toObject(ProtectionMode.class);
-        Assertions.assertEquals(EnforcementMode.ENFORCE, model.exe());
+        ProtectionMode model
+            = BinaryData.fromString("{\"exe\":\"None\",\"msi\":\"None\",\"script\":\"Audit\",\"executable\":\"Audit\"}")
+                .toObject(ProtectionMode.class);
+        Assertions.assertEquals(EnforcementMode.NONE, model.exe());
         Assertions.assertEquals(EnforcementMode.NONE, model.msi());
-        Assertions.assertEquals(EnforcementMode.ENFORCE, model.script());
-        Assertions.assertEquals(EnforcementMode.NONE, model.executable());
+        Assertions.assertEquals(EnforcementMode.AUDIT, model.script());
+        Assertions.assertEquals(EnforcementMode.AUDIT, model.executable());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProtectionMode model = new ProtectionMode().withExe(EnforcementMode.ENFORCE).withMsi(EnforcementMode.NONE)
-            .withScript(EnforcementMode.ENFORCE).withExecutable(EnforcementMode.NONE);
+        ProtectionMode model = new ProtectionMode().withExe(EnforcementMode.NONE)
+            .withMsi(EnforcementMode.NONE)
+            .withScript(EnforcementMode.AUDIT)
+            .withExecutable(EnforcementMode.AUDIT);
         model = BinaryData.fromObject(model).toObject(ProtectionMode.class);
-        Assertions.assertEquals(EnforcementMode.ENFORCE, model.exe());
+        Assertions.assertEquals(EnforcementMode.NONE, model.exe());
         Assertions.assertEquals(EnforcementMode.NONE, model.msi());
-        Assertions.assertEquals(EnforcementMode.ENFORCE, model.script());
-        Assertions.assertEquals(EnforcementMode.NONE, model.executable());
+        Assertions.assertEquals(EnforcementMode.AUDIT, model.script());
+        Assertions.assertEquals(EnforcementMode.AUDIT, model.executable());
     }
 }

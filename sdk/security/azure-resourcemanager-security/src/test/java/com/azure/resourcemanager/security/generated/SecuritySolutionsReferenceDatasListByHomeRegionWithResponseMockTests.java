@@ -6,58 +6,41 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.SecurityFamily;
 import com.azure.resourcemanager.security.models.SecuritySolutionsReferenceDataList;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class SecuritySolutionsReferenceDatasListByHomeRegionWithResponseMockTests {
     @Test
     public void testListByHomeRegionWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"securityFamily\":\"Ngfw\",\"alertVendorName\":\"nrufqqauygas\",\"packageInfoUrl\":\"mhb\",\"productName\":\"v\",\"publisher\":\"wkqnatxvuzcc\",\"publisherDisplayName\":\"lirybytcaqp\",\"template\":\"ohlcbnrv\"},\"location\":\"yhhsisztqfr\",\"id\":\"anteqiwduukaamim\",\"name\":\"jzcxysjdfx\",\"type\":\"ksijrjgyindexij\"}]}";
+            = "{\"value\":[{\"properties\":{\"securityFamily\":\"Ngfw\",\"alertVendorName\":\"wtidcnzalgmpupj\",\"packageInfoUrl\":\"ltyl\",\"productName\":\"uudvbgvzlzjsb\",\"publisher\":\"p\",\"publisherDisplayName\":\"utzaziydpoknsea\",\"template\":\"mbdqra\"},\"location\":\"d\",\"id\":\"rluob\",\"name\":\"valqwzkny\",\"type\":\"j\"},{\"properties\":{\"securityFamily\":\"SaasWaf\",\"alertVendorName\":\"svclfjycl\",\"packageInfoUrl\":\"ildlffll\",\"productName\":\"irmtxfqpfildcg\",\"publisher\":\"fouzfbpg\",\"publisherDisplayName\":\"ryvidbzdylb\",\"template\":\"jatgngwn\"},\"location\":\"ftecgprzsqmpdqc\",\"id\":\"kzb\",\"name\":\"qhaathxo\",\"type\":\"x\"},{\"properties\":{\"securityFamily\":\"Va\",\"alertVendorName\":\"colusyruxrzhhlhr\",\"packageInfoUrl\":\"mgsbpgmncrvtpifo\",\"productName\":\"omppz\",\"publisher\":\"a\",\"publisherDisplayName\":\"qmeu\",\"template\":\"plfcmpua\"},\"location\":\"goce\",\"id\":\"tlyspjymwicc\",\"name\":\"rncfu\",\"type\":\"lakgixhqjqhgqwbb\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SecuritySolutionsReferenceDataList response = manager.securitySolutionsReferenceDatas()
-            .listByHomeRegionWithResponse("hhpkvyqpvzxxzndw", com.azure.core.util.Context.NONE).getValue();
+            .listByHomeRegionWithResponse("ucrxdtejob", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals(SecurityFamily.NGFW, response.value().get(0).securityFamily());
-        Assertions.assertEquals("nrufqqauygas", response.value().get(0).alertVendorName());
-        Assertions.assertEquals("mhb", response.value().get(0).packageInfoUrl());
-        Assertions.assertEquals("v", response.value().get(0).productName());
-        Assertions.assertEquals("wkqnatxvuzcc", response.value().get(0).publisher());
-        Assertions.assertEquals("lirybytcaqp", response.value().get(0).publisherDisplayName());
-        Assertions.assertEquals("ohlcbnrv", response.value().get(0).template());
+        Assertions.assertEquals("wtidcnzalgmpupj", response.value().get(0).alertVendorName());
+        Assertions.assertEquals("ltyl", response.value().get(0).packageInfoUrl());
+        Assertions.assertEquals("uudvbgvzlzjsb", response.value().get(0).productName());
+        Assertions.assertEquals("p", response.value().get(0).publisher());
+        Assertions.assertEquals("utzaziydpoknsea", response.value().get(0).publisherDisplayName());
+        Assertions.assertEquals("mbdqra", response.value().get(0).template());
     }
 }

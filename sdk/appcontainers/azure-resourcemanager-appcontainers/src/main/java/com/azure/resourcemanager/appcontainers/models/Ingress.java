@@ -5,71 +5,67 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Container App Ingress configuration. */
+/**
+ * Container App Ingress configuration.
+ */
 @Fluent
-public final class Ingress {
+public final class Ingress implements JsonSerializable<Ingress> {
     /*
      * Hostname.
      */
-    @JsonProperty(value = "fqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String fqdn;
 
     /*
      * Bool indicating if app exposes an external http endpoint
      */
-    @JsonProperty(value = "external")
     private Boolean external;
 
     /*
      * Target Port in containers for traffic from ingress
      */
-    @JsonProperty(value = "targetPort")
     private Integer targetPort;
 
     /*
      * Exposed Port in containers for TCP traffic from ingress
      */
-    @JsonProperty(value = "exposedPort")
     private Integer exposedPort;
 
     /*
      * Ingress transport protocol
      */
-    @JsonProperty(value = "transport")
     private IngressTransportMethod transport;
 
     /*
      * Traffic weights for app's revisions
      */
-    @JsonProperty(value = "traffic")
     private List<TrafficWeight> traffic;
 
     /*
      * custom domain bindings for Container Apps' hostnames.
      */
-    @JsonProperty(value = "customDomains")
     private List<CustomDomain> customDomains;
 
     /*
      * Bool indicating if HTTP connections to is allowed. If set to false HTTP connections are automatically redirected
      * to HTTPS connections
      */
-    @JsonProperty(value = "allowInsecure")
     private Boolean allowInsecure;
 
     /*
      * Rules to restrict incoming IP address.
      */
-    @JsonProperty(value = "ipSecurityRestrictions")
     private List<IpSecurityRestrictionRule> ipSecurityRestrictions;
 
     /*
      * Sticky Sessions for Single Revision Mode
      */
-    @JsonProperty(value = "stickySessions")
     private IngressStickySessions stickySessions;
 
     /*
@@ -77,22 +73,32 @@ public final class Ingress {
      * Accept indicates server forwards client certificate but does not require a client certificate. Require indicates
      * server requires a client certificate.
      */
-    @JsonProperty(value = "clientCertificateMode")
     private IngressClientCertificateMode clientCertificateMode;
 
     /*
      * CORS policy for container app
      */
-    @JsonProperty(value = "corsPolicy")
     private CorsPolicy corsPolicy;
 
-    /** Creates an instance of Ingress class. */
+    /*
+     * Settings to expose additional ports on container app
+     */
+    private List<IngressPortMapping> additionalPortMappings;
+
+    /*
+     * Whether an http app listens on http or https
+     */
+    private IngressTargetPortHttpScheme targetPortHttpScheme;
+
+    /**
+     * Creates an instance of Ingress class.
+     */
     public Ingress() {
     }
 
     /**
      * Get the fqdn property: Hostname.
-     *
+     * 
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -101,7 +107,7 @@ public final class Ingress {
 
     /**
      * Get the external property: Bool indicating if app exposes an external http endpoint.
-     *
+     * 
      * @return the external value.
      */
     public Boolean external() {
@@ -110,7 +116,7 @@ public final class Ingress {
 
     /**
      * Set the external property: Bool indicating if app exposes an external http endpoint.
-     *
+     * 
      * @param external the external value to set.
      * @return the Ingress object itself.
      */
@@ -121,7 +127,7 @@ public final class Ingress {
 
     /**
      * Get the targetPort property: Target Port in containers for traffic from ingress.
-     *
+     * 
      * @return the targetPort value.
      */
     public Integer targetPort() {
@@ -130,7 +136,7 @@ public final class Ingress {
 
     /**
      * Set the targetPort property: Target Port in containers for traffic from ingress.
-     *
+     * 
      * @param targetPort the targetPort value to set.
      * @return the Ingress object itself.
      */
@@ -141,7 +147,7 @@ public final class Ingress {
 
     /**
      * Get the exposedPort property: Exposed Port in containers for TCP traffic from ingress.
-     *
+     * 
      * @return the exposedPort value.
      */
     public Integer exposedPort() {
@@ -150,7 +156,7 @@ public final class Ingress {
 
     /**
      * Set the exposedPort property: Exposed Port in containers for TCP traffic from ingress.
-     *
+     * 
      * @param exposedPort the exposedPort value to set.
      * @return the Ingress object itself.
      */
@@ -161,7 +167,7 @@ public final class Ingress {
 
     /**
      * Get the transport property: Ingress transport protocol.
-     *
+     * 
      * @return the transport value.
      */
     public IngressTransportMethod transport() {
@@ -170,7 +176,7 @@ public final class Ingress {
 
     /**
      * Set the transport property: Ingress transport protocol.
-     *
+     * 
      * @param transport the transport value to set.
      * @return the Ingress object itself.
      */
@@ -181,7 +187,7 @@ public final class Ingress {
 
     /**
      * Get the traffic property: Traffic weights for app's revisions.
-     *
+     * 
      * @return the traffic value.
      */
     public List<TrafficWeight> traffic() {
@@ -190,7 +196,7 @@ public final class Ingress {
 
     /**
      * Set the traffic property: Traffic weights for app's revisions.
-     *
+     * 
      * @param traffic the traffic value to set.
      * @return the Ingress object itself.
      */
@@ -201,7 +207,7 @@ public final class Ingress {
 
     /**
      * Get the customDomains property: custom domain bindings for Container Apps' hostnames.
-     *
+     * 
      * @return the customDomains value.
      */
     public List<CustomDomain> customDomains() {
@@ -210,7 +216,7 @@ public final class Ingress {
 
     /**
      * Set the customDomains property: custom domain bindings for Container Apps' hostnames.
-     *
+     * 
      * @param customDomains the customDomains value to set.
      * @return the Ingress object itself.
      */
@@ -222,7 +228,7 @@ public final class Ingress {
     /**
      * Get the allowInsecure property: Bool indicating if HTTP connections to is allowed. If set to false HTTP
      * connections are automatically redirected to HTTPS connections.
-     *
+     * 
      * @return the allowInsecure value.
      */
     public Boolean allowInsecure() {
@@ -232,7 +238,7 @@ public final class Ingress {
     /**
      * Set the allowInsecure property: Bool indicating if HTTP connections to is allowed. If set to false HTTP
      * connections are automatically redirected to HTTPS connections.
-     *
+     * 
      * @param allowInsecure the allowInsecure value to set.
      * @return the Ingress object itself.
      */
@@ -243,7 +249,7 @@ public final class Ingress {
 
     /**
      * Get the ipSecurityRestrictions property: Rules to restrict incoming IP address.
-     *
+     * 
      * @return the ipSecurityRestrictions value.
      */
     public List<IpSecurityRestrictionRule> ipSecurityRestrictions() {
@@ -252,7 +258,7 @@ public final class Ingress {
 
     /**
      * Set the ipSecurityRestrictions property: Rules to restrict incoming IP address.
-     *
+     * 
      * @param ipSecurityRestrictions the ipSecurityRestrictions value to set.
      * @return the Ingress object itself.
      */
@@ -263,7 +269,7 @@ public final class Ingress {
 
     /**
      * Get the stickySessions property: Sticky Sessions for Single Revision Mode.
-     *
+     * 
      * @return the stickySessions value.
      */
     public IngressStickySessions stickySessions() {
@@ -272,7 +278,7 @@ public final class Ingress {
 
     /**
      * Set the stickySessions property: Sticky Sessions for Single Revision Mode.
-     *
+     * 
      * @param stickySessions the stickySessions value to set.
      * @return the Ingress object itself.
      */
@@ -285,7 +291,7 @@ public final class Ingress {
      * Get the clientCertificateMode property: Client certificate mode for mTLS authentication. Ignore indicates server
      * drops client certificate on forwarding. Accept indicates server forwards client certificate but does not require
      * a client certificate. Require indicates server requires a client certificate.
-     *
+     * 
      * @return the clientCertificateMode value.
      */
     public IngressClientCertificateMode clientCertificateMode() {
@@ -296,7 +302,7 @@ public final class Ingress {
      * Set the clientCertificateMode property: Client certificate mode for mTLS authentication. Ignore indicates server
      * drops client certificate on forwarding. Accept indicates server forwards client certificate but does not require
      * a client certificate. Require indicates server requires a client certificate.
-     *
+     * 
      * @param clientCertificateMode the clientCertificateMode value to set.
      * @return the Ingress object itself.
      */
@@ -307,7 +313,7 @@ public final class Ingress {
 
     /**
      * Get the corsPolicy property: CORS policy for container app.
-     *
+     * 
      * @return the corsPolicy value.
      */
     public CorsPolicy corsPolicy() {
@@ -316,7 +322,7 @@ public final class Ingress {
 
     /**
      * Set the corsPolicy property: CORS policy for container app.
-     *
+     * 
      * @param corsPolicy the corsPolicy value to set.
      * @return the Ingress object itself.
      */
@@ -326,8 +332,48 @@ public final class Ingress {
     }
 
     /**
+     * Get the additionalPortMappings property: Settings to expose additional ports on container app.
+     * 
+     * @return the additionalPortMappings value.
+     */
+    public List<IngressPortMapping> additionalPortMappings() {
+        return this.additionalPortMappings;
+    }
+
+    /**
+     * Set the additionalPortMappings property: Settings to expose additional ports on container app.
+     * 
+     * @param additionalPortMappings the additionalPortMappings value to set.
+     * @return the Ingress object itself.
+     */
+    public Ingress withAdditionalPortMappings(List<IngressPortMapping> additionalPortMappings) {
+        this.additionalPortMappings = additionalPortMappings;
+        return this;
+    }
+
+    /**
+     * Get the targetPortHttpScheme property: Whether an http app listens on http or https.
+     * 
+     * @return the targetPortHttpScheme value.
+     */
+    public IngressTargetPortHttpScheme targetPortHttpScheme() {
+        return this.targetPortHttpScheme;
+    }
+
+    /**
+     * Set the targetPortHttpScheme property: Whether an http app listens on http or https.
+     * 
+     * @param targetPortHttpScheme the targetPortHttpScheme value to set.
+     * @return the Ingress object itself.
+     */
+    public Ingress withTargetPortHttpScheme(IngressTargetPortHttpScheme targetPortHttpScheme) {
+        this.targetPortHttpScheme = targetPortHttpScheme;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -346,5 +392,94 @@ public final class Ingress {
         if (corsPolicy() != null) {
             corsPolicy().validate();
         }
+        if (additionalPortMappings() != null) {
+            additionalPortMappings().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("external", this.external);
+        jsonWriter.writeNumberField("targetPort", this.targetPort);
+        jsonWriter.writeNumberField("exposedPort", this.exposedPort);
+        jsonWriter.writeStringField("transport", this.transport == null ? null : this.transport.toString());
+        jsonWriter.writeArrayField("traffic", this.traffic, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("customDomains", this.customDomains, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("allowInsecure", this.allowInsecure);
+        jsonWriter.writeArrayField("ipSecurityRestrictions", this.ipSecurityRestrictions,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("stickySessions", this.stickySessions);
+        jsonWriter.writeStringField("clientCertificateMode",
+            this.clientCertificateMode == null ? null : this.clientCertificateMode.toString());
+        jsonWriter.writeJsonField("corsPolicy", this.corsPolicy);
+        jsonWriter.writeArrayField("additionalPortMappings", this.additionalPortMappings,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("targetPortHttpScheme",
+            this.targetPortHttpScheme == null ? null : this.targetPortHttpScheme.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Ingress from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Ingress if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Ingress.
+     */
+    public static Ingress fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Ingress deserializedIngress = new Ingress();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("fqdn".equals(fieldName)) {
+                    deserializedIngress.fqdn = reader.getString();
+                } else if ("external".equals(fieldName)) {
+                    deserializedIngress.external = reader.getNullable(JsonReader::getBoolean);
+                } else if ("targetPort".equals(fieldName)) {
+                    deserializedIngress.targetPort = reader.getNullable(JsonReader::getInt);
+                } else if ("exposedPort".equals(fieldName)) {
+                    deserializedIngress.exposedPort = reader.getNullable(JsonReader::getInt);
+                } else if ("transport".equals(fieldName)) {
+                    deserializedIngress.transport = IngressTransportMethod.fromString(reader.getString());
+                } else if ("traffic".equals(fieldName)) {
+                    List<TrafficWeight> traffic = reader.readArray(reader1 -> TrafficWeight.fromJson(reader1));
+                    deserializedIngress.traffic = traffic;
+                } else if ("customDomains".equals(fieldName)) {
+                    List<CustomDomain> customDomains = reader.readArray(reader1 -> CustomDomain.fromJson(reader1));
+                    deserializedIngress.customDomains = customDomains;
+                } else if ("allowInsecure".equals(fieldName)) {
+                    deserializedIngress.allowInsecure = reader.getNullable(JsonReader::getBoolean);
+                } else if ("ipSecurityRestrictions".equals(fieldName)) {
+                    List<IpSecurityRestrictionRule> ipSecurityRestrictions
+                        = reader.readArray(reader1 -> IpSecurityRestrictionRule.fromJson(reader1));
+                    deserializedIngress.ipSecurityRestrictions = ipSecurityRestrictions;
+                } else if ("stickySessions".equals(fieldName)) {
+                    deserializedIngress.stickySessions = IngressStickySessions.fromJson(reader);
+                } else if ("clientCertificateMode".equals(fieldName)) {
+                    deserializedIngress.clientCertificateMode
+                        = IngressClientCertificateMode.fromString(reader.getString());
+                } else if ("corsPolicy".equals(fieldName)) {
+                    deserializedIngress.corsPolicy = CorsPolicy.fromJson(reader);
+                } else if ("additionalPortMappings".equals(fieldName)) {
+                    List<IngressPortMapping> additionalPortMappings
+                        = reader.readArray(reader1 -> IngressPortMapping.fromJson(reader1));
+                    deserializedIngress.additionalPortMappings = additionalPortMappings;
+                } else if ("targetPortHttpScheme".equals(fieldName)) {
+                    deserializedIngress.targetPortHttpScheme
+                        = IngressTargetPortHttpScheme.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIngress;
+        });
     }
 }

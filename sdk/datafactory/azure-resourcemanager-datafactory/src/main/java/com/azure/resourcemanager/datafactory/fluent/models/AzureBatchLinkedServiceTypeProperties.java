@@ -166,8 +166,8 @@ public final class AzureBatchLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -176,8 +176,8 @@ public final class AzureBatchLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureBatchLinkedServiceTypeProperties object itself.
@@ -214,23 +214,27 @@ public final class AzureBatchLinkedServiceTypeProperties {
      */
     public void validate() {
         if (accountName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property accountName in model AzureBatchLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property accountName in model AzureBatchLinkedServiceTypeProperties"));
         }
         if (accessKey() != null) {
             accessKey().validate();
         }
         if (batchUri() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property batchUri in model AzureBatchLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property batchUri in model AzureBatchLinkedServiceTypeProperties"));
         }
         if (poolName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property poolName in model AzureBatchLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property poolName in model AzureBatchLinkedServiceTypeProperties"));
         }
         if (linkedServiceName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property linkedServiceName in model AzureBatchLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property linkedServiceName in model AzureBatchLinkedServiceTypeProperties"));
         } else {
             linkedServiceName().validate();
         }

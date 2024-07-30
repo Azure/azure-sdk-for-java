@@ -6,27 +6,55 @@ package com.azure.resourcemanager.appcontainers.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.appcontainers.models.DaprComponentServiceBinding;
 import com.azure.resourcemanager.appcontainers.models.DaprMetadata;
 import com.azure.resourcemanager.appcontainers.models.Secret;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Dapr Component. */
+/**
+ * Dapr Component.
+ */
 @Fluent
 public final class DaprComponentInner extends ProxyResource {
     /*
      * Dapr Component resource specific properties
      */
-    @JsonProperty(value = "properties")
     private DaprComponentProperties innerProperties;
 
-    /** Creates an instance of DaprComponentInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of DaprComponentInner class.
+     */
     public DaprComponentInner() {
     }
 
     /**
      * Get the innerProperties property: Dapr Component resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DaprComponentProperties innerProperties() {
@@ -34,8 +62,47 @@ public final class DaprComponentInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the componentType property: Component type.
-     *
+     * 
      * @return the componentType value.
      */
     public String componentType() {
@@ -44,7 +111,7 @@ public final class DaprComponentInner extends ProxyResource {
 
     /**
      * Set the componentType property: Component type.
-     *
+     * 
      * @param componentType the componentType value to set.
      * @return the DaprComponentInner object itself.
      */
@@ -58,7 +125,7 @@ public final class DaprComponentInner extends ProxyResource {
 
     /**
      * Get the version property: Component version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -67,7 +134,7 @@ public final class DaprComponentInner extends ProxyResource {
 
     /**
      * Set the version property: Component version.
-     *
+     * 
      * @param version the version value to set.
      * @return the DaprComponentInner object itself.
      */
@@ -81,7 +148,7 @@ public final class DaprComponentInner extends ProxyResource {
 
     /**
      * Get the ignoreErrors property: Boolean describing if the component errors are ignores.
-     *
+     * 
      * @return the ignoreErrors value.
      */
     public Boolean ignoreErrors() {
@@ -90,7 +157,7 @@ public final class DaprComponentInner extends ProxyResource {
 
     /**
      * Set the ignoreErrors property: Boolean describing if the component errors are ignores.
-     *
+     * 
      * @param ignoreErrors the ignoreErrors value to set.
      * @return the DaprComponentInner object itself.
      */
@@ -104,7 +171,7 @@ public final class DaprComponentInner extends ProxyResource {
 
     /**
      * Get the initTimeout property: Initialization timeout.
-     *
+     * 
      * @return the initTimeout value.
      */
     public String initTimeout() {
@@ -113,7 +180,7 @@ public final class DaprComponentInner extends ProxyResource {
 
     /**
      * Set the initTimeout property: Initialization timeout.
-     *
+     * 
      * @param initTimeout the initTimeout value to set.
      * @return the DaprComponentInner object itself.
      */
@@ -127,7 +194,7 @@ public final class DaprComponentInner extends ProxyResource {
 
     /**
      * Get the secrets property: Collection of secrets used by a Dapr component.
-     *
+     * 
      * @return the secrets value.
      */
     public List<Secret> secrets() {
@@ -136,7 +203,7 @@ public final class DaprComponentInner extends ProxyResource {
 
     /**
      * Set the secrets property: Collection of secrets used by a Dapr component.
-     *
+     * 
      * @param secrets the secrets value to set.
      * @return the DaprComponentInner object itself.
      */
@@ -150,7 +217,7 @@ public final class DaprComponentInner extends ProxyResource {
 
     /**
      * Get the secretStoreComponent property: Name of a Dapr component to retrieve component secrets from.
-     *
+     * 
      * @return the secretStoreComponent value.
      */
     public String secretStoreComponent() {
@@ -159,7 +226,7 @@ public final class DaprComponentInner extends ProxyResource {
 
     /**
      * Set the secretStoreComponent property: Name of a Dapr component to retrieve component secrets from.
-     *
+     * 
      * @param secretStoreComponent the secretStoreComponent value to set.
      * @return the DaprComponentInner object itself.
      */
@@ -173,7 +240,7 @@ public final class DaprComponentInner extends ProxyResource {
 
     /**
      * Get the metadata property: Component metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public List<DaprMetadata> metadata() {
@@ -182,7 +249,7 @@ public final class DaprComponentInner extends ProxyResource {
 
     /**
      * Set the metadata property: Component metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the DaprComponentInner object itself.
      */
@@ -196,7 +263,7 @@ public final class DaprComponentInner extends ProxyResource {
 
     /**
      * Get the scopes property: Names of container apps that can use this Dapr component.
-     *
+     * 
      * @return the scopes value.
      */
     public List<String> scopes() {
@@ -205,7 +272,7 @@ public final class DaprComponentInner extends ProxyResource {
 
     /**
      * Set the scopes property: Names of container apps that can use this Dapr component.
-     *
+     * 
      * @param scopes the scopes value to set.
      * @return the DaprComponentInner object itself.
      */
@@ -218,13 +285,81 @@ public final class DaprComponentInner extends ProxyResource {
     }
 
     /**
+     * Get the serviceComponentBind property: List of container app services that are bound to the Dapr component.
+     * 
+     * @return the serviceComponentBind value.
+     */
+    public List<DaprComponentServiceBinding> serviceComponentBind() {
+        return this.innerProperties() == null ? null : this.innerProperties().serviceComponentBind();
+    }
+
+    /**
+     * Set the serviceComponentBind property: List of container app services that are bound to the Dapr component.
+     * 
+     * @param serviceComponentBind the serviceComponentBind value to set.
+     * @return the DaprComponentInner object itself.
+     */
+    public DaprComponentInner withServiceComponentBind(List<DaprComponentServiceBinding> serviceComponentBind) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DaprComponentProperties();
+        }
+        this.innerProperties().withServiceComponentBind(serviceComponentBind);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DaprComponentInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DaprComponentInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DaprComponentInner.
+     */
+    public static DaprComponentInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DaprComponentInner deserializedDaprComponentInner = new DaprComponentInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDaprComponentInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDaprComponentInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDaprComponentInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDaprComponentInner.innerProperties = DaprComponentProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedDaprComponentInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDaprComponentInner;
+        });
     }
 }

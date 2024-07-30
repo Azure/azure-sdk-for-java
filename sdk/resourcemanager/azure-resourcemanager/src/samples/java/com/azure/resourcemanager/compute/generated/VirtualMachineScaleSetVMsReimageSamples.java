@@ -12,7 +12,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMReimageP
 public final class VirtualMachineScaleSetVMsReimageSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Reimage_MaximumSet_Gen.json
      */
     /**
@@ -22,14 +22,19 @@ public final class VirtualMachineScaleSetVMsReimageSamples {
      */
     public static void
         virtualMachineScaleSetVMReimageMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetVMs().reimage("rgcompute",
-            "aaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-            new VirtualMachineScaleSetVMReimageParameters().withTempDisk(true), com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetVMs()
+            .reimage("rgcompute", "aaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                new VirtualMachineScaleSetVMReimageParameters().withTempDisk(true)
+                    .withForceUpdateOSDiskForEphemeral(true),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Reimage_MinimumSet_Gen.json
      */
     /**
@@ -39,7 +44,10 @@ public final class VirtualMachineScaleSetVMsReimageSamples {
      */
     public static void
         virtualMachineScaleSetVMReimageMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetVMs().reimage("rgcompute", "aaaaaaa",
-            "aaaaaaaaaaaaa", null, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetVMs()
+            .reimage("rgcompute", "aaaaaaa", "aaaaaaaaaaaaa", null, com.azure.core.util.Context.NONE);
     }
 }

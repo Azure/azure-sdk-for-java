@@ -19,12 +19,14 @@ public class ShareFileMetadataInfo {
      * @param eTag ETag of the file.
      * @param isServerEncrypted Flag indicating if the file's content is encrypted on the server.
      */
-    public ShareFileMetadataInfo(final String eTag, final Boolean isServerEncrypted) {
+    public ShareFileMetadataInfo(String eTag, Boolean isServerEncrypted) {
         this.eTag = eTag;
         this.isServerEncrypted = isServerEncrypted;
     }
 
     /**
+     * Gets the ETag of the file.
+     *
      * @return the ETag of the file.
      */
     public String getETag() {
@@ -32,6 +34,8 @@ public class ShareFileMetadataInfo {
     }
 
     /**
+     * Gets the encryption status of the file's content on the server.
+     *
      * @return the encryption status of the file's content on the server.
      */
     public Boolean isServerEncrypted() {

@@ -17,6 +17,7 @@ It includes the following main features:
 ### Prerequisites
 
 - [Java Development Kit (JDK)][jdk_link] with version 8 or above
+  - Here are details about [Java 8 client compatibility with Azure Certificate Authority](https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis).
 - [Azure Subscription][azure_subscription]
 - [AI Services or Document Intelligence account][form_recognizer_account] to use this package.
 
@@ -27,7 +28,7 @@ It includes the following main features:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-documentintelligence</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -40,6 +41,7 @@ This table shows the relationship between SDK versions and supported API version
 |--------------|----------------------------------|
 | 1.0.0-beta.1 | 2023-10-31-preview               |
 | 1.0.0-beta.2 | 2024-02-29-preview               |
+| 1.0.0-beta.3 | 2024-02-29-preview               |
 
 > Note: Please rely on the older `azure-ai-formrecognizer` library through the older service API versions for retired
 > models, such as `"prebuilt-businessCard"` and `"prebuilt-document"`. For more information, see [Changelog][changelog].
@@ -90,7 +92,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.11.3</version>
+    <version>1.12.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -162,7 +164,7 @@ File layoutDocument = new File("local/file_path/filename.png");
 Path filePath = layoutDocument.toPath();
 BinaryData layoutDocumentData = BinaryData.fromFile(filePath, (int) layoutDocument.length());
 
-SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutResultPoller =
+SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeLayoutResultPoller =
     documentIntelligenceClient.beginAnalyzeDocument("prebuilt-layout",
         null,
         null,
@@ -172,7 +174,7 @@ SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutResultPo
         null,
         new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(layoutDocument.toPath())));
 
-AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult().getAnalyzeResult();
+AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 
 // pages
 analyzeLayoutResult.getPages().forEach(documentPage -> {
@@ -222,7 +224,7 @@ For example, to analyze fields from a sales receipt, into the `beginAnalyzeDocum
 File sourceFile = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
     + "sample-forms/receipts/contoso-allinone.jpg");
 
-SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeReceiptPoller =
+SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeReceiptPoller =
     documentIntelligenceClient.beginAnalyzeDocument("prebuilt-receipt",
         null,
         null,
@@ -232,7 +234,7 @@ SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeReceiptPoller 
         null,
         new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(sourceFile.toPath())));
 
-AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult().getAnalyzeResult();
+AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult();
 
 for (int i = 0; i < receiptResults.getDocuments().size(); i++) {
     Document analyzedReceipt = receiptResults.getDocuments().get(i);
@@ -323,7 +325,7 @@ was built on.
 ```java com.azure.ai.documentintelligence.readme.analyzeCustomModel
 String documentUrl = "{document-url}";
 String modelId = "{custom-built-model-ID}";
-SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeDocumentPoller = documentIntelligenceClient.beginAnalyzeDocument(modelId,
+SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeDocumentPoller = documentIntelligenceClient.beginAnalyzeDocument(modelId,
     "1",
     "en-US",
     StringIndexType.TEXT_ELEMENTS,
@@ -332,7 +334,7 @@ SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeDocumentPoller
     ContentFormat.TEXT,
     new AnalyzeDocumentRequest().setUrlSource(documentUrl));
 
-AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult().getAnalyzeResult();
+AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
 
 for (int i = 0; i < analyzeResult.getDocuments().size(); i++) {
     final Document analyzedDocument = analyzeResult.getDocuments().get(i);

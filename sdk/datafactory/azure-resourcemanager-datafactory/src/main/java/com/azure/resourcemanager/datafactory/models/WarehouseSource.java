@@ -6,16 +6,24 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity Microsoft Fabric Warehouse source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = WarehouseSource.class, visible = true)
 @JsonTypeName("WarehouseSource")
 @Fluent
 public final class WarehouseSource extends TabularSource {
+    /*
+     * Copy source type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "WarehouseSource";
+
     /*
      * Microsoft Fabric Warehouse reader query. Type: string (or Expression with resultType string).
      */
@@ -30,8 +38,8 @@ public final class WarehouseSource extends TabularSource {
     private Object sqlReaderStoredProcedureName;
 
     /*
-     * Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}".
-     * Type: object (or Expression with resultType object), itemType: StoredProcedureParameter.
+     * Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}". Type:
+     * object (or Expression with resultType object), itemType: StoredProcedureParameter.
      */
     @JsonProperty(value = "storedProcedureParameters")
     private Object storedProcedureParameters;
@@ -61,6 +69,16 @@ public final class WarehouseSource extends TabularSource {
      * Creates an instance of WarehouseSource class.
      */
     public WarehouseSource() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

@@ -8,26 +8,27 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class CosmosAccountConfig {
     private final String endpoint;
-    private final String accountKey;
+    private final CosmosAuthConfig cosmosAuthConfig;
     private final String applicationName;
     private final boolean useGatewayMode;
     private final List<String> preferredRegionsList;
 
     public CosmosAccountConfig(
         String endpoint,
-        String accountKey,
+        CosmosAuthConfig cosmosAuthConfig,
         String applicationName,
         boolean useGatewayMode,
         List<String> preferredRegionsList) {
 
         checkArgument(StringUtils.isNotEmpty(endpoint), "Argument 'endpoint' should not be null");
-        checkArgument(StringUtils.isNotEmpty(accountKey), "Argument 'accountKey' should not be null");
+        checkNotNull(cosmosAuthConfig, "Argument 'cosmosAuthConfig' should not be null");
 
         this.endpoint = endpoint;
-        this.accountKey = accountKey;
+        this.cosmosAuthConfig = cosmosAuthConfig;
         this.applicationName = applicationName;
         this.useGatewayMode = useGatewayMode;
         this.preferredRegionsList = preferredRegionsList;
@@ -37,8 +38,8 @@ public class CosmosAccountConfig {
         return endpoint;
     }
 
-    public String getAccountKey() {
-        return accountKey;
+    public CosmosAuthConfig getCosmosAuthConfig() {
+        return cosmosAuthConfig;
     }
 
     public String getApplicationName() {

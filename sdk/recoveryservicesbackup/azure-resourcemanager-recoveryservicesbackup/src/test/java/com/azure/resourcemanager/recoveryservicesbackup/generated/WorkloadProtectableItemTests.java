@@ -23,9 +23,10 @@ public final class WorkloadProtectableItemTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadProtectableItem model
-            = new WorkloadProtectableItem().withBackupManagementType("mokzhjjklf").withWorkloadType("mouwqlgzrfzeey")
-                .withFriendlyName("izikayuhq").withProtectionState(ProtectionStatus.PROTECTION_FAILED);
+        WorkloadProtectableItem model = new WorkloadProtectableItem().withBackupManagementType("mokzhjjklf")
+            .withWorkloadType("mouwqlgzrfzeey")
+            .withFriendlyName("izikayuhq")
+            .withProtectionState(ProtectionStatus.PROTECTION_FAILED);
         model = BinaryData.fromObject(model).toObject(WorkloadProtectableItem.class);
         Assertions.assertEquals("mokzhjjklf", model.backupManagementType());
         Assertions.assertEquals("mouwqlgzrfzeey", model.workloadType());

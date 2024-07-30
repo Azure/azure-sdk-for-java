@@ -10,11 +10,9 @@ import com.azure.resourcemanager.devcenter.fluent.models.ImageVersionProperties;
 public final class ImageVersionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageVersionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"umasxazjpq\",\"publishedDate\":\"2021-10-08T22:25:54Z\",\"excludeFromLatest\":false,\"osDiskImageSizeInGb\":285130790,\"provisioningState\":\"Succeeded\"}")
-                .toObject(ImageVersionProperties.class);
+        ImageVersionProperties model = BinaryData.fromString(
+            "{\"name\":\"kyv\",\"publishedDate\":\"2021-08-31T04:23:50Z\",\"excludeFromLatest\":false,\"osDiskImageSizeInGb\":106855620,\"provisioningState\":\"NotSpecified\"}")
+            .toObject(ImageVersionProperties.class);
     }
 
     @org.junit.jupiter.api.Test

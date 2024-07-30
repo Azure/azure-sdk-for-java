@@ -10,14 +10,14 @@ import com.azure.resourcemanager.datafactory.models.JsonWriteSettings;
 public final class JsonWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JsonWriteSettings model = BinaryData
-            .fromString("{\"type\":\"JsonWriteSettings\",\"filePattern\":\"dataorzozf\",\"\":{\"bnefab\":\"dataw\"}}")
+        JsonWriteSettings model = BinaryData.fromString(
+            "{\"type\":\"JsonWriteSettings\",\"filePattern\":\"dataezmznoejqduyq\",\"\":{\"x\":\"datayzajdpbnbp\"}}")
             .toObject(JsonWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JsonWriteSettings model = new JsonWriteSettings().withFilePattern("dataorzozf");
+        JsonWriteSettings model = new JsonWriteSettings().withFilePattern("dataezmznoejqduyq");
         model = BinaryData.fromObject(model).toObject(JsonWriteSettings.class);
     }
 }

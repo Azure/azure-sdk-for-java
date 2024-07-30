@@ -7,17 +7,14 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * SSIS object metadata.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = SsisObjectMetadata.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = SsisObjectMetadata.class, visible = true)
 @JsonTypeName("SsisObjectMetadata")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Folder", value = SsisFolder.class),
@@ -26,6 +23,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "Environment", value = SsisEnvironment.class) })
 @Fluent
 public class SsisObjectMetadata {
+    /*
+     * Type of metadata.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private SsisObjectMetadataType type = SsisObjectMetadataType.fromString("SsisObjectMetadata");
+
     /*
      * Metadata id.
      */
@@ -48,6 +52,15 @@ public class SsisObjectMetadata {
      * Creates an instance of SsisObjectMetadata class.
      */
     public SsisObjectMetadata() {
+    }
+
+    /**
+     * Get the type property: Type of metadata.
+     * 
+     * @return the type value.
+     */
+    public SsisObjectMetadataType type() {
+        return this.type;
     }
 
     /**

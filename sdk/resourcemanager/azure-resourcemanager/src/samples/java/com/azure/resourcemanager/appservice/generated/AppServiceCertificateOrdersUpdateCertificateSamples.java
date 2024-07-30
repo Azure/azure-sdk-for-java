@@ -11,9 +11,7 @@ import com.azure.resourcemanager.appservice.fluent.models.AppServiceCertificateP
  */
 public final class AppServiceCertificateOrdersUpdateCertificateSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-01-01/examples/
-     * UpdateAppServiceCertificate.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-12-01/examples/UpdateAppServiceCertificate.json
      */
     /**
      * Sample code: Update Certificate.
@@ -21,9 +19,13 @@ public final class AppServiceCertificateOrdersUpdateCertificateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateCertificate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getAppServiceCertificateOrders().updateCertificateWithResponse(
-            "testrg123", "SampleCertificateOrderName", "SampleCertName1", new AppServiceCertificatePatchResourceInner()
-                .withKeyVaultId("fakeTokenPlaceholder").withKeyVaultSecretName("fakeTokenPlaceholder"),
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getAppServiceCertificateOrders()
+            .updateCertificateWithResponse("testrg123", "SampleCertificateOrderName", "SampleCertName1",
+                new AppServiceCertificatePatchResourceInner().withKeyVaultId("fakeTokenPlaceholder")
+                    .withKeyVaultSecretName("fakeTokenPlaceholder"),
+                com.azure.core.util.Context.NONE);
     }
 }

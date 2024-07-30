@@ -14,8 +14,10 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the ResourceManagementClientImpl type. */
-@ServiceClientBuilder(serviceClients = {ResourceManagementClientImpl.class})
+/**
+ * A builder for creating a new instance of the ResourceManagementClientImpl type.
+ */
+@ServiceClientBuilder(serviceClients = { ResourceManagementClientImpl.class })
 public final class ResourceManagementClientBuilder {
     /*
      * The Microsoft Azure subscription ID.
@@ -24,7 +26,7 @@ public final class ResourceManagementClientBuilder {
 
     /**
      * Sets The Microsoft Azure subscription ID.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the ResourceManagementClientBuilder.
      */
@@ -40,7 +42,7 @@ public final class ResourceManagementClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the ResourceManagementClientBuilder.
      */
@@ -56,7 +58,7 @@ public final class ResourceManagementClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the ResourceManagementClientBuilder.
      */
@@ -72,7 +74,7 @@ public final class ResourceManagementClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the ResourceManagementClientBuilder.
      */
@@ -88,7 +90,7 @@ public final class ResourceManagementClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the ResourceManagementClientBuilder.
      */
@@ -104,7 +106,7 @@ public final class ResourceManagementClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the ResourceManagementClientBuilder.
      */
@@ -115,30 +117,22 @@ public final class ResourceManagementClientBuilder {
 
     /**
      * Builds an instance of ResourceManagementClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of ResourceManagementClientImpl.
      */
     public ResourceManagementClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline =
-            (pipeline != null)
-                ? pipeline
-                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        Duration localDefaultPollInterval =
-            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter =
-            (serializerAdapter != null)
-                ? serializerAdapter
-                : SerializerFactory.createDefaultManagementSerializerAdapter();
-        ResourceManagementClientImpl client =
-            new ResourceManagementClientImpl(
-                localPipeline,
-                localSerializerAdapter,
-                localDefaultPollInterval,
-                localEnvironment,
-                this.subscriptionId,
-                localEndpoint);
+        HttpPipeline localPipeline = (pipeline != null)
+            ? pipeline
+            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval
+            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
+            ? serializerAdapter
+            : SerializerFactory.createDefaultManagementSerializerAdapter();
+        ResourceManagementClientImpl client = new ResourceManagementClientImpl(localPipeline, localSerializerAdapter,
+            localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }

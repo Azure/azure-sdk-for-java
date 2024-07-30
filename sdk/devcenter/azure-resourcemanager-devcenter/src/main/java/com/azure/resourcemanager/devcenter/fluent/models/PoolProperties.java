@@ -16,7 +16,9 @@ import com.azure.resourcemanager.devcenter.models.VirtualNetworkType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of a Pool. */
+/**
+ * Properties of a Pool.
+ */
 @Fluent
 public final class PoolProperties extends PoolUpdateProperties {
     /*
@@ -26,8 +28,7 @@ public final class PoolProperties extends PoolUpdateProperties {
     private HealthStatus healthStatus;
 
     /*
-     * Details on the Pool health status to help diagnose issues. This is only populated when the pool status indicates
-     * the pool is in a non-healthy state
+     * Details on the Pool health status to help diagnose issues. This is only populated when the pool status indicates the pool is in a non-healthy state
      */
     @JsonProperty(value = "healthStatusDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<HealthStatusDetail> healthStatusDetails;
@@ -44,14 +45,16 @@ public final class PoolProperties extends PoolUpdateProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of PoolProperties class. */
+    /**
+     * Creates an instance of PoolProperties class.
+     */
     public PoolProperties() {
     }
 
     /**
      * Get the healthStatus property: Overall health status of the Pool. Indicates whether or not the Pool is available
      * to create Dev Boxes.
-     *
+     * 
      * @return the healthStatus value.
      */
     public HealthStatus healthStatus() {
@@ -61,7 +64,7 @@ public final class PoolProperties extends PoolUpdateProperties {
     /**
      * Get the healthStatusDetails property: Details on the Pool health status to help diagnose issues. This is only
      * populated when the pool status indicates the pool is in a non-healthy state.
-     *
+     * 
      * @return the healthStatusDetails value.
      */
     public List<HealthStatusDetail> healthStatusDetails() {
@@ -70,7 +73,7 @@ public final class PoolProperties extends PoolUpdateProperties {
 
     /**
      * Get the devBoxCount property: Indicates the number of provisioned Dev Boxes in this pool.
-     *
+     * 
      * @return the devBoxCount value.
      */
     public Integer devBoxCount() {
@@ -79,70 +82,88 @@ public final class PoolProperties extends PoolUpdateProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PoolProperties withDevBoxDefinitionName(String devBoxDefinitionName) {
         super.withDevBoxDefinitionName(devBoxDefinitionName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PoolProperties withNetworkConnectionName(String networkConnectionName) {
         super.withNetworkConnectionName(networkConnectionName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PoolProperties withLicenseType(LicenseType licenseType) {
         super.withLicenseType(licenseType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PoolProperties withLocalAdministrator(LocalAdminStatus localAdministrator) {
         super.withLocalAdministrator(localAdministrator);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PoolProperties withStopOnDisconnect(StopOnDisconnectConfiguration stopOnDisconnect) {
         super.withStopOnDisconnect(stopOnDisconnect);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PoolProperties withSingleSignOnStatus(SingleSignOnStatus singleSignOnStatus) {
         super.withSingleSignOnStatus(singleSignOnStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PoolProperties withDisplayName(String displayName) {
         super.withDisplayName(displayName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PoolProperties withVirtualNetworkType(VirtualNetworkType virtualNetworkType) {
         super.withVirtualNetworkType(virtualNetworkType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PoolProperties withManagedVirtualNetworkRegions(List<String> managedVirtualNetworkRegions) {
         super.withManagedVirtualNetworkRegions(managedVirtualNetworkRegions);
@@ -151,7 +172,7 @@ public final class PoolProperties extends PoolUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

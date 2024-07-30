@@ -13,38 +13,42 @@ public final class SubvolumeModelInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubvolumeModelInner model = BinaryData.fromString(
-            "{\"id\":\"byowbblgyavutp\",\"name\":\"joxoism\",\"type\":\"sbpimlq\",\"properties\":{\"path\":\"xkcgxxlxsffgcvi\",\"parentPath\":\"zdwlvwlyoupfgfb\",\"size\":7653162173647164897,\"bytesUsed\":4324822470137605092,\"permissions\":\"kfm\",\"creationTimeStamp\":\"2021-07-25T09:50:13Z\",\"accessedTimeStamp\":\"2021-10-13T02:52:40Z\",\"modifiedTimeStamp\":\"2021-07-19T15:33:36Z\",\"changedTimeStamp\":\"2021-01-19T00:17:43Z\",\"provisioningState\":\"sttktlahbqa\"}}")
+            "{\"id\":\"gioilqu\",\"name\":\"ydxtqm\",\"type\":\"ox\",\"properties\":{\"path\":\"gufhyaomtbg\",\"parentPath\":\"avgrvkffovjz\",\"size\":5645922877678061686,\"bytesUsed\":2314195344847215175,\"permissions\":\"mfxumvfcluyovw\",\"creationTimeStamp\":\"2021-07-15T13:35:55Z\",\"accessedTimeStamp\":\"2021-04-25T08:04:37Z\",\"modifiedTimeStamp\":\"2021-01-15T15:47:25Z\",\"changedTimeStamp\":\"2021-12-07T02:03:19Z\",\"provisioningState\":\"yhwzdgiruj\"}}")
             .toObject(SubvolumeModelInner.class);
-        Assertions.assertEquals("xkcgxxlxsffgcvi", model.path());
-        Assertions.assertEquals("zdwlvwlyoupfgfb", model.parentPath());
-        Assertions.assertEquals(7653162173647164897L, model.size());
-        Assertions.assertEquals(4324822470137605092L, model.bytesUsed());
-        Assertions.assertEquals("kfm", model.permissions());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-25T09:50:13Z"), model.creationTimestamp());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-13T02:52:40Z"), model.accessedTimestamp());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-19T15:33:36Z"), model.modifiedTimestamp());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-19T00:17:43Z"), model.changedTimestamp());
-        Assertions.assertEquals("sttktlahbqa", model.provisioningState());
+        Assertions.assertEquals("gufhyaomtbg", model.path());
+        Assertions.assertEquals("avgrvkffovjz", model.parentPath());
+        Assertions.assertEquals(5645922877678061686L, model.size());
+        Assertions.assertEquals(2314195344847215175L, model.bytesUsed());
+        Assertions.assertEquals("mfxumvfcluyovw", model.permissions());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-15T13:35:55Z"), model.creationTimestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-25T08:04:37Z"), model.accessedTimestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-15T15:47:25Z"), model.modifiedTimestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-07T02:03:19Z"), model.changedTimestamp());
+        Assertions.assertEquals("yhwzdgiruj", model.provisioningState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubvolumeModelInner model = new SubvolumeModelInner().withPath("xkcgxxlxsffgcvi")
-            .withParentPath("zdwlvwlyoupfgfb").withSize(7653162173647164897L).withBytesUsed(4324822470137605092L)
-            .withPermissions("kfm").withCreationTimestamp(OffsetDateTime.parse("2021-07-25T09:50:13Z"))
-            .withAccessedTimestamp(OffsetDateTime.parse("2021-10-13T02:52:40Z"))
-            .withModifiedTimestamp(OffsetDateTime.parse("2021-07-19T15:33:36Z"))
-            .withChangedTimestamp(OffsetDateTime.parse("2021-01-19T00:17:43Z")).withProvisioningState("sttktlahbqa");
+        SubvolumeModelInner model = new SubvolumeModelInner().withPath("gufhyaomtbg")
+            .withParentPath("avgrvkffovjz")
+            .withSize(5645922877678061686L)
+            .withBytesUsed(2314195344847215175L)
+            .withPermissions("mfxumvfcluyovw")
+            .withCreationTimestamp(OffsetDateTime.parse("2021-07-15T13:35:55Z"))
+            .withAccessedTimestamp(OffsetDateTime.parse("2021-04-25T08:04:37Z"))
+            .withModifiedTimestamp(OffsetDateTime.parse("2021-01-15T15:47:25Z"))
+            .withChangedTimestamp(OffsetDateTime.parse("2021-12-07T02:03:19Z"))
+            .withProvisioningState("yhwzdgiruj");
         model = BinaryData.fromObject(model).toObject(SubvolumeModelInner.class);
-        Assertions.assertEquals("xkcgxxlxsffgcvi", model.path());
-        Assertions.assertEquals("zdwlvwlyoupfgfb", model.parentPath());
-        Assertions.assertEquals(7653162173647164897L, model.size());
-        Assertions.assertEquals(4324822470137605092L, model.bytesUsed());
-        Assertions.assertEquals("kfm", model.permissions());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-25T09:50:13Z"), model.creationTimestamp());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-13T02:52:40Z"), model.accessedTimestamp());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-19T15:33:36Z"), model.modifiedTimestamp());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-19T00:17:43Z"), model.changedTimestamp());
-        Assertions.assertEquals("sttktlahbqa", model.provisioningState());
+        Assertions.assertEquals("gufhyaomtbg", model.path());
+        Assertions.assertEquals("avgrvkffovjz", model.parentPath());
+        Assertions.assertEquals(5645922877678061686L, model.size());
+        Assertions.assertEquals(2314195344847215175L, model.bytesUsed());
+        Assertions.assertEquals("mfxumvfcluyovw", model.permissions());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-15T13:35:55Z"), model.creationTimestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-25T08:04:37Z"), model.accessedTimestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-15T15:47:25Z"), model.modifiedTimestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-07T02:03:19Z"), model.changedTimestamp());
+        Assertions.assertEquals("yhwzdgiruj", model.provisioningState());
     }
 }

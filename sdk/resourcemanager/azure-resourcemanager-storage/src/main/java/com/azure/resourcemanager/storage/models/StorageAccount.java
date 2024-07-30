@@ -16,12 +16,12 @@ import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.models.StorageAccountInner;
+import reactor.core.publisher.Mono;
+
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure storage account. */
 @Fluent
@@ -252,6 +252,12 @@ public interface StorageAccount
      *         {@link StorageAccount#identityTypeForCustomerEncryptionKey()} is not {@link IdentityType#USER_ASSIGNED}
      */
     String userAssignedIdentityIdForCustomerEncryptionKey();
+    /**
+     * Whether the storage account can be accessed from public network.
+     *
+     * @return whether the storage account can be accessed from public network.
+     */
+    PublicNetworkAccess publicNetworkAccess();
 
     /** Container interface for all the definitions that need to be implemented. */
     interface Definition
@@ -560,6 +566,12 @@ public interface StorageAccount
         /** The stage of storage account definition allowing to configure network access settings. */
         interface WithNetworkAccess {
             /**
+             * Disables public network access for the storage account.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate disablePublicNetworkAccess();
+            /**
              * Specifies that by default access to storage account should be allowed from all networks.
              *
              * @return the next stage of storage account definition
@@ -661,6 +673,15 @@ public interface StorageAccount
 
         /** The stage of storage account definition allowing to configure allow cross tenant replication. */
         interface WithAllowCrossTenantReplication {
+            /**
+             * Enables allow cross tenant replication.
+             *
+             * Enables in storage account overrides the allow cross tenant replication settings for individual containers.
+             *
+             * @return the next stage of storage account definition
+             */
+            WithCreate allowCrossTenantReplication();
+
             /**
              * Disables allow cross tenant replication.
              *
@@ -989,6 +1010,20 @@ public interface StorageAccount
 
         /** The stage of storage account update allowing to configure network access. */
         interface WithNetworkAccess {
+            /**
+             * Enables public network access for the storage account.
+             *
+             * @return the next stage of the update
+             */
+            Update enablePublicNetworkAccess();
+
+            /**
+             * Disables public network access for the storage account.
+             *
+             * @return the next stage of the update
+             */
+            Update disablePublicNetworkAccess();
+
             /**
              * Specifies that by default access to storage account should be allowed from all networks.
              *

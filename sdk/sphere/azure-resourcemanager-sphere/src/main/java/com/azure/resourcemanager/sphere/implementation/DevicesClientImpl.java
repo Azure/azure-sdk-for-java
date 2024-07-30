@@ -43,150 +43,114 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DevicesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DevicesClient.
+ */
 public final class DevicesClientImpl implements DevicesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DevicesService service;
 
-    /** The service client containing this operation class. */
-    private final AzureSphereManagementClientImpl client;
+    /**
+     * The service client containing this operation class.
+     */
+    private final AzureSphereMgmtClientImpl client;
 
     /**
      * Initializes an instance of DevicesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
-    DevicesClientImpl(AzureSphereManagementClientImpl client) {
+    DevicesClientImpl(AzureSphereMgmtClientImpl client) {
         this.service = RestProxy.create(DevicesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureSphereManagementClientDevices to be used by the proxy service to
+     * The interface defining all the services for AzureSphereMgmtClientDevices to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureSphereManagemen")
+    @ServiceInterface(name = "AzureSphereMgmtClien")
     public interface DevicesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeviceListResult>> listByDeviceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("catalogName") String catalogName,
-            @PathParam("productName") String productName,
-            @PathParam("deviceGroupName") String deviceGroupName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DeviceListResult>> listByDeviceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("catalogName") String catalogName,
+            @PathParam("productName") String productName, @PathParam("deviceGroupName") String deviceGroupName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeviceInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("catalogName") String catalogName,
-            @PathParam("productName") String productName,
-            @PathParam("deviceGroupName") String deviceGroupName,
-            @PathParam("deviceName") String deviceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DeviceInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("catalogName") String catalogName,
+            @PathParam("productName") String productName, @PathParam("deviceGroupName") String deviceGroupName,
+            @PathParam("deviceName") String deviceName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("catalogName") String catalogName,
-            @PathParam("productName") String productName,
-            @PathParam("deviceGroupName") String deviceGroupName,
-            @PathParam("deviceName") String deviceName,
-            @BodyParam("application/json") DeviceInner resource,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("catalogName") String catalogName,
+            @PathParam("productName") String productName, @PathParam("deviceGroupName") String deviceGroupName,
+            @PathParam("deviceName") String deviceName, @BodyParam("application/json") DeviceInner resource,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("catalogName") String catalogName,
-            @PathParam("productName") String productName,
-            @PathParam("deviceGroupName") String deviceGroupName,
-            @PathParam("deviceName") String deviceName,
-            @BodyParam("application/json") DeviceUpdate properties,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("catalogName") String catalogName,
+            @PathParam("productName") String productName, @PathParam("deviceGroupName") String deviceGroupName,
+            @PathParam("deviceName") String deviceName, @BodyParam("application/json") DeviceUpdate properties,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("catalogName") String catalogName,
-            @PathParam("productName") String productName,
-            @PathParam("deviceGroupName") String deviceGroupName,
-            @PathParam("deviceName") String deviceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("catalogName") String catalogName,
+            @PathParam("productName") String productName, @PathParam("deviceGroupName") String deviceGroupName,
+            @PathParam("deviceName") String deviceName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}/generateCapabilityImage")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/devices/{deviceName}/generateCapabilityImage")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> generateCapabilityImage(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("catalogName") String catalogName,
-            @PathParam("productName") String productName,
-            @PathParam("deviceGroupName") String deviceGroupName,
+        Mono<Response<Flux<ByteBuffer>>> generateCapabilityImage(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("catalogName") String catalogName,
+            @PathParam("productName") String productName, @PathParam("deviceGroupName") String deviceGroupName,
             @PathParam("deviceName") String deviceName,
             @BodyParam("application/json") GenerateCapabilityImageRequest generateDeviceCapabilityRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeviceListResult>> listByDeviceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List Device resources by DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used
      * for product or device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -195,22 +159,18 @@ public final class DevicesClientImpl implements DevicesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Device list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DeviceInner>> listByDeviceGroupSinglePageAsync(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName) {
+    private Mono<PagedResponse<DeviceInner>> listByDeviceGroupSinglePageAsync(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -228,35 +188,18 @@ public final class DevicesClientImpl implements DevicesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByDeviceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            catalogName,
-                            productName,
-                            deviceGroupName,
-                            accept,
-                            context))
-            .<PagedResponse<DeviceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByDeviceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, deviceGroupName, accept,
+                context))
+            .<PagedResponse<DeviceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List Device resources by DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used
      * for product or device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -266,22 +209,18 @@ public final class DevicesClientImpl implements DevicesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Device list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DeviceInner>> listByDeviceGroupSinglePageAsync(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName, Context context) {
+    private Mono<PagedResponse<DeviceInner>> listByDeviceGroupSinglePageAsync(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -300,31 +239,16 @@ public final class DevicesClientImpl implements DevicesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByDeviceGroup(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                catalogName,
-                productName,
-                deviceGroupName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByDeviceGroup(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, catalogName, productName, deviceGroupName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List Device resources by DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used
      * for product or device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -335,8 +259,8 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return the response of a Device list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DeviceInner> listByDeviceGroupAsync(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName) {
+    private PagedFlux<DeviceInner> listByDeviceGroupAsync(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName) {
         return new PagedFlux<>(
             () -> listByDeviceGroupSinglePageAsync(resourceGroupName, catalogName, productName, deviceGroupName),
             nextLink -> listByDeviceGroupNextSinglePageAsync(nextLink));
@@ -345,7 +269,7 @@ public final class DevicesClientImpl implements DevicesClient {
     /**
      * List Device resources by DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used
      * for product or device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -357,18 +281,16 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return the response of a Device list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DeviceInner> listByDeviceGroupAsync(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName, Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByDeviceGroupSinglePageAsync(resourceGroupName, catalogName, productName, deviceGroupName, context),
-            nextLink -> listByDeviceGroupNextSinglePageAsync(nextLink, context));
+    private PagedFlux<DeviceInner> listByDeviceGroupAsync(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, Context context) {
+        return new PagedFlux<>(() -> listByDeviceGroupSinglePageAsync(resourceGroupName, catalogName, productName,
+            deviceGroupName, context), nextLink -> listByDeviceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List Device resources by DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used
      * for product or device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -379,8 +301,8 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return the response of a Device list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeviceInner> listByDeviceGroup(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName) {
+    public PagedIterable<DeviceInner> listByDeviceGroup(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName) {
         return new PagedIterable<>(
             listByDeviceGroupAsync(resourceGroupName, catalogName, productName, deviceGroupName));
     }
@@ -388,7 +310,7 @@ public final class DevicesClientImpl implements DevicesClient {
     /**
      * List Device resources by DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used
      * for product or device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -400,8 +322,8 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return the response of a Device list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeviceInner> listByDeviceGroup(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName, Context context) {
+    public PagedIterable<DeviceInner> listByDeviceGroup(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, Context context) {
         return new PagedIterable<>(
             listByDeviceGroupAsync(resourceGroupName, catalogName, productName, deviceGroupName, context));
     }
@@ -409,7 +331,7 @@ public final class DevicesClientImpl implements DevicesClient {
     /**
      * Get a Device. Use '.unassigned' or '.default' for the device group and product names when a device does not
      * belong to a device group and product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -421,19 +343,15 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return a Device along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeviceInner>> getWithResponseAsync(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName, String deviceName) {
+    private Mono<Response<DeviceInner>> getWithResponseAsync(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, String deviceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -454,27 +372,16 @@ public final class DevicesClientImpl implements DevicesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            catalogName,
-                            productName,
-                            deviceGroupName,
-                            deviceName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, deviceGroupName,
+                deviceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a Device. Use '.unassigned' or '.default' for the device group and product names when a device does not
      * belong to a device group and product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -487,24 +394,15 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return a Device along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeviceInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
-        Context context) {
+    private Mono<Response<DeviceInner>> getWithResponseAsync(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, String deviceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -525,24 +423,14 @@ public final class DevicesClientImpl implements DevicesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                catalogName,
-                productName,
-                deviceGroupName,
-                deviceName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, catalogName, productName, deviceGroupName, deviceName, accept, context);
     }
 
     /**
      * Get a Device. Use '.unassigned' or '.default' for the device group and product names when a device does not
      * belong to a device group and product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -554,8 +442,8 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return a Device on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeviceInner> getAsync(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName, String deviceName) {
+    private Mono<DeviceInner> getAsync(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, String deviceName) {
         return getWithResponseAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -563,7 +451,7 @@ public final class DevicesClientImpl implements DevicesClient {
     /**
      * Get a Device. Use '.unassigned' or '.default' for the device group and product names when a device does not
      * belong to a device group and product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -576,13 +464,8 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return a Device along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeviceInner> getWithResponse(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
-        Context context) {
+    public Response<DeviceInner> getWithResponse(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, String deviceName, Context context) {
         return getWithResponseAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, context)
             .block();
     }
@@ -590,7 +473,7 @@ public final class DevicesClientImpl implements DevicesClient {
     /**
      * Get a Device. Use '.unassigned' or '.default' for the device group and product names when a device does not
      * belong to a device group and product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -602,8 +485,8 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return a Device.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeviceInner get(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName, String deviceName) {
+    public DeviceInner get(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
+        String deviceName) {
         return getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, Context.NONE)
             .getValue();
     }
@@ -611,7 +494,7 @@ public final class DevicesClientImpl implements DevicesClient {
     /**
      * Create a Device. Use '.unassigned' or '.default' for the device group and product names to claim a device to the
      * catalog only.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -622,27 +505,18 @@ public final class DevicesClientImpl implements DevicesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an device resource belonging to a device group resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
-        DeviceInner resource) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, String deviceName, DeviceInner resource) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -668,28 +542,16 @@ public final class DevicesClientImpl implements DevicesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            catalogName,
-                            productName,
-                            deviceGroupName,
-                            deviceName,
-                            resource,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, deviceGroupName,
+                deviceName, resource, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create a Device. Use '.unassigned' or '.default' for the device group and product names to claim a device to the
      * catalog only.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -701,28 +563,19 @@ public final class DevicesClientImpl implements DevicesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an device resource belonging to a device group resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
-        DeviceInner resource,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, String deviceName, DeviceInner resource,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -748,25 +601,15 @@ public final class DevicesClientImpl implements DevicesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                catalogName,
-                productName,
-                deviceGroupName,
-                deviceName,
-                resource,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, deviceGroupName, deviceName,
+            resource, accept, context);
     }
 
     /**
      * Create a Device. Use '.unassigned' or '.default' for the device group and product names to claim a device to the
      * catalog only.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -779,26 +622,18 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return the {@link PollerFlux} for polling of an device resource belonging to a device group resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DeviceInner>, DeviceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
-        DeviceInner resource) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, catalogName, productName, deviceGroupName, deviceName, resource);
-        return this
-            .client
-            .<DeviceInner, DeviceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DeviceInner.class, DeviceInner.class, this.client.getContext());
+    private PollerFlux<PollResult<DeviceInner>, DeviceInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, String deviceName, DeviceInner resource) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, catalogName,
+            productName, deviceGroupName, deviceName, resource);
+        return this.client.<DeviceInner, DeviceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DeviceInner.class, DeviceInner.class, this.client.getContext());
     }
 
     /**
      * Create a Device. Use '.unassigned' or '.default' for the device group and product names to claim a device to the
      * catalog only.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -812,28 +647,20 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return the {@link PollerFlux} for polling of an device resource belonging to a device group resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DeviceInner>, DeviceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
-        DeviceInner resource,
+    private PollerFlux<PollResult<DeviceInner>, DeviceInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, String deviceName, DeviceInner resource,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, catalogName, productName, deviceGroupName, deviceName, resource, context);
-        return this
-            .client
-            .<DeviceInner, DeviceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DeviceInner.class, DeviceInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, catalogName,
+            productName, deviceGroupName, deviceName, resource, context);
+        return this.client.<DeviceInner, DeviceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DeviceInner.class, DeviceInner.class, context);
     }
 
     /**
      * Create a Device. Use '.unassigned' or '.default' for the device group and product names to claim a device to the
      * catalog only.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -846,23 +673,16 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return the {@link SyncPoller} for polling of an device resource belonging to a device group resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DeviceInner>, DeviceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
-        DeviceInner resource) {
-        return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName, catalogName, productName, deviceGroupName, deviceName, resource)
-            .getSyncPoller();
+    public SyncPoller<PollResult<DeviceInner>, DeviceInner> beginCreateOrUpdate(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, String deviceName, DeviceInner resource) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName,
+            resource).getSyncPoller();
     }
 
     /**
      * Create a Device. Use '.unassigned' or '.default' for the device group and product names to claim a device to the
      * catalog only.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -876,24 +696,17 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return the {@link SyncPoller} for polling of an device resource belonging to a device group resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DeviceInner>, DeviceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
-        DeviceInner resource,
+    public SyncPoller<PollResult<DeviceInner>, DeviceInner> beginCreateOrUpdate(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, String deviceName, DeviceInner resource,
         Context context) {
-        return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName, catalogName, productName, deviceGroupName, deviceName, resource, context)
-            .getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName,
+            resource, context).getSyncPoller();
     }
 
     /**
      * Create a Device. Use '.unassigned' or '.default' for the device group and product names to claim a device to the
      * catalog only.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -906,23 +719,16 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return an device resource belonging to a device group resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeviceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
-        DeviceInner resource) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, catalogName, productName, deviceGroupName, deviceName, resource)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<DeviceInner> createOrUpdateAsync(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, String deviceName, DeviceInner resource) {
+        return beginCreateOrUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName,
+            resource).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a Device. Use '.unassigned' or '.default' for the device group and product names to claim a device to the
      * catalog only.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -936,24 +742,16 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return an device resource belonging to a device group resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeviceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
-        DeviceInner resource,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, catalogName, productName, deviceGroupName, deviceName, resource, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<DeviceInner> createOrUpdateAsync(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, String deviceName, DeviceInner resource, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName,
+            resource, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a Device. Use '.unassigned' or '.default' for the device group and product names to claim a device to the
      * catalog only.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -966,13 +764,8 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return an device resource belonging to a device group resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeviceInner createOrUpdate(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
-        DeviceInner resource) {
+    public DeviceInner createOrUpdate(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, String deviceName, DeviceInner resource) {
         return createOrUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, resource)
             .block();
     }
@@ -980,7 +773,7 @@ public final class DevicesClientImpl implements DevicesClient {
     /**
      * Create a Device. Use '.unassigned' or '.default' for the device group and product names to claim a device to the
      * catalog only.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -994,23 +787,16 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return an device resource belonging to a device group resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeviceInner createOrUpdate(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
-        DeviceInner resource,
-        Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName, catalogName, productName, deviceGroupName, deviceName, resource, context)
-            .block();
+    public DeviceInner createOrUpdate(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, String deviceName, DeviceInner resource, Context context) {
+        return createOrUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, resource,
+            context).block();
     }
 
     /**
      * Update a Device. Use '.unassigned' or '.default' for the device group and product names to move a device to the
      * catalog level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1021,27 +807,18 @@ public final class DevicesClientImpl implements DevicesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an device resource belonging to a device group resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
-        DeviceUpdate properties) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, String deviceName, DeviceUpdate properties) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1067,28 +844,16 @@ public final class DevicesClientImpl implements DevicesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            catalogName,
-                            productName,
-                            deviceGroupName,
-                            deviceName,
-                            properties,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, deviceGroupName,
+                deviceName, properties, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update a Device. Use '.unassigned' or '.default' for the device group and product names to move a device to the
      * catalog level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1100,28 +865,18 @@ public final class DevicesClientImpl implements DevicesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an device resource belonging to a device group resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
-        DeviceUpdate properties,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, String deviceName, DeviceUpdate properties, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1147,25 +902,14 @@ public final class DevicesClientImpl implements DevicesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                catalogName,
-                productName,
-                deviceGroupName,
-                deviceName,
-                properties,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, catalogName, productName, deviceGroupName, deviceName, properties, accept, context);
     }
 
     /**
      * Update a Device. Use '.unassigned' or '.default' for the device group and product names to move a device to the
      * catalog level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1178,26 +922,18 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return the {@link PollerFlux} for polling of an device resource belonging to a device group resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DeviceInner>, DeviceInner> beginUpdateAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
-        DeviceUpdate properties) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, catalogName, productName, deviceGroupName, deviceName, properties);
-        return this
-            .client
-            .<DeviceInner, DeviceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DeviceInner.class, DeviceInner.class, this.client.getContext());
+    private PollerFlux<PollResult<DeviceInner>, DeviceInner> beginUpdateAsync(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, String deviceName, DeviceUpdate properties) {
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, catalogName, productName,
+            deviceGroupName, deviceName, properties);
+        return this.client.<DeviceInner, DeviceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DeviceInner.class, DeviceInner.class, this.client.getContext());
     }
 
     /**
      * Update a Device. Use '.unassigned' or '.default' for the device group and product names to move a device to the
      * catalog level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1211,28 +947,20 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return the {@link PollerFlux} for polling of an device resource belonging to a device group resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DeviceInner>, DeviceInner> beginUpdateAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
-        DeviceUpdate properties,
+    private PollerFlux<PollResult<DeviceInner>, DeviceInner> beginUpdateAsync(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, String deviceName, DeviceUpdate properties,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, catalogName, productName, deviceGroupName, deviceName, properties, context);
-        return this
-            .client
-            .<DeviceInner, DeviceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DeviceInner.class, DeviceInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, catalogName, productName,
+            deviceGroupName, deviceName, properties, context);
+        return this.client.<DeviceInner, DeviceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DeviceInner.class, DeviceInner.class, context);
     }
 
     /**
      * Update a Device. Use '.unassigned' or '.default' for the device group and product names to move a device to the
      * catalog level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1245,13 +973,8 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return the {@link SyncPoller} for polling of an device resource belonging to a device group resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DeviceInner>, DeviceInner> beginUpdate(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
-        DeviceUpdate properties) {
+    public SyncPoller<PollResult<DeviceInner>, DeviceInner> beginUpdate(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, String deviceName, DeviceUpdate properties) {
         return this
             .beginUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, properties)
             .getSyncPoller();
@@ -1260,7 +983,7 @@ public final class DevicesClientImpl implements DevicesClient {
     /**
      * Update a Device. Use '.unassigned' or '.default' for the device group and product names to move a device to the
      * catalog level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1274,24 +997,16 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return the {@link SyncPoller} for polling of an device resource belonging to a device group resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DeviceInner>, DeviceInner> beginUpdate(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
-        DeviceUpdate properties,
-        Context context) {
-        return this
-            .beginUpdateAsync(
-                resourceGroupName, catalogName, productName, deviceGroupName, deviceName, properties, context)
-            .getSyncPoller();
+    public SyncPoller<PollResult<DeviceInner>, DeviceInner> beginUpdate(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, String deviceName, DeviceUpdate properties, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName,
+            properties, context).getSyncPoller();
     }
 
     /**
      * Update a Device. Use '.unassigned' or '.default' for the device group and product names to move a device to the
      * catalog level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1304,22 +1019,16 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return an device resource belonging to a device group resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeviceInner> updateAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
-        DeviceUpdate properties) {
+    private Mono<DeviceInner> updateAsync(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, String deviceName, DeviceUpdate properties) {
         return beginUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, properties)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update a Device. Use '.unassigned' or '.default' for the device group and product names to move a device to the
      * catalog level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1333,24 +1042,16 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return an device resource belonging to a device group resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeviceInner> updateAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
-        DeviceUpdate properties,
-        Context context) {
-        return beginUpdateAsync(
-                resourceGroupName, catalogName, productName, deviceGroupName, deviceName, properties, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<DeviceInner> updateAsync(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, String deviceName, DeviceUpdate properties, Context context) {
+        return beginUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, properties,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update a Device. Use '.unassigned' or '.default' for the device group and product names to move a device to the
      * catalog level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1363,13 +1064,8 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return an device resource belonging to a device group resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeviceInner update(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
-        DeviceUpdate properties) {
+    public DeviceInner update(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
+        String deviceName, DeviceUpdate properties) {
         return updateAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, properties)
             .block();
     }
@@ -1377,7 +1073,7 @@ public final class DevicesClientImpl implements DevicesClient {
     /**
      * Update a Device. Use '.unassigned' or '.default' for the device group and product names to move a device to the
      * catalog level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1391,22 +1087,15 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return an device resource belonging to a device group resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeviceInner update(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
-        DeviceUpdate properties,
-        Context context) {
-        return updateAsync(
-                resourceGroupName, catalogName, productName, deviceGroupName, deviceName, properties, context)
-            .block();
+    public DeviceInner update(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
+        String deviceName, DeviceUpdate properties, Context context) {
+        return updateAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, properties,
+            context).block();
     }
 
     /**
      * Delete a Device.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1418,19 +1107,15 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName, String deviceName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, String deviceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1451,26 +1136,15 @@ public final class DevicesClientImpl implements DevicesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            catalogName,
-                            productName,
-                            deviceGroupName,
-                            deviceName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, deviceGroupName,
+                deviceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a Device.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1483,24 +1157,15 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, String deviceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1521,23 +1186,13 @@ public final class DevicesClientImpl implements DevicesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                catalogName,
-                productName,
-                deviceGroupName,
-                deviceName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, catalogName, productName, deviceGroupName, deviceName, accept, context);
     }
 
     /**
      * Delete a Device.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1549,19 +1204,17 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName, String deviceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, String deviceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a Device.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1574,24 +1227,18 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, String deviceName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, catalogName, productName,
+            deviceGroupName, deviceName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete a Device.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1603,16 +1250,15 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName, String deviceName) {
-        return this
-            .beginDeleteAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, String deviceName) {
+        return this.beginDeleteAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName)
             .getSyncPoller();
     }
 
     /**
      * Delete a Device.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1625,21 +1271,15 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
-        Context context) {
-        return this
-            .beginDeleteAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, String deviceName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, context)
             .getSyncPoller();
     }
 
     /**
      * Delete a Device.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1651,16 +1291,15 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName, String deviceName) {
-        return beginDeleteAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, String deviceName) {
+        return beginDeleteAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a Device.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1673,21 +1312,15 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
-        Context context) {
+    private Mono<Void> deleteAsync(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, String deviceName, Context context) {
         return beginDeleteAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a Device.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1698,14 +1331,14 @@ public final class DevicesClientImpl implements DevicesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName, String deviceName) {
+    public void delete(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
+        String deviceName) {
         deleteAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName).block();
     }
 
     /**
      * Delete a Device.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1717,20 +1350,15 @@ public final class DevicesClientImpl implements DevicesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
-        Context context) {
+    public void delete(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
+        String deviceName, Context context) {
         deleteAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, context).block();
     }
 
     /**
      * Generates the capability image for the device. Use '.unassigned' or '.default' for the device group and product
      * names to generate the image for a device that does not belong to a specific device group and product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1740,28 +1368,20 @@ public final class DevicesClientImpl implements DevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return signed device capability image response along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return signed device capability image response along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> generateCapabilityImageWithResponseAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
+    private Mono<Response<Flux<ByteBuffer>>> generateCapabilityImageWithResponseAsync(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, String deviceName,
         GenerateCapabilityImageRequest generateDeviceCapabilityRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1781,37 +1401,23 @@ public final class DevicesClientImpl implements DevicesClient {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
         }
         if (generateDeviceCapabilityRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter generateDeviceCapabilityRequest is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter generateDeviceCapabilityRequest is required and cannot be null."));
         } else {
             generateDeviceCapabilityRequest.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .generateCapabilityImage(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            catalogName,
-                            productName,
-                            deviceGroupName,
-                            deviceName,
-                            generateDeviceCapabilityRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.generateCapabilityImage(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, catalogName,
+                productName, deviceGroupName, deviceName, generateDeviceCapabilityRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Generates the capability image for the device. Use '.unassigned' or '.default' for the device group and product
      * names to generate the image for a device that does not belong to a specific device group and product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1822,29 +1428,20 @@ public final class DevicesClientImpl implements DevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return signed device capability image response along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return signed device capability image response along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> generateCapabilityImageWithResponseAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
-        GenerateCapabilityImageRequest generateDeviceCapabilityRequest,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> generateCapabilityImageWithResponseAsync(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, String deviceName,
+        GenerateCapabilityImageRequest generateDeviceCapabilityRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1864,34 +1461,22 @@ public final class DevicesClientImpl implements DevicesClient {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
         }
         if (generateDeviceCapabilityRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter generateDeviceCapabilityRequest is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter generateDeviceCapabilityRequest is required and cannot be null."));
         } else {
             generateDeviceCapabilityRequest.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .generateCapabilityImage(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                catalogName,
-                productName,
-                deviceGroupName,
-                deviceName,
-                generateDeviceCapabilityRequest,
-                accept,
-                context);
+        return service.generateCapabilityImage(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, deviceGroupName, deviceName,
+            generateDeviceCapabilityRequest, accept, context);
     }
 
     /**
      * Generates the capability image for the device. Use '.unassigned' or '.default' for the device group and product
      * names to generate the image for a device that does not belong to a specific device group and product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1905,35 +1490,19 @@ public final class DevicesClientImpl implements DevicesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SignedCapabilityImageResponseInner>, SignedCapabilityImageResponseInner>
-        beginGenerateCapabilityImageAsync(
-            String resourceGroupName,
-            String catalogName,
-            String productName,
-            String deviceGroupName,
-            String deviceName,
-            GenerateCapabilityImageRequest generateDeviceCapabilityRequest) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            generateCapabilityImageWithResponseAsync(
-                resourceGroupName,
-                catalogName,
-                productName,
-                deviceGroupName,
-                deviceName,
-                generateDeviceCapabilityRequest);
-        return this
-            .client
-            .<SignedCapabilityImageResponseInner, SignedCapabilityImageResponseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SignedCapabilityImageResponseInner.class,
-                SignedCapabilityImageResponseInner.class,
-                this.client.getContext());
+        beginGenerateCapabilityImageAsync(String resourceGroupName, String catalogName, String productName,
+            String deviceGroupName, String deviceName, GenerateCapabilityImageRequest generateDeviceCapabilityRequest) {
+        Mono<Response<Flux<ByteBuffer>>> mono = generateCapabilityImageWithResponseAsync(resourceGroupName, catalogName,
+            productName, deviceGroupName, deviceName, generateDeviceCapabilityRequest);
+        return this.client.<SignedCapabilityImageResponseInner, SignedCapabilityImageResponseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SignedCapabilityImageResponseInner.class,
+            SignedCapabilityImageResponseInner.class, this.client.getContext());
     }
 
     /**
      * Generates the capability image for the device. Use '.unassigned' or '.default' for the device group and product
      * names to generate the image for a device that does not belong to a specific device group and product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1948,38 +1517,21 @@ public final class DevicesClientImpl implements DevicesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SignedCapabilityImageResponseInner>, SignedCapabilityImageResponseInner>
-        beginGenerateCapabilityImageAsync(
-            String resourceGroupName,
-            String catalogName,
-            String productName,
-            String deviceGroupName,
-            String deviceName,
-            GenerateCapabilityImageRequest generateDeviceCapabilityRequest,
+        beginGenerateCapabilityImageAsync(String resourceGroupName, String catalogName, String productName,
+            String deviceGroupName, String deviceName, GenerateCapabilityImageRequest generateDeviceCapabilityRequest,
             Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            generateCapabilityImageWithResponseAsync(
-                resourceGroupName,
-                catalogName,
-                productName,
-                deviceGroupName,
-                deviceName,
-                generateDeviceCapabilityRequest,
-                context);
-        return this
-            .client
-            .<SignedCapabilityImageResponseInner, SignedCapabilityImageResponseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SignedCapabilityImageResponseInner.class,
-                SignedCapabilityImageResponseInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = generateCapabilityImageWithResponseAsync(resourceGroupName, catalogName,
+            productName, deviceGroupName, deviceName, generateDeviceCapabilityRequest, context);
+        return this.client.<SignedCapabilityImageResponseInner, SignedCapabilityImageResponseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SignedCapabilityImageResponseInner.class,
+            SignedCapabilityImageResponseInner.class, context);
     }
 
     /**
      * Generates the capability image for the device. Use '.unassigned' or '.default' for the device group and product
      * names to generate the image for a device that does not belong to a specific device group and product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1993,28 +1545,16 @@ public final class DevicesClientImpl implements DevicesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SignedCapabilityImageResponseInner>, SignedCapabilityImageResponseInner>
-        beginGenerateCapabilityImage(
-            String resourceGroupName,
-            String catalogName,
-            String productName,
-            String deviceGroupName,
-            String deviceName,
-            GenerateCapabilityImageRequest generateDeviceCapabilityRequest) {
-        return this
-            .beginGenerateCapabilityImageAsync(
-                resourceGroupName,
-                catalogName,
-                productName,
-                deviceGroupName,
-                deviceName,
-                generateDeviceCapabilityRequest)
-            .getSyncPoller();
+        beginGenerateCapabilityImage(String resourceGroupName, String catalogName, String productName,
+            String deviceGroupName, String deviceName, GenerateCapabilityImageRequest generateDeviceCapabilityRequest) {
+        return this.beginGenerateCapabilityImageAsync(resourceGroupName, catalogName, productName, deviceGroupName,
+            deviceName, generateDeviceCapabilityRequest).getSyncPoller();
     }
 
     /**
      * Generates the capability image for the device. Use '.unassigned' or '.default' for the device group and product
      * names to generate the image for a device that does not belong to a specific device group and product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -2029,30 +1569,17 @@ public final class DevicesClientImpl implements DevicesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SignedCapabilityImageResponseInner>, SignedCapabilityImageResponseInner>
-        beginGenerateCapabilityImage(
-            String resourceGroupName,
-            String catalogName,
-            String productName,
-            String deviceGroupName,
-            String deviceName,
-            GenerateCapabilityImageRequest generateDeviceCapabilityRequest,
+        beginGenerateCapabilityImage(String resourceGroupName, String catalogName, String productName,
+            String deviceGroupName, String deviceName, GenerateCapabilityImageRequest generateDeviceCapabilityRequest,
             Context context) {
-        return this
-            .beginGenerateCapabilityImageAsync(
-                resourceGroupName,
-                catalogName,
-                productName,
-                deviceGroupName,
-                deviceName,
-                generateDeviceCapabilityRequest,
-                context)
-            .getSyncPoller();
+        return this.beginGenerateCapabilityImageAsync(resourceGroupName, catalogName, productName, deviceGroupName,
+            deviceName, generateDeviceCapabilityRequest, context).getSyncPoller();
     }
 
     /**
      * Generates the capability image for the device. Use '.unassigned' or '.default' for the device group and product
      * names to generate the image for a device that does not belong to a specific device group and product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -2065,28 +1592,17 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return signed device capability image response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SignedCapabilityImageResponseInner> generateCapabilityImageAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
+    private Mono<SignedCapabilityImageResponseInner> generateCapabilityImageAsync(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, String deviceName,
         GenerateCapabilityImageRequest generateDeviceCapabilityRequest) {
-        return beginGenerateCapabilityImageAsync(
-                resourceGroupName,
-                catalogName,
-                productName,
-                deviceGroupName,
-                deviceName,
-                generateDeviceCapabilityRequest)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginGenerateCapabilityImageAsync(resourceGroupName, catalogName, productName, deviceGroupName,
+            deviceName, generateDeviceCapabilityRequest).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Generates the capability image for the device. Use '.unassigned' or '.default' for the device group and product
      * names to generate the image for a device that does not belong to a specific device group and product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -2100,30 +1616,17 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return signed device capability image response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SignedCapabilityImageResponseInner> generateCapabilityImageAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
-        GenerateCapabilityImageRequest generateDeviceCapabilityRequest,
-        Context context) {
-        return beginGenerateCapabilityImageAsync(
-                resourceGroupName,
-                catalogName,
-                productName,
-                deviceGroupName,
-                deviceName,
-                generateDeviceCapabilityRequest,
-                context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<SignedCapabilityImageResponseInner> generateCapabilityImageAsync(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, String deviceName,
+        GenerateCapabilityImageRequest generateDeviceCapabilityRequest, Context context) {
+        return beginGenerateCapabilityImageAsync(resourceGroupName, catalogName, productName, deviceGroupName,
+            deviceName, generateDeviceCapabilityRequest, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Generates the capability image for the device. Use '.unassigned' or '.default' for the device group and product
      * names to generate the image for a device that does not belong to a specific device group and product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -2136,27 +1639,17 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return signed device capability image response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SignedCapabilityImageResponseInner generateCapabilityImage(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
+    public SignedCapabilityImageResponseInner generateCapabilityImage(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, String deviceName,
         GenerateCapabilityImageRequest generateDeviceCapabilityRequest) {
-        return generateCapabilityImageAsync(
-                resourceGroupName,
-                catalogName,
-                productName,
-                deviceGroupName,
-                deviceName,
-                generateDeviceCapabilityRequest)
-            .block();
+        return generateCapabilityImageAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName,
+            generateDeviceCapabilityRequest).block();
     }
 
     /**
      * Generates the capability image for the device. Use '.unassigned' or '.default' for the device group and product
      * names to generate the image for a device that does not belong to a specific device group and product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -2170,35 +1663,24 @@ public final class DevicesClientImpl implements DevicesClient {
      * @return signed device capability image response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SignedCapabilityImageResponseInner generateCapabilityImage(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
-        GenerateCapabilityImageRequest generateDeviceCapabilityRequest,
-        Context context) {
-        return generateCapabilityImageAsync(
-                resourceGroupName,
-                catalogName,
-                productName,
-                deviceGroupName,
-                deviceName,
-                generateDeviceCapabilityRequest,
-                context)
-            .block();
+    public SignedCapabilityImageResponseInner generateCapabilityImage(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, String deviceName,
+        GenerateCapabilityImageRequest generateDeviceCapabilityRequest, Context context) {
+        return generateCapabilityImageAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName,
+            generateDeviceCapabilityRequest, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Device list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeviceInner>> listByDeviceGroupNextSinglePageAsync(String nextLink) {
@@ -2206,37 +1688,29 @@ public final class DevicesClientImpl implements DevicesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByDeviceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DeviceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DeviceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Device list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeviceInner>> listByDeviceGroupNextSinglePageAsync(String nextLink, Context context) {
@@ -2244,23 +1718,13 @@ public final class DevicesClientImpl implements DevicesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByDeviceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByDeviceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

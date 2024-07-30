@@ -14,7 +14,7 @@ import java.util.Map;
 public final class NetworkManagersPatchSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkManagerPatch.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkManagerPatch.json
      */
     /**
      * Sample code: NetworkManagesPatch.
@@ -22,8 +22,13 @@ public final class NetworkManagersPatchSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void networkManagesPatch(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getNetworkManagers().patchWithResponse("rg1", "testNetworkManager",
-            new PatchObject().withTags(mapOf("tag1", "value1", "tag2", "value2")), com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getNetworkManagers()
+            .patchWithResponse("rg1", "testNetworkManager",
+                new PatchObject().withTags(mapOf("tag1", "value1", "tag2", "value2")),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

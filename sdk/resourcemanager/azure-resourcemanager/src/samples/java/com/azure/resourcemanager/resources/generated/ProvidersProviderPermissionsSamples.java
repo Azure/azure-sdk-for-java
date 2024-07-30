@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-/** Samples for Providers ProviderPermissions. */
+/**
+ * Samples for Providers ProviderPermissions.
+ */
 public final class ProvidersProviderPermissionsSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/GetProviderPermissions.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/GetProviderPermissions.json
      */
     /**
      * Sample code: Get provider resource types.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getProviderResourceTypes(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .genericResources()
+        azure.genericResources()
             .manager()
             .serviceClient()
             .getProviders()

@@ -11,6 +11,7 @@ import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UserAgentUtil;
+import com.azure.core.util.logging.LoggingEventBuilder;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -37,7 +38,23 @@ import static com.azure.core.amqp.implementation.ClientConstants.HOSTNAME_KEY;
  * Creates an AMQP connection using sockets.
  */
 public class ConnectionHandler extends Handler {
+    /**
+     * Gets the secure AMQP (amqps) port. The standard AMQP port number that has been assigned by IANA for secure
+     * TCP using TLS.
+     * When using <b>secure</b> AMQP, the TCP connection is first overlaid with TLS before entering the AMQP protocol
+     * handshake.
+     *
+     * @see <a href="https://learn.microsoft.com/azure/service-bus-messaging/service-bus-amqp-protocol-guide">
+     *     Connections and sessions</a>
+     */
     public static final int AMQPS_PORT = 5671;
+    /**
+     * Gets the AMQP (amqp) port.  The standard AMQP port number that has been assigned by IANA for TCP, UDP, and SCTP.
+     * Currently, there is no mapping for UDP nor SCTP.
+     * When using AMQP, the TCP connection does not, initially, need to be overlaid with TLS, whereby the server
+     * immediately <b>offers a mandatory upgrade of connection</b> to TLS using the AMQP-prescribed model.
+     */
+    public static final int AMQP_PORT = 5672;
 
     static final Symbol PRODUCT = Symbol.valueOf("product");
     static final Symbol VERSION = Symbol.valueOf("version");
@@ -52,21 +69,20 @@ public class ConnectionHandler extends Handler {
     private final ConnectionOptions connectionOptions;
     private final SslPeerDetails peerDetails;
     private final AmqpMetricsProvider metricProvider;
+    private final boolean enableSsl;
 
     /**
-     * Creates a handler that handles proton-j's connection events.
+     * Creates a handler that handles proton-j's connection events without using SSL.
      *
      * @param connectionId Identifier for this connection.
      * @param connectionOptions Options used when creating the AMQP connection.
-     * @param peerDetails The peer details for this connection.
-     * @deprecated use {@link ConnectionHandler#ConnectionHandler(String, ConnectionOptions, SslPeerDetails, AmqpMetricsProvider)} instead.
-     * @throws NullPointerException if {@code connectionOptions} or {@code peerDetails} is null.
+     * @param metricProvider The AMQP metrics provider.
+     * @throws NullPointerException if {@code connectionOptions}, {@code peerDetails}, or {@code metricProvider} is
+     * null.
      */
-    @Deprecated
     public ConnectionHandler(final String connectionId, final ConnectionOptions connectionOptions,
-        SslPeerDetails peerDetails) {
-        this(connectionId, connectionOptions, peerDetails,
-            new AmqpMetricsProvider(null, connectionOptions.getFullyQualifiedNamespace(), null));
+        AmqpMetricsProvider metricProvider) {
+        this(connectionId, connectionOptions, null, metricProvider, false);
     }
 
     /**
@@ -81,6 +97,11 @@ public class ConnectionHandler extends Handler {
      */
     public ConnectionHandler(final String connectionId, final ConnectionOptions connectionOptions,
         SslPeerDetails peerDetails, AmqpMetricsProvider metricProvider) {
+        this(connectionId, connectionOptions, peerDetails, metricProvider, true);
+    }
+
+    ConnectionHandler(String connectionId, ConnectionOptions connectionOptions, SslPeerDetails peerDetails,
+        AmqpMetricsProvider metricProvider, boolean enableSsl) {
         super(connectionId,
             Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.").getHostname());
         add(new Handshaker());
@@ -100,8 +121,14 @@ public class ConnectionHandler extends Handler {
 
         this.connectionProperties.put(USER_AGENT.toString(), userAgent);
 
-        this.peerDetails = Objects.requireNonNull(peerDetails, "'peerDetails' cannot be null.");
+        if (enableSsl) {
+            this.peerDetails = Objects.requireNonNull(peerDetails, "'peerDetails' cannot be null.");
+        } else {
+            this.peerDetails = peerDetails;
+        }
+
         this.metricProvider = Objects.requireNonNull(metricProvider, "'metricProvider' cannot be null.");
+        this.enableSsl = enableSsl;
     }
 
     /**
@@ -142,6 +169,10 @@ public class ConnectionHandler extends Handler {
         // Giving it an idle timeout will enable the client side to know broken connection faster.
         // Refer to http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#doc-doc-idle-time-out
         transport.setIdleTimeout(CONNECTION_IDLE_TIMEOUT);
+
+        if (!enableSsl) {
+            return;
+        }
 
         final SslDomain sslDomain = Proton.sslDomain();
         sslDomain.init(SslDomain.Mode.CLIENT);
@@ -214,10 +245,12 @@ public class ConnectionHandler extends Handler {
     public void onConnectionBound(Event event) {
         final Transport transport = event.getTransport();
 
-        logger.atInfo()
-            .addKeyValue(HOSTNAME_KEY, getHostname())
-            .addKeyValue("peerDetails", () -> peerDetails.getHostname() + ":" + peerDetails.getPort())
-            .log("onConnectionBound");
+        final LoggingEventBuilder builder = logger.atInfo().addKeyValue(HOSTNAME_KEY, getHostname());
+        if (peerDetails != null) {
+            builder.addKeyValue("peerDetails", () -> peerDetails.getHostname() + ":" + peerDetails.getPort());
+        }
+
+        builder.log("onConnectionBound");
 
         this.addTransportLayers(event, (TransportInternal) transport);
 

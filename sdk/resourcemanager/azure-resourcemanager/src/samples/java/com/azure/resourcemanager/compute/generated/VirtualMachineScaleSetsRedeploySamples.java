@@ -13,7 +13,7 @@ import java.util.Arrays;
 public final class VirtualMachineScaleSetsRedeploySamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Redeploy_MinimumSet_Gen.json
      */
     /**
@@ -23,13 +23,16 @@ public final class VirtualMachineScaleSetsRedeploySamples {
      */
     public static void
         virtualMachineScaleSetRedeployMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets().redeploy("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaaaa", null, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .redeploy("rgcompute", "aaaaaaaaaaaaaaaaaaaaaa", null, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Redeploy_MaximumSet_Gen.json
      */
     /**
@@ -39,9 +42,12 @@ public final class VirtualMachineScaleSetsRedeploySamples {
      */
     public static void
         virtualMachineScaleSetRedeployMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets().redeploy("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-            new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(Arrays.asList("aaaaaaaaaaaaaaaaa")),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .redeploy("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(Arrays.asList("aaaaaaaaaaaaaaaaa")),
+                com.azure.core.util.Context.NONE);
     }
 }

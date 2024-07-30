@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class WorkflowRunActionsListExpressionTracesSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
-     * WorkflowRunActions_ListExpressionTraces.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/WorkflowRunActions_ListExpressionTraces.json
      */
     /**
      * Sample code: List expression traces.
@@ -18,7 +17,11 @@ public final class WorkflowRunActionsListExpressionTracesSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listExpressionTraces(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getWorkflowRunActions().listExpressionTraces("testResourceGroup",
-            "test-name", "testFlow", "08586776228332053161046300351", "testAction", com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getWorkflowRunActions()
+            .listExpressionTraces("testResourceGroup", "test-name", "testFlow", "08586776228332053161046300351",
+                "testAction", com.azure.core.util.Context.NONE);
     }
 }

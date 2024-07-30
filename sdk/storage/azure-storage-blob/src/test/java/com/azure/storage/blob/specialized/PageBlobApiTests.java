@@ -7,7 +7,6 @@ import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpRange;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.BlobClient;
@@ -39,6 +38,7 @@ import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
 import org.junit.jupiter.api.BeforeEach;
@@ -536,6 +536,21 @@ public class PageBlobApiTests extends BlobTestBase {
         assertResponseStatusCode(response, 201);
         assertTrue(validateBasicHeaders(response.getHeaders()));
     }
+
+    /*@RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @Test
+    public void uploadPageFromURLSourceErrorAndStatusCode() {
+        PageBlobClient destBlob = cc.getBlobClient(generateBlobName()).getPageBlobClient();
+
+        destBlob.createIfNotExists(Constants.KB);
+        PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
+
+        BlobStorageException e = assertThrows(BlobStorageException.class, () -> destBlob.uploadPagesFromUrl(pageRange, bc.getBlobUrl(), null));
+
+        assertTrue(e.getStatusCode() == 409);
+        assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
+        assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
+    }*/
 
     @Test
     public void uploadPageFromURLRange() {
@@ -1689,16 +1704,18 @@ public class PageBlobApiTests extends BlobTestBase {
         assertTrue(aadBlob.exists());
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @LiveOnly
     @Test
-    public void audienceError() {
-        PageBlobClient aadBlob = instrument(new SpecializedBlobClientBuilder()
-            .endpoint(bc.getBlobUrl())
-            .credential(new MockTokenCredential())
-            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience")))
+    /* This test tests if the bearer challenge is working properly. A bad audience is passed in, the service returns
+    the default audience, and the request gets retried with this default audience, making the call function as expected.
+     */
+    public void audienceErrorBearerChallengeRetry() {
+        PageBlobClient aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
+            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience"))
             .buildPageBlobClient();
 
-        BlobStorageException e = assertThrows(BlobStorageException.class, () -> aadBlob.exists());
-        assertTrue(e.getErrorCode() == BlobErrorCode.INVALID_AUTHENTICATION_INFO);
+        assertNotNull(aadBlob.getProperties());
     }
 
     @Test

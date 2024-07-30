@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-/** Samples for DevCenters ListByResourceGroup. */
+/**
+ * Samples for DevCenters ListByResourceGroup.
+ */
 public final class DevCentersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2023-10-01-preview/examples/DevCenters_ListByResourceGroup.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/DevCenters_ListByResourceGroup.json
      */
     /**
      * Sample code: DevCenters_ListByResourceGroup.
-     *
+     * 
      * @param manager Entry point to DevCenterManager.
      */
     public static void devCentersListByResourceGroup(com.azure.resourcemanager.devcenter.DevCenterManager manager) {

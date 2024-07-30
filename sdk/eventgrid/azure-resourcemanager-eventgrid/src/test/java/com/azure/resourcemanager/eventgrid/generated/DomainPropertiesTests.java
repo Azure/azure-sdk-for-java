@@ -45,29 +45,39 @@ public final class DomainPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DomainProperties model
-            = new DomainProperties().withMinimumTlsVersionAllowed(TlsVersion.ONE_ZERO)
-                .withInputSchema(InputSchema.EVENT_GRID_SCHEMA)
-                .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
-                    .withInlineEventTypes(mapOf("hdzhlrqj", new InlineEventProperties().withDescription("dsuyonobgla")
-                        .withDisplayName("qxtccmgyudx").withDocumentationUrl("lmoyrx").withDataSchemaUrl("fudwpznt"),
-                        "seyvj",
-                        new InlineEventProperties().withDescription("ck").withDisplayName("lhrxsbkyvpyc")
-                            .withDocumentationUrl("uzbpzkafku").withDataSchemaUrl("crnwbmeh"),
-                        "dhmdua",
-                        new InlineEventProperties().withDescription("rts").withDisplayName("spkdee")
-                            .withDocumentationUrl("ofmxagkvtmelmqkr").withDataSchemaUrl("hvljuahaquh"),
-                        "zlfmisgwbnbbeld",
-                        new InlineEventProperties().withDescription("exq").withDisplayName("fadmws")
-                            .withDocumentationUrl("r").withDataSchemaUrl("xpvgo"))))
-                .withInputSchemaMapping(new InputSchemaMapping()).withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
-                .withInboundIpRules(
-                    Arrays.asList(new InboundIpRule().withIpMask("hsfwxosowzxcug").withAction(IpActionType.ALLOW),
-                        new InboundIpRule().withIpMask("oxdjebwpuc").withAction(IpActionType.ALLOW),
-                        new InboundIpRule().withIpMask("ovbvmeueciv").withAction(IpActionType.ALLOW)))
-                .withDisableLocalAuth(true).withAutoCreateTopicWithFirstSubscription(true)
-                .withAutoDeleteTopicWithLastSubscription(true)
-                .withDataResidencyBoundary(DataResidencyBoundary.WITHIN_GEOPAIR);
+        DomainProperties model = new DomainProperties().withMinimumTlsVersionAllowed(TlsVersion.ONE_ZERO)
+            .withInputSchema(InputSchema.EVENT_GRID_SCHEMA)
+            .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
+                .withInlineEventTypes(mapOf("hdzhlrqj",
+                    new InlineEventProperties().withDescription("dsuyonobgla")
+                        .withDisplayName("qxtccmgyudx")
+                        .withDocumentationUrl("lmoyrx")
+                        .withDataSchemaUrl("fudwpznt"),
+                    "seyvj",
+                    new InlineEventProperties().withDescription("ck")
+                        .withDisplayName("lhrxsbkyvpyc")
+                        .withDocumentationUrl("uzbpzkafku")
+                        .withDataSchemaUrl("crnwbmeh"),
+                    "dhmdua",
+                    new InlineEventProperties().withDescription("rts")
+                        .withDisplayName("spkdee")
+                        .withDocumentationUrl("ofmxagkvtmelmqkr")
+                        .withDataSchemaUrl("hvljuahaquh"),
+                    "zlfmisgwbnbbeld",
+                    new InlineEventProperties().withDescription("exq")
+                        .withDisplayName("fadmws")
+                        .withDocumentationUrl("r")
+                        .withDataSchemaUrl("xpvgo"))))
+            .withInputSchemaMapping(new InputSchemaMapping())
+            .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
+            .withInboundIpRules(
+                Arrays.asList(new InboundIpRule().withIpMask("hsfwxosowzxcug").withAction(IpActionType.ALLOW),
+                    new InboundIpRule().withIpMask("oxdjebwpuc").withAction(IpActionType.ALLOW),
+                    new InboundIpRule().withIpMask("ovbvmeueciv").withAction(IpActionType.ALLOW)))
+            .withDisableLocalAuth(true)
+            .withAutoCreateTopicWithFirstSubscription(true)
+            .withAutoDeleteTopicWithLastSubscription(true)
+            .withDataResidencyBoundary(DataResidencyBoundary.WITHIN_GEOPAIR);
         model = BinaryData.fromObject(model).toObject(DomainProperties.class);
         Assertions.assertEquals(TlsVersion.ONE_ZERO, model.minimumTlsVersionAllowed());
         Assertions.assertEquals(InputSchema.EVENT_GRID_SCHEMA, model.inputSchema());

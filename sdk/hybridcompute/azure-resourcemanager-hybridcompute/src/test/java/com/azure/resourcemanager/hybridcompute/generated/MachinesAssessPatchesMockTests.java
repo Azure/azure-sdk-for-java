@@ -6,59 +6,31 @@ package com.azure.resourcemanager.hybridcompute.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcompute.HybridComputeManager;
 import com.azure.resourcemanager.hybridcompute.models.MachineAssessPatchesResult;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class MachinesAssessPatchesMockTests {
     @Test
     public void testAssessPatches() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"status\":\"Unknown\",\"assessmentActivityId\":\"429ccadd-e3ce-4042-8fd6-898e6b442f24\",\"rebootPending\":false,\"availablePatchCountByClassification\":{\"security\":149120205,\"critical\":897576014,\"definition\":1240461141,\"updateRollup\":515034915,\"featurePack\":1955540217,\"servicePack\":1173386247,\"tools\":1481873943,\"updates\":972359949,\"other\":581977719},\"startDateTime\":\"2021-04-19T13:21:36Z\",\"lastModifiedDateTime\":\"2021-03-17T02:24:33Z\",\"startedBy\":\"Platform\",\"patchServiceUsed\":\"APT\",\"osType\":\"Linux\"}";
 
-        String responseStr =
-            "{\"status\":\"Unknown\",\"assessmentActivityId\":\"nrwrbiork\",\"rebootPending\":false,\"availablePatchCountByClassification\":{\"security\":681185824,\"critical\":1038080670,\"definition\":1788432373,\"updateRollup\":2074857851,\"featurePack\":728204459,\"servicePack\":547145469,\"tools\":208031947,\"updates\":2010806413,\"other\":581700333},\"startDateTime\":\"2020-12-27T23:16:18Z\",\"lastModifiedDateTime\":\"2021-10-29T08:24:04Z\",\"startedBy\":\"Platform\",\"patchServiceUsed\":\"Zypper\",\"osType\":\"Linux\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        HybridComputeManager manager = HybridComputeManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        MachineAssessPatchesResult response
+            = manager.machines().assessPatches("ltv", "qjctzenkeif", com.azure.core.util.Context.NONE);
 
-        HybridComputeManager manager =
-            HybridComputeManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        MachineAssessPatchesResult response =
-            manager.machines().assessPatches("vnuuepzl", "phwzsoldweyuqdu", com.azure.core.util.Context.NONE);
     }
 }

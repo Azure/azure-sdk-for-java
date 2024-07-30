@@ -12,9 +12,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.PreValidateEnable
  */
 public final class ProtectionIntentValidateSamples {
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * AzureIaasVm/ProtectionIntent_Validate.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/AzureIaasVm/ProtectionIntent_Validate.json
      */
     /**
      * Sample code: Validate Enable Protection on Azure Vm.
@@ -23,12 +21,13 @@ public final class ProtectionIntentValidateSamples {
      */
     public static void validateEnableProtectionOnAzureVm(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.protectionIntents().validateWithResponse("southeastasia", new PreValidateEnableBackupRequest()
-            .withResourceType(DataSourceType.VM)
-            .withResourceId(
-                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/arunaupgrade/providers/Microsoft.Compute/VirtualMachines/upgrade1")
-            .withVaultId(
-                "/Subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.RecoveryServices/Vaults/myVault")
-            .withProperties(""), com.azure.core.util.Context.NONE);
+        manager.protectionIntents()
+            .validateWithResponse("southeastasia", new PreValidateEnableBackupRequest()
+                .withResourceType(DataSourceType.VM)
+                .withResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/arunaupgrade/providers/Microsoft.Compute/VirtualMachines/upgrade1")
+                .withVaultId(
+                    "/Subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.RecoveryServices/Vaults/myVault")
+                .withProperties(""), com.azure.core.util.Context.NONE);
     }
 }

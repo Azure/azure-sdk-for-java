@@ -22,17 +22,13 @@ import java.util.List;
 @Fluent
 public final class PricingProperties {
     /*
-     * Indicates whether the Defender plan is enabled on the selected scope. Microsoft Defender for Cloud is provided
-     * in two pricing tiers: free and standard. The standard tier offers advanced security capabilities, while the free
-     * tier offers basic security features.
+     * Indicates whether the Defender plan is enabled on the selected scope. Microsoft Defender for Cloud is provided in two pricing tiers: free and standard. The standard tier offers advanced security capabilities, while the free tier offers basic security features.
      */
     @JsonProperty(value = "pricingTier", required = true)
     private PricingTier pricingTier;
 
     /*
-     * The sub-plan selected for a Standard pricing configuration, when more than one sub-plan is available. Each
-     * sub-plan enables a set of security features. When not specified, full plan is applied. For VirtualMachines plan,
-     * available sub plans are 'P1' & 'P2', where for resource level only 'P1' sub plan is supported.
+     * The sub-plan selected for a Standard pricing configuration, when more than one sub-plan is available. Each sub-plan enables a set of security features. When not specified, full plan is applied. For VirtualMachines plan, available sub plans are 'P1' & 'P2', where for resource level only 'P1' sub plan is supported.
      */
     @JsonProperty(value = "subPlan")
     private String subPlan;
@@ -44,43 +40,31 @@ public final class PricingProperties {
     private Duration freeTrialRemainingTime;
 
     /*
-     * Optional. If `pricingTier` is `Standard` then this property holds the date of the last time the `pricingTier`
-     * was set to `Standard`, when available (e.g 2023-03-01T12:42:42.1921106Z).
+     * Optional. If `pricingTier` is `Standard` then this property holds the date of the last time the `pricingTier` was set to `Standard`, when available (e.g 2023-03-01T12:42:42.1921106Z).
      */
     @JsonProperty(value = "enablementTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime enablementTime;
 
     /*
-     * If set to "False", it allows the descendants of this scope to override the pricing configuration set on this
-     * scope (allows setting inherited="False"). If set to "True", it prevents overrides and forces this pricing
-     * configuration on all the descendants of this scope. This field is only available for subscription-level pricing.
+     * If set to "False", it allows the descendants of this scope to override the pricing configuration set on this scope (allows setting inherited="False"). If set to "True", it prevents overrides and forces this pricing configuration on all the descendants of this scope. This field is only available for subscription-level pricing.
      */
     @JsonProperty(value = "enforce")
     private Enforce enforce;
 
     /*
-     * "inherited" = "True" indicates that the current scope inherits its pricing configuration from its parent. The ID
-     * of the parent scope that provides the inherited configuration is displayed in the "inheritedFrom" field. On the
-     * other hand, "inherited" = "False" indicates that the current scope has its own pricing configuration explicitly
-     * set, and does not inherit from its parent. This field is read only and available only for resource-level
-     * pricing.
+     * "inherited" = "True" indicates that the current scope inherits its pricing configuration from its parent. The ID of the parent scope that provides the inherited configuration is displayed in the "inheritedFrom" field. On the other hand, "inherited" = "False" indicates that the current scope has its own pricing configuration explicitly set, and does not inherit from its parent. This field is read only and available only for resource-level pricing.
      */
     @JsonProperty(value = "inherited", access = JsonProperty.Access.WRITE_ONLY)
     private Inherited inherited;
 
     /*
-     * The id of the scope inherited from. "Null" if not inherited. This field is only available for resource-level
-     * pricing.
+     * The id of the scope inherited from. "Null" if not inherited. This field is only available for resource-level pricing.
      */
     @JsonProperty(value = "inheritedFrom", access = JsonProperty.Access.WRITE_ONLY)
     private String inheritedFrom;
 
     /*
-     * This field is available for subscription-level only, and reflects the coverage status of the resources under the
-     * subscription. Please note: The "pricingTier" field reflects the plan status of the subscription. However, since
-     * the plan status can also be defined at the resource level, there might be misalignment between the
-     * subscription's plan status and the resource status. This field helps indicate the coverage status of the
-     * resources.
+     * This field is available for subscription-level only, and reflects the coverage status of the resources under the subscription. Please note: The "pricingTier" field reflects the plan status of the subscription. However, since the plan status can also be defined at the resource level, there might be misalignment between the subscription's plan status and the resource status. This field helps indicate the coverage status of the resources.
      */
     @JsonProperty(value = "resourcesCoverageStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ResourcesCoverageStatus resourcesCoverageStatus;
@@ -134,10 +118,10 @@ public final class PricingProperties {
     }
 
     /**
-     * Get the subPlan property: The sub-plan selected for a Standard pricing configuration, when more than one
-     * sub-plan is available. Each sub-plan enables a set of security features. When not specified, full plan is
-     * applied. For VirtualMachines plan, available sub plans are 'P1' &amp; 'P2', where for resource level only 'P1'
-     * sub plan is supported.
+     * Get the subPlan property: The sub-plan selected for a Standard pricing configuration, when more than one sub-plan
+     * is available. Each sub-plan enables a set of security features. When not specified, full plan is applied. For
+     * VirtualMachines plan, available sub plans are 'P1' &amp; 'P2', where for resource level only 'P1' sub plan is
+     * supported.
      * 
      * @return the subPlan value.
      */
@@ -146,10 +130,10 @@ public final class PricingProperties {
     }
 
     /**
-     * Set the subPlan property: The sub-plan selected for a Standard pricing configuration, when more than one
-     * sub-plan is available. Each sub-plan enables a set of security features. When not specified, full plan is
-     * applied. For VirtualMachines plan, available sub plans are 'P1' &amp; 'P2', where for resource level only 'P1'
-     * sub plan is supported.
+     * Set the subPlan property: The sub-plan selected for a Standard pricing configuration, when more than one sub-plan
+     * is available. Each sub-plan enables a set of security features. When not specified, full plan is applied. For
+     * VirtualMachines plan, available sub plans are 'P1' &amp; 'P2', where for resource level only 'P1' sub plan is
+     * supported.
      * 
      * @param subPlan the subPlan value to set.
      * @return the PricingProperties object itself.
@@ -231,9 +215,9 @@ public final class PricingProperties {
     /**
      * Get the resourcesCoverageStatus property: This field is available for subscription-level only, and reflects the
      * coverage status of the resources under the subscription. Please note: The "pricingTier" field reflects the plan
-     * status of the subscription. However, since the plan status can also be defined at the resource level, there
-     * might be misalignment between the subscription's plan status and the resource status. This field helps indicate
-     * the coverage status of the resources.
+     * status of the subscription. However, since the plan status can also be defined at the resource level, there might
+     * be misalignment between the subscription's plan status and the resource status. This field helps indicate the
+     * coverage status of the resources.
      * 
      * @return the resourcesCoverageStatus value.
      */
@@ -288,8 +272,8 @@ public final class PricingProperties {
      */
     public void validate() {
         if (pricingTier() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property pricingTier in model PricingProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property pricingTier in model PricingProperties"));
         }
         if (extensions() != null) {
             extensions().forEach(e -> e.validate());

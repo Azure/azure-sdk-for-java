@@ -8,23 +8,28 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A group to be updated. */
+/**
+ * A group to be updated.
+ */
 @Fluent
 public final class UpdateGroup {
     /*
      * Name of the group.
-     * It must match a group name of an existing fleet member.
+     * It must match a group name of an existing fleet member. 
      */
     @JsonProperty(value = "name", required = true)
     private String name;
 
-    /** Creates an instance of UpdateGroup class. */
+    /**
+     * Creates an instance of UpdateGroup class.
+     */
     public UpdateGroup() {
     }
 
     /**
-     * Get the name property: Name of the group. It must match a group name of an existing fleet member.
-     *
+     * Get the name property: Name of the group.
+     * It must match a group name of an existing fleet member.
+     * 
      * @return the name value.
      */
     public String name() {
@@ -32,8 +37,9 @@ public final class UpdateGroup {
     }
 
     /**
-     * Set the name property: Name of the group. It must match a group name of an existing fleet member.
-     *
+     * Set the name property: Name of the group.
+     * It must match a group name of an existing fleet member.
+     * 
      * @param name the name value to set.
      * @return the UpdateGroup object itself.
      */
@@ -44,14 +50,13 @@ public final class UpdateGroup {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model UpdateGroup"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model UpdateGroup"));
         }
     }
 

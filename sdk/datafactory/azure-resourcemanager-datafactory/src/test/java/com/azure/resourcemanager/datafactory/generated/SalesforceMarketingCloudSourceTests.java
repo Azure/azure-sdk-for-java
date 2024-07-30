@@ -11,16 +11,19 @@ public final class SalesforceMarketingCloudSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SalesforceMarketingCloudSource model = BinaryData.fromString(
-            "{\"type\":\"SalesforceMarketingCloudSource\",\"query\":\"dataiwvwmc\",\"queryTimeout\":\"datayoestplmytnhvyj\",\"additionalColumns\":\"dataerh\",\"sourceRetryCount\":\"datastiawywppq\",\"sourceRetryWait\":\"datajxbdyczplmljcisx\",\"maxConcurrentConnections\":\"datas\",\"disableMetricsCollection\":\"datayt\",\"\":{\"zantahuykxsjymps\":\"dataufdynhq\",\"adwiqnsmpfeyjvl\":\"datam\",\"ryoleqikcorkem\":\"dataqsy\",\"htbtuvwz\":\"databobx\"}}")
+            "{\"type\":\"SalesforceMarketingCloudSource\",\"query\":\"datajp\",\"queryTimeout\":\"datalrhnlxstpgzybezm\",\"additionalColumns\":\"dataqpdchdsxvkm\",\"sourceRetryCount\":\"datapxzgj\",\"sourceRetryWait\":\"datamtskto\",\"maxConcurrentConnections\":\"datay\",\"disableMetricsCollection\":\"datad\",\"\":{\"osugrfizfw\":\"dataso\",\"jqnienctwbimh\":\"datamaenwhqafzgzmo\",\"qam\":\"datamognnwxrdll\",\"fpnbyxygubvi\":\"datajyy\"}}")
             .toObject(SalesforceMarketingCloudSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SalesforceMarketingCloudSource model = new SalesforceMarketingCloudSource()
-            .withSourceRetryCount("datastiawywppq").withSourceRetryWait("datajxbdyczplmljcisx")
-            .withMaxConcurrentConnections("datas").withDisableMetricsCollection("datayt")
-            .withQueryTimeout("datayoestplmytnhvyj").withAdditionalColumns("dataerh").withQuery("dataiwvwmc");
+        SalesforceMarketingCloudSource model = new SalesforceMarketingCloudSource().withSourceRetryCount("datapxzgj")
+            .withSourceRetryWait("datamtskto")
+            .withMaxConcurrentConnections("datay")
+            .withDisableMetricsCollection("datad")
+            .withQueryTimeout("datalrhnlxstpgzybezm")
+            .withAdditionalColumns("dataqpdchdsxvkm")
+            .withQuery("datajp");
         model = BinaryData.fromObject(model).toObject(SalesforceMarketingCloudSource.class);
     }
 }

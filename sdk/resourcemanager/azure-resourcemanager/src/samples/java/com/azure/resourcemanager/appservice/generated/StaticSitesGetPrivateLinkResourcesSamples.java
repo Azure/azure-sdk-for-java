@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class StaticSitesGetPrivateLinkResourcesSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetSitePrivateLinkResources.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetSitePrivateLinkResources.json
      */
     /**
      * Sample code: Get private link resources of a site.
@@ -18,7 +17,10 @@ public final class StaticSitesGetPrivateLinkResourcesSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getPrivateLinkResourcesOfASite(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getStaticSites().getPrivateLinkResourcesWithResponse("rg", "testSite",
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getStaticSites()
+            .getPrivateLinkResourcesWithResponse("rg", "testSite", com.azure.core.util.Context.NONE);
     }
 }

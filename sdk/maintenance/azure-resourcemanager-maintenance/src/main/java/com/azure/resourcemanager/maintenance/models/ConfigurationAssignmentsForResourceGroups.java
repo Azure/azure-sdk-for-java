@@ -8,13 +8,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.maintenance.fluent.models.ConfigurationAssignmentInner;
 
-/** Resource collection API of ConfigurationAssignmentsForResourceGroups. */
+/**
+ * Resource collection API of ConfigurationAssignmentsForResourceGroups.
+ */
 public interface ConfigurationAssignmentsForResourceGroups {
     /**
      * Get configuration assignment
-     *
-     * <p>Get configuration assignment for resource..
-     *
+     * 
+     * Get configuration assignment for resource..
+     * 
      * @param resourceGroupName Resource group name.
      * @param configurationAssignmentName Configuration assignment name.
      * @param context The context to associate with this operation.
@@ -23,14 +25,14 @@ public interface ConfigurationAssignmentsForResourceGroups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration assignment for resource. along with {@link Response}.
      */
-    Response<ConfigurationAssignment> getByResourceGroupWithResponse(
-        String resourceGroupName, String configurationAssignmentName, Context context);
+    Response<ConfigurationAssignment> getByResourceGroupWithResponse(String resourceGroupName,
+        String configurationAssignmentName, Context context);
 
     /**
      * Get configuration assignment
-     *
-     * <p>Get configuration assignment for resource..
-     *
+     * 
+     * Get configuration assignment for resource..
+     * 
      * @param resourceGroupName Resource group name.
      * @param configurationAssignmentName Configuration assignment name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,9 +44,9 @@ public interface ConfigurationAssignmentsForResourceGroups {
 
     /**
      * Create configuration assignment
-     *
-     * <p>Register configuration for resource.
-     *
+     * 
+     * Register configuration for resource.
+     * 
      * @param resourceGroupName Resource group name.
      * @param configurationAssignmentName Configuration assignment name.
      * @param configurationAssignment The configurationAssignment.
@@ -54,17 +56,14 @@ public interface ConfigurationAssignmentsForResourceGroups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration Assignment along with {@link Response}.
      */
-    Response<ConfigurationAssignment> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String configurationAssignmentName,
-        ConfigurationAssignmentInner configurationAssignment,
-        Context context);
+    Response<ConfigurationAssignment> createOrUpdateWithResponse(String resourceGroupName,
+        String configurationAssignmentName, ConfigurationAssignmentInner configurationAssignment, Context context);
 
     /**
      * Create configuration assignment
-     *
-     * <p>Register configuration for resource.
-     *
+     * 
+     * Register configuration for resource.
+     * 
      * @param resourceGroupName Resource group name.
      * @param configurationAssignmentName Configuration assignment name.
      * @param configurationAssignment The configurationAssignment.
@@ -73,16 +72,14 @@ public interface ConfigurationAssignmentsForResourceGroups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration Assignment.
      */
-    ConfigurationAssignment createOrUpdate(
-        String resourceGroupName,
-        String configurationAssignmentName,
+    ConfigurationAssignment createOrUpdate(String resourceGroupName, String configurationAssignmentName,
         ConfigurationAssignmentInner configurationAssignment);
 
     /**
      * Create configuration assignment
-     *
-     * <p>Register configuration for resource.
-     *
+     * 
+     * Register configuration for resource.
+     * 
      * @param resourceGroupName Resource group name.
      * @param configurationAssignmentName Configuration assignment name.
      * @param configurationAssignment The configurationAssignment.
@@ -92,17 +89,14 @@ public interface ConfigurationAssignmentsForResourceGroups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration Assignment along with {@link Response}.
      */
-    Response<ConfigurationAssignment> updateWithResponse(
-        String resourceGroupName,
-        String configurationAssignmentName,
-        ConfigurationAssignmentInner configurationAssignment,
-        Context context);
+    Response<ConfigurationAssignment> updateWithResponse(String resourceGroupName, String configurationAssignmentName,
+        ConfigurationAssignmentInner configurationAssignment, Context context);
 
     /**
      * Create configuration assignment
-     *
-     * <p>Register configuration for resource.
-     *
+     * 
+     * Register configuration for resource.
+     * 
      * @param resourceGroupName Resource group name.
      * @param configurationAssignmentName Configuration assignment name.
      * @param configurationAssignment The configurationAssignment.
@@ -111,16 +105,14 @@ public interface ConfigurationAssignmentsForResourceGroups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration Assignment.
      */
-    ConfigurationAssignment update(
-        String resourceGroupName,
-        String configurationAssignmentName,
+    ConfigurationAssignment update(String resourceGroupName, String configurationAssignmentName,
         ConfigurationAssignmentInner configurationAssignment);
 
     /**
      * Unregister configuration for resource
-     *
-     * <p>Unregister configuration for resource.
-     *
+     * 
+     * Unregister configuration for resource.
+     * 
      * @param resourceGroupName Resource group name.
      * @param configurationAssignmentName Unique configuration assignment name.
      * @param context The context to associate with this operation.
@@ -129,14 +121,14 @@ public interface ConfigurationAssignmentsForResourceGroups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration Assignment along with {@link Response}.
      */
-    Response<ConfigurationAssignment> deleteByResourceGroupWithResponse(
-        String resourceGroupName, String configurationAssignmentName, Context context);
+    Response<ConfigurationAssignment> deleteByResourceGroupWithResponse(String resourceGroupName,
+        String configurationAssignmentName, Context context);
 
     /**
      * Unregister configuration for resource
-     *
-     * <p>Unregister configuration for resource.
-     *
+     * 
+     * Unregister configuration for resource.
+     * 
      * @param resourceGroupName Resource group name.
      * @param configurationAssignmentName Unique configuration assignment name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

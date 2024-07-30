@@ -15,23 +15,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedServiceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedServiceIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"None\",\"userAssignedIdentities\":{\"hoxus\":{\"principalId\":\"d8ec4b94-42f5-4d75-a814-48a9d2955920\",\"clientId\":\"79fb29f8-425a-4e38-8a70-0b576086a2dd\"},\"abgy\":{\"principalId\":\"3355358b-96f4-4c03-8f78-aa731062614b\",\"clientId\":\"c7b242d7-68d7-40b9-bc95-b8afb8c67e44\"}}}")
-                .toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
+        ManagedServiceIdentity model = BinaryData.fromString(
+            "{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"attpngjcrcczsq\":{\"principalId\":\"83ba8a45-e88e-42eb-9bb5-92531893cd59\",\"clientId\":\"89f4e168-009b-4be5-ba63-1a484c447309\"}}}")
+            .toObject(ManagedServiceIdentity.class);
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedServiceIdentity model =
-            new ManagedServiceIdentity()
-                .withType(ManagedServiceIdentityType.NONE)
-                .withUserAssignedIdentities(
-                    mapOf("hoxus", new UserAssignedIdentity(), "abgy", new UserAssignedIdentity()));
+        ManagedServiceIdentity model = new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+            .withUserAssignedIdentities(mapOf("attpngjcrcczsq", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
     }
 
     // Use "Map.of" if available

@@ -5,71 +5,73 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Linked service for Salesforce Service Cloud.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("SalesforceServiceCloud")
-@JsonFlatten
 @Fluent
 public class SalesforceServiceCloudLinkedService extends LinkedService {
     /*
-     * The URL of Salesforce Service Cloud instance. Default is 'https://login.salesforce.com'. To copy data from
-     * sandbox, specify 'https://test.salesforce.com'. To copy data from custom domain, specify, for example,
-     * 'https://[domain].my.salesforce.com'. Type: string (or Expression with resultType string).
+     * Type of linked service.
      */
-    @JsonProperty(value = "typeProperties.environmentUrl")
+    private String type = "SalesforceServiceCloud";
+
+    /*
+     * The URL of Salesforce Service Cloud instance. Default is 'https://login.salesforce.com'. To copy data from sandbox, specify 'https://test.salesforce.com'. To copy data from custom domain, specify, for example, 'https://[domain].my.salesforce.com'. Type: string (or Expression with resultType string).
+     */
     private Object environmentUrl;
 
     /*
-     * The username for Basic authentication of the Salesforce instance. Type: string (or Expression with resultType
-     * string).
+     * The username for Basic authentication of the Salesforce instance. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.username")
     private Object username;
 
     /*
      * The password for Basic authentication of the Salesforce instance.
      */
-    @JsonProperty(value = "typeProperties.password")
     private SecretBase password;
 
     /*
      * The security token is optional to remotely access Salesforce instance.
      */
-    @JsonProperty(value = "typeProperties.securityToken")
     private SecretBase securityToken;
 
     /*
      * The Salesforce API version used in ADF. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.apiVersion")
     private Object apiVersion;
 
     /*
      * Extended properties appended to the connection string. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.extendedProperties")
     private Object extendedProperties;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
     /**
      * Creates an instance of SalesforceServiceCloudLinkedService class.
      */
     public SalesforceServiceCloudLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -205,8 +207,8 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
      * 
      * @return the encryptedCredential value.
      */
@@ -215,8 +217,8 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SalesforceServiceCloudLinkedService object itself.
@@ -260,5 +262,109 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
     public SalesforceServiceCloudLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("connectVia", getConnectVia());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("type", this.type);
+        if (environmentUrl != null
+            || username != null
+            || password != null
+            || securityToken != null
+            || apiVersion != null
+            || extendedProperties != null
+            || encryptedCredential != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("environmentUrl", this.environmentUrl);
+            jsonWriter.writeUntypedField("username", this.username);
+            jsonWriter.writeJsonField("password", this.password);
+            jsonWriter.writeJsonField("securityToken", this.securityToken);
+            jsonWriter.writeUntypedField("apiVersion", this.apiVersion);
+            jsonWriter.writeUntypedField("extendedProperties", this.extendedProperties);
+            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SalesforceServiceCloudLinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SalesforceServiceCloudLinkedService if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SalesforceServiceCloudLinkedService.
+     */
+    public static SalesforceServiceCloudLinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SalesforceServiceCloudLinkedService deserializedSalesforceServiceCloudLinkedService
+                = new SalesforceServiceCloudLinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectVia".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudLinkedService
+                        .setConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudLinkedService.setDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedSalesforceServiceCloudLinkedService.setParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedSalesforceServiceCloudLinkedService.setAnnotations(annotations);
+                } else if ("type".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudLinkedService.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("environmentUrl".equals(fieldName)) {
+                            deserializedSalesforceServiceCloudLinkedService.environmentUrl = reader.readUntyped();
+                        } else if ("username".equals(fieldName)) {
+                            deserializedSalesforceServiceCloudLinkedService.username = reader.readUntyped();
+                        } else if ("password".equals(fieldName)) {
+                            deserializedSalesforceServiceCloudLinkedService.password = SecretBase.fromJson(reader);
+                        } else if ("securityToken".equals(fieldName)) {
+                            deserializedSalesforceServiceCloudLinkedService.securityToken = SecretBase.fromJson(reader);
+                        } else if ("apiVersion".equals(fieldName)) {
+                            deserializedSalesforceServiceCloudLinkedService.apiVersion = reader.readUntyped();
+                        } else if ("extendedProperties".equals(fieldName)) {
+                            deserializedSalesforceServiceCloudLinkedService.extendedProperties = reader.readUntyped();
+                        } else if ("encryptedCredential".equals(fieldName)) {
+                            deserializedSalesforceServiceCloudLinkedService.encryptedCredential = reader.readUntyped();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSalesforceServiceCloudLinkedService.setAdditionalProperties(additionalProperties);
+
+            return deserializedSalesforceServiceCloudLinkedService;
+        });
     }
 }

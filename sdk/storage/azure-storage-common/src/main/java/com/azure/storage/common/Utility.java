@@ -34,6 +34,11 @@ public final class Utility {
       */
     public static final String STORAGE_TRACING_NAMESPACE_VALUE = "Microsoft.Storage";
 
+    /**
+     * Creates a new instance of {@link Utility}.
+     */
+    public Utility() {
+    }
 
     /**
      * Performs a safe decoding of the passed string, taking care to preserve each {@code +} character rather than

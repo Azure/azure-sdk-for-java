@@ -6,16 +6,24 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity Oracle source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = OracleSource.class, visible = true)
 @JsonTypeName("OracleSource")
 @Fluent
 public final class OracleSource extends CopySource {
+    /*
+     * Copy source type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "OracleSource";
+
     /*
      * Oracle reader query. Type: string (or Expression with resultType string).
      */
@@ -53,6 +61,16 @@ public final class OracleSource extends CopySource {
      * Creates an instance of OracleSource class.
      */
     public OracleSource() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -98,8 +116,8 @@ public final class OracleSource extends CopySource {
     }
 
     /**
-     * Get the partitionOption property: The partition mechanism that will be used for Oracle read in parallel.
-     * Possible values include: "None", "PhysicalPartitionsOfTable", "DynamicRange".
+     * Get the partitionOption property: The partition mechanism that will be used for Oracle read in parallel. Possible
+     * values include: "None", "PhysicalPartitionsOfTable", "DynamicRange".
      * 
      * @return the partitionOption value.
      */
@@ -108,8 +126,8 @@ public final class OracleSource extends CopySource {
     }
 
     /**
-     * Set the partitionOption property: The partition mechanism that will be used for Oracle read in parallel.
-     * Possible values include: "None", "PhysicalPartitionsOfTable", "DynamicRange".
+     * Set the partitionOption property: The partition mechanism that will be used for Oracle read in parallel. Possible
+     * values include: "None", "PhysicalPartitionsOfTable", "DynamicRange".
      * 
      * @param partitionOption the partitionOption value to set.
      * @return the OracleSource object itself.

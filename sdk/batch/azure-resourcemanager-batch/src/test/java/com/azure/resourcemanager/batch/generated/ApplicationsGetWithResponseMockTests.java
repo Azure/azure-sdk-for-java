@@ -31,7 +31,7 @@ public final class ApplicationsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"displayName\":\"ithtywu\",\"allowUpdates\":false,\"defaultVersion\":\"ihwqknfdntwjchr\"},\"etag\":\"oihxumwctondzjlu\",\"id\":\"dfdlwggyts\",\"name\":\"wtovvtgsein\",\"type\":\"fiufx\"}";
+            = "{\"properties\":{\"displayName\":\"t\",\"allowUpdates\":false,\"defaultVersion\":\"pyostronzmyhgfi\"},\"etag\":\"sxkm\",\"id\":\"waekrrjreafxtsgu\",\"name\":\"hjglikk\",\"type\":\"wslolbqp\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -49,10 +49,10 @@ public final class ApplicationsGetWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Application response = manager.applications()
-            .getWithResponse("ttpkiwkkbnujrywv", "y", "bfpncurdo", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("exdrrvqahqkg", "tpwijnh", "jsvfycxzbfvoowv", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("ithtywu", response.displayName());
+        Assertions.assertEquals("t", response.displayName());
         Assertions.assertEquals(false, response.allowUpdates());
-        Assertions.assertEquals("ihwqknfdntwjchr", response.defaultVersion());
+        Assertions.assertEquals("pyostronzmyhgfi", response.defaultVersion());
     }
 }

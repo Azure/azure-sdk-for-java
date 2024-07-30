@@ -38,8 +38,8 @@ import com.azure.resourcemanager.compute.fluent.models.RunCommandDocumentInner;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineRunCommandInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
 import com.azure.resourcemanager.compute.models.RunCommandListResult;
-import com.azure.resourcemanager.compute.models.VirtualMachineRunCommandUpdate;
 import com.azure.resourcemanager.compute.models.VirtualMachineRunCommandsListResult;
+import com.azure.resourcemanager.compute.models.VirtualMachineRunCommandUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -182,7 +182,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), location, apiVersion,
@@ -216,7 +216,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
@@ -311,7 +311,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), location, commandId, apiVersion,
@@ -348,7 +348,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), location, commandId, apiVersion, this.client.getSubscriptionId(),
@@ -440,7 +440,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, vmName,
@@ -488,7 +488,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, vmName, runCommandName, apiVersion,
@@ -697,7 +697,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, vmName, runCommandName,
@@ -745,7 +745,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), resourceGroupName, vmName, runCommandName, apiVersion,
@@ -945,7 +945,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, vmName, runCommandName,
@@ -986,7 +986,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, vmName, runCommandName, apiVersion,
@@ -1169,7 +1169,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(context -> service.getByVirtualMachine(this.client.getEndpoint(), resourceGroupName, vmName,
@@ -1212,7 +1212,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service.getByVirtualMachine(this.client.getEndpoint(), resourceGroupName, vmName, runCommandName, expand,
@@ -1306,7 +1306,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(context -> service.listByVirtualMachine(this.client.getEndpoint(), resourceGroupName, vmName,
@@ -1347,7 +1347,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
@@ -1448,9 +1448,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1476,9 +1474,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1505,9 +1501,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1536,9 +1530,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.

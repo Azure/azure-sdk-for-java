@@ -8,32 +8,48 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The state of the UpdateRun, UpdateStage, UpdateGroup, or MemberUpdate. */
+/**
+ * The state of the UpdateRun, UpdateStage, UpdateGroup, or MemberUpdate.
+ */
 public final class UpdateState extends ExpandableStringEnum<UpdateState> {
-    /** Static value NotStarted for UpdateState. */
+    /**
+     * Static value NotStarted for UpdateState.
+     */
     public static final UpdateState NOT_STARTED = fromString("NotStarted");
 
-    /** Static value Running for UpdateState. */
+    /**
+     * Static value Running for UpdateState.
+     */
     public static final UpdateState RUNNING = fromString("Running");
 
-    /** Static value Stopping for UpdateState. */
+    /**
+     * Static value Stopping for UpdateState.
+     */
     public static final UpdateState STOPPING = fromString("Stopping");
 
-    /** Static value Stopped for UpdateState. */
+    /**
+     * Static value Stopped for UpdateState.
+     */
     public static final UpdateState STOPPED = fromString("Stopped");
 
-    /** Static value Skipped for UpdateState. */
+    /**
+     * Static value Skipped for UpdateState.
+     */
     public static final UpdateState SKIPPED = fromString("Skipped");
 
-    /** Static value Failed for UpdateState. */
+    /**
+     * Static value Failed for UpdateState.
+     */
     public static final UpdateState FAILED = fromString("Failed");
 
-    /** Static value Completed for UpdateState. */
+    /**
+     * Static value Completed for UpdateState.
+     */
     public static final UpdateState COMPLETED = fromString("Completed");
 
     /**
      * Creates a new instance of UpdateState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,7 +58,7 @@ public final class UpdateState extends ExpandableStringEnum<UpdateState> {
 
     /**
      * Creates or finds a UpdateState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding UpdateState.
      */
@@ -53,7 +69,7 @@ public final class UpdateState extends ExpandableStringEnum<UpdateState> {
 
     /**
      * Gets known UpdateState values.
-     *
+     * 
      * @return known UpdateState values.
      */
     public static Collection<UpdateState> values() {

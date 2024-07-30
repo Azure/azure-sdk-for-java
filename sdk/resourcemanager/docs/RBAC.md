@@ -2,7 +2,7 @@
 
 [Managed identity][managed_identity] and [role-based access control][rbac] are commonly used together for identity and access management.
 
-Managed identity provides an identity for the Azure resource in Microsoft Entra ID, and uses it to obtain Azure AD token.
+Managed identity provides an identity for the Azure resource in Microsoft Entra ID, and uses it to obtain Microsoft Entra ID token.
 RBAC enforces the role, scope, and access control of that managed identity. 
 
 They are useful in scenarios of enabling Azure virtual machine or web app to either manage Azure resource, or access data in Azure resource.

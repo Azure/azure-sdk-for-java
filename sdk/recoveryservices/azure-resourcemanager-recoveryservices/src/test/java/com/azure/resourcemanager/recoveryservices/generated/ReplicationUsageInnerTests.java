@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ReplicationUsageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReplicationUsageInner model =
-            BinaryData
-                .fromString(
-                    "{\"monitoringSummary\":{\"unHealthyVmCount\":1532132699,\"unHealthyProviderCount\":1672849191,\"eventsCount\":961101058,\"deprecatedProviderCount\":516100581,\"supportedProviderCount\":492523913,\"unsupportedProviderCount\":1080662266},\"jobsSummary\":{\"failedJobs\":1270858426,\"suspendedJobs\":727938504,\"inProgressJobs\":1303287981},\"protectedItemCount\":853033280,\"recoveryPlanCount\":1452273822,\"registeredServersCount\":970292518,\"recoveryServicesProviderAuthType\":1524084754}")
-                .toObject(ReplicationUsageInner.class);
+        ReplicationUsageInner model = BinaryData.fromString(
+            "{\"monitoringSummary\":{\"unHealthyVmCount\":1532132699,\"unHealthyProviderCount\":1672849191,\"eventsCount\":961101058,\"deprecatedProviderCount\":516100581,\"supportedProviderCount\":492523913,\"unsupportedProviderCount\":1080662266},\"jobsSummary\":{\"failedJobs\":1270858426,\"suspendedJobs\":727938504,\"inProgressJobs\":1303287981},\"protectedItemCount\":853033280,\"recoveryPlanCount\":1452273822,\"registeredServersCount\":970292518,\"recoveryServicesProviderAuthType\":1524084754}")
+            .toObject(ReplicationUsageInner.class);
         Assertions.assertEquals(1532132699, model.monitoringSummary().unHealthyVmCount());
         Assertions.assertEquals(1672849191, model.monitoringSummary().unHealthyProviderCount());
         Assertions.assertEquals(961101058, model.monitoringSummary().eventsCount());
@@ -35,25 +33,20 @@ public final class ReplicationUsageInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReplicationUsageInner model =
-            new ReplicationUsageInner()
-                .withMonitoringSummary(
-                    new MonitoringSummary()
-                        .withUnHealthyVmCount(1532132699)
-                        .withUnHealthyProviderCount(1672849191)
-                        .withEventsCount(961101058)
-                        .withDeprecatedProviderCount(516100581)
-                        .withSupportedProviderCount(492523913)
-                        .withUnsupportedProviderCount(1080662266))
-                .withJobsSummary(
-                    new JobsSummary()
-                        .withFailedJobs(1270858426)
-                        .withSuspendedJobs(727938504)
-                        .withInProgressJobs(1303287981))
-                .withProtectedItemCount(853033280)
-                .withRecoveryPlanCount(1452273822)
-                .withRegisteredServersCount(970292518)
-                .withRecoveryServicesProviderAuthType(1524084754);
+        ReplicationUsageInner model = new ReplicationUsageInner()
+            .withMonitoringSummary(new MonitoringSummary().withUnHealthyVmCount(1532132699)
+                .withUnHealthyProviderCount(1672849191)
+                .withEventsCount(961101058)
+                .withDeprecatedProviderCount(516100581)
+                .withSupportedProviderCount(492523913)
+                .withUnsupportedProviderCount(1080662266))
+            .withJobsSummary(new JobsSummary().withFailedJobs(1270858426)
+                .withSuspendedJobs(727938504)
+                .withInProgressJobs(1303287981))
+            .withProtectedItemCount(853033280)
+            .withRecoveryPlanCount(1452273822)
+            .withRegisteredServersCount(970292518)
+            .withRecoveryServicesProviderAuthType(1524084754);
         model = BinaryData.fromObject(model).toObject(ReplicationUsageInner.class);
         Assertions.assertEquals(1532132699, model.monitoringSummary().unHealthyVmCount());
         Assertions.assertEquals(1672849191, model.monitoringSummary().unHealthyProviderCount());

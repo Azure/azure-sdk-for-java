@@ -3,6 +3,7 @@ trigger: none
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
+    UseFederatedAuth: true
     ServiceDirectory: monitor
     SupportedClouds: 'Public,UsGov,China'
     Artifacts:
@@ -12,8 +13,3 @@ extends:
       - name: azure-monitor-query
         groupId: com.azure
         safeName: azuremonitorquery
-    EnvVars:
-      AZURE_CLIENT_ID: $(MONITOR_CLIENT_ID)
-      AZURE_TENANT_ID: $(MONITOR_TENANT_ID)
-      AZURE_CLIENT_SECRET: $(MONITOR_CLIENT_SECRET)
-      AZURE_SUBSCRIPTION_ID: $(MONITOR_SUBSCRIPTION_ID)

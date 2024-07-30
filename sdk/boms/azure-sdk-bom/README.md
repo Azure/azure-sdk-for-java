@@ -21,7 +21,7 @@ result in all dependencies being included in your project.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-sdk-bom</artifactId>
-      <version>1.2.21</version>
+      <version>1.2.25</version>
       <type>pom</type>
       <scope>import</scope>
     </dependency>
@@ -57,7 +57,7 @@ listing the artifact's version.
 
 #### Release cadence
 
-Currently, the `azure-sdk-bom` releases monthly using the latest globally available(GA) versions of managed libraries.
+Currently, the `azure-sdk-bom` releases monthly using the latest generally available(GA) versions of managed libraries.
 
 #### Included library requirements
 

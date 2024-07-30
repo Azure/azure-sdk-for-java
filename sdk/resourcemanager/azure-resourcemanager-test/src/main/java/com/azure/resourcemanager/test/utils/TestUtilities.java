@@ -10,7 +10,12 @@ import java.util.Iterator;
 /**
  * Common utility functions for the tests.
  */
-public class TestUtilities {
+public final class TestUtilities {
+
+    private TestUtilities() {
+
+    }
+
     /**
      * Wrapper on the ResourceManagerUtils.InternalRuntimeContext.sleep, in case of record mode will not sleep, otherwise sleep.
      *

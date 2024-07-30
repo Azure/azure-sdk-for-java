@@ -13,7 +13,7 @@ import com.azure.resourcemanager.compute.models.SshGenerateKeyPairInputParameter
 public final class SshPublicKeysGenerateKeyPairSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * sshPublicKeyExamples/SshPublicKey_GenerateKeyPair_EncryptionWithRSA.json
      */
     /**
@@ -22,15 +22,18 @@ public final class SshPublicKeysGenerateKeyPairSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void generateAnSSHKeyPairWithRSAEncryption(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getSshPublicKeys().generateKeyPairWithResponse(
-            "myResourceGroup", "mySshPublicKeyName",
-            new SshGenerateKeyPairInputParameters().withEncryptionType(SshEncryptionTypes.RSA),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getSshPublicKeys()
+            .generateKeyPairWithResponse("myResourceGroup", "mySshPublicKeyName",
+                new SshGenerateKeyPairInputParameters().withEncryptionType(SshEncryptionTypes.RSA),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * sshPublicKeyExamples/SshPublicKey_GenerateKeyPair.json
      */
     /**
@@ -39,13 +42,17 @@ public final class SshPublicKeysGenerateKeyPairSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void generateAnSSHKeyPair(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getSshPublicKeys().generateKeyPairWithResponse(
-            "myResourceGroup", "mySshPublicKeyName", null, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getSshPublicKeys()
+            .generateKeyPairWithResponse("myResourceGroup", "mySshPublicKeyName", null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * sshPublicKeyExamples/SshPublicKey_GenerateKeyPair_EncryptionWithEd25519.json
      */
     /**
@@ -54,9 +61,12 @@ public final class SshPublicKeysGenerateKeyPairSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void generateAnSSHKeyPairWithEd25519Encryption(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getSshPublicKeys().generateKeyPairWithResponse(
-            "myResourceGroup", "mySshPublicKeyName",
-            new SshGenerateKeyPairInputParameters().withEncryptionType(SshEncryptionTypes.RSA),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getSshPublicKeys()
+            .generateKeyPairWithResponse("myResourceGroup", "mySshPublicKeyName",
+                new SshGenerateKeyPairInputParameters().withEncryptionType(SshEncryptionTypes.RSA),
+                com.azure.core.util.Context.NONE);
     }
 }

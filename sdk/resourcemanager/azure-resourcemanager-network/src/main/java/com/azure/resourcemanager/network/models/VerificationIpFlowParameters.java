@@ -32,8 +32,8 @@ public final class VerificationIpFlowParameters {
     private IpFlowProtocol protocol;
 
     /*
-     * The local port. Acceptable values are a single integer in the range (0-65535). Support for * for the source
-     * port, which depends on the direction.
+     * The local port. Acceptable values are a single integer in the range (0-65535). Support for * for the source port,
+     * which depends on the direction.
      */
     @JsonProperty(value = "localPort", required = true)
     private String localPort;
@@ -215,8 +215,8 @@ public final class VerificationIpFlowParameters {
     }
 
     /**
-     * Get the targetNicResourceId property: The NIC ID. (If VM has multiple NICs and IP forwarding is enabled on any
-     * of them, then this parameter must be specified. Otherwise optional).
+     * Get the targetNicResourceId property: The NIC ID. (If VM has multiple NICs and IP forwarding is enabled on any of
+     * them, then this parameter must be specified. Otherwise optional).
      * 
      * @return the targetNicResourceId value.
      */
@@ -225,8 +225,8 @@ public final class VerificationIpFlowParameters {
     }
 
     /**
-     * Set the targetNicResourceId property: The NIC ID. (If VM has multiple NICs and IP forwarding is enabled on any
-     * of them, then this parameter must be specified. Otherwise optional).
+     * Set the targetNicResourceId property: The NIC ID. (If VM has multiple NICs and IP forwarding is enabled on any of
+     * them, then this parameter must be specified. Otherwise optional).
      * 
      * @param targetNicResourceId the targetNicResourceId value to set.
      * @return the VerificationIpFlowParameters object itself.
@@ -243,32 +243,39 @@ public final class VerificationIpFlowParameters {
      */
     public void validate() {
         if (targetResourceId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property targetResourceId in model VerificationIpFlowParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetResourceId in model VerificationIpFlowParameters"));
         }
         if (direction() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property direction in model VerificationIpFlowParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property direction in model VerificationIpFlowParameters"));
         }
         if (protocol() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property protocol in model VerificationIpFlowParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property protocol in model VerificationIpFlowParameters"));
         }
         if (localPort() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property localPort in model VerificationIpFlowParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property localPort in model VerificationIpFlowParameters"));
         }
         if (remotePort() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property remotePort in model VerificationIpFlowParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property remotePort in model VerificationIpFlowParameters"));
         }
         if (localIpAddress() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property localIpAddress in model VerificationIpFlowParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property localIpAddress in model VerificationIpFlowParameters"));
         }
         if (remoteIpAddress() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property remoteIpAddress in model VerificationIpFlowParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property remoteIpAddress in model VerificationIpFlowParameters"));
         }
     }
 

@@ -5,140 +5,137 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.file.share.models.LeaseDurationType;
 import com.azure.storage.file.share.models.LeaseStateType;
 import com.azure.storage.file.share.models.LeaseStatusType;
 import com.azure.storage.file.share.models.ShareRootSquash;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
 import java.time.OffsetDateTime;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
-/** Properties of a share. */
-@JacksonXmlRootElement(localName = "SharePropertiesInternal")
+/**
+ * Properties of a share.
+ */
 @Fluent
-public final class SharePropertiesInternal {
+public final class SharePropertiesInternal implements XmlSerializable<SharePropertiesInternal> {
     /*
      * The Last-Modified property.
      */
-    @JsonProperty(value = "Last-Modified", required = true)
     private DateTimeRfc1123 lastModified;
 
     /*
      * The Etag property.
      */
-    @JsonProperty(value = "Etag", required = true)
     private String eTag;
 
     /*
      * The Quota property.
      */
-    @JsonProperty(value = "Quota", required = true)
     private int quota;
 
     /*
      * The ProvisionedIops property.
      */
-    @JsonProperty(value = "ProvisionedIops")
     private Integer provisionedIops;
 
     /*
      * The ProvisionedIngressMBps property.
      */
-    @JsonProperty(value = "ProvisionedIngressMBps")
     private Integer provisionedIngressMBps;
 
     /*
      * The ProvisionedEgressMBps property.
      */
-    @JsonProperty(value = "ProvisionedEgressMBps")
     private Integer provisionedEgressMBps;
 
     /*
      * The ProvisionedBandwidthMiBps property.
      */
-    @JsonProperty(value = "ProvisionedBandwidthMiBps")
     private Integer provisionedBandwidthMiBps;
 
     /*
      * The NextAllowedQuotaDowngradeTime property.
      */
-    @JsonProperty(value = "NextAllowedQuotaDowngradeTime")
     private DateTimeRfc1123 nextAllowedQuotaDowngradeTime;
 
     /*
      * The DeletedTime property.
      */
-    @JsonProperty(value = "DeletedTime")
     private DateTimeRfc1123 deletedTime;
 
     /*
      * The RemainingRetentionDays property.
      */
-    @JsonProperty(value = "RemainingRetentionDays")
     private Integer remainingRetentionDays;
 
     /*
      * The AccessTier property.
      */
-    @JsonProperty(value = "AccessTier")
     private String accessTier;
 
     /*
      * The AccessTierChangeTime property.
      */
-    @JsonProperty(value = "AccessTierChangeTime")
     private DateTimeRfc1123 accessTierChangeTime;
 
     /*
      * The AccessTierTransitionState property.
      */
-    @JsonProperty(value = "AccessTierTransitionState")
     private String accessTierTransitionState;
 
     /*
      * The current lease status of the share.
      */
-    @JsonProperty(value = "LeaseStatus")
     private LeaseStatusType leaseStatus;
 
     /*
      * Lease state of the share.
      */
-    @JsonProperty(value = "LeaseState")
     private LeaseStateType leaseState;
 
     /*
      * When a share is leased, specifies whether the lease is of infinite or fixed duration.
      */
-    @JsonProperty(value = "LeaseDuration")
     private LeaseDurationType leaseDuration;
 
     /*
      * The EnabledProtocols property.
      */
-    @JsonProperty(value = "EnabledProtocols")
     private String enabledProtocols;
 
     /*
      * The RootSquash property.
      */
-    @JsonProperty(value = "RootSquash")
     private ShareRootSquash rootSquash;
+
+    /*
+     * The EnableSnapshotVirtualDirectoryAccess property.
+     */
+    private Boolean enableSnapshotVirtualDirectoryAccess;
 
     /*
      * Dictionary of <string>
      */
-    @JsonProperty(value = "Metadata")
     private Map<String, String> metadata;
 
-    /** Creates an instance of SharePropertiesInternal class. */
-    public SharePropertiesInternal() {}
+    /**
+     * Creates an instance of SharePropertiesInternal class.
+     */
+    public SharePropertiesInternal() {
+    }
 
     /**
      * Get the lastModified property: The Last-Modified property.
-     *
+     * 
      * @return the lastModified value.
      */
     public OffsetDateTime getLastModified() {
@@ -150,7 +147,7 @@ public final class SharePropertiesInternal {
 
     /**
      * Set the lastModified property: The Last-Modified property.
-     *
+     * 
      * @param lastModified the lastModified value to set.
      * @return the SharePropertiesInternal object itself.
      */
@@ -165,7 +162,7 @@ public final class SharePropertiesInternal {
 
     /**
      * Get the eTag property: The Etag property.
-     *
+     * 
      * @return the eTag value.
      */
     public String getETag() {
@@ -174,7 +171,7 @@ public final class SharePropertiesInternal {
 
     /**
      * Set the eTag property: The Etag property.
-     *
+     * 
      * @param eTag the eTag value to set.
      * @return the SharePropertiesInternal object itself.
      */
@@ -185,7 +182,7 @@ public final class SharePropertiesInternal {
 
     /**
      * Get the quota property: The Quota property.
-     *
+     * 
      * @return the quota value.
      */
     public int getQuota() {
@@ -194,7 +191,7 @@ public final class SharePropertiesInternal {
 
     /**
      * Set the quota property: The Quota property.
-     *
+     * 
      * @param quota the quota value to set.
      * @return the SharePropertiesInternal object itself.
      */
@@ -205,7 +202,7 @@ public final class SharePropertiesInternal {
 
     /**
      * Get the provisionedIops property: The ProvisionedIops property.
-     *
+     * 
      * @return the provisionedIops value.
      */
     public Integer getProvisionedIops() {
@@ -214,7 +211,7 @@ public final class SharePropertiesInternal {
 
     /**
      * Set the provisionedIops property: The ProvisionedIops property.
-     *
+     * 
      * @param provisionedIops the provisionedIops value to set.
      * @return the SharePropertiesInternal object itself.
      */
@@ -225,7 +222,7 @@ public final class SharePropertiesInternal {
 
     /**
      * Get the provisionedIngressMBps property: The ProvisionedIngressMBps property.
-     *
+     * 
      * @return the provisionedIngressMBps value.
      */
     public Integer getProvisionedIngressMBps() {
@@ -234,7 +231,7 @@ public final class SharePropertiesInternal {
 
     /**
      * Set the provisionedIngressMBps property: The ProvisionedIngressMBps property.
-     *
+     * 
      * @param provisionedIngressMBps the provisionedIngressMBps value to set.
      * @return the SharePropertiesInternal object itself.
      */
@@ -245,7 +242,7 @@ public final class SharePropertiesInternal {
 
     /**
      * Get the provisionedEgressMBps property: The ProvisionedEgressMBps property.
-     *
+     * 
      * @return the provisionedEgressMBps value.
      */
     public Integer getProvisionedEgressMBps() {
@@ -254,7 +251,7 @@ public final class SharePropertiesInternal {
 
     /**
      * Set the provisionedEgressMBps property: The ProvisionedEgressMBps property.
-     *
+     * 
      * @param provisionedEgressMBps the provisionedEgressMBps value to set.
      * @return the SharePropertiesInternal object itself.
      */
@@ -265,7 +262,7 @@ public final class SharePropertiesInternal {
 
     /**
      * Get the provisionedBandwidthMiBps property: The ProvisionedBandwidthMiBps property.
-     *
+     * 
      * @return the provisionedBandwidthMiBps value.
      */
     public Integer getProvisionedBandwidthMiBps() {
@@ -274,7 +271,7 @@ public final class SharePropertiesInternal {
 
     /**
      * Set the provisionedBandwidthMiBps property: The ProvisionedBandwidthMiBps property.
-     *
+     * 
      * @param provisionedBandwidthMiBps the provisionedBandwidthMiBps value to set.
      * @return the SharePropertiesInternal object itself.
      */
@@ -285,7 +282,7 @@ public final class SharePropertiesInternal {
 
     /**
      * Get the nextAllowedQuotaDowngradeTime property: The NextAllowedQuotaDowngradeTime property.
-     *
+     * 
      * @return the nextAllowedQuotaDowngradeTime value.
      */
     public OffsetDateTime getNextAllowedQuotaDowngradeTime() {
@@ -297,7 +294,7 @@ public final class SharePropertiesInternal {
 
     /**
      * Set the nextAllowedQuotaDowngradeTime property: The NextAllowedQuotaDowngradeTime property.
-     *
+     * 
      * @param nextAllowedQuotaDowngradeTime the nextAllowedQuotaDowngradeTime value to set.
      * @return the SharePropertiesInternal object itself.
      */
@@ -312,7 +309,7 @@ public final class SharePropertiesInternal {
 
     /**
      * Get the deletedTime property: The DeletedTime property.
-     *
+     * 
      * @return the deletedTime value.
      */
     public OffsetDateTime getDeletedTime() {
@@ -324,7 +321,7 @@ public final class SharePropertiesInternal {
 
     /**
      * Set the deletedTime property: The DeletedTime property.
-     *
+     * 
      * @param deletedTime the deletedTime value to set.
      * @return the SharePropertiesInternal object itself.
      */
@@ -339,7 +336,7 @@ public final class SharePropertiesInternal {
 
     /**
      * Get the remainingRetentionDays property: The RemainingRetentionDays property.
-     *
+     * 
      * @return the remainingRetentionDays value.
      */
     public Integer getRemainingRetentionDays() {
@@ -348,7 +345,7 @@ public final class SharePropertiesInternal {
 
     /**
      * Set the remainingRetentionDays property: The RemainingRetentionDays property.
-     *
+     * 
      * @param remainingRetentionDays the remainingRetentionDays value to set.
      * @return the SharePropertiesInternal object itself.
      */
@@ -359,7 +356,7 @@ public final class SharePropertiesInternal {
 
     /**
      * Get the accessTier property: The AccessTier property.
-     *
+     * 
      * @return the accessTier value.
      */
     public String getAccessTier() {
@@ -368,7 +365,7 @@ public final class SharePropertiesInternal {
 
     /**
      * Set the accessTier property: The AccessTier property.
-     *
+     * 
      * @param accessTier the accessTier value to set.
      * @return the SharePropertiesInternal object itself.
      */
@@ -379,7 +376,7 @@ public final class SharePropertiesInternal {
 
     /**
      * Get the accessTierChangeTime property: The AccessTierChangeTime property.
-     *
+     * 
      * @return the accessTierChangeTime value.
      */
     public OffsetDateTime getAccessTierChangeTime() {
@@ -391,7 +388,7 @@ public final class SharePropertiesInternal {
 
     /**
      * Set the accessTierChangeTime property: The AccessTierChangeTime property.
-     *
+     * 
      * @param accessTierChangeTime the accessTierChangeTime value to set.
      * @return the SharePropertiesInternal object itself.
      */
@@ -406,7 +403,7 @@ public final class SharePropertiesInternal {
 
     /**
      * Get the accessTierTransitionState property: The AccessTierTransitionState property.
-     *
+     * 
      * @return the accessTierTransitionState value.
      */
     public String getAccessTierTransitionState() {
@@ -415,7 +412,7 @@ public final class SharePropertiesInternal {
 
     /**
      * Set the accessTierTransitionState property: The AccessTierTransitionState property.
-     *
+     * 
      * @param accessTierTransitionState the accessTierTransitionState value to set.
      * @return the SharePropertiesInternal object itself.
      */
@@ -426,7 +423,7 @@ public final class SharePropertiesInternal {
 
     /**
      * Get the leaseStatus property: The current lease status of the share.
-     *
+     * 
      * @return the leaseStatus value.
      */
     public LeaseStatusType getLeaseStatus() {
@@ -435,7 +432,7 @@ public final class SharePropertiesInternal {
 
     /**
      * Set the leaseStatus property: The current lease status of the share.
-     *
+     * 
      * @param leaseStatus the leaseStatus value to set.
      * @return the SharePropertiesInternal object itself.
      */
@@ -446,7 +443,7 @@ public final class SharePropertiesInternal {
 
     /**
      * Get the leaseState property: Lease state of the share.
-     *
+     * 
      * @return the leaseState value.
      */
     public LeaseStateType getLeaseState() {
@@ -455,7 +452,7 @@ public final class SharePropertiesInternal {
 
     /**
      * Set the leaseState property: Lease state of the share.
-     *
+     * 
      * @param leaseState the leaseState value to set.
      * @return the SharePropertiesInternal object itself.
      */
@@ -467,7 +464,7 @@ public final class SharePropertiesInternal {
     /**
      * Get the leaseDuration property: When a share is leased, specifies whether the lease is of infinite or fixed
      * duration.
-     *
+     * 
      * @return the leaseDuration value.
      */
     public LeaseDurationType getLeaseDuration() {
@@ -477,7 +474,7 @@ public final class SharePropertiesInternal {
     /**
      * Set the leaseDuration property: When a share is leased, specifies whether the lease is of infinite or fixed
      * duration.
-     *
+     * 
      * @param leaseDuration the leaseDuration value to set.
      * @return the SharePropertiesInternal object itself.
      */
@@ -488,7 +485,7 @@ public final class SharePropertiesInternal {
 
     /**
      * Get the enabledProtocols property: The EnabledProtocols property.
-     *
+     * 
      * @return the enabledProtocols value.
      */
     public String getEnabledProtocols() {
@@ -497,7 +494,7 @@ public final class SharePropertiesInternal {
 
     /**
      * Set the enabledProtocols property: The EnabledProtocols property.
-     *
+     * 
      * @param enabledProtocols the enabledProtocols value to set.
      * @return the SharePropertiesInternal object itself.
      */
@@ -508,7 +505,7 @@ public final class SharePropertiesInternal {
 
     /**
      * Get the rootSquash property: The RootSquash property.
-     *
+     * 
      * @return the rootSquash value.
      */
     public ShareRootSquash getRootSquash() {
@@ -517,7 +514,7 @@ public final class SharePropertiesInternal {
 
     /**
      * Set the rootSquash property: The RootSquash property.
-     *
+     * 
      * @param rootSquash the rootSquash value to set.
      * @return the SharePropertiesInternal object itself.
      */
@@ -527,8 +524,29 @@ public final class SharePropertiesInternal {
     }
 
     /**
+     * Get the enableSnapshotVirtualDirectoryAccess property: The EnableSnapshotVirtualDirectoryAccess property.
+     * 
+     * @return the enableSnapshotVirtualDirectoryAccess value.
+     */
+    public Boolean isEnableSnapshotVirtualDirectoryAccess() {
+        return this.enableSnapshotVirtualDirectoryAccess;
+    }
+
+    /**
+     * Set the enableSnapshotVirtualDirectoryAccess property: The EnableSnapshotVirtualDirectoryAccess property.
+     * 
+     * @param enableSnapshotVirtualDirectoryAccess the enableSnapshotVirtualDirectoryAccess value to set.
+     * @return the SharePropertiesInternal object itself.
+     */
+    public SharePropertiesInternal
+        setEnableSnapshotVirtualDirectoryAccess(Boolean enableSnapshotVirtualDirectoryAccess) {
+        this.enableSnapshotVirtualDirectoryAccess = enableSnapshotVirtualDirectoryAccess;
+        return this;
+    }
+
+    /**
      * Get the metadata property: Dictionary of &lt;string&gt;.
-     *
+     * 
      * @return the metadata value.
      */
     public Map<String, String> getMetadata() {
@@ -537,12 +555,152 @@ public final class SharePropertiesInternal {
 
     /**
      * Set the metadata property: Dictionary of &lt;string&gt;.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the SharePropertiesInternal object itself.
      */
     public SharePropertiesInternal setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "SharePropertiesInternal" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        xmlWriter.writeStringElement("Last-Modified", Objects.toString(this.lastModified, null));
+        xmlWriter.writeStringElement("Etag", this.eTag);
+        xmlWriter.writeIntElement("Quota", this.quota);
+        xmlWriter.writeNumberElement("ProvisionedIops", this.provisionedIops);
+        xmlWriter.writeNumberElement("ProvisionedIngressMBps", this.provisionedIngressMBps);
+        xmlWriter.writeNumberElement("ProvisionedEgressMBps", this.provisionedEgressMBps);
+        xmlWriter.writeNumberElement("ProvisionedBandwidthMiBps", this.provisionedBandwidthMiBps);
+        xmlWriter.writeStringElement("NextAllowedQuotaDowngradeTime",
+            Objects.toString(this.nextAllowedQuotaDowngradeTime, null));
+        xmlWriter.writeStringElement("DeletedTime", Objects.toString(this.deletedTime, null));
+        xmlWriter.writeNumberElement("RemainingRetentionDays", this.remainingRetentionDays);
+        xmlWriter.writeStringElement("AccessTier", this.accessTier);
+        xmlWriter.writeStringElement("AccessTierChangeTime", Objects.toString(this.accessTierChangeTime, null));
+        xmlWriter.writeStringElement("AccessTierTransitionState", this.accessTierTransitionState);
+        xmlWriter.writeStringElement("LeaseStatus", this.leaseStatus == null ? null : this.leaseStatus.toString());
+        xmlWriter.writeStringElement("LeaseState", this.leaseState == null ? null : this.leaseState.toString());
+        xmlWriter.writeStringElement("LeaseDuration",
+            this.leaseDuration == null ? null : this.leaseDuration.toString());
+        xmlWriter.writeStringElement("EnabledProtocols", this.enabledProtocols);
+        xmlWriter.writeStringElement("RootSquash", this.rootSquash == null ? null : this.rootSquash.toString());
+        xmlWriter.writeBooleanElement("EnableSnapshotVirtualDirectoryAccess",
+            this.enableSnapshotVirtualDirectoryAccess);
+        if (this.metadata != null) {
+            xmlWriter.writeStartElement("Metadata");
+            for (Map.Entry<String, String> entry : this.metadata.entrySet()) {
+                xmlWriter.writeStringElement(entry.getKey(), entry.getValue());
+            }
+            xmlWriter.writeEndElement();
+        }
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of SharePropertiesInternal from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of SharePropertiesInternal if the XmlReader was pointing to an instance of it, or null if it
+     * was pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the SharePropertiesInternal.
+     */
+    public static SharePropertiesInternal fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of SharePropertiesInternal from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     * cases where the model can deserialize from different root element names.
+     * @return An instance of SharePropertiesInternal if the XmlReader was pointing to an instance of it, or null if it
+     * was pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the SharePropertiesInternal.
+     */
+    public static SharePropertiesInternal fromXml(XmlReader xmlReader, String rootElementName)
+        throws XMLStreamException {
+        String finalRootElementName
+            = CoreUtils.isNullOrEmpty(rootElementName) ? "SharePropertiesInternal" : rootElementName;
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            SharePropertiesInternal deserializedSharePropertiesInternal = new SharePropertiesInternal();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
+
+                if ("Last-Modified".equals(elementName.getLocalPart())) {
+                    deserializedSharePropertiesInternal.lastModified = reader.getNullableElement(DateTimeRfc1123::new);
+                } else if ("Etag".equals(elementName.getLocalPart())) {
+                    deserializedSharePropertiesInternal.eTag = reader.getStringElement();
+                } else if ("Quota".equals(elementName.getLocalPart())) {
+                    deserializedSharePropertiesInternal.quota = reader.getIntElement();
+                } else if ("ProvisionedIops".equals(elementName.getLocalPart())) {
+                    deserializedSharePropertiesInternal.provisionedIops = reader.getNullableElement(Integer::parseInt);
+                } else if ("ProvisionedIngressMBps".equals(elementName.getLocalPart())) {
+                    deserializedSharePropertiesInternal.provisionedIngressMBps
+                        = reader.getNullableElement(Integer::parseInt);
+                } else if ("ProvisionedEgressMBps".equals(elementName.getLocalPart())) {
+                    deserializedSharePropertiesInternal.provisionedEgressMBps
+                        = reader.getNullableElement(Integer::parseInt);
+                } else if ("ProvisionedBandwidthMiBps".equals(elementName.getLocalPart())) {
+                    deserializedSharePropertiesInternal.provisionedBandwidthMiBps
+                        = reader.getNullableElement(Integer::parseInt);
+                } else if ("NextAllowedQuotaDowngradeTime".equals(elementName.getLocalPart())) {
+                    deserializedSharePropertiesInternal.nextAllowedQuotaDowngradeTime
+                        = reader.getNullableElement(DateTimeRfc1123::new);
+                } else if ("DeletedTime".equals(elementName.getLocalPart())) {
+                    deserializedSharePropertiesInternal.deletedTime = reader.getNullableElement(DateTimeRfc1123::new);
+                } else if ("RemainingRetentionDays".equals(elementName.getLocalPart())) {
+                    deserializedSharePropertiesInternal.remainingRetentionDays
+                        = reader.getNullableElement(Integer::parseInt);
+                } else if ("AccessTier".equals(elementName.getLocalPart())) {
+                    deserializedSharePropertiesInternal.accessTier = reader.getStringElement();
+                } else if ("AccessTierChangeTime".equals(elementName.getLocalPart())) {
+                    deserializedSharePropertiesInternal.accessTierChangeTime
+                        = reader.getNullableElement(DateTimeRfc1123::new);
+                } else if ("AccessTierTransitionState".equals(elementName.getLocalPart())) {
+                    deserializedSharePropertiesInternal.accessTierTransitionState = reader.getStringElement();
+                } else if ("LeaseStatus".equals(elementName.getLocalPart())) {
+                    deserializedSharePropertiesInternal.leaseStatus
+                        = LeaseStatusType.fromString(reader.getStringElement());
+                } else if ("LeaseState".equals(elementName.getLocalPart())) {
+                    deserializedSharePropertiesInternal.leaseState
+                        = LeaseStateType.fromString(reader.getStringElement());
+                } else if ("LeaseDuration".equals(elementName.getLocalPart())) {
+                    deserializedSharePropertiesInternal.leaseDuration
+                        = LeaseDurationType.fromString(reader.getStringElement());
+                } else if ("EnabledProtocols".equals(elementName.getLocalPart())) {
+                    deserializedSharePropertiesInternal.enabledProtocols = reader.getStringElement();
+                } else if ("RootSquash".equals(elementName.getLocalPart())) {
+                    deserializedSharePropertiesInternal.rootSquash
+                        = ShareRootSquash.fromString(reader.getStringElement());
+                } else if ("EnableSnapshotVirtualDirectoryAccess".equals(elementName.getLocalPart())) {
+                    deserializedSharePropertiesInternal.enableSnapshotVirtualDirectoryAccess
+                        = reader.getNullableElement(Boolean::parseBoolean);
+                } else if ("Metadata".equals(elementName.getLocalPart())) {
+                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                        if (deserializedSharePropertiesInternal.metadata == null) {
+                            deserializedSharePropertiesInternal.metadata = new LinkedHashMap<>();
+                        }
+                        deserializedSharePropertiesInternal.metadata.put(reader.getElementName().getLocalPart(),
+                            reader.getStringElement());
+                    }
+                } else {
+                    reader.skipElement();
+                }
+            }
+
+            return deserializedSharePropertiesInternal;
+        });
     }
 }

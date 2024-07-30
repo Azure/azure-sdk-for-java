@@ -47,14 +47,18 @@ public final class ConnectorSettingImpl
     private String connectorName;
 
     public ConnectorSetting create() {
-        this.innerObject = serviceManager.serviceClient().getConnectors()
-            .createOrUpdateWithResponse(connectorName, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectors()
+            .createOrUpdateWithResponse(connectorName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public ConnectorSetting create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getConnectors()
-            .createOrUpdateWithResponse(connectorName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectors()
+            .createOrUpdateWithResponse(connectorName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -69,14 +73,18 @@ public final class ConnectorSettingImpl
     }
 
     public ConnectorSetting apply() {
-        this.innerObject = serviceManager.serviceClient().getConnectors()
-            .createOrUpdateWithResponse(connectorName, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectors()
+            .createOrUpdateWithResponse(connectorName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public ConnectorSetting apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getConnectors()
-            .createOrUpdateWithResponse(connectorName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectors()
+            .createOrUpdateWithResponse(connectorName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 

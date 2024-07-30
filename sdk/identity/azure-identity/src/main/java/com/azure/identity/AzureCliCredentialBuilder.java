@@ -19,7 +19,7 @@ import java.util.Objects;
  * terminal. It allows users to
  * <a href="https://learn.microsoft.com/cli/azure/authenticate-azure-cli">authenticate interactively</a> as a
  * user and/or a service principal against
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>.
+ * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a>.
  * The AzureCliCredential authenticates in a development environment and acquires a token on behalf of the
  * logged-in user or service principal in Azure CLI. It acts as the Azure CLI logged in user or service principal
  * and executes an Azure CLI command underneath to authenticate the application against Microsoft Entra ID.</p>

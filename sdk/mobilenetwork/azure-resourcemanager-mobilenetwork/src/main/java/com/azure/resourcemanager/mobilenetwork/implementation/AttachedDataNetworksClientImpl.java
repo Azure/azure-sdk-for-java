@@ -40,23 +40,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AttachedDataNetworksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AttachedDataNetworksClient.
+ */
 public final class AttachedDataNetworksClientImpl implements AttachedDataNetworksClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AttachedDataNetworksService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MobileNetworkManagementClientImpl client;
 
     /**
      * Initializes an instance of AttachedDataNetworksClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AttachedDataNetworksClientImpl(MobileNetworkManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(AttachedDataNetworksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(AttachedDataNetworksService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -67,101 +72,80 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
     @Host("{$host}")
     @ServiceInterface(name = "MobileNetworkManagem")
     public interface AttachedDataNetworksService {
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}/packetCoreDataPlanes/{packetCoreDataPlaneName}/attachedDataNetworks/{attachedDataNetworkName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}/packetCoreDataPlanes/{packetCoreDataPlaneName}/attachedDataNetworks/{attachedDataNetworkName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("packetCoreControlPlaneName") String packetCoreControlPlaneName,
+            @PathParam("packetCoreDataPlaneName") String packetCoreDataPlaneName,
+            @PathParam("attachedDataNetworkName") String attachedDataNetworkName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}/packetCoreDataPlanes/{packetCoreDataPlaneName}/attachedDataNetworks/{attachedDataNetworkName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<AttachedDataNetworkInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("packetCoreControlPlaneName") String packetCoreControlPlaneName,
+            @PathParam("packetCoreDataPlaneName") String packetCoreDataPlaneName,
+            @PathParam("attachedDataNetworkName") String attachedDataNetworkName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}/packetCoreDataPlanes/{packetCoreDataPlaneName}/attachedDataNetworks/{attachedDataNetworkName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("packetCoreControlPlaneName") String packetCoreControlPlaneName,
             @PathParam("packetCoreDataPlaneName") String packetCoreDataPlaneName,
             @PathParam("attachedDataNetworkName") String attachedDataNetworkName,
             @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") AttachedDataNetworkInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}/packetCoreDataPlanes/{packetCoreDataPlaneName}/attachedDataNetworks/{attachedDataNetworkName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}/packetCoreDataPlanes/{packetCoreDataPlaneName}/attachedDataNetworks/{attachedDataNetworkName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AttachedDataNetworkInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AttachedDataNetworkInner>> updateTags(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("packetCoreControlPlaneName") String packetCoreControlPlaneName,
             @PathParam("packetCoreDataPlaneName") String packetCoreDataPlaneName,
             @PathParam("attachedDataNetworkName") String attachedDataNetworkName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") TagsObject parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}/packetCoreDataPlanes/{packetCoreDataPlaneName}/attachedDataNetworks/{attachedDataNetworkName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}/packetCoreDataPlanes/{packetCoreDataPlaneName}/attachedDataNetworks")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AttachedDataNetworkListResult>> listByPacketCoreDataPlane(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("packetCoreControlPlaneName") String packetCoreControlPlaneName,
             @PathParam("packetCoreDataPlaneName") String packetCoreDataPlaneName,
-            @PathParam("attachedDataNetworkName") String attachedDataNetworkName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") AttachedDataNetworkInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}/packetCoreDataPlanes/{packetCoreDataPlaneName}/attachedDataNetworks/{attachedDataNetworkName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AttachedDataNetworkInner>> updateTags(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("packetCoreControlPlaneName") String packetCoreControlPlaneName,
-            @PathParam("packetCoreDataPlaneName") String packetCoreDataPlaneName,
-            @PathParam("attachedDataNetworkName") String attachedDataNetworkName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") TagsObject parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}/packetCoreDataPlanes/{packetCoreDataPlaneName}/attachedDataNetworks")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AttachedDataNetworkListResult>> listByPacketCoreDataPlane(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("packetCoreControlPlaneName") String packetCoreControlPlaneName,
-            @PathParam("packetCoreDataPlaneName") String packetCoreDataPlaneName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AttachedDataNetworkListResult>> listByPacketCoreDataPlaneNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Deletes the specified attached data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -172,64 +156,43 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String packetCoreControlPlaneName, String packetCoreDataPlaneName, String attachedDataNetworkName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (packetCoreControlPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter packetCoreControlPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreControlPlaneName is required and cannot be null."));
         }
         if (packetCoreDataPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter packetCoreDataPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreDataPlaneName is required and cannot be null."));
         }
         if (attachedDataNetworkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter attachedDataNetworkName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter attachedDataNetworkName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            packetCoreControlPlaneName,
-                            packetCoreDataPlaneName,
-                            attachedDataNetworkName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName,
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the specified attached data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -241,62 +204,43 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName,
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String packetCoreControlPlaneName, String packetCoreDataPlaneName, String attachedDataNetworkName,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (packetCoreControlPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter packetCoreControlPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreControlPlaneName is required and cannot be null."));
         }
         if (packetCoreDataPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter packetCoreDataPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreDataPlaneName is required and cannot be null."));
         }
         if (attachedDataNetworkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter attachedDataNetworkName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter attachedDataNetworkName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                packetCoreControlPlaneName,
-                packetCoreDataPlaneName,
-                attachedDataNetworkName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName, this.client.getApiVersion(),
+            accept, context);
     }
 
     /**
      * Deletes the specified attached data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -307,23 +251,17 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(
-                resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String packetCoreControlPlaneName, String packetCoreDataPlaneName, String attachedDataNetworkName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, packetCoreControlPlaneName,
+            packetCoreDataPlaneName, attachedDataNetworkName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes the specified attached data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -335,28 +273,19 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName,
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String packetCoreControlPlaneName, String packetCoreDataPlaneName, String attachedDataNetworkName,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(
-                resourceGroupName,
-                packetCoreControlPlaneName,
-                packetCoreDataPlaneName,
-                attachedDataNetworkName,
-                context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, packetCoreControlPlaneName,
+            packetCoreDataPlaneName, attachedDataNetworkName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes the specified attached data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -367,20 +296,17 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String packetCoreControlPlaneName,
+        String packetCoreDataPlaneName, String attachedDataNetworkName) {
         return this
-            .beginDeleteAsync(
-                resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName)
+            .beginDeleteAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
+                attachedDataNetworkName)
             .getSyncPoller();
     }
 
     /**
      * Deletes the specified attached data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -392,25 +318,17 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName,
-        Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String packetCoreControlPlaneName,
+        String packetCoreDataPlaneName, String attachedDataNetworkName, Context context) {
         return this
-            .beginDeleteAsync(
-                resourceGroupName,
-                packetCoreControlPlaneName,
-                packetCoreDataPlaneName,
-                attachedDataNetworkName,
-                context)
+            .beginDeleteAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
+                attachedDataNetworkName, context)
             .getSyncPoller();
     }
 
     /**
      * Deletes the specified attached data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -421,20 +339,15 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName) {
-        return beginDeleteAsync(
-                resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<Void> deleteAsync(String resourceGroupName, String packetCoreControlPlaneName,
+        String packetCoreDataPlaneName, String attachedDataNetworkName) {
+        return beginDeleteAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
+            attachedDataNetworkName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the specified attached data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -446,25 +359,15 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName,
-        Context context) {
-        return beginDeleteAsync(
-                resourceGroupName,
-                packetCoreControlPlaneName,
-                packetCoreDataPlaneName,
-                attachedDataNetworkName,
-                context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<Void> deleteAsync(String resourceGroupName, String packetCoreControlPlaneName,
+        String packetCoreDataPlaneName, String attachedDataNetworkName, Context context) {
+        return beginDeleteAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
+            attachedDataNetworkName, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the specified attached data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -474,10 +377,7 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
+    public void delete(String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName,
         String attachedDataNetworkName) {
         deleteAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName)
             .block();
@@ -485,7 +385,7 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
 
     /**
      * Deletes the specified attached data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -496,24 +396,15 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName,
-        Context context) {
-        deleteAsync(
-                resourceGroupName,
-                packetCoreControlPlaneName,
-                packetCoreDataPlaneName,
-                attachedDataNetworkName,
-                context)
-            .block();
+    public void delete(String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName,
+        String attachedDataNetworkName, Context context) {
+        deleteAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName,
+            context).block();
     }
 
     /**
      * Gets information about the specified attached data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -522,67 +413,46 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified attached data network along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AttachedDataNetworkInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName) {
+    private Mono<Response<AttachedDataNetworkInner>> getWithResponseAsync(String resourceGroupName,
+        String packetCoreControlPlaneName, String packetCoreDataPlaneName, String attachedDataNetworkName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (packetCoreControlPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter packetCoreControlPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreControlPlaneName is required and cannot be null."));
         }
         if (packetCoreDataPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter packetCoreDataPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreDataPlaneName is required and cannot be null."));
         }
         if (attachedDataNetworkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter attachedDataNetworkName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter attachedDataNetworkName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            packetCoreControlPlaneName,
-                            packetCoreDataPlaneName,
-                            attachedDataNetworkName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName,
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets information about the specified attached data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -592,65 +462,46 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified attached data network along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AttachedDataNetworkInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName,
+    private Mono<Response<AttachedDataNetworkInner>> getWithResponseAsync(String resourceGroupName,
+        String packetCoreControlPlaneName, String packetCoreDataPlaneName, String attachedDataNetworkName,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (packetCoreControlPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter packetCoreControlPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreControlPlaneName is required and cannot be null."));
         }
         if (packetCoreDataPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter packetCoreDataPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreDataPlaneName is required and cannot be null."));
         }
         if (attachedDataNetworkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter attachedDataNetworkName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter attachedDataNetworkName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                packetCoreControlPlaneName,
-                packetCoreDataPlaneName,
-                attachedDataNetworkName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName, this.client.getApiVersion(),
+            accept, context);
     }
 
     /**
      * Gets information about the specified attached data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -661,19 +512,15 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @return information about the specified attached data network on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AttachedDataNetworkInner> getAsync(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName) {
-        return getWithResponseAsync(
-                resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<AttachedDataNetworkInner> getAsync(String resourceGroupName, String packetCoreControlPlaneName,
+        String packetCoreDataPlaneName, String attachedDataNetworkName) {
+        return getWithResponseAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
+            attachedDataNetworkName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets information about the specified attached data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -685,24 +532,16 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @return information about the specified attached data network along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AttachedDataNetworkInner> getWithResponse(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName,
+    public Response<AttachedDataNetworkInner> getWithResponse(String resourceGroupName,
+        String packetCoreControlPlaneName, String packetCoreDataPlaneName, String attachedDataNetworkName,
         Context context) {
-        return getWithResponseAsync(
-                resourceGroupName,
-                packetCoreControlPlaneName,
-                packetCoreDataPlaneName,
-                attachedDataNetworkName,
-                context)
-            .block();
+        return getWithResponseAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
+            attachedDataNetworkName, context).block();
     }
 
     /**
      * Gets information about the specified attached data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -713,24 +552,16 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @return information about the specified attached data network.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttachedDataNetworkInner get(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName) {
-        return getWithResponse(
-                resourceGroupName,
-                packetCoreControlPlaneName,
-                packetCoreDataPlaneName,
-                attachedDataNetworkName,
-                Context.NONE)
-            .getValue();
+    public AttachedDataNetworkInner get(String resourceGroupName, String packetCoreControlPlaneName,
+        String packetCoreDataPlaneName, String attachedDataNetworkName) {
+        return getWithResponse(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
+            attachedDataNetworkName, Context.NONE).getValue();
     }
 
     /**
      * Creates or updates an attached data network. Must be created in the same location as its parent packet core data
      * plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -742,43 +573,32 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @return attached data network resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String packetCoreControlPlaneName, String packetCoreDataPlaneName, String attachedDataNetworkName,
         AttachedDataNetworkInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (packetCoreControlPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter packetCoreControlPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreControlPlaneName is required and cannot be null."));
         }
         if (packetCoreDataPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter packetCoreDataPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreDataPlaneName is required and cannot be null."));
         }
         if (attachedDataNetworkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter attachedDataNetworkName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter attachedDataNetworkName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -787,27 +607,16 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            packetCoreControlPlaneName,
-                            packetCoreDataPlaneName,
-                            attachedDataNetworkName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName,
+                this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates an attached data network. Must be created in the same location as its parent packet core data
      * plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -820,44 +629,32 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @return attached data network resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName,
-        AttachedDataNetworkInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String packetCoreControlPlaneName, String packetCoreDataPlaneName, String attachedDataNetworkName,
+        AttachedDataNetworkInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (packetCoreControlPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter packetCoreControlPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreControlPlaneName is required and cannot be null."));
         }
         if (packetCoreDataPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter packetCoreDataPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreDataPlaneName is required and cannot be null."));
         }
         if (attachedDataNetworkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter attachedDataNetworkName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter attachedDataNetworkName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -866,24 +663,15 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                packetCoreControlPlaneName,
-                packetCoreDataPlaneName,
-                attachedDataNetworkName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName, this.client.getApiVersion(),
+            parameters, accept, context);
     }
 
     /**
      * Creates or updates an attached data network. Must be created in the same location as its parent packet core data
      * plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -896,32 +684,19 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AttachedDataNetworkInner>, AttachedDataNetworkInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName,
-        AttachedDataNetworkInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName,
-                packetCoreControlPlaneName,
-                packetCoreDataPlaneName,
-                attachedDataNetworkName,
-                parameters);
-        return this
-            .client
-            .<AttachedDataNetworkInner, AttachedDataNetworkInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AttachedDataNetworkInner.class,
-                AttachedDataNetworkInner.class,
-                this.client.getContext());
+        String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName,
+        String attachedDataNetworkName, AttachedDataNetworkInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName,
+            packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName, parameters);
+        return this.client.<AttachedDataNetworkInner, AttachedDataNetworkInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AttachedDataNetworkInner.class, AttachedDataNetworkInner.class,
+            this.client.getContext());
     }
 
     /**
      * Creates or updates an attached data network. Must be created in the same location as its parent packet core data
      * plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -935,35 +710,19 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AttachedDataNetworkInner>, AttachedDataNetworkInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName,
-        AttachedDataNetworkInner parameters,
-        Context context) {
+        String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName,
+        String attachedDataNetworkName, AttachedDataNetworkInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName,
-                packetCoreControlPlaneName,
-                packetCoreDataPlaneName,
-                attachedDataNetworkName,
-                parameters,
-                context);
-        return this
-            .client
-            .<AttachedDataNetworkInner, AttachedDataNetworkInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AttachedDataNetworkInner.class,
-                AttachedDataNetworkInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName,
+            packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName, parameters, context);
+        return this.client.<AttachedDataNetworkInner, AttachedDataNetworkInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AttachedDataNetworkInner.class, AttachedDataNetworkInner.class, context);
     }
 
     /**
      * Creates or updates an attached data network. Must be created in the same location as its parent packet core data
      * plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -976,25 +735,18 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AttachedDataNetworkInner>, AttachedDataNetworkInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName,
-        AttachedDataNetworkInner parameters) {
+        String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName,
+        String attachedDataNetworkName, AttachedDataNetworkInner parameters) {
         return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName,
-                packetCoreControlPlaneName,
-                packetCoreDataPlaneName,
-                attachedDataNetworkName,
-                parameters)
+            .beginCreateOrUpdateAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
+                attachedDataNetworkName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates an attached data network. Must be created in the same location as its parent packet core data
      * plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -1008,27 +760,18 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AttachedDataNetworkInner>, AttachedDataNetworkInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName,
-        AttachedDataNetworkInner parameters,
-        Context context) {
+        String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName,
+        String attachedDataNetworkName, AttachedDataNetworkInner parameters, Context context) {
         return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName,
-                packetCoreControlPlaneName,
-                packetCoreDataPlaneName,
-                attachedDataNetworkName,
-                parameters,
-                context)
+            .beginCreateOrUpdateAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
+                attachedDataNetworkName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates an attached data network. Must be created in the same location as its parent packet core data
      * plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -1040,26 +783,17 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @return attached data network resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AttachedDataNetworkInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName,
+    private Mono<AttachedDataNetworkInner> createOrUpdateAsync(String resourceGroupName,
+        String packetCoreControlPlaneName, String packetCoreDataPlaneName, String attachedDataNetworkName,
         AttachedDataNetworkInner parameters) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName,
-                packetCoreControlPlaneName,
-                packetCoreDataPlaneName,
-                attachedDataNetworkName,
-                parameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginCreateOrUpdateAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
+            attachedDataNetworkName, parameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates an attached data network. Must be created in the same location as its parent packet core data
      * plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -1072,28 +806,17 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @return attached data network resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AttachedDataNetworkInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName,
-        AttachedDataNetworkInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName,
-                packetCoreControlPlaneName,
-                packetCoreDataPlaneName,
-                attachedDataNetworkName,
-                parameters,
-                context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<AttachedDataNetworkInner> createOrUpdateAsync(String resourceGroupName,
+        String packetCoreControlPlaneName, String packetCoreDataPlaneName, String attachedDataNetworkName,
+        AttachedDataNetworkInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
+            attachedDataNetworkName, parameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates an attached data network. Must be created in the same location as its parent packet core data
      * plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -1105,25 +828,16 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @return attached data network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttachedDataNetworkInner createOrUpdate(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName,
-        AttachedDataNetworkInner parameters) {
-        return createOrUpdateAsync(
-                resourceGroupName,
-                packetCoreControlPlaneName,
-                packetCoreDataPlaneName,
-                attachedDataNetworkName,
-                parameters)
-            .block();
+    public AttachedDataNetworkInner createOrUpdate(String resourceGroupName, String packetCoreControlPlaneName,
+        String packetCoreDataPlaneName, String attachedDataNetworkName, AttachedDataNetworkInner parameters) {
+        return createOrUpdateAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
+            attachedDataNetworkName, parameters).block();
     }
 
     /**
      * Creates or updates an attached data network. Must be created in the same location as its parent packet core data
      * plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -1136,26 +850,16 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @return attached data network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttachedDataNetworkInner createOrUpdate(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName,
-        AttachedDataNetworkInner parameters,
+    public AttachedDataNetworkInner createOrUpdate(String resourceGroupName, String packetCoreControlPlaneName,
+        String packetCoreDataPlaneName, String attachedDataNetworkName, AttachedDataNetworkInner parameters,
         Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName,
-                packetCoreControlPlaneName,
-                packetCoreDataPlaneName,
-                attachedDataNetworkName,
-                parameters,
-                context)
-            .block();
+        return createOrUpdateAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
+            attachedDataNetworkName, parameters, context).block();
     }
 
     /**
      * Updates an attached data network tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -1167,43 +871,32 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @return attached data network resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AttachedDataNetworkInner>> updateTagsWithResponseAsync(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName,
+    private Mono<Response<AttachedDataNetworkInner>> updateTagsWithResponseAsync(String resourceGroupName,
+        String packetCoreControlPlaneName, String packetCoreDataPlaneName, String attachedDataNetworkName,
         TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (packetCoreControlPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter packetCoreControlPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreControlPlaneName is required and cannot be null."));
         }
         if (packetCoreDataPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter packetCoreDataPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreDataPlaneName is required and cannot be null."));
         }
         if (attachedDataNetworkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter attachedDataNetworkName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter attachedDataNetworkName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1212,26 +905,15 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateTags(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            packetCoreControlPlaneName,
-                            packetCoreDataPlaneName,
-                            attachedDataNetworkName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName,
+                this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates an attached data network tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -1244,44 +926,32 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @return attached data network resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AttachedDataNetworkInner>> updateTagsWithResponseAsync(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName,
-        TagsObject parameters,
-        Context context) {
+    private Mono<Response<AttachedDataNetworkInner>> updateTagsWithResponseAsync(String resourceGroupName,
+        String packetCoreControlPlaneName, String packetCoreDataPlaneName, String attachedDataNetworkName,
+        TagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (packetCoreControlPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter packetCoreControlPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreControlPlaneName is required and cannot be null."));
         }
         if (packetCoreDataPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter packetCoreDataPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreDataPlaneName is required and cannot be null."));
         }
         if (attachedDataNetworkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter attachedDataNetworkName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter attachedDataNetworkName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1290,23 +960,14 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .updateTags(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                packetCoreControlPlaneName,
-                packetCoreDataPlaneName,
-                attachedDataNetworkName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName, this.client.getApiVersion(),
+            parameters, accept, context);
     }
 
     /**
      * Updates an attached data network tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -1318,24 +979,15 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @return attached data network resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AttachedDataNetworkInner> updateTagsAsync(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName,
-        TagsObject parameters) {
-        return updateTagsWithResponseAsync(
-                resourceGroupName,
-                packetCoreControlPlaneName,
-                packetCoreDataPlaneName,
-                attachedDataNetworkName,
-                parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<AttachedDataNetworkInner> updateTagsAsync(String resourceGroupName, String packetCoreControlPlaneName,
+        String packetCoreDataPlaneName, String attachedDataNetworkName, TagsObject parameters) {
+        return updateTagsWithResponseAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
+            attachedDataNetworkName, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Updates an attached data network tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -1348,26 +1000,16 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @return attached data network resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AttachedDataNetworkInner> updateTagsWithResponse(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName,
-        TagsObject parameters,
-        Context context) {
-        return updateTagsWithResponseAsync(
-                resourceGroupName,
-                packetCoreControlPlaneName,
-                packetCoreDataPlaneName,
-                attachedDataNetworkName,
-                parameters,
-                context)
-            .block();
+    public Response<AttachedDataNetworkInner> updateTagsWithResponse(String resourceGroupName,
+        String packetCoreControlPlaneName, String packetCoreDataPlaneName, String attachedDataNetworkName,
+        TagsObject parameters, Context context) {
+        return updateTagsWithResponseAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
+            attachedDataNetworkName, parameters, context).block();
     }
 
     /**
      * Updates an attached data network tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -1379,25 +1021,15 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @return attached data network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttachedDataNetworkInner updateTags(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName,
-        TagsObject parameters) {
-        return updateTagsWithResponse(
-                resourceGroupName,
-                packetCoreControlPlaneName,
-                packetCoreDataPlaneName,
-                attachedDataNetworkName,
-                parameters,
-                Context.NONE)
-            .getValue();
+    public AttachedDataNetworkInner updateTags(String resourceGroupName, String packetCoreControlPlaneName,
+        String packetCoreDataPlaneName, String attachedDataNetworkName, TagsObject parameters) {
+        return updateTagsWithResponse(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
+            attachedDataNetworkName, parameters, Context.NONE).getValue();
     }
 
     /**
      * Gets all the attached data networks associated with a packet core data plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -1405,67 +1037,44 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the attached data networks associated with a packet core data plane along with {@link PagedResponse}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AttachedDataNetworkInner>> listByPacketCoreDataPlaneSinglePageAsync(
         String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (packetCoreControlPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter packetCoreControlPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreControlPlaneName is required and cannot be null."));
         }
         if (packetCoreDataPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter packetCoreDataPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreDataPlaneName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByPacketCoreDataPlane(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            packetCoreControlPlaneName,
-                            packetCoreDataPlaneName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<AttachedDataNetworkInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByPacketCoreDataPlane(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<AttachedDataNetworkInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all the attached data networks associated with a packet core data plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -1474,86 +1083,63 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the attached data networks associated with a packet core data plane along with {@link PagedResponse}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AttachedDataNetworkInner>> listByPacketCoreDataPlaneSinglePageAsync(
         String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (packetCoreControlPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter packetCoreControlPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreControlPlaneName is required and cannot be null."));
         }
         if (packetCoreDataPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter packetCoreDataPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreDataPlaneName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByPacketCoreDataPlane(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                packetCoreControlPlaneName,
-                packetCoreDataPlaneName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByPacketCoreDataPlane(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                packetCoreControlPlaneName, packetCoreDataPlaneName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets all the attached data networks associated with a packet core data plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the attached data networks associated with a packet core data plane as paginated response with {@link
-     *     PagedFlux}.
+     * @return all the attached data networks associated with a packet core data plane as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AttachedDataNetworkInner> listByPacketCoreDataPlaneAsync(
-        String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName) {
-        return new PagedFlux<>(
-            () ->
-                listByPacketCoreDataPlaneSinglePageAsync(
-                    resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName),
+    private PagedFlux<AttachedDataNetworkInner> listByPacketCoreDataPlaneAsync(String resourceGroupName,
+        String packetCoreControlPlaneName, String packetCoreDataPlaneName) {
+        return new PagedFlux<>(() -> listByPacketCoreDataPlaneSinglePageAsync(resourceGroupName,
+            packetCoreControlPlaneName, packetCoreDataPlaneName),
             nextLink -> listByPacketCoreDataPlaneNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all the attached data networks associated with a packet core data plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -1561,41 +1147,40 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the attached data networks associated with a packet core data plane as paginated response with {@link
-     *     PagedFlux}.
+     * @return all the attached data networks associated with a packet core data plane as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AttachedDataNetworkInner> listByPacketCoreDataPlaneAsync(
-        String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName, Context context) {
+    private PagedFlux<AttachedDataNetworkInner> listByPacketCoreDataPlaneAsync(String resourceGroupName,
+        String packetCoreControlPlaneName, String packetCoreDataPlaneName, Context context) {
         return new PagedFlux<>(
-            () ->
-                listByPacketCoreDataPlaneSinglePageAsync(
-                    resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, context),
+            () -> listByPacketCoreDataPlaneSinglePageAsync(resourceGroupName, packetCoreControlPlaneName,
+                packetCoreDataPlaneName, context),
             nextLink -> listByPacketCoreDataPlaneNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets all the attached data networks associated with a packet core data plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the attached data networks associated with a packet core data plane as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the attached data networks associated with a packet core data plane as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AttachedDataNetworkInner> listByPacketCoreDataPlane(
-        String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName) {
+    public PagedIterable<AttachedDataNetworkInner> listByPacketCoreDataPlane(String resourceGroupName,
+        String packetCoreControlPlaneName, String packetCoreDataPlaneName) {
         return new PagedIterable<>(
             listByPacketCoreDataPlaneAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName));
     }
 
     /**
      * Gets all the attached data networks associated with a packet core data plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -1603,92 +1188,74 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the attached data networks associated with a packet core data plane as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the attached data networks associated with a packet core data plane as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AttachedDataNetworkInner> listByPacketCoreDataPlane(
-        String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName, Context context) {
-        return new PagedIterable<>(
-            listByPacketCoreDataPlaneAsync(
-                resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, context));
+    public PagedIterable<AttachedDataNetworkInner> listByPacketCoreDataPlane(String resourceGroupName,
+        String packetCoreControlPlaneName, String packetCoreDataPlaneName, Context context) {
+        return new PagedIterable<>(listByPacketCoreDataPlaneAsync(resourceGroupName, packetCoreControlPlaneName,
+            packetCoreDataPlaneName, context));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for attached data network API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AttachedDataNetworkInner>> listByPacketCoreDataPlaneNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<AttachedDataNetworkInner>>
+        listByPacketCoreDataPlaneNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByPacketCoreDataPlaneNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AttachedDataNetworkInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<AttachedDataNetworkInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for attached data network API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AttachedDataNetworkInner>> listByPacketCoreDataPlaneNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<AttachedDataNetworkInner>> listByPacketCoreDataPlaneNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByPacketCoreDataPlaneNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByPacketCoreDataPlaneNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

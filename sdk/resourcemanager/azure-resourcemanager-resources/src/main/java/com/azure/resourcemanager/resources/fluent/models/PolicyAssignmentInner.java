@@ -17,7 +17,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The policy assignment. */
+/**
+ * The policy assignment.
+ */
 @Fluent
 public final class PolicyAssignmentInner extends ProxyResource {
     /*
@@ -44,13 +46,15 @@ public final class PolicyAssignmentInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of PolicyAssignmentInner class. */
+    /**
+     * Creates an instance of PolicyAssignmentInner class.
+     */
     public PolicyAssignmentInner() {
     }
 
     /**
      * Get the innerProperties property: Properties for the policy assignment.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PolicyAssignmentProperties innerProperties() {
@@ -59,7 +63,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Get the location property: The location of the policy assignment. Only required when utilizing managed identity.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -68,7 +72,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Set the location property: The location of the policy assignment. Only required when utilizing managed identity.
-     *
+     * 
      * @param location the location value to set.
      * @return the PolicyAssignmentInner object itself.
      */
@@ -79,7 +83,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Get the identity property: The managed identity associated with the policy assignment.
-     *
+     * 
      * @return the identity value.
      */
     public Identity identity() {
@@ -88,7 +92,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Set the identity property: The managed identity associated with the policy assignment.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the PolicyAssignmentInner object itself.
      */
@@ -99,7 +103,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Get the systemData property: The system metadata relating to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -108,7 +112,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Get the displayName property: The display name of the policy assignment.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -117,7 +121,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Set the displayName property: The display name of the policy assignment.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the PolicyAssignmentInner object itself.
      */
@@ -131,7 +135,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Get the policyDefinitionId property: The ID of the policy definition or policy set definition being assigned.
-     *
+     * 
      * @return the policyDefinitionId value.
      */
     public String policyDefinitionId() {
@@ -140,7 +144,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Set the policyDefinitionId property: The ID of the policy definition or policy set definition being assigned.
-     *
+     * 
      * @param policyDefinitionId the policyDefinitionId value to set.
      * @return the PolicyAssignmentInner object itself.
      */
@@ -154,7 +158,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Get the scope property: The scope for the policy assignment.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -163,7 +167,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Get the notScopes property: The policy's excluded scopes.
-     *
+     * 
      * @return the notScopes value.
      */
     public List<String> notScopes() {
@@ -172,7 +176,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Set the notScopes property: The policy's excluded scopes.
-     *
+     * 
      * @param notScopes the notScopes value to set.
      * @return the PolicyAssignmentInner object itself.
      */
@@ -186,7 +190,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Get the parameters property: The parameter values for the assigned policy rule. The keys are the parameter names.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, ParameterValuesValue> parameters() {
@@ -195,7 +199,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Set the parameters property: The parameter values for the assigned policy rule. The keys are the parameter names.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the PolicyAssignmentInner object itself.
      */
@@ -209,7 +213,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Get the description property: This message will be part of response in case of policy violation.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -218,7 +222,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Set the description property: This message will be part of response in case of policy violation.
-     *
+     * 
      * @param description the description value to set.
      * @return the PolicyAssignmentInner object itself.
      */
@@ -233,7 +237,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
     /**
      * Get the metadata property: The policy assignment metadata. Metadata is an open ended object and is typically a
      * collection of key value pairs.
-     *
+     * 
      * @return the metadata value.
      */
     public Object metadata() {
@@ -243,7 +247,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
     /**
      * Set the metadata property: The policy assignment metadata. Metadata is an open ended object and is typically a
      * collection of key value pairs.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the PolicyAssignmentInner object itself.
      */
@@ -258,7 +262,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
     /**
      * Get the enforcementMode property: The policy assignment enforcement mode. Possible values are Default and
      * DoNotEnforce.
-     *
+     * 
      * @return the enforcementMode value.
      */
     public EnforcementMode enforcementMode() {
@@ -268,7 +272,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
     /**
      * Set the enforcementMode property: The policy assignment enforcement mode. Possible values are Default and
      * DoNotEnforce.
-     *
+     * 
      * @param enforcementMode the enforcementMode value to set.
      * @return the PolicyAssignmentInner object itself.
      */
@@ -283,7 +287,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
     /**
      * Get the nonComplianceMessages property: The messages that describe why a resource is non-compliant with the
      * policy.
-     *
+     * 
      * @return the nonComplianceMessages value.
      */
     public List<NonComplianceMessage> nonComplianceMessages() {
@@ -293,7 +297,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
     /**
      * Set the nonComplianceMessages property: The messages that describe why a resource is non-compliant with the
      * policy.
-     *
+     * 
      * @param nonComplianceMessages the nonComplianceMessages value to set.
      * @return the PolicyAssignmentInner object itself.
      */
@@ -307,7 +311,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Get the resourceSelectors property: The resource selector list to filter policies by resource properties.
-     *
+     * 
      * @return the resourceSelectors value.
      */
     public List<ResourceSelector> resourceSelectors() {
@@ -316,7 +320,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Set the resourceSelectors property: The resource selector list to filter policies by resource properties.
-     *
+     * 
      * @param resourceSelectors the resourceSelectors value to set.
      * @return the PolicyAssignmentInner object itself.
      */
@@ -330,7 +334,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Get the overrides property: The policy property value override.
-     *
+     * 
      * @return the overrides value.
      */
     public List<OverrideModel> overrides() {
@@ -339,7 +343,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Set the overrides property: The policy property value override.
-     *
+     * 
      * @param overrides the overrides value to set.
      * @return the PolicyAssignmentInner object itself.
      */
@@ -353,7 +357,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

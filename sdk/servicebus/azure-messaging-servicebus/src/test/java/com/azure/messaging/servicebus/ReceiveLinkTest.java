@@ -4,6 +4,8 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import org.junit.jupiter.api.AfterEach;
 import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
@@ -21,6 +23,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class ReceiveLinkTest {
+    private static final ClientLogger LOGGER = new ClientLogger(ReceiveLinkTest.class);
+
     private final AtomicInteger counter = new AtomicInteger();
     private final AmqpReceiveLink[] allLinks = new AmqpReceiveLink[4];
 
@@ -47,7 +51,7 @@ public class ReceiveLinkTest {
 
         when(link2.getLinkName()).thenReturn("link2-name");
         when(link2.getEndpointStates()).thenAnswer(invocation -> {
-            System.out.println("link2-name endpoints");
+            LOGGER.log(LogLevel.VERBOSE, () -> "link2-name endpoints");
 
             return Flux.create(sink -> {
                 sink.onRequest(r -> sink.next(AmqpEndpointState.UNINITIALIZED));
@@ -56,7 +60,7 @@ public class ReceiveLinkTest {
 
         when(link3.getLinkName()).thenReturn("link3-name");
         when(link3.getEndpointStates()).thenAnswer(invocation -> {
-            System.out.println("link3-name endpoints");
+            LOGGER.log(LogLevel.VERBOSE, () -> "link3-name endpoints");
             return Flux.create(sink -> {
                 // Emit uninitialized first. After 3 seconds, emit ACTIVE.
                 sink.onRequest(r -> {
@@ -88,7 +92,7 @@ public class ReceiveLinkTest {
         })
             .retryWhen(Retry.from(retrySignals -> retrySignals.flatMap(signal -> {
                 final Throwable failure = signal.failure();
-                System.err.printf("    Retry: %s. Error occurred while waiting: %s%n", signal.totalRetriesInARow(), failure);
+                LOGGER.verbose("    Retry: {}. Error occurred while waiting: {}", signal.totalRetriesInARow(), failure);
                 if (failure instanceof TimeoutException) {
                     return Mono.delay(Duration.ofSeconds(4));
                 } else {
@@ -100,7 +104,7 @@ public class ReceiveLinkTest {
     private Mono<AmqpReceiveLink> createReceiveLink() {
         int index = counter.getAndIncrement();
 
-        System.out.println("Index: " + index);
+        LOGGER.log(LogLevel.VERBOSE, () -> "Index: " + index);
         if (index < allLinks.length) {
             return Mono.just(allLinks[index]);
         } else {

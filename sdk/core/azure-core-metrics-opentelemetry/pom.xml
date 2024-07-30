@@ -12,7 +12,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-core-metrics-opentelemetry</artifactId>
-  <version>1.0.0-beta.18</version> <!-- {x-version-update;com.azure:azure-core-metrics-opentelemetry;current} -->
+  <version>1.0.0-beta.21</version> <!-- {x-version-update;com.azure:azure-core-metrics-opentelemetry;current} -->
 
   <name>Microsoft Azure OpenTelemetry metrics plugin</name>
   <description>This package contains the OpenTelemetry metrics plugin for Azure client libraries.</description>
@@ -42,18 +42,19 @@
     <spotbugs.skip>false</spotbugs.skip>
     <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
     <spotless.skip>false</spotless.skip>
+    <animal.sniffer.skip>false</animal.sniffer.skip>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-api</artifactId>
-      <version>1.35.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+      <version>1.40.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.48.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.51.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
@@ -66,27 +67,27 @@
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk</artifactId>
-      <version>1.35.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+      <version>1.40.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk-testing</artifactId>
-      <version>1.35.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
+      <version>1.40.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.25.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <version>1.27.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.15.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
+      <version>1.16.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -122,7 +123,7 @@
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-exporter-otlp</artifactId>
-      <version>1.35.0</version>  <!-- {x-version-update;io.opentelemetry:opentelemetry-exporter-otlp;external_dependency} -->
+      <version>1.40.0</version>  <!-- {x-version-update;io.opentelemetry:opentelemetry-exporter-otlp;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -132,16 +133,16 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.opentelemetry:opentelemetry-api:[1.35.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-sdk:[1.35.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-sdk-testing:[1.35.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-exporter-logging:[1.35.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-logging;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-exporter-otlp:[1.35.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-otlp;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-api:[1.40.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk:[1.40.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk-testing:[1.40.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-exporter-logging:[1.40.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-logging;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-exporter-otlp:[1.40.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-otlp;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

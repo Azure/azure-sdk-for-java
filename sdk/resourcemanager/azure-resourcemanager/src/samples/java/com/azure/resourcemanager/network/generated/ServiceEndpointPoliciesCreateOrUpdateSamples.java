@@ -14,7 +14,7 @@ import java.util.Arrays;
 public final class ServiceEndpointPoliciesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/ServiceEndpointPolicyCreate.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ServiceEndpointPolicyCreate.
      * json
      */
     /**
@@ -23,12 +23,16 @@ public final class ServiceEndpointPoliciesCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createServiceEndpointPolicy(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getServiceEndpointPolicies().createOrUpdate("rg1", "testPolicy",
-            new ServiceEndpointPolicyInner().withLocation("westus"), com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getServiceEndpointPolicies()
+            .createOrUpdate("rg1", "testPolicy", new ServiceEndpointPolicyInner().withLocation("westus"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * ServiceEndpointPolicyCreateWithDefinition.json
      */
     /**
@@ -37,14 +41,18 @@ public final class ServiceEndpointPoliciesCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createServiceEndpointPolicyWithDefinition(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getServiceEndpointPolicies().createOrUpdate("rg1", "testPolicy",
-            new ServiceEndpointPolicyInner().withLocation("westus")
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getServiceEndpointPolicies()
+            .createOrUpdate("rg1", "testPolicy", new ServiceEndpointPolicyInner().withLocation("westus")
                 .withServiceEndpointPolicyDefinitions(Arrays.asList(new ServiceEndpointPolicyDefinitionInner()
                     .withName("StorageServiceEndpointPolicyDefinition")
-                    .withDescription("Storage Service EndpointPolicy Definition").withService("Microsoft.Storage")
+                    .withDescription("Storage Service EndpointPolicy Definition")
+                    .withService("Microsoft.Storage")
                     .withServiceResources(Arrays.asList("/subscriptions/subid1",
                         "/subscriptions/subid1/resourceGroups/storageRg",
                         "/subscriptions/subid1/resourceGroups/storageRg/providers/Microsoft.Storage/storageAccounts/stAccount")))),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

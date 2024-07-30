@@ -18,9 +18,7 @@ import java.util.Map;
  */
 public final class ClientsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
-     * Clients_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/Clients_CreateOrUpdate.json
      */
     /**
      * Sample code: Clients_CreateOrUpdate.
@@ -29,16 +27,17 @@ public final class ClientsCreateOrUpdateSamples {
      */
     public static void clientsCreateOrUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager)
         throws IOException {
-        manager.clients().define("exampleClientName1").withExistingNamespace("examplerg", "exampleNamespaceName1")
+        manager.clients()
+            .define("exampleClientName1")
+            .withExistingNamespace("examplerg", "exampleNamespaceName1")
             .withDescription("This is a test client")
             .withClientCertificateAuthentication(new ClientCertificateAuthentication()
                 .withValidationScheme(ClientCertificateValidationScheme.SUBJECT_MATCHES_AUTHENTICATION_NAME))
             .withState(ClientState.ENABLED)
-            .withAttributes(
-                mapOf("deviceTypes",
-                    SerializerFactory.createDefaultManagementSerializerAdapter()
-                        .deserialize("[\"Fan\",\"Light\",\"AC\"]", Object.class, SerializerEncoding.JSON),
-                    "floor", 3, "room", "345"))
+            .withAttributes(mapOf("deviceTypes",
+                SerializerFactory.createDefaultManagementSerializerAdapter()
+                    .deserialize("[\"Fan\",\"Light\",\"AC\"]", Object.class, SerializerEncoding.JSON),
+                "floor", 3, "room", "345"))
             .create();
     }
 

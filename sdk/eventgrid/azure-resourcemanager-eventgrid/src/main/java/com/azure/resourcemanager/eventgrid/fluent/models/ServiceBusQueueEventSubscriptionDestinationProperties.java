@@ -33,8 +33,8 @@ public final class ServiceBusQueueEventSubscriptionDestinationProperties {
     }
 
     /**
-     * Get the resourceId property: The Azure Resource Id that represents the endpoint of the Service Bus destination
-     * of an event subscription.
+     * Get the resourceId property: The Azure Resource Id that represents the endpoint of the Service Bus destination of
+     * an event subscription.
      * 
      * @return the resourceId value.
      */
@@ -43,8 +43,8 @@ public final class ServiceBusQueueEventSubscriptionDestinationProperties {
     }
 
     /**
-     * Set the resourceId property: The Azure Resource Id that represents the endpoint of the Service Bus destination
-     * of an event subscription.
+     * Set the resourceId property: The Azure Resource Id that represents the endpoint of the Service Bus destination of
+     * an event subscription.
      * 
      * @param resourceId the resourceId value to set.
      * @return the ServiceBusQueueEventSubscriptionDestinationProperties object itself.

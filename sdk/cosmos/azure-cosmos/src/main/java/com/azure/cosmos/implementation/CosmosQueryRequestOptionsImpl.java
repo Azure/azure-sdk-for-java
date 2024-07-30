@@ -3,8 +3,10 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.models.CosmosRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +22,15 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
     private Integer maxItemCount;
     private String requestContinuation;
     private PartitionKey partitionkey;
+    private PartitionKeyDefinition partitionKeyDefinition;
     private boolean emptyPagesAllowed;
     private FeedRange feedRange;
     private boolean queryPlanRetrievalDisallowed;
     private boolean emptyPageDiagnosticsEnabled;
     private String queryName;
+    private Integer maxItemCountForVectorSearch;
     private List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker = new ArrayList<>();
+    private String collectionRid;
 
     /**
      * Instantiates a new query request options.
@@ -56,12 +61,15 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
         this.maxItemCount = options.maxItemCount;
         this.requestContinuation = options.requestContinuation;
         this.partitionkey = options.partitionkey;
+        this.partitionKeyDefinition = options.partitionKeyDefinition;
         this.emptyPagesAllowed = options.emptyPagesAllowed;
         this.queryPlanRetrievalDisallowed = options.queryPlanRetrievalDisallowed;
         this.emptyPageDiagnosticsEnabled = options.emptyPageDiagnosticsEnabled;
         this.queryName = options.queryName;
         this.feedRange = options.feedRange;
         this.cancelledRequestDiagnosticsTracker = options.cancelledRequestDiagnosticsTracker;
+        this.maxItemCountForVectorSearch = options.maxItemCountForVectorSearch;
+        this.collectionRid = options.collectionRid;
     }
 
     /**
@@ -84,12 +92,23 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
         return this;
     }
 
+    @Override
+    public Boolean isContentResponseOnWriteEnabled() {
+        return null;
+    }
+
+    @Override
+    public Boolean getNonIdempotentWriteRetriesEnabled() {
+        return null;
+    }
+
     /**
      * Gets the option to allow scan on the queries which couldn't be served as
      * indexing was opted out on the requested paths.
      *
      * @return the option of enable scan in query.
      */
+    @Override
     public Boolean isScanInQueryEnabled() {
         return this.scanInQueryEnabled;
     }
@@ -135,7 +154,8 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
      * @return number of concurrent operations run client side during parallel query
      * execution.
      */
-    public int getMaxDegreeOfParallelism() {
+    @Override
+    public Integer getMaxDegreeOfParallelism() {
         return maxDegreeOfParallelism;
     }
 
@@ -158,7 +178,8 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
      * @return maximum number of items that can be buffered client side during
      * parallel query execution.
      */
-    public int getMaxBufferedItemCount() {
+    @Override
+    public Integer getMaxBufferedItemCount() {
         return maxBufferedItemCount;
     }
 
@@ -180,8 +201,14 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
      *
      * @return the max number of items.
      */
+    @Override
     public Integer getMaxItemCount() {
         return this.maxItemCount;
+    }
+
+    @Override
+    public Integer getMaxPrefetchPageCount() {
+        return null;
     }
 
     /**
@@ -193,6 +220,29 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
      */
     public CosmosQueryRequestOptionsImpl setMaxItemCount(Integer maxItemCount) {
         this.maxItemCount = maxItemCount;
+        return this;
+    }
+
+    /**
+     * Gets the maximum item size to fetch during non-streaming order by queries.
+     *
+     * @return the max number of items for vector search.
+     */
+    public Integer getMaxItemCountForVectorSearch() {
+        if (this.maxItemCountForVectorSearch == null) {
+            this.maxItemCountForVectorSearch = Configs.DEFAULT_MAX_ITEM_COUNT_FOR_VECTOR_SEARCH;
+        }
+        return this.maxItemCountForVectorSearch;
+    }
+
+    /**
+     * Sets the maximum item size to fetch during non-streaming order by queries.
+     *
+     * @param maxItemCountForVectorSearch the max number of items for vector search.
+     * return the CosmosQueryRequestOptions.
+     */
+    public CosmosQueryRequestOptionsImpl setMaxItemCountForVectorSearch(Integer maxItemCountForVectorSearch) {
+        this.maxItemCountForVectorSearch = maxItemCountForVectorSearch;
         return this;
     }
 
@@ -283,6 +333,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
      * @param defaultQueryName the default query name that should be used if none is specified on request options
      * @return the logical query name
      */
+    @Override
     public String getQueryNameOrDefault(String defaultQueryName) {
         return !Strings.isNullOrWhiteSpace(queryName) ? queryName : defaultQueryName;
     }
@@ -319,5 +370,31 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
 
     public void setCancelledRequestDiagnosticsTracker(List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker) {
         this.cancelledRequestDiagnosticsTracker = cancelledRequestDiagnosticsTracker;
+    }
+
+    public void setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
+        this.partitionKeyDefinition = partitionKeyDefinition;
+    }
+
+    public PartitionKeyDefinition getPartitionKeyDefinition() {
+        return this.partitionKeyDefinition;
+    }
+
+    @Override
+    public void override(CosmosRequestOptions cosmosRequestOptions) {
+        super.override(cosmosRequestOptions);
+        this.scanInQueryEnabled = overrideOption(cosmosRequestOptions.isScanInQueryEnabled(), this.scanInQueryEnabled);
+        this.maxDegreeOfParallelism = overrideOption(cosmosRequestOptions.getMaxDegreeOfParallelism(), this.maxDegreeOfParallelism);
+        this.maxBufferedItemCount = overrideOption(cosmosRequestOptions.getMaxBufferedItemCount(), this.maxBufferedItemCount);
+        this.maxItemCount = overrideOption(cosmosRequestOptions.getMaxItemCount(), this.maxItemCount);
+        this.queryName = overrideOption(cosmosRequestOptions.getQueryName(), this.queryName);
+    }
+
+    public String getCollectionRid() {
+        return collectionRid;
+    }
+
+    public void setCollectionRid(String collectionRid) {
+        this.collectionRid = collectionRid;
     }
 }

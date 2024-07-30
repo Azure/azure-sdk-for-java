@@ -40,9 +40,8 @@ public final class ExcelDatasetTypeProperties {
     private Object range;
 
     /*
-     * When used as input, treat the first row of data as headers. When used as output,write the headers into the
-     * output as the first row of data. The default value is false. Type: boolean (or Expression with resultType
-     * boolean).
+     * When used as input, treat the first row of data as headers. When used as output,write the headers into the output
+     * as the first row of data. The default value is false. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "firstRowAsHeader")
     private Object firstRowAsHeader;
@@ -218,8 +217,9 @@ public final class ExcelDatasetTypeProperties {
      */
     public void validate() {
         if (location() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property location in model ExcelDatasetTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model ExcelDatasetTypeProperties"));
         } else {
             location().validate();
         }

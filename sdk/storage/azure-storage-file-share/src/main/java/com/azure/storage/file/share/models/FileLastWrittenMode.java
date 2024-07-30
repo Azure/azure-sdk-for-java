@@ -4,18 +4,23 @@
 
 package com.azure.storage.file.share.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for FileLastWrittenMode. */
+/**
+ * Defines values for FileLastWrittenMode.
+ */
 public enum FileLastWrittenMode {
-    /** Enum value Now. */
+    /**
+     * Enum value Now.
+     */
     NOW("Now"),
 
-    /** Enum value Preserve. */
+    /**
+     * Enum value Preserve.
+     */
     PRESERVE("Preserve");
 
-    /** The actual serialized value for a FileLastWrittenMode instance. */
+    /**
+     * The actual serialized value for a FileLastWrittenMode instance.
+     */
     private final String value;
 
     FileLastWrittenMode(String value) {
@@ -24,11 +29,10 @@ public enum FileLastWrittenMode {
 
     /**
      * Parses a serialized value to a FileLastWrittenMode instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed FileLastWrittenMode object, or null if unable to parse.
      */
-    @JsonCreator
     public static FileLastWrittenMode fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum FileLastWrittenMode {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

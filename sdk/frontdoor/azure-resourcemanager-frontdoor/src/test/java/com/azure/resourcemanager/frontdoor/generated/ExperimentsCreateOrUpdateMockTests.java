@@ -6,86 +6,56 @@ package com.azure.resourcemanager.frontdoor.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.frontdoor.FrontDoorManager;
 import com.azure.resourcemanager.frontdoor.models.Endpoint;
 import com.azure.resourcemanager.frontdoor.models.Experiment;
 import com.azure.resourcemanager.frontdoor.models.State;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ExperimentsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"description\":\"ormkfqlwxldyk\",\"endpointA\":{\"name\":\"ygaolnjpnnb\",\"endpoint\":\"ksibjgsjjxx\"},\"endpointB\":{\"name\":\"rnadzyqegxyiv\",\"endpoint\":\"nbm\"},\"enabledState\":\"Disabled\",\"resourceState\":\"Enabling\",\"status\":\"kgqxn\",\"scriptFileUri\":\"bkezn\"},\"location\":\"aujvaa\",\"tags\":{\"umrrqmbzm\":\"giycwkdtaawxwfek\",\"idbirkfpkso\":\"kratbnxwbj\",\"ewijymrhbguz\":\"dgo\",\"nfnzhhh\":\"zkye\"},\"id\":\"o\",\"name\":\"mffjkutycyarn\",\"type\":\"oohguabzoghkt\"}";
 
-        String responseStr =
-            "{\"properties\":{\"description\":\"ffeycx\",\"endpointA\":{\"name\":\"piymerteea\",\"endpoint\":\"xqiekkkzddrtk\"},\"endpointB\":{\"name\":\"jbmxvavre\",\"endpoint\":\"eesvecu\"},\"enabledState\":\"Enabled\",\"resourceState\":\"Deleting\",\"status\":\"s\",\"scriptFileUri\":\"prtujwsawdd\"},\"location\":\"ibabxvititvtzeex\",\"tags\":{\"pypqtgsfj\":\"xtfglecdmdqb\",\"db\":\"cbslhhx\",\"irudh\":\"vodhtn\",\"es\":\"m\"},\"id\":\"kdlpa\",\"name\":\"zrcxfailcfxwmdbo\",\"type\":\"dfgsftufqobrj\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        FrontDoorManager manager = FrontDoorManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Experiment response = manager.experiments()
+            .define("jxcjrmmuabwib")
+            .withRegion("ekidswyskb")
+            .withExistingNetworkExperimentProfile("jcmmzrrscub", "wsdrnpxqwodif")
+            .withTags(mapOf("rpq", "fgllukkutvlx"))
+            .withDescription("gjonmcy")
+            .withEndpointA(new Endpoint().withName("y").withEndpoint("amwineofvfkakp"))
+            .withEndpointB(new Endpoint().withName("t").withEndpoint("vboclzhzjk"))
+            .withEnabledState(State.DISABLED)
+            .create();
 
-        FrontDoorManager manager =
-            FrontDoorManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Experiment response =
-            manager
-                .experiments()
-                .define("ao")
-                .withRegion("zbezkgimsidxasic")
-                .withExistingNetworkExperimentProfile("m", "yefrpmpdnqqska")
-                .withTags(mapOf("gat", "vvjskgfmocwahp", "kzyb", "eaahhvjhhn", "yxkyxvx", "jjidjk"))
-                .withDescription("mbnpqf")
-                .withEndpointA(new Endpoint().withName("lkzmegnitgvkxl").withEndpoint("qdrfegcealzxwhc"))
-                .withEndpointB(new Endpoint().withName("ymo").withEndpoint("hlwigdivbkbxg"))
-                .withEnabledState(State.ENABLED)
-                .create();
-
-        Assertions.assertEquals("ibabxvititvtzeex", response.location());
-        Assertions.assertEquals("xtfglecdmdqb", response.tags().get("pypqtgsfj"));
-        Assertions.assertEquals("ffeycx", response.description());
-        Assertions.assertEquals("piymerteea", response.endpointA().name());
-        Assertions.assertEquals("xqiekkkzddrtk", response.endpointA().endpoint());
-        Assertions.assertEquals("jbmxvavre", response.endpointB().name());
-        Assertions.assertEquals("eesvecu", response.endpointB().endpoint());
-        Assertions.assertEquals(State.ENABLED, response.enabledState());
+        Assertions.assertEquals("aujvaa", response.location());
+        Assertions.assertEquals("giycwkdtaawxwfek", response.tags().get("umrrqmbzm"));
+        Assertions.assertEquals("ormkfqlwxldyk", response.description());
+        Assertions.assertEquals("ygaolnjpnnb", response.endpointA().name());
+        Assertions.assertEquals("ksibjgsjjxx", response.endpointA().endpoint());
+        Assertions.assertEquals("rnadzyqegxyiv", response.endpointB().name());
+        Assertions.assertEquals("nbm", response.endpointB().endpoint());
+        Assertions.assertEquals(State.DISABLED, response.enabledState());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

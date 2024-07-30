@@ -14,6 +14,7 @@ import com.azure.ai.openai.assistants.models.MessageTextContent;
 import com.azure.ai.openai.assistants.models.PageableList;
 import com.azure.ai.openai.assistants.models.RunStatus;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
+import com.azure.ai.openai.assistants.models.ThreadMessageOptions;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.Configuration;
@@ -99,7 +100,7 @@ public class MathTutorAssistant {
 
     private static ThreadRun submitMessage(String assistantId, String threadId, String userMessage) {
         // Then add the Message to the thread
-        ThreadMessage threadMessage = client.createMessage(threadId, MessageRole.USER, userMessage);
+        ThreadMessage threadMessage = client.createMessage(threadId, new ThreadMessageOptions(MessageRole.USER, userMessage));
         System.out.printf("Thread Message ID = \"%s\" is created at %s.%n", threadMessage.getId(), threadMessage.getCreatedAt());
         System.out.println("Message Content: " + ((MessageTextContent) threadMessage.getContent().get(0)).getText().getValue());
 

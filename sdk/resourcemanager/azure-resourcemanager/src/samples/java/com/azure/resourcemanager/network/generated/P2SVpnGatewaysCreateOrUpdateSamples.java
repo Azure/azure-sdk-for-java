@@ -21,7 +21,7 @@ import java.util.Map;
 public final class P2SVpnGatewaysCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/P2SVpnGatewayPut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/P2SVpnGatewayPut.json
      */
     /**
      * Sample code: P2SVpnGatewayPut.
@@ -29,8 +29,12 @@ public final class P2SVpnGatewaysCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void p2SVpnGatewayPut(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getP2SVpnGateways().createOrUpdate("rg1", "p2sVpnGateway1",
-            new P2SVpnGatewayInner().withLocation("West US").withTags(mapOf("key1", "fakeTokenPlaceholder"))
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getP2SVpnGateways()
+            .createOrUpdate("rg1", "p2sVpnGateway1", new P2SVpnGatewayInner().withLocation("West US")
+                .withTags(mapOf("key1", "fakeTokenPlaceholder"))
                 .withVirtualHub(new SubResource().withId(
                     "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1"))
                 .withP2SConnectionConfigurations(Arrays.asList(new P2SConnectionConfiguration().withId(
@@ -52,8 +56,8 @@ public final class P2SVpnGatewaysCreateOrUpdateSamples {
                 .withVpnGatewayScaleUnit(1)
                 .withVpnServerConfiguration(new SubResource().withId(
                     "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/vpnServerConfigurations/vpnServerConfiguration1"))
-                .withCustomDnsServers(Arrays.asList("1.1.1.1", "2.2.2.2")).withIsRoutingPreferenceInternet(false),
-            com.azure.core.util.Context.NONE);
+                .withCustomDnsServers(Arrays.asList("1.1.1.1", "2.2.2.2"))
+                .withIsRoutingPreferenceInternet(false), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters required for profile upgrade. */
+/**
+ * Parameters required for profile upgrade.
+ */
 @Fluent
 public final class ProfileUpgradeParameters {
     /*
@@ -18,14 +20,16 @@ public final class ProfileUpgradeParameters {
     @JsonProperty(value = "wafMappingList", required = true)
     private List<ProfileChangeSkuWafMapping> wafMappingList;
 
-    /** Creates an instance of ProfileUpgradeParameters class. */
+    /**
+     * Creates an instance of ProfileUpgradeParameters class.
+     */
     public ProfileUpgradeParameters() {
     }
 
     /**
      * Get the wafMappingList property: Web Application Firewall (WAF) and security policy mapping for the profile
      * upgrade.
-     *
+     * 
      * @return the wafMappingList value.
      */
     public List<ProfileChangeSkuWafMapping> wafMappingList() {
@@ -35,7 +39,7 @@ public final class ProfileUpgradeParameters {
     /**
      * Set the wafMappingList property: Web Application Firewall (WAF) and security policy mapping for the profile
      * upgrade.
-     *
+     * 
      * @param wafMappingList the wafMappingList value to set.
      * @return the ProfileUpgradeParameters object itself.
      */
@@ -46,15 +50,13 @@ public final class ProfileUpgradeParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (wafMappingList() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property wafMappingList in model ProfileUpgradeParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property wafMappingList in model ProfileUpgradeParameters"));
         } else {
             wafMappingList().forEach(e -> e.validate());
         }

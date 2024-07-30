@@ -7,46 +7,76 @@ package com.azure.resourcemanager.appcontainers.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.appcontainers.models.AppInsightsConfiguration;
 import com.azure.resourcemanager.appcontainers.models.AppLogsConfiguration;
 import com.azure.resourcemanager.appcontainers.models.CustomDomainConfiguration;
 import com.azure.resourcemanager.appcontainers.models.DaprConfiguration;
 import com.azure.resourcemanager.appcontainers.models.EnvironmentProvisioningState;
 import com.azure.resourcemanager.appcontainers.models.KedaConfiguration;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPropertiesPeerAuthentication;
+import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPropertiesPeerTrafficConfiguration;
+import com.azure.resourcemanager.appcontainers.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.appcontainers.models.OpenTelemetryConfiguration;
+import com.azure.resourcemanager.appcontainers.models.PublicNetworkAccess;
 import com.azure.resourcemanager.appcontainers.models.VnetConfiguration;
 import com.azure.resourcemanager.appcontainers.models.WorkloadProfile;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** An environment for hosting container apps. */
+/**
+ * An environment for hosting container apps.
+ */
 @Fluent
 public final class ManagedEnvironmentInner extends Resource {
     /*
      * Kind of the Environment.
      */
-    @JsonProperty(value = "kind")
     private String kind;
+
+    /*
+     * Managed identities for the Managed Environment to interact with other Azure services without maintaining any
+     * secrets or credentials in code.
+     */
+    private ManagedServiceIdentity identity;
 
     /*
      * Managed environment resource specific properties
      */
-    @JsonProperty(value = "properties")
     private ManagedEnvironmentProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ManagedEnvironmentInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of ManagedEnvironmentInner class.
+     */
     public ManagedEnvironmentInner() {
     }
 
     /**
      * Get the kind property: Kind of the Environment.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -55,7 +85,7 @@ public final class ManagedEnvironmentInner extends Resource {
 
     /**
      * Set the kind property: Kind of the Environment.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the ManagedEnvironmentInner object itself.
      */
@@ -65,8 +95,30 @@ public final class ManagedEnvironmentInner extends Resource {
     }
 
     /**
+     * Get the identity property: Managed identities for the Managed Environment to interact with other Azure services
+     * without maintaining any secrets or credentials in code.
+     * 
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed identities for the Managed Environment to interact with other Azure services
+     * without maintaining any secrets or credentials in code.
+     * 
+     * @param identity the identity value to set.
+     * @return the ManagedEnvironmentInner object itself.
+     */
+    public ManagedEnvironmentInner withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * Get the innerProperties property: Managed environment resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ManagedEnvironmentProperties innerProperties() {
@@ -75,21 +127,55 @@ public final class ManagedEnvironmentInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ManagedEnvironmentInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ManagedEnvironmentInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -98,7 +184,7 @@ public final class ManagedEnvironmentInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state of the Environment.
-     *
+     * 
      * @return the provisioningState value.
      */
     public EnvironmentProvisioningState provisioningState() {
@@ -108,7 +194,7 @@ public final class ManagedEnvironmentInner extends Resource {
     /**
      * Get the daprAIInstrumentationKey property: Azure Monitor instrumentation key used by Dapr to export Service to
      * Service communication telemetry.
-     *
+     * 
      * @return the daprAIInstrumentationKey value.
      */
     public String daprAIInstrumentationKey() {
@@ -118,7 +204,7 @@ public final class ManagedEnvironmentInner extends Resource {
     /**
      * Set the daprAIInstrumentationKey property: Azure Monitor instrumentation key used by Dapr to export Service to
      * Service communication telemetry.
-     *
+     * 
      * @param daprAIInstrumentationKey the daprAIInstrumentationKey value to set.
      * @return the ManagedEnvironmentInner object itself.
      */
@@ -133,7 +219,7 @@ public final class ManagedEnvironmentInner extends Resource {
     /**
      * Get the daprAIConnectionString property: Application Insights connection string used by Dapr to export Service to
      * Service communication telemetry.
-     *
+     * 
      * @return the daprAIConnectionString value.
      */
     public String daprAIConnectionString() {
@@ -143,7 +229,7 @@ public final class ManagedEnvironmentInner extends Resource {
     /**
      * Set the daprAIConnectionString property: Application Insights connection string used by Dapr to export Service to
      * Service communication telemetry.
-     *
+     * 
      * @param daprAIConnectionString the daprAIConnectionString value to set.
      * @return the ManagedEnvironmentInner object itself.
      */
@@ -157,7 +243,7 @@ public final class ManagedEnvironmentInner extends Resource {
 
     /**
      * Get the vnetConfiguration property: Vnet configuration for the environment.
-     *
+     * 
      * @return the vnetConfiguration value.
      */
     public VnetConfiguration vnetConfiguration() {
@@ -166,7 +252,7 @@ public final class ManagedEnvironmentInner extends Resource {
 
     /**
      * Set the vnetConfiguration property: Vnet configuration for the environment.
-     *
+     * 
      * @param vnetConfiguration the vnetConfiguration value to set.
      * @return the ManagedEnvironmentInner object itself.
      */
@@ -180,7 +266,7 @@ public final class ManagedEnvironmentInner extends Resource {
 
     /**
      * Get the deploymentErrors property: Any errors that occurred during deployment or deployment validation.
-     *
+     * 
      * @return the deploymentErrors value.
      */
     public String deploymentErrors() {
@@ -189,7 +275,7 @@ public final class ManagedEnvironmentInner extends Resource {
 
     /**
      * Get the defaultDomain property: Default Domain Name for the cluster.
-     *
+     * 
      * @return the defaultDomain value.
      */
     public String defaultDomain() {
@@ -198,7 +284,7 @@ public final class ManagedEnvironmentInner extends Resource {
 
     /**
      * Get the staticIp property: Static IP of the Environment.
-     *
+     * 
      * @return the staticIp value.
      */
     public String staticIp() {
@@ -206,9 +292,10 @@ public final class ManagedEnvironmentInner extends Resource {
     }
 
     /**
-     * Get the appLogsConfiguration property: Cluster configuration which enables the log daemon to export app logs to a
-     * destination. Currently only "log-analytics" is supported.
-     *
+     * Get the appLogsConfiguration property: Cluster configuration which enables the log daemon to export
+     * app logs to a destination. Currently only "log-analytics" is
+     * supported.
+     * 
      * @return the appLogsConfiguration value.
      */
     public AppLogsConfiguration appLogsConfiguration() {
@@ -216,9 +303,10 @@ public final class ManagedEnvironmentInner extends Resource {
     }
 
     /**
-     * Set the appLogsConfiguration property: Cluster configuration which enables the log daemon to export app logs to a
-     * destination. Currently only "log-analytics" is supported.
-     *
+     * Set the appLogsConfiguration property: Cluster configuration which enables the log daemon to export
+     * app logs to a destination. Currently only "log-analytics" is
+     * supported.
+     * 
      * @param appLogsConfiguration the appLogsConfiguration value to set.
      * @return the ManagedEnvironmentInner object itself.
      */
@@ -231,8 +319,55 @@ public final class ManagedEnvironmentInner extends Resource {
     }
 
     /**
+     * Get the appInsightsConfiguration property: Environment level Application Insights configuration.
+     * 
+     * @return the appInsightsConfiguration value.
+     */
+    public AppInsightsConfiguration appInsightsConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().appInsightsConfiguration();
+    }
+
+    /**
+     * Set the appInsightsConfiguration property: Environment level Application Insights configuration.
+     * 
+     * @param appInsightsConfiguration the appInsightsConfiguration value to set.
+     * @return the ManagedEnvironmentInner object itself.
+     */
+    public ManagedEnvironmentInner withAppInsightsConfiguration(AppInsightsConfiguration appInsightsConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedEnvironmentProperties();
+        }
+        this.innerProperties().withAppInsightsConfiguration(appInsightsConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the openTelemetryConfiguration property: Environment Open Telemetry configuration.
+     * 
+     * @return the openTelemetryConfiguration value.
+     */
+    public OpenTelemetryConfiguration openTelemetryConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().openTelemetryConfiguration();
+    }
+
+    /**
+     * Set the openTelemetryConfiguration property: Environment Open Telemetry configuration.
+     * 
+     * @param openTelemetryConfiguration the openTelemetryConfiguration value to set.
+     * @return the ManagedEnvironmentInner object itself.
+     */
+    public ManagedEnvironmentInner
+        withOpenTelemetryConfiguration(OpenTelemetryConfiguration openTelemetryConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedEnvironmentProperties();
+        }
+        this.innerProperties().withOpenTelemetryConfiguration(openTelemetryConfiguration);
+        return this;
+    }
+
+    /**
      * Get the zoneRedundant property: Whether or not this Managed Environment is zone-redundant.
-     *
+     * 
      * @return the zoneRedundant value.
      */
     public Boolean zoneRedundant() {
@@ -241,7 +376,7 @@ public final class ManagedEnvironmentInner extends Resource {
 
     /**
      * Set the zoneRedundant property: Whether or not this Managed Environment is zone-redundant.
-     *
+     * 
      * @param zoneRedundant the zoneRedundant value to set.
      * @return the ManagedEnvironmentInner object itself.
      */
@@ -255,7 +390,7 @@ public final class ManagedEnvironmentInner extends Resource {
 
     /**
      * Get the customDomainConfiguration property: Custom domain configuration for the environment.
-     *
+     * 
      * @return the customDomainConfiguration value.
      */
     public CustomDomainConfiguration customDomainConfiguration() {
@@ -264,7 +399,7 @@ public final class ManagedEnvironmentInner extends Resource {
 
     /**
      * Set the customDomainConfiguration property: Custom domain configuration for the environment.
-     *
+     * 
      * @param customDomainConfiguration the customDomainConfiguration value to set.
      * @return the ManagedEnvironmentInner object itself.
      */
@@ -278,7 +413,7 @@ public final class ManagedEnvironmentInner extends Resource {
 
     /**
      * Get the eventStreamEndpoint property: The endpoint of the eventstream of the Environment.
-     *
+     * 
      * @return the eventStreamEndpoint value.
      */
     public String eventStreamEndpoint() {
@@ -287,7 +422,7 @@ public final class ManagedEnvironmentInner extends Resource {
 
     /**
      * Get the workloadProfiles property: Workload profiles configured for the Managed Environment.
-     *
+     * 
      * @return the workloadProfiles value.
      */
     public List<WorkloadProfile> workloadProfiles() {
@@ -296,7 +431,7 @@ public final class ManagedEnvironmentInner extends Resource {
 
     /**
      * Set the workloadProfiles property: Workload profiles configured for the Managed Environment.
-     *
+     * 
      * @param workloadProfiles the workloadProfiles value to set.
      * @return the ManagedEnvironmentInner object itself.
      */
@@ -310,7 +445,7 @@ public final class ManagedEnvironmentInner extends Resource {
 
     /**
      * Get the kedaConfiguration property: The configuration of Keda component.
-     *
+     * 
      * @return the kedaConfiguration value.
      */
     public KedaConfiguration kedaConfiguration() {
@@ -319,7 +454,7 @@ public final class ManagedEnvironmentInner extends Resource {
 
     /**
      * Set the kedaConfiguration property: The configuration of Keda component.
-     *
+     * 
      * @param kedaConfiguration the kedaConfiguration value to set.
      * @return the ManagedEnvironmentInner object itself.
      */
@@ -333,7 +468,7 @@ public final class ManagedEnvironmentInner extends Resource {
 
     /**
      * Get the daprConfiguration property: The configuration of Dapr component.
-     *
+     * 
      * @return the daprConfiguration value.
      */
     public DaprConfiguration daprConfiguration() {
@@ -342,7 +477,7 @@ public final class ManagedEnvironmentInner extends Resource {
 
     /**
      * Set the daprConfiguration property: The configuration of Dapr component.
-     *
+     * 
      * @param daprConfiguration the daprConfiguration value to set.
      * @return the ManagedEnvironmentInner object itself.
      */
@@ -358,7 +493,7 @@ public final class ManagedEnvironmentInner extends Resource {
      * Get the infrastructureResourceGroup property: Name of the platform-managed resource group created for the Managed
      * Environment to host infrastructure resources. If a subnet ID is provided, this resource group will be created in
      * the same subscription as the subnet.
-     *
+     * 
      * @return the infrastructureResourceGroup value.
      */
     public String infrastructureResourceGroup() {
@@ -369,7 +504,7 @@ public final class ManagedEnvironmentInner extends Resource {
      * Set the infrastructureResourceGroup property: Name of the platform-managed resource group created for the Managed
      * Environment to host infrastructure resources. If a subnet ID is provided, this resource group will be created in
      * the same subscription as the subnet.
-     *
+     * 
      * @param infrastructureResourceGroup the infrastructureResourceGroup value to set.
      * @return the ManagedEnvironmentInner object itself.
      */
@@ -383,7 +518,7 @@ public final class ManagedEnvironmentInner extends Resource {
 
     /**
      * Get the peerAuthentication property: Peer authentication settings for the Managed Environment.
-     *
+     * 
      * @return the peerAuthentication value.
      */
     public ManagedEnvironmentPropertiesPeerAuthentication peerAuthentication() {
@@ -392,12 +527,12 @@ public final class ManagedEnvironmentInner extends Resource {
 
     /**
      * Set the peerAuthentication property: Peer authentication settings for the Managed Environment.
-     *
+     * 
      * @param peerAuthentication the peerAuthentication value to set.
      * @return the ManagedEnvironmentInner object itself.
      */
-    public ManagedEnvironmentInner withPeerAuthentication(
-        ManagedEnvironmentPropertiesPeerAuthentication peerAuthentication) {
+    public ManagedEnvironmentInner
+        withPeerAuthentication(ManagedEnvironmentPropertiesPeerAuthentication peerAuthentication) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ManagedEnvironmentProperties();
         }
@@ -406,13 +541,132 @@ public final class ManagedEnvironmentInner extends Resource {
     }
 
     /**
+     * Get the peerTrafficConfiguration property: Peer traffic settings for the Managed Environment.
+     * 
+     * @return the peerTrafficConfiguration value.
+     */
+    public ManagedEnvironmentPropertiesPeerTrafficConfiguration peerTrafficConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().peerTrafficConfiguration();
+    }
+
+    /**
+     * Set the peerTrafficConfiguration property: Peer traffic settings for the Managed Environment.
+     * 
+     * @param peerTrafficConfiguration the peerTrafficConfiguration value to set.
+     * @return the ManagedEnvironmentInner object itself.
+     */
+    public ManagedEnvironmentInner
+        withPeerTrafficConfiguration(ManagedEnvironmentPropertiesPeerTrafficConfiguration peerTrafficConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedEnvironmentProperties();
+        }
+        this.innerProperties().withPeerTrafficConfiguration(peerTrafficConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: Private endpoint connections to the resource.
+     * 
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Property to allow or block all public traffic. Allowed Values: 'Enabled',
+     * 'Disabled'.
+     * 
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Property to allow or block all public traffic. Allowed Values: 'Enabled',
+     * 'Disabled'.
+     * 
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the ManagedEnvironmentInner object itself.
+     */
+    public ManagedEnvironmentInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedEnvironmentProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedEnvironmentInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedEnvironmentInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedEnvironmentInner.
+     */
+    public static ManagedEnvironmentInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedEnvironmentInner deserializedManagedEnvironmentInner = new ManagedEnvironmentInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedManagedEnvironmentInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedManagedEnvironmentInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedManagedEnvironmentInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedManagedEnvironmentInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedManagedEnvironmentInner.withTags(tags);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedManagedEnvironmentInner.kind = reader.getString();
+                } else if ("identity".equals(fieldName)) {
+                    deserializedManagedEnvironmentInner.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedManagedEnvironmentInner.innerProperties = ManagedEnvironmentProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedManagedEnvironmentInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedEnvironmentInner;
+        });
     }
 }

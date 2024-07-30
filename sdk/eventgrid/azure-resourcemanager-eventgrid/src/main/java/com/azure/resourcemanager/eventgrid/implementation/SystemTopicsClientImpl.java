@@ -34,8 +34,8 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.eventgrid.fluent.SystemTopicsClient;
 import com.azure.resourcemanager.eventgrid.fluent.models.SystemTopicInner;
-import com.azure.resourcemanager.eventgrid.models.SystemTopicUpdateParameters;
 import com.azure.resourcemanager.eventgrid.models.SystemTopicsListResult;
+import com.azure.resourcemanager.eventgrid.models.SystemTopicUpdateParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -66,8 +66,8 @@ public final class SystemTopicsClientImpl implements SystemTopicsClient {
     }
 
     /**
-     * The interface defining all the services for EventGridManagementClientSystemTopics to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for EventGridManagementClientSystemTopics to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "EventGridManagementC")

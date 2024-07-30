@@ -13,6 +13,7 @@ import com.azure.ai.openai.assistants.models.RunStatus;
 import com.azure.ai.openai.assistants.models.RunStep;
 import com.azure.ai.openai.assistants.models.RunStepToolCallDetails;
 import com.azure.ai.openai.assistants.models.SubmitToolOutputsAction;
+import com.azure.ai.openai.assistants.models.ThreadMessageOptions;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -53,10 +54,11 @@ public class FunctionsAsyncTests extends AssistantsClientTestBase {
                         // Send first user message
                         return client.createMessage(
                             assistantThread.getId(),
-                            MessageRole.USER,
-                            "Assuming both my usually preferred vacation spot and favourite airline carrier, how much would it cost "
-                                + "to fly there in September?"
-                        ).then(Mono.just(cleanUp));
+                            new ThreadMessageOptions(
+                                MessageRole.USER,
+                                "Assuming both my usually preferred vacation spot and favourite airline carrier, how much would it cost "
+                                    + "to fly there in September?"
+                            )).then(Mono.just(cleanUp));
                     }).flatMap(cleanUp ->
                         // Create run thread
                         client.createRun(cleanUp.getThread(), cleanUp.getAssistant())

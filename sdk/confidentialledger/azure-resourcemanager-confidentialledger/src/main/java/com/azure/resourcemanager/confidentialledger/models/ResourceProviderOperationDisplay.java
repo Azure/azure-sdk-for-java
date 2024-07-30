@@ -7,7 +7,9 @@ package com.azure.resourcemanager.confidentialledger.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the properties of the Operation. */
+/**
+ * Describes the properties of the Operation.
+ */
 @Fluent
 public final class ResourceProviderOperationDisplay {
     /*
@@ -34,13 +36,15 @@ public final class ResourceProviderOperationDisplay {
     @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of ResourceProviderOperationDisplay class. */
+    /**
+     * Creates an instance of ResourceProviderOperationDisplay class.
+     */
     public ResourceProviderOperationDisplay() {
     }
 
     /**
      * Get the provider property: Name of the resource provider.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -49,7 +53,7 @@ public final class ResourceProviderOperationDisplay {
 
     /**
      * Set the provider property: Name of the resource provider.
-     *
+     * 
      * @param provider the provider value to set.
      * @return the ResourceProviderOperationDisplay object itself.
      */
@@ -60,7 +64,7 @@ public final class ResourceProviderOperationDisplay {
 
     /**
      * Get the resource property: Name of the resource type.
-     *
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -69,7 +73,7 @@ public final class ResourceProviderOperationDisplay {
 
     /**
      * Set the resource property: Name of the resource type.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the ResourceProviderOperationDisplay object itself.
      */
@@ -80,7 +84,7 @@ public final class ResourceProviderOperationDisplay {
 
     /**
      * Get the operation property: Name of the resource provider operation.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -89,7 +93,7 @@ public final class ResourceProviderOperationDisplay {
 
     /**
      * Set the operation property: Name of the resource provider operation.
-     *
+     * 
      * @param operation the operation value to set.
      * @return the ResourceProviderOperationDisplay object itself.
      */
@@ -100,7 +104,7 @@ public final class ResourceProviderOperationDisplay {
 
     /**
      * Get the description property: Description of the resource provider operation.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -109,7 +113,7 @@ public final class ResourceProviderOperationDisplay {
 
     /**
      * Set the description property: Description of the resource provider operation.
-     *
+     * 
      * @param description the description value to set.
      * @return the ResourceProviderOperationDisplay object itself.
      */
@@ -120,7 +124,7 @@ public final class ResourceProviderOperationDisplay {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.resources.models.DataManifestCustomResourceFunc
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The resource functions supported by a manifest. */
+/**
+ * The resource functions supported by a manifest.
+ */
 @Fluent
 public final class DataManifestResourceFunctionsDefinition {
     /*
@@ -24,13 +26,15 @@ public final class DataManifestResourceFunctionsDefinition {
     @JsonProperty(value = "custom")
     private List<DataManifestCustomResourceFunctionDefinition> custom;
 
-    /** Creates an instance of DataManifestResourceFunctionsDefinition class. */
+    /**
+     * Creates an instance of DataManifestResourceFunctionsDefinition class.
+     */
     public DataManifestResourceFunctionsDefinition() {
     }
 
     /**
      * Get the standard property: The standard resource functions (subscription and/or resourceGroup).
-     *
+     * 
      * @return the standard value.
      */
     public List<String> standard() {
@@ -39,7 +43,7 @@ public final class DataManifestResourceFunctionsDefinition {
 
     /**
      * Set the standard property: The standard resource functions (subscription and/or resourceGroup).
-     *
+     * 
      * @param standard the standard value to set.
      * @return the DataManifestResourceFunctionsDefinition object itself.
      */
@@ -50,7 +54,7 @@ public final class DataManifestResourceFunctionsDefinition {
 
     /**
      * Get the custom property: An array of data manifest custom resource definition.
-     *
+     * 
      * @return the custom value.
      */
     public List<DataManifestCustomResourceFunctionDefinition> custom() {
@@ -59,19 +63,19 @@ public final class DataManifestResourceFunctionsDefinition {
 
     /**
      * Set the custom property: An array of data manifest custom resource definition.
-     *
+     * 
      * @param custom the custom value to set.
      * @return the DataManifestResourceFunctionsDefinition object itself.
      */
-    public DataManifestResourceFunctionsDefinition withCustom(
-        List<DataManifestCustomResourceFunctionDefinition> custom) {
+    public DataManifestResourceFunctionsDefinition
+        withCustom(List<DataManifestCustomResourceFunctionDefinition> custom) {
         this.custom = custom;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

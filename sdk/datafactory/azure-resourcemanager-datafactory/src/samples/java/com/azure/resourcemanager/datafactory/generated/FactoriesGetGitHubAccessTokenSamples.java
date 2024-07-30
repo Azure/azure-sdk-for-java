@@ -20,9 +20,11 @@ public final class FactoriesGetGitHubAccessTokenSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void factoriesGetGitHubAccessToken(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.factories().getGitHubAccessTokenWithResponse("exampleResourceGroup", "exampleFactoryName",
-            new GitHubAccessTokenRequest().withGitHubAccessCode("fakeTokenPlaceholder").withGitHubClientId("some")
-                .withGitHubAccessTokenBaseUrl("fakeTokenPlaceholder"),
-            com.azure.core.util.Context.NONE);
+        manager.factories()
+            .getGitHubAccessTokenWithResponse("exampleResourceGroup", "exampleFactoryName",
+                new GitHubAccessTokenRequest().withGitHubAccessCode("fakeTokenPlaceholder")
+                    .withGitHubClientId("some")
+                    .withGitHubAccessTokenBaseUrl("fakeTokenPlaceholder"),
+                com.azure.core.util.Context.NONE);
     }
 }

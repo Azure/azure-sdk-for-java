@@ -17,8 +17,8 @@ public final class SyncErrorDetailsImpl implements SyncErrorDetails {
 
     private final com.azure.resourcemanager.devcenter.DevCenterManager serviceManager;
 
-    SyncErrorDetailsImpl(
-        SyncErrorDetailsInner innerObject, com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
+    SyncErrorDetailsImpl(SyncErrorDetailsInner innerObject,
+        com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

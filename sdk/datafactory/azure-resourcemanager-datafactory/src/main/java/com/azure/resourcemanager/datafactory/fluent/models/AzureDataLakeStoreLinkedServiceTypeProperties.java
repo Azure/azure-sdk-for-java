@@ -63,8 +63,8 @@ public final class AzureDataLakeStoreLinkedServiceTypeProperties {
     private Object subscriptionId;
 
     /*
-     * Data Lake Store account resource group name (if different from Data Factory account). Type: string (or
-     * Expression with resultType string).
+     * Data Lake Store account resource group name (if different from Data Factory account). Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "resourceGroupName")
     private Object resourceGroupName;
@@ -133,8 +133,8 @@ public final class AzureDataLakeStoreLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the servicePrincipalKey property: The Key of the application used to authenticate against the Azure Data
-     * Lake Store account.
+     * Get the servicePrincipalKey property: The Key of the application used to authenticate against the Azure Data Lake
+     * Store account.
      * 
      * @return the servicePrincipalKey value.
      */
@@ -143,8 +143,8 @@ public final class AzureDataLakeStoreLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the servicePrincipalKey property: The Key of the application used to authenticate against the Azure Data
-     * Lake Store account.
+     * Set the servicePrincipalKey property: The Key of the application used to authenticate against the Azure Data Lake
+     * Store account.
      * 
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the AzureDataLakeStoreLinkedServiceTypeProperties object itself.
@@ -177,9 +177,9 @@ public final class AzureDataLakeStoreLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values
-     * are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud
-     * type. Type: string (or Expression with resultType string).
+     * Get the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
+     * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
+     * Type: string (or Expression with resultType string).
      * 
      * @return the azureCloudType value.
      */
@@ -188,9 +188,9 @@ public final class AzureDataLakeStoreLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values
-     * are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud
-     * type. Type: string (or Expression with resultType string).
+     * Set the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
+     * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
+     * Type: string (or Expression with resultType string).
      * 
      * @param azureCloudType the azureCloudType value to set.
      * @return the AzureDataLakeStoreLinkedServiceTypeProperties object itself.
@@ -265,8 +265,8 @@ public final class AzureDataLakeStoreLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -275,8 +275,8 @@ public final class AzureDataLakeStoreLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureDataLakeStoreLinkedServiceTypeProperties object itself.
@@ -313,8 +313,9 @@ public final class AzureDataLakeStoreLinkedServiceTypeProperties {
      */
     public void validate() {
         if (dataLakeStoreUri() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property dataLakeStoreUri in model AzureDataLakeStoreLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataLakeStoreUri in model AzureDataLakeStoreLinkedServiceTypeProperties"));
         }
         if (servicePrincipalKey() != null) {
             servicePrincipalKey().validate();

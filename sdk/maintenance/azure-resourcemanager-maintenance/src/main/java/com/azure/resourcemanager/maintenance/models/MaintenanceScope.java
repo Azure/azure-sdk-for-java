@@ -8,32 +8,48 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Gets or sets maintenanceScope of the configuration. */
+/**
+ * Gets or sets maintenanceScope of the configuration.
+ */
 public final class MaintenanceScope extends ExpandableStringEnum<MaintenanceScope> {
-    /** Static value Host for MaintenanceScope. */
+    /**
+     * Static value Host for MaintenanceScope.
+     */
     public static final MaintenanceScope HOST = fromString("Host");
 
-    /** Static value Resource for MaintenanceScope. */
+    /**
+     * Static value Resource for MaintenanceScope.
+     */
     public static final MaintenanceScope RESOURCE = fromString("Resource");
 
-    /** Static value OSImage for MaintenanceScope. */
+    /**
+     * Static value OSImage for MaintenanceScope.
+     */
     public static final MaintenanceScope OSIMAGE = fromString("OSImage");
 
-    /** Static value Extension for MaintenanceScope. */
+    /**
+     * Static value Extension for MaintenanceScope.
+     */
     public static final MaintenanceScope EXTENSION = fromString("Extension");
 
-    /** Static value InGuestPatch for MaintenanceScope. */
+    /**
+     * Static value InGuestPatch for MaintenanceScope.
+     */
     public static final MaintenanceScope IN_GUEST_PATCH = fromString("InGuestPatch");
 
-    /** Static value SQLDB for MaintenanceScope. */
+    /**
+     * Static value SQLDB for MaintenanceScope.
+     */
     public static final MaintenanceScope SQLDB = fromString("SQLDB");
 
-    /** Static value SQLManagedInstance for MaintenanceScope. */
+    /**
+     * Static value SQLManagedInstance for MaintenanceScope.
+     */
     public static final MaintenanceScope SQLMANAGED_INSTANCE = fromString("SQLManagedInstance");
 
     /**
      * Creates a new instance of MaintenanceScope value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,7 +58,7 @@ public final class MaintenanceScope extends ExpandableStringEnum<MaintenanceScop
 
     /**
      * Creates or finds a MaintenanceScope from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MaintenanceScope.
      */
@@ -53,7 +69,7 @@ public final class MaintenanceScope extends ExpandableStringEnum<MaintenanceScop
 
     /**
      * Gets known MaintenanceScope values.
-     *
+     * 
      * @return known MaintenanceScope values.
      */
     public static Collection<MaintenanceScope> values() {

@@ -102,8 +102,8 @@ public final class DdosProtectionPlanInner extends Resource {
     }
 
     /**
-     * Get the virtualNetworks property: The list of virtual networks associated with the DDoS protection plan
-     * resource. This list is read-only.
+     * Get the virtualNetworks property: The list of virtual networks associated with the DDoS protection plan resource.
+     * This list is read-only.
      * 
      * @return the virtualNetworks value.
      */

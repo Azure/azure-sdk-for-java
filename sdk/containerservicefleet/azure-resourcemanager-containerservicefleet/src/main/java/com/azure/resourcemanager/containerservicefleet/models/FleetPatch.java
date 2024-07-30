@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Properties of a Fleet that can be patched. */
+/**
+ * Properties of a Fleet that can be patched.
+ */
 @Fluent
 public final class FleetPatch {
     /*
@@ -25,13 +27,15 @@ public final class FleetPatch {
     @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
 
-    /** Creates an instance of FleetPatch class. */
+    /**
+     * Creates an instance of FleetPatch class.
+     */
     public FleetPatch() {
     }
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -40,7 +44,7 @@ public final class FleetPatch {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the FleetPatch object itself.
      */
@@ -51,7 +55,7 @@ public final class FleetPatch {
 
     /**
      * Get the identity property: Managed identity.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -60,7 +64,7 @@ public final class FleetPatch {
 
     /**
      * Set the identity property: Managed identity.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the FleetPatch object itself.
      */
@@ -71,7 +75,7 @@ public final class FleetPatch {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

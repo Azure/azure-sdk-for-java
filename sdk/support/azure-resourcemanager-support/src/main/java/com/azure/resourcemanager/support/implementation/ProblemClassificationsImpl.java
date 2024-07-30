@@ -21,31 +21,28 @@ public final class ProblemClassificationsImpl implements ProblemClassifications 
 
     private final com.azure.resourcemanager.support.SupportManager serviceManager;
 
-    public ProblemClassificationsImpl(
-        ProblemClassificationsClient innerClient, com.azure.resourcemanager.support.SupportManager serviceManager) {
+    public ProblemClassificationsImpl(ProblemClassificationsClient innerClient,
+        com.azure.resourcemanager.support.SupportManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ProblemClassification> list(String serviceName) {
         PagedIterable<ProblemClassificationInner> inner = this.serviceClient().list(serviceName);
-        return Utils.mapPage(inner, inner1 -> new ProblemClassificationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProblemClassificationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ProblemClassification> list(String serviceName, Context context) {
         PagedIterable<ProblemClassificationInner> inner = this.serviceClient().list(serviceName, context);
-        return Utils.mapPage(inner, inner1 -> new ProblemClassificationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProblemClassificationImpl(inner1, this.manager()));
     }
 
-    public Response<ProblemClassification> getWithResponse(
-        String serviceName, String problemClassificationName, Context context) {
-        Response<ProblemClassificationInner> inner =
-            this.serviceClient().getWithResponse(serviceName, problemClassificationName, context);
+    public Response<ProblemClassification> getWithResponse(String serviceName, String problemClassificationName,
+        Context context) {
+        Response<ProblemClassificationInner> inner
+            = this.serviceClient().getWithResponse(serviceName, problemClassificationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ProblemClassificationImpl(inner.getValue(), this.manager()));
         } else {
             return null;

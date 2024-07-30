@@ -53,6 +53,11 @@ public class EmailTestBase extends TestProxyTestBase {
             emailClientBuilder.addPolicy(recordPolicy);
         }
 
+        if (!interceptorManager.isLiveMode()) {
+            // Remove `operation-location` sanitizers from list of common sanitizers
+            interceptorManager.removeSanitizers("AZSDK2030");
+        }
+
         return emailClientBuilder;
     }
 

@@ -6,49 +6,32 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.TopologyResource;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class TopologiesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"calculatedDateTime\":\"2021-04-27T18:50:47Z\",\"topologyResources\":[{\"resourceId\":\"avzlhjgmrodbl\",\"severity\":\"qrac\",\"recommendationsExist\":false,\"networkZones\":\"iwf\",\"topologyScore\":1805290620,\"location\":\"hxmyib\",\"parents\":[{}],\"children\":[{},{},{}]},{\"resourceId\":\"ttgxkxt\",\"severity\":\"bbjbeyqohvia\",\"recommendationsExist\":false,\"networkZones\":\"krare\",\"topologyScore\":1319565502,\"location\":\"bvtpxow\",\"parents\":[{},{},{}],\"children\":[{},{},{},{}]}]},\"location\":\"cjasua\",\"id\":\"egjkfiszhexumf\",\"name\":\"vwesl\",\"type\":\"blitxrrsjs\"}";
+            = "{\"properties\":{\"calculatedDateTime\":\"2021-12-03T16:53:46Z\",\"topologyResources\":[{\"resourceId\":\"yio\",\"severity\":\"qgqs\",\"recommendationsExist\":true,\"networkZones\":\"efeombo\",\"topologyScore\":1397425058,\"location\":\"fuakqsjymcfvvzc\",\"parents\":[{}],\"children\":[{},{},{}]},{\"resourceId\":\"tc\",\"severity\":\"nbpkfnxrlncmlzvv\",\"recommendationsExist\":true,\"networkZones\":\"fhqsa\",\"topologyScore\":712234866,\"location\":\"revfwcbawapn\",\"parents\":[{}],\"children\":[{},{}]},{\"resourceId\":\"kmzv\",\"severity\":\"qxfblsxy\",\"recommendationsExist\":false,\"networkZones\":\"od\",\"topologyScore\":876052992,\"location\":\"ef\",\"parents\":[{},{},{}],\"children\":[{},{},{},{}]},{\"resourceId\":\"rvbbnasgfyxhsxcg\",\"severity\":\"m\",\"recommendationsExist\":false,\"networkZones\":\"cnxskeh\",\"topologyScore\":308289690,\"location\":\"azufl\",\"parents\":[{}],\"children\":[{},{},{}]}]},\"location\":\"hpdnc\",\"id\":\"kqrgiv\",\"name\":\"h\",\"type\":\"nimjlyhbjfnmmib\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         TopologyResource response = manager.topologies()
-            .getWithResponse("tmpumzuhoo", "ttqhpvaru", "vuwjyul", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("cvt", "yhpbiln", "zyjbuwuuusyd", com.azure.core.util.Context.NONE)
+            .getValue();
 
     }
 }

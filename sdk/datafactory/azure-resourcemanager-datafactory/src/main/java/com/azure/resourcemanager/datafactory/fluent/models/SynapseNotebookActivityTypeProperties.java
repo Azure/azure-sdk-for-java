@@ -54,9 +54,9 @@ public final class SynapseNotebookActivityTypeProperties {
     private Object conf;
 
     /*
-     * Number of core and memory to be used for driver allocated in the specified Spark pool for the session, which
-     * will be used for overriding 'driverCores' and 'driverMemory' of the notebook you provide. Type: string (or
-     * Expression with resultType string).
+     * Number of core and memory to be used for driver allocated in the specified Spark pool for the session, which will
+     * be used for overriding 'driverCores' and 'driverMemory' of the notebook you provide. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "driverSize")
     private Object driverSize;
@@ -313,8 +313,9 @@ public final class SynapseNotebookActivityTypeProperties {
      */
     public void validate() {
         if (notebook() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property notebook in model SynapseNotebookActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property notebook in model SynapseNotebookActivityTypeProperties"));
         } else {
             notebook().validate();
         }

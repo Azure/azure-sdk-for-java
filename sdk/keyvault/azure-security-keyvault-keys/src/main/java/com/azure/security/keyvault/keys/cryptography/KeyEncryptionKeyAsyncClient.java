@@ -3,8 +3,6 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
-import static com.azure.core.util.FluxUtil.monoError;
-
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -15,8 +13,18 @@ import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import reactor.core.publisher.Mono;
 
+import static com.azure.core.util.FluxUtil.monoError;
+
 /**
  * A key client which is used to asynchronously wrap or unwrap another key.
+ *
+ * <p>When a {@link KeyEncryptionKeyAsyncClient} gets created using a {@code Azure Key Vault key identifier}, the first
+ * time a cryptographic operation is attempted, the client will attempt to retrieve the key material from the service,
+ * cache it, and perform all future cryptographic operations locally, deferring to the service when that's not possible.
+ * If key retrieval and caching fails because of a non-retryable error, the client will not make any further attempts
+ * and will fall back to performing all cryptographic operations on the service side. Conversely, when a
+ * {@link KeyEncryptionKeyAsyncClient} created using a {@link JsonWebKey JSON Web Key}, all cryptographic operations
+ * will be performed locally.</p>
  */
 @ServiceClient(builder = KeyEncryptionKeyClientBuilder.class, isAsync = true)
 public final class KeyEncryptionKeyAsyncClient extends CryptographyAsyncClient implements AsyncKeyEncryptionKey {
@@ -28,9 +36,12 @@ public final class KeyEncryptionKeyAsyncClient extends CryptographyAsyncClient i
      * @param keyId The identifier of the key to use for cryptography operations.
      * @param pipeline The {@link HttpPipeline} that the HTTP requests and responses flow through.
      * @param version {@link CryptographyServiceVersion} of the service to be used when making requests.
+     * @param disableKeyCaching Indicates if local key caching should be disabled and all cryptographic operations
+     * deferred to the service.
      */
-    KeyEncryptionKeyAsyncClient(String keyId, HttpPipeline pipeline, CryptographyServiceVersion version) {
-        super(keyId, pipeline, version);
+    KeyEncryptionKeyAsyncClient(String keyId, HttpPipeline pipeline, CryptographyServiceVersion version,
+                                boolean disableKeyCaching) {
+        super(keyId, pipeline, version, disableKeyCaching);
     }
 
     /**

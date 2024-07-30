@@ -41,6 +41,11 @@ public abstract class PersonalizerTestBase extends TestProxyTestBase {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
+        if (!interceptorManager.isLiveMode()) {
+            // Removes `Location` and `id` sanitizer from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK2003", "AZSDK3430");
+        }
+
         return setCredential(builder, getTestMode(), isSingleSlot, isStatic);
     }
 

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.models.PrivateLinkServiceConnectionStat
  */
 public final class ApplicationGatewayPrivateEndpointConnectionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * ApplicationGatewayPrivateEndpointConnectionUpdate.json
      */
     /**
@@ -22,11 +22,15 @@ public final class ApplicationGatewayPrivateEndpointConnectionsUpdateSamples {
      */
     public static void
         updateApplicationGatewayPrivateEndpointConnection(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getApplicationGatewayPrivateEndpointConnections()
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getApplicationGatewayPrivateEndpointConnections()
             .update("rg1", "appgw", "connection1",
                 new ApplicationGatewayPrivateEndpointConnectionInner().withName("connection1")
-                    .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                        .withStatus("Approved").withDescription("approved it for some reason.")),
+                    .withPrivateLinkServiceConnectionState(
+                        new PrivateLinkServiceConnectionState().withStatus("Approved")
+                            .withDescription("approved it for some reason.")),
                 com.azure.core.util.Context.NONE);
     }
 }

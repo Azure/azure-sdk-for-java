@@ -22,8 +22,8 @@ public final class CustomEventsTriggerTypeProperties {
     private String subjectBeginsWith;
 
     /*
-     * The event subject must end with the pattern provided for trigger to fire. At least one of these must be
-     * provided: subjectBeginsWith, subjectEndsWith.
+     * The event subject must end with the pattern provided for trigger to fire. At least one of these must be provided:
+     * subjectBeginsWith, subjectEndsWith.
      */
     @JsonProperty(value = "subjectEndsWith")
     private String subjectEndsWith;
@@ -137,12 +137,14 @@ public final class CustomEventsTriggerTypeProperties {
      */
     public void validate() {
         if (events() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property events in model CustomEventsTriggerTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property events in model CustomEventsTriggerTypeProperties"));
         }
         if (scope() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property scope in model CustomEventsTriggerTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property scope in model CustomEventsTriggerTypeProperties"));
         }
     }
 

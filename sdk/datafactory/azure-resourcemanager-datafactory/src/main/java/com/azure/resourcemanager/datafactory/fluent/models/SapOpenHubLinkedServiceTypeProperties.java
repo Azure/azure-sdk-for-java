@@ -92,8 +92,8 @@ public final class SapOpenHubLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the server property: Host name of the SAP BW instance where the open hub destination is located. Type:
-     * string (or Expression with resultType string).
+     * Get the server property: Host name of the SAP BW instance where the open hub destination is located. Type: string
+     * (or Expression with resultType string).
      * 
      * @return the server value.
      */
@@ -102,8 +102,8 @@ public final class SapOpenHubLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the server property: Host name of the SAP BW instance where the open hub destination is located. Type:
-     * string (or Expression with resultType string).
+     * Set the server property: Host name of the SAP BW instance where the open hub destination is located. Type: string
+     * (or Expression with resultType string).
      * 
      * @param server the server value to set.
      * @return the SapOpenHubLinkedServiceTypeProperties object itself.
@@ -114,9 +114,8 @@ public final class SapOpenHubLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the systemNumber property: System number of the BW system where the open hub destination is located.
-     * (Usually a two-digit decimal number represented as a string.) Type: string (or Expression with resultType
-     * string).
+     * Get the systemNumber property: System number of the BW system where the open hub destination is located. (Usually
+     * a two-digit decimal number represented as a string.) Type: string (or Expression with resultType string).
      * 
      * @return the systemNumber value.
      */
@@ -125,9 +124,8 @@ public final class SapOpenHubLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the systemNumber property: System number of the BW system where the open hub destination is located.
-     * (Usually a two-digit decimal number represented as a string.) Type: string (or Expression with resultType
-     * string).
+     * Set the systemNumber property: System number of the BW system where the open hub destination is located. (Usually
+     * a two-digit decimal number represented as a string.) Type: string (or Expression with resultType string).
      * 
      * @param systemNumber the systemNumber value to set.
      * @return the SapOpenHubLinkedServiceTypeProperties object itself.
@@ -162,8 +160,8 @@ public final class SapOpenHubLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the language property: Language of the BW system where the open hub destination is located. The default
-     * value is EN. Type: string (or Expression with resultType string).
+     * Get the language property: Language of the BW system where the open hub destination is located. The default value
+     * is EN. Type: string (or Expression with resultType string).
      * 
      * @return the language value.
      */
@@ -172,8 +170,8 @@ public final class SapOpenHubLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the language property: Language of the BW system where the open hub destination is located. The default
-     * value is EN. Type: string (or Expression with resultType string).
+     * Set the language property: Language of the BW system where the open hub destination is located. The default value
+     * is EN. Type: string (or Expression with resultType string).
      * 
      * @param language the language value to set.
      * @return the SapOpenHubLinkedServiceTypeProperties object itself.
@@ -314,8 +312,8 @@ public final class SapOpenHubLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -324,8 +322,8 @@ public final class SapOpenHubLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SapOpenHubLinkedServiceTypeProperties object itself.

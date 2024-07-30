@@ -6,7 +6,11 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -17,110 +21,95 @@ import java.util.Map;
  * it is the container end of the relationship.
  */
 @Fluent
-public final class AtlasRelationshipAttributeDef {
+public final class AtlasRelationshipAttributeDef implements JsonSerializable<AtlasRelationshipAttributeDef> {
     /*
      * single-valued attribute or multi-valued attribute.
      */
     @Generated
-    @JsonProperty(value = "cardinality")
     private CardinalityValue cardinality;
 
     /*
      * An array of constraints.
      */
     @Generated
-    @JsonProperty(value = "constraints")
     private List<AtlasConstraintDef> constraints;
 
     /*
      * The default value of the attribute.
      */
     @Generated
-    @JsonProperty(value = "defaultValue")
     private String defaultValue;
 
     /*
      * The description of the attribute.
      */
     @Generated
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Determines if it is included in notification.
      */
     @Generated
-    @JsonProperty(value = "includeInNotification")
     private Boolean includeInNotification;
 
     /*
      * Determines if it is indexable.
      */
     @Generated
-    @JsonProperty(value = "isIndexable")
     private Boolean isIndexable;
 
     /*
      * Determines if it is optional.
      */
     @Generated
-    @JsonProperty(value = "isOptional")
     private Boolean isOptional;
 
     /*
      * Determines if it unique.
      */
     @Generated
-    @JsonProperty(value = "isUnique")
     private Boolean isUnique;
 
     /*
      * The name of the attribute.
      */
     @Generated
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The options for the attribute.
      */
     @Generated
-    @JsonProperty(value = "options")
     private Map<String, String> options;
 
     /*
      * The name of the type.
      */
     @Generated
-    @JsonProperty(value = "typeName")
     private String typeName;
 
     /*
      * The maximum count of the values.
      */
     @Generated
-    @JsonProperty(value = "valuesMaxCount")
     private Integer valuesMaxCount;
 
     /*
      * The minimum count of the values.
      */
     @Generated
-    @JsonProperty(value = "valuesMinCount")
     private Integer valuesMinCount;
 
     /*
      * Determines if it is a legacy attribute.
      */
     @Generated
-    @JsonProperty(value = "isLegacyAttribute")
     private Boolean isLegacyAttribute;
 
     /*
      * The name of the relationship type.
      */
     @Generated
-    @JsonProperty(value = "relationshipTypeName")
     private String relationshipTypeName;
 
     /**
@@ -458,5 +447,92 @@ public final class AtlasRelationshipAttributeDef {
     public AtlasRelationshipAttributeDef setRelationshipTypeName(String relationshipTypeName) {
         this.relationshipTypeName = relationshipTypeName;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("cardinality", this.cardinality == null ? null : this.cardinality.toString());
+        jsonWriter.writeArrayField("constraints", this.constraints, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("defaultValue", this.defaultValue);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeBooleanField("includeInNotification", this.includeInNotification);
+        jsonWriter.writeBooleanField("isIndexable", this.isIndexable);
+        jsonWriter.writeBooleanField("isOptional", this.isOptional);
+        jsonWriter.writeBooleanField("isUnique", this.isUnique);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeMapField("options", this.options, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("typeName", this.typeName);
+        jsonWriter.writeNumberField("valuesMaxCount", this.valuesMaxCount);
+        jsonWriter.writeNumberField("valuesMinCount", this.valuesMinCount);
+        jsonWriter.writeBooleanField("isLegacyAttribute", this.isLegacyAttribute);
+        jsonWriter.writeStringField("relationshipTypeName", this.relationshipTypeName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AtlasRelationshipAttributeDef from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AtlasRelationshipAttributeDef if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AtlasRelationshipAttributeDef.
+     */
+    @Generated
+    public static AtlasRelationshipAttributeDef fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AtlasRelationshipAttributeDef deserializedAtlasRelationshipAttributeDef
+                = new AtlasRelationshipAttributeDef();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("cardinality".equals(fieldName)) {
+                    deserializedAtlasRelationshipAttributeDef.cardinality
+                        = CardinalityValue.fromString(reader.getString());
+                } else if ("constraints".equals(fieldName)) {
+                    List<AtlasConstraintDef> constraints
+                        = reader.readArray(reader1 -> AtlasConstraintDef.fromJson(reader1));
+                    deserializedAtlasRelationshipAttributeDef.constraints = constraints;
+                } else if ("defaultValue".equals(fieldName)) {
+                    deserializedAtlasRelationshipAttributeDef.defaultValue = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedAtlasRelationshipAttributeDef.description = reader.getString();
+                } else if ("includeInNotification".equals(fieldName)) {
+                    deserializedAtlasRelationshipAttributeDef.includeInNotification
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isIndexable".equals(fieldName)) {
+                    deserializedAtlasRelationshipAttributeDef.isIndexable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isOptional".equals(fieldName)) {
+                    deserializedAtlasRelationshipAttributeDef.isOptional = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isUnique".equals(fieldName)) {
+                    deserializedAtlasRelationshipAttributeDef.isUnique = reader.getNullable(JsonReader::getBoolean);
+                } else if ("name".equals(fieldName)) {
+                    deserializedAtlasRelationshipAttributeDef.name = reader.getString();
+                } else if ("options".equals(fieldName)) {
+                    Map<String, String> options = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAtlasRelationshipAttributeDef.options = options;
+                } else if ("typeName".equals(fieldName)) {
+                    deserializedAtlasRelationshipAttributeDef.typeName = reader.getString();
+                } else if ("valuesMaxCount".equals(fieldName)) {
+                    deserializedAtlasRelationshipAttributeDef.valuesMaxCount = reader.getNullable(JsonReader::getInt);
+                } else if ("valuesMinCount".equals(fieldName)) {
+                    deserializedAtlasRelationshipAttributeDef.valuesMinCount = reader.getNullable(JsonReader::getInt);
+                } else if ("isLegacyAttribute".equals(fieldName)) {
+                    deserializedAtlasRelationshipAttributeDef.isLegacyAttribute
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("relationshipTypeName".equals(fieldName)) {
+                    deserializedAtlasRelationshipAttributeDef.relationshipTypeName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAtlasRelationshipAttributeDef;
+        });
     }
 }

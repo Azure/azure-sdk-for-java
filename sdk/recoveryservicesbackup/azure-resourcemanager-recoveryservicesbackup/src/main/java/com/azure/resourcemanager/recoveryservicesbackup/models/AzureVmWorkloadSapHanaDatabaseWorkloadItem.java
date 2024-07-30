@@ -5,20 +5,43 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Azure VM workload-specific workload item representing SAP HANA Database.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "workloadItemType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "workloadItemType",
+    defaultImpl = AzureVmWorkloadSapHanaDatabaseWorkloadItem.class,
+    visible = true)
 @JsonTypeName("SAPHanaDatabase")
 @Fluent
 public final class AzureVmWorkloadSapHanaDatabaseWorkloadItem extends AzureVmWorkloadItem {
+    /*
+     * Type of the backup item.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "workloadItemType", required = true)
+    private String workloadItemType = "SAPHanaDatabase";
+
     /**
      * Creates an instance of AzureVmWorkloadSapHanaDatabaseWorkloadItem class.
      */
     public AzureVmWorkloadSapHanaDatabaseWorkloadItem() {
+    }
+
+    /**
+     * Get the workloadItemType property: Type of the backup item.
+     * 
+     * @return the workloadItemType value.
+     */
+    @Override
+    public String workloadItemType() {
+        return this.workloadItemType;
     }
 
     /**

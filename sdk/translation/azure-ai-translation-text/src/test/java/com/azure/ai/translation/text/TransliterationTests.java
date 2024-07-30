@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.ai.translation.text;
 
-import com.azure.ai.translation.text.models.InputTextItem;
 import com.azure.ai.translation.text.models.TransliteratedText;
 import org.junit.jupiter.api.Test;
 
@@ -15,18 +14,15 @@ public class TransliterationTests extends TextTranslationClientBase {
 
     @Test
     public void verifyTransliteration() {
-        ArrayList<InputTextItem> content = new ArrayList<>();
-        content.add(new InputTextItem("这里怎么一回事?"));
-
-        List<TransliteratedText> response = getTranslationClient().transliterate("zh-Hans", "Hans", "Latn", content);
-        assertTrue(response.get(0).getText().length() > 1);
+        TransliteratedText response = getTranslationClient().transliterate("zh-Hans", "Hans", "Latn", "这里怎么一回事?");
+        assertTrue(response.getText().length() > 1);
     }
 
     @Test
     public void verifyTransliterationWithMultipleTextArray() {
-        ArrayList<InputTextItem> content = new ArrayList<>();
-        content.add(new InputTextItem("यहएककसौटीहैयहएककसौटीहै"));
-        content.add(new InputTextItem("यहएककसौटीहै"));
+        ArrayList<String> content = new ArrayList<>();
+        content.add("यहएककसौटीहैयहएककसौटीहै");
+        content.add("यहएककसौटीहै");
 
         List<TransliteratedText> response = getTranslationClient().transliterate("hi", "Deva", "Latn", content);
         assertTrue(response.get(0).getText().length() > 1);
@@ -35,10 +31,10 @@ public class TransliterationTests extends TextTranslationClientBase {
 
     @Test
     public void verifyTransliterationWithEditDistance() {
-        ArrayList<InputTextItem> content = new ArrayList<>();
-        content.add(new InputTextItem("gujarat"));
-        content.add(new InputTextItem("hadman"));
-        content.add(new InputTextItem("hukkabar"));
+        ArrayList<String> content = new ArrayList<>();
+        content.add("gujarat");
+        content.add("hadman");
+        content.add("hukkabar");
 
         List<TransliteratedText> response = getTranslationClient().transliterate("gu", "latn", "gujr", content);
         assertTrue(response.get(0).getText().length() > 1);

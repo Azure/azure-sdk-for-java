@@ -6,6 +6,7 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -26,15 +27,13 @@ public final class Login {
     private TokenStore tokenStore;
 
     /*
-     * <code>true</code> if the fragments from the request are preserved after the login request is made; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if the fragments from the request are preserved after the login request is made; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "preserveUrlFragmentsForLogins")
     private Boolean preserveUrlFragmentsForLogins;
 
     /*
-     * External URLs that can be redirected to as part of logging in or logging out of the app. Note that the query
-     * string part of the URL is ignored.
+     * External URLs that can be redirected to as part of logging in or logging out of the app. Note that the query string part of the URL is ignored.
      * This is an advanced setting typically only needed by Windows Store application backends.
      * Note that URLs within the current domain are always implicitly allowed.
      */
@@ -61,7 +60,7 @@ public final class Login {
 
     /**
      * Get the routes property: The routes that specify the endpoints used for login and logout requests.
-     * 
+     *
      * @return the routes value.
      */
     public LoginRoutes routes() {
@@ -70,7 +69,7 @@ public final class Login {
 
     /**
      * Set the routes property: The routes that specify the endpoints used for login and logout requests.
-     * 
+     *
      * @param routes the routes value to set.
      * @return the Login object itself.
      */
@@ -81,7 +80,7 @@ public final class Login {
 
     /**
      * Get the tokenStore property: The configuration settings of the token store.
-     * 
+     *
      * @return the tokenStore value.
      */
     public TokenStore tokenStore() {
@@ -90,7 +89,7 @@ public final class Login {
 
     /**
      * Set the tokenStore property: The configuration settings of the token store.
-     * 
+     *
      * @param tokenStore the tokenStore value to set.
      * @return the Login object itself.
      */
@@ -102,7 +101,7 @@ public final class Login {
     /**
      * Get the preserveUrlFragmentsForLogins property: &lt;code&gt;true&lt;/code&gt; if the fragments from the request
      * are preserved after the login request is made; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     * 
+     *
      * @return the preserveUrlFragmentsForLogins value.
      */
     public Boolean preserveUrlFragmentsForLogins() {
@@ -112,7 +111,7 @@ public final class Login {
     /**
      * Set the preserveUrlFragmentsForLogins property: &lt;code&gt;true&lt;/code&gt; if the fragments from the request
      * are preserved after the login request is made; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     * 
+     *
      * @param preserveUrlFragmentsForLogins the preserveUrlFragmentsForLogins value to set.
      * @return the Login object itself.
      */
@@ -126,7 +125,7 @@ public final class Login {
      * logging out of the app. Note that the query string part of the URL is ignored.
      * This is an advanced setting typically only needed by Windows Store application backends.
      * Note that URLs within the current domain are always implicitly allowed.
-     * 
+     *
      * @return the allowedExternalRedirectUrls value.
      */
     public List<String> allowedExternalRedirectUrls() {
@@ -138,7 +137,7 @@ public final class Login {
      * logging out of the app. Note that the query string part of the URL is ignored.
      * This is an advanced setting typically only needed by Windows Store application backends.
      * Note that URLs within the current domain are always implicitly allowed.
-     * 
+     *
      * @param allowedExternalRedirectUrls the allowedExternalRedirectUrls value to set.
      * @return the Login object itself.
      */
@@ -149,7 +148,7 @@ public final class Login {
 
     /**
      * Get the cookieExpiration property: The configuration settings of the session cookie's expiration.
-     * 
+     *
      * @return the cookieExpiration value.
      */
     public CookieExpiration cookieExpiration() {
@@ -158,7 +157,7 @@ public final class Login {
 
     /**
      * Set the cookieExpiration property: The configuration settings of the session cookie's expiration.
-     * 
+     *
      * @param cookieExpiration the cookieExpiration value to set.
      * @return the Login object itself.
      */
@@ -169,7 +168,7 @@ public final class Login {
 
     /**
      * Get the nonce property: The configuration settings of the nonce used in the login flow.
-     * 
+     *
      * @return the nonce value.
      */
     public Nonce nonce() {
@@ -178,7 +177,7 @@ public final class Login {
 
     /**
      * Set the nonce property: The configuration settings of the nonce used in the login flow.
-     * 
+     *
      * @param nonce the nonce value to set.
      * @return the Login object itself.
      */
@@ -189,7 +188,7 @@ public final class Login {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

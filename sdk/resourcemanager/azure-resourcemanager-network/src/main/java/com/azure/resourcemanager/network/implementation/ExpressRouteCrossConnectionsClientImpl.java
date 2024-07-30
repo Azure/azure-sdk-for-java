@@ -72,8 +72,8 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
     }
 
     /**
-     * The interface defining all the services for NetworkManagementClientExpressRouteCrossConnections to be used by
-     * the proxy service to perform REST calls.
+     * The interface defining all the services for NetworkManagementClientExpressRouteCrossConnections to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
@@ -84,7 +84,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ExpressRouteCrossConnectionListResult>> list(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCrossConnections")
@@ -175,13 +175,16 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
     /**
      * Retrieves all the ExpressRouteCrossConnections in a subscription.
      * 
+     * @param filter The filter to apply on the operation. For example, you can use $filter=name eq
+     * '{circuitServiceKey}'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListExpressRouteCrossConnection API service call along with {@link PagedResponse} on
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ExpressRouteCrossConnectionInner>> listSinglePageAsync() {
+    private Mono<PagedResponse<ExpressRouteCrossConnectionInner>> listSinglePageAsync(String filter) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -190,11 +193,11 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                accept, context))
+                filter, accept, context))
             .<PagedResponse<ExpressRouteCrossConnectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -203,6 +206,8 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
     /**
      * Retrieves all the ExpressRouteCrossConnections in a subscription.
      * 
+     * @param filter The filter to apply on the operation. For example, you can use $filter=name eq
+     * '{circuitServiceKey}'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -211,7 +216,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ExpressRouteCrossConnectionInner>> listSinglePageAsync(Context context) {
+    private Mono<PagedResponse<ExpressRouteCrossConnectionInner>> listSinglePageAsync(String filter, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -220,12 +225,29 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
+        return service
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), filter, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Retrieves all the ExpressRouteCrossConnections in a subscription.
+     * 
+     * @param filter The filter to apply on the operation. For example, you can use $filter=name eq
+     * '{circuitServiceKey}'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for ListExpressRouteCrossConnection API service call as paginated response with
+     * {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ExpressRouteCrossConnectionInner> listAsync(String filter) {
+        return new PagedFlux<>(() -> listSinglePageAsync(filter), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -238,12 +260,15 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ExpressRouteCrossConnectionInner> listAsync() {
-        return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
+        final String filter = null;
+        return new PagedFlux<>(() -> listSinglePageAsync(filter), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Retrieves all the ExpressRouteCrossConnections in a subscription.
      * 
+     * @param filter The filter to apply on the operation. For example, you can use $filter=name eq
+     * '{circuitServiceKey}'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -252,8 +277,8 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ExpressRouteCrossConnectionInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context),
+    private PagedFlux<ExpressRouteCrossConnectionInner> listAsync(String filter, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -267,12 +292,15 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRouteCrossConnectionInner> list() {
-        return new PagedIterable<>(listAsync());
+        final String filter = null;
+        return new PagedIterable<>(listAsync(filter));
     }
 
     /**
      * Retrieves all the ExpressRouteCrossConnections in a subscription.
      * 
+     * @param filter The filter to apply on the operation. For example, you can use $filter=name eq
+     * '{circuitServiceKey}'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -281,8 +309,8 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ExpressRouteCrossConnectionInner> list(Context context) {
-        return new PagedIterable<>(listAsync(context));
+    public PagedIterable<ExpressRouteCrossConnectionInner> list(String filter, Context context) {
+        return new PagedIterable<>(listAsync(filter, context));
     }
 
     /**
@@ -310,7 +338,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -346,7 +374,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -452,7 +480,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -491,7 +519,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, crossConnectionName, apiVersion,
@@ -583,7 +611,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -628,7 +656,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, crossConnectionName, apiVersion,
@@ -828,7 +856,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
         } else {
             crossConnectionParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -875,7 +903,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
         } else {
             crossConnectionParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), resourceGroupName, crossConnectionName, apiVersion,
@@ -975,7 +1003,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1023,7 +1051,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listArpTable(this.client.getEndpoint(), resourceGroupName, crossConnectionName, peeringName,
@@ -1246,7 +1274,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listRoutesTableSummary(this.client.getEndpoint(), resourceGroupName,
@@ -1294,7 +1322,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listRoutesTableSummary(this.client.getEndpoint(), resourceGroupName, crossConnectionName,
@@ -1521,7 +1549,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1570,7 +1598,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listRoutesTable(this.client.getEndpoint(), resourceGroupName, crossConnectionName, peeringName,
@@ -1720,7 +1748,8 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
     private Mono<ExpressRouteCircuitsRoutesTableListResultInner> listRoutesTableAsync(String resourceGroupName,
         String crossConnectionName, String peeringName, String devicePath, Context context) {
         return beginListRoutesTableAsync(resourceGroupName, crossConnectionName, peeringName, devicePath, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1767,9 +1796,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1795,9 +1822,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1825,9 +1850,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1856,9 +1879,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class WebAppsGetAppSettingsKeyVaultReferencesSlotSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
-     * GetKeyVaultReferencesForAppSettingsSlot.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetKeyVaultReferencesForAppSettingsSlot.json
      */
     /**
      * Sample code: Get Azure Key Vault references for app settings for slot.
@@ -19,7 +18,10 @@ public final class WebAppsGetAppSettingsKeyVaultReferencesSlotSamples {
      */
     public static void
         getAzureKeyVaultReferencesForAppSettingsForSlot(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getWebApps().getAppSettingsKeyVaultReferencesSlot("testrg123",
-            "testc6282", "stage", com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getWebApps()
+            .getAppSettingsKeyVaultReferencesSlot("testrg123", "testc6282", "stage", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,34 +5,54 @@
 package com.azure.resourcemanager.appcomplianceautomation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Indicates the control status. */
+/**
+ * Indicates the control status.
+ */
 public final class ControlStatus extends ExpandableStringEnum<ControlStatus> {
-    /** Static value Passed for ControlStatus. */
+    /**
+     * Static value Passed for ControlStatus.
+     */
     public static final ControlStatus PASSED = fromString("Passed");
 
-    /** Static value Failed for ControlStatus. */
+    /**
+     * Static value Failed for ControlStatus.
+     */
     public static final ControlStatus FAILED = fromString("Failed");
 
-    /** Static value NotApplicable for ControlStatus. */
+    /**
+     * Static value NotApplicable for ControlStatus.
+     */
     public static final ControlStatus NOT_APPLICABLE = fromString("NotApplicable");
 
     /**
+     * Static value PendingApproval for ControlStatus.
+     */
+    public static final ControlStatus PENDING_APPROVAL = fromString("PendingApproval");
+
+    /**
+     * Creates a new instance of ControlStatus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ControlStatus() {
+    }
+
+    /**
      * Creates or finds a ControlStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ControlStatus.
      */
-    @JsonCreator
     public static ControlStatus fromString(String name) {
         return fromString(name, ControlStatus.class);
     }
 
     /**
      * Gets known ControlStatus values.
-     *
+     * 
      * @return known ControlStatus values.
      */
     public static Collection<ControlStatus> values() {

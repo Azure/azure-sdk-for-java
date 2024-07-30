@@ -6,51 +6,35 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeMonitoringData;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class IntegrationRuntimesGetMonitoringDataWithResponseMockTests {
     @Test
     public void testGetMonitoringDataWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"name\":\"gbm\",\"nodes\":[{\"nodeName\":\"erauoht\",\"availableMemoryInMB\":1304587071,\"cpuUtilization\":1389990784,\"concurrentJobsLimit\":1347387035,\"concurrentJobsRunning\":260431426,\"maxConcurrentJobs\":718972733,\"sentBytes\":1.437074,\"receivedBytes\":58.880486,\"\":{\"eeyptvrbgcprsds\":\"datarx\",\"su\":\"datawozpmhhdnxwkf\",\"mxitvmrq\":\"datasbyfoavozqnn\"}},{\"nodeName\":\"zch\",\"availableMemoryInMB\":1378405861,\"cpuUtilization\":735227834,\"concurrentJobsLimit\":1330999405,\"concurrentJobsRunning\":181863906,\"maxConcurrentJobs\":903484269,\"sentBytes\":79.66964,\"receivedBytes\":18.096357,\"\":{\"pfojhvqmdoqyohzh\":\"databfrv\",\"xfvj\":\"datandfkp\",\"arhfeadedivadpcx\":\"datafusuwghtgp\"}},{\"nodeName\":\"pmw\",\"availableMemoryInMB\":1264586477,\"cpuUtilization\":1236271427,\"concurrentJobsLimit\":64649335,\"concurrentJobsRunning\":697187006,\"maxConcurrentJobs\":1636051443,\"sentBytes\":73.32201,\"receivedBytes\":23.75918,\"\":{\"kmnuivpbjcl\":\"datavlc\",\"yp\":\"datahfzriigte\",\"nctkqbvtdeou\":\"datamjqjoamzdsa\",\"juwdvfaulbfrc\":\"dataixgtpykbjevj\"}},{\"nodeName\":\"ucobpkphxh\",\"availableMemoryInMB\":471274210,\"cpuUtilization\":1807912949,\"concurrentJobsLimit\":345365482,\"concurrentJobsRunning\":704883797,\"maxConcurrentJobs\":796383837,\"sentBytes\":91.77441,\"receivedBytes\":82.7453,\"\":{\"wuyp\":\"datazqohthsmduaoypry\",\"jsov\":\"datauvpdclaj\",\"zehxddmaevcjtrw\":\"datafreyrgrgf\"}}]}";
+            = "{\"name\":\"nisinpkcww\",\"nodes\":[{\"nodeName\":\"b\",\"availableMemoryInMB\":26795964,\"cpuUtilization\":2078169809,\"concurrentJobsLimit\":1586982490,\"concurrentJobsRunning\":597607505,\"maxConcurrentJobs\":1140443642,\"sentBytes\":0.19900799,\"receivedBytes\":92.48324,\"\":{\"zxotwralnl\":\"datauptnhuybtmtokohy\",\"sarfmjschcxud\":\"datazlnrellwfgyabg\",\"qlltoiud\":\"dataomhhsumzfvrak\",\"bsbhaqsu\":\"dataeoibehrholjjxi\"}}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        DataFactoryManager manager = DataFactoryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DataFactoryManager manager = DataFactoryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IntegrationRuntimeMonitoringData response = manager.integrationRuntimes()
-            .getMonitoringDataWithResponse("ogfxbv", "lc", "dnajncefqn", com.azure.core.util.Context.NONE).getValue();
+            .getMonitoringDataWithResponse("yuukhssretugorc", "kcsevq", "dwktogmcblwh",
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("gbm", response.name());
+        Assertions.assertEquals("nisinpkcww", response.name());
     }
 }

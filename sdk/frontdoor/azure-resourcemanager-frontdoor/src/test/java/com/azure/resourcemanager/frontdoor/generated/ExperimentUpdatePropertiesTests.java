@@ -12,20 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ExperimentUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExperimentUpdateProperties model =
-            BinaryData
-                .fromString("{\"description\":\"zonokixrjqci\",\"enabledState\":\"Enabled\"}")
+        ExperimentUpdateProperties model
+            = BinaryData.fromString("{\"description\":\"pqg\",\"enabledState\":\"Disabled\"}")
                 .toObject(ExperimentUpdateProperties.class);
-        Assertions.assertEquals("zonokixrjqci", model.description());
-        Assertions.assertEquals(State.ENABLED, model.enabledState());
+        Assertions.assertEquals("pqg", model.description());
+        Assertions.assertEquals(State.DISABLED, model.enabledState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExperimentUpdateProperties model =
-            new ExperimentUpdateProperties().withDescription("zonokixrjqci").withEnabledState(State.ENABLED);
+        ExperimentUpdateProperties model
+            = new ExperimentUpdateProperties().withDescription("pqg").withEnabledState(State.DISABLED);
         model = BinaryData.fromObject(model).toObject(ExperimentUpdateProperties.class);
-        Assertions.assertEquals("zonokixrjqci", model.description());
-        Assertions.assertEquals(State.ENABLED, model.enabledState());
+        Assertions.assertEquals("pqg", model.description());
+        Assertions.assertEquals(State.DISABLED, model.enabledState());
     }
 }

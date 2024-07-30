@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class BackupsUnderBackupVaultRestoreFilesSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/
      * BackupsUnderBackupVault_SingleFileRestore.json
      */
     /**
@@ -21,10 +21,11 @@ public final class BackupsUnderBackupVaultRestoreFilesSamples {
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void backupsSingleFileRestore(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.backupsUnderBackupVaults().restoreFiles("myRG", "account1", "backupVault1", "backup1",
-            new BackupRestoreFiles().withFileList(Arrays.asList("/dir1/customer1.db", "/dir1/customer2.db"))
+        manager.backupsUnderBackupVaults()
+            .restoreFiles("myRG", "account1", "backupVault1", "backup1", new BackupRestoreFiles()
+                .withFileList(Arrays.asList("/dir1/customer1.db", "/dir1/customer2.db"))
                 .withDestinationVolumeId(
                     "/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1"),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

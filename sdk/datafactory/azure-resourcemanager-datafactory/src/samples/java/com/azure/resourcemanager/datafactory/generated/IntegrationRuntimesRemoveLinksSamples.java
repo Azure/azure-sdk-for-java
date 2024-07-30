@@ -20,9 +20,9 @@ public final class IntegrationRuntimesRemoveLinksSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void integrationRuntimesUpgrade(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimes().removeLinksWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleIntegrationRuntime",
-            new LinkedIntegrationRuntimeRequest().withLinkedFactoryName("exampleFactoryName-linked"),
-            com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes()
+            .removeLinksWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime",
+                new LinkedIntegrationRuntimeRequest().withLinkedFactoryName("exampleFactoryName-linked"),
+                com.azure.core.util.Context.NONE);
     }
 }

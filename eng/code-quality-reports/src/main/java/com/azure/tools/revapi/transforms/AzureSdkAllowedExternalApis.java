@@ -102,6 +102,8 @@ public final class AzureSdkAllowedExternalApis<E extends Element<E>> extends Bas
                 return ExternalApiStatus.CLOUD_EVENTS;
             } else if ("opentelemetry.".regionMatches(0, className, 3, 14)) {
                 return ExternalApiStatus.OPEN_TELEMETRY;
+            } else if ("clientcore.".regionMatches(0, className, 3, 10)) {
+                return ExternalApiStatus.SDK_CLASSES;
             }
         } else if (className.startsWith("org.")) {
             if ("json.".regionMatches(0, className, 4, 5)) {

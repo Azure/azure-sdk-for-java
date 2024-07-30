@@ -7,7 +7,9 @@ package com.azure.resourcemanager.resources.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information about a tenant managing the subscription. */
+/**
+ * Information about a tenant managing the subscription.
+ */
 @Immutable
 public final class ManagedByTenant {
     /*
@@ -16,13 +18,15 @@ public final class ManagedByTenant {
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
-    /** Creates an instance of ManagedByTenant class. */
+    /**
+     * Creates an instance of ManagedByTenant class.
+     */
     public ManagedByTenant() {
     }
 
     /**
      * Get the tenantId property: The tenant ID of the managing tenant. This is a GUID.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -31,7 +35,7 @@ public final class ManagedByTenant {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

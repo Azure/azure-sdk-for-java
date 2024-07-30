@@ -9,7 +9,9 @@ import com.azure.resourcemanager.resources.models.AvailabilityZonePeers;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Result of the Check zone peers operation. */
+/**
+ * Result of the Check zone peers operation.
+ */
 @Fluent
 public final class CheckZonePeersResultInner {
     /*
@@ -30,13 +32,15 @@ public final class CheckZonePeersResultInner {
     @JsonProperty(value = "availabilityZonePeers")
     private List<AvailabilityZonePeers> availabilityZonePeers;
 
-    /** Creates an instance of CheckZonePeersResultInner class. */
+    /**
+     * Creates an instance of CheckZonePeersResultInner class.
+     */
     public CheckZonePeersResultInner() {
     }
 
     /**
      * Get the subscriptionId property: The subscription ID.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -45,7 +49,7 @@ public final class CheckZonePeersResultInner {
 
     /**
      * Get the location property: the location of the subscription.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -54,7 +58,7 @@ public final class CheckZonePeersResultInner {
 
     /**
      * Set the location property: the location of the subscription.
-     *
+     * 
      * @param location the location value to set.
      * @return the CheckZonePeersResultInner object itself.
      */
@@ -65,7 +69,7 @@ public final class CheckZonePeersResultInner {
 
     /**
      * Get the availabilityZonePeers property: The Availability Zones shared by the subscriptions.
-     *
+     * 
      * @return the availabilityZonePeers value.
      */
     public List<AvailabilityZonePeers> availabilityZonePeers() {
@@ -74,7 +78,7 @@ public final class CheckZonePeersResultInner {
 
     /**
      * Set the availabilityZonePeers property: The Availability Zones shared by the subscriptions.
-     *
+     * 
      * @param availabilityZonePeers the availabilityZonePeers value to set.
      * @return the CheckZonePeersResultInner object itself.
      */
@@ -85,7 +89,7 @@ public final class CheckZonePeersResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

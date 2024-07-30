@@ -100,8 +100,8 @@ public final class RestResourceDatasetTypeProperties {
     }
 
     /**
-     * Get the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string
-     * (or Expression with resultType string).
+     * Get the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or
+     * Expression with resultType string).
      * 
      * @return the requestBody value.
      */
@@ -110,8 +110,8 @@ public final class RestResourceDatasetTypeProperties {
     }
 
     /**
-     * Set the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string
-     * (or Expression with resultType string).
+     * Set the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or
+     * Expression with resultType string).
      * 
      * @param requestBody the requestBody value to set.
      * @return the RestResourceDatasetTypeProperties object itself.

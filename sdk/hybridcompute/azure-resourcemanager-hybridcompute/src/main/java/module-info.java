@@ -4,16 +4,10 @@
 
 module com.azure.resourcemanager.hybridcompute {
     requires transitive com.azure.core.management;
-
     exports com.azure.resourcemanager.hybridcompute;
     exports com.azure.resourcemanager.hybridcompute.fluent;
     exports com.azure.resourcemanager.hybridcompute.fluent.models;
     exports com.azure.resourcemanager.hybridcompute.models;
-
-    opens com.azure.resourcemanager.hybridcompute.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.hybridcompute.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.hybridcompute.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.hybridcompute.models to com.azure.core;
 }

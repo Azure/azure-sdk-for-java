@@ -183,16 +183,10 @@ public class NamespaceProperties implements XmlSerializable<NamespaceProperties>
     }
 
     public static NamespaceProperties fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        // BEGIN: com.azure.xml.XmlReader.readObject#String-String-ReadValueCallback
         return xmlReader.readObject("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
             getRootElementName(rootElementName, "NamespaceInfo"), reader -> {
-
-                String alias = null;
-                OffsetDateTime createdTime = null;
-                MessagingSku messagingSku = null;
-                Integer messagingUnits = null;
-                OffsetDateTime modifiedTime = null;
-                String name = null;
-                NamespaceType namespaceType = null;
+                NamespaceProperties properties = new NamespaceProperties();
 
                 while (xmlReader.nextElement() != XmlToken.END_ELEMENT) {
                     QName qName = xmlReader.getElementName();
@@ -201,35 +195,30 @@ public class NamespaceProperties implements XmlSerializable<NamespaceProperties>
 
                     if ("Alias".equals(localPart)
                         && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect".equals(namespaceUri)) {
-                        alias = xmlReader.getStringElement();
+                        properties.alias = xmlReader.getStringElement();
                     } else if ("CreatedTime".equals(localPart)
                         && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect".equals(namespaceUri)) {
-                        createdTime = OffsetDateTime.parse(xmlReader.getStringElement());
+                        properties.createdTime = OffsetDateTime.parse(xmlReader.getStringElement());
                     } else if ("MessagingSKU".equals(localPart)
                         && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect".equals(namespaceUri)) {
-                        messagingSku = MessagingSku.fromString(xmlReader.getStringElement());
+                        properties.messagingSku = MessagingSku.fromString(xmlReader.getStringElement());
                     } else if ("MessagingUnits".equals(localPart)
                         && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect".equals(namespaceUri)) {
-                        messagingUnits = xmlReader.getIntElement();
+                        properties.messagingUnits = xmlReader.getIntElement();
                     } else if ("ModifiedTime".equals(localPart)
                         && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect".equals(namespaceUri)) {
-                        modifiedTime = OffsetDateTime.parse(xmlReader.getStringElement());
+                        properties.modifiedTime = OffsetDateTime.parse(xmlReader.getStringElement());
                     } else if ("Name".equals(localPart)
                         && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect".equals(namespaceUri)) {
-                        name = xmlReader.getStringElement();
+                        properties.name = xmlReader.getStringElement();
                     } else if ("NamespaceType".equals(localPart)
                         && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect".equals(namespaceUri)) {
-                        namespaceType = NamespaceType.fromString(xmlReader.getStringElement());
+                        properties.namespaceType = NamespaceType.fromString(xmlReader.getStringElement());
                     }
                 }
 
-                return new NamespaceProperties().setAlias(alias)
-                    .setCreatedTime(createdTime)
-                    .setMessagingSku(messagingSku)
-                    .setMessagingUnits(messagingUnits)
-                    .setModifiedTime(modifiedTime)
-                    .setName(name)
-                    .setNamespaceType(namespaceType);
+                return properties;
             });
+        // END: com.azure.xml.XmlReader.readObject#String-String-ReadValueCallback
     }
 }

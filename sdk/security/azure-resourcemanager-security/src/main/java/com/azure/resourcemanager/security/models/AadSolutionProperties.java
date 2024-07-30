@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AadSolutionProperties extends ExternalSecuritySolutionProperties {
     /*
-     * The connectivity state of the external AAD solution
+     * The connectivity state of the external AAD solution 
      */
     @JsonProperty(value = "connectivityState")
     private AadConnectivityState connectivityState;

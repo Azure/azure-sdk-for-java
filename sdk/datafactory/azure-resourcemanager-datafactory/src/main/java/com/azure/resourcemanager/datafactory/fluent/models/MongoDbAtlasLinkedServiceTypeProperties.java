@@ -113,12 +113,14 @@ public final class MongoDbAtlasLinkedServiceTypeProperties {
      */
     public void validate() {
         if (connectionString() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property connectionString in model MongoDbAtlasLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property connectionString in model MongoDbAtlasLinkedServiceTypeProperties"));
         }
         if (database() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property database in model MongoDbAtlasLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property database in model MongoDbAtlasLinkedServiceTypeProperties"));
         }
     }
 

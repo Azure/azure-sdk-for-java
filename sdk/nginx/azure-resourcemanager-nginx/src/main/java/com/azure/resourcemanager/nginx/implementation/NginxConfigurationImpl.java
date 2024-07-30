@@ -4,10 +4,13 @@
 
 package com.azure.resourcemanager.nginx.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.nginx.fluent.models.NginxConfigurationInner;
+import com.azure.resourcemanager.nginx.models.AnalysisCreate;
+import com.azure.resourcemanager.nginx.models.AnalysisResult;
 import com.azure.resourcemanager.nginx.models.NginxConfiguration;
 import com.azure.resourcemanager.nginx.models.NginxConfigurationProperties;
 
@@ -74,14 +77,16 @@ public final class NginxConfigurationImpl
     }
 
     public NginxConfiguration create() {
-        this.innerObject = serviceManager.serviceClient().getConfigurations().createOrUpdate(resourceGroupName,
-            deploymentName, configurationName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurations()
+            .createOrUpdate(resourceGroupName, deploymentName, configurationName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public NginxConfiguration create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getConfigurations().createOrUpdate(resourceGroupName,
-            deploymentName, configurationName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurations()
+            .createOrUpdate(resourceGroupName, deploymentName, configurationName, this.innerModel(), context);
         return this;
     }
 
@@ -96,14 +101,16 @@ public final class NginxConfigurationImpl
     }
 
     public NginxConfiguration apply() {
-        this.innerObject = serviceManager.serviceClient().getConfigurations().createOrUpdate(resourceGroupName,
-            deploymentName, configurationName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurations()
+            .createOrUpdate(resourceGroupName, deploymentName, configurationName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public NginxConfiguration apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getConfigurations().createOrUpdate(resourceGroupName,
-            deploymentName, configurationName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurations()
+            .createOrUpdate(resourceGroupName, deploymentName, configurationName, this.innerModel(), context);
         return this;
     }
 
@@ -111,21 +118,34 @@ public final class NginxConfigurationImpl
         com.azure.resourcemanager.nginx.NginxManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.deploymentName = Utils.getValueFromIdByName(innerObject.id(), "nginxDeployments");
-        this.configurationName = Utils.getValueFromIdByName(innerObject.id(), "configurations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.deploymentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "nginxDeployments");
+        this.configurationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "configurations");
     }
 
     public NginxConfiguration refresh() {
-        this.innerObject = serviceManager.serviceClient().getConfigurations()
-            .getWithResponse(resourceGroupName, deploymentName, configurationName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurations()
+            .getWithResponse(resourceGroupName, deploymentName, configurationName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NginxConfiguration refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getConfigurations()
-            .getWithResponse(resourceGroupName, deploymentName, configurationName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurations()
+            .getWithResponse(resourceGroupName, deploymentName, configurationName, context)
+            .getValue();
         return this;
+    }
+
+    public Response<AnalysisResult> analysisWithResponse(AnalysisCreate body, Context context) {
+        return serviceManager.configurations()
+            .analysisWithResponse(resourceGroupName, deploymentName, configurationName, body, context);
+    }
+
+    public AnalysisResult analysis() {
+        return serviceManager.configurations().analysis(resourceGroupName, deploymentName, configurationName);
     }
 
     public NginxConfigurationImpl withRegion(Region location) {

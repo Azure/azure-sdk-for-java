@@ -5,7 +5,6 @@ package com.azure.search.documents.indexes;
 
 import com.azure.core.models.GeoPoint;
 import com.azure.search.documents.TestHelpers;
-import com.azure.search.documents.indexes.models.LexicalNormalizerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.test.environment.models.HotelAnalyzerException;
@@ -20,8 +19,6 @@ import com.azure.search.documents.test.environment.models.HotelWithIgnoredFields
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -126,7 +123,7 @@ public class FieldBuilderTests {
     public void supportedFields() {
         List<SearchField> fields = SearchIndexClient.buildSearchFields(AllSupportedFields.class, null);
 
-        assertEquals(23, fields.size());
+        assertEquals(25, fields.size());
 
         Map<String, SearchFieldDataType> fieldToDataType = fields.stream()
             .collect(Collectors.toMap(SearchField::getName, SearchField::getType));
@@ -154,6 +151,9 @@ public class FieldBuilderTests {
         assertEquals(SearchFieldDataType.INT16, fieldToDataType.get("primitiveShort"));
         assertEquals(SearchFieldDataType.SBYTE, fieldToDataType.get("nullableByte"));
         assertEquals(SearchFieldDataType.SBYTE, fieldToDataType.get("primitiveByte"));
+        assertEquals(SearchFieldDataType.collection(SearchFieldDataType.SBYTE), fieldToDataType.get("byteArray"));
+        assertEquals(SearchFieldDataType.collection(SearchFieldDataType.SBYTE), fieldToDataType.get("byteList"));
+
     }
 
     @SuppressWarnings({"unused", "UseOfObsoleteDateTimeApi"})
@@ -296,42 +296,18 @@ public class FieldBuilderTests {
         public Byte getNullableByte() {
             return nullableByte;
         }
-    }
-    @Test
-    public void validNormalizerField() {
-        List<SearchField> fields = SearchIndexClient.buildSearchFields(ValidNormalizer.class, null);
 
-        assertEquals(1, fields.size());
+        // 24. name = 'byteArray', OData type = COMPLEX
+        private byte[] byteArray;
+        public byte[] getByteArray() {
+            return byteArray;
+        }
 
-        SearchField normalizerField = fields.get(0);
-        assertEquals(LexicalNormalizerName.STANDARD, normalizerField.getNormalizerName());
-    }
-
-    @SuppressWarnings("unused")
-    public static final class ValidNormalizer {
-        @SimpleField(normalizerName = "standard", isFilterable = true)
-        public String validNormalizer;
-    }
-
-    @ParameterizedTest
-    @ValueSource(classes = { NonStringNormalizer.class, MissingFunctionalityNormalizer.class })
-    public void invalidNormalizerField(Class<?> type) {
-        RuntimeException ex = assertThrows(RuntimeException.class,
-            () -> SearchIndexClient.buildSearchFields(type, null));
-
-        assertTrue(ex.getMessage().contains("A field with a normalizer name"));
-    }
-
-    @SuppressWarnings("unused")
-    public static final class NonStringNormalizer {
-        @SimpleField(normalizerName = "standard")
-        public int wrongTypeForNormalizer;
-    }
-
-    @SuppressWarnings("unused")
-    public static final class MissingFunctionalityNormalizer {
-        @SimpleField(normalizerName = "standard")
-        public String rightTypeWrongFunctionality;
+        // 25. name = 'byteList', OData type = COMPLEX
+        private List<Byte> byteList;
+        public List<Byte> getByteList() {
+            return byteList;
+        }
     }
 
     @Test

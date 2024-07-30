@@ -13,9 +13,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.PrivateLinkServ
  */
 public final class PrivateEndpointConnectionOperationUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/
-     * PrivateEndpointConnectionUpdate.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/PrivateEndpointConnectionUpdate.json
      */
     /**
      * Sample code: Approve or reject a private endpoint connection with a given name.
@@ -24,11 +22,11 @@ public final class PrivateEndpointConnectionOperationUpdateSamples {
      */
     public static void approveOrRejectAPrivateEndpointConnectionWithAGivenName(
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        manager.privateEndpointConnectionOperations().update("Default", "test-svr",
-            "private-endpoint-connection-name.1fa229cd-bf3f-47f0-8c49-afb36723997e",
-            new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
-                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
-                    .withDescription("Approved by johndoe@contoso.com")),
-            com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnectionOperations()
+            .update("Default", "test-svr", "private-endpoint-connection-name.1fa229cd-bf3f-47f0-8c49-afb36723997e",
+                new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
+                    new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                        .withDescription("Approved by johndoe@contoso.com")),
+                com.azure.core.util.Context.NONE);
     }
 }

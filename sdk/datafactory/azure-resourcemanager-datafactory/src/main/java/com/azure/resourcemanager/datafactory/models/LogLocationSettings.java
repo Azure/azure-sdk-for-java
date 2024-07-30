@@ -81,8 +81,9 @@ public final class LogLocationSettings {
      */
     public void validate() {
         if (linkedServiceName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property linkedServiceName in model LogLocationSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property linkedServiceName in model LogLocationSettings"));
         } else {
             linkedServiceName().validate();
         }

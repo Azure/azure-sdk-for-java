@@ -28,8 +28,8 @@ public final class ProtectionContainerOperationResultsImpl implements Protection
 
     public Response<ProtectionContainerResource> getWithResponse(String vaultName, String resourceGroupName,
         String fabricName, String containerName, String operationId, Context context) {
-        Response<ProtectionContainerResourceInner> inner = this.serviceClient().getWithResponse(vaultName,
-            resourceGroupName, fabricName, containerName, operationId, context);
+        Response<ProtectionContainerResourceInner> inner = this.serviceClient()
+            .getWithResponse(vaultName, resourceGroupName, fabricName, containerName, operationId, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ProtectionContainerResourceImpl(inner.getValue(), this.manager()));

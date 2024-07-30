@@ -23,7 +23,8 @@ public final class ConnectionStateTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ConnectionState model = new ConnectionState().withStatus(PersistedConnectionStatus.DISCONNECTED)
-            .withDescription("xiebwwaloayqcg").withActionsRequired("tzjuzgwyzmhtxo");
+            .withDescription("xiebwwaloayqcg")
+            .withActionsRequired("tzjuzgwyzmhtxo");
         model = BinaryData.fromObject(model).toObject(ConnectionState.class);
         Assertions.assertEquals(PersistedConnectionStatus.DISCONNECTED, model.status());
         Assertions.assertEquals("xiebwwaloayqcg", model.description());

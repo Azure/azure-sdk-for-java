@@ -13,7 +13,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineReimageParameters;
 public final class VirtualMachinesReimageSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Reimage.json
      */
     /**
@@ -22,13 +22,17 @@ public final class VirtualMachinesReimageSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void reimageAVirtualMachine(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().reimage("myResourceGroup", "myVMName",
-            new VirtualMachineReimageParameters().withTempDisk(true), com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .reimage("myResourceGroup", "myVMName", new VirtualMachineReimageParameters().withTempDisk(true),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Reimage_NonEphemeralVMs.json
      */
     /**
@@ -37,10 +41,15 @@ public final class VirtualMachinesReimageSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void reimageANonEphemeralVirtualMachine(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().reimage(
-            "myResourceGroup", "myVMName", new VirtualMachineReimageParameters().withTempDisk(true)
-                .withExactVersion("aaaaaa").withOsProfile(new OSProfileProvisioningData()
-                    .withAdminPassword("fakeTokenPlaceholder").withCustomData("{your-custom-data}")),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .reimage("myResourceGroup", "myVMName",
+                new VirtualMachineReimageParameters().withTempDisk(true)
+                    .withExactVersion("aaaaaa")
+                    .withOsProfile(new OSProfileProvisioningData().withAdminPassword("fakeTokenPlaceholder")
+                        .withCustomData("{your-custom-data}")),
+                com.azure.core.util.Context.NONE);
     }
 }

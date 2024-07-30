@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.models.PrivateLinkServiceConnectionStat
  */
 public final class PrivateLinkServicesUpdatePrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * PrivateLinkServiceUpdatePrivateEndpointConnection.json
      */
     /**
@@ -22,11 +22,15 @@ public final class PrivateLinkServicesUpdatePrivateEndpointConnectionSamples {
      */
     public static void approveOrRejectPrivateEndPointConnectionForAPrivateLinkService(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getPrivateLinkServices()
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getPrivateLinkServices()
             .updatePrivateEndpointConnectionWithResponse("rg1", "testPls", "testPlePeConnection",
                 new PrivateEndpointConnectionInner().withName("testPlePeConnection")
-                    .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                        .withStatus("Approved").withDescription("approved it for some reason.")),
+                    .withPrivateLinkServiceConnectionState(
+                        new PrivateLinkServiceConnectionState().withStatus("Approved")
+                            .withDescription("approved it for some reason.")),
                 com.azure.core.util.Context.NONE);
     }
 }

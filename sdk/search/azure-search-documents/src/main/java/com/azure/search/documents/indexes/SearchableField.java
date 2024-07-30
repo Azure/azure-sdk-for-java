@@ -5,9 +5,9 @@ package com.azure.search.documents.indexes;
 
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
-import com.azure.search.documents.indexes.models.LexicalNormalizerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SynonymMap;
+import com.azure.search.documents.indexes.models.VectorEncodingFormat;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -88,14 +88,6 @@ public @interface SearchableField {
     String indexAnalyzerName() default "";
 
     /**
-     * A {@link LexicalNormalizerName} to associate as the normalizer for the {@link SearchField field}.
-     *
-     * @return The {@link LexicalNormalizerName} that will be associated as the normalizer for the
-     * {@link SearchField field}.
-     */
-    String normalizerName() default "";
-
-    /**
      * A list of {@link SynonymMap} names to be associated with the {@link SearchField field}.
      * <p>
      * Assigning a synonym map to a field ensures that query terms targeting that field are expanded at query-time using
@@ -126,4 +118,12 @@ public @interface SearchableField {
      */
     String vectorSearchProfileName() default "";
 
+    /**
+     * A {@link VectorEncodingFormat} to be associated with the {@link SearchField field}.
+     * <p>
+     * If the value is empty, the field won't have a {@link SearchField#getVectorEncodingFormat()} value.
+     *
+     * @return The {@link VectorEncodingFormat} that will be associated with the {@link SearchField field}.
+     */
+    String vectorEncodingFormat() default "";
 }

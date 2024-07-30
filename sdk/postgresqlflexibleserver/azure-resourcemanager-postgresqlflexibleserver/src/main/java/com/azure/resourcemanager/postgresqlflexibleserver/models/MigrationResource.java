@@ -73,6 +73,13 @@ public interface MigrationResource {
     MigrationStatus currentStatus();
 
     /**
+     * Gets the migrationInstanceResourceId property: ResourceId of the private endpoint migration instance.
+     * 
+     * @return the migrationInstanceResourceId value.
+     */
+    String migrationInstanceResourceId();
+
+    /**
      * Gets the migrationMode property: There are two types of migration modes Online and Offline.
      * 
      * @return the migrationMode value.
@@ -87,8 +94,8 @@ public interface MigrationResource {
     MigrationOption migrationOption();
 
     /**
-     * Gets the sourceType property: migration source server type : OnPremises, AWS, GCP, AzureVM or
-     * PostgreSQLSingleServer.
+     * Gets the sourceType property: migration source server type : OnPremises, AWS, GCP, AzureVM,
+     * PostgreSQLSingleServer, AWS_RDS, AWS_AURORA, AWS_EC2, GCP_CloudSQL, GCP_AlloyDB, GCP_Compute, or EDB.
      * 
      * @return the sourceType value.
      */
@@ -118,7 +125,8 @@ public interface MigrationResource {
 
     /**
      * Gets the sourceDbServerResourceId property: ResourceId of the source database server in case the sourceType is
-     * PostgreSQLSingleServer. For other source types this should be ipaddress:port@username or hostname:port@username.
+     * PostgreSQLSingleServer. For other source types this should be ipaddress:port&#064;username or
+     * hostname:port&#064;username.
      * 
      * @return the sourceDbServerResourceId value.
      */
@@ -191,6 +199,13 @@ public interface MigrationResource {
      * @return the migrationWindowEndTimeInUtc value.
      */
     OffsetDateTime migrationWindowEndTimeInUtc();
+
+    /**
+     * Gets the migrateRoles property: To migrate roles and permissions we need to send this flag as True.
+     * 
+     * @return the migrateRoles value.
+     */
+    MigrateRolesEnum migrateRoles();
 
     /**
      * Gets the startDataMigration property: Indicates whether the data migration should start right away.
@@ -315,15 +330,17 @@ public interface MigrationResource {
          * The stage of the MigrationResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithMigrationMode,
-            DefinitionStages.WithMigrationOption, DefinitionStages.WithSourceType, DefinitionStages.WithSslMode,
-            DefinitionStages.WithSourceDbServerResourceId, DefinitionStages.WithSourceDbServerFullyQualifiedDomainName,
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithMigrationInstanceResourceId,
+            DefinitionStages.WithMigrationMode, DefinitionStages.WithMigrationOption, DefinitionStages.WithSourceType,
+            DefinitionStages.WithSslMode, DefinitionStages.WithSourceDbServerResourceId,
+            DefinitionStages.WithSourceDbServerFullyQualifiedDomainName,
             DefinitionStages.WithTargetDbServerFullyQualifiedDomainName, DefinitionStages.WithSecretParameters,
             DefinitionStages.WithDbsToMigrate, DefinitionStages.WithSetupLogicalReplicationOnSourceDbIfNeeded,
             DefinitionStages.WithOverwriteDbsInTarget, DefinitionStages.WithMigrationWindowStartTimeInUtc,
-            DefinitionStages.WithMigrationWindowEndTimeInUtc, DefinitionStages.WithStartDataMigration,
-            DefinitionStages.WithTriggerCutover, DefinitionStages.WithDbsToTriggerCutoverOn,
-            DefinitionStages.WithCancel, DefinitionStages.WithDbsToCancelMigrationOn {
+            DefinitionStages.WithMigrationWindowEndTimeInUtc, DefinitionStages.WithMigrateRoles,
+            DefinitionStages.WithStartDataMigration, DefinitionStages.WithTriggerCutover,
+            DefinitionStages.WithDbsToTriggerCutoverOn, DefinitionStages.WithCancel,
+            DefinitionStages.WithDbsToCancelMigrationOn {
             /**
              * Executes the create request.
              * 
@@ -351,6 +368,20 @@ public interface MigrationResource {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the MigrationResource definition allowing to specify migrationInstanceResourceId.
+         */
+        interface WithMigrationInstanceResourceId {
+            /**
+             * Specifies the migrationInstanceResourceId property: ResourceId of the private endpoint migration
+             * instance.
+             * 
+             * @param migrationInstanceResourceId ResourceId of the private endpoint migration instance.
+             * @return the next definition stage.
+             */
+            WithCreate withMigrationInstanceResourceId(String migrationInstanceResourceId);
         }
 
         /**
@@ -384,10 +415,11 @@ public interface MigrationResource {
          */
         interface WithSourceType {
             /**
-             * Specifies the sourceType property: migration source server type : OnPremises, AWS, GCP, AzureVM or
-             * PostgreSQLSingleServer.
+             * Specifies the sourceType property: migration source server type : OnPremises, AWS, GCP, AzureVM,
+             * PostgreSQLSingleServer, AWS_RDS, AWS_AURORA, AWS_EC2, GCP_CloudSQL, GCP_AlloyDB, GCP_Compute, or EDB.
              * 
-             * @param sourceType migration source server type : OnPremises, AWS, GCP, AzureVM or PostgreSQLSingleServer.
+             * @param sourceType migration source server type : OnPremises, AWS, GCP, AzureVM, PostgreSQLSingleServer,
+             * AWS_RDS, AWS_AURORA, AWS_EC2, GCP_CloudSQL, GCP_AlloyDB, GCP_Compute, or EDB.
              * @return the next definition stage.
              */
             WithCreate withSourceType(SourceType sourceType);
@@ -414,12 +446,12 @@ public interface MigrationResource {
         interface WithSourceDbServerResourceId {
             /**
              * Specifies the sourceDbServerResourceId property: ResourceId of the source database server in case the
-             * sourceType is PostgreSQLSingleServer. For other source types this should be ipaddress:port@username or
-             * hostname:port@username.
+             * sourceType is PostgreSQLSingleServer. For other source types this should be ipaddress:port&#064;username
+             * or hostname:port&#064;username.
              * 
              * @param sourceDbServerResourceId ResourceId of the source database server in case the sourceType is
-             * PostgreSQLSingleServer. For other source types this should be ipaddress:port@username or
-             * hostname:port@username.
+             * PostgreSQLSingleServer. For other source types this should be ipaddress:port&#064;username or
+             * hostname:port&#064;username.
              * @return the next definition stage.
              */
             WithCreate withSourceDbServerResourceId(String sourceDbServerResourceId);
@@ -541,6 +573,19 @@ public interface MigrationResource {
         }
 
         /**
+         * The stage of the MigrationResource definition allowing to specify migrateRoles.
+         */
+        interface WithMigrateRoles {
+            /**
+             * Specifies the migrateRoles property: To migrate roles and permissions we need to send this flag as True.
+             * 
+             * @param migrateRoles To migrate roles and permissions we need to send this flag as True.
+             * @return the next definition stage.
+             */
+            WithCreate withMigrateRoles(MigrateRolesEnum migrateRoles);
+        }
+
+        /**
          * The stage of the MigrationResource definition allowing to specify startDataMigration.
          */
         interface WithStartDataMigration {
@@ -626,8 +671,9 @@ public interface MigrationResource {
         UpdateStages.WithTargetDbServerFullyQualifiedDomainName, UpdateStages.WithSecretParameters,
         UpdateStages.WithDbsToMigrate, UpdateStages.WithSetupLogicalReplicationOnSourceDbIfNeeded,
         UpdateStages.WithOverwriteDbsInTarget, UpdateStages.WithMigrationWindowStartTimeInUtc,
-        UpdateStages.WithStartDataMigration, UpdateStages.WithTriggerCutover, UpdateStages.WithDbsToTriggerCutoverOn,
-        UpdateStages.WithCancel, UpdateStages.WithDbsToCancelMigrationOn, UpdateStages.WithMigrationMode {
+        UpdateStages.WithMigrateRoles, UpdateStages.WithStartDataMigration, UpdateStages.WithTriggerCutover,
+        UpdateStages.WithDbsToTriggerCutoverOn, UpdateStages.WithCancel, UpdateStages.WithDbsToCancelMigrationOn,
+        UpdateStages.WithMigrationMode {
         /**
          * Executes the update request.
          * 
@@ -774,6 +820,19 @@ public interface MigrationResource {
              * @return the next definition stage.
              */
             Update withMigrationWindowStartTimeInUtc(OffsetDateTime migrationWindowStartTimeInUtc);
+        }
+
+        /**
+         * The stage of the MigrationResource update allowing to specify migrateRoles.
+         */
+        interface WithMigrateRoles {
+            /**
+             * Specifies the migrateRoles property: To migrate roles and permissions we need to send this flag as True.
+             * 
+             * @param migrateRoles To migrate roles and permissions we need to send this flag as True.
+             * @return the next definition stage.
+             */
+            Update withMigrateRoles(MigrateRolesEnum migrateRoles);
         }
 
         /**

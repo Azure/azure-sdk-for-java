@@ -6,6 +6,7 @@ package com.azure.ai.openai.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
+import java.util.List;
 
 /**
  * The configuration information for an audio transcription request.
@@ -27,8 +28,7 @@ public final class AudioTranscriptionOptions {
     private AudioTranscriptionFormat responseFormat;
 
     /*
-     * The primary spoken language of the audio data to be transcribed, supplied as a two-letter ISO-639-1 language
-     * code
+     * The primary spoken language of the audio data to be transcribed, supplied as a two-letter ISO-639-1 language code
      * such as 'en' or 'fr'.
      * Providing this known input language is optional but may improve the accuracy and/or latency of transcription.
      */
@@ -206,8 +206,7 @@ public final class AudioTranscriptionOptions {
     private String filename;
 
     /**
-     * Get the filename property: The optional filename or descriptive identifier to associate with with the audio
-     * data.
+     * Get the filename property: The optional filename or descriptive identifier to associate with with the audio data.
      *
      * @return the filename value.
      */
@@ -217,8 +216,7 @@ public final class AudioTranscriptionOptions {
     }
 
     /**
-     * Set the filename property: The optional filename or descriptive identifier to associate with with the audio
-     * data.
+     * Set the filename property: The optional filename or descriptive identifier to associate with with the audio data.
      *
      * @param filename the filename value to set.
      * @return the AudioTranscriptionOptions object itself.
@@ -236,5 +234,46 @@ public final class AudioTranscriptionOptions {
      */
     public AudioTranscriptionOptions(byte[] file) {
         this.file = file;
+    }
+
+    /*
+     * The timestamp granularities to populate for this transcription.
+     * `response_format` must be set `verbose_json` to use timestamp granularities.
+     * Either or both of these options are supported: `word`, or `segment`.
+     * Note: There is no additional latency for segment timestamps, but generating word timestamps incurs additional
+     * latency.
+     */
+    @Generated
+    private List<AudioTranscriptionTimestampGranularity> timestampGranularities;
+
+    /**
+     * Get the timestampGranularities property: The timestamp granularities to populate for this transcription.
+     * `response_format` must be set `verbose_json` to use timestamp granularities.
+     * Either or both of these options are supported: `word`, or `segment`.
+     * Note: There is no additional latency for segment timestamps, but generating word timestamps incurs additional
+     * latency.
+     *
+     * @return the timestampGranularities value.
+     */
+    @Generated
+    public List<AudioTranscriptionTimestampGranularity> getTimestampGranularities() {
+        return this.timestampGranularities;
+    }
+
+    /**
+     * Set the timestampGranularities property: The timestamp granularities to populate for this transcription.
+     * `response_format` must be set `verbose_json` to use timestamp granularities.
+     * Either or both of these options are supported: `word`, or `segment`.
+     * Note: There is no additional latency for segment timestamps, but generating word timestamps incurs additional
+     * latency.
+     *
+     * @param timestampGranularities the timestampGranularities value to set.
+     * @return the AudioTranscriptionOptions object itself.
+     */
+    @Generated
+    public AudioTranscriptionOptions
+        setTimestampGranularities(List<AudioTranscriptionTimestampGranularity> timestampGranularities) {
+        this.timestampGranularities = timestampGranularities;
+        return this;
     }
 }

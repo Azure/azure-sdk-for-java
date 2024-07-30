@@ -12,7 +12,9 @@ import com.azure.resourcemanager.cdn.models.HealthProbeParameters;
 import com.azure.resourcemanager.cdn.models.LoadBalancingSettingsParameters;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The JSON object that contains the properties of the origin group. */
+/**
+ * The JSON object that contains the properties of the origin group.
+ */
 @Fluent
 public final class AfdOriginGroupProperties extends AfdOriginGroupUpdatePropertiesParameters {
     /*
@@ -27,13 +29,15 @@ public final class AfdOriginGroupProperties extends AfdOriginGroupUpdateProperti
     @JsonProperty(value = "deploymentStatus", access = JsonProperty.Access.WRITE_ONLY)
     private DeploymentStatus deploymentStatus;
 
-    /** Creates an instance of AfdOriginGroupProperties class. */
+    /**
+     * Creates an instance of AfdOriginGroupProperties class.
+     */
     public AfdOriginGroupProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning status.
-     *
+     * 
      * @return the provisioningState value.
      */
     public AfdProvisioningState provisioningState() {
@@ -42,38 +46,45 @@ public final class AfdOriginGroupProperties extends AfdOriginGroupUpdateProperti
 
     /**
      * Get the deploymentStatus property: The deploymentStatus property.
-     *
+     * 
      * @return the deploymentStatus value.
      */
     public DeploymentStatus deploymentStatus() {
         return this.deploymentStatus;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AfdOriginGroupProperties withLoadBalancingSettings(LoadBalancingSettingsParameters loadBalancingSettings) {
         super.withLoadBalancingSettings(loadBalancingSettings);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AfdOriginGroupProperties withHealthProbeSettings(HealthProbeParameters healthProbeSettings) {
         super.withHealthProbeSettings(healthProbeSettings);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AfdOriginGroupProperties withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
         Integer trafficRestorationTimeToHealedOrNewEndpointsInMinutes) {
-        super
-            .withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
-                trafficRestorationTimeToHealedOrNewEndpointsInMinutes);
+        super.withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
+            trafficRestorationTimeToHealedOrNewEndpointsInMinutes);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AfdOriginGroupProperties withSessionAffinityState(EnabledState sessionAffinityState) {
         super.withSessionAffinityState(sessionAffinityState);
@@ -82,7 +93,7 @@ public final class AfdOriginGroupProperties extends AfdOriginGroupUpdateProperti
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

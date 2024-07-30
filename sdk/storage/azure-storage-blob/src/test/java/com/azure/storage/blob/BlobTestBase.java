@@ -4,7 +4,6 @@
 package com.azure.storage.blob;
 
 import com.azure.core.client.traits.HttpTrait;
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
@@ -20,7 +19,6 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobProperties;
@@ -217,14 +215,13 @@ public class BlobTestBase extends TestProxyTestBase {
         return FluxUtil.collectBytesInByteBufferStream(content).map(ByteBuffer::wrap);
     }
 
-    protected static String getAuthToken() {
+    protected String getAuthToken() {
         if (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) {
             // we just need some string to satisfy SDK for playback mode. Recording framework handles this fine.
             return "recordingBearerToken";
         }
-        return new EnvironmentCredentialBuilder().build().getToken(new TokenRequestContext()
-                .setScopes(Collections.singletonList("https://storage.azure.com/.default")))
-            .map(AccessToken::getToken).block();
+        return StorageCommonTestUtils.getTokenCredential(interceptorManager).getTokenSync(new TokenRequestContext()
+                .setScopes(Collections.singletonList("https://storage.azure.com/.default"))).getToken();
     }
 
     protected String generateContainerName() {
@@ -365,7 +362,7 @@ public class BlobTestBase extends TestProxyTestBase {
 
         instrument(builder);
 
-        return setOauthCredentials(builder).buildClient();
+        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildClient();
     }
 
     protected BlobServiceAsyncClient getOAuthServiceAsyncClient() {
@@ -374,17 +371,7 @@ public class BlobTestBase extends TestProxyTestBase {
 
         instrument(builder);
 
-        return setOauthCredentials(builder).buildAsyncClient();
-    }
-
-    protected BlobServiceClientBuilder setOauthCredentials(BlobServiceClientBuilder builder) {
-        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
-            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-            return builder.credential(new EnvironmentCredentialBuilder().build());
-        } else {
-            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
-            return builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential());
-        }
+        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildAsyncClient();
     }
 
     protected BlobServiceClient getServiceClient(String endpoint) {
@@ -456,13 +443,7 @@ public class BlobTestBase extends TestProxyTestBase {
             builder.addPolicy(policy);
         }
 
-        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
-            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-            builder.credential(new EnvironmentCredentialBuilder().build());
-        } else {
-            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
-            builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential());
-        }
+        builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));
 
         instrument(builder);
         return builder;
@@ -565,13 +546,7 @@ public class BlobTestBase extends TestProxyTestBase {
             builder.addPolicy(policy);
         }
 
-        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
-            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-            builder.credential(new EnvironmentCredentialBuilder().build());
-        } else {
-            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
-            builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential());
-        }
+        builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));
 
         instrument(builder);
         return builder;
@@ -634,13 +609,7 @@ public class BlobTestBase extends TestProxyTestBase {
             builder.addPolicy(policy);
         }
 
-        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
-            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-            builder.credential(new EnvironmentCredentialBuilder().build());
-        } else {
-            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
-            builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential());
-        }
+        builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));
 
         instrument(builder);
         return builder;
@@ -727,13 +696,7 @@ public class BlobTestBase extends TestProxyTestBase {
             builder.addPolicy(policy);
         }
 
-        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
-            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-            builder.credential(new EnvironmentCredentialBuilder().build());
-        } else {
-            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
-            builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential());
-        }
+        builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));
 
         instrument(builder);
         return builder;

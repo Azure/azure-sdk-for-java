@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SwiftVirtualNetworkProperties {
     /*
-     * The Virtual Network subnet's resource ID. This is the subnet that this Web App will join. This subnet must have
-     * a delegation to Microsoft.Web/serverFarms defined first.
+     * The Virtual Network subnet's resource ID. This is the subnet that this Web App will join. This subnet must have a delegation to Microsoft.Web/serverFarms defined first.
      */
     @JsonProperty(value = "subnetResourceId")
     private String subnetResourceId;
@@ -32,8 +31,8 @@ public final class SwiftVirtualNetworkProperties {
     }
 
     /**
-     * Get the subnetResourceId property: The Virtual Network subnet's resource ID. This is the subnet that this Web
-     * App will join. This subnet must have a delegation to Microsoft.Web/serverFarms defined first.
+     * Get the subnetResourceId property: The Virtual Network subnet's resource ID. This is the subnet that this Web App
+     * will join. This subnet must have a delegation to Microsoft.Web/serverFarms defined first.
      * 
      * @return the subnetResourceId value.
      */
@@ -42,8 +41,8 @@ public final class SwiftVirtualNetworkProperties {
     }
 
     /**
-     * Set the subnetResourceId property: The Virtual Network subnet's resource ID. This is the subnet that this Web
-     * App will join. This subnet must have a delegation to Microsoft.Web/serverFarms defined first.
+     * Set the subnetResourceId property: The Virtual Network subnet's resource ID. This is the subnet that this Web App
+     * will join. This subnet must have a delegation to Microsoft.Web/serverFarms defined first.
      * 
      * @param subnetResourceId the subnetResourceId value to set.
      * @return the SwiftVirtualNetworkProperties object itself.

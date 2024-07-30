@@ -15,7 +15,7 @@ import java.util.Map;
 public final class IpAllocationsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/IpAllocationCreate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/IpAllocationCreate.json
      */
     /**
      * Sample code: Create IpAllocation.
@@ -23,12 +23,16 @@ public final class IpAllocationsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createIpAllocation(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getIpAllocations().createOrUpdate("rg1", "test-ipallocation",
-            new IpAllocationInner().withLocation("centraluseuap").withTypePropertiesType(IpAllocationType.HYPERNET)
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getIpAllocations()
+            .createOrUpdate("rg1", "test-ipallocation", new IpAllocationInner().withLocation("centraluseuap")
+                .withTypePropertiesType(IpAllocationType.HYPERNET)
                 .withPrefix("3.2.5.0/24")
                 .withAllocationTags(mapOf("VNetID",
                     "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/HypernetVnet1")),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

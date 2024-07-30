@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.BlobEventsTriggerTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,10 +16,17 @@ import java.util.List;
 /**
  * Trigger that runs every time a Blob event occurs.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = BlobEventsTrigger.class, visible = true)
 @JsonTypeName("BlobEventsTrigger")
 @Fluent
 public final class BlobEventsTrigger extends MultiplePipelineTrigger {
+    /*
+     * Trigger type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "BlobEventsTrigger";
+
     /*
      * Blob Events Trigger properties.
      */
@@ -29,6 +37,16 @@ public final class BlobEventsTrigger extends MultiplePipelineTrigger {
      * Creates an instance of BlobEventsTrigger class.
      */
     public BlobEventsTrigger() {
+    }
+
+    /**
+     * Get the type property: Trigger type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -69,8 +87,8 @@ public final class BlobEventsTrigger extends MultiplePipelineTrigger {
 
     /**
      * Get the blobPathBeginsWith property: The blob path must begin with the pattern provided for trigger to fire. For
-     * example, '/records/blobs/december/' will only fire the trigger for blobs in the december folder under the
-     * records container. At least one of these must be provided: blobPathBeginsWith, blobPathEndsWith.
+     * example, '/records/blobs/december/' will only fire the trigger for blobs in the december folder under the records
+     * container. At least one of these must be provided: blobPathBeginsWith, blobPathEndsWith.
      * 
      * @return the blobPathBeginsWith value.
      */
@@ -80,8 +98,8 @@ public final class BlobEventsTrigger extends MultiplePipelineTrigger {
 
     /**
      * Set the blobPathBeginsWith property: The blob path must begin with the pattern provided for trigger to fire. For
-     * example, '/records/blobs/december/' will only fire the trigger for blobs in the december folder under the
-     * records container. At least one of these must be provided: blobPathBeginsWith, blobPathEndsWith.
+     * example, '/records/blobs/december/' will only fire the trigger for blobs in the december folder under the records
+     * container. At least one of these must be provided: blobPathBeginsWith, blobPathEndsWith.
      * 
      * @param blobPathBeginsWith the blobPathBeginsWith value to set.
      * @return the BlobEventsTrigger object itself.
@@ -96,8 +114,8 @@ public final class BlobEventsTrigger extends MultiplePipelineTrigger {
 
     /**
      * Get the blobPathEndsWith property: The blob path must end with the pattern provided for trigger to fire. For
-     * example, 'december/boxes.csv' will only fire the trigger for blobs named boxes in a december folder. At least
-     * one of these must be provided: blobPathBeginsWith, blobPathEndsWith.
+     * example, 'december/boxes.csv' will only fire the trigger for blobs named boxes in a december folder. At least one
+     * of these must be provided: blobPathBeginsWith, blobPathEndsWith.
      * 
      * @return the blobPathEndsWith value.
      */
@@ -107,8 +125,8 @@ public final class BlobEventsTrigger extends MultiplePipelineTrigger {
 
     /**
      * Set the blobPathEndsWith property: The blob path must end with the pattern provided for trigger to fire. For
-     * example, 'december/boxes.csv' will only fire the trigger for blobs named boxes in a december folder. At least
-     * one of these must be provided: blobPathBeginsWith, blobPathEndsWith.
+     * example, 'december/boxes.csv' will only fire the trigger for blobs named boxes in a december folder. At least one
+     * of these must be provided: blobPathBeginsWith, blobPathEndsWith.
      * 
      * @param blobPathEndsWith the blobPathEndsWith value to set.
      * @return the BlobEventsTrigger object itself.
@@ -199,8 +217,9 @@ public final class BlobEventsTrigger extends MultiplePipelineTrigger {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model BlobEventsTrigger"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model BlobEventsTrigger"));
         } else {
             innerTypeProperties().validate();
         }

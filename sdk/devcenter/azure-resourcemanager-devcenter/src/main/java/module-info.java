@@ -4,16 +4,10 @@
 
 module com.azure.resourcemanager.devcenter {
     requires transitive com.azure.core.management;
-
     exports com.azure.resourcemanager.devcenter;
     exports com.azure.resourcemanager.devcenter.fluent;
     exports com.azure.resourcemanager.devcenter.fluent.models;
     exports com.azure.resourcemanager.devcenter.models;
-
-    opens com.azure.resourcemanager.devcenter.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.devcenter.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.devcenter.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.devcenter.models to com.azure.core, com.fasterxml.jackson.databind;
 }

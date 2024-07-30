@@ -17,8 +17,7 @@ public final class ContainerAppJobExecutionsImpl implements ContainerAppJobExecu
 
     private final com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager;
 
-    ContainerAppJobExecutionsImpl(
-        ContainerAppJobExecutionsInner innerObject,
+    ContainerAppJobExecutionsImpl(ContainerAppJobExecutionsInner innerObject,
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,12 +26,9 @@ public final class ContainerAppJobExecutionsImpl implements ContainerAppJobExecu
     public List<JobExecution> value() {
         List<JobExecutionInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new JobExecutionImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new JobExecutionImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

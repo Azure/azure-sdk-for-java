@@ -32,43 +32,35 @@ public final class LinkedServiceListResponseTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LinkedServiceListResponse model
-            = new LinkedServiceListResponse()
-                .withValue(
-                    Arrays.asList(new LinkedServiceResourceInner().withId("pe")
-                        .withProperties(new LinkedService()
-                            .withConnectVia(new IntegrationRuntimeReference().withReferenceName("o")
-                                .withParameters(mapOf("ggdtpnapnyiro", "datanxknalaulp", "ylgqgitxmedjvcsl",
-                                    "datauhpigvp", "wwncwzzhxgk", "datan", "t", "datarmgucnap")))
-                            .withDescription("ellwptfdy")
-                            .withParameters(mapOf("opppcqeq",
-                                new ParameterSpecification().withType(ParameterType.OBJECT)
-                                    .withDefaultValue("datauaceopzfqrhhu"),
-                                "ahzxctobgbk",
-                                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataz"),
-                                "grcfb",
-                                new ParameterSpecification().withType(ParameterType.STRING)
-                                    .withDefaultValue("dataizpost")))
-                            .withAnnotations(Arrays.asList("datamfqjhhkxbp", "datajy", "datajhxxjyn", "datau"))
-                            .withAdditionalProperties(mapOf("type", "LinkedService"))),
-                        new LinkedServiceResourceInner()
-                            .withId(
-                                "hh")
-                            .withProperties(new LinkedService()
-                                .withConnectVia(new IntegrationRuntimeReference().withReferenceName("wfbkrvrns")
-                                    .withParameters(mapOf("ohxcrsbfova", "dataq", "sub", "datarruvwbhsq", "rxbpyb",
-                                        "datagjb", "twss", "datarfbjf")))
-                                .withDescription("ftpvjzbexil")
-                                .withParameters(mapOf("vwpm",
-                                    new ParameterSpecification()
-                                        .withType(ParameterType.SECURE_STRING).withDefaultValue("dataq"),
-                                    "jhwqytjrybnw",
-                                    new ParameterSpecification().withType(ParameterType.STRING)
-                                        .withDefaultValue("dataruoujmk")))
-                                .withAnnotations(Arrays.asList("datagdrjervnaenqpe", "dataindoygmifthnzd",
-                                    "datadslgnayqigynduh", "datavhqlkthumaqo"))
-                                .withAdditionalProperties(mapOf("type", "LinkedService")))))
-                .withNextLink("rzdzucerscdnt");
+        LinkedServiceListResponse model = new LinkedServiceListResponse().withValue(Arrays.asList(
+            new LinkedServiceResourceInner().withId("pe")
+                .withProperties(new LinkedService()
+                    .withConnectVia(new IntegrationRuntimeReference().withReferenceName("o")
+                        .withParameters(mapOf("ggdtpnapnyiro", "datanxknalaulp", "ylgqgitxmedjvcsl", "datauhpigvp",
+                            "wwncwzzhxgk", "datan", "t", "datarmgucnap")))
+                    .withDescription("ellwptfdy")
+                    .withParameters(mapOf("opppcqeq",
+                        new ParameterSpecification().withType(ParameterType.OBJECT)
+                            .withDefaultValue("datauaceopzfqrhhu"),
+                        "ahzxctobgbk",
+                        new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataz"), "grcfb",
+                        new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataizpost")))
+                    .withAnnotations(Arrays.asList("datamfqjhhkxbp", "datajy", "datajhxxjyn", "datau"))
+                    .withAdditionalProperties(mapOf("type", "LinkedService"))),
+            new LinkedServiceResourceInner().withId("hh")
+                .withProperties(new LinkedService()
+                    .withConnectVia(new IntegrationRuntimeReference().withReferenceName("wfbkrvrns")
+                        .withParameters(mapOf("ohxcrsbfova", "dataq", "sub", "datarruvwbhsq", "rxbpyb", "datagjb",
+                            "twss", "datarfbjf")))
+                    .withDescription("ftpvjzbexil")
+                    .withParameters(mapOf("vwpm",
+                        new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("dataq"),
+                        "jhwqytjrybnw",
+                        new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataruoujmk")))
+                    .withAnnotations(Arrays.asList("datagdrjervnaenqpe", "dataindoygmifthnzd", "datadslgnayqigynduh",
+                        "datavhqlkthumaqo"))
+                    .withAdditionalProperties(mapOf("type", "LinkedService")))))
+            .withNextLink("rzdzucerscdnt");
         model = BinaryData.fromObject(model).toObject(LinkedServiceListResponse.class);
         Assertions.assertEquals("pe", model.value().get(0).id());
         Assertions.assertEquals("o", model.value().get(0).properties().connectVia().referenceName());

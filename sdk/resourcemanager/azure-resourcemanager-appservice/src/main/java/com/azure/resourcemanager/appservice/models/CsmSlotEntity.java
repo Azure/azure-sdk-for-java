@@ -52,8 +52,8 @@ public final class CsmSlotEntity {
     }
 
     /**
-     * Get the preserveVnet property: &lt;code&gt;true&lt;/code&gt; to preserve Virtual Network to the slot during
-     * swap; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * Get the preserveVnet property: &lt;code&gt;true&lt;/code&gt; to preserve Virtual Network to the slot during swap;
+     * otherwise, &lt;code&gt;false&lt;/code&gt;.
      * 
      * @return the preserveVnet value.
      */
@@ -62,8 +62,8 @@ public final class CsmSlotEntity {
     }
 
     /**
-     * Set the preserveVnet property: &lt;code&gt;true&lt;/code&gt; to preserve Virtual Network to the slot during
-     * swap; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * Set the preserveVnet property: &lt;code&gt;true&lt;/code&gt; to preserve Virtual Network to the slot during swap;
+     * otherwise, &lt;code&gt;false&lt;/code&gt;.
      * 
      * @param preserveVnet the preserveVnet value to set.
      * @return the CsmSlotEntity object itself.
@@ -80,8 +80,8 @@ public final class CsmSlotEntity {
      */
     public void validate() {
         if (targetSlot() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property targetSlot in model CsmSlotEntity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property targetSlot in model CsmSlotEntity"));
         }
     }
 

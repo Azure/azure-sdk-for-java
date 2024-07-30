@@ -147,9 +147,9 @@ public class ManagementChannel implements ServiceBusManagementNode {
             final Object value = ((AmqpValue) response.getBody()).getValue();
 
             if (!(value instanceof Map)) {
-                return monoError(logger, Exceptions.propagate(new AmqpException(false, String.format(
+                return monoError(logger, new AmqpException(false, String.format(
                     "Body not expected when renewing session. Id: %s. Value: %s", sessionId, value),
-                    getErrorContext())));
+                    getErrorContext()));
             }
 
             @SuppressWarnings("unchecked") final Map<String, Object> map = (Map<String, Object>) value;
@@ -352,8 +352,8 @@ public class ManagementChannel implements ServiceBusManagementNode {
                         "Error sending. Size of the payload exceeded maximum message size: %s kb", maxLinkSize / 1024);
                     final AmqpErrorContext errorContext = channel.getErrorContext();
 
-                    return monoError(logger, Exceptions.propagate(new AmqpException(false,
-                        AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, errorMessage, exception, errorContext)));
+                    return monoError(logger, new AmqpException(false,
+                        AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, errorMessage, exception, errorContext));
                 }
 
                 final Map<String, Object> messageEntry = new HashMap<>();
@@ -524,9 +524,9 @@ public class ManagementChannel implements ServiceBusManagementNode {
             } else if (statusCode == AmqpResponseCode.NO_CONTENT) {
                 list = Collections.emptyList();
             } else {
-                throw logger.logExceptionAsError(Exceptions.propagate(new AmqpException(true,
+                throw logger.logExceptionAsWarning(new AmqpException(true,
                     "Get rules response error. Could not get rules.",
-                    getErrorContext())));
+                    getErrorContext()));
             }
 
             return Flux.fromIterable(list);
@@ -597,7 +597,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
     private <T> Mono<T> errorIfEmpty(RequestResponseChannel channel) {
         return Mono.error(() -> {
             String error = String.format("entityPath[%s] No response received from management channel.", entityPath);
-            return logger.logExceptionAsError(new AmqpException(true, error, channel.getErrorContext()));
+            return logger.logExceptionAsWarning(new AmqpException(true, error, channel.getErrorContext()));
         });
     }
 

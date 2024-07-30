@@ -19,7 +19,11 @@ parameters:
     type: string
   - name: ClientId
     type: string
+  - name: ClientIdCert
+    type: string
   - name: ClientSecret
+    type: string
+  - name: ClientCertPem
     type: string
   - name: CosmosContainerName
     type: string
@@ -44,7 +48,7 @@ stages:
         inputs:
           mavenPOMFile: pom.xml
           goals: 'package'
-          options: '$(DefaultOptions) -T 1 -Ppackage-assembly -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl com.azure:azure-cosmos,com.azure.cosmos.spark:${{ parameters.SparkVersion }}'
+          options: '$(DefaultOptions) -T 1 -Ppackage-assembly -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl com.azure:azure-cosmos,com.azure:azure-cosmos-test,com.azure.cosmos.spark:${{ parameters.SparkVersion }}'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
@@ -59,7 +63,7 @@ stages:
           targetType: inline
           script: python -m pip install --upgrade pip setuptools wheel databricks-cli
       - task: Bash@3
-        displayName: Connect to Databricks workspace
+        displayName: 'Connect to Databricks workspace $(DatabricksEndpoint)'
         inputs:
           targetType: inline
           script: >-
@@ -82,4 +86,4 @@ stages:
         displayName: Importing and executing notebooks
         inputs:
           filePath: $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3_2-12/test-databricks/databricks-notebooks-install.sh
-          arguments: ${{ parameters.ClusterName }} $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3_2-12/test-databricks/notebooks ${{ parameters.CosmosEndpoint }} ${{ parameters.CosmosKey }} ${{ parameters.SubscriptionId }} ${{ parameters.TenantId }} ${{ parameters.ResourceGroupName }} ${{ parameters.ClientId }} ${{ parameters.ClientSecret }} ${{ parameters.CosmosContainerName }} ${{ parameters.CosmosDatabaseName }}
+          arguments: ${{ parameters.ClusterName }} $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3_2-12/test-databricks/notebooks ${{ parameters.CosmosEndpoint }} ${{ parameters.CosmosKey }} ${{ parameters.SubscriptionId }} ${{ parameters.TenantId }} ${{ parameters.ResourceGroupName }} ${{ parameters.ClientId }} ${{ parameters.ClientIdCert }} ${{ parameters.ClientSecret }} ${{ parameters.ClientCertPem }} ${{ parameters.CosmosContainerName }} ${{ parameters.CosmosDatabaseName }}

@@ -34,13 +34,15 @@ import com.azure.core.util.Configuration;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 class JobRouterTestBase extends TestProxyTestBase {
     protected static final String JAVA_LIVE_TESTS = "JAVA_LIVE_TEST";
+    private static final String[] REMOVE_SANITIZER_ID = {"AZSDK2003", "AZSDK2030", "AZSDK3430", "AZSDK3493", "AZSDK3490"};
+    private boolean sanitizersRemoved = false;
 
     protected String getConnectionString() {
         String connectionString = interceptorManager.isPlaybackMode()
@@ -117,7 +119,11 @@ class JobRouterTestBase extends TestProxyTestBase {
         if (interceptorManager.isRecordMode()) {
             policies.add(interceptorManager.getRecordPolicy());
         }
-
+        // Disable `$..etag` and name sanitizer
+        if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
+            interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
+            sanitizersRemoved = true;
+        }
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
@@ -133,11 +139,7 @@ class JobRouterTestBase extends TestProxyTestBase {
 
     protected RouterQueue createQueue(JobRouterAdministrationClient routerAdminClient, String queueId, String distributionPolicyId) {
         String queueName = String.format("%s-Name", queueId);
-        Map<String, RouterValue> queueLabels = new HashMap<String, RouterValue>() {
-            {
-                put("Label_1", new RouterValue("Value_1"));
-            }
-        };
+        Map<String, RouterValue> queueLabels = Collections.singletonMap("Label_1", new RouterValue("Value_1"));
 
         CreateQueueOptions createQueueOptions = new CreateQueueOptions(queueId, distributionPolicyId)
             .setLabels(queueLabels)
@@ -151,11 +153,10 @@ class JobRouterTestBase extends TestProxyTestBase {
 
         CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
             id,
-            Duration.ofSeconds(10),
+            Duration.ofSeconds(100),
             new LongestIdleMode()
                 .setMinConcurrentOffers(1)
-                .setMaxConcurrentOffers(10)
-        )
+                .setMaxConcurrentOffers(10))
             .setName(distributionPolicyName);
 
         return routerAdminClient.createDistributionPolicy(createDistributionPolicyOptions);
@@ -165,14 +166,8 @@ class JobRouterTestBase extends TestProxyTestBase {
         CreateJobOptions createJobOptions = new CreateJobOptions("job-id", "chat-channel", queueId)
             .setPriority(1)
             .setChannelReference("12345")
-            .setRequestedWorkerSelectors(
-                new ArrayList<RouterWorkerSelector>() {
-                    {
-                        new RouterWorkerSelector("Some-skill", LabelOperator.GREATER_THAN)
-                            .setValue(new RouterValue(10));
-                    }
-                }
-            );
+            .setRequestedWorkerSelectors(Collections.singletonList(
+                new RouterWorkerSelector("Some-skill", LabelOperator.GREATER_THAN, new RouterValue(10))));
         return jobRouterClient.createJob(createJobOptions);
     }
 }

@@ -17,8 +17,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureBlobStorageLinkedServiceTypeProperties {
     /*
-     * The connection string. It is mutually exclusive with sasUri, serviceEndpoint property. Type: string,
-     * SecureString or AzureKeyVaultSecretReference.
+     * The connection string. It is mutually exclusive with sasUri, serviceEndpoint property. Type: string, SecureString
+     * or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "connectionString")
     private Object connectionString;
@@ -289,9 +289,9 @@ public final class AzureBlobStorageLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values
-     * are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud
-     * type. Type: string (or Expression with resultType string).
+     * Get the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
+     * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
+     * Type: string (or Expression with resultType string).
      * 
      * @return the azureCloudType value.
      */
@@ -300,9 +300,9 @@ public final class AzureBlobStorageLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values
-     * are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud
-     * type. Type: string (or Expression with resultType string).
+     * Set the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
+     * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
+     * Type: string (or Expression with resultType string).
      * 
      * @param azureCloudType the azureCloudType value to set.
      * @return the AzureBlobStorageLinkedServiceTypeProperties object itself.
@@ -337,8 +337,8 @@ public final class AzureBlobStorageLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -347,8 +347,8 @@ public final class AzureBlobStorageLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureBlobStorageLinkedServiceTypeProperties object itself.

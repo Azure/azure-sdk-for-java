@@ -9,7 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.datafactory.fluent.models.ManagedIdentityCredentialResourceInner;
+import com.azure.resourcemanager.datafactory.fluent.models.CredentialResourceInner;
 
 /**
  * An instance of this class provides access to all the operations defined in CredentialOperationsClient.
@@ -26,7 +26,7 @@ public interface CredentialOperationsClient {
      * @return a list of credential resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedIdentityCredentialResourceInner> listByFactory(String resourceGroupName, String factoryName);
+    PagedIterable<CredentialResourceInner> listByFactory(String resourceGroupName, String factoryName);
 
     /**
      * List credentials.
@@ -40,8 +40,7 @@ public interface CredentialOperationsClient {
      * @return a list of credential resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedIdentityCredentialResourceInner> listByFactory(String resourceGroupName, String factoryName,
-        Context context);
+    PagedIterable<CredentialResourceInner> listByFactory(String resourceGroupName, String factoryName, Context context);
 
     /**
      * Creates or updates a credential.
@@ -59,9 +58,8 @@ public interface CredentialOperationsClient {
      * @return credential resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagedIdentityCredentialResourceInner> createOrUpdateWithResponse(String resourceGroupName,
-        String factoryName, String credentialName, ManagedIdentityCredentialResourceInner credential, String ifMatch,
-        Context context);
+    Response<CredentialResourceInner> createOrUpdateWithResponse(String resourceGroupName, String factoryName,
+        String credentialName, CredentialResourceInner credential, String ifMatch, Context context);
 
     /**
      * Creates or updates a credential.
@@ -76,8 +74,8 @@ public interface CredentialOperationsClient {
      * @return credential resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedIdentityCredentialResourceInner createOrUpdate(String resourceGroupName, String factoryName,
-        String credentialName, ManagedIdentityCredentialResourceInner credential);
+    CredentialResourceInner createOrUpdate(String resourceGroupName, String factoryName, String credentialName,
+        CredentialResourceInner credential);
 
     /**
      * Gets a credential.
@@ -94,7 +92,7 @@ public interface CredentialOperationsClient {
      * @return a credential along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagedIdentityCredentialResourceInner> getWithResponse(String resourceGroupName, String factoryName,
+    Response<CredentialResourceInner> getWithResponse(String resourceGroupName, String factoryName,
         String credentialName, String ifNoneMatch, Context context);
 
     /**
@@ -109,7 +107,7 @@ public interface CredentialOperationsClient {
      * @return a credential.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedIdentityCredentialResourceInner get(String resourceGroupName, String factoryName, String credentialName);
+    CredentialResourceInner get(String resourceGroupName, String factoryName, String credentialName);
 
     /**
      * Deletes a credential.

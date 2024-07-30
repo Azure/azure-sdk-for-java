@@ -10,14 +10,14 @@ import com.azure.resourcemanager.datafactory.fluent.models.AzureDataExplorerData
 public final class AzureDataExplorerDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureDataExplorerDatasetTypeProperties model = BinaryData.fromString("{\"table\":\"dataysyajmm\"}")
+        AzureDataExplorerDatasetTypeProperties model = BinaryData.fromString("{\"table\":\"datahuecxhgs\"}")
             .toObject(AzureDataExplorerDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureDataExplorerDatasetTypeProperties model
-            = new AzureDataExplorerDatasetTypeProperties().withTable("dataysyajmm");
+            = new AzureDataExplorerDatasetTypeProperties().withTable("datahuecxhgs");
         model = BinaryData.fromObject(model).toObject(AzureDataExplorerDatasetTypeProperties.class);
     }
 }

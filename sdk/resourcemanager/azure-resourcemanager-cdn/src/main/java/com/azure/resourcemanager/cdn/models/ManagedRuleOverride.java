@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines a managed rule group override setting. */
+/**
+ * Defines a managed rule group override setting.
+ */
 @Fluent
 public final class ManagedRuleOverride {
     /*
@@ -29,13 +31,15 @@ public final class ManagedRuleOverride {
     @JsonProperty(value = "action")
     private ActionType action;
 
-    /** Creates an instance of ManagedRuleOverride class. */
+    /**
+     * Creates an instance of ManagedRuleOverride class.
+     */
     public ManagedRuleOverride() {
     }
 
     /**
      * Get the ruleId property: Identifier for the managed rule.
-     *
+     * 
      * @return the ruleId value.
      */
     public String ruleId() {
@@ -44,7 +48,7 @@ public final class ManagedRuleOverride {
 
     /**
      * Set the ruleId property: Identifier for the managed rule.
-     *
+     * 
      * @param ruleId the ruleId value to set.
      * @return the ManagedRuleOverride object itself.
      */
@@ -56,7 +60,7 @@ public final class ManagedRuleOverride {
     /**
      * Get the enabledState property: Describes if the managed rule is in enabled or disabled state. Defaults to
      * Disabled if not specified.
-     *
+     * 
      * @return the enabledState value.
      */
     public ManagedRuleEnabledState enabledState() {
@@ -66,7 +70,7 @@ public final class ManagedRuleOverride {
     /**
      * Set the enabledState property: Describes if the managed rule is in enabled or disabled state. Defaults to
      * Disabled if not specified.
-     *
+     * 
      * @param enabledState the enabledState value to set.
      * @return the ManagedRuleOverride object itself.
      */
@@ -77,7 +81,7 @@ public final class ManagedRuleOverride {
 
     /**
      * Get the action property: Describes the override action to be applied when rule matches.
-     *
+     * 
      * @return the action value.
      */
     public ActionType action() {
@@ -86,7 +90,7 @@ public final class ManagedRuleOverride {
 
     /**
      * Set the action property: Describes the override action to be applied when rule matches.
-     *
+     * 
      * @param action the action value to set.
      * @return the ManagedRuleOverride object itself.
      */
@@ -97,14 +101,13 @@ public final class ManagedRuleOverride {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ruleId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property ruleId in model ManagedRuleOverride"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property ruleId in model ManagedRuleOverride"));
         }
     }
 

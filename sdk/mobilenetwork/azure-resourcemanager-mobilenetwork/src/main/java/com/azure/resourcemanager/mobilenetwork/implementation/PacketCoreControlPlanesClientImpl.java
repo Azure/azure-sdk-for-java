@@ -43,23 +43,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PacketCoreControlPlanesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PacketCoreControlPlanesClient.
+ */
 public final class PacketCoreControlPlanesClientImpl implements PacketCoreControlPlanesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PacketCoreControlPlanesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MobileNetworkManagementClientImpl client;
 
     /**
      * Initializes an instance of PacketCoreControlPlanesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PacketCoreControlPlanesClientImpl(MobileNetworkManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(PacketCoreControlPlanesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(PacketCoreControlPlanesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -70,155 +75,115 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
     @Host("{$host}")
     @ServiceInterface(name = "MobileNetworkManagem")
     public interface PacketCoreControlPlanesService {
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("packetCoreControlPlaneName") String packetCoreControlPlaneName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PacketCoreControlPlaneInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PacketCoreControlPlaneInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("packetCoreControlPlaneName") String packetCoreControlPlaneName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("packetCoreControlPlaneName") String packetCoreControlPlaneName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") PacketCoreControlPlaneInner parameters,
-            @HeaderParam("Accept") String accept,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") PacketCoreControlPlaneInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PacketCoreControlPlaneInner>> updateTags(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PacketCoreControlPlaneInner>> updateTags(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("packetCoreControlPlaneName") String packetCoreControlPlaneName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") IdentityAndTagsObject parameters,
-            @HeaderParam("Accept") String accept,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") IdentityAndTagsObject parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PacketCoreControlPlaneListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<PacketCoreControlPlaneListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PacketCoreControlPlaneListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<PacketCoreControlPlaneListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}/rollback")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}/rollback")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> rollback(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> rollback(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("packetCoreControlPlaneName") String packetCoreControlPlaneName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}/reinstall")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}/reinstall")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> reinstall(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> reinstall(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("packetCoreControlPlaneName") String packetCoreControlPlaneName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}/collectDiagnosticsPackage")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}/collectDiagnosticsPackage")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> collectDiagnosticsPackage(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> collectDiagnosticsPackage(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("packetCoreControlPlaneName") String packetCoreControlPlaneName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") PacketCoreControlPlaneCollectDiagnosticsPackage parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PacketCoreControlPlaneListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PacketCoreControlPlaneListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Deletes the specified packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -227,49 +192,35 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String packetCoreControlPlaneName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String packetCoreControlPlaneName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (packetCoreControlPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter packetCoreControlPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreControlPlaneName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            packetCoreControlPlaneName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+                context -> service.delete(this.client.getEndpoint(), resourceGroupName, packetCoreControlPlaneName,
+                    this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the specified packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param context The context to associate with this operation.
@@ -279,46 +230,33 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String packetCoreControlPlaneName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String packetCoreControlPlaneName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (packetCoreControlPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter packetCoreControlPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreControlPlaneName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                packetCoreControlPlaneName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, packetCoreControlPlaneName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Deletes the specified packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -327,18 +265,16 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String packetCoreControlPlaneName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String packetCoreControlPlaneName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, packetCoreControlPlaneName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes the specified packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param context The context to associate with this operation.
@@ -348,19 +284,18 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String packetCoreControlPlaneName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String packetCoreControlPlaneName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, packetCoreControlPlaneName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, packetCoreControlPlaneName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes the specified packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -375,7 +310,7 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
 
     /**
      * Deletes the specified packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param context The context to associate with this operation.
@@ -385,14 +320,14 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String packetCoreControlPlaneName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String packetCoreControlPlaneName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, packetCoreControlPlaneName, context).getSyncPoller();
     }
 
     /**
      * Deletes the specified packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -402,14 +337,13 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String packetCoreControlPlaneName) {
-        return beginDeleteAsync(resourceGroupName, packetCoreControlPlaneName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, packetCoreControlPlaneName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the specified packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param context The context to associate with this operation.
@@ -420,14 +354,13 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String packetCoreControlPlaneName, Context context) {
-        return beginDeleteAsync(resourceGroupName, packetCoreControlPlaneName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, packetCoreControlPlaneName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the specified packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -441,7 +374,7 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
 
     /**
      * Deletes the specified packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param context The context to associate with this operation.
@@ -456,59 +389,43 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
 
     /**
      * Gets information about the specified packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified packet core control plane along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PacketCoreControlPlaneInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String packetCoreControlPlaneName) {
+    private Mono<Response<PacketCoreControlPlaneInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String packetCoreControlPlaneName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (packetCoreControlPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter packetCoreControlPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreControlPlaneName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            packetCoreControlPlaneName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+            packetCoreControlPlaneName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets information about the specified packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param context The context to associate with this operation.
@@ -516,49 +433,36 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified packet core control plane along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PacketCoreControlPlaneInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String packetCoreControlPlaneName, Context context) {
+    private Mono<Response<PacketCoreControlPlaneInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String packetCoreControlPlaneName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (packetCoreControlPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter packetCoreControlPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreControlPlaneName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                packetCoreControlPlaneName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, packetCoreControlPlaneName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets information about the specified packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -567,15 +471,15 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return information about the specified packet core control plane on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PacketCoreControlPlaneInner> getByResourceGroupAsync(
-        String resourceGroupName, String packetCoreControlPlaneName) {
+    private Mono<PacketCoreControlPlaneInner> getByResourceGroupAsync(String resourceGroupName,
+        String packetCoreControlPlaneName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, packetCoreControlPlaneName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets information about the specified packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param context The context to associate with this operation.
@@ -585,14 +489,14 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return information about the specified packet core control plane along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PacketCoreControlPlaneInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String packetCoreControlPlaneName, Context context) {
+    public Response<PacketCoreControlPlaneInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String packetCoreControlPlaneName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, packetCoreControlPlaneName, context).block();
     }
 
     /**
      * Gets information about the specified packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -607,7 +511,7 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
 
     /**
      * Creates or updates a packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param parameters Parameters supplied to the create or update packet core control plane operation.
@@ -617,29 +521,23 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return packet core control plane resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String packetCoreControlPlaneName, PacketCoreControlPlaneInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String packetCoreControlPlaneName, PacketCoreControlPlaneInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (packetCoreControlPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter packetCoreControlPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreControlPlaneName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -648,24 +546,15 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            packetCoreControlPlaneName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
+                packetCoreControlPlaneName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param parameters Parameters supplied to the create or update packet core control plane operation.
@@ -676,32 +565,23 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return packet core control plane resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        PacketCoreControlPlaneInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String packetCoreControlPlaneName, PacketCoreControlPlaneInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (packetCoreControlPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter packetCoreControlPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreControlPlaneName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -710,21 +590,13 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                packetCoreControlPlaneName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, packetCoreControlPlaneName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Creates or updates a packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param parameters Parameters supplied to the create or update packet core control plane operation.
@@ -736,21 +608,16 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PacketCoreControlPlaneInner>, PacketCoreControlPlaneInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String packetCoreControlPlaneName, PacketCoreControlPlaneInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, packetCoreControlPlaneName, parameters);
-        return this
-            .client
-            .<PacketCoreControlPlaneInner, PacketCoreControlPlaneInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                PacketCoreControlPlaneInner.class,
-                PacketCoreControlPlaneInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, packetCoreControlPlaneName, parameters);
+        return this.client.<PacketCoreControlPlaneInner, PacketCoreControlPlaneInner>getLroResult(mono,
+            this.client.getHttpPipeline(), PacketCoreControlPlaneInner.class, PacketCoreControlPlaneInner.class,
+            this.client.getContext());
     }
 
     /**
      * Creates or updates a packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param parameters Parameters supplied to the create or update packet core control plane operation.
@@ -762,26 +629,19 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PacketCoreControlPlaneInner>, PacketCoreControlPlaneInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        PacketCoreControlPlaneInner parameters,
+        String resourceGroupName, String packetCoreControlPlaneName, PacketCoreControlPlaneInner parameters,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, packetCoreControlPlaneName, parameters, context);
-        return this
-            .client
-            .<PacketCoreControlPlaneInner, PacketCoreControlPlaneInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                PacketCoreControlPlaneInner.class,
-                PacketCoreControlPlaneInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, packetCoreControlPlaneName, parameters, context);
+        return this.client.<PacketCoreControlPlaneInner, PacketCoreControlPlaneInner>getLroResult(mono,
+            this.client.getHttpPipeline(), PacketCoreControlPlaneInner.class, PacketCoreControlPlaneInner.class,
+            context);
     }
 
     /**
      * Creates or updates a packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param parameters Parameters supplied to the create or update packet core control plane operation.
@@ -798,7 +658,7 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
 
     /**
      * Creates or updates a packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param parameters Parameters supplied to the create or update packet core control plane operation.
@@ -810,18 +670,15 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PacketCoreControlPlaneInner>, PacketCoreControlPlaneInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        PacketCoreControlPlaneInner parameters,
+        String resourceGroupName, String packetCoreControlPlaneName, PacketCoreControlPlaneInner parameters,
         Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, packetCoreControlPlaneName, parameters, context)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, packetCoreControlPlaneName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param parameters Parameters supplied to the create or update packet core control plane operation.
@@ -831,16 +688,15 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return packet core control plane resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PacketCoreControlPlaneInner> createOrUpdateAsync(
-        String resourceGroupName, String packetCoreControlPlaneName, PacketCoreControlPlaneInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, packetCoreControlPlaneName, parameters)
-            .last()
+    private Mono<PacketCoreControlPlaneInner> createOrUpdateAsync(String resourceGroupName,
+        String packetCoreControlPlaneName, PacketCoreControlPlaneInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, packetCoreControlPlaneName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param parameters Parameters supplied to the create or update packet core control plane operation.
@@ -851,19 +707,15 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return packet core control plane resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PacketCoreControlPlaneInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        PacketCoreControlPlaneInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, packetCoreControlPlaneName, parameters, context)
-            .last()
+    private Mono<PacketCoreControlPlaneInner> createOrUpdateAsync(String resourceGroupName,
+        String packetCoreControlPlaneName, PacketCoreControlPlaneInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, packetCoreControlPlaneName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param parameters Parameters supplied to the create or update packet core control plane operation.
@@ -873,14 +725,14 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return packet core control plane resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PacketCoreControlPlaneInner createOrUpdate(
-        String resourceGroupName, String packetCoreControlPlaneName, PacketCoreControlPlaneInner parameters) {
+    public PacketCoreControlPlaneInner createOrUpdate(String resourceGroupName, String packetCoreControlPlaneName,
+        PacketCoreControlPlaneInner parameters) {
         return createOrUpdateAsync(resourceGroupName, packetCoreControlPlaneName, parameters).block();
     }
 
     /**
      * Creates or updates a packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param parameters Parameters supplied to the create or update packet core control plane operation.
@@ -891,17 +743,14 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return packet core control plane resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PacketCoreControlPlaneInner createOrUpdate(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        PacketCoreControlPlaneInner parameters,
-        Context context) {
+    public PacketCoreControlPlaneInner createOrUpdate(String resourceGroupName, String packetCoreControlPlaneName,
+        PacketCoreControlPlaneInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, packetCoreControlPlaneName, parameters, context).block();
     }
 
     /**
      * Patch packet core control plane resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param parameters Parameters supplied to patch packet core control plane resource.
@@ -911,29 +760,23 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return packet core control plane resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PacketCoreControlPlaneInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String packetCoreControlPlaneName, IdentityAndTagsObject parameters) {
+    private Mono<Response<PacketCoreControlPlaneInner>> updateTagsWithResponseAsync(String resourceGroupName,
+        String packetCoreControlPlaneName, IdentityAndTagsObject parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (packetCoreControlPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter packetCoreControlPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreControlPlaneName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -943,23 +786,14 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .updateTags(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            packetCoreControlPlaneName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.updateTags(this.client.getEndpoint(), resourceGroupName, packetCoreControlPlaneName,
+                    this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Patch packet core control plane resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param parameters Parameters supplied to patch packet core control plane resource.
@@ -970,32 +804,23 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return packet core control plane resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PacketCoreControlPlaneInner>> updateTagsWithResponseAsync(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        IdentityAndTagsObject parameters,
-        Context context) {
+    private Mono<Response<PacketCoreControlPlaneInner>> updateTagsWithResponseAsync(String resourceGroupName,
+        String packetCoreControlPlaneName, IdentityAndTagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (packetCoreControlPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter packetCoreControlPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreControlPlaneName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1004,21 +829,13 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .updateTags(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                packetCoreControlPlaneName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.updateTags(this.client.getEndpoint(), resourceGroupName, packetCoreControlPlaneName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Patch packet core control plane resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param parameters Parameters supplied to patch packet core control plane resource.
@@ -1028,15 +845,15 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return packet core control plane resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PacketCoreControlPlaneInner> updateTagsAsync(
-        String resourceGroupName, String packetCoreControlPlaneName, IdentityAndTagsObject parameters) {
+    private Mono<PacketCoreControlPlaneInner> updateTagsAsync(String resourceGroupName,
+        String packetCoreControlPlaneName, IdentityAndTagsObject parameters) {
         return updateTagsWithResponseAsync(resourceGroupName, packetCoreControlPlaneName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Patch packet core control plane resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param parameters Parameters supplied to patch packet core control plane resource.
@@ -1047,17 +864,14 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return packet core control plane resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PacketCoreControlPlaneInner> updateTagsWithResponse(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        IdentityAndTagsObject parameters,
-        Context context) {
+    public Response<PacketCoreControlPlaneInner> updateTagsWithResponse(String resourceGroupName,
+        String packetCoreControlPlaneName, IdentityAndTagsObject parameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, packetCoreControlPlaneName, parameters, context).block();
     }
 
     /**
      * Patch packet core control plane resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param parameters Parameters supplied to patch packet core control plane resource.
@@ -1067,117 +881,84 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return packet core control plane resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PacketCoreControlPlaneInner updateTags(
-        String resourceGroupName, String packetCoreControlPlaneName, IdentityAndTagsObject parameters) {
+    public PacketCoreControlPlaneInner updateTags(String resourceGroupName, String packetCoreControlPlaneName,
+        IdentityAndTagsObject parameters) {
         return updateTagsWithResponse(resourceGroupName, packetCoreControlPlaneName, parameters, Context.NONE)
             .getValue();
     }
 
     /**
      * Lists all the packet core control planes in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for packet core control planes API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PacketCoreControlPlaneInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<PacketCoreControlPlaneInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<PacketCoreControlPlaneInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all the packet core control planes in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for packet core control planes API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PacketCoreControlPlaneInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all the packet core control planes in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for packet core control planes API service call as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PacketCoreControlPlaneInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all the packet core control planes in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1186,17 +967,17 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PacketCoreControlPlaneInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all the packet core control planes in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for packet core control planes API service call as paginated response with {@link
-     *     PagedIterable}.
+     * @return response for packet core control planes API service call as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PacketCoreControlPlaneInner> list() {
@@ -1205,13 +986,13 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
 
     /**
      * Lists all the packet core control planes in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for packet core control planes API service call as paginated response with {@link
-     *     PagedIterable}.
+     * @return response for packet core control planes API service call as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PacketCoreControlPlaneInner> list(Context context) {
@@ -1220,111 +1001,76 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
 
     /**
      * Lists all the packet core control planes in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for packet core control planes API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PacketCoreControlPlaneInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName) {
+    private Mono<PagedResponse<PacketCoreControlPlaneInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<PacketCoreControlPlaneInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<PacketCoreControlPlaneInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all the packet core control planes in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for packet core control planes API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PacketCoreControlPlaneInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<PacketCoreControlPlaneInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all the packet core control planes in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1333,14 +1079,13 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PacketCoreControlPlaneInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all the packet core control planes in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1350,20 +1095,19 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PacketCoreControlPlaneInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all the packet core control planes in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for packet core control planes API service call as paginated response with {@link
-     *     PagedIterable}.
+     * @return response for packet core control planes API service call as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PacketCoreControlPlaneInner> listByResourceGroup(String resourceGroupName) {
@@ -1372,14 +1116,14 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
 
     /**
      * Lists all the packet core control planes in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for packet core control planes API service call as paginated response with {@link
-     *     PagedIterable}.
+     * @return response for packet core control planes API service call as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PacketCoreControlPlaneInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1389,111 +1133,84 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
     /**
      * Roll back the specified packet core control plane to the previous version, "rollbackVersion". Multiple
      * consecutive rollbacks are not possible. This action may cause a service outage.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> rollbackWithResponseAsync(
-        String resourceGroupName, String packetCoreControlPlaneName) {
+    private Mono<Response<Flux<ByteBuffer>>> rollbackWithResponseAsync(String resourceGroupName,
+        String packetCoreControlPlaneName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (packetCoreControlPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter packetCoreControlPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreControlPlaneName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .rollback(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            packetCoreControlPlaneName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+                context -> service.rollback(this.client.getEndpoint(), resourceGroupName, packetCoreControlPlaneName,
+                    this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Roll back the specified packet core control plane to the previous version, "rollbackVersion". Multiple
      * consecutive rollbacks are not possible. This action may cause a service outage.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> rollbackWithResponseAsync(
-        String resourceGroupName, String packetCoreControlPlaneName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> rollbackWithResponseAsync(String resourceGroupName,
+        String packetCoreControlPlaneName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (packetCoreControlPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter packetCoreControlPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreControlPlaneName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .rollback(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                packetCoreControlPlaneName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.rollback(this.client.getEndpoint(), resourceGroupName, packetCoreControlPlaneName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Roll back the specified packet core control plane to the previous version, "rollbackVersion". Multiple
      * consecutive rollbacks are not possible. This action may cause a service outage.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1502,24 +1219,19 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginRollbackAsync(
-        String resourceGroupName, String packetCoreControlPlaneName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            rollbackWithResponseAsync(resourceGroupName, packetCoreControlPlaneName);
-        return this
-            .client
-            .<AsyncOperationStatusInner, AsyncOperationStatusInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AsyncOperationStatusInner.class,
-                AsyncOperationStatusInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner>
+        beginRollbackAsync(String resourceGroupName, String packetCoreControlPlaneName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = rollbackWithResponseAsync(resourceGroupName, packetCoreControlPlaneName);
+        return this.client.<AsyncOperationStatusInner, AsyncOperationStatusInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AsyncOperationStatusInner.class, AsyncOperationStatusInner.class,
+            this.client.getContext());
     }
 
     /**
      * Roll back the specified packet core control plane to the previous version, "rollbackVersion". Multiple
      * consecutive rollbacks are not possible. This action may cause a service outage.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param context The context to associate with this operation.
@@ -1529,25 +1241,19 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginRollbackAsync(
-        String resourceGroupName, String packetCoreControlPlaneName, Context context) {
+    private PollerFlux<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner>
+        beginRollbackAsync(String resourceGroupName, String packetCoreControlPlaneName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            rollbackWithResponseAsync(resourceGroupName, packetCoreControlPlaneName, context);
-        return this
-            .client
-            .<AsyncOperationStatusInner, AsyncOperationStatusInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AsyncOperationStatusInner.class,
-                AsyncOperationStatusInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = rollbackWithResponseAsync(resourceGroupName, packetCoreControlPlaneName, context);
+        return this.client.<AsyncOperationStatusInner, AsyncOperationStatusInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AsyncOperationStatusInner.class, AsyncOperationStatusInner.class, context);
     }
 
     /**
      * Roll back the specified packet core control plane to the previous version, "rollbackVersion". Multiple
      * consecutive rollbacks are not possible. This action may cause a service outage.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1556,15 +1262,15 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginRollback(
-        String resourceGroupName, String packetCoreControlPlaneName) {
+    public SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner>
+        beginRollback(String resourceGroupName, String packetCoreControlPlaneName) {
         return this.beginRollbackAsync(resourceGroupName, packetCoreControlPlaneName).getSyncPoller();
     }
 
     /**
      * Roll back the specified packet core control plane to the previous version, "rollbackVersion". Multiple
      * consecutive rollbacks are not possible. This action may cause a service outage.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param context The context to associate with this operation.
@@ -1574,15 +1280,15 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginRollback(
-        String resourceGroupName, String packetCoreControlPlaneName, Context context) {
+    public SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner>
+        beginRollback(String resourceGroupName, String packetCoreControlPlaneName, Context context) {
         return this.beginRollbackAsync(resourceGroupName, packetCoreControlPlaneName, context).getSyncPoller();
     }
 
     /**
      * Roll back the specified packet core control plane to the previous version, "rollbackVersion". Multiple
      * consecutive rollbacks are not possible. This action may cause a service outage.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1592,15 +1298,14 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AsyncOperationStatusInner> rollbackAsync(String resourceGroupName, String packetCoreControlPlaneName) {
-        return beginRollbackAsync(resourceGroupName, packetCoreControlPlaneName)
-            .last()
+        return beginRollbackAsync(resourceGroupName, packetCoreControlPlaneName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Roll back the specified packet core control plane to the previous version, "rollbackVersion". Multiple
      * consecutive rollbacks are not possible. This action may cause a service outage.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param context The context to associate with this operation.
@@ -1610,17 +1315,16 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AsyncOperationStatusInner> rollbackAsync(
-        String resourceGroupName, String packetCoreControlPlaneName, Context context) {
-        return beginRollbackAsync(resourceGroupName, packetCoreControlPlaneName, context)
-            .last()
+    private Mono<AsyncOperationStatusInner> rollbackAsync(String resourceGroupName, String packetCoreControlPlaneName,
+        Context context) {
+        return beginRollbackAsync(resourceGroupName, packetCoreControlPlaneName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Roll back the specified packet core control plane to the previous version, "rollbackVersion". Multiple
      * consecutive rollbacks are not possible. This action may cause a service outage.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1636,7 +1340,7 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
     /**
      * Roll back the specified packet core control plane to the previous version, "rollbackVersion". Multiple
      * consecutive rollbacks are not possible. This action may cause a service outage.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param context The context to associate with this operation.
@@ -1646,119 +1350,92 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AsyncOperationStatusInner rollback(
-        String resourceGroupName, String packetCoreControlPlaneName, Context context) {
+    public AsyncOperationStatusInner rollback(String resourceGroupName, String packetCoreControlPlaneName,
+        Context context) {
         return rollbackAsync(resourceGroupName, packetCoreControlPlaneName, context).block();
     }
 
     /**
-     * Reinstall the specified packet core control plane. This action will remove any transaction state from the packet
-     * core to return it to a known state. This action will cause a service outage.
-     *
+     * Reinstall the specified packet core control plane. This action will try to restore the packet core to the
+     * installed state that was disrupted by a transient failure. This action will cause a service outage.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> reinstallWithResponseAsync(
-        String resourceGroupName, String packetCoreControlPlaneName) {
+    private Mono<Response<Flux<ByteBuffer>>> reinstallWithResponseAsync(String resourceGroupName,
+        String packetCoreControlPlaneName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (packetCoreControlPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter packetCoreControlPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreControlPlaneName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .reinstall(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            packetCoreControlPlaneName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+                context -> service.reinstall(this.client.getEndpoint(), resourceGroupName, packetCoreControlPlaneName,
+                    this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Reinstall the specified packet core control plane. This action will remove any transaction state from the packet
-     * core to return it to a known state. This action will cause a service outage.
-     *
+     * Reinstall the specified packet core control plane. This action will try to restore the packet core to the
+     * installed state that was disrupted by a transient failure. This action will cause a service outage.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> reinstallWithResponseAsync(
-        String resourceGroupName, String packetCoreControlPlaneName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> reinstallWithResponseAsync(String resourceGroupName,
+        String packetCoreControlPlaneName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (packetCoreControlPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter packetCoreControlPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreControlPlaneName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .reinstall(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                packetCoreControlPlaneName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.reinstall(this.client.getEndpoint(), resourceGroupName, packetCoreControlPlaneName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
-     * Reinstall the specified packet core control plane. This action will remove any transaction state from the packet
-     * core to return it to a known state. This action will cause a service outage.
-     *
+     * Reinstall the specified packet core control plane. This action will try to restore the packet core to the
+     * installed state that was disrupted by a transient failure. This action will cause a service outage.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1767,24 +1444,19 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginReinstallAsync(
-        String resourceGroupName, String packetCoreControlPlaneName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            reinstallWithResponseAsync(resourceGroupName, packetCoreControlPlaneName);
-        return this
-            .client
-            .<AsyncOperationStatusInner, AsyncOperationStatusInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AsyncOperationStatusInner.class,
-                AsyncOperationStatusInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner>
+        beginReinstallAsync(String resourceGroupName, String packetCoreControlPlaneName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = reinstallWithResponseAsync(resourceGroupName, packetCoreControlPlaneName);
+        return this.client.<AsyncOperationStatusInner, AsyncOperationStatusInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AsyncOperationStatusInner.class, AsyncOperationStatusInner.class,
+            this.client.getContext());
     }
 
     /**
-     * Reinstall the specified packet core control plane. This action will remove any transaction state from the packet
-     * core to return it to a known state. This action will cause a service outage.
-     *
+     * Reinstall the specified packet core control plane. This action will try to restore the packet core to the
+     * installed state that was disrupted by a transient failure. This action will cause a service outage.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param context The context to associate with this operation.
@@ -1794,25 +1466,19 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginReinstallAsync(
-        String resourceGroupName, String packetCoreControlPlaneName, Context context) {
+    private PollerFlux<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner>
+        beginReinstallAsync(String resourceGroupName, String packetCoreControlPlaneName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            reinstallWithResponseAsync(resourceGroupName, packetCoreControlPlaneName, context);
-        return this
-            .client
-            .<AsyncOperationStatusInner, AsyncOperationStatusInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AsyncOperationStatusInner.class,
-                AsyncOperationStatusInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = reinstallWithResponseAsync(resourceGroupName, packetCoreControlPlaneName, context);
+        return this.client.<AsyncOperationStatusInner, AsyncOperationStatusInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AsyncOperationStatusInner.class, AsyncOperationStatusInner.class, context);
     }
 
     /**
-     * Reinstall the specified packet core control plane. This action will remove any transaction state from the packet
-     * core to return it to a known state. This action will cause a service outage.
-     *
+     * Reinstall the specified packet core control plane. This action will try to restore the packet core to the
+     * installed state that was disrupted by a transient failure. This action will cause a service outage.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1821,15 +1487,15 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginReinstall(
-        String resourceGroupName, String packetCoreControlPlaneName) {
+    public SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner>
+        beginReinstall(String resourceGroupName, String packetCoreControlPlaneName) {
         return this.beginReinstallAsync(resourceGroupName, packetCoreControlPlaneName).getSyncPoller();
     }
 
     /**
-     * Reinstall the specified packet core control plane. This action will remove any transaction state from the packet
-     * core to return it to a known state. This action will cause a service outage.
-     *
+     * Reinstall the specified packet core control plane. This action will try to restore the packet core to the
+     * installed state that was disrupted by a transient failure. This action will cause a service outage.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param context The context to associate with this operation.
@@ -1839,15 +1505,15 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginReinstall(
-        String resourceGroupName, String packetCoreControlPlaneName, Context context) {
+    public SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner>
+        beginReinstall(String resourceGroupName, String packetCoreControlPlaneName, Context context) {
         return this.beginReinstallAsync(resourceGroupName, packetCoreControlPlaneName, context).getSyncPoller();
     }
 
     /**
-     * Reinstall the specified packet core control plane. This action will remove any transaction state from the packet
-     * core to return it to a known state. This action will cause a service outage.
-     *
+     * Reinstall the specified packet core control plane. This action will try to restore the packet core to the
+     * installed state that was disrupted by a transient failure. This action will cause a service outage.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1856,17 +1522,16 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AsyncOperationStatusInner> reinstallAsync(
-        String resourceGroupName, String packetCoreControlPlaneName) {
-        return beginReinstallAsync(resourceGroupName, packetCoreControlPlaneName)
-            .last()
+    private Mono<AsyncOperationStatusInner> reinstallAsync(String resourceGroupName,
+        String packetCoreControlPlaneName) {
+        return beginReinstallAsync(resourceGroupName, packetCoreControlPlaneName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Reinstall the specified packet core control plane. This action will remove any transaction state from the packet
-     * core to return it to a known state. This action will cause a service outage.
-     *
+     * Reinstall the specified packet core control plane. This action will try to restore the packet core to the
+     * installed state that was disrupted by a transient failure. This action will cause a service outage.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param context The context to associate with this operation.
@@ -1876,17 +1541,16 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AsyncOperationStatusInner> reinstallAsync(
-        String resourceGroupName, String packetCoreControlPlaneName, Context context) {
-        return beginReinstallAsync(resourceGroupName, packetCoreControlPlaneName, context)
-            .last()
+    private Mono<AsyncOperationStatusInner> reinstallAsync(String resourceGroupName, String packetCoreControlPlaneName,
+        Context context) {
+        return beginReinstallAsync(resourceGroupName, packetCoreControlPlaneName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Reinstall the specified packet core control plane. This action will remove any transaction state from the packet
-     * core to return it to a known state. This action will cause a service outage.
-     *
+     * Reinstall the specified packet core control plane. This action will try to restore the packet core to the
+     * installed state that was disrupted by a transient failure. This action will cause a service outage.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1900,9 +1564,9 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
     }
 
     /**
-     * Reinstall the specified packet core control plane. This action will remove any transaction state from the packet
-     * core to return it to a known state. This action will cause a service outage.
-     *
+     * Reinstall the specified packet core control plane. This action will try to restore the packet core to the
+     * installed state that was disrupted by a transient failure. This action will cause a service outage.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param context The context to associate with this operation.
@@ -1912,50 +1576,42 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AsyncOperationStatusInner reinstall(
-        String resourceGroupName, String packetCoreControlPlaneName, Context context) {
+    public AsyncOperationStatusInner reinstall(String resourceGroupName, String packetCoreControlPlaneName,
+        Context context) {
         return reinstallAsync(resourceGroupName, packetCoreControlPlaneName, context).block();
     }
 
     /**
      * Collect a diagnostics package for the specified packet core control plane. This action will upload the
      * diagnostics to a storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param parameters Parameters supplied to the packet core control plane collect diagnostics package operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> collectDiagnosticsPackageWithResponseAsync(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        PacketCoreControlPlaneCollectDiagnosticsPackage parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> collectDiagnosticsPackageWithResponseAsync(String resourceGroupName,
+        String packetCoreControlPlaneName, PacketCoreControlPlaneCollectDiagnosticsPackage parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (packetCoreControlPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter packetCoreControlPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreControlPlaneName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1964,25 +1620,16 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .collectDiagnosticsPackage(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            packetCoreControlPlaneName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.collectDiagnosticsPackage(this.client.getEndpoint(), resourceGroupName,
+                packetCoreControlPlaneName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Collect a diagnostics package for the specified packet core control plane. This action will upload the
      * diagnostics to a storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param parameters Parameters supplied to the packet core control plane collect diagnostics package operation.
@@ -1990,36 +1637,28 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> collectDiagnosticsPackageWithResponseAsync(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        PacketCoreControlPlaneCollectDiagnosticsPackage parameters,
+    private Mono<Response<Flux<ByteBuffer>>> collectDiagnosticsPackageWithResponseAsync(String resourceGroupName,
+        String packetCoreControlPlaneName, PacketCoreControlPlaneCollectDiagnosticsPackage parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (packetCoreControlPlaneName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter packetCoreControlPlaneName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter packetCoreControlPlaneName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -2028,22 +1667,15 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .collectDiagnosticsPackage(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                packetCoreControlPlaneName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.collectDiagnosticsPackage(this.client.getEndpoint(), resourceGroupName,
+            packetCoreControlPlaneName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters,
+            accept, context);
     }
 
     /**
      * Collect a diagnostics package for the specified packet core control plane. This action will upload the
      * diagnostics to a storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param parameters Parameters supplied to the packet core control plane collect diagnostics package operation.
@@ -2054,26 +1686,19 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner>
-        beginCollectDiagnosticsPackageAsync(
-            String resourceGroupName,
-            String packetCoreControlPlaneName,
+        beginCollectDiagnosticsPackageAsync(String resourceGroupName, String packetCoreControlPlaneName,
             PacketCoreControlPlaneCollectDiagnosticsPackage parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            collectDiagnosticsPackageWithResponseAsync(resourceGroupName, packetCoreControlPlaneName, parameters);
-        return this
-            .client
-            .<AsyncOperationStatusInner, AsyncOperationStatusInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AsyncOperationStatusInner.class,
-                AsyncOperationStatusInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = collectDiagnosticsPackageWithResponseAsync(resourceGroupName, packetCoreControlPlaneName, parameters);
+        return this.client.<AsyncOperationStatusInner, AsyncOperationStatusInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AsyncOperationStatusInner.class, AsyncOperationStatusInner.class,
+            this.client.getContext());
     }
 
     /**
      * Collect a diagnostics package for the specified packet core control plane. This action will upload the
      * diagnostics to a storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param parameters Parameters supplied to the packet core control plane collect diagnostics package operation.
@@ -2085,29 +1710,19 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner>
-        beginCollectDiagnosticsPackageAsync(
-            String resourceGroupName,
-            String packetCoreControlPlaneName,
-            PacketCoreControlPlaneCollectDiagnosticsPackage parameters,
-            Context context) {
+        beginCollectDiagnosticsPackageAsync(String resourceGroupName, String packetCoreControlPlaneName,
+            PacketCoreControlPlaneCollectDiagnosticsPackage parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            collectDiagnosticsPackageWithResponseAsync(
-                resourceGroupName, packetCoreControlPlaneName, parameters, context);
-        return this
-            .client
-            .<AsyncOperationStatusInner, AsyncOperationStatusInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AsyncOperationStatusInner.class,
-                AsyncOperationStatusInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = collectDiagnosticsPackageWithResponseAsync(resourceGroupName,
+            packetCoreControlPlaneName, parameters, context);
+        return this.client.<AsyncOperationStatusInner, AsyncOperationStatusInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AsyncOperationStatusInner.class, AsyncOperationStatusInner.class, context);
     }
 
     /**
      * Collect a diagnostics package for the specified packet core control plane. This action will upload the
      * diagnostics to a storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param parameters Parameters supplied to the packet core control plane collect diagnostics package operation.
@@ -2118,18 +1733,16 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginCollectDiagnosticsPackage(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
+        String resourceGroupName, String packetCoreControlPlaneName,
         PacketCoreControlPlaneCollectDiagnosticsPackage parameters) {
-        return this
-            .beginCollectDiagnosticsPackageAsync(resourceGroupName, packetCoreControlPlaneName, parameters)
+        return this.beginCollectDiagnosticsPackageAsync(resourceGroupName, packetCoreControlPlaneName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Collect a diagnostics package for the specified packet core control plane. This action will upload the
      * diagnostics to a storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param parameters Parameters supplied to the packet core control plane collect diagnostics package operation.
@@ -2141,10 +1754,8 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginCollectDiagnosticsPackage(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        PacketCoreControlPlaneCollectDiagnosticsPackage parameters,
-        Context context) {
+        String resourceGroupName, String packetCoreControlPlaneName,
+        PacketCoreControlPlaneCollectDiagnosticsPackage parameters, Context context) {
         return this
             .beginCollectDiagnosticsPackageAsync(resourceGroupName, packetCoreControlPlaneName, parameters, context)
             .getSyncPoller();
@@ -2153,7 +1764,7 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
     /**
      * Collect a diagnostics package for the specified packet core control plane. This action will upload the
      * diagnostics to a storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param parameters Parameters supplied to the packet core control plane collect diagnostics package operation.
@@ -2163,19 +1774,16 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AsyncOperationStatusInner> collectDiagnosticsPackageAsync(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        PacketCoreControlPlaneCollectDiagnosticsPackage parameters) {
-        return beginCollectDiagnosticsPackageAsync(resourceGroupName, packetCoreControlPlaneName, parameters)
-            .last()
+    private Mono<AsyncOperationStatusInner> collectDiagnosticsPackageAsync(String resourceGroupName,
+        String packetCoreControlPlaneName, PacketCoreControlPlaneCollectDiagnosticsPackage parameters) {
+        return beginCollectDiagnosticsPackageAsync(resourceGroupName, packetCoreControlPlaneName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Collect a diagnostics package for the specified packet core control plane. This action will upload the
      * diagnostics to a storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param parameters Parameters supplied to the packet core control plane collect diagnostics package operation.
@@ -2186,10 +1794,8 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AsyncOperationStatusInner> collectDiagnosticsPackageAsync(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        PacketCoreControlPlaneCollectDiagnosticsPackage parameters,
+    private Mono<AsyncOperationStatusInner> collectDiagnosticsPackageAsync(String resourceGroupName,
+        String packetCoreControlPlaneName, PacketCoreControlPlaneCollectDiagnosticsPackage parameters,
         Context context) {
         return beginCollectDiagnosticsPackageAsync(resourceGroupName, packetCoreControlPlaneName, parameters, context)
             .last()
@@ -2199,7 +1805,7 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
     /**
      * Collect a diagnostics package for the specified packet core control plane. This action will upload the
      * diagnostics to a storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param parameters Parameters supplied to the packet core control plane collect diagnostics package operation.
@@ -2209,17 +1815,15 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AsyncOperationStatusInner collectDiagnosticsPackage(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        PacketCoreControlPlaneCollectDiagnosticsPackage parameters) {
+    public AsyncOperationStatusInner collectDiagnosticsPackage(String resourceGroupName,
+        String packetCoreControlPlaneName, PacketCoreControlPlaneCollectDiagnosticsPackage parameters) {
         return collectDiagnosticsPackageAsync(resourceGroupName, packetCoreControlPlaneName, parameters).block();
     }
 
     /**
      * Collect a diagnostics package for the specified packet core control plane. This action will upload the
      * diagnostics to a storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param parameters Parameters supplied to the packet core control plane collect diagnostics package operation.
@@ -2230,10 +1834,8 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AsyncOperationStatusInner collectDiagnosticsPackage(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        PacketCoreControlPlaneCollectDiagnosticsPackage parameters,
+    public AsyncOperationStatusInner collectDiagnosticsPackage(String resourceGroupName,
+        String packetCoreControlPlaneName, PacketCoreControlPlaneCollectDiagnosticsPackage parameters,
         Context context) {
         return collectDiagnosticsPackageAsync(resourceGroupName, packetCoreControlPlaneName, parameters, context)
             .block();
@@ -2241,14 +1843,15 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for packet core control planes API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PacketCoreControlPlaneInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -2256,76 +1859,59 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PacketCoreControlPlaneInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<PacketCoreControlPlaneInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for packet core control planes API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PacketCoreControlPlaneInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<PacketCoreControlPlaneInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for packet core control planes API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PacketCoreControlPlaneInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -2333,63 +1919,45 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PacketCoreControlPlaneInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<PacketCoreControlPlaneInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for packet core control planes API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PacketCoreControlPlaneInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<PacketCoreControlPlaneInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

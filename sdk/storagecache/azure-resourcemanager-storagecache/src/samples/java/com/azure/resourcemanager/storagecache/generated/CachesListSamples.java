@@ -9,9 +9,7 @@ package com.azure.resourcemanager.storagecache.generated;
  */
 public final class CachesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-11-01-preview/examples/
-     * Caches_List.json
+     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/Caches_List.json
      */
     /**
      * Sample code: Caches_List.

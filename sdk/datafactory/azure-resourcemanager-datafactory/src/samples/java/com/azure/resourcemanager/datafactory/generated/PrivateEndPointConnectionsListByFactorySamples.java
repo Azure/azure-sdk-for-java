@@ -19,7 +19,7 @@ public final class PrivateEndPointConnectionsListByFactorySamples {
      */
     public static void
         privateEndPointConnectionsListByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.privateEndPointConnections().listByFactory("exampleResourceGroup", "exampleFactoryName",
-            com.azure.core.util.Context.NONE);
+        manager.privateEndPointConnections()
+            .listByFactory("exampleResourceGroup", "exampleFactoryName", com.azure.core.util.Context.NONE);
     }
 }

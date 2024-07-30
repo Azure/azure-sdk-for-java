@@ -88,26 +88,22 @@ public final class ManagedCertificateImpl
     }
 
     public ManagedCertificate create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getManagedCertificates()
-                .createOrUpdate(
-                    resourceGroupName, environmentName, managedCertificateName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getManagedCertificates()
+            .createOrUpdate(resourceGroupName, environmentName, managedCertificateName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public ManagedCertificate create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getManagedCertificates()
-                .createOrUpdate(resourceGroupName, environmentName, managedCertificateName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getManagedCertificates()
+            .createOrUpdate(resourceGroupName, environmentName, managedCertificateName, this.innerModel(), context);
         return this;
     }
 
-    ManagedCertificateImpl(
-        String name, com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
+    ManagedCertificateImpl(String name,
+        com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = new ManagedCertificateInner();
         this.serviceManager = serviceManager;
         this.managedCertificateName = name;
@@ -119,62 +115,46 @@ public final class ManagedCertificateImpl
     }
 
     public ManagedCertificate apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getManagedCertificates()
-                .updateWithResponse(
-                    resourceGroupName,
-                    environmentName,
-                    managedCertificateName,
-                    updateManagedCertificateEnvelope,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getManagedCertificates()
+            .updateWithResponse(resourceGroupName, environmentName, managedCertificateName,
+                updateManagedCertificateEnvelope, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ManagedCertificate apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getManagedCertificates()
-                .updateWithResponse(
-                    resourceGroupName,
-                    environmentName,
-                    managedCertificateName,
-                    updateManagedCertificateEnvelope,
-                    context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getManagedCertificates()
+            .updateWithResponse(resourceGroupName, environmentName, managedCertificateName,
+                updateManagedCertificateEnvelope, context)
+            .getValue();
         return this;
     }
 
-    ManagedCertificateImpl(
-        ManagedCertificateInner innerObject,
+    ManagedCertificateImpl(ManagedCertificateInner innerObject,
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.environmentName = Utils.getValueFromIdByName(innerObject.id(), "managedEnvironments");
-        this.managedCertificateName = Utils.getValueFromIdByName(innerObject.id(), "managedCertificates");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.environmentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "managedEnvironments");
+        this.managedCertificateName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "managedCertificates");
     }
 
     public ManagedCertificate refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getManagedCertificates()
-                .getWithResponse(resourceGroupName, environmentName, managedCertificateName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getManagedCertificates()
+            .getWithResponse(resourceGroupName, environmentName, managedCertificateName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ManagedCertificate refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getManagedCertificates()
-                .getWithResponse(resourceGroupName, environmentName, managedCertificateName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getManagedCertificates()
+            .getWithResponse(resourceGroupName, environmentName, managedCertificateName, context)
+            .getValue();
         return this;
     }
 

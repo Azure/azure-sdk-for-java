@@ -9,9 +9,7 @@ package com.azure.resourcemanager.eventgrid.generated;
  */
 public final class EventSubscriptionsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
-     * EventSubscriptions_DeleteForCustomTopic.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/EventSubscriptions_DeleteForCustomTopic.json
      */
     /**
      * Sample code: EventSubscriptions_DeleteForCustomTopic.
@@ -20,15 +18,14 @@ public final class EventSubscriptionsDeleteSamples {
      */
     public static void
         eventSubscriptionsDeleteForCustomTopic(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.eventSubscriptions().delete(
-            "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1",
-            "examplesubscription1", com.azure.core.util.Context.NONE);
+        manager.eventSubscriptions()
+            .delete(
+                "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1",
+                "examplesubscription1", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
-     * EventSubscriptions_DeleteForResourceGroup.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/EventSubscriptions_DeleteForResourceGroup.json
      */
     /**
      * Sample code: EventSubscriptions_DeleteForResourceGroup.
@@ -37,15 +34,13 @@ public final class EventSubscriptionsDeleteSamples {
      */
     public static void
         eventSubscriptionsDeleteForResourceGroup(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.eventSubscriptions().delete(
-            "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg", "examplesubscription2",
-            com.azure.core.util.Context.NONE);
+        manager.eventSubscriptions()
+            .delete("subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg",
+                "examplesubscription2", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
-     * EventSubscriptions_DeleteForSubscription.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/EventSubscriptions_DeleteForSubscription.json
      */
     /**
      * Sample code: EventSubscriptions_DeleteForSubscription.
@@ -54,14 +49,13 @@ public final class EventSubscriptionsDeleteSamples {
      */
     public static void
         eventSubscriptionsDeleteForSubscription(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.eventSubscriptions().delete("subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40",
-            "examplesubscription3", com.azure.core.util.Context.NONE);
+        manager.eventSubscriptions()
+            .delete("subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40", "examplesubscription3",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
-     * EventSubscriptions_DeleteForResource.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/EventSubscriptions_DeleteForResource.json
      */
     /**
      * Sample code: EventSubscriptions_DeleteForResource.
@@ -70,8 +64,9 @@ public final class EventSubscriptionsDeleteSamples {
      */
     public static void
         eventSubscriptionsDeleteForResource(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.eventSubscriptions().delete(
-            "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1",
-            "examplesubscription10", com.azure.core.util.Context.NONE);
+        manager.eventSubscriptions()
+            .delete(
+                "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1",
+                "examplesubscription10", com.azure.core.util.Context.NONE);
     }
 }

@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class AppServiceEnvironmentsGetAseV3NetworkingConfigurationSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
-     * AppServiceEnvironments_GetAseV3NetworkingConfiguration.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/AppServiceEnvironments_GetAseV3NetworkingConfiguration.json
      */
     /**
      * Sample code: Get networking configuration of an App Service Environment.
@@ -19,7 +18,10 @@ public final class AppServiceEnvironmentsGetAseV3NetworkingConfigurationSamples 
      */
     public static void
         getNetworkingConfigurationOfAnAppServiceEnvironment(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getAppServiceEnvironments()
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getAppServiceEnvironments()
             .getAseV3NetworkingConfigurationWithResponse("test-rg", "test-ase", com.azure.core.util.Context.NONE);
     }
 }

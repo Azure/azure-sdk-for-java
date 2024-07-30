@@ -9,8 +9,9 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class BackupsGetSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/
-     * BackupsUnderBackupVault_Get.json
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/BackupsUnderBackupVault_Get.
+     * json
      */
     /**
      * Sample code: BackupsUnderBackupVault_Get.
@@ -18,7 +19,7 @@ public final class BackupsGetSamples {
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void backupsUnderBackupVaultGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.backups().getWithResponse("myRG", "account1", "backupVault1", "backup1",
-            com.azure.core.util.Context.NONE);
+        manager.backups()
+            .getWithResponse("myRG", "account1", "backupVault1", "backup1", com.azure.core.util.Context.NONE);
     }
 }

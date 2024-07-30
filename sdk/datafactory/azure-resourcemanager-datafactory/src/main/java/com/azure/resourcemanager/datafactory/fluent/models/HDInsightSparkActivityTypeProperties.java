@@ -160,8 +160,8 @@ public final class HDInsightSparkActivityTypeProperties {
     }
 
     /**
-     * Get the sparkJobLinkedService property: The storage linked service for uploading the entry file and
-     * dependencies, and for receiving logs.
+     * Get the sparkJobLinkedService property: The storage linked service for uploading the entry file and dependencies,
+     * and for receiving logs.
      * 
      * @return the sparkJobLinkedService value.
      */
@@ -170,8 +170,8 @@ public final class HDInsightSparkActivityTypeProperties {
     }
 
     /**
-     * Set the sparkJobLinkedService property: The storage linked service for uploading the entry file and
-     * dependencies, and for receiving logs.
+     * Set the sparkJobLinkedService property: The storage linked service for uploading the entry file and dependencies,
+     * and for receiving logs.
      * 
      * @param sparkJobLinkedService the sparkJobLinkedService value to set.
      * @return the HDInsightSparkActivityTypeProperties object itself.
@@ -251,12 +251,14 @@ public final class HDInsightSparkActivityTypeProperties {
      */
     public void validate() {
         if (rootPath() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property rootPath in model HDInsightSparkActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property rootPath in model HDInsightSparkActivityTypeProperties"));
         }
         if (entryFilePath() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property entryFilePath in model HDInsightSparkActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property entryFilePath in model HDInsightSparkActivityTypeProperties"));
         }
         if (sparkJobLinkedService() != null) {
             sparkJobLinkedService().validate();

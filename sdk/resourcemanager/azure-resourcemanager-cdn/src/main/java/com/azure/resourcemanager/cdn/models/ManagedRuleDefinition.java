@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cdn.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes a managed rule definition. */
+/**
+ * Describes a managed rule definition.
+ */
 @Immutable
 public final class ManagedRuleDefinition {
     /*
@@ -22,13 +24,15 @@ public final class ManagedRuleDefinition {
     @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
-    /** Creates an instance of ManagedRuleDefinition class. */
+    /**
+     * Creates an instance of ManagedRuleDefinition class.
+     */
     public ManagedRuleDefinition() {
     }
 
     /**
      * Get the ruleId property: Identifier for the managed rule.
-     *
+     * 
      * @return the ruleId value.
      */
     public String ruleId() {
@@ -37,7 +41,7 @@ public final class ManagedRuleDefinition {
 
     /**
      * Get the description property: Describes the functionality of the managed rule.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -46,7 +50,7 @@ public final class ManagedRuleDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

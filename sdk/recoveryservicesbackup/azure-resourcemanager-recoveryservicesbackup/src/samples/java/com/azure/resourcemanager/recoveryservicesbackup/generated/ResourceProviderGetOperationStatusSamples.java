@@ -9,9 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class ResourceProviderGetOperationStatusSamples {
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * BackupDataMove/BackupDataMoveOperationStatus_Get.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/BackupDataMove/BackupDataMoveOperationStatus_Get.json
      */
     /**
      * Sample code: Get OperationStatus.
@@ -20,7 +18,8 @@ public final class ResourceProviderGetOperationStatusSamples {
      */
     public static void
         getOperationStatus(com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.resourceProviders().getOperationStatusWithResponse("source-rsv", "sourceRG",
-            "00000000-0000-0000-0000-000000000000", com.azure.core.util.Context.NONE);
+        manager.resourceProviders()
+            .getOperationStatusWithResponse("source-rsv", "sourceRG", "00000000-0000-0000-0000-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }

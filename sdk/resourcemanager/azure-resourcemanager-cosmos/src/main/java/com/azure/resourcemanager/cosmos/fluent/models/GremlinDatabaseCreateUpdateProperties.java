@@ -22,8 +22,7 @@ public final class GremlinDatabaseCreateUpdateProperties {
     private GremlinDatabaseResource resource;
 
     /*
-     * A key-value pair of options to be applied for the request. This corresponds to the headers sent with the
-     * request.
+     * A key-value pair of options to be applied for the request. This corresponds to the headers sent with the request.
      */
     @JsonProperty(value = "options")
     private CreateUpdateOptions options;
@@ -83,8 +82,9 @@ public final class GremlinDatabaseCreateUpdateProperties {
      */
     public void validate() {
         if (resource() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property resource in model GremlinDatabaseCreateUpdateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property resource in model GremlinDatabaseCreateUpdateProperties"));
         } else {
             resource().validate();
         }

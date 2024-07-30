@@ -22,7 +22,7 @@ import java.util.Map;
 public final class VirtualMachineExtensionsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachineExtension_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
@@ -32,30 +32,43 @@ public final class VirtualMachineExtensionsCreateOrUpdateSamples {
      */
     public static void virtualMachineExtensionCreateOrUpdateMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) throws IOException {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineExtensions().createOrUpdate("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaa",
-            new VirtualMachineExtensionInner().withLocation("westus").withTags(mapOf("key9183", "fakeTokenPlaceholder"))
-                .withForceUpdateTag("a").withPublisher("extPublisher").withTypePropertiesType("extType")
-                .withTypeHandlerVersion("1.2").withAutoUpgradeMinorVersion(true).withEnableAutomaticUpgrade(true)
-                .withSettings(SerializerFactory.createDefaultManagementSerializerAdapter().deserialize("{}",
-                    Object.class, SerializerEncoding.JSON))
-                .withProtectedSettings(SerializerFactory.createDefaultManagementSerializerAdapter().deserialize("{}",
-                    Object.class, SerializerEncoding.JSON))
-                .withInstanceView(new VirtualMachineExtensionInstanceView().withName("aaaaaaaaaaaaaaaaa")
-                    .withType("aaaaaaaaa").withTypeHandlerVersion("aaaaaaaaaaaaaaaaaaaaaaaaaa")
-                    .withSubstatuses(Arrays.asList(new InstanceViewStatus().withCode("fakeTokenPlaceholder")
-                        .withLevel(StatusLevelTypes.INFO).withDisplayStatus("aaaaaa").withMessage("a")
-                        .withTime(OffsetDateTime.parse("2021-11-30T12:58:26.522Z"))))
-                    .withStatuses(Arrays.asList(new InstanceViewStatus().withCode("fakeTokenPlaceholder")
-                        .withLevel(StatusLevelTypes.INFO).withDisplayStatus("aaaaaa").withMessage("a")
-                        .withTime(OffsetDateTime.parse("2021-11-30T12:58:26.522Z")))))
-                .withSuppressFailures(true),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineExtensions()
+            .createOrUpdate("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaa",
+                new VirtualMachineExtensionInner().withLocation("westus")
+                    .withTags(mapOf("key9183", "fakeTokenPlaceholder"))
+                    .withForceUpdateTag("a")
+                    .withPublisher("extPublisher")
+                    .withTypePropertiesType("extType")
+                    .withTypeHandlerVersion("1.2")
+                    .withAutoUpgradeMinorVersion(true)
+                    .withEnableAutomaticUpgrade(true)
+                    .withSettings(SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize("{}", Object.class, SerializerEncoding.JSON))
+                    .withProtectedSettings(SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize("{}", Object.class, SerializerEncoding.JSON))
+                    .withInstanceView(new VirtualMachineExtensionInstanceView().withName("aaaaaaaaaaaaaaaaa")
+                        .withType("aaaaaaaaa")
+                        .withTypeHandlerVersion("aaaaaaaaaaaaaaaaaaaaaaaaaa")
+                        .withSubstatuses(Arrays.asList(new InstanceViewStatus().withCode("fakeTokenPlaceholder")
+                            .withLevel(StatusLevelTypes.INFO)
+                            .withDisplayStatus("aaaaaa")
+                            .withMessage("a")
+                            .withTime(OffsetDateTime.parse("2021-11-30T12:58:26.522Z"))))
+                        .withStatuses(Arrays.asList(new InstanceViewStatus().withCode("fakeTokenPlaceholder")
+                            .withLevel(StatusLevelTypes.INFO)
+                            .withDisplayStatus("aaaaaa")
+                            .withMessage("a")
+                            .withTime(OffsetDateTime.parse("2021-11-30T12:58:26.522Z")))))
+                    .withSuppressFailures(true),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachineExtension_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
@@ -65,9 +78,12 @@ public final class VirtualMachineExtensionsCreateOrUpdateSamples {
      */
     public static void
         virtualMachineExtensionCreateOrUpdateMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineExtensions().createOrUpdate("rgcompute",
-            "myVM", "myVMExtension", new VirtualMachineExtensionInner().withLocation("westus"),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineExtensions()
+            .createOrUpdate("rgcompute", "myVM", "myVMExtension",
+                new VirtualMachineExtensionInner().withLocation("westus"), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

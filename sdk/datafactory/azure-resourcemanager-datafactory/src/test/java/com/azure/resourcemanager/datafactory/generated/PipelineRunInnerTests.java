@@ -23,18 +23,20 @@ public final class PipelineRunInnerTests {
     public void testSerialize() throws Exception {
         PipelineRunInner model = new PipelineRunInner().withAdditionalProperties(mapOf("durationInMs", 1900106080,
             "runDimensions",
-            JacksonAdapter.createDefaultSerializerAdapter().deserialize("{\"nwxyiop\":\"ivjlfrqttbajlka\"}",
-                Object.class, SerializerEncoding.JSON),
+            JacksonAdapter.createDefaultSerializerAdapter()
+                .deserialize("{\"nwxyiop\":\"ivjlfrqttbajlka\"}", Object.class, SerializerEncoding.JSON),
             "invokedBy",
-            JacksonAdapter.createDefaultSerializerAdapter().deserialize(
-                "{\"name\":\"qqfkuv\",\"id\":\"xkdmligo\",\"invokedByType\":\"brxk\",\"pipelineName\":\"loazuruocbgoo\",\"pipelineRunId\":\"te\"}",
-                Object.class, SerializerEncoding.JSON),
+            JacksonAdapter.createDefaultSerializerAdapter()
+                .deserialize(
+                    "{\"name\":\"qqfkuv\",\"id\":\"xkdmligo\",\"invokedByType\":\"brxk\",\"pipelineName\":\"loazuruocbgoo\",\"pipelineRunId\":\"te\"}",
+                    Object.class, SerializerEncoding.JSON),
             "runStart", "2021-05-18T20:05:21Z", "message", "dilmyww", "pipelineName", "wlvwlyoupf", "lastUpdated",
             "2021-05-01T19:42:34Z", "isLatest", true, "runId", "lqol", "runEnd", "2021-08-27T22:46:55Z", "runGroupId",
             "kcgxxlxsffgcvi", "parameters",
-            JacksonAdapter.createDefaultSerializerAdapter().deserialize(
-                "{\"ubdyhgk\":\"k\",\"tsttktlahbq\":\"minsgowzf\",\"mmqtgqqqxhr\":\"ctxtgzukxi\",\"juisavokqdzf\":\"xrxc\"}",
-                Object.class, SerializerEncoding.JSON),
+            JacksonAdapter.createDefaultSerializerAdapter()
+                .deserialize(
+                    "{\"ubdyhgk\":\"k\",\"tsttktlahbq\":\"minsgowzf\",\"mmqtgqqqxhr\":\"ctxtgzukxi\",\"juisavokqdzf\":\"xrxc\"}",
+                    Object.class, SerializerEncoding.JSON),
             "status", "vjgsl"));
         model = BinaryData.fromObject(model).toObject(PipelineRunInner.class);
     }

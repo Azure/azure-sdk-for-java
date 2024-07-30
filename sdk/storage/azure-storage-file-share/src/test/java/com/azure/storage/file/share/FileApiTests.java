@@ -509,6 +509,38 @@ class FileApiTests extends FileShareTestBase {
         assertArrayEquals(DATA.getDefaultBytes(), stream.toByteArray());
     }
 
+    @LiveOnly
+    @Test
+    public void uploadAndDownloadAndUploadAgain() {
+        byte[] randomData = getRandomByteArray(20 * Constants.MB);
+        ByteArrayInputStream input = new ByteArrayInputStream(randomData);
+
+        String pathName = generatePathName();
+        ShareFileClient fileClient = shareClient.getFileClient(pathName);
+        fileClient.create(20 * Constants.MB);
+
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSizeLong((long) Constants.MB)
+            .setMaxSingleUploadSizeLong(2L * Constants.MB)
+            .setMaxConcurrency(5);
+        ShareFileUploadOptions parallelUploadOptions = new ShareFileUploadOptions(input)
+            .setParallelTransferOptions(parallelTransferOptions);
+
+        fileClient.uploadWithResponse(parallelUploadOptions, null, null);
+
+        StorageFileInputStream inputStreamResult = fileClient.openInputStream();
+
+        // Upload the downloaded content to a different location
+        String pathName2 = generatePathName();
+
+        parallelUploadOptions = new ShareFileUploadOptions(inputStreamResult)
+            .setParallelTransferOptions(parallelTransferOptions);
+
+        ShareFileClient fileClient2 = shareClient.getFileClient(pathName2);
+        fileClient2.create(20 * Constants.MB);
+        fileClient2.uploadWithResponse(parallelUploadOptions, null, null);
+    }
+
     @Test
     public void downloadAllNull() {
         primaryFileClient.create(DATA.getDefaultDataSizeLong());
@@ -1070,6 +1102,21 @@ class FileApiTests extends FileShareTestBase {
         }
     }
 
+    /*@RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @Test
+    public void uploadRangeFromURLSourceErrorAndStatusCode() {
+        primaryFileClient.create(1024);
+        ShareFileClient destinationClient = shareClient.getFileClient(generatePathName());
+        destinationClient.create(1024);
+
+        ShareStorageException e = assertThrows(ShareStorageException.class,
+            () -> destinationClient.uploadRangeFromUrl(5, 0, 0, primaryFileClient.getFileUrl()));
+
+        assertTrue(e.getStatusCode() == 401);
+        assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
+        assertTrue(e.getServiceMessage().contains("Server failed to authenticate the request. Please refer to the information in the www-authenticate header."));
+    }*/
+
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
     public void uploadRangeFromURLOAuth() {
@@ -1315,6 +1362,21 @@ class FileApiTests extends FileShareTestBase {
         ShareStorageException e = assertThrows(ShareStorageException.class, poller::waitForCompletion);
         FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.INVALID_HEADER_VALUE);
     }
+
+    /*@RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @Test
+    public void startCopySourceErrorAndStatusCode() {
+        primaryFileClient.create(1024);
+
+        ShareStorageException e = assertThrows(ShareStorageException.class, () -> {
+            SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy("https://error.file.core.windows.net/garbage", testMetadata, null);
+            poller.waitForCompletion();
+        });
+
+        assertTrue(e.getStatusCode() == 400);
+        assertTrue(e.getServiceMessage().contains("InvalidUri"));
+        assertTrue(e.getServiceMessage().contains("The requested URI does not represent any resource on the server."));
+    }*/
 
     @ParameterizedTest
     @MethodSource("com.azure.storage.file.share.FileShareTestHelper#startCopyArgumentsSupplier")
@@ -2261,6 +2323,55 @@ class FileApiTests extends FileShareTestBase {
         FileShareTestHelper.deleteFileIfExists(testFolder.getPath(), fileName);
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-05-04")
+    @ParameterizedTest
+    @MethodSource("listRangesDiffWithRenameSupplier")
+    public void listRangesDiffWithRename(Boolean renameSupport) throws IOException {
+        //create a file
+        String fileName = generateShareName();
+        primaryFileClient.create(Constants.MB);
+
+        //upload some content
+        ByteArrayInputStream content = new ByteArrayInputStream(FileShareTestHelper.getRandomBuffer(Constants.KB));
+        String uploadFile = FileShareTestHelper.createRandomFileWithLength(Constants.KB, testFolder, fileName);
+        primaryFileClient.uploadFromFile(uploadFile);
+        primaryFileClient.uploadRange(content, Constants.KB);
+
+        //take snapshot
+        ShareSnapshotInfo previousSnapshot = shareClient.createSnapshot();
+
+        //rename file
+        ShareFileClient destFile = primaryFileClient.rename(generatePathName());
+
+        //take another snapshot
+        shareClient.createSnapshot();
+
+        //setup options
+        ShareFileListRangesDiffOptions options = new ShareFileListRangesDiffOptions(previousSnapshot.getSnapshot());
+        options.setRenameIncluded(renameSupport);
+
+        //call
+        if (renameSupport == null || !renameSupport) {
+            ShareStorageException e = assertThrows(ShareStorageException.class,
+                () -> destFile.listRangesDiffWithResponse(options, null, null));
+            assertEquals(ShareErrorCode.PREVIOUS_SNAPSHOT_NOT_FOUND, e.getErrorCode());
+        } else {
+            Response<ShareFileRangeList> response = destFile.listRangesDiffWithResponse(options, null, null);
+            assertEquals(200, response.getStatusCode());
+            assertEquals(0, response.getValue().getRanges().size());
+        }
+
+        FileShareTestHelper.deleteFileIfExists(testFolder.getPath(), fileName);
+        destFile.delete();
+    }
+
+    private static Stream<Arguments> listRangesDiffWithRenameSupplier() {
+        return Stream.of(
+            Arguments.of(true),
+            Arguments.of(false),
+            Arguments.of((Boolean) null));
+    }
+
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2022-11-02")
     @Test
     public void listRangesDiffTrailingDot() throws IOException {
@@ -2778,7 +2889,7 @@ class FileApiTests extends FileShareTestBase {
 
         ShareFileClient aadFileClient = oAuthServiceClient.getShareClient(shareName).getFileClient(fileName);
         ShareStorageException e = assertThrows(ShareStorageException.class, aadFileClient::exists);
-        assertEquals(ShareErrorCode.AUTHENTICATION_FAILED, e.getErrorCode());
+        assertEquals(ShareErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
     }
 
     @Test
@@ -2798,7 +2909,6 @@ class FileApiTests extends FileShareTestBase {
         assertTrue(aadFileClient.exists());
     }
 
-    /* Uncomment this test when Client Name is enabled with STG 93.
     @PlaybackOnly
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-02-04")
     @Test
@@ -2808,7 +2918,5 @@ class FileApiTests extends FileShareTestBase {
         ShareFileClient fileClient = directoryClient.getFileClient("test.txt");
         List<HandleItem> list = fileClient.listHandles().stream().collect(Collectors.toList());
         assertNotNull(list.get(0).getClientName());
-
     }
-     */
 }

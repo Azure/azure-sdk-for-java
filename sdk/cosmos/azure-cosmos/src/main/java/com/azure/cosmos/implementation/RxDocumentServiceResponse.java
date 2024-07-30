@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.Address;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
@@ -18,7 +19,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 /**
  * This is core Transport/Connection agnostic response for the Azure Cosmos DB database service.
@@ -165,7 +165,7 @@ public class RxDocumentServiceResponse {
     @SuppressWarnings("unchecked")
     // Given cls (where cls == Class<T>), objectNode is first decoded to cls and then casted to T.
     public <T> List<T> getQueryResponse(
-        Function<JsonNode, T> factoryMethod,
+        CosmosItemSerializer effectiveSerializer,
         Class<T> c) {
 
         String resourceKey = RxDocumentServiceResponse.getResourceKey(c);
@@ -185,9 +185,7 @@ public class RxDocumentServiceResponse {
                 ? (ObjectNode) fromJson(String.format("{\"%s\": %s}", Constants.Properties.VALUE, jToken))
                 : (ObjectNode) jToken;
 
-            T resource = factoryMethod == null ?
-                (T) JsonSerializable.instantiateFromObjectNodeAndType(resourceJson, c):
-                factoryMethod.apply(resourceJson);
+            T resource = Utils.parse(resourceJson, c, effectiveSerializer);
 
             queryResults.add(resource);
         }

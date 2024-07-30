@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Deployment operation parameters. */
+/**
+ * Deployment operation parameters.
+ */
 @Fluent
 public final class DeploymentInner {
     /*
@@ -33,13 +35,15 @@ public final class DeploymentInner {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of DeploymentInner class. */
+    /**
+     * Creates an instance of DeploymentInner class.
+     */
     public DeploymentInner() {
     }
 
     /**
      * Get the location property: The location to store the deployment data.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -48,7 +52,7 @@ public final class DeploymentInner {
 
     /**
      * Set the location property: The location to store the deployment data.
-     *
+     * 
      * @param location the location value to set.
      * @return the DeploymentInner object itself.
      */
@@ -59,7 +63,7 @@ public final class DeploymentInner {
 
     /**
      * Get the properties property: The deployment properties.
-     *
+     * 
      * @return the properties value.
      */
     public DeploymentProperties properties() {
@@ -68,7 +72,7 @@ public final class DeploymentInner {
 
     /**
      * Set the properties property: The deployment properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the DeploymentInner object itself.
      */
@@ -79,7 +83,7 @@ public final class DeploymentInner {
 
     /**
      * Get the tags property: Deployment tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -88,7 +92,7 @@ public final class DeploymentInner {
 
     /**
      * Set the tags property: Deployment tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the DeploymentInner object itself.
      */
@@ -99,14 +103,13 @@ public final class DeploymentInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property properties in model DeploymentInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property properties in model DeploymentInner"));
         } else {
             properties().validate();
         }

@@ -6,16 +6,24 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The data stored in text format.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = TextFormat.class, visible = true)
 @JsonTypeName("TextFormat")
 @Fluent
 public final class TextFormat extends DatasetStorageFormat {
+    /*
+     * Type of dataset storage format.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "TextFormat";
+
     /*
      * The column delimiter. Type: string (or Expression with resultType string).
      */
@@ -49,8 +57,8 @@ public final class TextFormat extends DatasetStorageFormat {
     /*
      * The code page name of the preferred encoding. If miss, the default value is ΓÇ£utf-8ΓÇ¥, unless BOM denotes
      * another Unicode encoding. Refer to the ΓÇ£NameΓÇ¥ column of the table in the following link to set supported
-     * values: https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or Expression with
-     * resultType string).
+     * values: https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "encodingName")
     private Object encodingName;
@@ -70,9 +78,8 @@ public final class TextFormat extends DatasetStorageFormat {
     private Object skipLineCount;
 
     /*
-     * When used as input, treat the first row of data as headers. When used as output,write the headers into the
-     * output as the first row of data. The default value is false. Type: boolean (or Expression with resultType
-     * boolean).
+     * When used as input, treat the first row of data as headers. When used as output,write the headers into the output
+     * as the first row of data. The default value is false. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "firstRowAsHeader")
     private Object firstRowAsHeader;
@@ -81,6 +88,16 @@ public final class TextFormat extends DatasetStorageFormat {
      * Creates an instance of TextFormat class.
      */
     public TextFormat() {
+    }
+
+    /**
+     * Get the type property: Type of dataset storage format.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -210,8 +227,8 @@ public final class TextFormat extends DatasetStorageFormat {
     }
 
     /**
-     * Get the treatEmptyAsNull property: Treat empty column values in the text file as null. The default value is
-     * true. Type: boolean (or Expression with resultType boolean).
+     * Get the treatEmptyAsNull property: Treat empty column values in the text file as null. The default value is true.
+     * Type: boolean (or Expression with resultType boolean).
      * 
      * @return the treatEmptyAsNull value.
      */
@@ -220,8 +237,8 @@ public final class TextFormat extends DatasetStorageFormat {
     }
 
     /**
-     * Set the treatEmptyAsNull property: Treat empty column values in the text file as null. The default value is
-     * true. Type: boolean (or Expression with resultType boolean).
+     * Set the treatEmptyAsNull property: Treat empty column values in the text file as null. The default value is true.
+     * Type: boolean (or Expression with resultType boolean).
      * 
      * @param treatEmptyAsNull the treatEmptyAsNull value to set.
      * @return the TextFormat object itself.
@@ -232,8 +249,8 @@ public final class TextFormat extends DatasetStorageFormat {
     }
 
     /**
-     * Get the skipLineCount property: The number of lines/rows to be skipped when parsing text files. The default
-     * value is 0. Type: integer (or Expression with resultType integer).
+     * Get the skipLineCount property: The number of lines/rows to be skipped when parsing text files. The default value
+     * is 0. Type: integer (or Expression with resultType integer).
      * 
      * @return the skipLineCount value.
      */
@@ -242,8 +259,8 @@ public final class TextFormat extends DatasetStorageFormat {
     }
 
     /**
-     * Set the skipLineCount property: The number of lines/rows to be skipped when parsing text files. The default
-     * value is 0. Type: integer (or Expression with resultType integer).
+     * Set the skipLineCount property: The number of lines/rows to be skipped when parsing text files. The default value
+     * is 0. Type: integer (or Expression with resultType integer).
      * 
      * @param skipLineCount the skipLineCount value to set.
      * @return the TextFormat object itself.

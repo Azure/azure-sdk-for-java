@@ -12,7 +12,7 @@ import com.azure.resourcemanager.compute.models.InstanceViewTypes;
 public final class VirtualMachinesGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Get_WithVMSizeProperties.json
      */
     /**
@@ -21,13 +21,16 @@ public final class VirtualMachinesGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAVirtualMachineWithVMSizeProperties(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
             .getByResourceGroupWithResponse("myResourceGroup", "myVM", null, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Get_AutoPlacedOnDedicatedHostGroup.json
      */
     /**
@@ -37,13 +40,16 @@ public final class VirtualMachinesGetByResourceGroupSamples {
      */
     public static void getAVirtualMachinePlacedOnADedicatedHostGroupThroughAutomaticPlacement(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
             .getByResourceGroupWithResponse("myResourceGroup", "myVM", null, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Get_WithDiskControllerType.json
      */
     /**
@@ -53,13 +59,17 @@ public final class VirtualMachinesGetByResourceGroupSamples {
      */
     public static void
         getAVirtualMachineWithDiskControllerTypeProperties(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().getByResourceGroupWithResponse(
-            "myResourceGroup", "myVM", InstanceViewTypes.USER_DATA, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .getByResourceGroupWithResponse("myResourceGroup", "myVM", InstanceViewTypes.USER_DATA,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Get.json
      */
     /**
@@ -68,7 +78,11 @@ public final class VirtualMachinesGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAVirtualMachine(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().getByResourceGroupWithResponse(
-            "myResourceGroup", "myVM", InstanceViewTypes.USER_DATA, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .getByResourceGroupWithResponse("myResourceGroup", "myVM", InstanceViewTypes.USER_DATA,
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -11,32 +11,30 @@ import com.azure.resourcemanager.resources.models.TemplateLink;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Deployments WhatIfAtTenantScope. */
+/**
+ * Samples for Deployments WhatIfAtTenantScope.
+ */
 public final class DeploymentsWhatIfAtTenantScopeSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/PostDeploymentWhatIfOnTenant.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/PostDeploymentWhatIfOnTenant.json
      */
     /**
      * Sample code: Predict template changes at management group scope.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void predictTemplateChangesAtManagementGroupScope(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .genericResources()
+    public static void
+        predictTemplateChangesAtManagementGroupScope(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.genericResources()
             .manager()
             .serviceClient()
             .getDeployments()
-            .whatIfAtTenantScope(
-                "exampleDeploymentName",
-                new ScopedDeploymentWhatIf()
-                    .withLocation("eastus")
-                    .withProperties(
-                        new DeploymentWhatIfProperties()
-                            .withTemplateLink(new TemplateLink().withUri("https://example.com/exampleTemplate.json"))
-                            .withParameters(mapOf())
-                            .withMode(DeploymentMode.INCREMENTAL)),
+            .whatIfAtTenantScope("exampleDeploymentName",
+                new ScopedDeploymentWhatIf().withLocation("eastus")
+                    .withProperties(new DeploymentWhatIfProperties()
+                        .withTemplateLink(new TemplateLink().withUri("https://example.com/exampleTemplate.json"))
+                        .withParameters(mapOf())
+                        .withMode(DeploymentMode.INCREMENTAL)),
                 com.azure.core.util.Context.NONE);
     }
 

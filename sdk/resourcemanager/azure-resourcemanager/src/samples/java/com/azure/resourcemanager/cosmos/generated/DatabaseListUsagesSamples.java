@@ -9,8 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class DatabaseListUsagesSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
-     * CosmosDBDatabaseGetUsages.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDatabaseGetUsages.json
      */
     /**
      * Sample code: CosmosDBDatabaseGetUsages.
@@ -18,7 +17,11 @@ public final class DatabaseListUsagesSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBDatabaseGetUsages(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getDatabases().listUsages("rg1", "ddb1", "databaseRid",
-            "$filter=name.value eq 'Storage'", com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getDatabases()
+            .listUsages("rg1", "ddb1", "databaseRid", "$filter=name.value eq 'Storage'",
+                com.azure.core.util.Context.NONE);
     }
 }

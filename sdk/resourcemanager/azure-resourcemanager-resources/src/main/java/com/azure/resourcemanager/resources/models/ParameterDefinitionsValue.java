@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The definition of a parameter that can be provided to the policy. */
+/**
+ * The definition of a parameter that can be provided to the policy.
+ */
 @Fluent
 public final class ParameterDefinitionsValue {
     /*
@@ -35,13 +37,15 @@ public final class ParameterDefinitionsValue {
     @JsonProperty(value = "metadata")
     private ParameterDefinitionsValueMetadata metadata;
 
-    /** Creates an instance of ParameterDefinitionsValue class. */
+    /**
+     * Creates an instance of ParameterDefinitionsValue class.
+     */
     public ParameterDefinitionsValue() {
     }
 
     /**
      * Get the type property: The data type of the parameter.
-     *
+     * 
      * @return the type value.
      */
     public ParameterType type() {
@@ -50,7 +54,7 @@ public final class ParameterDefinitionsValue {
 
     /**
      * Set the type property: The data type of the parameter.
-     *
+     * 
      * @param type the type value to set.
      * @return the ParameterDefinitionsValue object itself.
      */
@@ -61,7 +65,7 @@ public final class ParameterDefinitionsValue {
 
     /**
      * Get the allowedValues property: The allowed values for the parameter.
-     *
+     * 
      * @return the allowedValues value.
      */
     public List<Object> allowedValues() {
@@ -70,7 +74,7 @@ public final class ParameterDefinitionsValue {
 
     /**
      * Set the allowedValues property: The allowed values for the parameter.
-     *
+     * 
      * @param allowedValues the allowedValues value to set.
      * @return the ParameterDefinitionsValue object itself.
      */
@@ -81,7 +85,7 @@ public final class ParameterDefinitionsValue {
 
     /**
      * Get the defaultValue property: The default value for the parameter if no value is provided.
-     *
+     * 
      * @return the defaultValue value.
      */
     public Object defaultValue() {
@@ -90,7 +94,7 @@ public final class ParameterDefinitionsValue {
 
     /**
      * Set the defaultValue property: The default value for the parameter if no value is provided.
-     *
+     * 
      * @param defaultValue the defaultValue value to set.
      * @return the ParameterDefinitionsValue object itself.
      */
@@ -101,7 +105,7 @@ public final class ParameterDefinitionsValue {
 
     /**
      * Get the metadata property: General metadata for the parameter.
-     *
+     * 
      * @return the metadata value.
      */
     public ParameterDefinitionsValueMetadata metadata() {
@@ -110,7 +114,7 @@ public final class ParameterDefinitionsValue {
 
     /**
      * Set the metadata property: General metadata for the parameter.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the ParameterDefinitionsValue object itself.
      */
@@ -121,7 +125,7 @@ public final class ParameterDefinitionsValue {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

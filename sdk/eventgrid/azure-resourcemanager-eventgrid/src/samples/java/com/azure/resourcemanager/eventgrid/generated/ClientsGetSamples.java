@@ -9,8 +9,7 @@ package com.azure.resourcemanager.eventgrid.generated;
  */
 public final class ClientsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/Clients_Get.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/Clients_Get.json
      */
     /**
      * Sample code: Clients_Get.
@@ -18,7 +17,8 @@ public final class ClientsGetSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void clientsGet(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.clients().getWithResponse("examplerg", "exampleNamespaceName1", "exampleClientName1",
-            com.azure.core.util.Context.NONE);
+        manager.clients()
+            .getWithResponse("examplerg", "exampleNamespaceName1", "exampleClientName1",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -10,10 +10,15 @@ import com.azure.resourcemanager.network.models.ConnectionMonitorEndpointFilter;
 import com.azure.resourcemanager.network.models.ConnectionMonitorEndpointFilterItem;
 import com.azure.resourcemanager.network.models.ConnectionMonitorEndpointFilterItemType;
 import com.azure.resourcemanager.network.models.ConnectionMonitorEndpointFilterType;
+import com.azure.resourcemanager.network.models.ConnectionMonitorEndpointLocationDetails;
+import com.azure.resourcemanager.network.models.ConnectionMonitorEndpointScope;
+import com.azure.resourcemanager.network.models.ConnectionMonitorEndpointScopeItem;
 import com.azure.resourcemanager.network.models.ConnectionMonitorTcpConfiguration;
 import com.azure.resourcemanager.network.models.ConnectionMonitorTestConfiguration;
 import com.azure.resourcemanager.network.models.ConnectionMonitorTestConfigurationProtocol;
 import com.azure.resourcemanager.network.models.ConnectionMonitorTestGroup;
+import com.azure.resourcemanager.network.models.EndpointType;
+
 import java.util.Arrays;
 
 /**
@@ -21,61 +26,119 @@ import java.util.Arrays;
  */
 public final class ConnectionMonitorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * NetworkWatcherConnectionMonitorCreate.json
      */
     /**
      * Sample code: Create connection monitor V1.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createConnectionMonitorV1(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getConnectionMonitors().createOrUpdate("rg1", "nw1", "cm1",
-            new ConnectionMonitorInner().withLocation("eastus")
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getConnectionMonitors()
+            .createOrUpdate("rg1", "nw1", "cm1", new ConnectionMonitorInner().withLocation("eastus")
                 .withEndpoints(Arrays.asList(
-                    new ConnectionMonitorEndpoint().withName("source").withResourceId(
-                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachines/ct1"),
+                    new ConnectionMonitorEndpoint().withName("source")
+                        .withResourceId(
+                            "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachines/ct1"),
                     new ConnectionMonitorEndpoint().withName("destination").withAddress("bing.com")))
                 .withTestConfigurations(Arrays.asList(new ConnectionMonitorTestConfiguration().withName("tcp")
-                    .withTestFrequencySec(60).withProtocol(ConnectionMonitorTestConfigurationProtocol.TCP)
+                    .withTestFrequencySec(60)
+                    .withProtocol(ConnectionMonitorTestConfigurationProtocol.TCP)
                     .withTcpConfiguration(new ConnectionMonitorTcpConfiguration().withPort(80))))
-                .withTestGroups(Arrays
-                    .asList(new ConnectionMonitorTestGroup().withName("tg").withTestConfigurations(Arrays.asList("tcp"))
-                        .withSources(Arrays.asList("source")).withDestinations(Arrays.asList("destination")))),
-            null, com.azure.core.util.Context.NONE);
+                .withTestGroups(Arrays.asList(new ConnectionMonitorTestGroup().withName("tg")
+                    .withTestConfigurations(Arrays.asList("tcp"))
+                    .withSources(Arrays.asList("source"))
+                    .withDestinations(Arrays.asList("destination")))),
+                null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * NetworkWatcherConnectionMonitorCreateWithArcNetwork.json
+     */
+    /**
+     * Sample code: Create connection monitor with Arc Network.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createConnectionMonitorWithArcNetwork(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getConnectionMonitors()
+            .createOrUpdate("rg1", "nw1", "cm1", new ConnectionMonitorInner()
+                .withEndpoints(Arrays.asList(new ConnectionMonitorEndpoint().withName("vm1")
+                    .withType(EndpointType.AZURE_VM)
+                    .withResourceId(
+                        "/subscriptions/9cece3e3-0f7d-47ca-af0e-9772773f90b7/resourceGroups/testRG/providers/Microsoft.Compute/virtualMachines/TESTVM"),
+                    new ConnectionMonitorEndpoint().withName("bing")
+                        .withType(EndpointType.EXTERNAL_ADDRESS)
+                        .withAddress("bing.com"),
+                    new ConnectionMonitorEndpoint().withName("google")
+                        .withType(EndpointType.EXTERNAL_ADDRESS)
+                        .withAddress("google.com"),
+                    new ConnectionMonitorEndpoint().withName("ArcBasedNetwork")
+                        .withType(EndpointType.AZURE_ARC_NETWORK)
+                        .withScope(new ConnectionMonitorEndpointScope().withInclude(
+                            Arrays.asList(new ConnectionMonitorEndpointScopeItem().withAddress("172.21.128.0/20"))))
+                        .withLocationDetails(new ConnectionMonitorEndpointLocationDetails().withRegion("eastus"))
+                        .withSubscriptionId("9cece3e3-0f7d-47ca-af0e-9772773f90b7")))
+                .withTestConfigurations(Arrays.asList(new ConnectionMonitorTestConfiguration().withName("testConfig1")
+                    .withTestFrequencySec(60)
+                    .withProtocol(ConnectionMonitorTestConfigurationProtocol.TCP)
+                    .withTcpConfiguration(
+                        new ConnectionMonitorTcpConfiguration().withPort(80).withDisableTraceRoute(false))))
+                .withTestGroups(Arrays.asList(new ConnectionMonitorTestGroup().withName("test1")
+                    .withDisable(false)
+                    .withTestConfigurations(Arrays.asList("testConfig1"))
+                    .withSources(Arrays.asList("vm1", "ArcBasedNetwork"))
+                    .withDestinations(Arrays.asList("bing", "google"))))
+                .withOutputs(Arrays.asList()), null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * NetworkWatcherConnectionMonitorV2Create.json
      */
     /**
      * Sample code: Create connection monitor V2.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createConnectionMonitorV2(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getConnectionMonitors().createOrUpdate("rg1", "nw1", "cm1",
-            new ConnectionMonitorInner().withEndpoints(Arrays.asList(
-                new ConnectionMonitorEndpoint().withName("vm1").withResourceId(
-                    "/subscriptions/96e68903-0a56-4819-9987-8d08ad6a1f99/resourceGroups/NwRgIrinaCentralUSEUAP/providers/Microsoft.Compute/virtualMachines/vm1"),
-                new ConnectionMonitorEndpoint().withName("CanaryWorkspaceVamshi").withResourceId(
-                    "/subscriptions/96e68903-0a56-4819-9987-8d08ad6a1f99/resourceGroups/vasamudrRG/providers/Microsoft.OperationalInsights/workspaces/vasamudrWorkspace")
-                    .withFilter(new ConnectionMonitorEndpointFilter()
-                        .withType(ConnectionMonitorEndpointFilterType.INCLUDE)
-                        .withItems(Arrays.asList(new ConnectionMonitorEndpointFilterItem()
-                            .withType(ConnectionMonitorEndpointFilterItemType.AGENT_ADDRESS).withAddress("npmuser")))),
-                new ConnectionMonitorEndpoint().withName("bing").withAddress("bing.com"),
-                new ConnectionMonitorEndpoint().withName("google").withAddress("google.com")))
-                .withTestConfigurations(Arrays
-                    .asList(new ConnectionMonitorTestConfiguration().withName("testConfig1").withTestFrequencySec(60)
-                        .withProtocol(ConnectionMonitorTestConfigurationProtocol.TCP).withTcpConfiguration(
-                            new ConnectionMonitorTcpConfiguration().withPort(80).withDisableTraceRoute(false))))
-                .withTestGroups(Arrays.asList(new ConnectionMonitorTestGroup().withName("test1").withDisable(false)
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getConnectionMonitors()
+            .createOrUpdate("rg1", "nw1", "cm1", new ConnectionMonitorInner()
+                .withEndpoints(Arrays.asList(new ConnectionMonitorEndpoint()
+                    .withName("vm1")
+                    .withResourceId(
+                        "/subscriptions/96e68903-0a56-4819-9987-8d08ad6a1f99/resourceGroups/NwRgIrinaCentralUSEUAP/providers/Microsoft.Compute/virtualMachines/vm1"),
+                    new ConnectionMonitorEndpoint().withName("CanaryWorkspaceVamshi")
+                        .withResourceId(
+                            "/subscriptions/96e68903-0a56-4819-9987-8d08ad6a1f99/resourceGroups/vasamudrRG/providers/Microsoft.OperationalInsights/workspaces/vasamudrWorkspace")
+                        .withFilter(
+                            new ConnectionMonitorEndpointFilter().withType(ConnectionMonitorEndpointFilterType.INCLUDE)
+                                .withItems(Arrays.asList(new ConnectionMonitorEndpointFilterItem()
+                                    .withType(ConnectionMonitorEndpointFilterItemType.AGENT_ADDRESS)
+                                    .withAddress("npmuser")))),
+                    new ConnectionMonitorEndpoint().withName("bing").withAddress("bing.com"),
+                    new ConnectionMonitorEndpoint().withName("google").withAddress("google.com")))
+                .withTestConfigurations(Arrays.asList(new ConnectionMonitorTestConfiguration().withName("testConfig1")
+                    .withTestFrequencySec(60)
+                    .withProtocol(ConnectionMonitorTestConfigurationProtocol.TCP)
+                    .withTcpConfiguration(
+                        new ConnectionMonitorTcpConfiguration().withPort(80).withDisableTraceRoute(false))))
+                .withTestGroups(Arrays.asList(new ConnectionMonitorTestGroup().withName("test1")
+                    .withDisable(false)
                     .withTestConfigurations(Arrays.asList("testConfig1"))
                     .withSources(Arrays.asList("vm1", "CanaryWorkspaceVamshi"))
                     .withDestinations(Arrays.asList("bing", "google"))))
-                .withOutputs(Arrays.asList()),
-            null, com.azure.core.util.Context.NONE);
+                .withOutputs(Arrays.asList()), null, com.azure.core.util.Context.NONE);
     }
 }

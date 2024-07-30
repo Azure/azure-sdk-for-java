@@ -38,8 +38,7 @@ public final class HandlerMapping {
     }
 
     /**
-     * Get the extension property: Requests with this extension will be handled using the specified FastCGI
-     * application.
+     * Get the extension property: Requests with this extension will be handled using the specified FastCGI application.
      * 
      * @return the extension value.
      */
@@ -48,8 +47,7 @@ public final class HandlerMapping {
     }
 
     /**
-     * Set the extension property: Requests with this extension will be handled using the specified FastCGI
-     * application.
+     * Set the extension property: Requests with this extension will be handled using the specified FastCGI application.
      * 
      * @param extension the extension value to set.
      * @return the HandlerMapping object itself.

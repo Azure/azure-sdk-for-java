@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.support.generated;
 
-/** Samples for FilesNoSubscription List. */
+/**
+ * Samples for FilesNoSubscription List.
+ */
 public final class FilesNoSubscriptionListSamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/ListFilesUnderFileWorkspace.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListFilesUnderFileWorkspace.json
      */
     /**
      * Sample code: List files under a workspace.
-     *
+     * 
      * @param manager Entry point to SupportManager.
      */
     public static void listFilesUnderAWorkspace(com.azure.resourcemanager.support.SupportManager manager) {

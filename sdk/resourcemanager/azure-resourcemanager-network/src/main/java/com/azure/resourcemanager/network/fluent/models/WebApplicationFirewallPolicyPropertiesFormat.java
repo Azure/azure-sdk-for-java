@@ -196,8 +196,9 @@ public final class WebApplicationFirewallPolicyPropertiesFormat {
             applicationGateways().forEach(e -> e.validate());
         }
         if (managedRules() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property managedRules in model WebApplicationFirewallPolicyPropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property managedRules in model WebApplicationFirewallPolicyPropertiesFormat"));
         } else {
             managedRules().validate();
         }

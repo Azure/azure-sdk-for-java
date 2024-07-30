@@ -6,20 +6,23 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The value item of the search result.
  */
 @Immutable
-public final class SearchResultValue {
+public final class SearchResultValue implements JsonSerializable<SearchResultValue> {
     /*
      * The search score calculated by the search engine. The results are ordered by
      * search score by default.
      */
     @Generated
-    @JsonProperty(value = "@search.score")
     private Double searchScore;
 
     /*
@@ -30,7 +33,6 @@ public final class SearchResultValue {
      * @search.highlights.
      */
     @Generated
-    @JsonProperty(value = "@search.highlights")
     private SearchHighlights searchHighlights;
 
     /*
@@ -38,105 +40,90 @@ public final class SearchResultValue {
      * distinguish whether a record is an asset or a term.
      */
     @Generated
-    @JsonProperty(value = "objectType")
     private String objectType;
 
     /*
      * The create time of the record. The Unix epoch format.
      */
     @Generated
-    @JsonProperty(value = "createTime")
     private Long createTime;
 
     /*
      * The last update time of the record. The Unix epoch format.
      */
     @Generated
-    @JsonProperty(value = "updateTime")
     private Long updateTime;
 
     /*
      * The GUID of the record.
      */
     @Generated
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The name of the record.
      */
     @Generated
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The qualified name of the record.
      */
     @Generated
-    @JsonProperty(value = "qualifiedName")
     private String qualifiedName;
 
     /*
      * The type name of the asset.
      */
     @Generated
-    @JsonProperty(value = "entityType")
     private String entityType;
 
     /*
      * The description of the asset.
      */
     @Generated
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The endorsement of the asset.
      */
     @Generated
-    @JsonProperty(value = "endorsement")
     private String endorsement;
 
     /*
      * The owner of the record.
      */
     @Generated
-    @JsonProperty(value = "owner")
     private String owner;
 
     /*
      * The classifications of the record.
      */
     @Generated
-    @JsonProperty(value = "classification")
     private List<String> classification;
 
     /*
      * The labels of the asset.
      */
     @Generated
-    @JsonProperty(value = "label")
     private List<String> label;
 
     /*
      * The terms assigned to the asset.
      */
     @Generated
-    @JsonProperty(value = "term")
     private List<TermSearchResultValue> term;
 
     /*
      * The contacts of the asset.
      */
     @Generated
-    @JsonProperty(value = "contact")
     private List<ContactSearchResultValue> contact;
 
     /*
      * The asset types of the asset.
      */
     @Generated
-    @JsonProperty(value = "assetType")
     private List<String> assetType;
 
     /*
@@ -144,35 +131,30 @@ public final class SearchResultValue {
      * AtlasGlossaryCategory.
      */
     @Generated
-    @JsonProperty(value = "glossaryType")
     private String glossaryType;
 
     /*
      * The glossary name of the term.
      */
     @Generated
-    @JsonProperty(value = "glossary")
     private String glossary;
 
     /*
      * The status of the term.
      */
     @Generated
-    @JsonProperty(value = "termStatus")
     private String termStatus;
 
     /*
      * The term template names used by the term.
      */
     @Generated
-    @JsonProperty(value = "termTemplate")
     private List<String> termTemplate;
 
     /*
      * The definition of the term.
      */
     @Generated
-    @JsonProperty(value = "longDescription")
     private String longDescription;
 
     /**
@@ -406,5 +388,115 @@ public final class SearchResultValue {
     @Generated
     public String getLongDescription() {
         return this.longDescription;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("@search.score", this.searchScore);
+        jsonWriter.writeJsonField("@search.highlights", this.searchHighlights);
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeNumberField("createTime", this.createTime);
+        jsonWriter.writeNumberField("updateTime", this.updateTime);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("qualifiedName", this.qualifiedName);
+        jsonWriter.writeStringField("entityType", this.entityType);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("endorsement", this.endorsement);
+        jsonWriter.writeStringField("owner", this.owner);
+        jsonWriter.writeArrayField("classification", this.classification,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("label", this.label, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("term", this.term, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("contact", this.contact, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("assetType", this.assetType, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("glossaryType", this.glossaryType);
+        jsonWriter.writeStringField("glossary", this.glossary);
+        jsonWriter.writeStringField("termStatus", this.termStatus);
+        jsonWriter.writeArrayField("termTemplate", this.termTemplate, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("longDescription", this.longDescription);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SearchResultValue from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchResultValue if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SearchResultValue.
+     */
+    @Generated
+    public static SearchResultValue fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SearchResultValue deserializedSearchResultValue = new SearchResultValue();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("@search.score".equals(fieldName)) {
+                    deserializedSearchResultValue.searchScore = reader.getNullable(JsonReader::getDouble);
+                } else if ("@search.highlights".equals(fieldName)) {
+                    deserializedSearchResultValue.searchHighlights = SearchHighlights.fromJson(reader);
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedSearchResultValue.objectType = reader.getString();
+                } else if ("createTime".equals(fieldName)) {
+                    deserializedSearchResultValue.createTime = reader.getNullable(JsonReader::getLong);
+                } else if ("updateTime".equals(fieldName)) {
+                    deserializedSearchResultValue.updateTime = reader.getNullable(JsonReader::getLong);
+                } else if ("id".equals(fieldName)) {
+                    deserializedSearchResultValue.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSearchResultValue.name = reader.getString();
+                } else if ("qualifiedName".equals(fieldName)) {
+                    deserializedSearchResultValue.qualifiedName = reader.getString();
+                } else if ("entityType".equals(fieldName)) {
+                    deserializedSearchResultValue.entityType = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedSearchResultValue.description = reader.getString();
+                } else if ("endorsement".equals(fieldName)) {
+                    deserializedSearchResultValue.endorsement = reader.getString();
+                } else if ("owner".equals(fieldName)) {
+                    deserializedSearchResultValue.owner = reader.getString();
+                } else if ("classification".equals(fieldName)) {
+                    List<String> classification = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSearchResultValue.classification = classification;
+                } else if ("label".equals(fieldName)) {
+                    List<String> label = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSearchResultValue.label = label;
+                } else if ("term".equals(fieldName)) {
+                    List<TermSearchResultValue> term
+                        = reader.readArray(reader1 -> TermSearchResultValue.fromJson(reader1));
+                    deserializedSearchResultValue.term = term;
+                } else if ("contact".equals(fieldName)) {
+                    List<ContactSearchResultValue> contact
+                        = reader.readArray(reader1 -> ContactSearchResultValue.fromJson(reader1));
+                    deserializedSearchResultValue.contact = contact;
+                } else if ("assetType".equals(fieldName)) {
+                    List<String> assetType = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSearchResultValue.assetType = assetType;
+                } else if ("glossaryType".equals(fieldName)) {
+                    deserializedSearchResultValue.glossaryType = reader.getString();
+                } else if ("glossary".equals(fieldName)) {
+                    deserializedSearchResultValue.glossary = reader.getString();
+                } else if ("termStatus".equals(fieldName)) {
+                    deserializedSearchResultValue.termStatus = reader.getString();
+                } else if ("termTemplate".equals(fieldName)) {
+                    List<String> termTemplate = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSearchResultValue.termTemplate = termTemplate;
+                } else if ("longDescription".equals(fieldName)) {
+                    deserializedSearchResultValue.longDescription = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSearchResultValue;
+        });
     }
 }

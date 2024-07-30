@@ -7,6 +7,7 @@ package com.azure.resourcemanager.eventgrid.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.eventgrid.fluent.models.WebhookPartnerDestinationProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -14,10 +15,21 @@ import java.util.List;
 /**
  * Information about the WebHook of the partner destination.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "endpointType",
+    defaultImpl = WebhookPartnerDestinationInfo.class,
+    visible = true)
 @JsonTypeName("WebHook")
 @Fluent
 public final class WebhookPartnerDestinationInfo extends PartnerDestinationInfo {
+    /*
+     * Type of the endpoint for the partner destination
+     */
+    @JsonTypeId
+    @JsonProperty(value = "endpointType", required = true)
+    private PartnerEndpointType endpointType = PartnerEndpointType.WEB_HOOK;
+
     /*
      * WebHook Properties of the partner destination.
      */
@@ -28,6 +40,16 @@ public final class WebhookPartnerDestinationInfo extends PartnerDestinationInfo 
      * Creates an instance of WebhookPartnerDestinationInfo class.
      */
     public WebhookPartnerDestinationInfo() {
+    }
+
+    /**
+     * Get the endpointType property: Type of the endpoint for the partner destination.
+     * 
+     * @return the endpointType value.
+     */
+    @Override
+    public PartnerEndpointType endpointType() {
+        return this.endpointType;
     }
 
     /**

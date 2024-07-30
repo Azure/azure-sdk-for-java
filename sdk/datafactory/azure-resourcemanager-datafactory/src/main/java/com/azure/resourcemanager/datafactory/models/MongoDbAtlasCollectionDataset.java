@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.MongoDbAtlasCollectionDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,21 @@ import java.util.Map;
 /**
  * The MongoDB Atlas database dataset.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = MongoDbAtlasCollectionDataset.class,
+    visible = true)
 @JsonTypeName("MongoDbAtlasCollection")
 @Fluent
 public final class MongoDbAtlasCollectionDataset extends Dataset {
+    /*
+     * Type of dataset.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "MongoDbAtlasCollection";
+
     /*
      * MongoDB Atlas database dataset properties.
      */
@@ -31,6 +43,16 @@ public final class MongoDbAtlasCollectionDataset extends Dataset {
      * Creates an instance of MongoDbAtlasCollectionDataset class.
      */
     public MongoDbAtlasCollectionDataset() {
+    }
+
+    /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -139,8 +161,9 @@ public final class MongoDbAtlasCollectionDataset extends Dataset {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model MongoDbAtlasCollectionDataset"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model MongoDbAtlasCollectionDataset"));
         } else {
             innerTypeProperties().validate();
         }

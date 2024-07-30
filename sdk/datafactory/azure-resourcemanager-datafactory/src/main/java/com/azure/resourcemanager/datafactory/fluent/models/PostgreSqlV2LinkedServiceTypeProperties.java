@@ -39,8 +39,8 @@ public final class PostgreSqlV2LinkedServiceTypeProperties {
     private Object database;
 
     /*
-     * SSL mode for connection. Type: integer. 0: disable, 1:allow, 2: prefer, 3: require, 4: verify-ca, 5:
-     * verify-full. Type: integer.
+     * SSL mode for connection. Type: integer. 0: disable, 1:allow, 2: prefer, 3: require, 4: verify-ca, 5: verify-full.
+     * Type: integer.
      */
     @JsonProperty(value = "sslMode", required = true)
     private Object sslMode;
@@ -516,8 +516,8 @@ public final class PostgreSqlV2LinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -526,8 +526,8 @@ public final class PostgreSqlV2LinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the PostgreSqlV2LinkedServiceTypeProperties object itself.
@@ -544,20 +544,24 @@ public final class PostgreSqlV2LinkedServiceTypeProperties {
      */
     public void validate() {
         if (server() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property server in model PostgreSqlV2LinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property server in model PostgreSqlV2LinkedServiceTypeProperties"));
         }
         if (username() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property username in model PostgreSqlV2LinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property username in model PostgreSqlV2LinkedServiceTypeProperties"));
         }
         if (database() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property database in model PostgreSqlV2LinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property database in model PostgreSqlV2LinkedServiceTypeProperties"));
         }
         if (sslMode() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property sslMode in model PostgreSqlV2LinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sslMode in model PostgreSqlV2LinkedServiceTypeProperties"));
         }
         if (password() != null) {
             password().validate();

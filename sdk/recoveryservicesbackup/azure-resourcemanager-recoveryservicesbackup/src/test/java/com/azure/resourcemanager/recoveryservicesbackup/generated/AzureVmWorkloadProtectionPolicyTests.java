@@ -27,102 +27,185 @@ public final class AzureVmWorkloadProtectionPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureVmWorkloadProtectionPolicy model = BinaryData.fromString(
-            "{\"backupManagementType\":\"AzureWorkload\",\"workLoadType\":\"Sharepoint\",\"settings\":{\"timeZone\":\"grvk\",\"issqlcompression\":true,\"isCompression\":true},\"subProtectionPolicy\":[{\"policyType\":\"Differential\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{\"vfcluyovwxnbkfe\":{\"tieringMode\":\"DoNotTier\",\"duration\":938334267,\"durationType\":\"Months\"},\"wzdgirujbzbo\":{\"tieringMode\":\"DoNotTier\",\"duration\":357757853,\"durationType\":\"Days\"},\"c\":{\"tieringMode\":\"DoNotTier\",\"duration\":1397036239,\"durationType\":\"Days\"}},\"snapshotBackupAdditionalDetails\":{\"instantRpRetentionRangeInDays\":1359383511,\"instantRPDetails\":\"yujviylwdshfssn\",\"userAssignedManagedIdentityDetails\":{\"identityArmId\":\"ye\",\"identityName\":\"ymsgaojfmwnc\",\"userAssignedIdentityProperties\":{\"clientId\":\"rfh\",\"principalId\":\"ctymoxoftp\"}}}},{\"policyType\":\"Log\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{\"qjlihhyuspska\":{\"tieringMode\":\"DoNotTier\",\"duration\":148157875,\"durationType\":\"Months\"}},\"snapshotBackupAdditionalDetails\":{\"instantRpRetentionRangeInDays\":2119274239,\"instantRPDetails\":\"fwdgzxulucvp\",\"userAssignedManagedIdentityDetails\":{\"identityArmId\":\"sreuzvxurisjnh\",\"identityName\":\"txifqj\",\"userAssignedIdentityProperties\":{\"clientId\":\"mrhublwpc\",\"principalId\":\"utr\"}}}}],\"makePolicyConsistent\":false,\"protectedItemsCount\":955392211,\"resourceGuardOperationRequests\":[\"tpwoqhihejq\",\"w\",\"pnfqntcyp\",\"xjvfoimwksl\"]}")
+            "{\"backupManagementType\":\"AzureWorkload\",\"workLoadType\":\"Client\",\"settings\":{\"timeZone\":\"zdgiruj\",\"issqlcompression\":true,\"isCompression\":true},\"subProtectionPolicy\":[{\"policyType\":\"SnapshotFull\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{\"jviylwdshfs\":{\"tieringMode\":\"TierAfter\",\"duration\":1569127875,\"durationType\":\"Days\"}},\"snapshotBackupAdditionalDetails\":{\"instantRpRetentionRangeInDays\":1046699767,\"instantRPDetails\":\"ye\",\"userAssignedManagedIdentityDetails\":{\"identityArmId\":\"msgaoj\",\"identityName\":\"wncot\",\"userAssignedIdentityProperties\":{\"clientId\":\"hirctymoxoftpipi\",\"principalId\":\"czuhxacpqjlihh\"}}}},{\"policyType\":\"SnapshotCopyOnlyFull\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{\"wdgzxulucv\":{\"tieringMode\":\"TierAfter\",\"duration\":2119274239,\"durationType\":\"Invalid\"},\"uzvx\":{\"tieringMode\":\"DoNotTier\",\"duration\":1595182067,\"durationType\":\"Months\"}},\"snapshotBackupAdditionalDetails\":{\"instantRpRetentionRangeInDays\":1209025236,\"instantRPDetails\":\"nhn\",\"userAssignedManagedIdentityDetails\":{\"identityArmId\":\"ifqjz\",\"identityName\":\"mrhublwpc\",\"userAssignedIdentityProperties\":{\"clientId\":\"trgjupauutpwoqh\",\"principalId\":\"ejqgw\"}}}},{\"policyType\":\"Full\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{\"vfoimwksli\":{\"tieringMode\":\"TierAfter\",\"duration\":315596091,\"durationType\":\"Invalid\"},\"ydfce\":{\"tieringMode\":\"Invalid\",\"duration\":772864922,\"durationType\":\"Years\"},\"gdyftumrtwna\":{\"tieringMode\":\"Invalid\",\"duration\":751635247,\"durationType\":\"Years\"}},\"snapshotBackupAdditionalDetails\":{\"instantRpRetentionRangeInDays\":825702732,\"instantRPDetails\":\"iw\",\"userAssignedManagedIdentityDetails\":{\"identityArmId\":\"gcyztsfmznbae\",\"identityName\":\"hchqnrnrpx\",\"userAssignedIdentityProperties\":{\"clientId\":\"wrykqgai\",\"principalId\":\"viklb\"}}}},{\"policyType\":\"CopyOnlyFull\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{\"vdsrhnjiv\":{\"tieringMode\":\"Invalid\",\"duration\":1504091159,\"durationType\":\"Days\"}},\"snapshotBackupAdditionalDetails\":{\"instantRpRetentionRangeInDays\":2016874931,\"instantRPDetails\":\"ovqfzge\",\"userAssignedManagedIdentityDetails\":{\"identityArmId\":\"ftul\",\"identityName\":\"tduceamt\",\"userAssignedIdentityProperties\":{\"clientId\":\"u\",\"principalId\":\"ejwcwwqiok\"}}}}],\"makePolicyConsistent\":false,\"protectedItemsCount\":1563475651,\"resourceGuardOperationRequests\":[\"msvpkjpr\",\"kwcf\"]}")
             .toObject(AzureVmWorkloadProtectionPolicy.class);
-        Assertions.assertEquals(955392211, model.protectedItemsCount());
-        Assertions.assertEquals("tpwoqhihejq", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(WorkloadType.SHAREPOINT, model.workLoadType());
-        Assertions.assertEquals("grvk", model.settings().timeZone());
+        Assertions.assertEquals(1563475651, model.protectedItemsCount());
+        Assertions.assertEquals("msvpkjpr", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(WorkloadType.CLIENT, model.workLoadType());
+        Assertions.assertEquals("zdgiruj", model.settings().timeZone());
         Assertions.assertEquals(true, model.settings().issqlcompression());
         Assertions.assertEquals(true, model.settings().isCompression());
-        Assertions.assertEquals(PolicyType.DIFFERENTIAL, model.subProtectionPolicy().get(0).policyType());
-        Assertions.assertEquals(TieringMode.DO_NOT_TIER,
-            model.subProtectionPolicy().get(0).tieringPolicy().get("vfcluyovwxnbkfe").tieringMode());
-        Assertions.assertEquals(938334267,
-            model.subProtectionPolicy().get(0).tieringPolicy().get("vfcluyovwxnbkfe").duration());
-        Assertions.assertEquals(RetentionDurationType.MONTHS,
-            model.subProtectionPolicy().get(0).tieringPolicy().get("vfcluyovwxnbkfe").durationType());
-        Assertions.assertEquals(1359383511,
+        Assertions.assertEquals(PolicyType.SNAPSHOT_FULL, model.subProtectionPolicy().get(0).policyType());
+        Assertions.assertEquals(TieringMode.TIER_AFTER,
+            model.subProtectionPolicy().get(0).tieringPolicy().get("jviylwdshfs").tieringMode());
+        Assertions.assertEquals(1569127875,
+            model.subProtectionPolicy().get(0).tieringPolicy().get("jviylwdshfs").duration());
+        Assertions.assertEquals(RetentionDurationType.DAYS,
+            model.subProtectionPolicy().get(0).tieringPolicy().get("jviylwdshfs").durationType());
+        Assertions.assertEquals(1046699767,
             model.subProtectionPolicy().get(0).snapshotBackupAdditionalDetails().instantRpRetentionRangeInDays());
-        Assertions.assertEquals("yujviylwdshfssn",
+        Assertions.assertEquals("ye",
             model.subProtectionPolicy().get(0).snapshotBackupAdditionalDetails().instantRPDetails());
-        Assertions.assertEquals("ye", model.subProtectionPolicy().get(0).snapshotBackupAdditionalDetails()
-            .userAssignedManagedIdentityDetails().identityArmId());
-        Assertions.assertEquals("ymsgaojfmwnc", model.subProtectionPolicy().get(0).snapshotBackupAdditionalDetails()
-            .userAssignedManagedIdentityDetails().identityName());
-        Assertions.assertEquals("rfh", model.subProtectionPolicy().get(0).snapshotBackupAdditionalDetails()
-            .userAssignedManagedIdentityDetails().userAssignedIdentityProperties().clientId());
-        Assertions.assertEquals("ctymoxoftp", model.subProtectionPolicy().get(0).snapshotBackupAdditionalDetails()
-            .userAssignedManagedIdentityDetails().userAssignedIdentityProperties().principalId());
+        Assertions.assertEquals("msgaoj",
+            model.subProtectionPolicy()
+                .get(0)
+                .snapshotBackupAdditionalDetails()
+                .userAssignedManagedIdentityDetails()
+                .identityArmId());
+        Assertions.assertEquals("wncot",
+            model.subProtectionPolicy()
+                .get(0)
+                .snapshotBackupAdditionalDetails()
+                .userAssignedManagedIdentityDetails()
+                .identityName());
+        Assertions.assertEquals("hirctymoxoftpipi",
+            model.subProtectionPolicy()
+                .get(0)
+                .snapshotBackupAdditionalDetails()
+                .userAssignedManagedIdentityDetails()
+                .userAssignedIdentityProperties()
+                .clientId());
+        Assertions.assertEquals("czuhxacpqjlihh",
+            model.subProtectionPolicy()
+                .get(0)
+                .snapshotBackupAdditionalDetails()
+                .userAssignedManagedIdentityDetails()
+                .userAssignedIdentityProperties()
+                .principalId());
         Assertions.assertEquals(false, model.makePolicyConsistent());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureVmWorkloadProtectionPolicy model
-            = new AzureVmWorkloadProtectionPolicy().withProtectedItemsCount(955392211)
-                .withResourceGuardOperationRequests(Arrays.asList("tpwoqhihejq", "w", "pnfqntcyp", "xjvfoimwksl"))
-                .withWorkLoadType(WorkloadType.SHAREPOINT)
-                .withSettings(new Settings().withTimeZone("grvk").withIssqlcompression(
-                    true).withIsCompression(
-                        true))
+            = new AzureVmWorkloadProtectionPolicy().withProtectedItemsCount(1563475651)
+                .withResourceGuardOperationRequests(Arrays.asList("msvpkjpr", "kwcf"))
+                .withWorkLoadType(WorkloadType.CLIENT)
+                .withSettings(new Settings().withTimeZone("zdgiruj").withIssqlcompression(true).withIsCompression(true))
                 .withSubProtectionPolicy(
-                    Arrays.asList(
-                        new SubProtectionPolicy().withPolicyType(PolicyType.DIFFERENTIAL)
-                            .withSchedulePolicy(new SchedulePolicy()).withRetentionPolicy(new RetentionPolicy())
-                            .withTieringPolicy(mapOf(
-                                "vfcluyovwxnbkfe", new TieringPolicy().withTieringMode(TieringMode.DO_NOT_TIER)
-                                    .withDuration(938334267).withDurationType(RetentionDurationType.MONTHS),
-                                "wzdgirujbzbo",
-                                new TieringPolicy().withTieringMode(TieringMode.DO_NOT_TIER).withDuration(357757853)
-                                    .withDurationType(RetentionDurationType.DAYS),
-                                "c",
-                                new TieringPolicy().withTieringMode(TieringMode.DO_NOT_TIER).withDuration(1397036239)
-                                    .withDurationType(RetentionDurationType.DAYS)))
-                            .withSnapshotBackupAdditionalDetails(new SnapshotBackupAdditionalDetails()
-                                .withInstantRpRetentionRangeInDays(1359383511).withInstantRPDetails("yujviylwdshfssn")
-                                .withUserAssignedManagedIdentityDetails(new UserAssignedManagedIdentityDetails()
-                                    .withIdentityArmId("ye").withIdentityName("ymsgaojfmwnc")
-                                    .withUserAssignedIdentityProperties(new UserAssignedIdentityProperties()
-                                        .withClientId("rfh").withPrincipalId("ctymoxoftp")))),
-                        new SubProtectionPolicy().withPolicyType(PolicyType.LOG)
-                            .withSchedulePolicy(new SchedulePolicy()).withRetentionPolicy(new RetentionPolicy())
-                            .withTieringPolicy(mapOf("qjlihhyuspska",
-                                new TieringPolicy().withTieringMode(TieringMode.DO_NOT_TIER).withDuration(148157875)
-                                    .withDurationType(RetentionDurationType.MONTHS)))
-                            .withSnapshotBackupAdditionalDetails(new SnapshotBackupAdditionalDetails()
-                                .withInstantRpRetentionRangeInDays(2119274239).withInstantRPDetails("fwdgzxulucvp")
-                                .withUserAssignedManagedIdentityDetails(new UserAssignedManagedIdentityDetails()
-                                    .withIdentityArmId("sreuzvxurisjnh").withIdentityName("txifqj")
-                                    .withUserAssignedIdentityProperties(new UserAssignedIdentityProperties()
-                                        .withClientId("mrhublwpc").withPrincipalId("utr"))))))
+                    Arrays
+                        .asList(
+                            new SubProtectionPolicy().withPolicyType(PolicyType.SNAPSHOT_FULL)
+                                .withSchedulePolicy(new SchedulePolicy())
+                                .withRetentionPolicy(new RetentionPolicy())
+                                .withTieringPolicy(mapOf("jviylwdshfs",
+                                    new TieringPolicy().withTieringMode(TieringMode.TIER_AFTER)
+                                        .withDuration(1569127875)
+                                        .withDurationType(RetentionDurationType.DAYS)))
+                                .withSnapshotBackupAdditionalDetails(
+                                    new SnapshotBackupAdditionalDetails().withInstantRpRetentionRangeInDays(1046699767)
+                                        .withInstantRPDetails("ye")
+                                        .withUserAssignedManagedIdentityDetails(
+                                            new UserAssignedManagedIdentityDetails().withIdentityArmId("msgaoj")
+                                                .withIdentityName("wncot")
+                                                .withUserAssignedIdentityProperties(new UserAssignedIdentityProperties()
+                                                    .withClientId("hirctymoxoftpipi")
+                                                    .withPrincipalId("czuhxacpqjlihh")))),
+                            new SubProtectionPolicy().withPolicyType(PolicyType.SNAPSHOT_COPY_ONLY_FULL)
+                                .withSchedulePolicy(new SchedulePolicy())
+                                .withRetentionPolicy(new RetentionPolicy())
+                                .withTieringPolicy(mapOf("wdgzxulucv",
+                                    new TieringPolicy().withTieringMode(TieringMode.TIER_AFTER)
+                                        .withDuration(2119274239)
+                                        .withDurationType(RetentionDurationType.INVALID),
+                                    "uzvx",
+                                    new TieringPolicy().withTieringMode(TieringMode.DO_NOT_TIER)
+                                        .withDuration(1595182067)
+                                        .withDurationType(RetentionDurationType.MONTHS)))
+                                .withSnapshotBackupAdditionalDetails(
+                                    new SnapshotBackupAdditionalDetails().withInstantRpRetentionRangeInDays(1209025236)
+                                        .withInstantRPDetails("nhn")
+                                        .withUserAssignedManagedIdentityDetails(
+                                            new UserAssignedManagedIdentityDetails().withIdentityArmId("ifqjz")
+                                                .withIdentityName("mrhublwpc")
+                                                .withUserAssignedIdentityProperties(
+                                                    new UserAssignedIdentityProperties().withClientId("trgjupauutpwoqh")
+                                                        .withPrincipalId("ejqgw")))),
+                            new SubProtectionPolicy().withPolicyType(PolicyType.FULL)
+                                .withSchedulePolicy(new SchedulePolicy())
+                                .withRetentionPolicy(new RetentionPolicy())
+                                .withTieringPolicy(mapOf("vfoimwksli",
+                                    new TieringPolicy().withTieringMode(TieringMode.TIER_AFTER)
+                                        .withDuration(315596091)
+                                        .withDurationType(RetentionDurationType.INVALID),
+                                    "ydfce",
+                                    new TieringPolicy().withTieringMode(TieringMode.INVALID)
+                                        .withDuration(772864922)
+                                        .withDurationType(RetentionDurationType.YEARS),
+                                    "gdyftumrtwna",
+                                    new TieringPolicy().withTieringMode(TieringMode.INVALID)
+                                        .withDuration(751635247)
+                                        .withDurationType(RetentionDurationType.YEARS)))
+                                .withSnapshotBackupAdditionalDetails(new SnapshotBackupAdditionalDetails()
+                                    .withInstantRpRetentionRangeInDays(825702732)
+                                    .withInstantRPDetails("iw")
+                                    .withUserAssignedManagedIdentityDetails(
+                                        new UserAssignedManagedIdentityDetails().withIdentityArmId("gcyztsfmznbae")
+                                            .withIdentityName("hchqnrnrpx")
+                                            .withUserAssignedIdentityProperties(new UserAssignedIdentityProperties()
+                                                .withClientId("wrykqgai")
+                                                .withPrincipalId("viklb")))),
+                            new SubProtectionPolicy().withPolicyType(PolicyType.COPY_ONLY_FULL)
+                                .withSchedulePolicy(new SchedulePolicy())
+                                .withRetentionPolicy(new RetentionPolicy())
+                                .withTieringPolicy(mapOf("vdsrhnjiv",
+                                    new TieringPolicy().withTieringMode(TieringMode.INVALID)
+                                        .withDuration(1504091159)
+                                        .withDurationType(RetentionDurationType.DAYS)))
+                                .withSnapshotBackupAdditionalDetails(
+                                    new SnapshotBackupAdditionalDetails().withInstantRpRetentionRangeInDays(2016874931)
+                                        .withInstantRPDetails("ovqfzge")
+                                        .withUserAssignedManagedIdentityDetails(
+                                            new UserAssignedManagedIdentityDetails().withIdentityArmId("ftul")
+                                                .withIdentityName("tduceamt")
+                                                .withUserAssignedIdentityProperties(
+                                                    new UserAssignedIdentityProperties().withClientId("u")
+                                                        .withPrincipalId("ejwcwwqiok"))))))
                 .withMakePolicyConsistent(false);
         model = BinaryData.fromObject(model).toObject(AzureVmWorkloadProtectionPolicy.class);
-        Assertions.assertEquals(955392211, model.protectedItemsCount());
-        Assertions.assertEquals("tpwoqhihejq", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(WorkloadType.SHAREPOINT, model.workLoadType());
-        Assertions.assertEquals("grvk", model.settings().timeZone());
+        Assertions.assertEquals(1563475651, model.protectedItemsCount());
+        Assertions.assertEquals("msvpkjpr", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(WorkloadType.CLIENT, model.workLoadType());
+        Assertions.assertEquals("zdgiruj", model.settings().timeZone());
         Assertions.assertEquals(true, model.settings().issqlcompression());
         Assertions.assertEquals(true, model.settings().isCompression());
-        Assertions.assertEquals(PolicyType.DIFFERENTIAL, model.subProtectionPolicy().get(0).policyType());
-        Assertions.assertEquals(TieringMode.DO_NOT_TIER,
-            model.subProtectionPolicy().get(0).tieringPolicy().get("vfcluyovwxnbkfe").tieringMode());
-        Assertions.assertEquals(938334267,
-            model.subProtectionPolicy().get(0).tieringPolicy().get("vfcluyovwxnbkfe").duration());
-        Assertions.assertEquals(RetentionDurationType.MONTHS,
-            model.subProtectionPolicy().get(0).tieringPolicy().get("vfcluyovwxnbkfe").durationType());
-        Assertions.assertEquals(1359383511,
+        Assertions.assertEquals(PolicyType.SNAPSHOT_FULL, model.subProtectionPolicy().get(0).policyType());
+        Assertions.assertEquals(TieringMode.TIER_AFTER,
+            model.subProtectionPolicy().get(0).tieringPolicy().get("jviylwdshfs").tieringMode());
+        Assertions.assertEquals(1569127875,
+            model.subProtectionPolicy().get(0).tieringPolicy().get("jviylwdshfs").duration());
+        Assertions.assertEquals(RetentionDurationType.DAYS,
+            model.subProtectionPolicy().get(0).tieringPolicy().get("jviylwdshfs").durationType());
+        Assertions.assertEquals(1046699767,
             model.subProtectionPolicy().get(0).snapshotBackupAdditionalDetails().instantRpRetentionRangeInDays());
-        Assertions.assertEquals("yujviylwdshfssn",
+        Assertions.assertEquals("ye",
             model.subProtectionPolicy().get(0).snapshotBackupAdditionalDetails().instantRPDetails());
-        Assertions.assertEquals("ye", model.subProtectionPolicy().get(0).snapshotBackupAdditionalDetails()
-            .userAssignedManagedIdentityDetails().identityArmId());
-        Assertions.assertEquals("ymsgaojfmwnc", model.subProtectionPolicy().get(0).snapshotBackupAdditionalDetails()
-            .userAssignedManagedIdentityDetails().identityName());
-        Assertions.assertEquals("rfh", model.subProtectionPolicy().get(0).snapshotBackupAdditionalDetails()
-            .userAssignedManagedIdentityDetails().userAssignedIdentityProperties().clientId());
-        Assertions.assertEquals("ctymoxoftp", model.subProtectionPolicy().get(0).snapshotBackupAdditionalDetails()
-            .userAssignedManagedIdentityDetails().userAssignedIdentityProperties().principalId());
+        Assertions.assertEquals("msgaoj",
+            model.subProtectionPolicy()
+                .get(0)
+                .snapshotBackupAdditionalDetails()
+                .userAssignedManagedIdentityDetails()
+                .identityArmId());
+        Assertions.assertEquals("wncot",
+            model.subProtectionPolicy()
+                .get(0)
+                .snapshotBackupAdditionalDetails()
+                .userAssignedManagedIdentityDetails()
+                .identityName());
+        Assertions.assertEquals("hirctymoxoftpipi",
+            model.subProtectionPolicy()
+                .get(0)
+                .snapshotBackupAdditionalDetails()
+                .userAssignedManagedIdentityDetails()
+                .userAssignedIdentityProperties()
+                .clientId());
+        Assertions.assertEquals("czuhxacpqjlihh",
+            model.subProtectionPolicy()
+                .get(0)
+                .snapshotBackupAdditionalDetails()
+                .userAssignedManagedIdentityDetails()
+                .userAssignedIdentityProperties()
+                .principalId());
         Assertions.assertEquals(false, model.makePolicyConsistent());
     }
 

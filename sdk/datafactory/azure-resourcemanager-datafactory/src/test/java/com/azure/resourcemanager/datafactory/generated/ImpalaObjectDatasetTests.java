@@ -19,32 +19,35 @@ public final class ImpalaObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImpalaObjectDataset model = BinaryData.fromString(
-            "{\"type\":\"ImpalaObject\",\"typeProperties\":{\"tableName\":\"dataxiefcorzbidaeb\",\"table\":\"datanicewd\",\"schema\":\"datajwiylciobb\"},\"description\":\"ws\",\"structure\":\"dataeqx\",\"schema\":\"datacuuuexsmnteevfg\",\"linkedServiceName\":{\"referenceName\":\"xfezraqsddko\",\"parameters\":{\"w\":\"dataxqfkyrxgmzzeg\",\"fegaok\":\"datazfss\"}},\"parameters\":{\"fyuklxkelmz\":{\"type\":\"String\",\"defaultValue\":\"datara\"},\"gsingmhpavsfg\":{\"type\":\"SecureString\",\"defaultValue\":\"databwhuecx\"},\"klj\":{\"type\":\"Float\",\"defaultValue\":\"dataqrwwbdrwro\"}},\"annotations\":[\"dataqhqq\",\"dataarkyulfamea\",\"datasjqenh\"],\"folder\":{\"name\":\"azvgeytlplslfcv\"},\"\":{\"jocrhnxzmfvmw\":\"datasuowtolkyqf\",\"rawwhyxf\":\"datanrtc\"}}")
+            "{\"type\":\"ImpalaObject\",\"typeProperties\":{\"tableName\":\"datahvpsuwichm\",\"table\":\"datazbyfkoc\",\"schema\":\"datazdct\"},\"description\":\"lwscrngtwgxrol\",\"structure\":\"dataplksdksutacucti\",\"schema\":\"datavis\",\"linkedServiceName\":{\"referenceName\":\"bvjh\",\"parameters\":{\"lphngrxlexoweoro\":\"datamqququ\",\"mtgbqpfy\":\"datarqicg\",\"nzhrplc\":\"datavhtvijvwmrg\"}},\"parameters\":{\"q\":{\"type\":\"Float\",\"defaultValue\":\"dataquuu\"},\"cmbkygvxjdqo\":{\"type\":\"Float\",\"defaultValue\":\"datatqyzyc\"}},\"annotations\":[\"datamdzlyb\"],\"folder\":{\"name\":\"fk\"},\"\":{\"sryjokvl\":\"datafkicxhsevmnkggh\"}}")
             .toObject(ImpalaObjectDataset.class);
-        Assertions.assertEquals("ws", model.description());
-        Assertions.assertEquals("xfezraqsddko", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("fyuklxkelmz").type());
-        Assertions.assertEquals("azvgeytlplslfcv", model.folder().name());
+        Assertions.assertEquals("lwscrngtwgxrol", model.description());
+        Assertions.assertEquals("bvjh", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("q").type());
+        Assertions.assertEquals("fk", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImpalaObjectDataset model = new ImpalaObjectDataset().withDescription("ws").withStructure("dataeqx")
-            .withSchema("datacuuuexsmnteevfg")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("xfezraqsddko")
-                .withParameters(mapOf("w", "dataxqfkyrxgmzzeg", "fegaok", "datazfss")))
-            .withParameters(mapOf("fyuklxkelmz",
-                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datara"), "gsingmhpavsfg",
-                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("databwhuecx"),
-                "klj", new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataqrwwbdrwro")))
-            .withAnnotations(Arrays.asList("dataqhqq", "dataarkyulfamea", "datasjqenh"))
-            .withFolder(new DatasetFolder().withName("azvgeytlplslfcv")).withTableName("dataxiefcorzbidaeb")
-            .withTable("datanicewd").withSchemaTypePropertiesSchema("datajwiylciobb");
+        ImpalaObjectDataset model = new ImpalaObjectDataset().withDescription("lwscrngtwgxrol")
+            .withStructure("dataplksdksutacucti")
+            .withSchema("datavis")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("bvjh")
+                .withParameters(
+                    mapOf("lphngrxlexoweoro", "datamqququ", "mtgbqpfy", "datarqicg", "nzhrplc", "datavhtvijvwmrg")))
+            .withParameters(mapOf("q",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataquuu"), "cmbkygvxjdqo",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datatqyzyc")))
+            .withAnnotations(Arrays.asList("datamdzlyb"))
+            .withFolder(new DatasetFolder().withName("fk"))
+            .withTableName("datahvpsuwichm")
+            .withTable("datazbyfkoc")
+            .withSchemaTypePropertiesSchema("datazdct");
         model = BinaryData.fromObject(model).toObject(ImpalaObjectDataset.class);
-        Assertions.assertEquals("ws", model.description());
-        Assertions.assertEquals("xfezraqsddko", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("fyuklxkelmz").type());
-        Assertions.assertEquals("azvgeytlplslfcv", model.folder().name());
+        Assertions.assertEquals("lwscrngtwgxrol", model.description());
+        Assertions.assertEquals("bvjh", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("q").type());
+        Assertions.assertEquals("fk", model.folder().name());
     }
 
     // Use "Map.of" if available

@@ -82,14 +82,17 @@ public final class SubvolumeInfoImpl implements SubvolumeInfo, SubvolumeInfo.Def
     }
 
     public SubvolumeInfo create() {
-        this.innerObject = serviceManager.serviceClient().getSubvolumes().create(resourceGroupName, accountName,
-            poolName, volumeName, subvolumeName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSubvolumes()
+            .create(resourceGroupName, accountName, poolName, volumeName, subvolumeName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public SubvolumeInfo create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSubvolumes().create(resourceGroupName, accountName,
-            poolName, volumeName, subvolumeName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSubvolumes()
+            .create(resourceGroupName, accountName, poolName, volumeName, subvolumeName, this.innerModel(), context);
         return this;
     }
 
@@ -105,14 +108,16 @@ public final class SubvolumeInfoImpl implements SubvolumeInfo, SubvolumeInfo.Def
     }
 
     public SubvolumeInfo apply() {
-        this.innerObject = serviceManager.serviceClient().getSubvolumes().update(resourceGroupName, accountName,
-            poolName, volumeName, subvolumeName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSubvolumes()
+            .update(resourceGroupName, accountName, poolName, volumeName, subvolumeName, updateBody, Context.NONE);
         return this;
     }
 
     public SubvolumeInfo apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSubvolumes().update(resourceGroupName, accountName,
-            poolName, volumeName, subvolumeName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSubvolumes()
+            .update(resourceGroupName, accountName, poolName, volumeName, subvolumeName, updateBody, context);
         return this;
     }
 
@@ -120,34 +125,37 @@ public final class SubvolumeInfoImpl implements SubvolumeInfo, SubvolumeInfo.Def
         com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "netAppAccounts");
-        this.poolName = Utils.getValueFromIdByName(innerObject.id(), "capacityPools");
-        this.volumeName = Utils.getValueFromIdByName(innerObject.id(), "volumes");
-        this.subvolumeName = Utils.getValueFromIdByName(innerObject.id(), "subvolumes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "netAppAccounts");
+        this.poolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "capacityPools");
+        this.volumeName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "volumes");
+        this.subvolumeName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "subvolumes");
     }
 
     public SubvolumeInfo refresh() {
-        this.innerObject = serviceManager.serviceClient().getSubvolumes()
+        this.innerObject = serviceManager.serviceClient()
+            .getSubvolumes()
             .getWithResponse(resourceGroupName, accountName, poolName, volumeName, subvolumeName, Context.NONE)
             .getValue();
         return this;
     }
 
     public SubvolumeInfo refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSubvolumes()
-            .getWithResponse(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSubvolumes()
+            .getWithResponse(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context)
+            .getValue();
         return this;
     }
 
     public SubvolumeModel getMetadata() {
-        return serviceManager.subvolumes().getMetadata(resourceGroupName, accountName, poolName, volumeName,
-            subvolumeName);
+        return serviceManager.subvolumes()
+            .getMetadata(resourceGroupName, accountName, poolName, volumeName, subvolumeName);
     }
 
     public SubvolumeModel getMetadata(Context context) {
-        return serviceManager.subvolumes().getMetadata(resourceGroupName, accountName, poolName, volumeName,
-            subvolumeName, context);
+        return serviceManager.subvolumes()
+            .getMetadata(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context);
     }
 
     public SubvolumeInfoImpl withPath(String path) {

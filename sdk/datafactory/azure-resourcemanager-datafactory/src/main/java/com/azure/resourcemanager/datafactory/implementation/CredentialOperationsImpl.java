@@ -10,9 +10,9 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.CredentialOperationsClient;
-import com.azure.resourcemanager.datafactory.fluent.models.ManagedIdentityCredentialResourceInner;
+import com.azure.resourcemanager.datafactory.fluent.models.CredentialResourceInner;
 import com.azure.resourcemanager.datafactory.models.CredentialOperations;
-import com.azure.resourcemanager.datafactory.models.ManagedIdentityCredentialResource;
+import com.azure.resourcemanager.datafactory.models.CredentialResource;
 
 public final class CredentialOperationsImpl implements CredentialOperations {
     private static final ClientLogger LOGGER = new ClientLogger(CredentialOperationsImpl.class);
@@ -27,39 +27,35 @@ public final class CredentialOperationsImpl implements CredentialOperations {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<ManagedIdentityCredentialResource> listByFactory(String resourceGroupName,
-        String factoryName) {
-        PagedIterable<ManagedIdentityCredentialResourceInner> inner
+    public PagedIterable<CredentialResource> listByFactory(String resourceGroupName, String factoryName) {
+        PagedIterable<CredentialResourceInner> inner
             = this.serviceClient().listByFactory(resourceGroupName, factoryName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new ManagedIdentityCredentialResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CredentialResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ManagedIdentityCredentialResource> listByFactory(String resourceGroupName, String factoryName,
+    public PagedIterable<CredentialResource> listByFactory(String resourceGroupName, String factoryName,
         Context context) {
-        PagedIterable<ManagedIdentityCredentialResourceInner> inner
+        PagedIterable<CredentialResourceInner> inner
             = this.serviceClient().listByFactory(resourceGroupName, factoryName, context);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new ManagedIdentityCredentialResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CredentialResourceImpl(inner1, this.manager()));
     }
 
-    public Response<ManagedIdentityCredentialResource> getWithResponse(String resourceGroupName, String factoryName,
+    public Response<CredentialResource> getWithResponse(String resourceGroupName, String factoryName,
         String credentialName, String ifNoneMatch, Context context) {
-        Response<ManagedIdentityCredentialResourceInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            factoryName, credentialName, ifNoneMatch, context);
+        Response<CredentialResourceInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, factoryName, credentialName, ifNoneMatch, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ManagedIdentityCredentialResourceImpl(inner.getValue(), this.manager()));
+                new CredentialResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ManagedIdentityCredentialResource get(String resourceGroupName, String factoryName, String credentialName) {
-        ManagedIdentityCredentialResourceInner inner
-            = this.serviceClient().get(resourceGroupName, factoryName, credentialName);
+    public CredentialResource get(String resourceGroupName, String factoryName, String credentialName) {
+        CredentialResourceInner inner = this.serviceClient().get(resourceGroupName, factoryName, credentialName);
         if (inner != null) {
-            return new ManagedIdentityCredentialResourceImpl(inner, this.manager());
+            return new CredentialResourceImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -74,7 +70,7 @@ public final class CredentialOperationsImpl implements CredentialOperations {
         this.serviceClient().delete(resourceGroupName, factoryName, credentialName);
     }
 
-    public ManagedIdentityCredentialResource getById(String id) {
+    public CredentialResource getById(String id) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -95,8 +91,7 @@ public final class CredentialOperationsImpl implements CredentialOperations {
             .getValue();
     }
 
-    public Response<ManagedIdentityCredentialResource> getByIdWithResponse(String id, String ifNoneMatch,
-        Context context) {
+    public Response<CredentialResource> getByIdWithResponse(String id, String ifNoneMatch, Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -161,7 +156,7 @@ public final class CredentialOperationsImpl implements CredentialOperations {
         return this.serviceManager;
     }
 
-    public ManagedIdentityCredentialResourceImpl define(String name) {
-        return new ManagedIdentityCredentialResourceImpl(name, this.manager());
+    public CredentialResourceImpl define(String name) {
+        return new CredentialResourceImpl(name, this.manager());
     }
 }

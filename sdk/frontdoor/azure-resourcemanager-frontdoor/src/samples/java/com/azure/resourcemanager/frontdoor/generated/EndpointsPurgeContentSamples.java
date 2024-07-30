@@ -7,22 +7,21 @@ package com.azure.resourcemanager.frontdoor.generated;
 import com.azure.resourcemanager.frontdoor.models.PurgeParameters;
 import java.util.Arrays;
 
-/** Samples for Endpoints PurgeContent. */
+/**
+ * Samples for Endpoints PurgeContent.
+ */
 public final class EndpointsPurgeContentSamples {
     /*
      * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorPurgeContent.json
      */
     /**
      * Sample code: Purge content from Front Door.
-     *
+     * 
      * @param manager Entry point to FrontDoorManager.
      */
     public static void purgeContentFromFrontDoor(com.azure.resourcemanager.frontdoor.FrontDoorManager manager) {
-        manager
-            .endpoints()
-            .purgeContent(
-                "rg1",
-                "frontDoor1",
+        manager.endpoints()
+            .purgeContent("rg1", "frontDoor1",
                 new PurgeParameters().withContentPaths(Arrays.asList("/pictures.aspx", "/pictures/*")),
                 com.azure.core.util.Context.NONE);
     }

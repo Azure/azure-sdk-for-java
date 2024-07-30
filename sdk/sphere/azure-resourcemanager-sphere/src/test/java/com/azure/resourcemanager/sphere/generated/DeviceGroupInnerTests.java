@@ -7,6 +7,7 @@ package com.azure.resourcemanager.sphere.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sphere.fluent.models.DeviceGroupInner;
 import com.azure.resourcemanager.sphere.models.AllowCrashDumpCollection;
+import com.azure.resourcemanager.sphere.models.DeviceGroupProperties;
 import com.azure.resourcemanager.sphere.models.OSFeedType;
 import com.azure.resourcemanager.sphere.models.RegionalDataBoundary;
 import com.azure.resourcemanager.sphere.models.UpdatePolicy;
@@ -15,32 +16,27 @@ import org.junit.jupiter.api.Assertions;
 public final class DeviceGroupInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeviceGroupInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"description\":\"hqyudxorrqnbpoc\",\"osFeedType\":\"RetailEval\",\"updatePolicy\":\"No3rdPartyAppUpdates\",\"allowCrashDumpsCollection\":\"Disabled\",\"regionalDataBoundary\":\"None\",\"hasDeployment\":true,\"provisioningState\":\"Succeeded\"},\"id\":\"llr\",\"name\":\"vvdfwatkpnpul\",\"type\":\"xxbczwtr\"}")
-                .toObject(DeviceGroupInner.class);
-        Assertions.assertEquals("hqyudxorrqnbpoc", model.description());
-        Assertions.assertEquals(OSFeedType.RETAIL_EVAL, model.osFeedType());
-        Assertions.assertEquals(UpdatePolicy.NO3RD_PARTY_APP_UPDATES, model.updatePolicy());
-        Assertions.assertEquals(AllowCrashDumpCollection.DISABLED, model.allowCrashDumpsCollection());
-        Assertions.assertEquals(RegionalDataBoundary.NONE, model.regionalDataBoundary());
+        DeviceGroupInner model = BinaryData.fromString(
+            "{\"properties\":{\"description\":\"d\",\"osFeedType\":\"Retail\",\"updatePolicy\":\"No3rdPartyAppUpdates\",\"allowCrashDumpsCollection\":\"Enabled\",\"regionalDataBoundary\":\"EU\",\"hasDeployment\":true,\"provisioningState\":\"Canceled\"},\"id\":\"czwtruwiqzbqjv\",\"name\":\"ovm\",\"type\":\"okacspk\"}")
+            .toObject(DeviceGroupInner.class);
+        Assertions.assertEquals("d", model.properties().description());
+        Assertions.assertEquals(OSFeedType.RETAIL, model.properties().osFeedType());
+        Assertions.assertEquals(UpdatePolicy.NO3RD_PARTY_APP_UPDATES, model.properties().updatePolicy());
+        Assertions.assertEquals(AllowCrashDumpCollection.ENABLED, model.properties().allowCrashDumpsCollection());
+        Assertions.assertEquals(RegionalDataBoundary.EU, model.properties().regionalDataBoundary());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeviceGroupInner model =
-            new DeviceGroupInner()
-                .withDescription("hqyudxorrqnbpoc")
-                .withOsFeedType(OSFeedType.RETAIL_EVAL)
-                .withUpdatePolicy(UpdatePolicy.NO3RD_PARTY_APP_UPDATES)
-                .withAllowCrashDumpsCollection(AllowCrashDumpCollection.DISABLED)
-                .withRegionalDataBoundary(RegionalDataBoundary.NONE);
+        DeviceGroupInner model = new DeviceGroupInner().withProperties(new DeviceGroupProperties().withDescription("d")
+            .withOsFeedType(OSFeedType.RETAIL).withUpdatePolicy(UpdatePolicy.NO3RD_PARTY_APP_UPDATES)
+            .withAllowCrashDumpsCollection(AllowCrashDumpCollection.ENABLED)
+            .withRegionalDataBoundary(RegionalDataBoundary.EU));
         model = BinaryData.fromObject(model).toObject(DeviceGroupInner.class);
-        Assertions.assertEquals("hqyudxorrqnbpoc", model.description());
-        Assertions.assertEquals(OSFeedType.RETAIL_EVAL, model.osFeedType());
-        Assertions.assertEquals(UpdatePolicy.NO3RD_PARTY_APP_UPDATES, model.updatePolicy());
-        Assertions.assertEquals(AllowCrashDumpCollection.DISABLED, model.allowCrashDumpsCollection());
-        Assertions.assertEquals(RegionalDataBoundary.NONE, model.regionalDataBoundary());
+        Assertions.assertEquals("d", model.properties().description());
+        Assertions.assertEquals(OSFeedType.RETAIL, model.properties().osFeedType());
+        Assertions.assertEquals(UpdatePolicy.NO3RD_PARTY_APP_UPDATES, model.properties().updatePolicy());
+        Assertions.assertEquals(AllowCrashDumpCollection.ENABLED, model.properties().allowCrashDumpsCollection());
+        Assertions.assertEquals(RegionalDataBoundary.EU, model.properties().regionalDataBoundary());
     }
 }

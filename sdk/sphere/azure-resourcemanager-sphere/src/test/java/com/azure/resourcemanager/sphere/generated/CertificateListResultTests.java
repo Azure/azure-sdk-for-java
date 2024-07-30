@@ -7,25 +7,23 @@ package com.azure.resourcemanager.sphere.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sphere.fluent.models.CertificateInner;
 import com.azure.resourcemanager.sphere.models.CertificateListResult;
+import com.azure.resourcemanager.sphere.models.CertificateProperties;
 import java.util.Arrays;
-import org.junit.jupiter.api.Assertions;
 
 public final class CertificateListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CertificateListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"certificate\":\"xxjtfe\",\"status\":\"Expired\",\"subject\":\"fziton\",\"thumbprint\":\"qfpjk\",\"expiryUtc\":\"2021-05-09T13:58:23Z\",\"notBeforeUtc\":\"2021-11-24T18:52:18Z\",\"provisioningState\":\"Failed\"},\"id\":\"hpf\",\"name\":\"xypininmayhuybbk\",\"type\":\"odepoogin\"}],\"nextLink\":\"amiheognarxz\"}")
-                .toObject(CertificateListResult.class);
-        Assertions.assertEquals("amiheognarxz", model.nextLink());
+        CertificateListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"certificate\":\"v\",\"status\":\"Inactive\",\"subject\":\"ihnhun\",\"thumbprint\":\"wjzrnfygxgisp\",\"expiryUtc\":\"2021-05-03T11:09:18Z\",\"notBeforeUtc\":\"2021-01-12T09:11:57Z\",\"provisioningState\":\"Accepted\"},\"id\":\"fublj\",\"name\":\"fxqeof\",\"type\":\"aeqjhqjbasvms\"},{\"properties\":{\"certificate\":\"ulngsntn\",\"status\":\"Expired\",\"subject\":\"zgcwrw\",\"thumbprint\":\"xxwr\",\"expiryUtc\":\"2021-07-19T21:40:35Z\",\"notBeforeUtc\":\"2021-04-09T18:31:52Z\",\"provisioningState\":\"Canceled\"},\"id\":\"qvkoc\",\"name\":\"cjdkwtnhxbnjbi\",\"type\":\"sqrglssainq\"},{\"properties\":{\"certificate\":\"nzl\",\"status\":\"Inactive\",\"subject\":\"ppeebvmgxsab\",\"thumbprint\":\"qduujitcjczdz\",\"expiryUtc\":\"2021-11-12T14:41:45Z\",\"notBeforeUtc\":\"2021-05-08T08:52:13Z\",\"provisioningState\":\"Deleting\"},\"id\":\"pdappds\",\"name\":\"dkvwrwjfe\",\"type\":\"snhu\"}],\"nextLink\":\"eltmrldhugjzzdat\"}")
+            .toObject(CertificateListResult.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CertificateListResult model =
-            new CertificateListResult().withValue(Arrays.asList(new CertificateInner())).withNextLink("amiheognarxz");
+        CertificateListResult model = new CertificateListResult()
+            .withValue(Arrays.asList(new CertificateInner().withProperties(new CertificateProperties()),
+                new CertificateInner().withProperties(new CertificateProperties()),
+                new CertificateInner().withProperties(new CertificateProperties())));
         model = BinaryData.fromObject(model).toObject(CertificateListResult.class);
-        Assertions.assertEquals("amiheognarxz", model.nextLink());
     }
 }

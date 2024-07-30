@@ -24,8 +24,7 @@ public final class ComplianceProperties {
     private OffsetDateTime assessmentTimestampUtcDate;
 
     /*
-     * The resource count of the given subscription for which the Compliance calculation was conducted (needed for
-     * Management Group Compliance calculation).
+     * The resource count of the given subscription for which the Compliance calculation was conducted (needed for Management Group Compliance calculation).
      */
     @JsonProperty(value = "resourceCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer resourceCount;
@@ -52,8 +51,8 @@ public final class ComplianceProperties {
     }
 
     /**
-     * Get the resourceCount property: The resource count of the given subscription for which the Compliance
-     * calculation was conducted (needed for Management Group Compliance calculation).
+     * Get the resourceCount property: The resource count of the given subscription for which the Compliance calculation
+     * was conducted (needed for Management Group Compliance calculation).
      * 
      * @return the resourceCount value.
      */

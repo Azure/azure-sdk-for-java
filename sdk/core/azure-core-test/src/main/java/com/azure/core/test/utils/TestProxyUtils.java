@@ -29,10 +29,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_ID;
@@ -45,42 +43,46 @@ import static com.azure.core.test.policy.TestProxyRecordPolicy.RECORD_MODE;
 public class TestProxyUtils {
     private static final ClientLogger LOGGER = new ClientLogger(TestProxyUtils.class);
     private static final HttpHeaderName X_RECORDING_SKIP = HttpHeaderName.fromString("x-recording-skip");
-
-    private static final List<String> JSON_PROPERTIES_TO_REDACT
-        = new ArrayList<>(Arrays.asList("authHeader", "accountKey", "accessToken", "accountName", "applicationId",
-            "apiKey", "connectionString", "url", "host", "password", "userName"));
-
-    private static final Map<String, String> HEADER_KEY_REGEX_TO_REDACT = new HashMap<String, String>() {
-        {
-            put("Operation-Location", URL_REGEX);
-            put("operation-location", URL_REGEX);
-        }
-    };
-
-    private static final String URL_REGEX = "(?<=http://|https://)([^/?]+)";
-    private static final List<String> HEADER_KEYS_TO_REDACT
-        = new ArrayList<>(Arrays.asList("Ocp-Apim-Subscription-Key", "api-key", "x-api-key", "subscription-key"));
     private static final String REDACTED_VALUE = "REDACTED";
+    private static final String URL_REGEX = "(?<=http://|https://)([^/?]+)";
 
-    // Redacts the following JSON properties in a request or response body:
-    // - Password
-    // - User ID
-    private static final String JSON_BODY_REGEX_REDACTIONS = "(?:(Password|User ID)=)(?<secret>.*)(?:;)";
+    // These are prepended with "$.." creating a Jsonpath expression.
+    private static final List<String> JSON_BODY_KEYS_TO_REDACT = Arrays.asList("authHeader", "accountKey",
+        "accessToken", "accountName", "applicationId", "apiKey", "client_secret", "connectionString", "url", "host",
+        "password", "userName", "applicationSecret", "aliasSecondaryConnectionString", "aliasPrimaryConnectionString",
+        "primaryKey", "secondaryKey", "adminPassword.value", "administratorLoginPassword", "runAsPassword",
+        "adminPassword", "accessSAS", "WEBSITE_AUTH_ENCRYPTION_KEY", "decryptionKey", "primaryMasterKey",
+        "primaryReadonlyMasterKey", "secondaryMasterKey", "secondaryReadonlyMasterKey", "certificatePassword",
+        "clientSecret", "keyVaultClientSecret", "authHeader", "httpHeader", "encryptedCredential", "functionKey",
+        "atlasKafkaPrimaryEndpoint", "atlasKafkaSecondaryEndpoint", "certificatePassword", "storageAccountPrimaryKey",
+        "privateKey", "fencingClientPassword", "acrToken", "scriptUrlSasToken", "azureBlobSource.containerUrl",
+        "properties.DOCKER_REGISTRY_SEVER_PASSWORD");
 
-    // Redacts the following XML elements in a request or response body:
-    // - PrimaryKey
-    // - SecondaryKey
-    // - SignedOid
-    // - SignedTid
-    // - Value
-    private static final String XML_BODY_PRIMARY_KEY_REDACTION = "<PrimaryKey>(?<secret>.*?)</PrimaryKey>";
-    private static final String XML_BODY_SECONDARY_KEY_REDACTION = "<SecondaryKey>(?<secret>.*?)</SecondaryKey>";
-    private static final String XML_BODY_SIGNED_OID_REDACTION
-        = "<UserDelegationKey>.*?<SignedOid>(?<secret>.*?)</SignedOid>.*?</UserDelegationKey>";
-    private static final String XML_BODY_SIGNED_TID_REDACTION
-        = "<UserDelegationKey>.*?<SignedTid>(?<secret>.*?)</SignedTid>.*?</UserDelegationKey>";
-    private static final String XML_BODY_VALUE_REDACTION
-        = "<UserDelegationKey>.*?<Value>(?<secret>.*?)</Value>.*?</UserDelegationKey>";
+    public static final String HOST_NAME_REGEX = "(?<=http://|https://)(?<host>[^/?\\\\.]+)";
+    private static final List<TestProxySanitizer> HEADER_KEY_REGEX_TO_REDACT = Arrays.asList(
+        new TestProxySanitizer("ServiceBusDlqSupplementaryAuthorization",
+            "(?:(sv|sig|se|srt|ss|sp)=)(?<secret>[^&\\\"]+)", REDACTED_VALUE, TestProxySanitizerType.HEADER)
+                .setGroupForReplace("secret"),
+        new TestProxySanitizer("ServiceBusSupplementaryAuthorization", "(?:(sv|sig|se|srt|ss|sp)=)(?<secret>[^&\\\"]+)",
+            REDACTED_VALUE, TestProxySanitizerType.HEADER).setGroupForReplace("secret"),
+        new TestProxySanitizer("operation-location", HOST_NAME_REGEX, REDACTED_VALUE, TestProxySanitizerType.HEADER)
+            .setGroupForReplace("host"),
+        new TestProxySanitizer("Location", HOST_NAME_REGEX, REDACTED_VALUE, TestProxySanitizerType.HEADER)
+            .setGroupForReplace("host"));
+
+    // Values in this list must have a capture group named "secret" for the redaction to work.
+    private static final List<String> BODY_REGEXES_TO_REDACT
+        = Arrays.asList("(?:(Password|User ID)=)(?<secret>.*)(?:;)", "client_secret=(?<secret>[^&]+)",
+            "<PrimaryKey>(?<secret>.*?)</PrimaryKey>", "<SecondaryKey>(?<secret>.*?)</SecondaryKey>",
+            "<UserDelegationKey>.*?<SignedOid>(?<secret>.*?)</SignedOid>.*?</UserDelegationKey>",
+            "<UserDelegationKey>.*?<SignedTid>(?<secret>.*?)</SignedTid>.*?</UserDelegationKey>",
+            "<UserDelegationKey>.*?<Value>(?<secret>.*?)</Value>.*?</UserDelegationKey>",
+            "SharedAccessKey=(?<secret>[^;\\\"]+)", "AccountKey=(?<secret>[^;\\\"]+)", "accesskey=(?<secret>[^;\\\"]+)",
+            "AccessKey=(?<secret>[^;\\\"]+)", "Secret=(?<secret>[^;\\\"]+)", "access_token=(?<secret>.*?)(?=&|$)",
+            "refresh_token=(?<secret>.*?)(?=&|$)");
+
+    private static final List<String> HEADER_KEYS_TO_REDACT = Arrays.asList("Ocp-Apim-Subscription-Key", "api-key",
+        "x-api-key", "subscription-key", "x-ms-encryption-key", "sshPassword");
 
     private static final HttpHeaderName X_RECORDING_UPSTREAM_BASE_URI
         = HttpHeaderName.fromString("x-recording-upstream-base-uri");
@@ -237,10 +239,17 @@ public class TestProxyUtils {
      */
     public static String getTestProxyVersion(Path testClassPath) {
         Path rootPath = TestUtils.getRepoRootResolveUntil(testClassPath, "eng");
+        Path overrideVersionFile = Paths.get("eng", "target_proxy_version.txt");
         Path versionFile = Paths.get("eng", "common", "testproxy", "target_version.txt");
-        rootPath = rootPath.resolve(versionFile);
+
+        // if a long-lived override exists, use it.
+        if (Files.exists(rootPath.resolve(overrideVersionFile))) {
+            versionFile = overrideVersionFile;
+        }
+
+        Path versionFilePath = rootPath.resolve(versionFile);
         try {
-            return Files.readAllLines(rootPath).get(0).replace(System.getProperty("line.separator"), "");
+            return Files.readAllLines(versionFilePath).get(0).replace(System.getProperty("line.separator"), "");
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -272,7 +281,7 @@ public class TestProxyUtils {
      * @return the list of default sanitizers to be added.
      */
     public static List<TestProxySanitizer> loadSanitizers() {
-        List<TestProxySanitizer> sanitizers = new ArrayList<>(addDefaultRegexSanitizers());
+        List<TestProxySanitizer> sanitizers = addDefaultRegexSanitizers();
         sanitizers.add(addDefaultUrlSanitizer());
         sanitizers.addAll(addDefaultBodySanitizers());
         sanitizers.addAll(addDefaultHeaderKeySanitizers());
@@ -434,6 +443,16 @@ public class TestProxyUtils {
         return new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/AddSanitizers").setBody(requestBody);
     }
 
+    /**
+     * Creates a request to remove sanitizers from the request.
+     * @return The {@link HttpRequest request} to be sent.
+     */
+    public static HttpRequest getRemoveSanitizerRequest() {
+
+        return new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/RemoveSanitizers")
+            .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
+    }
+
     private static HttpRequest createHttpRequest(String requestBody, String sanitizerType, URL proxyUrl) {
         return new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/AddSanitizer").setBody(requestBody)
             .setHeader(X_ABSTRACTION_IDENTIFIER, sanitizerType);
@@ -495,7 +514,7 @@ public class TestProxyUtils {
     }
 
     private static List<TestProxySanitizer> addDefaultBodySanitizers() {
-        return JSON_PROPERTIES_TO_REDACT.stream()
+        return JSON_BODY_KEYS_TO_REDACT.stream()
             .map(jsonProperty -> new TestProxySanitizer("$.." + jsonProperty, null, REDACTED_VALUE,
                 TestProxySanitizerType.BODY_KEY))
             .collect(Collectors.toList());
@@ -504,28 +523,12 @@ public class TestProxyUtils {
     private static List<TestProxySanitizer> addDefaultRegexSanitizers() {
         List<TestProxySanitizer> regexSanitizers = new ArrayList<>();
 
-        regexSanitizers
-            .add(new TestProxySanitizer(JSON_BODY_REGEX_REDACTIONS, REDACTED_VALUE, TestProxySanitizerType.BODY_REGEX)
-                .setGroupForReplace("secret"));
-        regexSanitizers.add(
-            new TestProxySanitizer(XML_BODY_PRIMARY_KEY_REDACTION, REDACTED_VALUE, TestProxySanitizerType.BODY_REGEX)
-                .setGroupForReplace("secret"));
-        regexSanitizers.add(
-            new TestProxySanitizer(XML_BODY_SECONDARY_KEY_REDACTION, REDACTED_VALUE, TestProxySanitizerType.BODY_REGEX)
-                .setGroupForReplace("secret"));
-        regexSanitizers.add(
-            new TestProxySanitizer(XML_BODY_SIGNED_OID_REDACTION, REDACTED_VALUE, TestProxySanitizerType.BODY_REGEX)
-                .setGroupForReplace("secret"));
-        regexSanitizers.add(
-            new TestProxySanitizer(XML_BODY_SIGNED_TID_REDACTION, REDACTED_VALUE, TestProxySanitizerType.BODY_REGEX)
-                .setGroupForReplace("secret"));
-        regexSanitizers
-            .add(new TestProxySanitizer(XML_BODY_VALUE_REDACTION, REDACTED_VALUE, TestProxySanitizerType.BODY_REGEX)
-                .setGroupForReplace("secret"));
+        regexSanitizers.addAll(BODY_REGEXES_TO_REDACT.stream()
+            .map(regex -> new TestProxySanitizer(regex, REDACTED_VALUE, TestProxySanitizerType.BODY_REGEX)
+                .setGroupForReplace("secret"))
+            .collect(Collectors.toList()));
 
-        // Add header key regexes
-        HEADER_KEY_REGEX_TO_REDACT
-            .forEach((key, regex) -> regexSanitizers.add(new TestProxySanitizer(key, regex, REDACTED_VALUE, HEADER)));
+        regexSanitizers.addAll(HEADER_KEY_REGEX_TO_REDACT);
 
         return regexSanitizers;
     }

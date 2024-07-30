@@ -7,6 +7,11 @@ package com.azure.resourcemanager.network.generated;
 import com.azure.resourcemanager.network.fluent.models.FlowLogInner;
 import com.azure.resourcemanager.network.models.FlowLogFormatParameters;
 import com.azure.resourcemanager.network.models.FlowLogFormatType;
+import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.network.models.ManagedServiceIdentityUserAssignedIdentities;
+import com.azure.resourcemanager.network.models.ResourceIdentityType;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Samples for FlowLogs CreateOrUpdate.
@@ -14,7 +19,7 @@ import com.azure.resourcemanager.network.models.FlowLogFormatType;
 public final class FlowLogsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkWatcherFlowLogCreate.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkWatcherFlowLogCreate.
      * json
      */
     /**
@@ -23,14 +28,33 @@ public final class FlowLogsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateFlowLog(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getFlowLogs().createOrUpdate("rg1", "nw1", "fl", new FlowLogInner()
-            .withLocation("centraluseuap")
-            .withTargetResourceId(
-                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityGroups/desmondcentral-nsg")
-            .withStorageId(
-                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Storage/storageAccounts/nwtest1mgvbfmqsigdxe")
-            .withEnabled(true)
-            .withFormat(new FlowLogFormatParameters().withType(FlowLogFormatType.JSON).withVersion(1)),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getFlowLogs()
+            .createOrUpdate("rg1", "nw1", "fl", new FlowLogInner().withLocation("centraluseuap")
+                .withIdentity(new ManagedServiceIdentity().withType(ResourceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1",
+                        new ManagedServiceIdentityUserAssignedIdentities())))
+                .withTargetResourceId(
+                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityGroups/desmondcentral-nsg")
+                .withStorageId(
+                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Storage/storageAccounts/nwtest1mgvbfmqsigdxe")
+                .withEnabled(true)
+                .withFormat(new FlowLogFormatParameters().withType(FlowLogFormatType.JSON).withVersion(1)),
+                com.azure.core.util.Context.NONE);
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

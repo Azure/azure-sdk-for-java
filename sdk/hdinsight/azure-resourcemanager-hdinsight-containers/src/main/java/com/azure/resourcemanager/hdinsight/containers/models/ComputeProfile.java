@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The compute profile. */
+/**
+ * The compute profile.
+ */
 @Fluent
 public final class ComputeProfile {
     /*
@@ -18,13 +20,15 @@ public final class ComputeProfile {
     @JsonProperty(value = "nodes", required = true)
     private List<NodeProfile> nodes;
 
-    /** Creates an instance of ComputeProfile class. */
+    /**
+     * Creates an instance of ComputeProfile class.
+     */
     public ComputeProfile() {
     }
 
     /**
      * Get the nodes property: The nodes definitions.
-     *
+     * 
      * @return the nodes value.
      */
     public List<NodeProfile> nodes() {
@@ -33,7 +37,7 @@ public final class ComputeProfile {
 
     /**
      * Set the nodes property: The nodes definitions.
-     *
+     * 
      * @param nodes the nodes value to set.
      * @return the ComputeProfile object itself.
      */
@@ -44,14 +48,13 @@ public final class ComputeProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (nodes() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property nodes in model ComputeProfile"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property nodes in model ComputeProfile"));
         } else {
             nodes().forEach(e -> e.validate());
         }

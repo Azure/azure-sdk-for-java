@@ -10,11 +10,9 @@ import com.azure.resourcemanager.devcenter.models.ScheduleListResult;
 public final class ScheduleListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScheduleListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"StorageProvisioningFailed\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"zzbtdcqvpniyujvi\",\"timeZone\":\"wdsh\",\"state\":\"Disabled\"},\"id\":\"rbgyefry\",\"name\":\"sgaojfmwncot\",\"type\":\"rfh\"},{\"properties\":{\"provisioningState\":\"Deleted\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"ftpipiwyczu\",\"timeZone\":\"a\",\"state\":\"Disabled\"},\"id\":\"lihhyuspskasdvlm\",\"name\":\"wdgzxulucv\",\"type\":\"amrsreuzv\"},{\"properties\":{\"provisioningState\":\"NotSpecified\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"ytxifqjzgxmrh\",\"timeZone\":\"lw\",\"state\":\"Disabled\"},\"id\":\"utr\",\"name\":\"jupauut\",\"type\":\"woqhihe\"},{\"properties\":{\"provisioningState\":\"NotSpecified\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"n\",\"timeZone\":\"ypsxjvfoim\",\"state\":\"Enabled\"},\"id\":\"ircizjxvy\",\"name\":\"fceacvlhvygd\",\"type\":\"ftumrtwnawjslbiw\"}],\"nextLink\":\"jgcyztsfmznba\"}")
-                .toObject(ScheduleListResult.class);
+        ScheduleListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"StorageProvisioningFailed\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"jcswsmys\",\"timeZone\":\"luqypfcvlerch\",\"state\":\"Enabled\",\"tags\":{\"sspuunnoxyhkx\":\"pjbabwidfc\"},\"location\":\"ddrihpf\"},\"id\":\"qcaaewdaomdjvl\",\"name\":\"jxxkzbrmsgei\",\"type\":\"siykzkdncjdxonbz\"},{\"properties\":{\"provisioningState\":\"RolloutInProgress\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"wyrpgogtqxepnyl\",\"timeZone\":\"uajlyj\",\"state\":\"Disabled\",\"tags\":{\"cib\":\"qzhv\",\"uxrkjp\":\"fmo\"},\"location\":\"w\"},\"id\":\"zwiivwzjbhyzs\",\"name\":\"jrkambtrnegvmnv\",\"type\":\"q\"}],\"nextLink\":\"vldspa\"}")
+            .toObject(ScheduleListResult.class);
     }
 
     @org.junit.jupiter.api.Test

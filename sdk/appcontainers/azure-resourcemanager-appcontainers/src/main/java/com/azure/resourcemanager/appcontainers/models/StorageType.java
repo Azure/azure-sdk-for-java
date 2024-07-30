@@ -5,23 +5,40 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Storage type for the volume. If not provided, use EmptyDir. */
+/**
+ * Storage type for the volume. If not provided, use EmptyDir.
+ */
 public final class StorageType extends ExpandableStringEnum<StorageType> {
-    /** Static value AzureFile for StorageType. */
+    /**
+     * Static value AzureFile for StorageType.
+     */
     public static final StorageType AZURE_FILE = fromString("AzureFile");
 
-    /** Static value EmptyDir for StorageType. */
+    /**
+     * Static value EmptyDir for StorageType.
+     */
     public static final StorageType EMPTY_DIR = fromString("EmptyDir");
 
-    /** Static value Secret for StorageType. */
+    /**
+     * Static value Secret for StorageType.
+     */
     public static final StorageType SECRET = fromString("Secret");
 
     /**
+     * Static value NfsAzureFile for StorageType.
+     */
+    public static final StorageType NFS_AZURE_FILE = fromString("NfsAzureFile");
+
+    /**
+     * Static value Smb for StorageType.
+     */
+    public static final StorageType SMB = fromString("Smb");
+
+    /**
      * Creates a new instance of StorageType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +47,17 @@ public final class StorageType extends ExpandableStringEnum<StorageType> {
 
     /**
      * Creates or finds a StorageType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StorageType.
      */
-    @JsonCreator
     public static StorageType fromString(String name) {
         return fromString(name, StorageType.class);
     }
 
     /**
      * Gets known StorageType values.
-     *
+     * 
      * @return known StorageType values.
      */
     public static Collection<StorageType> values() {

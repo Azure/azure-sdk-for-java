@@ -11,7 +11,7 @@
   </parent>
   <groupId>com.azure.cosmos.spark</groupId>
   <artifactId>azure-cosmos-spark_3-2_2-12</artifactId>
-  <version>4.28.3</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-2_2-12;current} -->
+  <version>4.34.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-2_2-12;current} -->
   <packaging>jar</packaging>
   <url>https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-cosmos-spark_3-2_2-12</url>
   <name>OLTP Spark 3.2 Connector for Azure Cosmos DB SQL API</name>
@@ -48,7 +48,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.3.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
+        <version>3.5.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>add-sources</id>
@@ -124,7 +124,7 @@
           <plugin>
             <groupId>org.scalatest</groupId>
             <artifactId>scalatest-maven-plugin</artifactId>
-            <version>2.0.2</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest-maven-plugin;external_dependency} -->
+            <version>2.1.0</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest-maven-plugin;external_dependency} -->
             <configuration>
               <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
               <junitxml>.</junitxml>
@@ -149,12 +149,24 @@
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-sql_2.12</artifactId>
       <version>3.2.0</version> <!-- {x-version-update;cosmos-spark_3-2_org.apache.spark:spark-sql_2.12;external_dependency} -->
+      <exclusions>
+        <exclusion>
+          <groupId>io.netty</groupId>
+          <artifactId>netty-all</artifactId>
+        </exclusion>
+      </exclusions>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-hive_2.12</artifactId>
       <version>3.2.0</version> <!-- {x-version-update;cosmos-spark_3-2_org.apache.spark:spark-hive_2.12;external_dependency} -->
+      <exclusions>
+        <exclusion>
+          <groupId>io.netty</groupId>
+          <artifactId>netty-all</artifactId>
+        </exclusion>
+      </exclusions>
       <scope>test</scope>
     </dependency>
     <dependency>

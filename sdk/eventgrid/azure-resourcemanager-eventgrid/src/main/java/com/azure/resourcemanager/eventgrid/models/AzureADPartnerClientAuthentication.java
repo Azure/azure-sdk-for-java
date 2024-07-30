@@ -7,16 +7,28 @@ package com.azure.resourcemanager.eventgrid.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.eventgrid.fluent.models.AzureADPartnerClientAuthenticationProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Azure Active Directory Partner Client Authentication.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "clientAuthenticationType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "clientAuthenticationType",
+    defaultImpl = AzureADPartnerClientAuthentication.class,
+    visible = true)
 @JsonTypeName("AzureAD")
 @Fluent
 public final class AzureADPartnerClientAuthentication extends PartnerClientAuthentication {
+    /*
+     * Type of client authentication
+     */
+    @JsonTypeId
+    @JsonProperty(value = "clientAuthenticationType", required = true)
+    private PartnerClientAuthenticationType clientAuthenticationType = PartnerClientAuthenticationType.AZURE_AD;
+
     /*
      * AzureAD ClientAuthentication Properties
      */
@@ -27,6 +39,16 @@ public final class AzureADPartnerClientAuthentication extends PartnerClientAuthe
      * Creates an instance of AzureADPartnerClientAuthentication class.
      */
     public AzureADPartnerClientAuthentication() {
+    }
+
+    /**
+     * Get the clientAuthenticationType property: Type of client authentication.
+     * 
+     * @return the clientAuthenticationType value.
+     */
+    @Override
+    public PartnerClientAuthenticationType clientAuthenticationType() {
+        return this.clientAuthenticationType;
     }
 
     /**

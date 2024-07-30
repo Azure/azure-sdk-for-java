@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class LoadBalancersSwapPublicIpAddressesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * LoadBalancersSwapPublicIpAddresses.json
      */
     /**
@@ -23,16 +23,19 @@ public final class LoadBalancersSwapPublicIpAddressesSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void swapVIPsBetweenTwoLoadBalancers(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getLoadBalancers().swapPublicIpAddresses("westus",
-            new LoadBalancerVipSwapRequest().withFrontendIpConfigurations(Arrays.asList(
-                new LoadBalancerVipSwapRequestFrontendIpConfiguration().withId(
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getLoadBalancers()
+            .swapPublicIpAddresses("westus", new LoadBalancerVipSwapRequest().withFrontendIpConfigurations(
+                Arrays.asList(new LoadBalancerVipSwapRequestFrontendIpConfiguration().withId(
                     "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb1/frontendIPConfigurations/lbfe1")
                     .withPublicIpAddress(new SubResource().withId(
                         "/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/publicIPAddresses/pip2")),
-                new LoadBalancerVipSwapRequestFrontendIpConfiguration().withId(
-                    "/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/loadBalancers/lb2/frontendIPConfigurations/lbfe2")
-                    .withPublicIpAddress(new SubResource().withId(
-                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/pip1")))),
-            com.azure.core.util.Context.NONE);
+                    new LoadBalancerVipSwapRequestFrontendIpConfiguration().withId(
+                        "/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/loadBalancers/lb2/frontendIPConfigurations/lbfe2")
+                        .withPublicIpAddress(new SubResource().withId(
+                            "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/pip1")))),
+                com.azure.core.util.Context.NONE);
     }
 }

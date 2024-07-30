@@ -5,7 +5,6 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -54,7 +53,6 @@ public final class FilePurpose extends ExpandableStringEnum<FilePurpose> {
      * @return the corresponding FilePurpose.
      */
     @Generated
-    @JsonCreator
     public static FilePurpose fromString(String name) {
         return fromString(name, FilePurpose.class);
     }
@@ -68,4 +66,22 @@ public final class FilePurpose extends ExpandableStringEnum<FilePurpose> {
     public static Collection<FilePurpose> values() {
         return values(FilePurpose.class);
     }
+
+    /**
+     * Indicates a file is used as input to .
+     */
+    @Generated
+    public static final FilePurpose BATCH = fromString("batch");
+
+    /**
+     * Indicates a file is used as output by a vector store batch operation.
+     */
+    @Generated
+    public static final FilePurpose BATCH_OUTPUT = fromString("batch_output");
+
+    /**
+     * Indicates a file is used as input to a vision operation.
+     */
+    @Generated
+    public static final FilePurpose VISION = fromString("vision");
 }

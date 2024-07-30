@@ -38,119 +38,94 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DeploymentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DeploymentsClient.
+ */
 public final class DeploymentsClientImpl implements DeploymentsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DeploymentsService service;
 
-    /** The service client containing this operation class. */
-    private final AzureSphereManagementClientImpl client;
+    /**
+     * The service client containing this operation class.
+     */
+    private final AzureSphereMgmtClientImpl client;
 
     /**
      * Initializes an instance of DeploymentsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
-    DeploymentsClientImpl(AzureSphereManagementClientImpl client) {
-        this.service =
-            RestProxy.create(DeploymentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+    DeploymentsClientImpl(AzureSphereMgmtClientImpl client) {
+        this.service
+            = RestProxy.create(DeploymentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureSphereManagementClientDeployments to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for AzureSphereMgmtClientDeployments to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureSphereManagemen")
+    @ServiceInterface(name = "AzureSphereMgmtClien")
     public interface DeploymentsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/deployments")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/deployments")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentListResult>> listByDeviceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("$maxpagesize") Integer maxpagesize,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("catalogName") String catalogName,
-            @PathParam("productName") String productName,
-            @PathParam("deviceGroupName") String deviceGroupName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DeploymentListResult>> listByDeviceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("$filter") String filter,
+            @QueryParam("$top") Integer top, @QueryParam("$skip") Integer skip,
+            @QueryParam("$maxpagesize") Integer maxpagesize, @PathParam("catalogName") String catalogName,
+            @PathParam("productName") String productName, @PathParam("deviceGroupName") String deviceGroupName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/deployments/{deploymentName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/deployments/{deploymentName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("catalogName") String catalogName,
-            @PathParam("productName") String productName,
-            @PathParam("deviceGroupName") String deviceGroupName,
-            @PathParam("deploymentName") String deploymentName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DeploymentInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("catalogName") String catalogName,
+            @PathParam("productName") String productName, @PathParam("deviceGroupName") String deviceGroupName,
+            @PathParam("deploymentName") String deploymentName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/deployments/{deploymentName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/deployments/{deploymentName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("catalogName") String catalogName,
-            @PathParam("productName") String productName,
-            @PathParam("deviceGroupName") String deviceGroupName,
-            @PathParam("deploymentName") String deploymentName,
-            @BodyParam("application/json") DeploymentInner resource,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("catalogName") String catalogName,
+            @PathParam("productName") String productName, @PathParam("deviceGroupName") String deviceGroupName,
+            @PathParam("deploymentName") String deploymentName, @BodyParam("application/json") DeploymentInner resource,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/deployments/{deploymentName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/deployments/{deploymentName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("catalogName") String catalogName,
-            @PathParam("productName") String productName,
-            @PathParam("deviceGroupName") String deviceGroupName,
-            @PathParam("deploymentName") String deploymentName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("catalogName") String catalogName,
+            @PathParam("productName") String productName, @PathParam("deviceGroupName") String deviceGroupName,
+            @PathParam("deploymentName") String deploymentName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeploymentListResult>> listByDeviceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List Deployment resources by DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be
      * used for product or device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -163,29 +138,19 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Deployment list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DeploymentInner>> listByDeviceGroupSinglePageAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String filter,
-        Integer top,
-        Integer skip,
+    private Mono<PagedResponse<DeploymentInner>> listByDeviceGroupSinglePageAsync(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, String filter, Integer top, Integer skip,
         Integer maxpagesize) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -203,39 +168,18 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByDeviceGroup(
-                            this.client.getEndpoint(),
-                            filter,
-                            top,
-                            skip,
-                            maxpagesize,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            catalogName,
-                            productName,
-                            deviceGroupName,
-                            accept,
-                            context))
-            .<PagedResponse<DeploymentInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByDeviceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, filter, top, skip, maxpagesize, catalogName,
+                productName, deviceGroupName, accept, context))
+            .<PagedResponse<DeploymentInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List Deployment resources by DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be
      * used for product or device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -249,30 +193,19 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Deployment list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DeploymentInner>> listByDeviceGroupSinglePageAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Integer maxpagesize,
-        Context context) {
+    private Mono<PagedResponse<DeploymentInner>> listByDeviceGroupSinglePageAsync(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, String filter, Integer top, Integer skip,
+        Integer maxpagesize, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -291,35 +224,17 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByDeviceGroup(
-                this.client.getEndpoint(),
-                filter,
-                top,
-                skip,
-                maxpagesize,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                catalogName,
-                productName,
-                deviceGroupName,
-                accept,
+            .listByDeviceGroup(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, filter, top, skip, maxpagesize, catalogName, productName, deviceGroupName, accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List Deployment resources by DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be
      * used for product or device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -334,26 +249,17 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @return the response of a Deployment list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DeploymentInner> listByDeviceGroupAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Integer maxpagesize) {
-        return new PagedFlux<>(
-            () ->
-                listByDeviceGroupSinglePageAsync(
-                    resourceGroupName, catalogName, productName, deviceGroupName, filter, top, skip, maxpagesize),
+    private PagedFlux<DeploymentInner> listByDeviceGroupAsync(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, String filter, Integer top, Integer skip, Integer maxpagesize) {
+        return new PagedFlux<>(() -> listByDeviceGroupSinglePageAsync(resourceGroupName, catalogName, productName,
+            deviceGroupName, filter, top, skip, maxpagesize),
             nextLink -> listByDeviceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * List Deployment resources by DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be
      * used for product or device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -364,23 +270,21 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @return the response of a Deployment list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DeploymentInner> listByDeviceGroupAsync(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName) {
+    private PagedFlux<DeploymentInner> listByDeviceGroupAsync(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName) {
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
         final Integer maxpagesize = null;
-        return new PagedFlux<>(
-            () ->
-                listByDeviceGroupSinglePageAsync(
-                    resourceGroupName, catalogName, productName, deviceGroupName, filter, top, skip, maxpagesize),
+        return new PagedFlux<>(() -> listByDeviceGroupSinglePageAsync(resourceGroupName, catalogName, productName,
+            deviceGroupName, filter, top, skip, maxpagesize),
             nextLink -> listByDeviceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * List Deployment resources by DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be
      * used for product or device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -396,35 +300,18 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @return the response of a Deployment list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DeploymentInner> listByDeviceGroupAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Integer maxpagesize,
+    private PagedFlux<DeploymentInner> listByDeviceGroupAsync(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, String filter, Integer top, Integer skip, Integer maxpagesize,
         Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByDeviceGroupSinglePageAsync(
-                    resourceGroupName,
-                    catalogName,
-                    productName,
-                    deviceGroupName,
-                    filter,
-                    top,
-                    skip,
-                    maxpagesize,
-                    context),
+        return new PagedFlux<>(() -> listByDeviceGroupSinglePageAsync(resourceGroupName, catalogName, productName,
+            deviceGroupName, filter, top, skip, maxpagesize, context),
             nextLink -> listByDeviceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List Deployment resources by DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be
      * used for product or device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -435,21 +322,20 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @return the response of a Deployment list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeploymentInner> listByDeviceGroup(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName) {
+    public PagedIterable<DeploymentInner> listByDeviceGroup(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName) {
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
         final Integer maxpagesize = null;
-        return new PagedIterable<>(
-            listByDeviceGroupAsync(
-                resourceGroupName, catalogName, productName, deviceGroupName, filter, top, skip, maxpagesize));
+        return new PagedIterable<>(listByDeviceGroupAsync(resourceGroupName, catalogName, productName, deviceGroupName,
+            filter, top, skip, maxpagesize));
     }
 
     /**
      * List Deployment resources by DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be
      * used for product or device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -465,54 +351,38 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @return the response of a Deployment list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeploymentInner> listByDeviceGroup(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Integer maxpagesize,
+    public PagedIterable<DeploymentInner> listByDeviceGroup(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, String filter, Integer top, Integer skip, Integer maxpagesize,
         Context context) {
-        return new PagedIterable<>(
-            listByDeviceGroupAsync(
-                resourceGroupName, catalogName, productName, deviceGroupName, filter, top, skip, maxpagesize, context));
+        return new PagedIterable<>(listByDeviceGroupAsync(resourceGroupName, catalogName, productName, deviceGroupName,
+            filter, top, skip, maxpagesize, context));
     }
 
     /**
      * Get a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or device
      * group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Deployment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeploymentInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName) {
+    private Mono<Response<DeploymentInner>> getWithResponseAsync(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, String deploymentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -533,33 +403,22 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            catalogName,
-                            productName,
-                            deviceGroupName,
-                            deploymentName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, deviceGroupName,
+                deploymentName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or device
      * group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -567,24 +426,15 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @return a Deployment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeploymentInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName,
-        Context context) {
+    private Mono<Response<DeploymentInner>> getWithResponseAsync(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, String deploymentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -605,42 +455,28 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                catalogName,
-                productName,
-                deviceGroupName,
-                deploymentName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, accept, context);
     }
 
     /**
      * Get a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or device
      * group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Deployment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeploymentInner> getAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName) {
+    private Mono<DeploymentInner> getAsync(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, String deploymentName) {
         return getWithResponseAsync(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -648,13 +484,13 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     /**
      * Get a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or device
      * group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -662,81 +498,62 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @return a Deployment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeploymentInner> getWithResponse(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName,
-        Context context) {
-        return getWithResponseAsync(
-                resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, context)
-            .block();
+    public Response<DeploymentInner> getWithResponse(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, String deploymentName, Context context) {
+        return getWithResponseAsync(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName,
+            context).block();
     }
 
     /**
      * Get a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or device
      * group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeploymentInner get(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
+    public DeploymentInner get(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
         String deploymentName) {
-        return getWithResponse(
-                resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, Context.NONE)
-            .getValue();
+        return getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName,
+            Context.NONE).getValue();
     }
 
     /**
      * Create a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an deployment resource belonging to a device group resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, String deploymentName,
         DeploymentInner resource) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -762,62 +579,41 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            catalogName,
-                            productName,
-                            deviceGroupName,
-                            deploymentName,
-                            resource,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, deviceGroupName,
+                deploymentName, resource, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an deployment resource belonging to a device group resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName,
-        DeploymentInner resource,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, String deploymentName, DeploymentInner resource,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -843,31 +639,21 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                catalogName,
-                productName,
-                deviceGroupName,
-                deploymentName,
-                resource,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, deviceGroupName,
+            deploymentName, resource, accept, context);
     }
 
     /**
      * Create a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -875,36 +661,25 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @return the {@link PollerFlux} for polling of an deployment resource belonging to a device group resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DeploymentInner>, DeploymentInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName,
+    private PollerFlux<PollResult<DeploymentInner>, DeploymentInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, String deploymentName,
         DeploymentInner resource) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, resource);
-        return this
-            .client
-            .<DeploymentInner, DeploymentInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DeploymentInner.class,
-                DeploymentInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, catalogName,
+            productName, deviceGroupName, deploymentName, resource);
+        return this.client.<DeploymentInner, DeploymentInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DeploymentInner.class, DeploymentInner.class, this.client.getContext());
     }
 
     /**
      * Create a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -913,34 +688,26 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @return the {@link PollerFlux} for polling of an deployment resource belonging to a device group resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DeploymentInner>, DeploymentInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName,
-        DeploymentInner resource,
+    private PollerFlux<PollResult<DeploymentInner>, DeploymentInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, String deploymentName, DeploymentInner resource,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, resource, context);
-        return this
-            .client
-            .<DeploymentInner, DeploymentInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DeploymentInner.class, DeploymentInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, catalogName,
+            productName, deviceGroupName, deploymentName, resource, context);
+        return this.client.<DeploymentInner, DeploymentInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DeploymentInner.class, DeploymentInner.class, context);
     }
 
     /**
      * Create a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -948,29 +715,23 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @return the {@link SyncPoller} for polling of an deployment resource belonging to a device group resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DeploymentInner>, DeploymentInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName,
+    public SyncPoller<PollResult<DeploymentInner>, DeploymentInner> beginCreateOrUpdate(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, String deploymentName,
         DeploymentInner resource) {
-        return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, resource)
-            .getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName,
+            deploymentName, resource).getSyncPoller();
     }
 
     /**
      * Create a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -979,30 +740,23 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @return the {@link SyncPoller} for polling of an deployment resource belonging to a device group resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DeploymentInner>, DeploymentInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName,
-        DeploymentInner resource,
+    public SyncPoller<PollResult<DeploymentInner>, DeploymentInner> beginCreateOrUpdate(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, String deploymentName, DeploymentInner resource,
         Context context) {
-        return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, resource, context)
-            .getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName,
+            deploymentName, resource, context).getSyncPoller();
     }
 
     /**
      * Create a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1010,29 +764,22 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @return an deployment resource belonging to a device group resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeploymentInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName,
-        DeploymentInner resource) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, resource)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<DeploymentInner> createOrUpdateAsync(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, String deploymentName, DeploymentInner resource) {
+        return beginCreateOrUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName,
+            resource).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1041,30 +788,22 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @return an deployment resource belonging to a device group resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeploymentInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName,
-        DeploymentInner resource,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, resource, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<DeploymentInner> createOrUpdateAsync(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, String deploymentName, DeploymentInner resource, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName,
+            resource, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1072,28 +811,22 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @return an deployment resource belonging to a device group resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeploymentInner createOrUpdate(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName,
-        DeploymentInner resource) {
-        return createOrUpdateAsync(
-                resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, resource)
-            .block();
+    public DeploymentInner createOrUpdate(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, String deploymentName, DeploymentInner resource) {
+        return createOrUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName,
+            resource).block();
     }
 
     /**
      * Create a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1102,52 +835,37 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @return an deployment resource belonging to a device group resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeploymentInner createOrUpdate(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName,
-        DeploymentInner resource,
-        Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, resource, context)
-            .block();
+    public DeploymentInner createOrUpdate(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, String deploymentName, DeploymentInner resource, Context context) {
+        return createOrUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName,
+            resource, context).block();
     }
 
     /**
      * Delete a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, String deploymentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1168,33 +886,22 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            catalogName,
-                            productName,
-                            deviceGroupName,
-                            deploymentName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, deviceGroupName,
+                deploymentName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1202,24 +909,15 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, String deploymentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1240,60 +938,44 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                catalogName,
-                productName,
-                deviceGroupName,
-                deploymentName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, accept, context);
     }
 
     /**
      * Delete a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, String deploymentName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1301,59 +983,47 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, String deploymentName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(
-                resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, catalogName, productName,
+            deviceGroupName, deploymentName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName) {
-        return this
-            .beginDeleteAsync(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, String deploymentName) {
+        return this.beginDeleteAsync(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName)
             .getSyncPoller();
     }
 
     /**
      * Delete a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1361,13 +1031,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName,
-        Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, String deploymentName, Context context) {
         return this
             .beginDeleteAsync(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, context)
             .getSyncPoller();
@@ -1376,40 +1041,35 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     /**
      * Delete a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName) {
-        return beginDeleteAsync(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, String deploymentName) {
+        return beginDeleteAsync(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1417,38 +1077,28 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName,
-        Context context) {
+    private Mono<Void> deleteAsync(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, String deploymentName, Context context) {
         return beginDeleteAsync(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
+    public void delete(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
         String deploymentName) {
         deleteAsync(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName).block();
     }
@@ -1456,39 +1106,35 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     /**
      * Delete a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName,
-        Context context) {
+    public void delete(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
+        String deploymentName, Context context) {
         deleteAsync(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Deployment list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeploymentInner>> listByDeviceGroupNextSinglePageAsync(String nextLink) {
@@ -1496,62 +1142,44 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByDeviceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DeploymentInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DeploymentInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Deployment list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DeploymentInner>> listByDeviceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DeploymentInner>> listByDeviceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByDeviceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByDeviceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

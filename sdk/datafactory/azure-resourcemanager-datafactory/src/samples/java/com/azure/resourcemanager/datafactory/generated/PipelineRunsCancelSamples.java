@@ -19,7 +19,8 @@ public final class PipelineRunsCancelSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void pipelineRunsCancel(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.pipelineRuns().cancelWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "16ac5348-ff82-4f95-a80d-638c1d47b721", null, com.azure.core.util.Context.NONE);
+        manager.pipelineRuns()
+            .cancelWithResponse("exampleResourceGroup", "exampleFactoryName", "16ac5348-ff82-4f95-a80d-638c1d47b721",
+                null, com.azure.core.util.Context.NONE);
     }
 }

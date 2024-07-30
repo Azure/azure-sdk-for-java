@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-/** Samples for SimPolicies Delete. */
+/**
+ * Samples for SimPolicies Delete.
+ */
 public final class SimPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimPolicyDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimPolicyDelete.json
      */
     /**
      * Sample code: Delete SIM policy.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void deleteSIMPolicy(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {

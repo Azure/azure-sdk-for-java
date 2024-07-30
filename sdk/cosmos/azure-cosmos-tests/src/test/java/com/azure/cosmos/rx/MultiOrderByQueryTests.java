@@ -3,10 +3,10 @@
 
 package com.azure.cosmos.rx;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.models.CompositePath;
@@ -14,7 +14,6 @@ import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.collections4.ComparatorUtils;
@@ -77,9 +76,9 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         public int compare(InternalObjectNode doc1, InternalObjectNode doc2) {
             boolean isAsc = order == CompositePathSortOrder.ASCENDING;
             if (isNumericPath) {
-                if (ModelBridgeInternal.getIntFromJsonSerializable(doc1, path) < ModelBridgeInternal.getIntFromJsonSerializable(doc2, path))
+                if (doc1.getInt(path) < doc2.getInt(path))
                     return isAsc ? -1 : 1;
-                else if (ModelBridgeInternal.getIntFromJsonSerializable(doc1, path) > ModelBridgeInternal.getIntFromJsonSerializable(doc2, path))
+                else if (doc1.getInt(path) > doc2.getInt(path))
                     return isAsc ? 1 : -1;
                 else
                     return 0;
@@ -89,14 +88,12 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
                     doc1 = doc2;
                     doc2 = temp;
                 }
-                return ModelBridgeInternal.getStringFromJsonSerializable(doc1, path)
-                                          .compareTo(ModelBridgeInternal.getStringFromJsonSerializable(doc2, path));
+                return doc1.getString(path)
+                                          .compareTo(doc2.getString(path));
             } else if (isBooleanPath) {
-                if (!ModelBridgeInternal.getBooleanFromJsonSerializable(doc1, path) &&
-                    ModelBridgeInternal.getBooleanFromJsonSerializable(doc2, path))
+                if (!doc1.getBoolean(path) && doc2.getBoolean(path))
                     return isAsc ? -1 : 1;
-                else if (ModelBridgeInternal.getBooleanFromJsonSerializable(doc1, path) &&
-                    !ModelBridgeInternal.getBooleanFromJsonSerializable(doc2, path))
+                else if (doc1.getBoolean(path) && !doc2.getBoolean(path))
                     return isAsc ? 1 : -1;
                 else
                     return 0;
@@ -130,7 +127,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         Random random = new Random();
         for (int i = 0; i < numberOfDocuments; ++i) {
             InternalObjectNode multiOrderByDocument = generateMultiOrderByDocument();
-            String multiOrderByDocumentString = ModelBridgeInternal.toJsonFromJsonSerializable(multiOrderByDocument);
+            String multiOrderByDocumentString = multiOrderByDocument.toJson();
             int numberOfDuplicates = 5;
 
             for (int j = 0; j < numberOfDuplicates; j++) {
@@ -141,23 +138,23 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
 
                 // Permute all the fields so that there are duplicates with tie breaks
                 InternalObjectNode numberClone = new InternalObjectNode(multiOrderByDocumentString);
-                BridgeInternal.setProperty(numberClone, NUMBER_FIELD, random.nextInt(5));
+                numberClone.set(NUMBER_FIELD, random.nextInt(5), CosmosItemSerializer.DEFAULT_SERIALIZER);
                 numberClone.setId(UUID.randomUUID().toString());
                 this.documents.add(numberClone);
 
                 InternalObjectNode stringClone = new InternalObjectNode(multiOrderByDocumentString);
-                BridgeInternal.setProperty(stringClone, STRING_FIELD, Integer.toString(random.nextInt(5)));
+                stringClone.set(STRING_FIELD, Integer.toString(random.nextInt(5)), CosmosItemSerializer.DEFAULT_SERIALIZER);
                 stringClone.setId(UUID.randomUUID().toString());
                 this.documents.add(stringClone);
 
                 InternalObjectNode boolClone = new InternalObjectNode(multiOrderByDocumentString);
-                BridgeInternal.setProperty(boolClone, BOOL_FIELD, random.nextInt(2) % 2 == 0);
+                boolClone.set(BOOL_FIELD, random.nextInt(2) % 2 == 0, CosmosItemSerializer.DEFAULT_SERIALIZER);
                 boolClone.setId(UUID.randomUUID().toString());
                 this.documents.add(boolClone);
 
                 // Also fuzz what partition it goes to
                 InternalObjectNode partitionClone = new InternalObjectNode(multiOrderByDocumentString);
-                BridgeInternal.setProperty(partitionClone, PARTITION_KEY, random.nextInt(5));
+                partitionClone.set(PARTITION_KEY, random.nextInt(5), CosmosItemSerializer.DEFAULT_SERIALIZER);
                 partitionClone.setId(UUID.randomUUID().toString());
                 this.documents.add(partitionClone);
             }
@@ -172,18 +169,18 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         Random random = new Random();
         InternalObjectNode document = new InternalObjectNode();
         document.setId(UUID.randomUUID().toString());
-        BridgeInternal.setProperty(document, NUMBER_FIELD, random.nextInt(5));
-        BridgeInternal.setProperty(document, NUMBER_FIELD_2, random.nextInt(5));
-        BridgeInternal.setProperty(document, BOOL_FIELD, (random.nextInt() % 2) == 0);
-        BridgeInternal.setProperty(document, STRING_FIELD, Integer.toString(random.nextInt(5)));
-        BridgeInternal.setProperty(document, STRING_FIELD_2, Integer.toString(random.nextInt(5)));
-        BridgeInternal.setProperty(document, NULL_FIELD, null);
-        BridgeInternal.setProperty(document, OBJECT_FIELD, "");
-        BridgeInternal.setProperty(document, ARRAY_FIELD, (new ObjectMapper()).createArrayNode());
-        BridgeInternal.setProperty(document, SHORT_STRING_FIELD, "a" + random.nextInt(100));
-        BridgeInternal.setProperty(document, MEDIUM_STRING_FIELD, "a" + random.nextInt(128) + 100);
-        BridgeInternal.setProperty(document, LONG_STRING_FIELD, "a" + random.nextInt(255) + 128);
-        BridgeInternal.setProperty(document, PARTITION_KEY, random.nextInt(5));
+        document.set(NUMBER_FIELD, random.nextInt(5), CosmosItemSerializer.DEFAULT_SERIALIZER);
+        document.set(NUMBER_FIELD_2, random.nextInt(5), CosmosItemSerializer.DEFAULT_SERIALIZER);
+        document.set(BOOL_FIELD, (random.nextInt() % 2) == 0, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        document.set(STRING_FIELD, Integer.toString(random.nextInt(5)), CosmosItemSerializer.DEFAULT_SERIALIZER);
+        document.set(STRING_FIELD_2, Integer.toString(random.nextInt(5)), CosmosItemSerializer.DEFAULT_SERIALIZER);
+        document.set(NULL_FIELD, null, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        document.set(OBJECT_FIELD, "", CosmosItemSerializer.DEFAULT_SERIALIZER);
+        document.set(ARRAY_FIELD, (new ObjectMapper()).createArrayNode(), CosmosItemSerializer.DEFAULT_SERIALIZER);
+        document.set(SHORT_STRING_FIELD, "a" + random.nextInt(100), CosmosItemSerializer.DEFAULT_SERIALIZER);
+        document.set(MEDIUM_STRING_FIELD, "a" + random.nextInt(128) + 100, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        document.set(LONG_STRING_FIELD, "a" + random.nextInt(255) + 128, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        document.set(PARTITION_KEY, random.nextInt(5), CosmosItemSerializer.DEFAULT_SERIALIZER);
         return document;
     }
 
@@ -271,7 +268,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         List<String> documentWithEmptyFieldIds = new ArrayList<>();
         for (int i = 0; i < documentWithUndefinedFiledSize; i++) {
             InternalObjectNode documentWithEmptyField = generateMultiOrderByDocument();
-            BridgeInternal.remove(documentWithEmptyField, NUMBER_FIELD);
+            documentWithEmptyField.remove(NUMBER_FIELD);
             documentCollection.createItem(documentWithEmptyField, new CosmosItemRequestOptions()).block();
             documentWithEmptyFieldIds.add(documentWithEmptyField.getId());
         }
@@ -328,7 +325,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         List<InternalObjectNode> result = new ArrayList<InternalObjectNode>();
         if (hasFilter) {
             for (InternalObjectNode document : cosmosItemSettings) {
-                if (ModelBridgeInternal.getIntFromJsonSerializable(document, NUMBER_FIELD) % 2 == 0) {
+                if (document.getInt(NUMBER_FIELD) % 2 == 0) {
                     result.add(document);
                 }
             }

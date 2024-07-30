@@ -3,6 +3,8 @@
 
 package com.azure.perf.test.core;
 
+import com.azure.core.util.BinaryData;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Random;
@@ -11,18 +13,19 @@ import java.util.Random;
  * Represents a repeating input stream with mark support enabled.
  */
 public class RepeatingInputStream extends InputStream {
-    private static final int RANDOM_BYTES_LENGTH = Integer.parseInt(
-        System.getProperty("azure.core.perf.test.data.buffer.size", "1048576")); // 1MB default;
     private static final byte[] RANDOM_BYTES;
     private final long size;
 
     private long mark = 0;
     private long readLimit = Long.MAX_VALUE;
     private long pos = 0;
-
+    private final byte[] source;
     static {
+        int randomLength = Integer.parseInt(
+            System.getProperty("azure.core.perf.test.data.buffer.size", "1048576")); // 1MB default;
+
         Random random = new Random(0);
-        RANDOM_BYTES = new byte[RANDOM_BYTES_LENGTH];
+        RANDOM_BYTES = new byte[randomLength];
         random.nextBytes(RANDOM_BYTES);
     }
 
@@ -30,13 +33,24 @@ public class RepeatingInputStream extends InputStream {
      * Creates an Instance of the repeating input stream.
      * @param size the size of the stream.
      */
-    public  RepeatingInputStream(long size) {
+    public RepeatingInputStream(long size) {
         this.size = size;
+        this.source = RANDOM_BYTES;
+    }
+
+    /**
+     * Creates an instance of the stream which repeats the given buffer.
+     * @param source the buffer to repeat. Must be relatively small and fit into memory.
+     * @param size the size of the stream.
+     */
+    public RepeatingInputStream(BinaryData source, long size) {
+        this.size = size;
+        this.source = source.toBytes();
     }
 
     @Override
     public synchronized int read() {
-        return (pos < size) ? (RANDOM_BYTES[(int) (pos++ % RANDOM_BYTES_LENGTH)] & 0xFF) : -1;
+        return (pos < size) ? getByte(pos) : -1;
     }
 
     @Override
@@ -50,12 +64,14 @@ public class RepeatingInputStream extends InputStream {
             return -1;
         }
 
-        int readCount = Math.min(len, RANDOM_BYTES_LENGTH);
-        long remaining = this.size - this.pos;
-        if (remaining < readCount) {
-            readCount = (int) remaining;
+        int posSrc = (int)(pos % source.length);
+        int readCount = Math.min(len, source.length - posSrc);
+
+        long remainingDest = this.size - this.pos;
+        if (remainingDest < readCount) {
+            readCount = (int) remainingDest;
         }
-        System.arraycopy(RANDOM_BYTES, 0, b, off, readCount);
+        System.arraycopy(source, posSrc, b, off, readCount);
         pos += readCount;
 
         return readCount;
@@ -94,6 +110,10 @@ public class RepeatingInputStream extends InputStream {
         } else {
             return (int) remaining;
         }
+    }
+
+    private int getByte(long pos) {
+        return source[(int)(pos % source.length)] & 0xFF;
     }
 }
 

@@ -3,9 +3,9 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.SparkBridgeInternal
+import com.azure.cosmos.{CosmosItemSerializerNoExceptionWrapping, SparkBridgeInternal}
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
-import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, SparkRowItem}
+import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, ObjectNodeMap, SparkRowItem, Utils}
 import com.azure.cosmos.models.{CosmosItemIdentity, CosmosReadManyRequestOptions, ModelBridgeInternal, PartitionKey, PartitionKeyDefinition}
 import com.azure.cosmos.spark.BulkWriter.getThreadInfo
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.IdAttributeName
@@ -18,6 +18,8 @@ import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.catalyst.encoders.ExpressionEncoder
 import org.apache.spark.sql.connector.read.PartitionReader
 import org.apache.spark.sql.types.StructType
+
+import java.util
 
 private[spark] case class ItemsPartitionReaderWithReadMany
 (
@@ -70,7 +72,7 @@ private[spark] case class ItemsPartitionReaderWithReadMany
     }
   }
 
-  log.logTrace(s"Instantiated ${this.getClass.getSimpleName}, Context: ${operationContext.toString} ${getThreadInfo}")
+  log.logTrace(s"Instantiated ${this.getClass.getSimpleName}, Context: ${operationContext.toString} $getThreadInfo")
 
   private val containerTargetConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
 
@@ -78,11 +80,11 @@ private[spark] case class ItemsPartitionReaderWithReadMany
     s"container ${containerTargetConfig.database}.${containerTargetConfig.container} - " +
     s"correlationActivityId ${diagnosticsContext.correlationActivityId}, " +
     s"readManyFilter: [feedRange: $feedRange], " +
-    s"Context: ${operationContext.toString} ${getThreadInfo}")
+    s"Context: ${operationContext.toString} $getThreadInfo")
 
   log.logTrace(s"container ${containerTargetConfig.database}.${containerTargetConfig.container} - " +
     s"readManyFilterDetails: [feedRange: $feedRange." +
-    s"Context: ${operationContext.toString} ${getThreadInfo}"
+    s"Context: ${operationContext.toString} $getThreadInfo"
   )
 
   private val clientCacheItem = CosmosClientCache(
@@ -121,41 +123,75 @@ private[spark] case class ItemsPartitionReaderWithReadMany
         partitionKeyDefinition)
 
   readManyOptionsImpl
-    .setItemFactoryMethod(
-      jsonNode => {
-        val objectNode = cosmosRowConverter.ensureObjectNode(jsonNode)
-        val idValue = objectNode.get(IdAttributeName).asText()
-        val partitionKey = PartitionKeyHelper.getPartitionKeyPath(objectNode, partitionKeyDefinition)
+    .setCustomItemSerializer(
+      new CosmosItemSerializerNoExceptionWrapping {
+        /**
+         * Used to serialize a POJO into a json tree
+         *
+         * @param item the POJO to be serialized
+         * @return the json tree that will be used as payload in Cosmos DB items
+         * @param <  T> The type of the POJO
+         */
+        override def serialize[T](item: T): util.Map[String, AnyRef] = ???
 
-        this.effectiveReadManyFilteringConfig.readManyFilterProperty match {
-          case CosmosConstants.Properties.Id => {
-            // id is also the partition key, there is no need to dynamically populate it
-            val row = cosmosRowConverter.fromObjectNodeToRow(readSchema,
-              objectNode,
-              readConfig.schemaConversionMode)
-
-            SparkRowItem(row, getPartitionKeyForFeedDiagnostics(partitionKey))
+        /**
+         * Used to deserialize the json tree stored in the Cosmos DB item as a POJO
+         *
+         * @param jsonNodeMap the json tree from the Cosmos DB item
+         * @param classType   The type of the POJO
+         * @return The deserialized POJO
+         * @param < T> The type of the POJO
+         */
+        override def deserialize[T](jsonNodeMap: util.Map[String, AnyRef], classType: Class[T]): T = {
+          if (jsonNodeMap == null) {
+            throw new IllegalStateException("The 'jsonNodeMap' should never be null here.")
           }
-          case _ => {
-            // id is not the partitionKey, dynamically computed the readMany filtering property
-            val computedColumnsMap = Map(
-              readConfig.readManyFilteringConfig.readManyFilterProperty ->
-                ((_: ObjectNode) => {
-                  CosmosItemIdentityHelper.getCosmosItemIdentityValueString(
-                    idValue,
-                    ModelBridgeInternal.getPartitionKeyInternal(partitionKey).toObjectArray.toList)
-                })
-            )
 
-            val row = cosmosRowConverter.fromObjectNodeToRowWithComputedColumns(readSchema,
-              objectNode,
-              readConfig.schemaConversionMode,
-              computedColumnsMap)
+          if (classType != classOf[SparkRowItem]) {
+            throw new IllegalStateException("The 'classType' must be 'classOf[SparkRowItem])' here.")
+          }
 
-            SparkRowItem(row, getPartitionKeyForFeedDiagnostics(partitionKey))
+          val objectNode: ObjectNode = jsonNodeMap match {
+            case map: ObjectNodeMap =>
+              map.getObjectNode
+            case _ =>
+              Utils.getSimpleObjectMapper.convertValue(jsonNodeMap, classOf[ObjectNode])
+          }
+
+          val idValue = objectNode.get(IdAttributeName).asText()
+          val partitionKey = PartitionKeyHelper.getPartitionKeyPath(objectNode, partitionKeyDefinition)
+
+          effectiveReadManyFilteringConfig.readManyFilterProperty match {
+            case CosmosConstants.Properties.Id => {
+              // id is also the partition key, there is no need to dynamically populate it
+              val row = cosmosRowConverter.fromObjectNodeToRow(readSchema,
+                objectNode,
+                readConfig.schemaConversionMode)
+
+              SparkRowItem(row, getPartitionKeyForFeedDiagnostics(partitionKey)).asInstanceOf[T]
+            }
+            case _ => {
+              // id is not the partitionKey, dynamically computed the readMany filtering property
+              val computedColumnsMap = Map(
+                readConfig.readManyFilteringConfig.readManyFilterProperty ->
+                  ((_: ObjectNode) => {
+                    CosmosItemIdentityHelper.getCosmosItemIdentityValueString(
+                      idValue,
+                      ModelBridgeInternal.getPartitionKeyInternal(partitionKey).toObjectArray.toList)
+                  })
+              )
+
+              val row = cosmosRowConverter.fromObjectNodeToRowWithComputedColumns(readSchema,
+                objectNode,
+                readConfig.schemaConversionMode,
+                computedColumnsMap)
+
+              SparkRowItem(row, getPartitionKeyForFeedDiagnostics(partitionKey)).asInstanceOf[T]
+            }
           }
         }
-      })
+      }
+    )
 
   private lazy val iterator = new TransientIOErrorsRetryingReadManyIterator[SparkRowItem](
     cosmosAsyncContainer,

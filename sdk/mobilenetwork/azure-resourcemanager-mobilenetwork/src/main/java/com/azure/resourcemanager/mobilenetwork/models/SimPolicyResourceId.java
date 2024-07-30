@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Reference to a SIM policy resource. */
+/**
+ * Reference to a SIM policy resource.
+ */
 @Fluent
 public final class SimPolicyResourceId {
     /*
@@ -17,13 +19,15 @@ public final class SimPolicyResourceId {
     @JsonProperty(value = "id", required = true)
     private String id;
 
-    /** Creates an instance of SimPolicyResourceId class. */
+    /**
+     * Creates an instance of SimPolicyResourceId class.
+     */
     public SimPolicyResourceId() {
     }
 
     /**
      * Get the id property: SIM policy resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -32,7 +36,7 @@ public final class SimPolicyResourceId {
 
     /**
      * Set the id property: SIM policy resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the SimPolicyResourceId object itself.
      */
@@ -43,14 +47,13 @@ public final class SimPolicyResourceId {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model SimPolicyResourceId"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model SimPolicyResourceId"));
         }
     }
 

@@ -11,19 +11,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 import java.util.UUID;
 
-/** Managed service identity (system assigned and/or user assigned identities). */
+/**
+ * Managed service identity (system assigned and/or user assigned identities).
+ */
 @Fluent
 public final class ManagedServiceIdentity {
     /*
-     * The service principal ID of the system assigned identity. This property will only be provided for a system
-     * assigned identity.
+     * The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity.
      */
     @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID principalId;
 
     /*
-     * The tenant ID of the system assigned identity. This property will only be provided for a system assigned
-     * identity.
+     * The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
      */
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID tenantId;
@@ -35,23 +35,22 @@ public final class ManagedServiceIdentity {
     private ManagedServiceIdentityType type;
 
     /*
-     * The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys
-     * will be ARM resource ids in the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
-     * The dictionary values can be empty objects ({}) in requests.
+     * The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests.
      */
     @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, UserAssignedIdentity> userAssignedIdentities;
 
-    /** Creates an instance of ManagedServiceIdentity class. */
+    /**
+     * Creates an instance of ManagedServiceIdentity class.
+     */
     public ManagedServiceIdentity() {
     }
 
     /**
      * Get the principalId property: The service principal ID of the system assigned identity. This property will only
      * be provided for a system assigned identity.
-     *
+     * 
      * @return the principalId value.
      */
     public UUID principalId() {
@@ -61,7 +60,7 @@ public final class ManagedServiceIdentity {
     /**
      * Get the tenantId property: The tenant ID of the system assigned identity. This property will only be provided for
      * a system assigned identity.
-     *
+     * 
      * @return the tenantId value.
      */
     public UUID tenantId() {
@@ -71,7 +70,7 @@ public final class ManagedServiceIdentity {
     /**
      * Get the type property: Type of managed service identity (where both SystemAssigned and UserAssigned types are
      * allowed).
-     *
+     * 
      * @return the type value.
      */
     public ManagedServiceIdentityType type() {
@@ -81,7 +80,7 @@ public final class ManagedServiceIdentity {
     /**
      * Set the type property: Type of managed service identity (where both SystemAssigned and UserAssigned types are
      * allowed).
-     *
+     * 
      * @param type the type value to set.
      * @return the ManagedServiceIdentity object itself.
      */
@@ -95,7 +94,7 @@ public final class ManagedServiceIdentity {
      * userAssignedIdentities dictionary keys will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
      * The dictionary values can be empty objects ({}) in requests.
-     *
+     * 
      * @return the userAssignedIdentities value.
      */
     public Map<String, UserAssignedIdentity> userAssignedIdentities() {
@@ -107,7 +106,7 @@ public final class ManagedServiceIdentity {
      * userAssignedIdentities dictionary keys will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
      * The dictionary values can be empty objects ({}) in requests.
-     *
+     * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the ManagedServiceIdentity object itself.
      */
@@ -118,24 +117,20 @@ public final class ManagedServiceIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model ManagedServiceIdentity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model ManagedServiceIdentity"));
         }
         if (userAssignedIdentities() != null) {
-            userAssignedIdentities()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            userAssignedIdentities().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 

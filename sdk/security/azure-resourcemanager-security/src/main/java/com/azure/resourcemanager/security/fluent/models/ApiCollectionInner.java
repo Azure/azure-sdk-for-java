@@ -92,8 +92,8 @@ public final class ApiCollectionInner extends ProxyResource {
     }
 
     /**
-     * Get the numberOfUnauthenticatedApiEndpoints property: The number of API endpoints in this API collection that
-     * are unauthenticated.
+     * Get the numberOfUnauthenticatedApiEndpoints property: The number of API endpoints in this API collection that are
+     * unauthenticated.
      * 
      * @return the numberOfUnauthenticatedApiEndpoints value.
      */
@@ -112,13 +112,14 @@ public final class ApiCollectionInner extends ProxyResource {
     }
 
     /**
-     * Get the numberOfApiEndpointsWithSensitiveDataExposed property: The number of API endpoints in this API
-     * collection which are exposing sensitive data in their requests and/or responses.
+     * Get the numberOfApiEndpointsWithSensitiveDataExposed property: The number of API endpoints in this API collection
+     * which are exposing sensitive data in their requests and/or responses.
      * 
      * @return the numberOfApiEndpointsWithSensitiveDataExposed value.
      */
     public Long numberOfApiEndpointsWithSensitiveDataExposed() {
-        return this.innerProperties() == null ? null
+        return this.innerProperties() == null
+            ? null
             : this.innerProperties().numberOfApiEndpointsWithSensitiveDataExposed();
     }
 

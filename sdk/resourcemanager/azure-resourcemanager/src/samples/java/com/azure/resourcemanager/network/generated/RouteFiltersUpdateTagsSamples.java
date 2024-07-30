@@ -14,7 +14,7 @@ import java.util.Map;
 public final class RouteFiltersUpdateTagsSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/RouteFilterUpdateTags.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/RouteFilterUpdateTags.json
      */
     /**
      * Sample code: Update route filter tags.
@@ -22,8 +22,12 @@ public final class RouteFiltersUpdateTagsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateRouteFilterTags(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getRouteFilters().updateTagsWithResponse("rg1", "filterName",
-            new TagsObject().withTags(mapOf("key1", "fakeTokenPlaceholder")), com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getRouteFilters()
+            .updateTagsWithResponse("rg1", "filterName",
+                new TagsObject().withTags(mapOf("key1", "fakeTokenPlaceholder")), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

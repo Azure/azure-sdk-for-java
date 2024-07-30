@@ -13,6 +13,7 @@ import com.azure.resourcemanager.network.models.VirtualNetworkEncryption;
 import com.azure.resourcemanager.network.models.VirtualNetworkPeeringLevel;
 import com.azure.resourcemanager.network.models.VirtualNetworkPeeringState;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Properties of the virtual network peering.
@@ -54,6 +55,18 @@ public final class VirtualNetworkPeeringPropertiesFormat {
      */
     @JsonProperty(value = "remoteVirtualNetwork")
     private SubResource remoteVirtualNetwork;
+
+    /*
+     * The local address space of the local virtual network that is peered.
+     */
+    @JsonProperty(value = "localAddressSpace")
+    private AddressSpace localAddressSpace;
+
+    /*
+     * The current local address space of the local virtual network that is peered.
+     */
+    @JsonProperty(value = "localVirtualNetworkAddressSpace")
+    private AddressSpace localVirtualNetworkAddressSpace;
 
     /*
      * The reference to the address space peered with the remote virtual network.
@@ -108,6 +121,30 @@ public final class VirtualNetworkPeeringPropertiesFormat {
      */
     @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
+
+    /*
+     * Whether complete virtual network address space is peered.
+     */
+    @JsonProperty(value = "peerCompleteVnets")
+    private Boolean peerCompleteVnets;
+
+    /*
+     * Whether only Ipv6 address space is peered for subnet peering.
+     */
+    @JsonProperty(value = "enableOnlyIPv6Peering")
+    private Boolean enableOnlyIPv6Peering;
+
+    /*
+     * List of local subnet names that are subnet peered with remote virtual network.
+     */
+    @JsonProperty(value = "localSubnetNames")
+    private List<String> localSubnetNames;
+
+    /*
+     * List of remote subnet names from remote virtual network that are subnet peered.
+     */
+    @JsonProperty(value = "remoteSubnetNames")
+    private List<String> remoteSubnetNames;
 
     /**
      * Creates an instance of VirtualNetworkPeeringPropertiesFormat class.
@@ -182,10 +219,10 @@ public final class VirtualNetworkPeeringPropertiesFormat {
     }
 
     /**
-     * Get the useRemoteGateways property: If remote gateways can be used on this virtual network. If the flag is set
-     * to true, and allowGatewayTransit on remote peering is also true, virtual network will use gateways of remote
-     * virtual network for transit. Only one peering can have this flag set to true. This flag cannot be set if virtual
-     * network already has a gateway.
+     * Get the useRemoteGateways property: If remote gateways can be used on this virtual network. If the flag is set to
+     * true, and allowGatewayTransit on remote peering is also true, virtual network will use gateways of remote virtual
+     * network for transit. Only one peering can have this flag set to true. This flag cannot be set if virtual network
+     * already has a gateway.
      * 
      * @return the useRemoteGateways value.
      */
@@ -194,10 +231,10 @@ public final class VirtualNetworkPeeringPropertiesFormat {
     }
 
     /**
-     * Set the useRemoteGateways property: If remote gateways can be used on this virtual network. If the flag is set
-     * to true, and allowGatewayTransit on remote peering is also true, virtual network will use gateways of remote
-     * virtual network for transit. Only one peering can have this flag set to true. This flag cannot be set if virtual
-     * network already has a gateway.
+     * Set the useRemoteGateways property: If remote gateways can be used on this virtual network. If the flag is set to
+     * true, and allowGatewayTransit on remote peering is also true, virtual network will use gateways of remote virtual
+     * network for transit. Only one peering can have this flag set to true. This flag cannot be set if virtual network
+     * already has a gateway.
      * 
      * @param useRemoteGateways the useRemoteGateways value to set.
      * @return the VirtualNetworkPeeringPropertiesFormat object itself.
@@ -228,6 +265,49 @@ public final class VirtualNetworkPeeringPropertiesFormat {
      */
     public VirtualNetworkPeeringPropertiesFormat withRemoteVirtualNetwork(SubResource remoteVirtualNetwork) {
         this.remoteVirtualNetwork = remoteVirtualNetwork;
+        return this;
+    }
+
+    /**
+     * Get the localAddressSpace property: The local address space of the local virtual network that is peered.
+     * 
+     * @return the localAddressSpace value.
+     */
+    public AddressSpace localAddressSpace() {
+        return this.localAddressSpace;
+    }
+
+    /**
+     * Set the localAddressSpace property: The local address space of the local virtual network that is peered.
+     * 
+     * @param localAddressSpace the localAddressSpace value to set.
+     * @return the VirtualNetworkPeeringPropertiesFormat object itself.
+     */
+    public VirtualNetworkPeeringPropertiesFormat withLocalAddressSpace(AddressSpace localAddressSpace) {
+        this.localAddressSpace = localAddressSpace;
+        return this;
+    }
+
+    /**
+     * Get the localVirtualNetworkAddressSpace property: The current local address space of the local virtual network
+     * that is peered.
+     * 
+     * @return the localVirtualNetworkAddressSpace value.
+     */
+    public AddressSpace localVirtualNetworkAddressSpace() {
+        return this.localVirtualNetworkAddressSpace;
+    }
+
+    /**
+     * Set the localVirtualNetworkAddressSpace property: The current local address space of the local virtual network
+     * that is peered.
+     * 
+     * @param localVirtualNetworkAddressSpace the localVirtualNetworkAddressSpace value to set.
+     * @return the VirtualNetworkPeeringPropertiesFormat object itself.
+     */
+    public VirtualNetworkPeeringPropertiesFormat
+        withLocalVirtualNetworkAddressSpace(AddressSpace localVirtualNetworkAddressSpace) {
+        this.localVirtualNetworkAddressSpace = localVirtualNetworkAddressSpace;
         return this;
     }
 
@@ -383,11 +463,99 @@ public final class VirtualNetworkPeeringPropertiesFormat {
     }
 
     /**
+     * Get the peerCompleteVnets property: Whether complete virtual network address space is peered.
+     * 
+     * @return the peerCompleteVnets value.
+     */
+    public Boolean peerCompleteVnets() {
+        return this.peerCompleteVnets;
+    }
+
+    /**
+     * Set the peerCompleteVnets property: Whether complete virtual network address space is peered.
+     * 
+     * @param peerCompleteVnets the peerCompleteVnets value to set.
+     * @return the VirtualNetworkPeeringPropertiesFormat object itself.
+     */
+    public VirtualNetworkPeeringPropertiesFormat withPeerCompleteVnets(Boolean peerCompleteVnets) {
+        this.peerCompleteVnets = peerCompleteVnets;
+        return this;
+    }
+
+    /**
+     * Get the enableOnlyIPv6Peering property: Whether only Ipv6 address space is peered for subnet peering.
+     * 
+     * @return the enableOnlyIPv6Peering value.
+     */
+    public Boolean enableOnlyIPv6Peering() {
+        return this.enableOnlyIPv6Peering;
+    }
+
+    /**
+     * Set the enableOnlyIPv6Peering property: Whether only Ipv6 address space is peered for subnet peering.
+     * 
+     * @param enableOnlyIPv6Peering the enableOnlyIPv6Peering value to set.
+     * @return the VirtualNetworkPeeringPropertiesFormat object itself.
+     */
+    public VirtualNetworkPeeringPropertiesFormat withEnableOnlyIPv6Peering(Boolean enableOnlyIPv6Peering) {
+        this.enableOnlyIPv6Peering = enableOnlyIPv6Peering;
+        return this;
+    }
+
+    /**
+     * Get the localSubnetNames property: List of local subnet names that are subnet peered with remote virtual network.
+     * 
+     * @return the localSubnetNames value.
+     */
+    public List<String> localSubnetNames() {
+        return this.localSubnetNames;
+    }
+
+    /**
+     * Set the localSubnetNames property: List of local subnet names that are subnet peered with remote virtual network.
+     * 
+     * @param localSubnetNames the localSubnetNames value to set.
+     * @return the VirtualNetworkPeeringPropertiesFormat object itself.
+     */
+    public VirtualNetworkPeeringPropertiesFormat withLocalSubnetNames(List<String> localSubnetNames) {
+        this.localSubnetNames = localSubnetNames;
+        return this;
+    }
+
+    /**
+     * Get the remoteSubnetNames property: List of remote subnet names from remote virtual network that are subnet
+     * peered.
+     * 
+     * @return the remoteSubnetNames value.
+     */
+    public List<String> remoteSubnetNames() {
+        return this.remoteSubnetNames;
+    }
+
+    /**
+     * Set the remoteSubnetNames property: List of remote subnet names from remote virtual network that are subnet
+     * peered.
+     * 
+     * @param remoteSubnetNames the remoteSubnetNames value to set.
+     * @return the VirtualNetworkPeeringPropertiesFormat object itself.
+     */
+    public VirtualNetworkPeeringPropertiesFormat withRemoteSubnetNames(List<String> remoteSubnetNames) {
+        this.remoteSubnetNames = remoteSubnetNames;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (localAddressSpace() != null) {
+            localAddressSpace().validate();
+        }
+        if (localVirtualNetworkAddressSpace() != null) {
+            localVirtualNetworkAddressSpace().validate();
+        }
         if (remoteAddressSpace() != null) {
             remoteAddressSpace().validate();
         }

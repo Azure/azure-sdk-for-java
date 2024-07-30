@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.models.VpnPacketCaptureStartParameters;
  */
 public final class VirtualNetworkGatewayConnectionsStartPacketCaptureSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * VirtualNetworkGatewayConnectionStartPacketCapture.json
      */
     /**
@@ -21,12 +21,15 @@ public final class VirtualNetworkGatewayConnectionsStartPacketCaptureSamples {
      */
     public static void startPacketCaptureOnVirtualNetworkGatewayConnectionWithoutFilter(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualNetworkGatewayConnections().startPacketCapture("rg1",
-            "vpngwcn1", null, com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworkGatewayConnections()
+            .startPacketCapture("rg1", "vpngwcn1", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * VirtualNetworkGatewayConnectionStartPacketCaptureFilterData.json
      */
     /**
@@ -36,7 +39,10 @@ public final class VirtualNetworkGatewayConnectionsStartPacketCaptureSamples {
      */
     public static void startPacketCaptureOnVirtualNetworkGatewayConnectionWithFilter(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualNetworkGatewayConnections()
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworkGatewayConnections()
             .startPacketCapture("rg1", "vpngwcn1", new VpnPacketCaptureStartParameters().withFilterData(
                 "{'TracingFlags': 11,'MaxPacketBufferSize': 120,'MaxFileSize': 200,'Filters': [{'SourceSubnets': ['20.1.1.0/24'],'DestinationSubnets': ['10.1.1.0/24'],'SourcePort': [500],'DestinationPort': [4500],'Protocol': 6,'TcpFlags': 16,'CaptureSingleDirectionTrafficOnly': true}]}"),
                 com.azure.core.util.Context.NONE);

@@ -23,7 +23,9 @@ public final class InsightTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Insight model = new Insight().withId("mdgbbjfdd").withTitle("bmbexppbhtqqro").withResults("p")
+        Insight model = new Insight().withId("mdgbbjfdd")
+            .withTitle("bmbexppbhtqqro")
+            .withResults("p")
             .withImportanceLevel(ImportanceLevel.INFORMATION);
         model = BinaryData.fromObject(model).toObject(Insight.class);
         Assertions.assertEquals("mdgbbjfdd", model.id());

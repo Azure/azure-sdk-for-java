@@ -12,21 +12,21 @@ public final class DefenderForDatabasesGcpOfferingDefenderForDatabasesArcAutoPro
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderForDatabasesGcpOfferingDefenderForDatabasesArcAutoProvisioning model = BinaryData
-            .fromString(
-                "{\"serviceAccountEmailAddress\":\"prlobrugejcvjkjy\",\"workloadIdentityProviderId\":\"cmtagelajdyo\"}")
+            .fromString("{\"serviceAccountEmailAddress\":\"ameudpabcreu\",\"workloadIdentityProviderId\":\"osgyj\"}")
             .toObject(DefenderForDatabasesGcpOfferingDefenderForDatabasesArcAutoProvisioning.class);
-        Assertions.assertEquals("prlobrugejcvjkjy", model.serviceAccountEmailAddress());
-        Assertions.assertEquals("cmtagelajdyo", model.workloadIdentityProviderId());
+        Assertions.assertEquals("ameudpabcreu", model.serviceAccountEmailAddress());
+        Assertions.assertEquals("osgyj", model.workloadIdentityProviderId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderForDatabasesGcpOfferingDefenderForDatabasesArcAutoProvisioning model
             = new DefenderForDatabasesGcpOfferingDefenderForDatabasesArcAutoProvisioning()
-                .withServiceAccountEmailAddress("prlobrugejcvjkjy").withWorkloadIdentityProviderId("cmtagelajdyo");
+                .withServiceAccountEmailAddress("ameudpabcreu")
+                .withWorkloadIdentityProviderId("osgyj");
         model = BinaryData.fromObject(model)
             .toObject(DefenderForDatabasesGcpOfferingDefenderForDatabasesArcAutoProvisioning.class);
-        Assertions.assertEquals("prlobrugejcvjkjy", model.serviceAccountEmailAddress());
-        Assertions.assertEquals("cmtagelajdyo", model.workloadIdentityProviderId());
+        Assertions.assertEquals("ameudpabcreu", model.serviceAccountEmailAddress());
+        Assertions.assertEquals("osgyj", model.workloadIdentityProviderId());
     }
 }

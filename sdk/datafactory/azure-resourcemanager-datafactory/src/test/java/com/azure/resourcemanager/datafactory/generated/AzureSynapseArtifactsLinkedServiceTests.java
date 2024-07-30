@@ -18,31 +18,29 @@ public final class AzureSynapseArtifactsLinkedServiceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureSynapseArtifactsLinkedService model = BinaryData.fromString(
-            "{\"type\":\"AzureSynapseArtifacts\",\"typeProperties\":{\"endpoint\":\"datahflnlutacsslel\",\"authentication\":\"dataukqurrtcf\",\"workspaceResourceId\":\"datat\"},\"connectVia\":{\"referenceName\":\"yrsleghozsmjj\",\"parameters\":{\"fsxvqqu\":\"datamozryyyvlxmspjq\",\"putizpvvihgxsd\":\"datazoblxxk\",\"lnarjtuoarjir\":\"datalodfodokhaogewd\"}},\"description\":\"cuyqt\",\"parameters\":{\"nvpzdbzpizgau\":{\"type\":\"Object\",\"defaultValue\":\"datajgmgfayvbsia\"},\"xorrceom\":{\"type\":\"String\",\"defaultValue\":\"datauwfy\"},\"n\":{\"type\":\"Float\",\"defaultValue\":\"datarbtrk\"},\"hg\":{\"type\":\"Object\",\"defaultValue\":\"dataijpjiudnustbmox\"}},\"annotations\":[\"datahbhue\"],\"\":{\"frhyxlwq\":\"datarlxzqzj\"}}")
+            "{\"type\":\"AzureSynapseArtifacts\",\"typeProperties\":{\"endpoint\":\"dataz\",\"authentication\":\"dataogdjwuybcppdvuo\",\"workspaceResourceId\":\"datavk\"},\"connectVia\":{\"referenceName\":\"mkupbnkcwauyl\",\"parameters\":{\"qzylempahyuxxe\":\"dataskrpyfrtluka\",\"rnhq\":\"datakeonp\"}},\"description\":\"uvvysphjkxgfmes\",\"parameters\":{\"oorvzhdncqcuwtp\":{\"type\":\"Bool\",\"defaultValue\":\"datafynvckxtanl\"}},\"annotations\":[\"dataq\",\"datanolspvxpiegxlzd\",\"dataatptzkmfvdrkcw\"],\"\":{\"frzzxirxxkmozkd\":\"datanwsffiahf\",\"vpyznjwm\":\"datazhrhki\",\"bzzwsesqytktvof\":\"datauuzny\"}}")
             .toObject(AzureSynapseArtifactsLinkedService.class);
-        Assertions.assertEquals("yrsleghozsmjj", model.connectVia().referenceName());
-        Assertions.assertEquals("cuyqt", model.description());
-        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("nvpzdbzpizgau").type());
+        Assertions.assertEquals("mkupbnkcwauyl", model.connectVia().referenceName());
+        Assertions.assertEquals("uvvysphjkxgfmes", model.description());
+        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("oorvzhdncqcuwtp").type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureSynapseArtifactsLinkedService model = new AzureSynapseArtifactsLinkedService()
-            .withConnectVia(new IntegrationRuntimeReference().withReferenceName("yrsleghozsmjj")
-                .withParameters(mapOf("fsxvqqu", "datamozryyyvlxmspjq", "putizpvvihgxsd", "datazoblxxk",
-                    "lnarjtuoarjir", "datalodfodokhaogewd")))
-            .withDescription("cuyqt")
-            .withParameters(mapOf("nvpzdbzpizgau",
-                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datajgmgfayvbsia"),
-                "xorrceom", new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datauwfy"),
-                "n", new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datarbtrk"), "hg",
-                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("dataijpjiudnustbmox")))
-            .withAnnotations(Arrays.asList("datahbhue")).withEndpoint("datahflnlutacsslel")
-            .withAuthentication("dataukqurrtcf").withWorkspaceResourceId("datat");
+            .withConnectVia(new IntegrationRuntimeReference().withReferenceName("mkupbnkcwauyl")
+                .withParameters(mapOf("qzylempahyuxxe", "dataskrpyfrtluka", "rnhq", "datakeonp")))
+            .withDescription("uvvysphjkxgfmes")
+            .withParameters(mapOf("oorvzhdncqcuwtp",
+                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datafynvckxtanl")))
+            .withAnnotations(Arrays.asList("dataq", "datanolspvxpiegxlzd", "dataatptzkmfvdrkcw"))
+            .withEndpoint("dataz")
+            .withAuthentication("dataogdjwuybcppdvuo")
+            .withWorkspaceResourceId("datavk");
         model = BinaryData.fromObject(model).toObject(AzureSynapseArtifactsLinkedService.class);
-        Assertions.assertEquals("yrsleghozsmjj", model.connectVia().referenceName());
-        Assertions.assertEquals("cuyqt", model.description());
-        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("nvpzdbzpizgau").type());
+        Assertions.assertEquals("mkupbnkcwauyl", model.connectVia().referenceName());
+        Assertions.assertEquals("uvvysphjkxgfmes", model.description());
+        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("oorvzhdncqcuwtp").type());
     }
 
     // Use "Map.of" if available

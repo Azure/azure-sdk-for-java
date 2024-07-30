@@ -19,82 +19,100 @@ public final class DataMapperMappingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataMapperMapping model = BinaryData.fromString(
-            "{\"targetEntityName\":\"mhklbnl\",\"sourceEntityName\":\"vcb\",\"sourceConnectionReference\":{\"connectionName\":\"zyqu\",\"type\":\"linkedservicetype\"},\"attributeMappingInfo\":{\"attributeMappings\":[{\"name\":\"rp\",\"type\":\"Aggregate\",\"functionName\":\"yuuatvlmbjwcolbm\",\"expression\":\"b\",\"attributeReference\":{\"name\":\"pcpahprzrvxhmtf\",\"entity\":\"cnxzcmj\",\"entityConnectionReference\":{\"connectionName\":\"xnoqrxtdisn\",\"type\":\"linkedservicetype\"}},\"attributeReferences\":[{\"name\":\"mydidwhepfw\",\"entity\":\"jfdoesxxhm\",\"entityConnectionReference\":{}}]},{\"name\":\"bckyoikxk\",\"type\":\"Direct\",\"functionName\":\"gknjzr\",\"expression\":\"t\",\"attributeReference\":{\"name\":\"lvukaobrlb\",\"entity\":\"snbagnchjhg\",\"entityConnectionReference\":{\"connectionName\":\"owa\",\"type\":\"linkedservicetype\"}},\"attributeReferences\":[{\"name\":\"jymxcgqt\",\"entity\":\"drclssoljome\",\"entityConnectionReference\":{}},{\"name\":\"ycnlbvgjcodk\",\"entity\":\"ji\",\"entityConnectionReference\":{}}]}]},\"sourceDenormalizeInfo\":\"datas\"}")
+            "{\"targetEntityName\":\"huxiqhzlraymez\",\"sourceEntityName\":\"skihmxrfd\",\"sourceConnectionReference\":{\"connectionName\":\"rednw\",\"type\":\"linkedservicetype\"},\"attributeMappingInfo\":{\"attributeMappings\":[{\"name\":\"gmevuafpwzy\",\"type\":\"Aggregate\",\"functionName\":\"gwltxeqip\",\"expression\":\"zdyi\",\"attributeReference\":{\"name\":\"ayorprav\",\"entity\":\"oge\",\"entityConnectionReference\":{\"connectionName\":\"bnsmjkwynqxaek\",\"type\":\"linkedservicetype\"}},\"attributeReferences\":[{\"name\":\"jtqpkevmyltjcrsp\",\"entity\":\"l\",\"entityConnectionReference\":{}},{\"name\":\"clf\",\"entity\":\"annnoytzposewx\",\"entityConnectionReference\":{}},{\"name\":\"xvkqm\",\"entity\":\"pxvpifdfaif\",\"entityConnectionReference\":{}},{\"name\":\"zeyuubeidszl\",\"entity\":\"toi\",\"entityConnectionReference\":{}}]}]},\"sourceDenormalizeInfo\":\"dataygvfltgvdihoyn\"}")
             .toObject(DataMapperMapping.class);
-        Assertions.assertEquals("mhklbnl", model.targetEntityName());
-        Assertions.assertEquals("vcb", model.sourceEntityName());
-        Assertions.assertEquals("zyqu", model.sourceConnectionReference().connectionName());
+        Assertions.assertEquals("huxiqhzlraymez", model.targetEntityName());
+        Assertions.assertEquals("skihmxrfd", model.sourceEntityName());
+        Assertions.assertEquals("rednw", model.sourceConnectionReference().connectionName());
         Assertions.assertEquals(ConnectionType.LINKEDSERVICETYPE, model.sourceConnectionReference().type());
-        Assertions.assertEquals("rp", model.attributeMappingInfo().attributeMappings().get(0).name());
+        Assertions.assertEquals("gmevuafpwzy", model.attributeMappingInfo().attributeMappings().get(0).name());
         Assertions.assertEquals(MappingType.AGGREGATE, model.attributeMappingInfo().attributeMappings().get(0).type());
-        Assertions.assertEquals("yuuatvlmbjwcolbm",
-            model.attributeMappingInfo().attributeMappings().get(0).functionName());
-        Assertions.assertEquals("b", model.attributeMappingInfo().attributeMappings().get(0).expression());
-        Assertions.assertEquals("pcpahprzrvxhmtf",
+        Assertions.assertEquals("gwltxeqip", model.attributeMappingInfo().attributeMappings().get(0).functionName());
+        Assertions.assertEquals("zdyi", model.attributeMappingInfo().attributeMappings().get(0).expression());
+        Assertions.assertEquals("ayorprav",
             model.attributeMappingInfo().attributeMappings().get(0).attributeReference().name());
-        Assertions.assertEquals("cnxzcmj",
+        Assertions.assertEquals("oge",
             model.attributeMappingInfo().attributeMappings().get(0).attributeReference().entity());
-        Assertions.assertEquals("xnoqrxtdisn", model.attributeMappingInfo().attributeMappings().get(0)
-            .attributeReference().entityConnectionReference().connectionName());
-        Assertions.assertEquals(ConnectionType.LINKEDSERVICETYPE, model.attributeMappingInfo().attributeMappings()
-            .get(0).attributeReference().entityConnectionReference().type());
-        Assertions.assertEquals("mydidwhepfw",
+        Assertions.assertEquals("bnsmjkwynqxaek",
+            model.attributeMappingInfo()
+                .attributeMappings()
+                .get(0)
+                .attributeReference()
+                .entityConnectionReference()
+                .connectionName());
+        Assertions.assertEquals(ConnectionType.LINKEDSERVICETYPE,
+            model.attributeMappingInfo()
+                .attributeMappings()
+                .get(0)
+                .attributeReference()
+                .entityConnectionReference()
+                .type());
+        Assertions.assertEquals("jtqpkevmyltjcrsp",
             model.attributeMappingInfo().attributeMappings().get(0).attributeReferences().get(0).name());
-        Assertions.assertEquals("jfdoesxxhm",
+        Assertions.assertEquals("l",
             model.attributeMappingInfo().attributeMappings().get(0).attributeReferences().get(0).entity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataMapperMapping model
-            = new DataMapperMapping().withTargetEntityName("mhklbnl").withSourceEntityName("vcb")
-                .withSourceConnectionReference(new MapperConnectionReference().withConnectionName("zyqu")
-                    .withType(ConnectionType.LINKEDSERVICETYPE))
-                .withAttributeMappingInfo(
-                    new MapperAttributeMappings()
-                        .withAttributeMappings(Arrays.asList(
-                            new MapperAttributeMapping().withName("rp").withType(MappingType.AGGREGATE)
-                                .withFunctionName("yuuatvlmbjwcolbm").withExpression("b")
-                                .withAttributeReference(new MapperAttributeReference().withName("pcpahprzrvxhmtf")
-                                    .withEntity("cnxzcmj")
-                                    .withEntityConnectionReference(new MapperConnectionReference()
-                                        .withConnectionName("xnoqrxtdisn").withType(ConnectionType.LINKEDSERVICETYPE)))
-                                .withAttributeReferences(Arrays.asList(
-                                    new MapperAttributeReference().withName("mydidwhepfw").withEntity("jfdoesxxhm")
-                                        .withEntityConnectionReference(new MapperConnectionReference()))),
-                            new MapperAttributeMapping().withName("bckyoikxk").withType(MappingType.DIRECT)
-                                .withFunctionName("gknjzr").withExpression("t")
-                                .withAttributeReference(
-                                    new MapperAttributeReference().withName("lvukaobrlb").withEntity("snbagnchjhg")
-                                        .withEntityConnectionReference(new MapperConnectionReference()
-                                            .withConnectionName("owa").withType(ConnectionType.LINKEDSERVICETYPE)))
-                                .withAttributeReferences(Arrays.asList(
-                                    new MapperAttributeReference().withName("jymxcgqt").withEntity("drclssoljome")
-                                        .withEntityConnectionReference(new MapperConnectionReference()),
-                                    new MapperAttributeReference().withName("ycnlbvgjcodk").withEntity("ji")
-                                        .withEntityConnectionReference(new MapperConnectionReference()))))))
-                .withSourceDenormalizeInfo("datas");
+        DataMapperMapping model = new DataMapperMapping().withTargetEntityName("huxiqhzlraymez")
+            .withSourceEntityName("skihmxrfd")
+            .withSourceConnectionReference(
+                new MapperConnectionReference().withConnectionName("rednw").withType(ConnectionType.LINKEDSERVICETYPE))
+            .withAttributeMappingInfo(new MapperAttributeMappings()
+                .withAttributeMappings(Arrays.asList(new MapperAttributeMapping().withName("gmevuafpwzy")
+                    .withType(MappingType.AGGREGATE)
+                    .withFunctionName("gwltxeqip")
+                    .withExpression("zdyi")
+                    .withAttributeReference(new MapperAttributeReference().withName("ayorprav")
+                        .withEntity("oge")
+                        .withEntityConnectionReference(
+                            new MapperConnectionReference().withConnectionName("bnsmjkwynqxaek")
+                                .withType(ConnectionType.LINKEDSERVICETYPE)))
+                    .withAttributeReferences(Arrays.asList(
+                        new MapperAttributeReference().withName("jtqpkevmyltjcrsp")
+                            .withEntity("l")
+                            .withEntityConnectionReference(new MapperConnectionReference()),
+                        new MapperAttributeReference().withName("clf")
+                            .withEntity("annnoytzposewx")
+                            .withEntityConnectionReference(new MapperConnectionReference()),
+                        new MapperAttributeReference().withName("xvkqm")
+                            .withEntity("pxvpifdfaif")
+                            .withEntityConnectionReference(new MapperConnectionReference()),
+                        new MapperAttributeReference().withName("zeyuubeidszl")
+                            .withEntity("toi")
+                            .withEntityConnectionReference(new MapperConnectionReference()))))))
+            .withSourceDenormalizeInfo("dataygvfltgvdihoyn");
         model = BinaryData.fromObject(model).toObject(DataMapperMapping.class);
-        Assertions.assertEquals("mhklbnl", model.targetEntityName());
-        Assertions.assertEquals("vcb", model.sourceEntityName());
-        Assertions.assertEquals("zyqu", model.sourceConnectionReference().connectionName());
+        Assertions.assertEquals("huxiqhzlraymez", model.targetEntityName());
+        Assertions.assertEquals("skihmxrfd", model.sourceEntityName());
+        Assertions.assertEquals("rednw", model.sourceConnectionReference().connectionName());
         Assertions.assertEquals(ConnectionType.LINKEDSERVICETYPE, model.sourceConnectionReference().type());
-        Assertions.assertEquals("rp", model.attributeMappingInfo().attributeMappings().get(0).name());
+        Assertions.assertEquals("gmevuafpwzy", model.attributeMappingInfo().attributeMappings().get(0).name());
         Assertions.assertEquals(MappingType.AGGREGATE, model.attributeMappingInfo().attributeMappings().get(0).type());
-        Assertions.assertEquals("yuuatvlmbjwcolbm",
-            model.attributeMappingInfo().attributeMappings().get(0).functionName());
-        Assertions.assertEquals("b", model.attributeMappingInfo().attributeMappings().get(0).expression());
-        Assertions.assertEquals("pcpahprzrvxhmtf",
+        Assertions.assertEquals("gwltxeqip", model.attributeMappingInfo().attributeMappings().get(0).functionName());
+        Assertions.assertEquals("zdyi", model.attributeMappingInfo().attributeMappings().get(0).expression());
+        Assertions.assertEquals("ayorprav",
             model.attributeMappingInfo().attributeMappings().get(0).attributeReference().name());
-        Assertions.assertEquals("cnxzcmj",
+        Assertions.assertEquals("oge",
             model.attributeMappingInfo().attributeMappings().get(0).attributeReference().entity());
-        Assertions.assertEquals("xnoqrxtdisn", model.attributeMappingInfo().attributeMappings().get(0)
-            .attributeReference().entityConnectionReference().connectionName());
-        Assertions.assertEquals(ConnectionType.LINKEDSERVICETYPE, model.attributeMappingInfo().attributeMappings()
-            .get(0).attributeReference().entityConnectionReference().type());
-        Assertions.assertEquals("mydidwhepfw",
+        Assertions.assertEquals("bnsmjkwynqxaek",
+            model.attributeMappingInfo()
+                .attributeMappings()
+                .get(0)
+                .attributeReference()
+                .entityConnectionReference()
+                .connectionName());
+        Assertions.assertEquals(ConnectionType.LINKEDSERVICETYPE,
+            model.attributeMappingInfo()
+                .attributeMappings()
+                .get(0)
+                .attributeReference()
+                .entityConnectionReference()
+                .type());
+        Assertions.assertEquals("jtqpkevmyltjcrsp",
             model.attributeMappingInfo().attributeMappings().get(0).attributeReferences().get(0).name());
-        Assertions.assertEquals("jfdoesxxhm",
+        Assertions.assertEquals("l",
             model.attributeMappingInfo().attributeMappings().get(0).attributeReferences().get(0).entity());
     }
 }

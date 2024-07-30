@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class VirtualWansDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualWANDelete.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualWANDelete.json
      */
     /**
      * Sample code: VirtualWANDelete.
@@ -18,7 +18,10 @@ public final class VirtualWansDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualWANDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualWans().delete("rg1", "virtualWan1",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualWans()
+            .delete("rg1", "virtualWan1", com.azure.core.util.Context.NONE);
     }
 }

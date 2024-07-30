@@ -8,8 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.BackupType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
@@ -20,14 +23,27 @@ public final class BackupInner extends ProxyResource {
     /*
      * Backup Properties
      */
-    @JsonProperty(value = "properties", required = true)
     private BackupProperties innerProperties = new BackupProperties();
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of BackupInner class.
@@ -54,9 +70,37 @@ public final class BackupInner extends ProxyResource {
     }
 
     /**
-     * Get the backupId property: backupId
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * UUID v4 used to identify the Backup.
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the backupId property: UUID v4 used to identify the Backup.
      * 
      * @return the backupId value.
      */
@@ -65,9 +109,7 @@ public final class BackupInner extends ProxyResource {
     }
 
     /**
-     * Get the creationDate property: creationDate
-     * 
-     * The creation date of the backup.
+     * Get the creationDate property: The creation date of the backup.
      * 
      * @return the creationDate value.
      */
@@ -117,9 +159,7 @@ public final class BackupInner extends ProxyResource {
     }
 
     /**
-     * Get the backupType property: backupType
-     * 
-     * Type of backup Manual or Scheduled.
+     * Get the backupType property: Type of backup Manual or Scheduled.
      * 
      * @return the backupType value.
      */
@@ -223,12 +263,57 @@ public final class BackupInner extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property innerProperties in model BackupInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property innerProperties in model BackupInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BackupInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackupInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackupInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BackupInner.
+     */
+    public static BackupInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackupInner deserializedBackupInner = new BackupInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedBackupInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedBackupInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedBackupInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBackupInner.innerProperties = BackupProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedBackupInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackupInner;
+        });
+    }
 }

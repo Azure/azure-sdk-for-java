@@ -93,6 +93,12 @@ public class NodeCounts {
     private int waitingForStartTask;
 
     /**
+     * The number of Compute Nodes in the upgradingOS state.
+     */
+    @JsonProperty(value = "upgradingOS", required = true)
+    private int upgradingOS;
+
+    /**
      * The total number of Compute Nodes.
      */
     @JsonProperty(value = "total", required = true)
@@ -355,6 +361,26 @@ public class NodeCounts {
      */
     public NodeCounts withWaitingForStartTask(int waitingForStartTask) {
         this.waitingForStartTask = waitingForStartTask;
+        return this;
+    }
+
+    /**
+     * Get the upgradingOS value.
+     *
+     * @return the upgradingOS value
+     */
+    public int upgradingOS() {
+        return this.upgradingOS;
+    }
+
+    /**
+     * Set the upgradingOS value.
+     *
+     * @param upgradingOS the upgradingOS value to set
+     * @return the NodeCounts object itself.
+     */
+    public NodeCounts withUpgradingOS(int upgradingOS) {
+        this.upgradingOS = upgradingOS;
         return this;
     }
 

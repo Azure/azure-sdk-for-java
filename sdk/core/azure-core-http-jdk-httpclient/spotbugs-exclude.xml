@@ -17,10 +17,14 @@
       </And>
       <And>
         <Or>
-          <Class name="com.azure.core.http.jdk.httpclient.implementation.JdkHttpResponseBase" />
-          <Class name="com.azure.core.http.jdk.httpclient.implementation.JdkHttpResponseSync" />
+          <Class name="com.azure.core.http.jdk.httpclient.implementation.JdkHttpResponseBase"/>
+          <Class name="com.azure.core.http.jdk.httpclient.implementation.JdkHttpResponseSync"/>
         </Or>
         <Method name="&lt;init&gt;"/>
+      </And>
+      <And>
+        <Class name="com.azure.core.http.jdk.httpclient.implementation.InputStreamTimeoutResponseSubscriber"/>
+        <Method name="onError"/>
       </And>
     </Or>
   </Match>
@@ -29,13 +33,45 @@
     <Bug pattern="EI_EXPOSE_REP"/>
     <Or>
       <And>
-        <Class name="com.azure.core.http.jdk.httpclient.implementation.BodyIgnoringSubscriber"/>
+        <Or>
+          <Class name="com.azure.core.http.jdk.httpclient.implementation.BodyIgnoringSubscriber"/>
+          <Class name="com.azure.core.http.jdk.httpclient.implementation.ByteArrayTimeoutResponseSubscriber"/>
+        </Or>
         <Method name="getBody"/>
       </And>
       <And>
-        <Class name="com.azure.core.http.jdk.httpclient.implementation.JdkHttpResponseBase" />
-        <Method name="getHeaders" />
+        <Class name="com.azure.core.http.jdk.httpclient.implementation.JdkHttpResponseBase"/>
+        <Method name="getHeaders"/>
       </And>
+    </Or>
+  </Match>
+
+  <Match>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+    <Or>
+      <And>
+        <Class name="com.azure.core.http.jdk.httpclient.implementation.ByteArrayTimeoutResponseSubscriber"/>
+        <Or>
+          <Field name="currentTimeout"/>
+          <Field name="subscription"/>
+        </Or>
+      </And>
+      <And>
+        <Class name="com.azure.core.http.jdk.httpclient.implementation.InputStreamTimeoutResponseSubscriber"/>
+        <Or>
+          <Field name="currentTimeout"/>
+          <Field name="subscription"/>
+        </Or>
+      </And>
+    </Or>
+  </Match>
+
+  <Match>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"/>
+    <Class name="com.azure.core.http.jdk.httpclient.implementation.InputStreamTimeoutResponseSubscriber"/>
+    <Or>
+      <Method name="close"/>
+      <Method name="onError"/>
     </Or>
   </Match>
 </FindBugsFilter>

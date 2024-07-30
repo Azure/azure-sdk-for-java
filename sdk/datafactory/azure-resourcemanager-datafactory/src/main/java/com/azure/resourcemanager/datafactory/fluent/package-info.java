@@ -4,7 +4,7 @@
 
 /**
  * Package containing the service clients for DataFactoryManagementClient.
- * The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data
- * Factory V2 services.
+ * The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory
+ * V2 services.
  */
 package com.azure.resourcemanager.datafactory.fluent;

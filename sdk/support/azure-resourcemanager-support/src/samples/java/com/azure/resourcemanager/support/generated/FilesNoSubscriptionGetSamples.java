@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.support.generated;
 
-/** Samples for FilesNoSubscription Get. */
+/**
+ * Samples for FilesNoSubscription Get.
+ */
 public final class FilesNoSubscriptionGetSamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/GetFileDetails.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/GetFileDetails.json
      */
     /**
      * Sample code: Get details of a subscription file.
-     *
+     * 
      * @param manager Entry point to SupportManager.
      */
     public static void getDetailsOfASubscriptionFile(com.azure.resourcemanager.support.SupportManager manager) {

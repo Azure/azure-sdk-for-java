@@ -105,12 +105,14 @@ public final class ExclusionManagedRuleSet {
      */
     public void validate() {
         if (ruleSetType() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property ruleSetType in model ExclusionManagedRuleSet"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property ruleSetType in model ExclusionManagedRuleSet"));
         }
         if (ruleSetVersion() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property ruleSetVersion in model ExclusionManagedRuleSet"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property ruleSetVersion in model ExclusionManagedRuleSet"));
         }
         if (ruleGroups() != null) {
             ruleGroups().forEach(e -> e.validate());

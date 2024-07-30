@@ -81,8 +81,9 @@ public final class ParquetDatasetTypeProperties {
      */
     public void validate() {
         if (location() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property location in model ParquetDatasetTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model ParquetDatasetTypeProperties"));
         } else {
             location().validate();
         }

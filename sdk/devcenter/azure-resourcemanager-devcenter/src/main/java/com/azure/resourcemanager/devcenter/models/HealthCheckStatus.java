@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Health check status values. */
+/**
+ * Health check status values.
+ */
 public final class HealthCheckStatus extends ExpandableStringEnum<HealthCheckStatus> {
-    /** Static value Unknown for HealthCheckStatus. */
+    /**
+     * Static value Unknown for HealthCheckStatus.
+     */
     public static final HealthCheckStatus UNKNOWN = fromString("Unknown");
 
-    /** Static value Pending for HealthCheckStatus. */
+    /**
+     * Static value Pending for HealthCheckStatus.
+     */
     public static final HealthCheckStatus PENDING = fromString("Pending");
 
-    /** Static value Running for HealthCheckStatus. */
+    /**
+     * Static value Running for HealthCheckStatus.
+     */
     public static final HealthCheckStatus RUNNING = fromString("Running");
 
-    /** Static value Passed for HealthCheckStatus. */
+    /**
+     * Static value Passed for HealthCheckStatus.
+     */
     public static final HealthCheckStatus PASSED = fromString("Passed");
 
-    /** Static value Warning for HealthCheckStatus. */
+    /**
+     * Static value Warning for HealthCheckStatus.
+     */
     public static final HealthCheckStatus WARNING = fromString("Warning");
 
-    /** Static value Failed for HealthCheckStatus. */
+    /**
+     * Static value Failed for HealthCheckStatus.
+     */
     public static final HealthCheckStatus FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of HealthCheckStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +53,7 @@ public final class HealthCheckStatus extends ExpandableStringEnum<HealthCheckSta
 
     /**
      * Creates or finds a HealthCheckStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HealthCheckStatus.
      */
@@ -50,7 +64,7 @@ public final class HealthCheckStatus extends ExpandableStringEnum<HealthCheckSta
 
     /**
      * Gets known HealthCheckStatus values.
-     *
+     * 
      * @return known HealthCheckStatus values.
      */
     public static Collection<HealthCheckStatus> values() {

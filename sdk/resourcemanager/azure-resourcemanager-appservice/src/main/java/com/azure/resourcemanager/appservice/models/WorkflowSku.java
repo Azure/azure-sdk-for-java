@@ -78,8 +78,8 @@ public final class WorkflowSku {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model WorkflowSku"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model WorkflowSku"));
         }
         if (plan() != null) {
             plan().validate();

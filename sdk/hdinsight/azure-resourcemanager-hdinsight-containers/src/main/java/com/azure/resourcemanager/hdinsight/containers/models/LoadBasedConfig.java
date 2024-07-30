@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Profile of load based Autoscale. */
+/**
+ * Profile of load based Autoscale.
+ */
 @Fluent
 public final class LoadBasedConfig {
     /*
@@ -47,14 +49,16 @@ public final class LoadBasedConfig {
     @JsonProperty(value = "scalingRules", required = true)
     private List<ScalingRule> scalingRules;
 
-    /** Creates an instance of LoadBasedConfig class. */
+    /**
+     * Creates an instance of LoadBasedConfig class.
+     */
     public LoadBasedConfig() {
     }
 
     /**
      * Get the minNodes property: User needs to set the minimum number of nodes for load based scaling, the load based
      * scaling will use this to scale up and scale down between minimum and maximum number of nodes.
-     *
+     * 
      * @return the minNodes value.
      */
     public int minNodes() {
@@ -64,7 +68,7 @@ public final class LoadBasedConfig {
     /**
      * Set the minNodes property: User needs to set the minimum number of nodes for load based scaling, the load based
      * scaling will use this to scale up and scale down between minimum and maximum number of nodes.
-     *
+     * 
      * @param minNodes the minNodes value to set.
      * @return the LoadBasedConfig object itself.
      */
@@ -76,7 +80,7 @@ public final class LoadBasedConfig {
     /**
      * Get the maxNodes property: User needs to set the maximum number of nodes for load based scaling, the load based
      * scaling will use this to scale up and scale down between minimum and maximum number of nodes.
-     *
+     * 
      * @return the maxNodes value.
      */
     public int maxNodes() {
@@ -86,7 +90,7 @@ public final class LoadBasedConfig {
     /**
      * Set the maxNodes property: User needs to set the maximum number of nodes for load based scaling, the load based
      * scaling will use this to scale up and scale down between minimum and maximum number of nodes.
-     *
+     * 
      * @param maxNodes the maxNodes value to set.
      * @return the LoadBasedConfig object itself.
      */
@@ -98,7 +102,7 @@ public final class LoadBasedConfig {
     /**
      * Get the pollInterval property: User can specify the poll interval, this is the time period (in seconds) after
      * which scaling metrics are polled for triggering a scaling operation.
-     *
+     * 
      * @return the pollInterval value.
      */
     public Integer pollInterval() {
@@ -108,7 +112,7 @@ public final class LoadBasedConfig {
     /**
      * Set the pollInterval property: User can specify the poll interval, this is the time period (in seconds) after
      * which scaling metrics are polled for triggering a scaling operation.
-     *
+     * 
      * @param pollInterval the pollInterval value to set.
      * @return the LoadBasedConfig object itself.
      */
@@ -121,7 +125,7 @@ public final class LoadBasedConfig {
      * Get the cooldownPeriod property: This is a cool down period, this is a time period in seconds, which determines
      * the amount of time that must elapse between a scaling activity started by a rule and the start of the next
      * scaling activity, regardless of the rule that triggers it. The default value is 300 seconds.
-     *
+     * 
      * @return the cooldownPeriod value.
      */
     public Integer cooldownPeriod() {
@@ -132,7 +136,7 @@ public final class LoadBasedConfig {
      * Set the cooldownPeriod property: This is a cool down period, this is a time period in seconds, which determines
      * the amount of time that must elapse between a scaling activity started by a rule and the start of the next
      * scaling activity, regardless of the rule that triggers it. The default value is 300 seconds.
-     *
+     * 
      * @param cooldownPeriod the cooldownPeriod value to set.
      * @return the LoadBasedConfig object itself.
      */
@@ -143,7 +147,7 @@ public final class LoadBasedConfig {
 
     /**
      * Get the scalingRules property: The scaling rules.
-     *
+     * 
      * @return the scalingRules value.
      */
     public List<ScalingRule> scalingRules() {
@@ -152,7 +156,7 @@ public final class LoadBasedConfig {
 
     /**
      * Set the scalingRules property: The scaling rules.
-     *
+     * 
      * @param scalingRules the scalingRules value to set.
      * @return the LoadBasedConfig object itself.
      */
@@ -163,14 +167,13 @@ public final class LoadBasedConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (scalingRules() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property scalingRules in model LoadBasedConfig"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property scalingRules in model LoadBasedConfig"));
         } else {
             scalingRules().forEach(e -> e.validate());
         }

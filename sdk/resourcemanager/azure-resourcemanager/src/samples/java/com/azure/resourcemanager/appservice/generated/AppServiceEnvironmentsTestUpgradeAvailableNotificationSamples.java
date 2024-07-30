@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class AppServiceEnvironmentsTestUpgradeAvailableNotificationSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
-     * AppServiceEnvironments_TestUpgradeAvailableNotification.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/AppServiceEnvironments_TestUpgradeAvailableNotification.json
      */
     /**
      * Sample code: Send a test notification that an upgrade is available for this App Service Environment.
@@ -19,7 +18,10 @@ public final class AppServiceEnvironmentsTestUpgradeAvailableNotificationSamples
      */
     public static void sendATestNotificationThatAnUpgradeIsAvailableForThisAppServiceEnvironment(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getAppServiceEnvironments()
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getAppServiceEnvironments()
             .testUpgradeAvailableNotificationWithResponse("rg", "SampleHostingEnvironment",
                 com.azure.core.util.Context.NONE);
     }

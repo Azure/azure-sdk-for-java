@@ -6,6 +6,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
@@ -15,11 +16,22 @@ import java.util.Map;
 /**
  * AzureWorkload SQL-specific restore with integrated rehydration of recovery point.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "objectType",
+    defaultImpl = AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest.class,
+    visible = true)
 @JsonTypeName("AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest")
 @Fluent
 public final class AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest
     extends AzureWorkloadSqlPointInTimeRestoreRequest {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "objectType", required = true)
+    private String objectType = "AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest";
+
     /*
      * RP Rehydration Info
      */
@@ -30,6 +42,17 @@ public final class AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest
      * Creates an instance of AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest class.
      */
     public AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest() {
+    }
+
+    /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
     }
 
     /**
@@ -173,6 +196,16 @@ public final class AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest
     public AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest
         withTargetVirtualMachineId(String targetVirtualMachineId) {
         super.withTargetVirtualMachineId(targetVirtualMachineId);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest
+        withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
+        super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
         return this;
     }
 

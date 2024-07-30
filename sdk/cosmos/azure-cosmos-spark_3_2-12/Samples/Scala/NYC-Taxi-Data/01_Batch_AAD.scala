@@ -253,7 +253,7 @@ val changeFeedCfg = Map(
   "spark.cosmos.auth.aad.clientSecret" -> clientSecret,
   "spark.cosmos.database" -> "SampleDatabase",
   "spark.cosmos.container" -> "GreenTaxiRecords",
-  "spark.cosmos.read.partitioning.strategy" -> "Default",
+  "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
   "spark.cosmos.read.inferSchema.enabled" -> "false",
   "spark.cosmos.changeFeed.startFrom" -> "Beginning",
   "spark.cosmos.changeFeed.mode" -> "Incremental"
@@ -284,7 +284,7 @@ val readCfg = Map(
   "spark.cosmos.auth.aad.clientId" -> clientId,
   "spark.cosmos.auth.aad.clientSecret" -> clientSecret,  "spark.cosmos.database" -> "SampleDatabase",
   "spark.cosmos.container" -> "GreenTaxiRecords",
-  "spark.cosmos.read.partitioning.strategy" -> "Default",
+  "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
   "spark.cosmos.read.inferSchema.enabled" -> "false",
 )
 
@@ -358,7 +358,7 @@ assert(df_Tables.count() == 3)
 // MAGIC   spark.cosmos.container = 'GreenTaxiRecords',
 // MAGIC   spark.cosmos.read.inferSchema.enabled = 'False',
 // MAGIC   spark.cosmos.read.inferSchema.includeSystemProperties = 'True',
-// MAGIC   spark.cosmos.read.partitioning.strategy = 'Aggressive');
+// MAGIC   spark.cosmos.read.partitioning.strategy = 'Restrictive');
 // MAGIC
 // MAGIC SELECT * FROM cosmosCatalog.SampleDatabase.GreenTaxiRecordsView LIMIT 10
 

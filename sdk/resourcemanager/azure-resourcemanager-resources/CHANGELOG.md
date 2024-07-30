@@ -1,6 +1,6 @@
 # Release History
 
-## 2.37.0-beta.1 (Unreleased)
+## 2.41.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,40 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.40.0 (2024-06-24)
+
+### Features Added
+
+- Supported Deployment Stack. See https://learn.microsoft.com/azure/azure-resource-manager/bicep/deployment-stacks
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of resources to `2024-03-01`.
+
+## 2.39.0 (2024-05-24)
+
+### Features Added
+
+- Supported `mode` and `metadata` in `PolicyDefinition` class.
+
+## 2.38.0 (2024-04-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.37.0 (2024-03-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.36.0 (2024-02-29)
 

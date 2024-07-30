@@ -12,8 +12,7 @@ public final class ValidateCustomDomainOutputImpl implements ValidateCustomDomai
 
     private final com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager;
 
-    ValidateCustomDomainOutputImpl(
-        ValidateCustomDomainOutputInner innerObject,
+    ValidateCustomDomainOutputImpl(ValidateCustomDomainOutputInner innerObject,
         com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

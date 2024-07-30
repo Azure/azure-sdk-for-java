@@ -7,222 +7,199 @@ package com.azure.security.attestation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 
-/** A Microsoft Azure Attestation response token body - the body of a response token issued by MAA. */
+/**
+ * A Microsoft Azure Attestation response token body - the body of a response token issued by MAA.
+ */
 @Fluent
-public final class AttestationResult {
+public final class AttestationResult implements JsonSerializable<AttestationResult> {
     /*
      * Unique Identifier for the token
      */
-    @JsonProperty(value = "jti")
     private String jti;
 
     /*
      * The Principal who issued the token
      */
-    @JsonProperty(value = "iss")
     private String iss;
 
     /*
-     * The time at which the token was issued, in the number of seconds since
-     * 1970-01-0T00:00:00Z UTC
+     * The time at which the token was issued, in the number of seconds since 1970-01-0T00:00:00Z UTC
      */
-    @JsonProperty(value = "iat")
     private Float iat;
 
     /*
-     * The expiration time after which the token is no longer valid, in the
-     * number of seconds since 1970-01-0T00:00:00Z UTC
+     * The expiration time after which the token is no longer valid, in the number of seconds since 1970-01-0T00:00:00Z
+     * UTC
      */
-    @JsonProperty(value = "exp")
     private Float exp;
 
     /*
-     * The not before time before which the token cannot be considered valid,
-     * in the number of seconds since 1970-01-0T00:00:00Z UTC
+     * The not before time before which the token cannot be considered valid, in the number of seconds since
+     * 1970-01-0T00:00:00Z UTC
      */
-    @JsonProperty(value = "nbf")
     private Float nbf;
 
     /*
      * An RFC 7800 Proof of Possession Key
      */
-    @JsonProperty(value = "cnf")
     private Object cnf;
 
     /*
      * The Nonce input to the attestation request, if provided.
      */
-    @JsonProperty(value = "nonce")
     private String nonce;
 
     /*
      * The Schema version of this structure. Current Value: 1.0
      */
-    @JsonProperty(value = "x-ms-ver")
     private String version;
 
     /*
      * Runtime Claims
      */
-    @JsonProperty(value = "x-ms-runtime")
     private Object runtimeClaims;
 
     /*
      * Inittime Claims
      */
-    @JsonProperty(value = "x-ms-inittime")
     private Object inittimeClaims;
 
     /*
      * Policy Generated Claims
      */
-    @JsonProperty(value = "x-ms-policy")
     private Object policyClaims;
 
     /*
      * The Attestation type being attested.
      */
-    @JsonProperty(value = "x-ms-attestation-type")
     private String verifierType;
 
     /*
      * The certificate used to sign the policy object, if specified.
      */
-    @JsonProperty(value = "x-ms-policy-signer")
     private JsonWebKey policySigner;
 
     /*
-     * The SHA256 hash of the BASE64URL encoded policy text used for
-     * attestation
+     * The SHA256 hash of the BASE64URL encoded policy text used for attestation
      */
-    @JsonProperty(value = "x-ms-policy-hash")
     private Base64Url policyHash;
 
     /*
      * True if the enclave is debuggable, false otherwise
      */
-    @JsonProperty(value = "x-ms-sgx-is-debuggable")
     private Boolean isDebuggable;
 
     /*
      * The SGX Product ID for the enclave.
      */
-    @JsonProperty(value = "x-ms-sgx-product-id")
     private Float productId;
 
     /*
      * The HEX encoded SGX MRENCLAVE value for the enclave.
      */
-    @JsonProperty(value = "x-ms-sgx-mrenclave")
     private String mrEnclave;
 
     /*
      * The HEX encoded SGX MRSIGNER value for the enclave.
      */
-    @JsonProperty(value = "x-ms-sgx-mrsigner")
     private String mrSigner;
 
     /*
      * The SGX SVN value for the enclave.
      */
-    @JsonProperty(value = "x-ms-sgx-svn")
     private Float svn;
 
     /*
      * A copy of the RuntimeData specified as an input to the attest call.
      */
-    @JsonProperty(value = "x-ms-sgx-ehd")
     private Base64Url enclaveHeldData;
 
     /*
      * The SGX SVN value for the enclave.
      */
-    @JsonProperty(value = "x-ms-sgx-collateral")
     private Object sgxCollateral;
 
     /*
      * DEPRECATED: Private Preview version of x-ms-ver claim.
      */
-    @JsonProperty(value = "ver")
     private String deprecatedVersion;
 
     /*
      * DEPRECATED: Private Preview version of x-ms-sgx-is-debuggable claim.
      */
-    @JsonProperty(value = "is-debuggable")
     private Boolean deprecatedIsDebuggable;
 
     /*
      * DEPRECATED: Private Preview version of x-ms-sgx-collateral claim.
      */
-    @JsonProperty(value = "maa-attestationcollateral")
     private Object deprecatedSgxCollateral;
 
     /*
      * DEPRECATED: Private Preview version of x-ms-sgx-ehd claim.
      */
-    @JsonProperty(value = "aas-ehd")
     private Base64Url deprecatedEnclaveHeldData;
 
     /*
      * DEPRECATED: Private Preview version of x-ms-sgx-ehd claim.
      */
-    @JsonProperty(value = "maa-ehd")
     private Base64Url deprecatedEnclaveHeldData2;
 
     /*
      * DEPRECATED: Private Preview version of x-ms-sgx-product-id
      */
-    @JsonProperty(value = "product-id")
     private Float deprecatedProductId;
 
     /*
      * DEPRECATED: Private Preview version of x-ms-sgx-mrenclave.
      */
-    @JsonProperty(value = "sgx-mrenclave")
     private String deprecatedMrEnclave;
 
     /*
      * DEPRECATED: Private Preview version of x-ms-sgx-mrsigner.
      */
-    @JsonProperty(value = "sgx-mrsigner")
     private String deprecatedMrSigner;
 
     /*
      * DEPRECATED: Private Preview version of x-ms-sgx-svn.
      */
-    @JsonProperty(value = "svn")
     private Float deprecatedSvn;
 
     /*
      * DEPRECATED: Private Preview version of x-ms-tee.
      */
-    @JsonProperty(value = "tee")
     private String deprecatedTee;
 
     /*
      * DEPRECATED: Private Preview version of x-ms-policy-signer
      */
-    @JsonProperty(value = "policy_signer")
     private JsonWebKey deprecatedPolicySigner;
 
     /*
      * DEPRECATED: Private Preview version of x-ms-policy-hash
      */
-    @JsonProperty(value = "policy_hash")
     private Base64Url deprecatedPolicyHash;
 
     /*
      * DEPRECATED: Private Preview version of nonce
      */
-    @JsonProperty(value = "rp_data")
     private String deprecatedRpData;
 
     /**
+     * Creates an instance of AttestationResult class.
+     */
+    public AttestationResult() {
+    }
+
+    /**
      * Get the jti property: Unique Identifier for the token.
-     *
+     * 
      * @return the jti value.
      */
     public String getJti() {
@@ -231,7 +208,7 @@ public final class AttestationResult {
 
     /**
      * Set the jti property: Unique Identifier for the token.
-     *
+     * 
      * @param jti the jti value to set.
      * @return the AttestationResult object itself.
      */
@@ -242,7 +219,7 @@ public final class AttestationResult {
 
     /**
      * Get the iss property: The Principal who issued the token.
-     *
+     * 
      * @return the iss value.
      */
     public String getIss() {
@@ -251,7 +228,7 @@ public final class AttestationResult {
 
     /**
      * Set the iss property: The Principal who issued the token.
-     *
+     * 
      * @param iss the iss value to set.
      * @return the AttestationResult object itself.
      */
@@ -263,7 +240,7 @@ public final class AttestationResult {
     /**
      * Get the iat property: The time at which the token was issued, in the number of seconds since 1970-01-0T00:00:00Z
      * UTC.
-     *
+     * 
      * @return the iat value.
      */
     public Float getIat() {
@@ -273,7 +250,7 @@ public final class AttestationResult {
     /**
      * Set the iat property: The time at which the token was issued, in the number of seconds since 1970-01-0T00:00:00Z
      * UTC.
-     *
+     * 
      * @param iat the iat value to set.
      * @return the AttestationResult object itself.
      */
@@ -285,7 +262,7 @@ public final class AttestationResult {
     /**
      * Get the exp property: The expiration time after which the token is no longer valid, in the number of seconds
      * since 1970-01-0T00:00:00Z UTC.
-     *
+     * 
      * @return the exp value.
      */
     public Float getExp() {
@@ -295,7 +272,7 @@ public final class AttestationResult {
     /**
      * Set the exp property: The expiration time after which the token is no longer valid, in the number of seconds
      * since 1970-01-0T00:00:00Z UTC.
-     *
+     * 
      * @param exp the exp value to set.
      * @return the AttestationResult object itself.
      */
@@ -307,7 +284,7 @@ public final class AttestationResult {
     /**
      * Get the nbf property: The not before time before which the token cannot be considered valid, in the number of
      * seconds since 1970-01-0T00:00:00Z UTC.
-     *
+     * 
      * @return the nbf value.
      */
     public Float getNbf() {
@@ -317,7 +294,7 @@ public final class AttestationResult {
     /**
      * Set the nbf property: The not before time before which the token cannot be considered valid, in the number of
      * seconds since 1970-01-0T00:00:00Z UTC.
-     *
+     * 
      * @param nbf the nbf value to set.
      * @return the AttestationResult object itself.
      */
@@ -328,7 +305,7 @@ public final class AttestationResult {
 
     /**
      * Get the cnf property: An RFC 7800 Proof of Possession Key.
-     *
+     * 
      * @return the cnf value.
      */
     public Object getCnf() {
@@ -337,7 +314,7 @@ public final class AttestationResult {
 
     /**
      * Set the cnf property: An RFC 7800 Proof of Possession Key.
-     *
+     * 
      * @param cnf the cnf value to set.
      * @return the AttestationResult object itself.
      */
@@ -348,7 +325,7 @@ public final class AttestationResult {
 
     /**
      * Get the nonce property: The Nonce input to the attestation request, if provided.
-     *
+     * 
      * @return the nonce value.
      */
     public String getNonce() {
@@ -357,7 +334,7 @@ public final class AttestationResult {
 
     /**
      * Set the nonce property: The Nonce input to the attestation request, if provided.
-     *
+     * 
      * @param nonce the nonce value to set.
      * @return the AttestationResult object itself.
      */
@@ -368,7 +345,7 @@ public final class AttestationResult {
 
     /**
      * Get the version property: The Schema version of this structure. Current Value: 1.0.
-     *
+     * 
      * @return the version value.
      */
     public String getVersion() {
@@ -377,7 +354,7 @@ public final class AttestationResult {
 
     /**
      * Set the version property: The Schema version of this structure. Current Value: 1.0.
-     *
+     * 
      * @param version the version value to set.
      * @return the AttestationResult object itself.
      */
@@ -388,7 +365,7 @@ public final class AttestationResult {
 
     /**
      * Get the runtimeClaims property: Runtime Claims.
-     *
+     * 
      * @return the runtimeClaims value.
      */
     public Object getRuntimeClaims() {
@@ -397,7 +374,7 @@ public final class AttestationResult {
 
     /**
      * Set the runtimeClaims property: Runtime Claims.
-     *
+     * 
      * @param runtimeClaims the runtimeClaims value to set.
      * @return the AttestationResult object itself.
      */
@@ -408,7 +385,7 @@ public final class AttestationResult {
 
     /**
      * Get the inittimeClaims property: Inittime Claims.
-     *
+     * 
      * @return the inittimeClaims value.
      */
     public Object getInittimeClaims() {
@@ -417,7 +394,7 @@ public final class AttestationResult {
 
     /**
      * Set the inittimeClaims property: Inittime Claims.
-     *
+     * 
      * @param inittimeClaims the inittimeClaims value to set.
      * @return the AttestationResult object itself.
      */
@@ -428,7 +405,7 @@ public final class AttestationResult {
 
     /**
      * Get the policyClaims property: Policy Generated Claims.
-     *
+     * 
      * @return the policyClaims value.
      */
     public Object getPolicyClaims() {
@@ -437,7 +414,7 @@ public final class AttestationResult {
 
     /**
      * Set the policyClaims property: Policy Generated Claims.
-     *
+     * 
      * @param policyClaims the policyClaims value to set.
      * @return the AttestationResult object itself.
      */
@@ -448,7 +425,7 @@ public final class AttestationResult {
 
     /**
      * Get the verifierType property: The Attestation type being attested.
-     *
+     * 
      * @return the verifierType value.
      */
     public String getVerifierType() {
@@ -457,7 +434,7 @@ public final class AttestationResult {
 
     /**
      * Set the verifierType property: The Attestation type being attested.
-     *
+     * 
      * @param verifierType the verifierType value to set.
      * @return the AttestationResult object itself.
      */
@@ -468,7 +445,7 @@ public final class AttestationResult {
 
     /**
      * Get the policySigner property: The certificate used to sign the policy object, if specified.
-     *
+     * 
      * @return the policySigner value.
      */
     public JsonWebKey getPolicySigner() {
@@ -477,7 +454,7 @@ public final class AttestationResult {
 
     /**
      * Set the policySigner property: The certificate used to sign the policy object, if specified.
-     *
+     * 
      * @param policySigner the policySigner value to set.
      * @return the AttestationResult object itself.
      */
@@ -488,19 +465,19 @@ public final class AttestationResult {
 
     /**
      * Get the policyHash property: The SHA256 hash of the BASE64URL encoded policy text used for attestation.
-     *
+     * 
      * @return the policyHash value.
      */
     public byte[] getPolicyHash() {
         if (this.policyHash == null) {
-            return new byte[0];
+            return null;
         }
         return this.policyHash.decodedBytes();
     }
 
     /**
      * Set the policyHash property: The SHA256 hash of the BASE64URL encoded policy text used for attestation.
-     *
+     * 
      * @param policyHash the policyHash value to set.
      * @return the AttestationResult object itself.
      */
@@ -515,7 +492,7 @@ public final class AttestationResult {
 
     /**
      * Get the isDebuggable property: True if the enclave is debuggable, false otherwise.
-     *
+     * 
      * @return the isDebuggable value.
      */
     public Boolean isDebuggable() {
@@ -524,7 +501,7 @@ public final class AttestationResult {
 
     /**
      * Set the isDebuggable property: True if the enclave is debuggable, false otherwise.
-     *
+     * 
      * @param isDebuggable the isDebuggable value to set.
      * @return the AttestationResult object itself.
      */
@@ -535,7 +512,7 @@ public final class AttestationResult {
 
     /**
      * Get the productId property: The SGX Product ID for the enclave.
-     *
+     * 
      * @return the productId value.
      */
     public Float getProductId() {
@@ -544,7 +521,7 @@ public final class AttestationResult {
 
     /**
      * Set the productId property: The SGX Product ID for the enclave.
-     *
+     * 
      * @param productId the productId value to set.
      * @return the AttestationResult object itself.
      */
@@ -555,7 +532,7 @@ public final class AttestationResult {
 
     /**
      * Get the mrEnclave property: The HEX encoded SGX MRENCLAVE value for the enclave.
-     *
+     * 
      * @return the mrEnclave value.
      */
     public String getMrEnclave() {
@@ -564,7 +541,7 @@ public final class AttestationResult {
 
     /**
      * Set the mrEnclave property: The HEX encoded SGX MRENCLAVE value for the enclave.
-     *
+     * 
      * @param mrEnclave the mrEnclave value to set.
      * @return the AttestationResult object itself.
      */
@@ -575,7 +552,7 @@ public final class AttestationResult {
 
     /**
      * Get the mrSigner property: The HEX encoded SGX MRSIGNER value for the enclave.
-     *
+     * 
      * @return the mrSigner value.
      */
     public String getMrSigner() {
@@ -584,7 +561,7 @@ public final class AttestationResult {
 
     /**
      * Set the mrSigner property: The HEX encoded SGX MRSIGNER value for the enclave.
-     *
+     * 
      * @param mrSigner the mrSigner value to set.
      * @return the AttestationResult object itself.
      */
@@ -595,7 +572,7 @@ public final class AttestationResult {
 
     /**
      * Get the svn property: The SGX SVN value for the enclave.
-     *
+     * 
      * @return the svn value.
      */
     public Float getSvn() {
@@ -604,7 +581,7 @@ public final class AttestationResult {
 
     /**
      * Set the svn property: The SGX SVN value for the enclave.
-     *
+     * 
      * @param svn the svn value to set.
      * @return the AttestationResult object itself.
      */
@@ -615,19 +592,19 @@ public final class AttestationResult {
 
     /**
      * Get the enclaveHeldData property: A copy of the RuntimeData specified as an input to the attest call.
-     *
+     * 
      * @return the enclaveHeldData value.
      */
     public byte[] getEnclaveHeldData() {
         if (this.enclaveHeldData == null) {
-            return new byte[0];
+            return null;
         }
         return this.enclaveHeldData.decodedBytes();
     }
 
     /**
      * Set the enclaveHeldData property: A copy of the RuntimeData specified as an input to the attest call.
-     *
+     * 
      * @param enclaveHeldData the enclaveHeldData value to set.
      * @return the AttestationResult object itself.
      */
@@ -642,7 +619,7 @@ public final class AttestationResult {
 
     /**
      * Get the sgxCollateral property: The SGX SVN value for the enclave.
-     *
+     * 
      * @return the sgxCollateral value.
      */
     public Object getSgxCollateral() {
@@ -651,7 +628,7 @@ public final class AttestationResult {
 
     /**
      * Set the sgxCollateral property: The SGX SVN value for the enclave.
-     *
+     * 
      * @param sgxCollateral the sgxCollateral value to set.
      * @return the AttestationResult object itself.
      */
@@ -662,7 +639,7 @@ public final class AttestationResult {
 
     /**
      * Get the deprecatedVersion property: DEPRECATED: Private Preview version of x-ms-ver claim.
-     *
+     * 
      * @return the deprecatedVersion value.
      */
     public String getDeprecatedVersion() {
@@ -671,7 +648,7 @@ public final class AttestationResult {
 
     /**
      * Set the deprecatedVersion property: DEPRECATED: Private Preview version of x-ms-ver claim.
-     *
+     * 
      * @param deprecatedVersion the deprecatedVersion value to set.
      * @return the AttestationResult object itself.
      */
@@ -682,7 +659,7 @@ public final class AttestationResult {
 
     /**
      * Get the deprecatedIsDebuggable property: DEPRECATED: Private Preview version of x-ms-sgx-is-debuggable claim.
-     *
+     * 
      * @return the deprecatedIsDebuggable value.
      */
     public Boolean isDeprecatedIsDebuggable() {
@@ -691,7 +668,7 @@ public final class AttestationResult {
 
     /**
      * Set the deprecatedIsDebuggable property: DEPRECATED: Private Preview version of x-ms-sgx-is-debuggable claim.
-     *
+     * 
      * @param deprecatedIsDebuggable the deprecatedIsDebuggable value to set.
      * @return the AttestationResult object itself.
      */
@@ -702,7 +679,7 @@ public final class AttestationResult {
 
     /**
      * Get the deprecatedSgxCollateral property: DEPRECATED: Private Preview version of x-ms-sgx-collateral claim.
-     *
+     * 
      * @return the deprecatedSgxCollateral value.
      */
     public Object getDeprecatedSgxCollateral() {
@@ -711,7 +688,7 @@ public final class AttestationResult {
 
     /**
      * Set the deprecatedSgxCollateral property: DEPRECATED: Private Preview version of x-ms-sgx-collateral claim.
-     *
+     * 
      * @param deprecatedSgxCollateral the deprecatedSgxCollateral value to set.
      * @return the AttestationResult object itself.
      */
@@ -722,19 +699,19 @@ public final class AttestationResult {
 
     /**
      * Get the deprecatedEnclaveHeldData property: DEPRECATED: Private Preview version of x-ms-sgx-ehd claim.
-     *
+     * 
      * @return the deprecatedEnclaveHeldData value.
      */
     public byte[] getDeprecatedEnclaveHeldData() {
         if (this.deprecatedEnclaveHeldData == null) {
-            return new byte[0];
+            return null;
         }
         return this.deprecatedEnclaveHeldData.decodedBytes();
     }
 
     /**
      * Set the deprecatedEnclaveHeldData property: DEPRECATED: Private Preview version of x-ms-sgx-ehd claim.
-     *
+     * 
      * @param deprecatedEnclaveHeldData the deprecatedEnclaveHeldData value to set.
      * @return the AttestationResult object itself.
      */
@@ -749,19 +726,19 @@ public final class AttestationResult {
 
     /**
      * Get the deprecatedEnclaveHeldData2 property: DEPRECATED: Private Preview version of x-ms-sgx-ehd claim.
-     *
+     * 
      * @return the deprecatedEnclaveHeldData2 value.
      */
     public byte[] getDeprecatedEnclaveHeldData2() {
         if (this.deprecatedEnclaveHeldData2 == null) {
-            return new byte[0];
+            return null;
         }
         return this.deprecatedEnclaveHeldData2.decodedBytes();
     }
 
     /**
      * Set the deprecatedEnclaveHeldData2 property: DEPRECATED: Private Preview version of x-ms-sgx-ehd claim.
-     *
+     * 
      * @param deprecatedEnclaveHeldData2 the deprecatedEnclaveHeldData2 value to set.
      * @return the AttestationResult object itself.
      */
@@ -776,7 +753,7 @@ public final class AttestationResult {
 
     /**
      * Get the deprecatedProductId property: DEPRECATED: Private Preview version of x-ms-sgx-product-id.
-     *
+     * 
      * @return the deprecatedProductId value.
      */
     public Float getDeprecatedProductId() {
@@ -785,7 +762,7 @@ public final class AttestationResult {
 
     /**
      * Set the deprecatedProductId property: DEPRECATED: Private Preview version of x-ms-sgx-product-id.
-     *
+     * 
      * @param deprecatedProductId the deprecatedProductId value to set.
      * @return the AttestationResult object itself.
      */
@@ -796,7 +773,7 @@ public final class AttestationResult {
 
     /**
      * Get the deprecatedMrEnclave property: DEPRECATED: Private Preview version of x-ms-sgx-mrenclave.
-     *
+     * 
      * @return the deprecatedMrEnclave value.
      */
     public String getDeprecatedMrEnclave() {
@@ -805,7 +782,7 @@ public final class AttestationResult {
 
     /**
      * Set the deprecatedMrEnclave property: DEPRECATED: Private Preview version of x-ms-sgx-mrenclave.
-     *
+     * 
      * @param deprecatedMrEnclave the deprecatedMrEnclave value to set.
      * @return the AttestationResult object itself.
      */
@@ -816,7 +793,7 @@ public final class AttestationResult {
 
     /**
      * Get the deprecatedMrSigner property: DEPRECATED: Private Preview version of x-ms-sgx-mrsigner.
-     *
+     * 
      * @return the deprecatedMrSigner value.
      */
     public String getDeprecatedMrSigner() {
@@ -825,7 +802,7 @@ public final class AttestationResult {
 
     /**
      * Set the deprecatedMrSigner property: DEPRECATED: Private Preview version of x-ms-sgx-mrsigner.
-     *
+     * 
      * @param deprecatedMrSigner the deprecatedMrSigner value to set.
      * @return the AttestationResult object itself.
      */
@@ -836,7 +813,7 @@ public final class AttestationResult {
 
     /**
      * Get the deprecatedSvn property: DEPRECATED: Private Preview version of x-ms-sgx-svn.
-     *
+     * 
      * @return the deprecatedSvn value.
      */
     public Float getDeprecatedSvn() {
@@ -845,7 +822,7 @@ public final class AttestationResult {
 
     /**
      * Set the deprecatedSvn property: DEPRECATED: Private Preview version of x-ms-sgx-svn.
-     *
+     * 
      * @param deprecatedSvn the deprecatedSvn value to set.
      * @return the AttestationResult object itself.
      */
@@ -856,7 +833,7 @@ public final class AttestationResult {
 
     /**
      * Get the deprecatedTee property: DEPRECATED: Private Preview version of x-ms-tee.
-     *
+     * 
      * @return the deprecatedTee value.
      */
     public String getDeprecatedTee() {
@@ -865,7 +842,7 @@ public final class AttestationResult {
 
     /**
      * Set the deprecatedTee property: DEPRECATED: Private Preview version of x-ms-tee.
-     *
+     * 
      * @param deprecatedTee the deprecatedTee value to set.
      * @return the AttestationResult object itself.
      */
@@ -876,7 +853,7 @@ public final class AttestationResult {
 
     /**
      * Get the deprecatedPolicySigner property: DEPRECATED: Private Preview version of x-ms-policy-signer.
-     *
+     * 
      * @return the deprecatedPolicySigner value.
      */
     public JsonWebKey getDeprecatedPolicySigner() {
@@ -885,7 +862,7 @@ public final class AttestationResult {
 
     /**
      * Set the deprecatedPolicySigner property: DEPRECATED: Private Preview version of x-ms-policy-signer.
-     *
+     * 
      * @param deprecatedPolicySigner the deprecatedPolicySigner value to set.
      * @return the AttestationResult object itself.
      */
@@ -896,19 +873,19 @@ public final class AttestationResult {
 
     /**
      * Get the deprecatedPolicyHash property: DEPRECATED: Private Preview version of x-ms-policy-hash.
-     *
+     * 
      * @return the deprecatedPolicyHash value.
      */
     public byte[] getDeprecatedPolicyHash() {
         if (this.deprecatedPolicyHash == null) {
-            return new byte[0];
+            return null;
         }
         return this.deprecatedPolicyHash.decodedBytes();
     }
 
     /**
      * Set the deprecatedPolicyHash property: DEPRECATED: Private Preview version of x-ms-policy-hash.
-     *
+     * 
      * @param deprecatedPolicyHash the deprecatedPolicyHash value to set.
      * @return the AttestationResult object itself.
      */
@@ -923,7 +900,7 @@ public final class AttestationResult {
 
     /**
      * Get the deprecatedRpData property: DEPRECATED: Private Preview version of nonce.
-     *
+     * 
      * @return the deprecatedRpData value.
      */
     public String getDeprecatedRpData() {
@@ -932,7 +909,7 @@ public final class AttestationResult {
 
     /**
      * Set the deprecatedRpData property: DEPRECATED: Private Preview version of nonce.
-     *
+     * 
      * @param deprecatedRpData the deprecatedRpData value to set.
      * @return the AttestationResult object itself.
      */
@@ -943,7 +920,7 @@ public final class AttestationResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -953,5 +930,142 @@ public final class AttestationResult {
         if (getDeprecatedPolicySigner() != null) {
             getDeprecatedPolicySigner().validate();
         }
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("jti", this.jti);
+        jsonWriter.writeStringField("iss", this.iss);
+        jsonWriter.writeNumberField("iat", this.iat);
+        jsonWriter.writeNumberField("exp", this.exp);
+        jsonWriter.writeNumberField("nbf", this.nbf);
+        jsonWriter.writeUntypedField("cnf", this.cnf);
+        jsonWriter.writeStringField("nonce", this.nonce);
+        jsonWriter.writeStringField("x-ms-ver", this.version);
+        jsonWriter.writeUntypedField("x-ms-runtime", this.runtimeClaims);
+        jsonWriter.writeUntypedField("x-ms-inittime", this.inittimeClaims);
+        jsonWriter.writeUntypedField("x-ms-policy", this.policyClaims);
+        jsonWriter.writeStringField("x-ms-attestation-type", this.verifierType);
+        jsonWriter.writeJsonField("x-ms-policy-signer", this.policySigner);
+        jsonWriter.writeStringField("x-ms-policy-hash", Objects.toString(this.policyHash, null));
+        jsonWriter.writeBooleanField("x-ms-sgx-is-debuggable", this.isDebuggable);
+        jsonWriter.writeNumberField("x-ms-sgx-product-id", this.productId);
+        jsonWriter.writeStringField("x-ms-sgx-mrenclave", this.mrEnclave);
+        jsonWriter.writeStringField("x-ms-sgx-mrsigner", this.mrSigner);
+        jsonWriter.writeNumberField("x-ms-sgx-svn", this.svn);
+        jsonWriter.writeStringField("x-ms-sgx-ehd", Objects.toString(this.enclaveHeldData, null));
+        jsonWriter.writeUntypedField("x-ms-sgx-collateral", this.sgxCollateral);
+        jsonWriter.writeStringField("ver", this.deprecatedVersion);
+        jsonWriter.writeBooleanField("is-debuggable", this.deprecatedIsDebuggable);
+        jsonWriter.writeUntypedField("maa-attestationcollateral", this.deprecatedSgxCollateral);
+        jsonWriter.writeStringField("aas-ehd", Objects.toString(this.deprecatedEnclaveHeldData, null));
+        jsonWriter.writeStringField("maa-ehd", Objects.toString(this.deprecatedEnclaveHeldData2, null));
+        jsonWriter.writeNumberField("product-id", this.deprecatedProductId);
+        jsonWriter.writeStringField("sgx-mrenclave", this.deprecatedMrEnclave);
+        jsonWriter.writeStringField("sgx-mrsigner", this.deprecatedMrSigner);
+        jsonWriter.writeNumberField("svn", this.deprecatedSvn);
+        jsonWriter.writeStringField("tee", this.deprecatedTee);
+        jsonWriter.writeJsonField("policy_signer", this.deprecatedPolicySigner);
+        jsonWriter.writeStringField("policy_hash", Objects.toString(this.deprecatedPolicyHash, null));
+        jsonWriter.writeStringField("rp_data", this.deprecatedRpData);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AttestationResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AttestationResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AttestationResult.
+     */
+    public static AttestationResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AttestationResult deserializedAttestationResult = new AttestationResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("jti".equals(fieldName)) {
+                    deserializedAttestationResult.jti = reader.getString();
+                } else if ("iss".equals(fieldName)) {
+                    deserializedAttestationResult.iss = reader.getString();
+                } else if ("iat".equals(fieldName)) {
+                    deserializedAttestationResult.iat = reader.getNullable(JsonReader::getFloat);
+                } else if ("exp".equals(fieldName)) {
+                    deserializedAttestationResult.exp = reader.getNullable(JsonReader::getFloat);
+                } else if ("nbf".equals(fieldName)) {
+                    deserializedAttestationResult.nbf = reader.getNullable(JsonReader::getFloat);
+                } else if ("cnf".equals(fieldName)) {
+                    deserializedAttestationResult.cnf = reader.readUntyped();
+                } else if ("nonce".equals(fieldName)) {
+                    deserializedAttestationResult.nonce = reader.getString();
+                } else if ("x-ms-ver".equals(fieldName)) {
+                    deserializedAttestationResult.version = reader.getString();
+                } else if ("x-ms-runtime".equals(fieldName)) {
+                    deserializedAttestationResult.runtimeClaims = reader.readUntyped();
+                } else if ("x-ms-inittime".equals(fieldName)) {
+                    deserializedAttestationResult.inittimeClaims = reader.readUntyped();
+                } else if ("x-ms-policy".equals(fieldName)) {
+                    deserializedAttestationResult.policyClaims = reader.readUntyped();
+                } else if ("x-ms-attestation-type".equals(fieldName)) {
+                    deserializedAttestationResult.verifierType = reader.getString();
+                } else if ("x-ms-policy-signer".equals(fieldName)) {
+                    deserializedAttestationResult.policySigner = JsonWebKey.fromJson(reader);
+                } else if ("x-ms-policy-hash".equals(fieldName)) {
+                    deserializedAttestationResult.policyHash
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("x-ms-sgx-is-debuggable".equals(fieldName)) {
+                    deserializedAttestationResult.isDebuggable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("x-ms-sgx-product-id".equals(fieldName)) {
+                    deserializedAttestationResult.productId = reader.getNullable(JsonReader::getFloat);
+                } else if ("x-ms-sgx-mrenclave".equals(fieldName)) {
+                    deserializedAttestationResult.mrEnclave = reader.getString();
+                } else if ("x-ms-sgx-mrsigner".equals(fieldName)) {
+                    deserializedAttestationResult.mrSigner = reader.getString();
+                } else if ("x-ms-sgx-svn".equals(fieldName)) {
+                    deserializedAttestationResult.svn = reader.getNullable(JsonReader::getFloat);
+                } else if ("x-ms-sgx-ehd".equals(fieldName)) {
+                    deserializedAttestationResult.enclaveHeldData
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("x-ms-sgx-collateral".equals(fieldName)) {
+                    deserializedAttestationResult.sgxCollateral = reader.readUntyped();
+                } else if ("ver".equals(fieldName)) {
+                    deserializedAttestationResult.deprecatedVersion = reader.getString();
+                } else if ("is-debuggable".equals(fieldName)) {
+                    deserializedAttestationResult.deprecatedIsDebuggable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("maa-attestationcollateral".equals(fieldName)) {
+                    deserializedAttestationResult.deprecatedSgxCollateral = reader.readUntyped();
+                } else if ("aas-ehd".equals(fieldName)) {
+                    deserializedAttestationResult.deprecatedEnclaveHeldData
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("maa-ehd".equals(fieldName)) {
+                    deserializedAttestationResult.deprecatedEnclaveHeldData2
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("product-id".equals(fieldName)) {
+                    deserializedAttestationResult.deprecatedProductId = reader.getNullable(JsonReader::getFloat);
+                } else if ("sgx-mrenclave".equals(fieldName)) {
+                    deserializedAttestationResult.deprecatedMrEnclave = reader.getString();
+                } else if ("sgx-mrsigner".equals(fieldName)) {
+                    deserializedAttestationResult.deprecatedMrSigner = reader.getString();
+                } else if ("svn".equals(fieldName)) {
+                    deserializedAttestationResult.deprecatedSvn = reader.getNullable(JsonReader::getFloat);
+                } else if ("tee".equals(fieldName)) {
+                    deserializedAttestationResult.deprecatedTee = reader.getString();
+                } else if ("policy_signer".equals(fieldName)) {
+                    deserializedAttestationResult.deprecatedPolicySigner = JsonWebKey.fromJson(reader);
+                } else if ("policy_hash".equals(fieldName)) {
+                    deserializedAttestationResult.deprecatedPolicyHash
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("rp_data".equals(fieldName)) {
+                    deserializedAttestationResult.deprecatedRpData = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAttestationResult;
+        });
     }
 }

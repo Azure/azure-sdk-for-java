@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class FirewallPoliciesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * FirewallPolicyListByResourceGroup.json
      */
     /**
@@ -19,7 +19,10 @@ public final class FirewallPoliciesListByResourceGroupSamples {
      */
     public static void
         listAllFirewallPoliciesForAGivenResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getFirewallPolicies().listByResourceGroup("rg1",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getFirewallPolicies()
+            .listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
     }
 }

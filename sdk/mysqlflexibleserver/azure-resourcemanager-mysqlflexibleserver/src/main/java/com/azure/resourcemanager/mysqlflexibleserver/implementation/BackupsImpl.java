@@ -21,21 +21,18 @@ public final class BackupsImpl implements Backups {
 
     private final com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager;
 
-    public BackupsImpl(
-        BackupsClient innerClient, com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager) {
+    public BackupsImpl(BackupsClient innerClient,
+        com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<ServerBackup> putWithResponse(
-        String resourceGroupName, String serverName, String backupName, Context context) {
-        Response<ServerBackupInner> inner =
-            this.serviceClient().putWithResponse(resourceGroupName, serverName, backupName, context);
+    public Response<ServerBackup> putWithResponse(String resourceGroupName, String serverName, String backupName,
+        Context context) {
+        Response<ServerBackupInner> inner
+            = this.serviceClient().putWithResponse(resourceGroupName, serverName, backupName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ServerBackupImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -51,15 +48,12 @@ public final class BackupsImpl implements Backups {
         }
     }
 
-    public Response<ServerBackup> getWithResponse(
-        String resourceGroupName, String serverName, String backupName, Context context) {
-        Response<ServerBackupInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serverName, backupName, context);
+    public Response<ServerBackup> getWithResponse(String resourceGroupName, String serverName, String backupName,
+        Context context) {
+        Response<ServerBackupInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serverName, backupName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ServerBackupImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -77,13 +71,13 @@ public final class BackupsImpl implements Backups {
 
     public PagedIterable<ServerBackup> listByServer(String resourceGroupName, String serverName) {
         PagedIterable<ServerBackupInner> inner = this.serviceClient().listByServer(resourceGroupName, serverName);
-        return Utils.mapPage(inner, inner1 -> new ServerBackupImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ServerBackupImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ServerBackup> listByServer(String resourceGroupName, String serverName, Context context) {
-        PagedIterable<ServerBackupInner> inner =
-            this.serviceClient().listByServer(resourceGroupName, serverName, context);
-        return Utils.mapPage(inner, inner1 -> new ServerBackupImpl(inner1, this.manager()));
+        PagedIterable<ServerBackupInner> inner
+            = this.serviceClient().listByServer(resourceGroupName, serverName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ServerBackupImpl(inner1, this.manager()));
     }
 
     private BackupsClient serviceClient() {

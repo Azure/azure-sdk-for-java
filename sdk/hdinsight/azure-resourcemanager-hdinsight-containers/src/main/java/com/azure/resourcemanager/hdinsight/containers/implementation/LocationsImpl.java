@@ -21,32 +21,28 @@ public final class LocationsImpl implements Locations {
 
     private final com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager serviceManager;
 
-    public LocationsImpl(
-        LocationsClient innerClient,
+    public LocationsImpl(LocationsClient innerClient,
         com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<NameAvailabilityResult> checkNameAvailabilityWithResponse(
-        String location, NameAvailabilityParameters nameAvailabilityParameters, Context context) {
-        Response<NameAvailabilityResultInner> inner =
-            this.serviceClient().checkNameAvailabilityWithResponse(location, nameAvailabilityParameters, context);
+    public Response<NameAvailabilityResult> checkNameAvailabilityWithResponse(String location,
+        NameAvailabilityParameters nameAvailabilityParameters, Context context) {
+        Response<NameAvailabilityResultInner> inner
+            = this.serviceClient().checkNameAvailabilityWithResponse(location, nameAvailabilityParameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new NameAvailabilityResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public NameAvailabilityResult checkNameAvailability(
-        String location, NameAvailabilityParameters nameAvailabilityParameters) {
-        NameAvailabilityResultInner inner =
-            this.serviceClient().checkNameAvailability(location, nameAvailabilityParameters);
+    public NameAvailabilityResult checkNameAvailability(String location,
+        NameAvailabilityParameters nameAvailabilityParameters) {
+        NameAvailabilityResultInner inner
+            = this.serviceClient().checkNameAvailability(location, nameAvailabilityParameters);
         if (inner != null) {
             return new NameAvailabilityResultImpl(inner, this.manager());
         } else {

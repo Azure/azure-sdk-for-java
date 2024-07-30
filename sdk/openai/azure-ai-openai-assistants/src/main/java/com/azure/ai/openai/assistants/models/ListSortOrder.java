@@ -5,7 +5,6 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class ListSortOrder extends ExpandableStringEnum<ListSortOrder> {
      * @return the corresponding ListSortOrder.
      */
     @Generated
-    @JsonCreator
     public static ListSortOrder fromString(String name) {
         return fromString(name, ListSortOrder.class);
     }

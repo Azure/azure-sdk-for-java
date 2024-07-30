@@ -18,8 +18,8 @@ public final class FrontendEndpointImpl implements FrontendEndpoint {
 
     private final com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager;
 
-    FrontendEndpointImpl(
-        FrontendEndpointInner innerObject, com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager) {
+    FrontendEndpointImpl(FrontendEndpointInner innerObject,
+        com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

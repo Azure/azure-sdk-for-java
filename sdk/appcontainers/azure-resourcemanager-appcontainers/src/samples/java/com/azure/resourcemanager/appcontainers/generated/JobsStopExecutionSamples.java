@@ -4,18 +4,21 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-/** Samples for Jobs StopExecution. */
+/**
+ * Samples for Jobs StopExecution.
+ */
 public final class JobsStopExecutionSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/Job_Stop_Execution.json
+     * x-ms-original-file:
+     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/Job_Stop_Execution.json
      */
     /**
      * Sample code: Terminate a Container Apps Job.
-     *
+     * 
      * @param manager Entry point to ContainerAppsApiManager.
      */
-    public static void terminateAContainerAppsJob(
-        com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
+    public static void
+        terminateAContainerAppsJob(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
         manager.jobs().stopExecution("rg", "testcontainerAppsJob0", "jobExecution1", com.azure.core.util.Context.NONE);
     }
 }

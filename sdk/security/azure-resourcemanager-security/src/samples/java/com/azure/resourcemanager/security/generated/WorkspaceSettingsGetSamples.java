@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class WorkspaceSettingsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/WorkspaceSettings/
-     * GetWorkspaceSetting_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/WorkspaceSettings/GetWorkspaceSetting_example.json
      */
     /**
      * Sample code: Get a workspace setting on subscription.

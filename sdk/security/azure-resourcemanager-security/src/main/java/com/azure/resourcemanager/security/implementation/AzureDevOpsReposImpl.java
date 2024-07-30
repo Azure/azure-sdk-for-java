@@ -43,8 +43,8 @@ public final class AzureDevOpsReposImpl implements AzureDevOpsRepos {
 
     public Response<AzureDevOpsRepository> getWithResponse(String resourceGroupName, String securityConnectorName,
         String orgName, String projectName, String repoName, Context context) {
-        Response<AzureDevOpsRepositoryInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            securityConnectorName, orgName, projectName, repoName, context);
+        Response<AzureDevOpsRepositoryInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, securityConnectorName, orgName, projectName, repoName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AzureDevOpsRepositoryImpl(inner.getValue(), this.manager()));

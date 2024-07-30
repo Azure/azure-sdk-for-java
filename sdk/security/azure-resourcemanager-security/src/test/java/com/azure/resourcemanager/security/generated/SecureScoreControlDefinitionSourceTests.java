@@ -13,15 +13,15 @@ public final class SecureScoreControlDefinitionSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecureScoreControlDefinitionSource model
-            = BinaryData.fromString("{\"sourceType\":\"BuiltIn\"}").toObject(SecureScoreControlDefinitionSource.class);
-        Assertions.assertEquals(ControlType.BUILT_IN, model.sourceType());
+            = BinaryData.fromString("{\"sourceType\":\"Custom\"}").toObject(SecureScoreControlDefinitionSource.class);
+        Assertions.assertEquals(ControlType.CUSTOM, model.sourceType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SecureScoreControlDefinitionSource model
-            = new SecureScoreControlDefinitionSource().withSourceType(ControlType.BUILT_IN);
+            = new SecureScoreControlDefinitionSource().withSourceType(ControlType.CUSTOM);
         model = BinaryData.fromObject(model).toObject(SecureScoreControlDefinitionSource.class);
-        Assertions.assertEquals(ControlType.BUILT_IN, model.sourceType());
+        Assertions.assertEquals(ControlType.CUSTOM, model.sourceType());
     }
 }

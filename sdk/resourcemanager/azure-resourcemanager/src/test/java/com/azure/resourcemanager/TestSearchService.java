@@ -5,6 +5,8 @@ package com.azure.resourcemanager;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.search.models.AdminKeyKind;
 import com.azure.resourcemanager.search.models.AdminKeys;
 import com.azure.resourcemanager.search.models.QueryKey;
@@ -15,6 +17,7 @@ import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 
 public class TestSearchService {
+    private static final ClientLogger LOGGER = new ClientLogger(TestSearchService.class);
 
     /**
      * Search service test.
@@ -61,7 +64,7 @@ public class TestSearchService {
                 .withPartitionCount(1)
                 .apply();
             Assertions.assertTrue(resource.tags().containsKey("tag2"));
-            Assertions.assertTrue(!resource.tags().containsKey("tag1"));
+            Assertions.assertFalse(resource.tags().containsKey("tag1"));
             Assertions.assertEquals(1, resource.replicaCount());
             Assertions.assertEquals(1, resource.partitionCount());
             Assertions.assertEquals(2, TestUtilities.getSize(resource.listQueryKeys()));
@@ -117,7 +120,7 @@ public class TestSearchService {
                 .withoutTag("tag1")
                 .apply();
             Assertions.assertTrue(resource.tags().containsKey("tag2"));
-            Assertions.assertTrue(!resource.tags().containsKey("tag1"));
+            Assertions.assertFalse(resource.tags().containsKey("tag1"));
             return resource;
         }
 
@@ -158,7 +161,7 @@ public class TestSearchService {
                 .withoutTag("tag1")
                 .apply();
             Assertions.assertTrue(resource.tags().containsKey("tag2"));
-            Assertions.assertTrue(!resource.tags().containsKey("tag1"));
+            Assertions.assertFalse(resource.tags().containsKey("tag1"));
             return resource;
         }
 
@@ -202,7 +205,7 @@ public class TestSearchService {
                 .withoutTag("tag1")
                 .apply();
             Assertions.assertTrue(resource.tags().containsKey("tag2"));
-            Assertions.assertTrue(!resource.tags().containsKey("tag1"));
+            Assertions.assertFalse(resource.tags().containsKey("tag1"));
             Assertions.assertEquals(SkuName.STANDARD, resource.sku().name());
             Assertions.assertEquals(1, resource.replicaCount());
             Assertions.assertEquals(1, resource.partitionCount());
@@ -247,7 +250,7 @@ public class TestSearchService {
             stringBuilder.append("\n\t  Key value: ").append(queryKey.key());
         }
 
-        System.out.println(stringBuilder);
+        LOGGER.log(LogLevel.VERBOSE, stringBuilder::toString);
     }
 
 }

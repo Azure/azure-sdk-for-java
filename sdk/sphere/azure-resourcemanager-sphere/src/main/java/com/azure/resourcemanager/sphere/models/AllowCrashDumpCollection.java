@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Allow crash dumps values. */
+/**
+ * Allow crash dumps values.
+ */
 public final class AllowCrashDumpCollection extends ExpandableStringEnum<AllowCrashDumpCollection> {
-    /** Static value Enabled for AllowCrashDumpCollection. */
+    /**
+     * Static value Enabled for AllowCrashDumpCollection.
+     */
     public static final AllowCrashDumpCollection ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for AllowCrashDumpCollection. */
+    /**
+     * Static value Disabled for AllowCrashDumpCollection.
+     */
     public static final AllowCrashDumpCollection DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of AllowCrashDumpCollection value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class AllowCrashDumpCollection extends ExpandableStringEnum<AllowCr
 
     /**
      * Creates or finds a AllowCrashDumpCollection from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AllowCrashDumpCollection.
      */
@@ -38,7 +44,7 @@ public final class AllowCrashDumpCollection extends ExpandableStringEnum<AllowCr
 
     /**
      * Gets known AllowCrashDumpCollection values.
-     *
+     * 
      * @return known AllowCrashDumpCollection values.
      */
     public static Collection<AllowCrashDumpCollection> values() {

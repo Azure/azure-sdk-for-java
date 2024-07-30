@@ -11,8 +11,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -52,7 +52,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to RecoveryServicesManager. Recovery Services Client. */
+/**
+ * Entry point to RecoveryServicesManager.
+ * Recovery Services Client.
+ */
 public final class RecoveryServicesManager {
     private VaultCertificates vaultCertificates;
 
@@ -79,18 +82,16 @@ public final class RecoveryServicesManager {
     private RecoveryServicesManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new RecoveryServicesManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new RecoveryServicesManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
      * Creates an instance of RecoveryServices service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the RecoveryServices service API instance.
@@ -103,7 +104,7 @@ public final class RecoveryServicesManager {
 
     /**
      * Creates an instance of RecoveryServices service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the RecoveryServices service API instance.
@@ -116,14 +117,16 @@ public final class RecoveryServicesManager {
 
     /**
      * Gets a Configurable instance that can be used to create RecoveryServicesManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new RecoveryServicesManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -195,8 +198,8 @@ public final class RecoveryServicesManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -213,8 +216,8 @@ public final class RecoveryServicesManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -234,15 +237,13 @@ public final class RecoveryServicesManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
+            userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.recoveryservices")
                 .append("/")
-                .append("1.2.0");
+                .append("1.3.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
+                userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -267,38 +268,28 @@ public final class RecoveryServicesManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new RecoveryServicesManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
     /**
      * Gets the resource collection API of VaultCertificates. It manages VaultCertificateResponse.
-     *
+     * 
      * @return Resource collection API of VaultCertificates.
      */
     public VaultCertificates vaultCertificates() {
@@ -310,7 +301,7 @@ public final class RecoveryServicesManager {
 
     /**
      * Gets the resource collection API of RegisteredIdentities.
-     *
+     * 
      * @return Resource collection API of RegisteredIdentities.
      */
     public RegisteredIdentities registeredIdentities() {
@@ -322,7 +313,7 @@ public final class RecoveryServicesManager {
 
     /**
      * Gets the resource collection API of ReplicationUsages.
-     *
+     * 
      * @return Resource collection API of ReplicationUsages.
      */
     public ReplicationUsages replicationUsages() {
@@ -334,20 +325,20 @@ public final class RecoveryServicesManager {
 
     /**
      * Gets the resource collection API of PrivateLinkResourcesOperations.
-     *
+     * 
      * @return Resource collection API of PrivateLinkResourcesOperations.
      */
     public PrivateLinkResourcesOperations privateLinkResourcesOperations() {
         if (this.privateLinkResourcesOperations == null) {
-            this.privateLinkResourcesOperations =
-                new PrivateLinkResourcesOperationsImpl(clientObject.getPrivateLinkResourcesOperations(), this);
+            this.privateLinkResourcesOperations
+                = new PrivateLinkResourcesOperationsImpl(clientObject.getPrivateLinkResourcesOperations(), this);
         }
         return privateLinkResourcesOperations;
     }
 
     /**
      * Gets the resource collection API of RecoveryServices.
-     *
+     * 
      * @return Resource collection API of RecoveryServices.
      */
     public RecoveryServices recoveryServices() {
@@ -359,7 +350,7 @@ public final class RecoveryServicesManager {
 
     /**
      * Gets the resource collection API of Vaults. It manages Vault.
-     *
+     * 
      * @return Resource collection API of Vaults.
      */
     public Vaults vaults() {
@@ -371,7 +362,7 @@ public final class RecoveryServicesManager {
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -383,7 +374,7 @@ public final class RecoveryServicesManager {
 
     /**
      * Gets the resource collection API of VaultExtendedInfoes.
-     *
+     * 
      * @return Resource collection API of VaultExtendedInfoes.
      */
     public VaultExtendedInfoes vaultExtendedInfoes() {
@@ -395,7 +386,7 @@ public final class RecoveryServicesManager {
 
     /**
      * Gets the resource collection API of ResourceProviders.
-     *
+     * 
      * @return Resource collection API of ResourceProviders.
      */
     public ResourceProviders resourceProviders() {
@@ -407,7 +398,7 @@ public final class RecoveryServicesManager {
 
     /**
      * Gets the resource collection API of Usages.
-     *
+     * 
      * @return Resource collection API of Usages.
      */
     public Usages usages() {
@@ -420,7 +411,7 @@ public final class RecoveryServicesManager {
     /**
      * Gets wrapped service client RecoveryServicesManagementClient providing direct access to the underlying
      * auto-generated API implementation, based on Azure REST API.
-     *
+     * 
      * @return Wrapped service client RecoveryServicesManagementClient.
      */
     public RecoveryServicesManagementClient serviceClient() {

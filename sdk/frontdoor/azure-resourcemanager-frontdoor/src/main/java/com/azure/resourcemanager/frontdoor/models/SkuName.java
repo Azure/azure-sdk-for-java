@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Name of the pricing tier. */
+/**
+ * Name of the pricing tier.
+ */
 public final class SkuName extends ExpandableStringEnum<SkuName> {
-    /** Static value Classic_AzureFrontDoor for SkuName. */
+    /**
+     * Static value Classic_AzureFrontDoor for SkuName.
+     */
     public static final SkuName CLASSIC_AZURE_FRONT_DOOR = fromString("Classic_AzureFrontDoor");
 
-    /** Static value Standard_AzureFrontDoor for SkuName. */
+    /**
+     * Static value Standard_AzureFrontDoor for SkuName.
+     */
     public static final SkuName STANDARD_AZURE_FRONT_DOOR = fromString("Standard_AzureFrontDoor");
 
-    /** Static value Premium_AzureFrontDoor for SkuName. */
+    /**
+     * Static value Premium_AzureFrontDoor for SkuName.
+     */
     public static final SkuName PREMIUM_AZURE_FRONT_DOOR = fromString("Premium_AzureFrontDoor");
 
     /**
      * Creates a new instance of SkuName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class SkuName extends ExpandableStringEnum<SkuName> {
 
     /**
      * Creates or finds a SkuName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SkuName.
      */
@@ -41,7 +49,7 @@ public final class SkuName extends ExpandableStringEnum<SkuName> {
 
     /**
      * Gets known SkuName values.
-     *
+     * 
      * @return known SkuName values.
      */
     public static Collection<SkuName> values() {

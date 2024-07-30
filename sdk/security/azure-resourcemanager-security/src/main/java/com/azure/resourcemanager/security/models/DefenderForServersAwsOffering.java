@@ -6,16 +6,28 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The Defender for Servers AWS offering.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "offeringType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "offeringType",
+    defaultImpl = DefenderForServersAwsOffering.class,
+    visible = true)
 @JsonTypeName("DefenderForServersAws")
 @Fluent
 public final class DefenderForServersAwsOffering extends CloudOffering {
+    /*
+     * The type of the security offering.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "offeringType", required = true)
+    private OfferingType offeringType = OfferingType.DEFENDER_FOR_SERVERS_AWS;
+
     /*
      * The Defender for servers connection configuration
      */
@@ -56,6 +68,16 @@ public final class DefenderForServersAwsOffering extends CloudOffering {
      * Creates an instance of DefenderForServersAwsOffering class.
      */
     public DefenderForServersAwsOffering() {
+    }
+
+    /**
+     * Get the offeringType property: The type of the security offering.
+     * 
+     * @return the offeringType value.
+     */
+    @Override
+    public OfferingType offeringType() {
+        return this.offeringType;
     }
 
     /**

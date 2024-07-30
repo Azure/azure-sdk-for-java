@@ -18,7 +18,8 @@ public final class IntegrationRuntimesStartSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void integrationRuntimesStart(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimes().start("exampleResourceGroup", "exampleFactoryName",
-            "exampleManagedIntegrationRuntime", com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes()
+            .start("exampleResourceGroup", "exampleFactoryName", "exampleManagedIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -139,8 +139,8 @@ public final class Office365LinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -149,8 +149,8 @@ public final class Office365LinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the Office365LinkedServiceTypeProperties object itself.
@@ -167,20 +167,24 @@ public final class Office365LinkedServiceTypeProperties {
      */
     public void validate() {
         if (office365TenantId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property office365TenantId in model Office365LinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property office365TenantId in model Office365LinkedServiceTypeProperties"));
         }
         if (servicePrincipalTenantId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property servicePrincipalTenantId in model Office365LinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property servicePrincipalTenantId in model Office365LinkedServiceTypeProperties"));
         }
         if (servicePrincipalId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property servicePrincipalId in model Office365LinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property servicePrincipalId in model Office365LinkedServiceTypeProperties"));
         }
         if (servicePrincipalKey() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property servicePrincipalKey in model Office365LinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property servicePrincipalKey in model Office365LinkedServiceTypeProperties"));
         } else {
             servicePrincipalKey().validate();
         }

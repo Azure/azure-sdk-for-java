@@ -5,46 +5,42 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * The content of the SQL script.
  */
 @Fluent
-public final class SqlScriptContent {
+public final class SqlScriptContent implements JsonSerializable<SqlScriptContent> {
     /*
      * SQL query to execute.
      */
-    @JsonProperty(value = "query", required = true)
     private String query;
 
     /*
      * The connection used to execute the SQL script.
      */
-    @JsonProperty(value = "currentConnection")
     private SqlConnection currentConnection;
 
     /*
      * Limit of results, '-1' for no limit.
      */
-    @JsonProperty(value = "resultLimit")
     private Integer resultLimit;
 
     /*
      * The metadata of the SQL script.
      */
-    @JsonProperty(value = "metadata")
     private SqlScriptMetadata metadata;
 
     /*
      * The content of the SQL script.
      */
-    @JsonIgnore
     private Map<String, Object> additionalProperties;
 
     /**
@@ -138,7 +134,6 @@ public final class SqlScriptContent {
      * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -154,11 +149,60 @@ public final class SqlScriptContent {
         return this;
     }
 
-    @JsonAnySetter
-    void setAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("query", this.query);
+        jsonWriter.writeJsonField("currentConnection", this.currentConnection);
+        jsonWriter.writeNumberField("resultLimit", this.resultLimit);
+        jsonWriter.writeJsonField("metadata", this.metadata);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
         }
-        additionalProperties.put(key, value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlScriptContent from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlScriptContent if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SqlScriptContent.
+     */
+    public static SqlScriptContent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlScriptContent deserializedSqlScriptContent = new SqlScriptContent();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("query".equals(fieldName)) {
+                    deserializedSqlScriptContent.query = reader.getString();
+                } else if ("currentConnection".equals(fieldName)) {
+                    deserializedSqlScriptContent.currentConnection = SqlConnection.fromJson(reader);
+                } else if ("resultLimit".equals(fieldName)) {
+                    deserializedSqlScriptContent.resultLimit = reader.getNullable(JsonReader::getInt);
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedSqlScriptContent.metadata = SqlScriptMetadata.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSqlScriptContent.additionalProperties = additionalProperties;
+
+            return deserializedSqlScriptContent;
+        });
     }
 }

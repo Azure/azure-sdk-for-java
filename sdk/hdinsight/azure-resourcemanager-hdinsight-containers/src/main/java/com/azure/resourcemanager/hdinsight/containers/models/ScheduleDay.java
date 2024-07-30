@@ -8,32 +8,48 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ScheduleDay. */
+/**
+ * Defines values for ScheduleDay.
+ */
 public final class ScheduleDay extends ExpandableStringEnum<ScheduleDay> {
-    /** Static value Sunday for ScheduleDay. */
+    /**
+     * Static value Sunday for ScheduleDay.
+     */
     public static final ScheduleDay SUNDAY = fromString("Sunday");
 
-    /** Static value Monday for ScheduleDay. */
+    /**
+     * Static value Monday for ScheduleDay.
+     */
     public static final ScheduleDay MONDAY = fromString("Monday");
 
-    /** Static value Tuesday for ScheduleDay. */
+    /**
+     * Static value Tuesday for ScheduleDay.
+     */
     public static final ScheduleDay TUESDAY = fromString("Tuesday");
 
-    /** Static value Wednesday for ScheduleDay. */
+    /**
+     * Static value Wednesday for ScheduleDay.
+     */
     public static final ScheduleDay WEDNESDAY = fromString("Wednesday");
 
-    /** Static value Thursday for ScheduleDay. */
+    /**
+     * Static value Thursday for ScheduleDay.
+     */
     public static final ScheduleDay THURSDAY = fromString("Thursday");
 
-    /** Static value Friday for ScheduleDay. */
+    /**
+     * Static value Friday for ScheduleDay.
+     */
     public static final ScheduleDay FRIDAY = fromString("Friday");
 
-    /** Static value Saturday for ScheduleDay. */
+    /**
+     * Static value Saturday for ScheduleDay.
+     */
     public static final ScheduleDay SATURDAY = fromString("Saturday");
 
     /**
      * Creates a new instance of ScheduleDay value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,7 +58,7 @@ public final class ScheduleDay extends ExpandableStringEnum<ScheduleDay> {
 
     /**
      * Creates or finds a ScheduleDay from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ScheduleDay.
      */
@@ -53,7 +69,7 @@ public final class ScheduleDay extends ExpandableStringEnum<ScheduleDay> {
 
     /**
      * Gets known ScheduleDay values.
-     *
+     * 
      * @return known ScheduleDay values.
      */
     public static Collection<ScheduleDay> values() {

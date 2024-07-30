@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-/** Samples for AttachedNetworks CreateOrUpdate. */
+/**
+ * Samples for AttachedNetworks CreateOrUpdate.
+ */
 public final class AttachedNetworksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2023-10-01-preview/examples/AttachedNetworks_Create.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/AttachedNetworks_Create.json
      */
     /**
      * Sample code: AttachedNetworks_Create.
-     *
+     * 
      * @param manager Entry point to DevCenterManager.
      */
     public static void attachedNetworksCreate(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
-        manager
-            .attachedNetworks()
+        manager.attachedNetworks()
             .define("network-uswest3")
             .withExistingDevcenter("rg1", "Contoso")
             .withNetworkConnectionId(

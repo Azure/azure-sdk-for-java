@@ -53,8 +53,8 @@ public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPol
     }
 
     /**
-     * The interface defining all the services for NetworkManagementClientFirewallPolicyIdpsSignatures to be used by
-     * the proxy service to perform REST calls.
+     * The interface defining all the services for NetworkManagementClientFirewallPolicyIdpsSignatures to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
@@ -77,7 +77,7 @@ public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPol
      * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
-     * @param parameters Will describe the query to run against the IDPS signatures DB.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -107,7 +107,7 @@ public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPol
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, firewallPolicyName,
@@ -121,7 +121,7 @@ public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPol
      * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
-     * @param parameters Will describe the query to run against the IDPS signatures DB.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -152,7 +152,7 @@ public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPol
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), resourceGroupName, firewallPolicyName,
@@ -165,7 +165,7 @@ public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPol
      * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
-     * @param parameters Will describe the query to run against the IDPS signatures DB.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -184,7 +184,7 @@ public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPol
      * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
-     * @param parameters Will describe the query to run against the IDPS signatures DB.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -203,7 +203,7 @@ public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPol
      * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
-     * @param parameters Will describe the query to run against the IDPS signatures DB.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

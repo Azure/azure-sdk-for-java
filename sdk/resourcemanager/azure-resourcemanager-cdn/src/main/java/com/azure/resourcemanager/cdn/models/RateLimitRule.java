@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Defines a rate limiting rule that can be included in a waf policy. */
+/**
+ * Defines a rate limiting rule that can be included in a waf policy.
+ */
 @Fluent
 public final class RateLimitRule extends CustomRule {
     /*
@@ -23,13 +25,15 @@ public final class RateLimitRule extends CustomRule {
     @JsonProperty(value = "rateLimitDurationInMinutes", required = true)
     private int rateLimitDurationInMinutes;
 
-    /** Creates an instance of RateLimitRule class. */
+    /**
+     * Creates an instance of RateLimitRule class.
+     */
     public RateLimitRule() {
     }
 
     /**
      * Get the rateLimitThreshold property: Defines rate limit threshold.
-     *
+     * 
      * @return the rateLimitThreshold value.
      */
     public int rateLimitThreshold() {
@@ -38,7 +42,7 @@ public final class RateLimitRule extends CustomRule {
 
     /**
      * Set the rateLimitThreshold property: Defines rate limit threshold.
-     *
+     * 
      * @param rateLimitThreshold the rateLimitThreshold value to set.
      * @return the RateLimitRule object itself.
      */
@@ -49,7 +53,7 @@ public final class RateLimitRule extends CustomRule {
 
     /**
      * Get the rateLimitDurationInMinutes property: Defines rate limit duration. Default is 1 minute.
-     *
+     * 
      * @return the rateLimitDurationInMinutes value.
      */
     public int rateLimitDurationInMinutes() {
@@ -58,7 +62,7 @@ public final class RateLimitRule extends CustomRule {
 
     /**
      * Set the rateLimitDurationInMinutes property: Defines rate limit duration. Default is 1 minute.
-     *
+     * 
      * @param rateLimitDurationInMinutes the rateLimitDurationInMinutes value to set.
      * @return the RateLimitRule object itself.
      */
@@ -67,35 +71,45 @@ public final class RateLimitRule extends CustomRule {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RateLimitRule withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RateLimitRule withEnabledState(CustomRuleEnabledState enabledState) {
         super.withEnabledState(enabledState);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RateLimitRule withPriority(int priority) {
         super.withPriority(priority);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RateLimitRule withMatchConditions(List<MatchCondition> matchConditions) {
         super.withMatchConditions(matchConditions);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RateLimitRule withAction(ActionType action) {
         super.withAction(action);
@@ -104,7 +118,7 @@ public final class RateLimitRule extends CustomRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

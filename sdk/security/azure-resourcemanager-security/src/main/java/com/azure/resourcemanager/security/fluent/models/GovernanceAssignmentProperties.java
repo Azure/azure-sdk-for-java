@@ -24,7 +24,7 @@ public final class GovernanceAssignmentProperties {
     private String owner;
 
     /*
-     * The remediation due-date - after this date Secure Score will be affected (in case of active grace-period)
+     * The remediation due-date - after this date Secure Score will be affected (in case of  active grace-period)
      */
     @JsonProperty(value = "remediationDueDate", required = true)
     private OffsetDateTime remediationDueDate;
@@ -42,8 +42,7 @@ public final class GovernanceAssignmentProperties {
     private Boolean isGracePeriod;
 
     /*
-     * The email notifications settings for the governance rule, states whether to disable notifications for mangers
-     * and owners
+     * The email notifications settings for the governance rule, states whether to disable notifications for mangers and owners
      */
     @JsonProperty(value = "governanceEmailNotification")
     private GovernanceEmailNotification governanceEmailNotification;
@@ -61,7 +60,7 @@ public final class GovernanceAssignmentProperties {
     }
 
     /**
-     * Get the owner property: The Owner for the governance assignment - e.g. user@contoso.com - see example.
+     * Get the owner property: The Owner for the governance assignment - e.g. user&#064;contoso.com - see example.
      * 
      * @return the owner value.
      */
@@ -70,7 +69,7 @@ public final class GovernanceAssignmentProperties {
     }
 
     /**
-     * Set the owner property: The Owner for the governance assignment - e.g. user@contoso.com - see example.
+     * Set the owner property: The Owner for the governance assignment - e.g. user&#064;contoso.com - see example.
      * 
      * @param owner the owner value to set.
      * @return the GovernanceAssignmentProperties object itself.
@@ -81,8 +80,8 @@ public final class GovernanceAssignmentProperties {
     }
 
     /**
-     * Get the remediationDueDate property: The remediation due-date - after this date Secure Score will be affected
-     * (in case of active grace-period).
+     * Get the remediationDueDate property: The remediation due-date - after this date Secure Score will be affected (in
+     * case of active grace-period).
      * 
      * @return the remediationDueDate value.
      */
@@ -91,8 +90,8 @@ public final class GovernanceAssignmentProperties {
     }
 
     /**
-     * Set the remediationDueDate property: The remediation due-date - after this date Secure Score will be affected
-     * (in case of active grace-period).
+     * Set the remediationDueDate property: The remediation due-date - after this date Secure Score will be affected (in
+     * case of active grace-period).
      * 
      * @param remediationDueDate the remediationDueDate value to set.
      * @return the GovernanceAssignmentProperties object itself.
@@ -194,8 +193,9 @@ public final class GovernanceAssignmentProperties {
      */
     public void validate() {
         if (remediationDueDate() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property remediationDueDate in model GovernanceAssignmentProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property remediationDueDate in model GovernanceAssignmentProperties"));
         }
         if (remediationEta() != null) {
             remediationEta().validate();

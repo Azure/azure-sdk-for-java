@@ -12,26 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ForwardProxyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ForwardProxy model =
-            BinaryData
-                .fromString(
-                    "{\"convention\":\"NoProxy\",\"customHostHeaderName\":\"chcbonqvpkvlrxnj\",\"customProtoHeaderName\":\"seiphe\"}")
-                .toObject(ForwardProxy.class);
-        Assertions.assertEquals(ForwardProxyConvention.NO_PROXY, model.convention());
-        Assertions.assertEquals("chcbonqvpkvlrxnj", model.customHostHeaderName());
-        Assertions.assertEquals("seiphe", model.customProtoHeaderName());
+        ForwardProxy model = BinaryData.fromString(
+            "{\"convention\":\"Custom\",\"customHostHeaderName\":\"yfsoppu\",\"customProtoHeaderName\":\"esnzwde\"}")
+            .toObject(ForwardProxy.class);
+        Assertions.assertEquals(ForwardProxyConvention.CUSTOM, model.convention());
+        Assertions.assertEquals("yfsoppu", model.customHostHeaderName());
+        Assertions.assertEquals("esnzwde", model.customProtoHeaderName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ForwardProxy model =
-            new ForwardProxy()
-                .withConvention(ForwardProxyConvention.NO_PROXY)
-                .withCustomHostHeaderName("chcbonqvpkvlrxnj")
-                .withCustomProtoHeaderName("seiphe");
+        ForwardProxy model = new ForwardProxy().withConvention(ForwardProxyConvention.CUSTOM)
+            .withCustomHostHeaderName("yfsoppu")
+            .withCustomProtoHeaderName("esnzwde");
         model = BinaryData.fromObject(model).toObject(ForwardProxy.class);
-        Assertions.assertEquals(ForwardProxyConvention.NO_PROXY, model.convention());
-        Assertions.assertEquals("chcbonqvpkvlrxnj", model.customHostHeaderName());
-        Assertions.assertEquals("seiphe", model.customProtoHeaderName());
+        Assertions.assertEquals(ForwardProxyConvention.CUSTOM, model.convention());
+        Assertions.assertEquals("yfsoppu", model.customHostHeaderName());
+        Assertions.assertEquals("esnzwde", model.customProtoHeaderName());
     }
 }

@@ -4,9 +4,11 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.BadRequestException;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -48,8 +50,15 @@ import java.util.stream.Collectors;
  */
 public class DocumentQueryExecutionContextFactory {
 
+    private static final ImplementationBridgeHelpers
+        .CosmosQueryRequestOptionsHelper
+        .CosmosQueryRequestOptionsAccessor qryOptAccessor = ImplementationBridgeHelpers
+        .CosmosQueryRequestOptionsHelper
+        .getCosmosQueryRequestOptionsAccessor();
+
     private final static int PageSizeFactorForTop = 5;
     private static final Logger logger = LoggerFactory.getLogger(DocumentQueryExecutionContextFactory.class);
+    private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor queryRequestOptionsAccessor = ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
     private static Mono<Utils.ValueHolder<DocumentCollection>> resolveCollection(DiagnosticsClientContext diagnosticsClientContext,
                                                                                  IDocumentQueryClient client,
                                                                                  ResourceType resourceTypeEnum,
@@ -239,7 +248,8 @@ public class DocumentQueryExecutionContextFactory {
                    && !queryInfo.hasTop()
                    && !queryInfo.hasOffset()
                    && !queryInfo.hasDCount()
-                   && !queryInfo.hasOrderBy();
+                   && !queryInfo.hasOrderBy()
+                   && !queryInfo.hasNonStreamingOrderBy();
     }
 
     private static boolean isScopedToSinglePartition(CosmosQueryRequestOptions cosmosQueryRequestOptions) {
@@ -301,6 +311,10 @@ public class DocumentQueryExecutionContextFactory {
         }
 
         return collectionObs.single().flatMap(collectionValueHolder -> {
+
+            queryRequestOptionsAccessor.setPartitionKeyDefinition(cosmosQueryRequestOptions, collectionValueHolder.v.getPartitionKey());
+            queryRequestOptionsAccessor.setCollectionRid(cosmosQueryRequestOptions, collectionValueHolder.v.getResourceId());
+
             Mono<Pair<List<Range<String>>, QueryInfo>> queryPlanTask =
                 getPartitionKeyRangesAndQueryInfo(diagnosticsClientContext,
                                                   client,
@@ -357,6 +371,34 @@ public class DocumentQueryExecutionContextFactory {
         }
 
         boolean getLazyFeedResponse = queryInfo.hasTop();
+
+        // We need to compute the optimal initial age size for non-streaming order-by queries
+        if (queryInfo.hasNonStreamingOrderBy()) {
+            // Validate the TOP or LIMIT for non-streaming order-by queries
+            if (!queryInfo.hasTop() && !queryInfo.hasLimit() && queryInfo.getTop() < 0 && queryInfo.getLimit() < 0) {
+                throw new NonStreamingOrderByBadRequestException(HttpConstants.StatusCodes.BADREQUEST,
+                    "Executing a vector search query without TOP or LIMIT can consume a large number of RUs" +
+                        "very fast and have long runtimes. Please ensure you are using one of the above two filters" +
+                        "with you vector search query.");
+            }
+            // Validate the size of TOP or LIMIT against MaxItemSizeForVectorSearch
+            int maxLimit = Math.max(queryInfo.hasTop() ? queryInfo.getTop() : 0,
+                queryInfo.hasLimit() ? queryInfo.getLimit() : 0);
+            int maxItemSizeForVectorSearch = Math.max(Configs.getMaxItemCountForVectorSearch(),
+                qryOptAccessor.getMaxItemCountForVectorSearch(cosmosQueryRequestOptions));
+            if (maxLimit > maxItemSizeForVectorSearch) {
+                throw new NonStreamingOrderByBadRequestException(HttpConstants.StatusCodes.BADREQUEST,
+                    "Executing a vector search query with TOP or LIMIT larger than the maxItemSizeForVectorSearch " +
+                        "is not allowed");
+            }
+            // Set initialPageSize based on the smallest of TOP or LIMIT
+            if (queryInfo.hasTop() || queryInfo.hasLimit()) {
+                int pageSizeWithTopOrLimit = Math.min(queryInfo.hasTop() ? queryInfo.getTop() : Integer.MAX_VALUE,
+                                           queryInfo.hasLimit() && queryInfo.hasOffset() ?
+                                               queryInfo.getLimit() + queryInfo.getOffset() : Integer.MAX_VALUE);
+                initialPageSize = pageSizeWithTopOrLimit;
+            }
+        }
 
         // We need to compute the optimal initial page size for order-by queries
         if (queryInfo.hasOrderBy()) {
@@ -419,7 +461,7 @@ public class DocumentQueryExecutionContextFactory {
     public static <T> Flux<? extends IDocumentQueryExecutionContext<T>> createReadManyQueryAsync(
         DiagnosticsClientContext diagnosticsClientContext, IDocumentQueryClient queryClient, String collectionResourceId, SqlQuerySpec sqlQuery,
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap, CosmosQueryRequestOptions cosmosQueryRequestOptions,
-        String resourceId, String collectionLink, UUID activityId, Class<T> klass,
+        DocumentCollection collection, String collectionLink, UUID activityId, Class<T> klass,
         ResourceType resourceTypeEnum,
         final AtomicBoolean isQueryCancelledOnTimeout) {
 
@@ -429,7 +471,7 @@ public class DocumentQueryExecutionContextFactory {
             sqlQuery,
             rangeQueryMap,
             cosmosQueryRequestOptions,
-            resourceId,
+            collection,
             collectionLink,
             activityId,
             klass,

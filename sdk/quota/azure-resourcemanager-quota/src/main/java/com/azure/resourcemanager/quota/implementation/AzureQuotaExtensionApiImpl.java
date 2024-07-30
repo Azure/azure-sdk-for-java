@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.quota.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -12,8 +13,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -23,6 +24,15 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.quota.fluent.AzureQuotaExtensionApi;
+import com.azure.resourcemanager.quota.fluent.GroupQuotaLimitsClient;
+import com.azure.resourcemanager.quota.fluent.GroupQuotaLimitsRequestsClient;
+import com.azure.resourcemanager.quota.fluent.GroupQuotaLocationSettingsClient;
+import com.azure.resourcemanager.quota.fluent.GroupQuotasClient;
+import com.azure.resourcemanager.quota.fluent.GroupQuotaSubscriptionAllocationRequestsClient;
+import com.azure.resourcemanager.quota.fluent.GroupQuotaSubscriptionAllocationsClient;
+import com.azure.resourcemanager.quota.fluent.GroupQuotaSubscriptionRequestsClient;
+import com.azure.resourcemanager.quota.fluent.GroupQuotaSubscriptionsClient;
+import com.azure.resourcemanager.quota.fluent.GroupQuotaUsagesClient;
 import com.azure.resourcemanager.quota.fluent.QuotaOperationsClient;
 import com.azure.resourcemanager.quota.fluent.QuotaRequestStatusClient;
 import com.azure.resourcemanager.quota.fluent.QuotasClient;
@@ -41,6 +51,20 @@ import reactor.core.publisher.Mono;
  */
 @ServiceClient(builder = AzureQuotaExtensionApiBuilder.class)
 public final class AzureQuotaExtensionApiImpl implements AzureQuotaExtensionApi {
+    /**
+     * The ID of the target subscription. The value must be an UUID.
+     */
+    private final String subscriptionId;
+
+    /**
+     * Gets The ID of the target subscription. The value must be an UUID.
+     * 
+     * @return the subscriptionId value.
+     */
+    public String getSubscriptionId() {
+        return this.subscriptionId;
+    }
+
     /**
      * server parameter.
      */
@@ -112,6 +136,132 @@ public final class AzureQuotaExtensionApiImpl implements AzureQuotaExtensionApi 
     }
 
     /**
+     * The GroupQuotasClient object to access its operations.
+     */
+    private final GroupQuotasClient groupQuotas;
+
+    /**
+     * Gets the GroupQuotasClient object to access its operations.
+     * 
+     * @return the GroupQuotasClient object.
+     */
+    public GroupQuotasClient getGroupQuotas() {
+        return this.groupQuotas;
+    }
+
+    /**
+     * The GroupQuotaSubscriptionsClient object to access its operations.
+     */
+    private final GroupQuotaSubscriptionsClient groupQuotaSubscriptions;
+
+    /**
+     * Gets the GroupQuotaSubscriptionsClient object to access its operations.
+     * 
+     * @return the GroupQuotaSubscriptionsClient object.
+     */
+    public GroupQuotaSubscriptionsClient getGroupQuotaSubscriptions() {
+        return this.groupQuotaSubscriptions;
+    }
+
+    /**
+     * The GroupQuotaSubscriptionRequestsClient object to access its operations.
+     */
+    private final GroupQuotaSubscriptionRequestsClient groupQuotaSubscriptionRequests;
+
+    /**
+     * Gets the GroupQuotaSubscriptionRequestsClient object to access its operations.
+     * 
+     * @return the GroupQuotaSubscriptionRequestsClient object.
+     */
+    public GroupQuotaSubscriptionRequestsClient getGroupQuotaSubscriptionRequests() {
+        return this.groupQuotaSubscriptionRequests;
+    }
+
+    /**
+     * The GroupQuotaLimitsClient object to access its operations.
+     */
+    private final GroupQuotaLimitsClient groupQuotaLimits;
+
+    /**
+     * Gets the GroupQuotaLimitsClient object to access its operations.
+     * 
+     * @return the GroupQuotaLimitsClient object.
+     */
+    public GroupQuotaLimitsClient getGroupQuotaLimits() {
+        return this.groupQuotaLimits;
+    }
+
+    /**
+     * The GroupQuotaLimitsRequestsClient object to access its operations.
+     */
+    private final GroupQuotaLimitsRequestsClient groupQuotaLimitsRequests;
+
+    /**
+     * Gets the GroupQuotaLimitsRequestsClient object to access its operations.
+     * 
+     * @return the GroupQuotaLimitsRequestsClient object.
+     */
+    public GroupQuotaLimitsRequestsClient getGroupQuotaLimitsRequests() {
+        return this.groupQuotaLimitsRequests;
+    }
+
+    /**
+     * The GroupQuotaSubscriptionAllocationsClient object to access its operations.
+     */
+    private final GroupQuotaSubscriptionAllocationsClient groupQuotaSubscriptionAllocations;
+
+    /**
+     * Gets the GroupQuotaSubscriptionAllocationsClient object to access its operations.
+     * 
+     * @return the GroupQuotaSubscriptionAllocationsClient object.
+     */
+    public GroupQuotaSubscriptionAllocationsClient getGroupQuotaSubscriptionAllocations() {
+        return this.groupQuotaSubscriptionAllocations;
+    }
+
+    /**
+     * The GroupQuotaSubscriptionAllocationRequestsClient object to access its operations.
+     */
+    private final GroupQuotaSubscriptionAllocationRequestsClient groupQuotaSubscriptionAllocationRequests;
+
+    /**
+     * Gets the GroupQuotaSubscriptionAllocationRequestsClient object to access its operations.
+     * 
+     * @return the GroupQuotaSubscriptionAllocationRequestsClient object.
+     */
+    public GroupQuotaSubscriptionAllocationRequestsClient getGroupQuotaSubscriptionAllocationRequests() {
+        return this.groupQuotaSubscriptionAllocationRequests;
+    }
+
+    /**
+     * The GroupQuotaUsagesClient object to access its operations.
+     */
+    private final GroupQuotaUsagesClient groupQuotaUsages;
+
+    /**
+     * Gets the GroupQuotaUsagesClient object to access its operations.
+     * 
+     * @return the GroupQuotaUsagesClient object.
+     */
+    public GroupQuotaUsagesClient getGroupQuotaUsages() {
+        return this.groupQuotaUsages;
+    }
+
+    /**
+     * The GroupQuotaLocationSettingsClient object to access its operations.
+     */
+    private final GroupQuotaLocationSettingsClient groupQuotaLocationSettings;
+
+    /**
+     * Gets the GroupQuotaLocationSettingsClient object to access its operations.
+     * 
+     * @return the GroupQuotaLocationSettingsClient object.
+     */
+    public GroupQuotaLocationSettingsClient getGroupQuotaLocationSettings() {
+        return this.groupQuotaLocationSettings;
+    }
+
+    /**
      * The UsagesClient object to access its operations.
      */
     private final UsagesClient usages;
@@ -174,15 +324,26 @@ public final class AzureQuotaExtensionApiImpl implements AzureQuotaExtensionApi 
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
+     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
     AzureQuotaExtensionApiImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval, AzureEnvironment environment, String endpoint) {
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
+        this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-02-01";
+        this.apiVersion = "2023-06-01-preview";
+        this.groupQuotas = new GroupQuotasClientImpl(this);
+        this.groupQuotaSubscriptions = new GroupQuotaSubscriptionsClientImpl(this);
+        this.groupQuotaSubscriptionRequests = new GroupQuotaSubscriptionRequestsClientImpl(this);
+        this.groupQuotaLimits = new GroupQuotaLimitsClientImpl(this);
+        this.groupQuotaLimitsRequests = new GroupQuotaLimitsRequestsClientImpl(this);
+        this.groupQuotaSubscriptionAllocations = new GroupQuotaSubscriptionAllocationsClientImpl(this);
+        this.groupQuotaSubscriptionAllocationRequests = new GroupQuotaSubscriptionAllocationRequestsClientImpl(this);
+        this.groupQuotaUsages = new GroupQuotaUsagesClientImpl(this);
+        this.groupQuotaLocationSettings = new GroupQuotaLocationSettingsClientImpl(this);
         this.usages = new UsagesClientImpl(this);
         this.quotas = new QuotasClientImpl(this);
         this.quotaRequestStatus = new QuotaRequestStatusClientImpl(this);
@@ -249,8 +410,8 @@ public final class AzureQuotaExtensionApiImpl implements AzureQuotaExtensionApi 
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError = this.getSerializerAdapter().deserialize(errorBody, ManagementError.class,
-                            SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -291,7 +452,7 @@ public final class AzureQuotaExtensionApiImpl implements AzureQuotaExtensionApi 
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

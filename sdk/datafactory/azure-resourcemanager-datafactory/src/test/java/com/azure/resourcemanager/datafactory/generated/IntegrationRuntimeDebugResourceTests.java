@@ -23,9 +23,9 @@ public final class IntegrationRuntimeDebugResourceTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeDebugResource model
-            = new IntegrationRuntimeDebugResource().withName("ezrxcczurtleipqx").withProperties(new IntegrationRuntime()
-                .withDescription("xbzlmc").withAdditionalProperties(mapOf("type", "IntegrationRuntime")));
+        IntegrationRuntimeDebugResource model = new IntegrationRuntimeDebugResource().withName("ezrxcczurtleipqx")
+            .withProperties(new IntegrationRuntime().withDescription("xbzlmc")
+                .withAdditionalProperties(mapOf("type", "IntegrationRuntime")));
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeDebugResource.class);
         Assertions.assertEquals("ezrxcczurtleipqx", model.name());
         Assertions.assertEquals("xbzlmc", model.properties().description());

@@ -28,8 +28,8 @@ public final class LinkedServiceTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LinkedService model = new LinkedService()
-            .withConnectVia(new IntegrationRuntimeReference()
-                .withReferenceName("tdum").withParameters(mapOf("hjpglkf", "datapxebmnzbt")))
+            .withConnectVia(new IntegrationRuntimeReference().withReferenceName("tdum")
+                .withParameters(mapOf("hjpglkf", "datapxebmnzbt")))
             .withDescription("hdneuelfph")
             .withParameters(mapOf("uvxzxclvi",
                 new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("dataozfikdowwq"), "dsjnka",

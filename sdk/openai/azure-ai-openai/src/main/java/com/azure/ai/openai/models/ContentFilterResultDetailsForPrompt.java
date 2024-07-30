@@ -6,14 +6,18 @@ package com.azure.ai.openai.models;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.models.ResponseError;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Information about content filtering evaluated against input data to Azure OpenAI.
  */
 @Immutable
-public final class ContentFilterResultDetailsForPrompt {
+public final class ContentFilterResultDetailsForPrompt
+    implements JsonSerializable<ContentFilterResultDetailsForPrompt> {
 
     /*
      * Describes language related to anatomical organs and genitals, romantic relationships,
@@ -22,7 +26,6 @@ public final class ContentFilterResultDetailsForPrompt {
      * prostitution, pornography, and abuse.
      */
     @Generated
-    @JsonProperty(value = "sexual")
     private ContentFilterResult sexual;
 
     /*
@@ -30,7 +33,6 @@ public final class ContentFilterResultDetailsForPrompt {
      * kill someone or something; describes weapons, etc.
      */
     @Generated
-    @JsonProperty(value = "violence")
     private ContentFilterResult violence;
 
     /*
@@ -41,7 +43,6 @@ public final class ContentFilterResultDetailsForPrompt {
      * status, personal appearance, and body size.
      */
     @Generated
-    @JsonProperty(value = "hate")
     private ContentFilterResult hate;
 
     /*
@@ -49,36 +50,31 @@ public final class ContentFilterResultDetailsForPrompt {
      * or damage one’s body, or kill oneself.
      */
     @Generated
-    @JsonProperty(value = "self_harm")
     private ContentFilterResult selfHarm;
 
     /*
      * Describes whether profanity was detected.
      */
     @Generated
-    @JsonProperty(value = "profanity")
     private ContentFilterDetectionResult profanity;
 
     /*
      * Describes detection results against configured custom blocklists.
      */
     @Generated
-    @JsonProperty(value = "custom_blocklists")
-    private List<ContentFilterBlocklistIdResult> customBlocklists;
+    private ContentFilterDetailedResults customBlocklists;
 
     /*
      * Describes an error returned if the content filtering system is
      * down or otherwise unable to complete the operation in time.
      */
     @Generated
-    @JsonProperty(value = "error")
     private ResponseError error;
 
     /*
      * Whether a jailbreak attempt was detected in the prompt.
      */
     @Generated
-    @JsonProperty(value = "jailbreak")
     private ContentFilterDetectionResult jailbreak;
 
     /**
@@ -146,7 +142,7 @@ public final class ContentFilterResultDetailsForPrompt {
      * @return the customBlocklists value.
      */
     @Generated
-    public List<ContentFilterBlocklistIdResult> getCustomBlocklists() {
+    public ContentFilterDetailedResults getCustomBlocklists() {
         return this.customBlocklists;
     }
 
@@ -176,5 +172,86 @@ public final class ContentFilterResultDetailsForPrompt {
      */
     @Generated
     private ContentFilterResultDetailsForPrompt() {
+    }
+
+    /*
+     * Whether an indirect attack was detected in the prompt.
+     */
+    @Generated
+    private ContentFilterDetectionResult indirectAttack;
+
+    /**
+     * Get the indirectAttack property: Whether an indirect attack was detected in the prompt.
+     *
+     * @return the indirectAttack value.
+     */
+    @Generated
+    public ContentFilterDetectionResult getIndirectAttack() {
+        return this.indirectAttack;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sexual", this.sexual);
+        jsonWriter.writeJsonField("violence", this.violence);
+        jsonWriter.writeJsonField("hate", this.hate);
+        jsonWriter.writeJsonField("self_harm", this.selfHarm);
+        jsonWriter.writeJsonField("profanity", this.profanity);
+        jsonWriter.writeJsonField("custom_blocklists", this.customBlocklists);
+        jsonWriter.writeJsonField("error", this.error);
+        jsonWriter.writeJsonField("jailbreak", this.jailbreak);
+        jsonWriter.writeJsonField("indirect_attack", this.indirectAttack);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContentFilterResultDetailsForPrompt from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContentFilterResultDetailsForPrompt if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContentFilterResultDetailsForPrompt.
+     */
+    @Generated
+    public static ContentFilterResultDetailsForPrompt fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContentFilterResultDetailsForPrompt deserializedContentFilterResultDetailsForPrompt
+                = new ContentFilterResultDetailsForPrompt();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("sexual".equals(fieldName)) {
+                    deserializedContentFilterResultDetailsForPrompt.sexual = ContentFilterResult.fromJson(reader);
+                } else if ("violence".equals(fieldName)) {
+                    deserializedContentFilterResultDetailsForPrompt.violence = ContentFilterResult.fromJson(reader);
+                } else if ("hate".equals(fieldName)) {
+                    deserializedContentFilterResultDetailsForPrompt.hate = ContentFilterResult.fromJson(reader);
+                } else if ("self_harm".equals(fieldName)) {
+                    deserializedContentFilterResultDetailsForPrompt.selfHarm = ContentFilterResult.fromJson(reader);
+                } else if ("profanity".equals(fieldName)) {
+                    deserializedContentFilterResultDetailsForPrompt.profanity
+                        = ContentFilterDetectionResult.fromJson(reader);
+                } else if ("custom_blocklists".equals(fieldName)) {
+                    deserializedContentFilterResultDetailsForPrompt.customBlocklists
+                        = ContentFilterDetailedResults.fromJson(reader);
+                } else if ("error".equals(fieldName)) {
+                    deserializedContentFilterResultDetailsForPrompt.error = ResponseError.fromJson(reader);
+                } else if ("jailbreak".equals(fieldName)) {
+                    deserializedContentFilterResultDetailsForPrompt.jailbreak
+                        = ContentFilterDetectionResult.fromJson(reader);
+                } else if ("indirect_attack".equals(fieldName)) {
+                    deserializedContentFilterResultDetailsForPrompt.indirectAttack
+                        = ContentFilterDetectionResult.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedContentFilterResultDetailsForPrompt;
+        });
     }
 }

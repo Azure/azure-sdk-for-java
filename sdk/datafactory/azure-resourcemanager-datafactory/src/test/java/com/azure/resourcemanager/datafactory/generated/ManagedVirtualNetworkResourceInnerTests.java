@@ -22,8 +22,8 @@ public final class ManagedVirtualNetworkResourceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedVirtualNetworkResourceInner model
-            = new ManagedVirtualNetworkResourceInner().withId("wpusxjbaqehg").withProperties(new ManagedVirtualNetwork()
+        ManagedVirtualNetworkResourceInner model = new ManagedVirtualNetworkResourceInner().withId("wpusxjbaqehg")
+            .withProperties(new ManagedVirtualNetwork()
                 .withAdditionalProperties(mapOf("vNetId", "ajinnixjawrtmjfj", "alias", "ccxlzhcoxovnek")));
         model = BinaryData.fromObject(model).toObject(ManagedVirtualNetworkResourceInner.class);
         Assertions.assertEquals("wpusxjbaqehg", model.id());

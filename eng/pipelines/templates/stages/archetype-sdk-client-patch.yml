@@ -14,9 +14,6 @@ parameters:
 - name: BuildParallelization
   type: string
   default: '2C'
-- name: UseEsrpRelease
-  type: boolean
-  default: true
 - name: JavaBuildVersion
   type: string
   default: $(JavaBuildVersion)
@@ -60,6 +57,7 @@ extends:
                   Paths:
                     - '**/*.xml'
                     - '**/*.md'
+                    - '**/*.yml'
                     - '!sdk/**/test-recordings/*'
                     - '!sdk/**/session-records/*'
 
@@ -172,7 +170,7 @@ extends:
                 ArtifactPath: '$(Build.ArtifactStagingDirectory)/_manifest'
                 ArtifactName: 'manifest'
 
-            - template: /eng/pipelines/templates/steps/clean-maven-local-cache.yml
+            - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
 
         - job: 'AnalyzeAndVerify'
           condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
@@ -319,4 +317,3 @@ extends:
             TestPipeline: ${{ parameters.TestPipeline }}
             ArtifactName: packages
             TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
-            UseEsrpRelease: ${{ parameters.UseEsrpRelease }}

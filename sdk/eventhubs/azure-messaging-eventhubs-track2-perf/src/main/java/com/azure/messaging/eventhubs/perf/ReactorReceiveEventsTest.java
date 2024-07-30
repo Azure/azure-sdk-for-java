@@ -90,7 +90,7 @@ public class ReactorReceiveEventsTest extends ServiceTest<EventHubsReceiveOption
             connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
             connectionOptions.getAuthorizationScope());
         final ReactorProvider provider = new ReactorProvider();
-        final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
+        final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider, null);
         final AmqpLinkProvider linkProvider = new AmqpLinkProvider();
         final PerfMessageSerializer messageSerializer = new PerfMessageSerializer();
         connection = new ReactorConnection(connectionId,

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.frontdoor.models.NetworkExperimentResourceState
 import com.azure.resourcemanager.frontdoor.models.State;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines the properties of an experiment. */
+/**
+ * Defines the properties of an experiment.
+ */
 @Fluent
 public final class ExperimentProperties {
     /*
@@ -55,13 +57,15 @@ public final class ExperimentProperties {
     @JsonProperty(value = "scriptFileUri", access = JsonProperty.Access.WRITE_ONLY)
     private String scriptFileUri;
 
-    /** Creates an instance of ExperimentProperties class. */
+    /**
+     * Creates an instance of ExperimentProperties class.
+     */
     public ExperimentProperties() {
     }
 
     /**
      * Get the description property: The description of the details or intents of the Experiment.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -70,7 +74,7 @@ public final class ExperimentProperties {
 
     /**
      * Set the description property: The description of the details or intents of the Experiment.
-     *
+     * 
      * @param description the description value to set.
      * @return the ExperimentProperties object itself.
      */
@@ -81,7 +85,7 @@ public final class ExperimentProperties {
 
     /**
      * Get the endpointA property: The endpoint A of an experiment.
-     *
+     * 
      * @return the endpointA value.
      */
     public Endpoint endpointA() {
@@ -90,7 +94,7 @@ public final class ExperimentProperties {
 
     /**
      * Set the endpointA property: The endpoint A of an experiment.
-     *
+     * 
      * @param endpointA the endpointA value to set.
      * @return the ExperimentProperties object itself.
      */
@@ -101,7 +105,7 @@ public final class ExperimentProperties {
 
     /**
      * Get the endpointB property: The endpoint B of an experiment.
-     *
+     * 
      * @return the endpointB value.
      */
     public Endpoint endpointB() {
@@ -110,7 +114,7 @@ public final class ExperimentProperties {
 
     /**
      * Set the endpointB property: The endpoint B of an experiment.
-     *
+     * 
      * @param endpointB the endpointB value to set.
      * @return the ExperimentProperties object itself.
      */
@@ -121,7 +125,7 @@ public final class ExperimentProperties {
 
     /**
      * Get the enabledState property: The state of the Experiment.
-     *
+     * 
      * @return the enabledState value.
      */
     public State enabledState() {
@@ -130,7 +134,7 @@ public final class ExperimentProperties {
 
     /**
      * Set the enabledState property: The state of the Experiment.
-     *
+     * 
      * @param enabledState the enabledState value to set.
      * @return the ExperimentProperties object itself.
      */
@@ -141,7 +145,7 @@ public final class ExperimentProperties {
 
     /**
      * Get the resourceState property: Resource status.
-     *
+     * 
      * @return the resourceState value.
      */
     public NetworkExperimentResourceState resourceState() {
@@ -150,7 +154,7 @@ public final class ExperimentProperties {
 
     /**
      * Get the status property: The description of Experiment status from the server side.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -159,7 +163,7 @@ public final class ExperimentProperties {
 
     /**
      * Get the scriptFileUri property: The uri to the Script used in the Experiment.
-     *
+     * 
      * @return the scriptFileUri value.
      */
     public String scriptFileUri() {
@@ -168,7 +172,7 @@ public final class ExperimentProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

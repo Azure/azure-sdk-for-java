@@ -9,7 +9,9 @@ import com.azure.resourcemanager.resources.fluent.models.ResourceGroupInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of resource groups. */
+/**
+ * List of resource groups.
+ */
 @Fluent
 public final class ResourceGroupListResult {
     /*
@@ -24,13 +26,15 @@ public final class ResourceGroupListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ResourceGroupListResult class. */
+    /**
+     * Creates an instance of ResourceGroupListResult class.
+     */
     public ResourceGroupListResult() {
     }
 
     /**
      * Get the value property: An array of resource groups.
-     *
+     * 
      * @return the value value.
      */
     public List<ResourceGroupInner> value() {
@@ -39,7 +43,7 @@ public final class ResourceGroupListResult {
 
     /**
      * Set the value property: An array of resource groups.
-     *
+     * 
      * @param value the value value to set.
      * @return the ResourceGroupListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class ResourceGroupListResult {
 
     /**
      * Get the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ResourceGroupListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

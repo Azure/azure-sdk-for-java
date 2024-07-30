@@ -151,8 +151,9 @@ public final class ActiveDirectoryAdministratorInner extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model ActiveDirectoryAdministratorInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model ActiveDirectoryAdministratorInner"));
         } else {
             innerProperties().validate();
         }

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitPeerin
  */
 public final class ExpressRouteCircuitPeeringsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * ExpressRouteCircuitPeeringCreate.json
      */
     /**
@@ -20,10 +20,15 @@ public final class ExpressRouteCircuitPeeringsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createExpressRouteCircuitPeerings(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getExpressRouteCircuitPeerings().createOrUpdate("rg1", "circuitName",
-            "AzurePrivatePeering",
-            new ExpressRouteCircuitPeeringInner().withPeerAsn(200L).withPrimaryPeerAddressPrefix("192.168.16.252/30")
-                .withSecondaryPeerAddressPrefix("192.168.18.252/30").withVlanId(200),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getExpressRouteCircuitPeerings()
+            .createOrUpdate("rg1", "circuitName", "AzurePrivatePeering",
+                new ExpressRouteCircuitPeeringInner().withPeerAsn(200L)
+                    .withPrimaryPeerAddressPrefix("192.168.16.252/30")
+                    .withSecondaryPeerAddressPrefix("192.168.18.252/30")
+                    .withVlanId(200),
+                com.azure.core.util.Context.NONE);
     }
 }

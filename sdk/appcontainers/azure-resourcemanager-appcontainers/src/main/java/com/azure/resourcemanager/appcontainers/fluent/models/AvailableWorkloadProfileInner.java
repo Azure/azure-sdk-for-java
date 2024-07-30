@@ -6,31 +6,57 @@ package com.azure.resourcemanager.appcontainers.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appcontainers.models.AvailableWorkloadProfileProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** A workload profile with specific hardware configure to run container apps. */
+/**
+ * A workload profile with specific hardware configure to run container apps.
+ */
 @Fluent
 public final class AvailableWorkloadProfileInner extends ProxyResource {
     /*
      * Region of the workload profile.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Revision resource specific properties
      */
-    @JsonProperty(value = "properties")
     private AvailableWorkloadProfileProperties properties;
 
-    /** Creates an instance of AvailableWorkloadProfileInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of AvailableWorkloadProfileInner class.
+     */
     public AvailableWorkloadProfileInner() {
     }
 
     /**
      * Get the location property: Region of the workload profile.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -39,7 +65,7 @@ public final class AvailableWorkloadProfileInner extends ProxyResource {
 
     /**
      * Set the location property: Region of the workload profile.
-     *
+     * 
      * @param location the location value to set.
      * @return the AvailableWorkloadProfileInner object itself.
      */
@@ -50,7 +76,7 @@ public final class AvailableWorkloadProfileInner extends ProxyResource {
 
     /**
      * Get the properties property: Revision resource specific properties.
-     *
+     * 
      * @return the properties value.
      */
     public AvailableWorkloadProfileProperties properties() {
@@ -59,7 +85,7 @@ public final class AvailableWorkloadProfileInner extends ProxyResource {
 
     /**
      * Set the properties property: Revision resource specific properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the AvailableWorkloadProfileInner object itself.
      */
@@ -69,13 +95,102 @@ public final class AvailableWorkloadProfileInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailableWorkloadProfileInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailableWorkloadProfileInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AvailableWorkloadProfileInner.
+     */
+    public static AvailableWorkloadProfileInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailableWorkloadProfileInner deserializedAvailableWorkloadProfileInner
+                = new AvailableWorkloadProfileInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAvailableWorkloadProfileInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAvailableWorkloadProfileInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAvailableWorkloadProfileInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedAvailableWorkloadProfileInner.location = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAvailableWorkloadProfileInner.properties
+                        = AvailableWorkloadProfileProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedAvailableWorkloadProfileInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailableWorkloadProfileInner;
+        });
     }
 }

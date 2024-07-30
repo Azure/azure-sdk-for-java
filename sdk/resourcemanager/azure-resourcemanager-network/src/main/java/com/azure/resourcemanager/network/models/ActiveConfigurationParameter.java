@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -20,8 +21,8 @@ public final class ActiveConfigurationParameter {
     private List<String> regions;
 
     /*
-     * When present, the value can be passed to a subsequent query call (together with the same query and scopes used
-     * in the current request) to retrieve the next page of data.
+     * When present, the value can be passed to a subsequent query call (together with the same query and scopes used in
+     * the current request) to retrieve the next page of data.
      */
     @JsonProperty(value = "skipToken")
     private String skipToken;
@@ -34,7 +35,7 @@ public final class ActiveConfigurationParameter {
 
     /**
      * Get the regions property: List of regions.
-     * 
+     *
      * @return the regions value.
      */
     public List<String> regions() {
@@ -43,7 +44,7 @@ public final class ActiveConfigurationParameter {
 
     /**
      * Set the regions property: List of regions.
-     * 
+     *
      * @param regions the regions value to set.
      * @return the ActiveConfigurationParameter object itself.
      */
@@ -55,7 +56,7 @@ public final class ActiveConfigurationParameter {
     /**
      * Get the skipToken property: When present, the value can be passed to a subsequent query call (together with the
      * same query and scopes used in the current request) to retrieve the next page of data.
-     * 
+     *
      * @return the skipToken value.
      */
     public String skipToken() {
@@ -65,7 +66,7 @@ public final class ActiveConfigurationParameter {
     /**
      * Set the skipToken property: When present, the value can be passed to a subsequent query call (together with the
      * same query and scopes used in the current request) to retrieve the next page of data.
-     * 
+     *
      * @param skipToken the skipToken value to set.
      * @return the ActiveConfigurationParameter object itself.
      */
@@ -76,7 +77,7 @@ public final class ActiveConfigurationParameter {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

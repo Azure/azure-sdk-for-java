@@ -579,7 +579,7 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     public void setEmptyRoutesNotEmptyBeforeWithResponse(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "setEmptyRoutesNotEmptyBeforeWithResponseSync");
         client.setRoutes(EXPECTED_ROUTES);
-        
+
         PagedIterable<SipTrunkRoute> iter = client.listRoutes();
         validateExpectedRoutes(iter);
 
@@ -814,8 +814,13 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
         List<SipTrunk> trunksList = getAsList(actual);
         assertEquals(expected.size(), trunksList.size());
         for (SipTrunk expectedTrunk : expected) {
-            Optional<SipTrunk> actualTrunk = trunksList.stream()
-                .filter(value -> Objects.equals(expectedTrunk.getFqdn(), value.getFqdn())).findAny();
+            Optional<SipTrunk> actualTrunk = Optional.empty();
+            for (SipTrunk value : trunksList) {
+                if (Objects.equals(expectedTrunk.getFqdn(), value.getFqdn())) {
+                    actualTrunk = Optional.of(value);
+                    break;
+                }
+            }
             assertTrue(actualTrunk.isPresent());
             assertEquals(expectedTrunk.getSipSignalingPort(), actualTrunk.get().getSipSignalingPort());
         }

@@ -11,18 +11,23 @@ public final class RestSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestSource model = BinaryData.fromString(
-            "{\"type\":\"RestSource\",\"requestMethod\":\"datacpbshqzzlcfe\",\"requestBody\":\"dataryxnklfswzsyigx\",\"additionalHeaders\":\"dataxhygc\",\"paginationRules\":\"databapeuqyz\",\"httpRequestTimeout\":\"datasuopcdiaossp\",\"requestInterval\":\"datatgkmrsqaqgllnhgi\",\"additionalColumns\":\"datawzzk\",\"sourceRetryCount\":\"dataqrngl\",\"sourceRetryWait\":\"datatu\",\"maxConcurrentConnections\":\"datafwdkpadktsyy\",\"disableMetricsCollection\":\"dataojrfqtfk\",\"\":{\"xokiffqpwdyzset\":\"datapmdajqpdvvzbej\",\"oij\":\"datamvtqhn\",\"g\":\"datacprkqywyb\",\"lisvqfblsizxpolp\":\"datayomsetzc\"}}")
+            "{\"type\":\"RestSource\",\"requestMethod\":\"datapccfwq\",\"requestBody\":\"dataouqyzxzjehdklvqt\",\"additionalHeaders\":\"dataoc\",\"paginationRules\":\"dataetctjh\",\"httpRequestTimeout\":\"datamoazsjsuevfvnn\",\"requestInterval\":\"dataccvxqbxgq\",\"additionalColumns\":\"datawnriwxe\",\"sourceRetryCount\":\"databv\",\"sourceRetryWait\":\"dataldi\",\"maxConcurrentConnections\":\"dataxsvzwbktalobxl\",\"disableMetricsCollection\":\"datajthmibqgld\",\"\":{\"evjealx\":\"datakalpqlnn\",\"fdkkvijilfqvodz\":\"dataewlwbxuf\"}}")
             .toObject(RestSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RestSource model = new RestSource().withSourceRetryCount("dataqrngl").withSourceRetryWait("datatu")
-            .withMaxConcurrentConnections("datafwdkpadktsyy").withDisableMetricsCollection("dataojrfqtfk")
-            .withRequestMethod("datacpbshqzzlcfe").withRequestBody("dataryxnklfswzsyigx")
-            .withAdditionalHeaders("dataxhygc").withPaginationRules("databapeuqyz")
-            .withHttpRequestTimeout("datasuopcdiaossp").withRequestInterval("datatgkmrsqaqgllnhgi")
-            .withAdditionalColumns("datawzzk");
+        RestSource model = new RestSource().withSourceRetryCount("databv")
+            .withSourceRetryWait("dataldi")
+            .withMaxConcurrentConnections("dataxsvzwbktalobxl")
+            .withDisableMetricsCollection("datajthmibqgld")
+            .withRequestMethod("datapccfwq")
+            .withRequestBody("dataouqyzxzjehdklvqt")
+            .withAdditionalHeaders("dataoc")
+            .withPaginationRules("dataetctjh")
+            .withHttpRequestTimeout("datamoazsjsuevfvnn")
+            .withRequestInterval("dataccvxqbxgq")
+            .withAdditionalColumns("datawnriwxe");
         model = BinaryData.fromObject(model).toObject(RestSource.class);
     }
 }

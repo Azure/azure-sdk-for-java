@@ -42,6 +42,12 @@ parameters:
     default: ''
   - name: OSName
     type: string
+  - name: TimeoutInMinutes
+    type: number
+    default: 60
+  - name: EnvVars
+    type: object
+    default: {}
 
 jobs:
   - job:
@@ -70,8 +76,9 @@ jobs:
     variables:
       - template: /eng/pipelines/templates/variables/globals.yml
 
+    timeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
+
     templateContext:
-      outputParentDirectory: '$(System.DefaultWorkingDirectory)'
       outputs:
         # Troubleshooting artifacts are creating in the staging directory under the folder 'troubleshooting'.
         # This will contain things such as heap dumps hprofs if testing hit OutOfMemory errors, log files captured
@@ -142,8 +149,9 @@ jobs:
           TestOptions: ${{ parameters.TestOptions }}
           TestParallelization: ${{ parameters.TestParallelization }}
           BuildParallelization: ${{ parameters.BuildParallelization }}
+          TestEnvVars: ${{ parameters.EnvVars }}
 
-      - template: /eng/pipelines/templates/steps/clean-maven-local-cache.yml
+      - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
 
       # Shut down proxy to prevent file locks on the log file for auto-injected credscan
       # steps on windows

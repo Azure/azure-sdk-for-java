@@ -7,6 +7,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
@@ -16,10 +17,21 @@ import java.util.Map;
 /**
  * IaaS VM workload specific backup copy.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "objectType",
+    defaultImpl = IaasVMRecoveryPoint.class,
+    visible = true)
 @JsonTypeName("IaasVMRecoveryPoint")
 @Fluent
 public final class IaasVMRecoveryPoint extends RecoveryPoint {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "objectType", required = true)
+    private String objectType = "IaasVMRecoveryPoint";
+
     /*
      * Type of the backup copy.
      */
@@ -140,6 +152,17 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
      * Creates an instance of IaasVMRecoveryPoint class.
      */
     public IaasVMRecoveryPoint() {
+    }
+
+    /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
     }
 
     /**
@@ -407,8 +430,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
     }
 
     /**
-     * Get the zones property: Identifies the zone of the VM at the time of backup. Applicable only for zone-pinned
-     * Vms.
+     * Get the zones property: Identifies the zone of the VM at the time of backup. Applicable only for zone-pinned Vms.
      * 
      * @return the zones value.
      */
@@ -417,8 +439,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
     }
 
     /**
-     * Set the zones property: Identifies the zone of the VM at the time of backup. Applicable only for zone-pinned
-     * Vms.
+     * Set the zones property: Identifies the zone of the VM at the time of backup. Applicable only for zone-pinned Vms.
      * 
      * @param zones the zones value to set.
      * @return the IaasVMRecoveryPoint object itself.

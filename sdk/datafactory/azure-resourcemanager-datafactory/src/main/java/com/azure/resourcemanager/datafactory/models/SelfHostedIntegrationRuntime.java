@@ -7,16 +7,28 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.datafactory.fluent.models.SelfHostedIntegrationRuntimeTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Self-hosted integration runtime.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = SelfHostedIntegrationRuntime.class,
+    visible = true)
 @JsonTypeName("SelfHosted")
 @Fluent
 public final class SelfHostedIntegrationRuntime extends IntegrationRuntime {
+    /*
+     * Type of integration runtime.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private IntegrationRuntimeType type = IntegrationRuntimeType.SELF_HOSTED;
+
     /*
      * When this property is not null, means this is a linked integration runtime. The property is used to access
      * original integration runtime.
@@ -31,8 +43,18 @@ public final class SelfHostedIntegrationRuntime extends IntegrationRuntime {
     }
 
     /**
-     * Get the innerTypeProperties property: When this property is not null, means this is a linked integration
-     * runtime. The property is used to access original integration runtime.
+     * Get the type property: Type of integration runtime.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public IntegrationRuntimeType type() {
+        return this.type;
+    }
+
+    /**
+     * Get the innerTypeProperties property: When this property is not null, means this is a linked integration runtime.
+     * The property is used to access original integration runtime.
      * 
      * @return the innerTypeProperties value.
      */
@@ -79,7 +101,8 @@ public final class SelfHostedIntegrationRuntime extends IntegrationRuntime {
      * @return the selfContainedInteractiveAuthoringEnabled value.
      */
     public Boolean selfContainedInteractiveAuthoringEnabled() {
-        return this.innerTypeProperties() == null ? null
+        return this.innerTypeProperties() == null
+            ? null
             : this.innerTypeProperties().selfContainedInteractiveAuthoringEnabled();
     }
 

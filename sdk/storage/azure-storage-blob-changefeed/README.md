@@ -10,6 +10,7 @@ process change events that occur in your Blob Storage account at a low cost.
 ### Prerequisites
 
 - [Java Development Kit (JDK)][jdk] with version 8 or above
+  - Here are details about [Java 8 client compatibility with Azure Certificate Authority](https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis).
 - [Azure Subscription][azure_subscription]
 - [Create Storage Account][storage_account]
 
@@ -20,7 +21,7 @@ process change events that occur in your Blob Storage account at a low cost.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob-changefeed</artifactId>
-    <version>12.0.0-beta.18</version>
+    <version>12.0.0-beta.22</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

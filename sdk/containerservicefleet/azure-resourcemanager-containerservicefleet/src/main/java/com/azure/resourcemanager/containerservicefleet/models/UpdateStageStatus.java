@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The status of a UpdateStage. */
+/**
+ * The status of a UpdateStage.
+ */
 @Immutable
 public final class UpdateStageStatus {
     /*
@@ -35,13 +37,15 @@ public final class UpdateStageStatus {
     @JsonProperty(value = "afterStageWaitStatus", access = JsonProperty.Access.WRITE_ONLY)
     private WaitStatus afterStageWaitStatus;
 
-    /** Creates an instance of UpdateStageStatus class. */
+    /**
+     * Creates an instance of UpdateStageStatus class.
+     */
     public UpdateStageStatus() {
     }
 
     /**
      * Get the status property: The status of the UpdateStage.
-     *
+     * 
      * @return the status value.
      */
     public UpdateStatus status() {
@@ -50,7 +54,7 @@ public final class UpdateStageStatus {
 
     /**
      * Get the name property: The name of the UpdateStage.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -59,7 +63,7 @@ public final class UpdateStageStatus {
 
     /**
      * Get the groups property: The list of groups to be updated as part of this UpdateStage.
-     *
+     * 
      * @return the groups value.
      */
     public List<UpdateGroupStatus> groups() {
@@ -68,7 +72,7 @@ public final class UpdateStageStatus {
 
     /**
      * Get the afterStageWaitStatus property: The status of the wait period configured on the UpdateStage.
-     *
+     * 
      * @return the afterStageWaitStatus value.
      */
     public WaitStatus afterStageWaitStatus() {
@@ -77,7 +81,7 @@ public final class UpdateStageStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

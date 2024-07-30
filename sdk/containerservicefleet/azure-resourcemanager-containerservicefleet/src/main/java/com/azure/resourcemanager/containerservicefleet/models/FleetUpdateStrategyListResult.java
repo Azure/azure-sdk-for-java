@@ -10,7 +10,9 @@ import com.azure.resourcemanager.containerservicefleet.fluent.models.FleetUpdate
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response of a FleetUpdateStrategy list operation. */
+/**
+ * The response of a FleetUpdateStrategy list operation.
+ */
 @Fluent
 public final class FleetUpdateStrategyListResult {
     /*
@@ -25,13 +27,15 @@ public final class FleetUpdateStrategyListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of FleetUpdateStrategyListResult class. */
+    /**
+     * Creates an instance of FleetUpdateStrategyListResult class.
+     */
     public FleetUpdateStrategyListResult() {
     }
 
     /**
      * Get the value property: The FleetUpdateStrategy items on this page.
-     *
+     * 
      * @return the value value.
      */
     public List<FleetUpdateStrategyInner> value() {
@@ -40,7 +44,7 @@ public final class FleetUpdateStrategyListResult {
 
     /**
      * Set the value property: The FleetUpdateStrategy items on this page.
-     *
+     * 
      * @param value the value value to set.
      * @return the FleetUpdateStrategyListResult object itself.
      */
@@ -51,7 +55,7 @@ public final class FleetUpdateStrategyListResult {
 
     /**
      * Get the nextLink property: The link to the next page of items.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +64,7 @@ public final class FleetUpdateStrategyListResult {
 
     /**
      * Set the nextLink property: The link to the next page of items.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the FleetUpdateStrategyListResult object itself.
      */
@@ -71,15 +75,14 @@ public final class FleetUpdateStrategyListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model FleetUpdateStrategyListResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model FleetUpdateStrategyListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

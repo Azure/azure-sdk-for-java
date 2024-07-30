@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WafRuleType. */
+/**
+ * Defines values for WafRuleType.
+ */
 public final class WafRuleType extends ExpandableStringEnum<WafRuleType> {
-    /** Static value managed for WafRuleType. */
+    /**
+     * Static value managed for WafRuleType.
+     */
     public static final WafRuleType MANAGED = fromString("managed");
 
-    /** Static value custom for WafRuleType. */
+    /**
+     * Static value custom for WafRuleType.
+     */
     public static final WafRuleType CUSTOM = fromString("custom");
 
-    /** Static value bot for WafRuleType. */
+    /**
+     * Static value bot for WafRuleType.
+     */
     public static final WafRuleType BOT = fromString("bot");
 
     /**
      * Creates a new instance of WafRuleType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class WafRuleType extends ExpandableStringEnum<WafRuleType> {
 
     /**
      * Creates or finds a WafRuleType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WafRuleType.
      */
@@ -41,7 +49,7 @@ public final class WafRuleType extends ExpandableStringEnum<WafRuleType> {
 
     /**
      * Gets known WafRuleType values.
-     *
+     * 
      * @return known WafRuleType values.
      */
     public static Collection<WafRuleType> values() {

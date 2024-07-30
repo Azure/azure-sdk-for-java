@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class UserAccessPolicy {
     /*
-     * The string with permissions for Data Plane access. Currently only 'r' is supported which grants read only
-     * access.
+     * The string with permissions for Data Plane access. Currently only 'r' is supported which grants read only access.
      */
     @JsonProperty(value = "permissions")
     private String permissions;
@@ -39,8 +38,8 @@ public final class UserAccessPolicy {
     private String startTime;
 
     /*
-     * Expiration time for the token. Maximum duration for the token is eight hours and by default the token will
-     * expire in eight hours.
+     * Expiration time for the token. Maximum duration for the token is eight hours and by default the token will expire
+     * in eight hours.
      */
     @JsonProperty(value = "expireTime")
     private String expireTime;
@@ -96,8 +95,8 @@ public final class UserAccessPolicy {
     }
 
     /**
-     * Get the profileName property: The name of the profile. Currently only the default is supported. The default
-     * value is DefaultProfile.
+     * Get the profileName property: The name of the profile. Currently only the default is supported. The default value
+     * is DefaultProfile.
      * 
      * @return the profileName value.
      */
@@ -106,8 +105,8 @@ public final class UserAccessPolicy {
     }
 
     /**
-     * Set the profileName property: The name of the profile. Currently only the default is supported. The default
-     * value is DefaultProfile.
+     * Set the profileName property: The name of the profile. Currently only the default is supported. The default value
+     * is DefaultProfile.
      * 
      * @param profileName the profileName value to set.
      * @return the UserAccessPolicy object itself.

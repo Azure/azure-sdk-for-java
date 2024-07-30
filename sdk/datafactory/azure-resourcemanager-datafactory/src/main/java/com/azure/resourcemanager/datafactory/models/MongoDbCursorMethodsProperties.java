@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -18,8 +18,8 @@ import java.util.Map;
 @Fluent
 public final class MongoDbCursorMethodsProperties {
     /*
-     * Specifies the fields to return in the documents that match the query filter. To return all fields in the
-     * matching documents, omit this parameter. Type: string (or Expression with resultType string).
+     * Specifies the fields to return in the documents that match the query filter. To return all fields in the matching
+     * documents, omit this parameter. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "project")
     private Object project;
@@ -124,8 +124,8 @@ public final class MongoDbCursorMethodsProperties {
     }
 
     /**
-     * Get the limit property: Specifies the maximum number of documents the server returns. limit() is analogous to
-     * the LIMIT statement in a SQL database. Type: integer (or Expression with resultType integer).
+     * Get the limit property: Specifies the maximum number of documents the server returns. limit() is analogous to the
+     * LIMIT statement in a SQL database. Type: integer (or Expression with resultType integer).
      * 
      * @return the limit value.
      */
@@ -134,8 +134,8 @@ public final class MongoDbCursorMethodsProperties {
     }
 
     /**
-     * Set the limit property: Specifies the maximum number of documents the server returns. limit() is analogous to
-     * the LIMIT statement in a SQL database. Type: integer (or Expression with resultType integer).
+     * Set the limit property: Specifies the maximum number of documents the server returns. limit() is analogous to the
+     * LIMIT statement in a SQL database. Type: integer (or Expression with resultType integer).
      * 
      * @param limit the limit value to set.
      * @return the MongoDbCursorMethodsProperties object itself.
@@ -169,7 +169,7 @@ public final class MongoDbCursorMethodsProperties {
     @JsonAnySetter
     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }

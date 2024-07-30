@@ -18,7 +18,7 @@ import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
 import com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.test.utils.TestUtils;
+import com.azure.core.implementation.util.HttpUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
@@ -70,6 +70,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -89,9 +90,12 @@ import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestS
 import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer.SHORT_POST_BODY_PATH;
 import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer.SHORT_POST_BODY_WITH_VALIDATION_PATH;
 import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer.TEST_HEADER;
+import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer.TIMEOUT;
+import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -237,7 +241,7 @@ public class NettyAsyncHttpClientTests {
             .flatMap(response -> Mono.using(() -> response, HttpResponse::getBodyAsByteArray, HttpResponse::close));
 
         StepVerifier.create(responses).thenConsumeWhile(response -> {
-            TestUtils.assertArraysEqual(LONG_BODY, response);
+            assertArraysEqual(LONG_BODY, response);
             return true;
         }).expectComplete().verify(Duration.ofSeconds(60));
     }
@@ -254,7 +258,7 @@ public class NettyAsyncHttpClientTests {
                 requests.add(() -> {
                     try (HttpResponse response = doRequestSync(client, "/long")) {
                         byte[] body = response.getBodyAsBinaryData().toBytes();
-                        TestUtils.assertArraysEqual(LONG_BODY, body);
+                        assertArraysEqual(LONG_BODY, body);
                         return null;
                     }
                 });
@@ -588,6 +592,46 @@ public class NettyAsyncHttpClientTests {
                     .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress()))
                     .build();
             assertNotEquals(NoopAddressResolverGroup.INSTANCE, httpClient.nettyClient.configuration().resolver());
+        }
+    }
+
+    @Test
+    public void perCallTimeout() {
+        HttpClient client = new NettyAsyncHttpClientBuilder().responseTimeout(Duration.ofSeconds(10)).build();
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(TIMEOUT));
+
+        // Verify a smaller timeout sent through Context times out the request.
+        StepVerifier.create(client.send(request, new Context(HttpUtils.AZURE_RESPONSE_TIMEOUT, Duration.ofSeconds(1))))
+            .expectErrorMatches(e -> e instanceof TimeoutException)
+            .verify();
+
+        // Then verify not setting a timeout through Context does not time out the request.
+        StepVerifier.create(client.send(request)
+            .flatMap(response -> Mono.zip(FluxUtil.collectBytesInByteBufferStream(response.getBody()),
+                Mono.just(response.getStatusCode()))))
+            .assertNext(tuple -> {
+                assertArraysEqual(SHORT_BODY, tuple.getT1());
+                assertEquals(200, tuple.getT2());
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void perCallTimeoutSync() {
+        HttpClient client = new NettyAsyncHttpClientBuilder().responseTimeout(Duration.ofSeconds(10)).build();
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(TIMEOUT));
+
+        // Verify a smaller timeout sent through Context times out the request.
+        RuntimeException ex = assertThrows(RuntimeException.class,
+            () -> client.sendSync(request, new Context(HttpUtils.AZURE_RESPONSE_TIMEOUT, Duration.ofSeconds(1))));
+        assertInstanceOf(TimeoutException.class, ex.getCause());
+
+        // Then verify not setting a timeout through Context does not time out the request.
+        try (HttpResponse response = client.sendSync(request, Context.NONE)) {
+            assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
+            assertEquals(200, response.getStatusCode());
         }
     }
 

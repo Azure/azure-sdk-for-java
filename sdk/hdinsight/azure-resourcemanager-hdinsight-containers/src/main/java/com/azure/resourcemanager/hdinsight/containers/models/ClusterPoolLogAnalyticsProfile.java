@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Cluster pool log analytics profile used to enable or disable OMS agent for AKS cluster. */
+/**
+ * Cluster pool log analytics profile used to enable or disable OMS agent for AKS cluster.
+ */
 @Fluent
 public class ClusterPoolLogAnalyticsProfile {
     /*
@@ -22,13 +24,15 @@ public class ClusterPoolLogAnalyticsProfile {
     @JsonProperty(value = "workspaceId")
     private String workspaceId;
 
-    /** Creates an instance of ClusterPoolLogAnalyticsProfile class. */
+    /**
+     * Creates an instance of ClusterPoolLogAnalyticsProfile class.
+     */
     public ClusterPoolLogAnalyticsProfile() {
     }
 
     /**
      * Get the enabled property: True if log analytics is enabled for cluster pool, otherwise false.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -37,7 +41,7 @@ public class ClusterPoolLogAnalyticsProfile {
 
     /**
      * Set the enabled property: True if log analytics is enabled for cluster pool, otherwise false.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ClusterPoolLogAnalyticsProfile object itself.
      */
@@ -48,7 +52,7 @@ public class ClusterPoolLogAnalyticsProfile {
 
     /**
      * Get the workspaceId property: Log analytics workspace to associate with the OMS agent.
-     *
+     * 
      * @return the workspaceId value.
      */
     public String workspaceId() {
@@ -57,7 +61,7 @@ public class ClusterPoolLogAnalyticsProfile {
 
     /**
      * Set the workspaceId property: Log analytics workspace to associate with the OMS agent.
-     *
+     * 
      * @param workspaceId the workspaceId value to set.
      * @return the ClusterPoolLogAnalyticsProfile object itself.
      */
@@ -68,7 +72,7 @@ public class ClusterPoolLogAnalyticsProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

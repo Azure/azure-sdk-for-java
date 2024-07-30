@@ -6,9 +6,11 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.security.attestation.models.AttestationData;
 import com.azure.security.attestation.models.AttestationDataInterpretation;
@@ -45,7 +47,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
+@LiveOnly
 public class AttestationTest extends AttestationClientTestBase {
+    // LiveOnly because "JWT cannot be stored in recordings."
     private static final String RUNTIME_DATA = "CiAgICAgICAgewogICAgICAgICAgICAiandrIiA6IHsKICAgICAgICAgICAgICAgICJrdHk"
         + "iOiJFQyIsCiAgICAgICAgICAgICAgICAidXNlIjoic2lnIiwKICAgICAgICAgICAgICAgICJjcnYiOiJQLTI1NiIsCiAgICAgICAgICAgICA"
         + "gICAieCI6IjE4d0hMZUlnVzl3Vk42VkQxVHhncHF5MkxzellrTWY2SjhualZBaWJ2aE0iLAogICAgICAgICAgICAgICAgInkiOiJjVjRkUzR"
@@ -354,7 +358,8 @@ public class AttestationTest extends AttestationClientTestBase {
             .setAttestationSigner(new AttestationSigningKey(getIsolatedSigningCertificate(), getIsolatedSigningKey())));
 
         if (result.getPolicyResolution() != PolicyModification.UPDATED) {
-            System.out.printf("Unexpected resolution setting TPM policy: %s", result.getPolicyResolution().toString());
+            LOGGER.log(LogLevel.VERBOSE,
+                () -> "Unexpected resolution setting TPM policy: " + result.getPolicyResolution());
             return;
         }
 
@@ -373,11 +378,11 @@ public class AttestationTest extends AttestationClientTestBase {
 
         Object deserializedResponse = assertDoesNotThrow(() -> ADAPTER.deserialize(tpmResponse.getTpmResult().toBytes(),
             Object.class, SerializerEncoding.JSON));
-        assertTrue(deserializedResponse instanceof LinkedHashMap);
+        assertInstanceOf(LinkedHashMap.class, deserializedResponse);
         @SuppressWarnings("unchecked")
         LinkedHashMap<String, Object> initialResponse = (LinkedHashMap<String, Object>) deserializedResponse;
         assertTrue(initialResponse.containsKey("payload"));
-        assertTrue(initialResponse.get("payload") instanceof LinkedHashMap);
+        assertInstanceOf(LinkedHashMap.class, initialResponse.get("payload"));
         @SuppressWarnings("unchecked")
         LinkedHashMap<String, Object> payload = (LinkedHashMap<String, Object>) initialResponse.get("payload");
         assertTrue(payload.containsKey("challenge"));
@@ -402,7 +407,8 @@ public class AttestationTest extends AttestationClientTestBase {
             .setAttestationSigner(new AttestationSigningKey(getIsolatedSigningCertificate(), getIsolatedSigningKey())));
 
         if (result.getPolicyResolution() != PolicyModification.UPDATED) {
-            System.out.printf("Unexpected resolution setting TPM policy: %s", result.getPolicyResolution().toString());
+            LOGGER.log(LogLevel.VERBOSE,
+                () -> "Unexpected resolution setting TPM policy: " + result.getPolicyResolution());
             return;
         }
 
@@ -423,11 +429,11 @@ public class AttestationTest extends AttestationClientTestBase {
 
         Object deserializedResponse = assertDoesNotThrow(() -> ADAPTER.deserialize(
             tpmResponse.getValue().getTpmResult().toBytes(), Object.class, SerializerEncoding.JSON));
-        assertTrue(deserializedResponse instanceof LinkedHashMap);
+        assertInstanceOf(LinkedHashMap.class, deserializedResponse);
         @SuppressWarnings("unchecked")
         LinkedHashMap<String, Object> initialResponse = (LinkedHashMap<String, Object>) deserializedResponse;
         assertTrue(initialResponse.containsKey("payload"));
-        assertTrue(initialResponse.get("payload") instanceof LinkedHashMap);
+        assertInstanceOf(LinkedHashMap.class, initialResponse.get("payload"));
         @SuppressWarnings("unchecked")
         LinkedHashMap<String, Object> payload = (LinkedHashMap<String, Object>) initialResponse.get("payload");
         assertTrue(payload.containsKey("challenge"));
@@ -450,7 +456,8 @@ public class AttestationTest extends AttestationClientTestBase {
             .setAttestationSigner(new AttestationSigningKey(getIsolatedSigningCertificate(), getIsolatedSigningKey())));
 
         if (result.getPolicyResolution() != PolicyModification.UPDATED) {
-            System.out.printf("Unexpected resolution setting TPM policy: %s", result.getPolicyResolution().toString());
+            LOGGER.log(LogLevel.VERBOSE,
+                () -> "Unexpected resolution setting TPM policy: " + result.getPolicyResolution());
             return;
         }
 
@@ -469,11 +476,11 @@ public class AttestationTest extends AttestationClientTestBase {
             .assertNext(tpmResponse -> {
                 Object deserializedResponse = assertDoesNotThrow(() -> ADAPTER.deserialize(
                     tpmResponse.getTpmResult().toBytes(), Object.class, SerializerEncoding.JSON));
-                assertTrue(deserializedResponse instanceof LinkedHashMap);
+                assertInstanceOf(LinkedHashMap.class, deserializedResponse);
                 @SuppressWarnings("unchecked")
                 LinkedHashMap<String, Object> initialResponse = (LinkedHashMap<String, Object>) deserializedResponse;
                 assertTrue(initialResponse.containsKey("payload"));
-                assertTrue(initialResponse.get("payload") instanceof LinkedHashMap);
+                assertInstanceOf(LinkedHashMap.class, initialResponse.get("payload"));
                 @SuppressWarnings("unchecked")
                 LinkedHashMap<String, Object> payload = (LinkedHashMap<String, Object>) initialResponse.get("payload");
                 assertTrue(payload.containsKey("challenge"));
@@ -669,7 +676,7 @@ public class AttestationTest extends AttestationClientTestBase {
         assertNull(result.getNonce());
 
         if (expectJson) {
-            assertTrue(result.getRuntimeClaims() instanceof Map);
+            assertInstanceOf(Map.class, result.getRuntimeClaims());
             @SuppressWarnings("unchecked")
             Map<String, Object> runtimeClaims = (Map<String, Object>) result.getRuntimeClaims();
             Map<String, Object> expectedClaims = assertDoesNotThrow(() ->
@@ -685,7 +692,7 @@ public class AttestationTest extends AttestationClientTestBase {
             LOGGER.verbose("Key: " + key);
             assertTrue(actual.containsKey(key));
             if (expected.get(key) instanceof Map) {
-                assertTrue(actual.get(key) instanceof Map);
+                assertInstanceOf(Map.class, actual.get(key));
                 @SuppressWarnings("unchecked")
                 Map<String, Object> expectedInner = (Map<String, Object>) expected.get(key);
                 @SuppressWarnings("unchecked")

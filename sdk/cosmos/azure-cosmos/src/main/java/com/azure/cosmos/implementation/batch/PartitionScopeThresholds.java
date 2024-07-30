@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.batch;
 
+import com.azure.cosmos.implementation.CosmosBulkExecutionOptionsImpl;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
@@ -20,7 +21,7 @@ public class PartitionScopeThresholds {
     private final static Logger logger = LoggerFactory.getLogger(PartitionScopeThresholds.class);
 
     private final String pkRangeId;
-    private final CosmosBulkExecutionOptions options;
+    private final CosmosBulkExecutionOptionsImpl options;
     private final AtomicInteger targetMicroBatchSize;
     private final AtomicLong totalOperationCount;
     private final AtomicReference<CurrentIntervalThresholds> currentThresholds;
@@ -30,28 +31,24 @@ public class PartitionScopeThresholds {
     private final double avgRetryRate;
     private final int maxMicroBatchSize;
 
-    public PartitionScopeThresholds(String pkRangeId, CosmosBulkExecutionOptions options) {
+    public PartitionScopeThresholds(String pkRangeId, CosmosBulkExecutionOptionsImpl options) {
         checkNotNull(pkRangeId, "expected non-null pkRangeId");
         checkNotNull(options, "expected non-null options");
 
         this.pkRangeId = pkRangeId;
         this.options = options;
-        this.targetMicroBatchSize = new AtomicInteger(options.getInitialMicroBatchSize());
         this.totalOperationCount = new AtomicLong(0);
         this.currentThresholds = new AtomicReference<>(new CurrentIntervalThresholds());
 
-        this.minRetryRate = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
-            .getCosmosBulkExecutionOptionsAccessor()
-            .getMinTargetedMicroBatchRetryRate(options);
-        this.maxRetryRate = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
-            .getCosmosBulkExecutionOptionsAccessor()
-            .getMaxTargetedMicroBatchRetryRate(options);
+        this.minRetryRate = options.getMinTargetedMicroBatchRetryRate();
+        this.maxRetryRate = options.getMaxTargetedMicroBatchRetryRate();
         this.avgRetryRate = ((this.maxRetryRate + this.minRetryRate)/2);
         this.maxMicroBatchSize = Math.min(
-            ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
-                .getCosmosBulkExecutionOptionsAccessor()
-                .getMaxMicroBatchSize(options),
+            options.getMaxMicroBatchSize(),
             BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST);
+        this.targetMicroBatchSize =
+            new AtomicInteger(
+                Math.min(options.getInitialMicroBatchSize(), this.maxMicroBatchSize));
     }
 
     public String getPartitionKeyRangeId() {

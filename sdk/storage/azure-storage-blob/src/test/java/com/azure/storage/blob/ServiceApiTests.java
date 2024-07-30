@@ -8,7 +8,6 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.paging.ContinuablePage;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -41,6 +40,7 @@ import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
+import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
@@ -1002,10 +1002,12 @@ public class ServiceApiTests extends BlobTestBase {
 
     @Test
     public void oAuthOnSecondary() {
-        BlobServiceClient serviceClient = setOauthCredentials(getServiceClientBuilder(null,
-            ENVIRONMENT.getPrimaryAccount().getBlobEndpointSecondary())).buildClient();
+        BlobServiceClientBuilder secondaryBuilder = getServiceClientBuilder(null,
+            ENVIRONMENT.getPrimaryAccount().getBlobEndpointSecondary());
+        BlobServiceClient secondaryClient = secondaryBuilder
+            .credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildClient();
 
-        assertDoesNotThrow(serviceClient::getProperties);
+        assertDoesNotThrow(secondaryClient::getProperties);
     }
 
     @ParameterizedTest
@@ -1141,16 +1143,18 @@ public class ServiceApiTests extends BlobTestBase {
         assertNotNull(aadService.getProperties());
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @LiveOnly
     @Test
-    public void audienceError() {
-        BlobServiceClient aadService = instrument(new BlobServiceClientBuilder()
-            .endpoint(cc.getBlobContainerUrl())
-            .credential(new MockTokenCredential())
-            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience")))
-            .buildClient();
+    /* This test tests if the bearer challenge is working properly. A bad audience is passed in, the service returns
+    the default audience, and the request gets retried with this default audience, making the call function as expected.
+     */
+    public void audienceErrorBearerChallengeRetry() {
+        BlobServiceClient aadService = getServiceClientBuilderWithTokenCredential(cc.getBlobContainerUrl())
+                .audience(BlobAudience.createBlobServiceAccountAudience("badAudience"))
+                .buildClient();
 
-        BlobStorageException e = assertThrows(BlobStorageException.class, () -> aadService.getProperties());
-        assertTrue(e.getErrorCode() == BlobErrorCode.INVALID_AUTHENTICATION_INFO);
+        assertNotNull(aadService.getProperties());
     }
 
     @Test

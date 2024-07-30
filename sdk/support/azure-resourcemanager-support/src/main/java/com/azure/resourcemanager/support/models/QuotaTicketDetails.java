@@ -16,8 +16,7 @@ import java.util.List;
 @Fluent
 public final class QuotaTicketDetails {
     /*
-     * Required for certain quota types when there is a sub type, such as Batch, for which you are requesting a quota
-     * increase.
+     * Required for certain quota types when there is a sub type, such as Batch, for which you are requesting a quota increase.
      */
     @JsonProperty(value = "quotaChangeRequestSubType")
     private String quotaChangeRequestSubType;
@@ -34,14 +33,16 @@ public final class QuotaTicketDetails {
     @JsonProperty(value = "quotaChangeRequests")
     private List<QuotaChangeRequest> quotaChangeRequests;
 
-    /** Creates an instance of QuotaTicketDetails class. */
+    /**
+     * Creates an instance of QuotaTicketDetails class.
+     */
     public QuotaTicketDetails() {
     }
 
     /**
      * Get the quotaChangeRequestSubType property: Required for certain quota types when there is a sub type, such as
      * Batch, for which you are requesting a quota increase.
-     *
+     * 
      * @return the quotaChangeRequestSubType value.
      */
     public String quotaChangeRequestSubType() {
@@ -51,7 +52,7 @@ public final class QuotaTicketDetails {
     /**
      * Set the quotaChangeRequestSubType property: Required for certain quota types when there is a sub type, such as
      * Batch, for which you are requesting a quota increase.
-     *
+     * 
      * @param quotaChangeRequestSubType the quotaChangeRequestSubType value to set.
      * @return the QuotaTicketDetails object itself.
      */
@@ -62,7 +63,7 @@ public final class QuotaTicketDetails {
 
     /**
      * Get the quotaChangeRequestVersion property: Quota change request version.
-     *
+     * 
      * @return the quotaChangeRequestVersion value.
      */
     public String quotaChangeRequestVersion() {
@@ -71,7 +72,7 @@ public final class QuotaTicketDetails {
 
     /**
      * Set the quotaChangeRequestVersion property: Quota change request version.
-     *
+     * 
      * @param quotaChangeRequestVersion the quotaChangeRequestVersion value to set.
      * @return the QuotaTicketDetails object itself.
      */
@@ -82,7 +83,7 @@ public final class QuotaTicketDetails {
 
     /**
      * Get the quotaChangeRequests property: This property is required for providing the region and new quota limits.
-     *
+     * 
      * @return the quotaChangeRequests value.
      */
     public List<QuotaChangeRequest> quotaChangeRequests() {
@@ -91,7 +92,7 @@ public final class QuotaTicketDetails {
 
     /**
      * Set the quotaChangeRequests property: This property is required for providing the region and new quota limits.
-     *
+     * 
      * @param quotaChangeRequests the quotaChangeRequests value to set.
      * @return the QuotaTicketDetails object itself.
      */
@@ -102,7 +103,7 @@ public final class QuotaTicketDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

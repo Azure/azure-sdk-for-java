@@ -29,6 +29,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +42,7 @@ import static com.azure.core.test.utils.TestProxyUtils.checkForTestProxyErrors;
 import static com.azure.core.test.utils.TestProxyUtils.createAddSanitizersRequest;
 import static com.azure.core.test.utils.TestProxyUtils.getAssetJsonFile;
 import static com.azure.core.test.utils.TestProxyUtils.getMatcherRequests;
+import static com.azure.core.test.utils.TestProxyUtils.getRemoveSanitizerRequest;
 import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
 
 /**
@@ -221,9 +223,31 @@ public class TestProxyPlaybackClient implements HttpClient {
             HttpRequest request
                 = createAddSanitizersRequest(sanitizers, proxyUrl).setHeader(X_RECORDING_ID, xRecordingId);
 
-            client.sendSync(request, Context.NONE).close();
+            sendRequestWithRetries(request);
         } else {
             this.sanitizers.addAll(sanitizers);
+        }
+    }
+
+    /**
+     * Removes the list of sanitizers from the current playback session.
+     * @param sanitizers The sanitizers to remove.
+     * @throws RuntimeException if an {@link IOException} is thrown.
+     */
+    public void removeProxySanitization(List<String> sanitizers) {
+        if (isPlayingBack()) {
+            Map<String, List<String>> data = new HashMap<>();
+            data.put("Sanitizers", sanitizers);
+
+            HttpRequest request;
+            try {
+                request = getRemoveSanitizerRequest().setBody(SERIALIZER.serialize(data, SerializerEncoding.JSON))
+                    .setHeader(X_RECORDING_ID, xRecordingId);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            sendRequestWithRetries(request);
         }
     }
 

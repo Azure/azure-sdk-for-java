@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Reference to a slice resource. */
+/**
+ * Reference to a slice resource.
+ */
 @Fluent
 public final class SliceResourceId {
     /*
@@ -17,13 +19,15 @@ public final class SliceResourceId {
     @JsonProperty(value = "id", required = true)
     private String id;
 
-    /** Creates an instance of SliceResourceId class. */
+    /**
+     * Creates an instance of SliceResourceId class.
+     */
     public SliceResourceId() {
     }
 
     /**
      * Get the id property: Slice resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -32,7 +36,7 @@ public final class SliceResourceId {
 
     /**
      * Set the id property: Slice resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the SliceResourceId object itself.
      */
@@ -43,14 +47,13 @@ public final class SliceResourceId {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model SliceResourceId"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model SliceResourceId"));
         }
     }
 

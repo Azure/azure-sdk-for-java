@@ -25,10 +25,12 @@ public final class ManagedVirtualNetworkListResponseTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedVirtualNetworkListResponse model = new ManagedVirtualNetworkListResponse()
-            .withValue(Arrays.asList(new ManagedVirtualNetworkResourceInner().withId("uir").withProperties(
-                new ManagedVirtualNetwork().withAdditionalProperties(mapOf("vNetId", "o", "alias", "vmfqhppubo")))))
-            .withNextLink("ionszonwp");
+        ManagedVirtualNetworkListResponse model
+            = new ManagedVirtualNetworkListResponse()
+                .withValue(Arrays.asList(new ManagedVirtualNetworkResourceInner().withId("uir")
+                    .withProperties(new ManagedVirtualNetwork()
+                        .withAdditionalProperties(mapOf("vNetId", "o", "alias", "vmfqhppubo")))))
+                .withNextLink("ionszonwp");
         model = BinaryData.fromObject(model).toObject(ManagedVirtualNetworkListResponse.class);
         Assertions.assertEquals("uir", model.value().get(0).id());
         Assertions.assertEquals("ionszonwp", model.nextLink());

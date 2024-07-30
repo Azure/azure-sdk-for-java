@@ -2,8 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.monitor.applicationinsights.spring;
 
-import io.opentelemetry.sdk.resources.Resource;
-import io.opentelemetry.semconv.ResourceAttributes;
+import io.opentelemetry.sdk.common.internal.OtelVersion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -16,21 +15,11 @@ public class OpenTelemetryVersionCheckRunner implements CommandLineRunner {
     private static final Logger LOG = LoggerFactory.getLogger(OpenTelemetryVersionCheckRunner.class);
 
     // If this version is not up-to-date, a test will fail.
+    //TODO: could be generated at build time
     /**
      * OpenTelemetry version of the starter
      */
-    public static final String STARTER_OTEL_VERSION = "1.35.0";
-
-    private final Resource otelResource;
-
-    /**
-     * Component to check the OpenTelemetry version.
-     *
-     * @param otelResource OpenTelemetry resource
-     */
-    public OpenTelemetryVersionCheckRunner(Resource otelResource) {
-        this.otelResource = otelResource;
-    }
+    public static final String STARTER_OTEL_VERSION = "1.40.0";
 
     /**
      * To verify the OpenTelemetry version at the application start-up.
@@ -40,8 +29,7 @@ public class OpenTelemetryVersionCheckRunner implements CommandLineRunner {
     @Override
     public void run(String... args) {
         try {
-            String currentOTelVersionAsString = otelResource.getAttribute(ResourceAttributes.TELEMETRY_SDK_VERSION);
-            OTelVersion currentOtelVersion = new OTelVersion(currentOTelVersionAsString);
+            OTelVersion currentOtelVersion = new OTelVersion(OtelVersion.VERSION);
             OTelVersion starterOTelVersion = new OTelVersion(STARTER_OTEL_VERSION);
             checkOpenTelemetryVersion(currentOtelVersion, starterOTelVersion);
         } catch (Exception e) {

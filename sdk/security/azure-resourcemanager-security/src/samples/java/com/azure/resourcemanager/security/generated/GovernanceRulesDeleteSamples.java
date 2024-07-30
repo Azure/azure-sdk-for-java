@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class GovernanceRulesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/
-     * DeleteManagementGroupGovernanceRule_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/DeleteManagementGroupGovernanceRule_example.json
      */
     /**
      * Sample code: Delete a Governance rule over management group scope.
@@ -20,14 +18,13 @@ public final class GovernanceRulesDeleteSamples {
      */
     public static void
         deleteAGovernanceRuleOverManagementGroupScope(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.governanceRules().delete("providers/Microsoft.Management/managementGroups/contoso",
-            "ad9a8e26-29d9-4829-bb30-e597a58cdbb8", com.azure.core.util.Context.NONE);
+        manager.governanceRules()
+            .delete("providers/Microsoft.Management/managementGroups/contoso", "ad9a8e26-29d9-4829-bb30-e597a58cdbb8",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/
-     * DeleteGovernanceRule_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/DeleteGovernanceRule_example.json
      */
     /**
      * Sample code: Delete a Governance rule over subscription scope.
@@ -36,14 +33,13 @@ public final class GovernanceRulesDeleteSamples {
      */
     public static void
         deleteAGovernanceRuleOverSubscriptionScope(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.governanceRules().delete("subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23",
-            "ad9a8e26-29d9-4829-bb30-e597a58cdbb8", com.azure.core.util.Context.NONE);
+        manager.governanceRules()
+            .delete("subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23", "ad9a8e26-29d9-4829-bb30-e597a58cdbb8",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/
-     * DeleteSecurityConnectorGovernanceRule_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/DeleteSecurityConnectorGovernanceRule_example.json
      */
     /**
      * Sample code: Delete a Governance rule over security connector scope.
@@ -52,8 +48,9 @@ public final class GovernanceRulesDeleteSamples {
      */
     public static void
         deleteAGovernanceRuleOverSecurityConnectorScope(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.governanceRules().delete(
-            "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/gcpResourceGroup/providers/Microsoft.Security/securityConnectors/gcpconnector",
-            "ad9a8e26-29d9-4829-bb30-e597a58cdbb8", com.azure.core.util.Context.NONE);
+        manager.governanceRules()
+            .delete(
+                "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/gcpResourceGroup/providers/Microsoft.Security/securityConnectors/gcpconnector",
+                "ad9a8e26-29d9-4829-bb30-e597a58cdbb8", com.azure.core.util.Context.NONE);
     }
 }

@@ -43,7 +43,7 @@ public final class WebhookActivityTypeProperties {
      */
     @JsonProperty(value = "headers")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> headers;
+    private Map<String, Object> headers;
 
     /*
      * Represents the payload that will be sent to the endpoint. Required for POST/PUT method, not allowed for GET
@@ -145,7 +145,7 @@ public final class WebhookActivityTypeProperties {
      * 
      * @return the headers value.
      */
-    public Map<String, String> headers() {
+    public Map<String, Object> headers() {
         return this.headers;
     }
 
@@ -157,7 +157,7 @@ public final class WebhookActivityTypeProperties {
      * @param headers the headers value to set.
      * @return the WebhookActivityTypeProperties object itself.
      */
-    public WebhookActivityTypeProperties withHeaders(Map<String, String> headers) {
+    public WebhookActivityTypeProperties withHeaders(Map<String, Object> headers) {
         this.headers = headers;
         return this;
     }
@@ -235,12 +235,14 @@ public final class WebhookActivityTypeProperties {
      */
     public void validate() {
         if (method() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property method in model WebhookActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property method in model WebhookActivityTypeProperties"));
         }
         if (url() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property url in model WebhookActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property url in model WebhookActivityTypeProperties"));
         }
         if (authentication() != null) {
             authentication().validate();

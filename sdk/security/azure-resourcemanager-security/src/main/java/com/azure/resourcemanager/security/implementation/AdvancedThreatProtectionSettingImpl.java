@@ -52,14 +52,18 @@ public final class AdvancedThreatProtectionSettingImpl
     }
 
     public AdvancedThreatProtectionSetting create() {
-        this.innerObject = serviceManager.serviceClient().getAdvancedThreatProtections()
-            .createWithResponse(resourceId, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAdvancedThreatProtections()
+            .createWithResponse(resourceId, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public AdvancedThreatProtectionSetting create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAdvancedThreatProtections()
-            .createWithResponse(resourceId, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAdvancedThreatProtections()
+            .createWithResponse(resourceId, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -69,14 +73,18 @@ public final class AdvancedThreatProtectionSettingImpl
     }
 
     public AdvancedThreatProtectionSetting refresh() {
-        this.innerObject = serviceManager.serviceClient().getAdvancedThreatProtections()
-            .getWithResponse(resourceId, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAdvancedThreatProtections()
+            .getWithResponse(resourceId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AdvancedThreatProtectionSetting refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAdvancedThreatProtections()
-            .getWithResponse(resourceId, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAdvancedThreatProtections()
+            .getWithResponse(resourceId, context)
+            .getValue();
         return this;
     }
 

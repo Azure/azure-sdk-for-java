@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VaultCertificateResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VaultCertificateResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"authType\":\"ResourceCertificateDetails\",\"friendlyName\":\"ybczmehmtzo\",\"issuer\":\"sphrupidgs\",\"resourceId\":5720978843418888179,\"subject\":\"hphoycm\",\"thumbprint\":\"ao\",\"validFrom\":\"2021-04-26T13:10:21Z\",\"validTo\":\"2021-03-23T13:19:49Z\"},\"id\":\"mtqio\",\"name\":\"jzehtb\",\"type\":\"ufpo\"}")
-                .toObject(VaultCertificateResponseInner.class);
+        VaultCertificateResponseInner model = BinaryData.fromString(
+            "{\"properties\":{\"authType\":\"ResourceCertificateDetails\",\"friendlyName\":\"ybczmehmtzo\",\"issuer\":\"sphrupidgs\",\"resourceId\":5720978843418888179,\"subject\":\"hphoycm\",\"thumbprint\":\"ao\",\"validFrom\":\"2021-04-26T13:10:21Z\",\"validTo\":\"2021-03-23T13:19:49Z\"},\"id\":\"mtqio\",\"name\":\"jzehtb\",\"type\":\"ufpo\"}")
+            .toObject(VaultCertificateResponseInner.class);
         Assertions.assertEquals("ybczmehmtzo", model.properties().friendlyName());
         Assertions.assertEquals("sphrupidgs", model.properties().issuer());
         Assertions.assertEquals(5720978843418888179L, model.properties().resourceId());
@@ -29,17 +27,14 @@ public final class VaultCertificateResponseInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VaultCertificateResponseInner model =
-            new VaultCertificateResponseInner()
-                .withProperties(
-                    new ResourceCertificateDetails()
-                        .withFriendlyName("ybczmehmtzo")
-                        .withIssuer("sphrupidgs")
-                        .withResourceId(5720978843418888179L)
-                        .withSubject("hphoycm")
-                        .withThumbprint("ao")
-                        .withValidFrom(OffsetDateTime.parse("2021-04-26T13:10:21Z"))
-                        .withValidTo(OffsetDateTime.parse("2021-03-23T13:19:49Z")));
+        VaultCertificateResponseInner model = new VaultCertificateResponseInner()
+            .withProperties(new ResourceCertificateDetails().withFriendlyName("ybczmehmtzo")
+                .withIssuer("sphrupidgs")
+                .withResourceId(5720978843418888179L)
+                .withSubject("hphoycm")
+                .withThumbprint("ao")
+                .withValidFrom(OffsetDateTime.parse("2021-04-26T13:10:21Z"))
+                .withValidTo(OffsetDateTime.parse("2021-03-23T13:19:49Z")));
         model = BinaryData.fromObject(model).toObject(VaultCertificateResponseInner.class);
         Assertions.assertEquals("ybczmehmtzo", model.properties().friendlyName());
         Assertions.assertEquals("sphrupidgs", model.properties().issuer());

@@ -10,9 +10,8 @@ import com.azure.resourcemanager.selfhelp.fluent.models.RestartTroubleshooterRes
 public final class RestartTroubleshooterResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RestartTroubleshooterResponseInner model
-            = BinaryData.fromString("{\"troubleshooterResourceName\":\"gebdunygaeq\"}")
-                .toObject(RestartTroubleshooterResponseInner.class);
+        RestartTroubleshooterResponseInner model = BinaryData.fromString("{\"troubleshooterResourceName\":\"l\"}")
+            .toObject(RestartTroubleshooterResponseInner.class);
     }
 
     @org.junit.jupiter.api.Test

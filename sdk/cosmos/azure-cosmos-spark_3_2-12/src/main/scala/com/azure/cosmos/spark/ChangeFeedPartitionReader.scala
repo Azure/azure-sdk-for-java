@@ -3,15 +3,15 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.SparkBridgeInternal
+import com.azure.cosmos.{CosmosItemSerializer, CosmosItemSerializerNoExceptionWrapping, SparkBridgeInternal}
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
-import com.azure.cosmos.implementation.{ChangeFeedSparkRowItem, ImplementationBridgeHelpers, SparkBridgeImplementationInternal, Strings}
+import com.azure.cosmos.implementation.{ChangeFeedSparkRowItem, ImplementationBridgeHelpers, ObjectNodeMap, SparkBridgeImplementationInternal, Strings, Utils}
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, ModelBridgeInternal, PartitionKeyDefinition}
 import com.azure.cosmos.spark.ChangeFeedPartitionReader.LsnPropertyName
 import com.azure.cosmos.spark.CosmosPredicates.requireNotNull
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.LsnAttributeName
 import com.azure.cosmos.spark.diagnostics.{DetailedFeedDiagnosticsProvider, DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
-import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.TaskContext
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.Row
@@ -19,6 +19,8 @@ import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.catalyst.encoders.ExpressionEncoder
 import org.apache.spark.sql.connector.read.PartitionReader
 import org.apache.spark.sql.types.StructType
+
+import java.util
 
 private object ChangeFeedPartitionReader {
   val LsnPropertyName: String = LsnAttributeName
@@ -85,7 +87,77 @@ private case class ChangeFeedPartitionReader
   private val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
   private val cosmosChangeFeedConfig = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(config)
 
-    private val changeFeedRequestOptions = {
+  private def changeFeedItemFactoryMethod(objectNode: ObjectNode): ChangeFeedSparkRowItem = {
+    val pkValue = partitionKeyDefinition match {
+      case Some(pkDef) => Some(PartitionKeyHelper.getPartitionKeyPath(objectNode, pkDef))
+      case None => None
+    }
+
+    val row = cosmosRowConverter.fromObjectNodeToRow(readSchema,
+      objectNode,
+      readConfig.schemaConversionMode)
+
+    ChangeFeedSparkRowItem(row, pkValue, objectNode.get(LsnPropertyName).asText())
+  }
+
+  private def changeFeedItemFactoryMethodV1(objectNode: ObjectNode): ChangeFeedSparkRowItem = {
+    val pkValue = partitionKeyDefinition match {
+      case Some(pkDef) => Some(PartitionKeyHelper.getPartitionKeyPath(objectNode, pkDef))
+      case None => None
+    }
+    val row = cosmosRowConverter.fromObjectNodeToChangeFeedRowV1(readSchema,
+      objectNode,
+      readConfig.schemaConversionMode)
+    ChangeFeedSparkRowItem(row, pkValue, cosmosRowConverter.getChangeFeedLsn(objectNode))
+  }
+
+  private val changeFeedItemDeserializer: CosmosItemSerializer = new CosmosItemSerializerNoExceptionWrapping {
+    override def serialize[T](item: T): util.Map[String, AnyRef] = ???
+
+    override def deserialize[T](jsonNodeMap: util.Map[String, AnyRef], classType: Class[T]): T = {
+      if (jsonNodeMap == null) {
+        throw new IllegalStateException("The 'jsonNodeMap' should never be null here.")
+      }
+
+      if (classType != classOf[ChangeFeedSparkRowItem]) {
+        throw new IllegalStateException("The 'classType' must be 'classOf[ChangeFeedSparkRowItem])' here.")
+      }
+
+      val objectNode: ObjectNode = jsonNodeMap match {
+        case map: ObjectNodeMap =>
+          map.getObjectNode
+        case _ =>
+          Utils.getSimpleObjectMapper.convertValue(jsonNodeMap, classOf[ObjectNode])
+      }
+
+      changeFeedItemFactoryMethod(objectNode).asInstanceOf[T]
+    }
+  }
+
+  private val changeFeedItemDeserializerV1: CosmosItemSerializer = new CosmosItemSerializerNoExceptionWrapping {
+    override def serialize[T](item: T): util.Map[String, AnyRef] = ???
+
+    override def deserialize[T](jsonNodeMap: util.Map[String, AnyRef], classType: Class[T]): T = {
+      if (jsonNodeMap == null) {
+        throw new IllegalStateException("The 'jsonNodeMap' should never be null here.")
+      }
+
+      if (classType != classOf[ChangeFeedSparkRowItem]) {
+        throw new IllegalStateException("The 'classType' must be 'classOf[ChangeFeedSparkRowItem])' here.")
+      }
+
+      val objectNode: ObjectNode = jsonNodeMap match {
+        case map: ObjectNodeMap =>
+          map.getObjectNode
+        case _ =>
+          Utils.getSimpleObjectMapper.convertValue(jsonNodeMap, classOf[ObjectNode])
+      }
+
+      changeFeedItemFactoryMethodV1(objectNode).asInstanceOf[T]
+    }
+  }
+
+  private val changeFeedRequestOptions = {
 
     val startLsn =
       SparkBridgeImplementationInternal.extractLsnFromChangeFeedContinuation(this.partition.continuationState.get)
@@ -97,47 +169,14 @@ private case class ChangeFeedPartitionReader
       .setMaxItemCount(readConfig.maxItemCount)
     ThroughputControlHelper.populateThroughputControlGroupName(options, readConfig.throughputControlConfig)
 
-    var factoryMethod: java.util.function.Function[JsonNode, _] = (_: JsonNode) => {}
-      cosmosChangeFeedConfig.changeFeedMode match {
-          case ChangeFeedModes.Incremental | ChangeFeedModes.LatestVersion =>
-              factoryMethod = (jsonNode: JsonNode) => changeFeedItemFactoryMethod(jsonNode)
-          case ChangeFeedModes.FullFidelity | ChangeFeedModes.AllVersionsAndDeletes =>
-              factoryMethod = (jsonNode: JsonNode) => changeFeedItemFactoryMethodV1(jsonNode)
+    val itemDeserializer: CosmosItemSerializer = cosmosChangeFeedConfig.changeFeedMode match {
+      case ChangeFeedModes.Incremental | ChangeFeedModes.LatestVersion =>
+        changeFeedItemDeserializer
+      case ChangeFeedModes.FullFidelity | ChangeFeedModes.AllVersionsAndDeletes =>
+        changeFeedItemDeserializerV1
     }
 
-    ImplementationBridgeHelpers
-      .CosmosChangeFeedRequestOptionsHelper
-      .getCosmosChangeFeedRequestOptionsAccessor
-      .setItemFactoryMethod(
-        options,
-        factoryMethod)
-    }
-
-    private def changeFeedItemFactoryMethod(jsonNode: JsonNode): ChangeFeedSparkRowItem = {
-      val objectNode = cosmosRowConverter.ensureObjectNode(jsonNode)
-
-      val pkValue = partitionKeyDefinition match {
-        case Some(pkDef) => Some(PartitionKeyHelper.getPartitionKeyPath(objectNode, pkDef))
-        case None => None
-      }
-
-      val row = cosmosRowConverter.fromObjectNodeToRow(readSchema,
-          objectNode,
-          readConfig.schemaConversionMode)
-
-      ChangeFeedSparkRowItem(row, pkValue, objectNode.get(LsnPropertyName).asText())
-    }
-
-    private def changeFeedItemFactoryMethodV1(jsonNode: JsonNode): ChangeFeedSparkRowItem = {
-      val objectNode = cosmosRowConverter.ensureObjectNode(jsonNode)
-      val pkValue = partitionKeyDefinition match {
-        case Some(pkDef) => Some(PartitionKeyHelper.getPartitionKeyPath(objectNode, pkDef))
-        case None => None
-      }
-      val row = cosmosRowConverter.fromObjectNodeToChangeFeedRowV1(readSchema,
-          objectNode,
-          readConfig.schemaConversionMode)
-      ChangeFeedSparkRowItem(row, pkValue, cosmosRowConverter.getChangeFeedLsn(objectNode))
+    options.setCustomItemSerializer(itemDeserializer)
   }
 
   private val rowSerializer: ExpressionEncoder.Serializer[Row] = RowSerializerPool.getOrCreateSerializer(readSchema)

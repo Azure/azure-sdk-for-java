@@ -5,19 +5,17 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.ClientEncryptionKey;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
-import com.azure.cosmos.implementation.CosmosQueryRequestOptionsBase;
 import com.azure.cosmos.implementation.CosmosResourceType;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DatabaseAccount;
-import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Index;
 import com.azure.cosmos.implementation.InternalObjectNode;
-import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.Permission;
@@ -40,19 +38,14 @@ import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
 import java.time.Duration;
-import java.time.Instant;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
-import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -85,16 +78,6 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosDatabaseResponse createCosmosDatabaseResponse(ResourceResponse<Database> response) {
         return new CosmosDatabaseResponse(response);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> CosmosItemResponse<T> createCosmosAsyncItemResponse(ResourceResponse<Document> response, Class<T> classType, ItemDeserializer itemDeserializer) {
-        return new CosmosItemResponse<>(response, classType, itemDeserializer);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosItemResponse<Object> createCosmosAsyncItemResponseWithObjectType(ResourceResponse<Document> response) {
-        return new CosmosItemResponse<>(response, Object.class, null);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -258,16 +241,6 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static RequestOptions toRequestOptions(CosmosItemRequestOptions cosmosItemRequestOptions) {
-        return cosmosItemRequestOptions.toRequestOptions();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static RequestOptions toRequestOptions(CosmosPatchItemRequestOptions cosmosPatchItemRequestOptions) {
-        return cosmosPatchItemRequestOptions.toRequestOptions();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosItemRequestOptions createCosmosItemRequestOptions(PartitionKey partitionKey) {
         return new CosmosItemRequestOptions(partitionKey);
     }
@@ -322,38 +295,13 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> FeedResponse<T> toFeedResponsePage(
-        RxDocumentServiceResponse response,
-        Function<JsonNode, T> factoryMethod,
-        Class<T> cls) {
-
-        return new FeedResponse<>(response.getQueryResponse(factoryMethod, cls), response);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> FeedResponse<T> toFeedResponsePage(List<T> results, Map<String, String> headers, boolean noChanges) {
         return new FeedResponse<>(results, headers, noChanges);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> FeedResponse<T> toChangeFeedResponsePage(
-        RxDocumentServiceResponse response,
-        Function<JsonNode, T> factoryMethod,
-        Class<T> cls) {
-
-        return new FeedResponse<>(
-            noChanges(response) ? Collections.emptyList() : response.getQueryResponse(factoryMethod, cls),
-            response.getResponseHeaders(), noChanges(response));
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> boolean noChanges(FeedResponse<T> page) {
         return page.nochanges;
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T extends Resource> boolean noChanges(RxDocumentServiceResponse rsp) {
-        return rsp.getStatusCode() == HttpConstants.StatusCodes.NOT_MODIFIED;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -423,120 +371,8 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static Object getPartitionKeyObject(PartitionKey right) {
-        throw new UnsupportedOperationException("getPartitionKeyObject is not supported");
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static String getAltLink(Resource resource) {
-        return resource.getAltLink();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setAltLink(Resource resource, String altLink) {
-        resource.setAltLink(altLink);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setResourceId(Resource resource, String resourceId) {
-        resource.setResourceId(resourceId);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setResourceSelfLink(Resource resource, String selfLink) {
-        resource.setSelfLink(selfLink);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setTimestamp(Resource resource, Instant date) {
-        resource.setTimestamp(date);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> void setProperty(JsonSerializable jsonSerializable, String propertyName, T value) {
-        jsonSerializable.set(propertyName, value);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static ObjectNode getObjectNodeFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
-        return jsonSerializable.getObject(propertyName);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void removeFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
-        jsonSerializable.remove(propertyName);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static Object getValue(JsonNode value) {
-        return JsonSerializable.getValue(value);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static Map<String, Object> getMapFromJsonSerializable(JsonSerializable jsonSerializable) {
-        return jsonSerializable.getMap();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosResourceType fromServiceSerializedFormat(String cosmosResourceType) {
         return CosmosResourceType.fromServiceSerializedFormat(cosmosResourceType);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static Boolean getBooleanFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
-        return jsonSerializable.getBoolean(propertyName);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static Double getDoubleFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
-        return jsonSerializable.getDouble(propertyName);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static Object getObjectByPathFromJsonSerializable(JsonSerializable jsonSerializable, List<String> propertyNames) {
-        return jsonSerializable.getObjectByPath(propertyNames);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static ByteBuffer serializeJsonToByteBuffer(JsonSerializable jsonSerializable) {
-        return jsonSerializable.serializeJsonToByteBuffer();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> T toObjectFromJsonSerializable(JsonSerializable jsonSerializable, Class<T> c) {
-        return jsonSerializable.toObject(c);
-    }
-
-    public static ByteBuffer serializeJsonToByteBuffer(JsonSerializable jsonSerializable, ObjectMapper objectMapper) {
-        return jsonSerializable.serializeJsonToByteBuffer(objectMapper);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static Object getObjectFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
-        return jsonSerializable.get(propertyName);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static String getStringFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
-        return jsonSerializable.getString(propertyName);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static Integer getIntFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
-        return jsonSerializable.getInt(propertyName);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static String toJsonFromJsonSerializable(JsonSerializable jsonSerializable) {
-        return jsonSerializable.toJson();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static ObjectNode getPropertyBagFromJsonSerializable(JsonSerializable jsonSerializable) {
-        if (jsonSerializable == null) {
-            return null;
-        }
-        return jsonSerializable.getPropertyBag();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -566,7 +402,7 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static ByteBuffer serializeJsonToByteBuffer(SqlQuerySpec sqlQuerySpec) {
         sqlQuerySpec.populatePropertyBag();
-        return sqlQuerySpec.getJsonSerializable().serializeJsonToByteBuffer();
+        return sqlQuerySpec.getJsonSerializable().serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null, false);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -598,6 +434,8 @@ public final class ModelBridgeInternal {
             ((PartitionKeyDefinition) t).populatePropertyBag();
         } else if (t instanceof SpatialSpec) {
             ((SpatialSpec) t).populatePropertyBag();
+        } else if (t instanceof CosmosVectorIndexSpec) {
+            ((CosmosVectorIndexSpec) t).populatePropertyBag();
         } else if (t instanceof SqlParameter) {
             ((SqlParameter) t).populatePropertyBag();
         } else if (t instanceof SqlQuerySpec) {
@@ -631,6 +469,8 @@ public final class ModelBridgeInternal {
             return ((PartitionKeyDefinition) t).getJsonSerializable();
         } else if (t instanceof SpatialSpec) {
             return ((SpatialSpec) t).getJsonSerializable();
+        } else if (t instanceof CosmosVectorIndexSpec) {
+            return ((CosmosVectorIndexSpec) t).getJsonSerializable();
         } else if (t instanceof SqlParameter) {
             return ((SqlParameter) t).getJsonSerializable();
         } else if (t instanceof SqlQuerySpec) {
@@ -874,7 +714,8 @@ public final class ModelBridgeInternal {
             result.getRetryAfterDuration(),
             result.getSubStatusCode(),
             response.getResponseHeaders(),
-            response.getDiagnostics());
+            response.getDiagnostics(),
+            result.getEffectiveItemSerializer());
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -922,6 +763,7 @@ public final class ModelBridgeInternal {
         CosmosPatchOperations.initialize();
         CosmosReadManyRequestOptions.initialize();
         CosmosQueryRequestOptions.initialize();
+        CosmosOperationDetails.initialize();
         FeedResponse.initialize();
         PartitionKey.initialize();
         CosmosClientTelemetryConfig.initialize();

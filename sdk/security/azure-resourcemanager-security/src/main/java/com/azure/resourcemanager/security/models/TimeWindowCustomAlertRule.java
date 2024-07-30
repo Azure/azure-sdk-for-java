@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.Duration;
@@ -18,9 +19,9 @@ import java.time.Duration;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "ruleType",
-    defaultImpl = TimeWindowCustomAlertRule.class)
+    defaultImpl = TimeWindowCustomAlertRule.class,
+    visible = true)
 @JsonTypeName("TimeWindowCustomAlertRule")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ActiveConnectionsNotInAllowedRange", value = ActiveConnectionsNotInAllowedRange.class),
@@ -52,6 +53,13 @@ import java.time.Duration;
 @Fluent
 public class TimeWindowCustomAlertRule extends ThresholdCustomAlertRule {
     /*
+     * The type of the custom alert rule.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "ruleType", required = true)
+    private String ruleType = "TimeWindowCustomAlertRule";
+
+    /*
      * The time window size in iso8601 format.
      */
     @JsonProperty(value = "timeWindowSize", required = true)
@@ -61,6 +69,16 @@ public class TimeWindowCustomAlertRule extends ThresholdCustomAlertRule {
      * Creates an instance of TimeWindowCustomAlertRule class.
      */
     public TimeWindowCustomAlertRule() {
+    }
+
+    /**
+     * Get the ruleType property: The type of the custom alert rule.
+     * 
+     * @return the ruleType value.
+     */
+    @Override
+    public String ruleType() {
+        return this.ruleType;
     }
 
     /**
@@ -119,8 +137,9 @@ public class TimeWindowCustomAlertRule extends ThresholdCustomAlertRule {
     public void validate() {
         super.validate();
         if (timeWindowSize() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property timeWindowSize in model TimeWindowCustomAlertRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property timeWindowSize in model TimeWindowCustomAlertRule"));
         }
     }
 

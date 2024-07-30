@@ -30,14 +30,14 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
     public PagedIterable<PrivateEndpointConnection> listByBatchAccount(String resourceGroupName, String accountName) {
         PagedIterable<PrivateEndpointConnectionInner> inner
             = this.serviceClient().listByBatchAccount(resourceGroupName, accountName);
-        return Utils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PrivateEndpointConnection> listByBatchAccount(String resourceGroupName, String accountName,
         Integer maxresults, Context context) {
         PagedIterable<PrivateEndpointConnectionInner> inner
             = this.serviceClient().listByBatchAccount(resourceGroupName, accountName, maxresults, context);
-        return Utils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
     }
 
     public Response<PrivateEndpointConnection> getWithResponse(String resourceGroupName, String accountName,

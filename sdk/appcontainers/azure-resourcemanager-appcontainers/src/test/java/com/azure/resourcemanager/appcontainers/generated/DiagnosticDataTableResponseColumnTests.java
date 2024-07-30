@@ -11,25 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class DiagnosticDataTableResponseColumnTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiagnosticDataTableResponseColumn model =
-            BinaryData
-                .fromString("{\"columnName\":\"ubdyhgk\",\"dataType\":\"in\",\"columnType\":\"owzfttsttkt\"}")
-                .toObject(DiagnosticDataTableResponseColumn.class);
-        Assertions.assertEquals("ubdyhgk", model.columnName());
-        Assertions.assertEquals("in", model.dataType());
-        Assertions.assertEquals("owzfttsttkt", model.columnType());
+        DiagnosticDataTableResponseColumn model = BinaryData
+            .fromString(
+                "{\"columnName\":\"tuwkffdj\",\"dataType\":\"sysidfvclglxnf\",\"columnType\":\"jtkbusqogsfika\"}")
+            .toObject(DiagnosticDataTableResponseColumn.class);
+        Assertions.assertEquals("tuwkffdj", model.columnName());
+        Assertions.assertEquals("sysidfvclglxnf", model.dataType());
+        Assertions.assertEquals("jtkbusqogsfika", model.columnType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiagnosticDataTableResponseColumn model =
-            new DiagnosticDataTableResponseColumn()
-                .withColumnName("ubdyhgk")
-                .withDataType("in")
-                .withColumnType("owzfttsttkt");
+        DiagnosticDataTableResponseColumn model = new DiagnosticDataTableResponseColumn().withColumnName("tuwkffdj")
+            .withDataType("sysidfvclglxnf")
+            .withColumnType("jtkbusqogsfika");
         model = BinaryData.fromObject(model).toObject(DiagnosticDataTableResponseColumn.class);
-        Assertions.assertEquals("ubdyhgk", model.columnName());
-        Assertions.assertEquals("in", model.dataType());
-        Assertions.assertEquals("owzfttsttkt", model.columnType());
+        Assertions.assertEquals("tuwkffdj", model.columnName());
+        Assertions.assertEquals("sysidfvclglxnf", model.dataType());
+        Assertions.assertEquals("jtkbusqogsfika", model.columnType());
     }
 }

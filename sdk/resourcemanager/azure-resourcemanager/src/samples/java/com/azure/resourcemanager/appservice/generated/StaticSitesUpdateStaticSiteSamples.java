@@ -11,8 +11,7 @@ import com.azure.resourcemanager.appservice.models.StaticSitePatchResource;
  */
 public final class StaticSitesUpdateStaticSiteSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/PatchStaticSite.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/PatchStaticSite.json
      */
     /**
      * Sample code: Patch a static site.
@@ -20,7 +19,11 @@ public final class StaticSitesUpdateStaticSiteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void patchAStaticSite(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getStaticSites().updateStaticSiteWithResponse("rg", "testStaticSite0",
-            new StaticSitePatchResource(), com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getStaticSites()
+            .updateStaticSiteWithResponse("rg", "testStaticSite0", new StaticSitePatchResource(),
+                com.azure.core.util.Context.NONE);
     }
 }

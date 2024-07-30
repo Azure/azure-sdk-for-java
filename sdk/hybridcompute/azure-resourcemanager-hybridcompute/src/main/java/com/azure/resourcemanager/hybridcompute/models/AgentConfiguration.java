@@ -5,68 +5,68 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Configurable properties that the user can set locally via the azcmagent config command, or remotely via ARM. */
+/**
+ * Configurable properties that the user can set locally via the azcmagent config command, or remotely via ARM.
+ */
 @Immutable
-public final class AgentConfiguration {
+public final class AgentConfiguration implements JsonSerializable<AgentConfiguration> {
     /*
      * Specifies the URL of the proxy to be used.
      */
-    @JsonProperty(value = "proxyUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String proxyUrl;
 
     /*
      * Specifies the list of ports that the agent will be able to listen on.
      */
-    @JsonProperty(value = "incomingConnectionsPorts", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> incomingConnectionsPorts;
 
     /*
      * Array of extensions that are allowed to be installed or updated.
      */
-    @JsonProperty(value = "extensionsAllowList", access = JsonProperty.Access.WRITE_ONLY)
     private List<ConfigurationExtension> extensionsAllowList;
 
     /*
      * Array of extensions that are blocked (cannot be installed or updated)
      */
-    @JsonProperty(value = "extensionsBlockList", access = JsonProperty.Access.WRITE_ONLY)
     private List<ConfigurationExtension> extensionsBlockList;
 
     /*
      * List of service names which should not use the specified proxy server.
      */
-    @JsonProperty(value = "proxyBypass", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> proxyBypass;
 
     /*
      * Specifies whether the extension service is enabled or disabled.
      */
-    @JsonProperty(value = "extensionsEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private String extensionsEnabled;
 
     /*
      * Specified whether the guest configuration service is enabled or disabled.
      */
-    @JsonProperty(value = "guestConfigurationEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private String guestConfigurationEnabled;
 
     /*
      * Name of configuration mode to use. Modes are pre-defined configurations of security controls, extension
      * allowlists and guest configuration, maintained by Microsoft.
      */
-    @JsonProperty(value = "configMode", access = JsonProperty.Access.WRITE_ONLY)
     private AgentConfigurationMode configMode;
 
-    /** Creates an instance of AgentConfiguration class. */
+    /**
+     * Creates an instance of AgentConfiguration class.
+     */
     public AgentConfiguration() {
     }
 
     /**
      * Get the proxyUrl property: Specifies the URL of the proxy to be used.
-     *
+     * 
      * @return the proxyUrl value.
      */
     public String proxyUrl() {
@@ -75,7 +75,7 @@ public final class AgentConfiguration {
 
     /**
      * Get the incomingConnectionsPorts property: Specifies the list of ports that the agent will be able to listen on.
-     *
+     * 
      * @return the incomingConnectionsPorts value.
      */
     public List<String> incomingConnectionsPorts() {
@@ -84,7 +84,7 @@ public final class AgentConfiguration {
 
     /**
      * Get the extensionsAllowList property: Array of extensions that are allowed to be installed or updated.
-     *
+     * 
      * @return the extensionsAllowList value.
      */
     public List<ConfigurationExtension> extensionsAllowList() {
@@ -93,7 +93,7 @@ public final class AgentConfiguration {
 
     /**
      * Get the extensionsBlockList property: Array of extensions that are blocked (cannot be installed or updated).
-     *
+     * 
      * @return the extensionsBlockList value.
      */
     public List<ConfigurationExtension> extensionsBlockList() {
@@ -102,7 +102,7 @@ public final class AgentConfiguration {
 
     /**
      * Get the proxyBypass property: List of service names which should not use the specified proxy server.
-     *
+     * 
      * @return the proxyBypass value.
      */
     public List<String> proxyBypass() {
@@ -111,7 +111,7 @@ public final class AgentConfiguration {
 
     /**
      * Get the extensionsEnabled property: Specifies whether the extension service is enabled or disabled.
-     *
+     * 
      * @return the extensionsEnabled value.
      */
     public String extensionsEnabled() {
@@ -121,7 +121,7 @@ public final class AgentConfiguration {
     /**
      * Get the guestConfigurationEnabled property: Specified whether the guest configuration service is enabled or
      * disabled.
-     *
+     * 
      * @return the guestConfigurationEnabled value.
      */
     public String guestConfigurationEnabled() {
@@ -131,7 +131,7 @@ public final class AgentConfiguration {
     /**
      * Get the configMode property: Name of configuration mode to use. Modes are pre-defined configurations of security
      * controls, extension allowlists and guest configuration, maintained by Microsoft.
-     *
+     * 
      * @return the configMode value.
      */
     public AgentConfigurationMode configMode() {
@@ -140,7 +140,7 @@ public final class AgentConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -150,5 +150,60 @@ public final class AgentConfiguration {
         if (extensionsBlockList() != null) {
             extensionsBlockList().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AgentConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AgentConfiguration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AgentConfiguration.
+     */
+    public static AgentConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AgentConfiguration deserializedAgentConfiguration = new AgentConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("proxyUrl".equals(fieldName)) {
+                    deserializedAgentConfiguration.proxyUrl = reader.getString();
+                } else if ("incomingConnectionsPorts".equals(fieldName)) {
+                    List<String> incomingConnectionsPorts = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAgentConfiguration.incomingConnectionsPorts = incomingConnectionsPorts;
+                } else if ("extensionsAllowList".equals(fieldName)) {
+                    List<ConfigurationExtension> extensionsAllowList
+                        = reader.readArray(reader1 -> ConfigurationExtension.fromJson(reader1));
+                    deserializedAgentConfiguration.extensionsAllowList = extensionsAllowList;
+                } else if ("extensionsBlockList".equals(fieldName)) {
+                    List<ConfigurationExtension> extensionsBlockList
+                        = reader.readArray(reader1 -> ConfigurationExtension.fromJson(reader1));
+                    deserializedAgentConfiguration.extensionsBlockList = extensionsBlockList;
+                } else if ("proxyBypass".equals(fieldName)) {
+                    List<String> proxyBypass = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAgentConfiguration.proxyBypass = proxyBypass;
+                } else if ("extensionsEnabled".equals(fieldName)) {
+                    deserializedAgentConfiguration.extensionsEnabled = reader.getString();
+                } else if ("guestConfigurationEnabled".equals(fieldName)) {
+                    deserializedAgentConfiguration.guestConfigurationEnabled = reader.getString();
+                } else if ("configMode".equals(fieldName)) {
+                    deserializedAgentConfiguration.configMode = AgentConfigurationMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAgentConfiguration;
+        });
     }
 }

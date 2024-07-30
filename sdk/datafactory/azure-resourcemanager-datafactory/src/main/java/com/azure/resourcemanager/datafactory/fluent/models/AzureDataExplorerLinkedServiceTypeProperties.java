@@ -61,9 +61,9 @@ public final class AzureDataExplorerLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the endpoint property: The endpoint of Azure Data Explorer (the engine's endpoint). URL will be in the
-     * format https://&lt;clusterName&gt;.&lt;regionName&gt;.kusto.windows.net. Type: string (or Expression with
-     * resultType string).
+     * Get the endpoint property: The endpoint of Azure Data Explorer (the engine's endpoint). URL will be in the format
+     * https://&lt;clusterName&gt;.&lt;regionName&gt;.kusto.windows.net. Type: string (or Expression with resultType
+     * string).
      * 
      * @return the endpoint value.
      */
@@ -72,9 +72,9 @@ public final class AzureDataExplorerLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the endpoint property: The endpoint of Azure Data Explorer (the engine's endpoint). URL will be in the
-     * format https://&lt;clusterName&gt;.&lt;regionName&gt;.kusto.windows.net. Type: string (or Expression with
-     * resultType string).
+     * Set the endpoint property: The endpoint of Azure Data Explorer (the engine's endpoint). URL will be in the format
+     * https://&lt;clusterName&gt;.&lt;regionName&gt;.kusto.windows.net. Type: string (or Expression with resultType
+     * string).
      * 
      * @param endpoint the endpoint value to set.
      * @return the AzureDataExplorerLinkedServiceTypeProperties object itself.
@@ -195,15 +195,17 @@ public final class AzureDataExplorerLinkedServiceTypeProperties {
      */
     public void validate() {
         if (endpoint() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property endpoint in model AzureDataExplorerLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property endpoint in model AzureDataExplorerLinkedServiceTypeProperties"));
         }
         if (servicePrincipalKey() != null) {
             servicePrincipalKey().validate();
         }
         if (database() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property database in model AzureDataExplorerLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property database in model AzureDataExplorerLinkedServiceTypeProperties"));
         }
         if (credential() != null) {
             credential().validate();

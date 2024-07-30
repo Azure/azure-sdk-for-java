@@ -9,9 +9,7 @@ package com.azure.resourcemanager.eventgrid.generated;
  */
 public final class NamespaceTopicsListSharedAccessKeysSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
-     * NamespaceTopics_ListSharedAccessKeys.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/NamespaceTopics_ListSharedAccessKeys.json
      */
     /**
      * Sample code: NamespaceTopics_ListSharedAccessKeys.
@@ -20,7 +18,8 @@ public final class NamespaceTopicsListSharedAccessKeysSamples {
      */
     public static void
         namespaceTopicsListSharedAccessKeys(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.namespaceTopics().listSharedAccessKeysWithResponse("examplerg", "examplenamespace2",
-            "examplenamespacetopic2", com.azure.core.util.Context.NONE);
+        manager.namespaceTopics()
+            .listSharedAccessKeysWithResponse("examplerg", "examplenamespace2", "examplenamespacetopic2",
+                com.azure.core.util.Context.NONE);
     }
 }

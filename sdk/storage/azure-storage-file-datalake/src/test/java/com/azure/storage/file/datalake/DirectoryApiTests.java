@@ -22,6 +22,7 @@ import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.AccessControlChangeCounters;
@@ -2124,7 +2125,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
         Response<DataLakeDirectoryClient> resp = dc.renameWithResponse(null, generatePathName(), null, null, null, null);
         DataLakeDirectoryClient renamedClient = resp.getValue();
 
-        assertDoesNotThrow(renamedClient::getProperties);
+        assertDoesNotThrow(() -> renamedClient.getProperties());
         assertThrows(DataLakeStorageException.class, () -> dc.getProperties());
     }
 
@@ -2136,7 +2137,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
         DataLakeDirectoryClient renamedClient = resp.getValue();
 
-        assertDoesNotThrow(renamedClient::getProperties);
+        assertDoesNotThrow(() -> renamedClient.getProperties());
         assertThrows(DataLakeStorageException.class, () -> dc.getProperties());
     }
 
@@ -3439,16 +3440,20 @@ public class DirectoryApiTests extends DataLakeTestBase {
         assertTrue(aadDirClient.exists());
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2024-08-04")
+    @LiveOnly
     @Test
-    public void audienceError() {
+    /* This test tests if the bearer challenge is working properly. A bad audience is passed in, the service returns
+    the default audience, and the request gets retried with this default audience, making the call function as expected.
+     */
+    public void audienceErrorBearerChallengeRetry() {
         DataLakeDirectoryClient aadDirClient = getPathClientBuilderWithTokenCredential(
             ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), dc.getDirectoryPath())
             .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
             .audience(DataLakeAudience.createDataLakeServiceAccountAudience("badAudience"))
             .buildDirectoryClient();
 
-        DataLakeStorageException e = assertThrows(DataLakeStorageException.class, aadDirClient::exists);
-        assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO.toString(), e.getErrorCode());
+        assertTrue(aadDirClient.exists());
     }
 
     @Test

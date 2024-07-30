@@ -14,14 +14,18 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.AsyncOperationStatusInner;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.SimInner;
 import com.azure.resourcemanager.mobilenetwork.models.EncryptedSimUploadList;
+import com.azure.resourcemanager.mobilenetwork.models.SimClone;
 import com.azure.resourcemanager.mobilenetwork.models.SimDeleteList;
+import com.azure.resourcemanager.mobilenetwork.models.SimMove;
 import com.azure.resourcemanager.mobilenetwork.models.SimUploadList;
 
-/** An instance of this class provides access to all the operations defined in SimsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SimsClient.
+ */
 public interface SimsClient {
     /**
      * Deletes the specified SIM.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
@@ -35,7 +39,7 @@ public interface SimsClient {
 
     /**
      * Deletes the specified SIM.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
@@ -46,12 +50,12 @@ public interface SimsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String simGroupName, String simName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String simGroupName, String simName,
+        Context context);
 
     /**
      * Deletes the specified SIM.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
@@ -64,7 +68,7 @@ public interface SimsClient {
 
     /**
      * Deletes the specified SIM.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
@@ -78,7 +82,7 @@ public interface SimsClient {
 
     /**
      * Gets information about the specified SIM.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
@@ -93,7 +97,7 @@ public interface SimsClient {
 
     /**
      * Gets information about the specified SIM.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
@@ -107,7 +111,7 @@ public interface SimsClient {
 
     /**
      * Creates or updates a SIM.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
@@ -118,12 +122,12 @@ public interface SimsClient {
      * @return the {@link SyncPoller} for polling of sIM resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SimInner>, SimInner> beginCreateOrUpdate(
-        String resourceGroupName, String simGroupName, String simName, SimInner parameters);
+    SyncPoller<PollResult<SimInner>, SimInner> beginCreateOrUpdate(String resourceGroupName, String simGroupName,
+        String simName, SimInner parameters);
 
     /**
      * Creates or updates a SIM.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
@@ -135,12 +139,12 @@ public interface SimsClient {
      * @return the {@link SyncPoller} for polling of sIM resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SimInner>, SimInner> beginCreateOrUpdate(
-        String resourceGroupName, String simGroupName, String simName, SimInner parameters, Context context);
+    SyncPoller<PollResult<SimInner>, SimInner> beginCreateOrUpdate(String resourceGroupName, String simGroupName,
+        String simName, SimInner parameters, Context context);
 
     /**
      * Creates or updates a SIM.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
@@ -155,7 +159,7 @@ public interface SimsClient {
 
     /**
      * Creates or updates a SIM.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
@@ -167,12 +171,12 @@ public interface SimsClient {
      * @return sIM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SimInner createOrUpdate(
-        String resourceGroupName, String simGroupName, String simName, SimInner parameters, Context context);
+    SimInner createOrUpdate(String resourceGroupName, String simGroupName, String simName, SimInner parameters,
+        Context context);
 
     /**
      * Gets all the SIMs in a SIM group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -185,7 +189,7 @@ public interface SimsClient {
 
     /**
      * Gets all the SIMs in a SIM group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
      * @param context The context to associate with this operation.
@@ -199,7 +203,7 @@ public interface SimsClient {
 
     /**
      * Bulk upload SIMs to a SIM group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
      * @param parameters Parameters supplied to the bulk SIM upload operation.
@@ -209,12 +213,12 @@ public interface SimsClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginBulkUpload(
-        String resourceGroupName, String simGroupName, SimUploadList parameters);
+    SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner>
+        beginBulkUpload(String resourceGroupName, String simGroupName, SimUploadList parameters);
 
     /**
      * Bulk upload SIMs to a SIM group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
      * @param parameters Parameters supplied to the bulk SIM upload operation.
@@ -225,12 +229,12 @@ public interface SimsClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginBulkUpload(
-        String resourceGroupName, String simGroupName, SimUploadList parameters, Context context);
+    SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner>
+        beginBulkUpload(String resourceGroupName, String simGroupName, SimUploadList parameters, Context context);
 
     /**
      * Bulk upload SIMs to a SIM group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
      * @param parameters Parameters supplied to the bulk SIM upload operation.
@@ -244,7 +248,7 @@ public interface SimsClient {
 
     /**
      * Bulk upload SIMs to a SIM group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
      * @param parameters Parameters supplied to the bulk SIM upload operation.
@@ -255,12 +259,12 @@ public interface SimsClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AsyncOperationStatusInner bulkUpload(
-        String resourceGroupName, String simGroupName, SimUploadList parameters, Context context);
+    AsyncOperationStatusInner bulkUpload(String resourceGroupName, String simGroupName, SimUploadList parameters,
+        Context context);
 
     /**
      * Bulk delete SIMs from a SIM group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
      * @param parameters Parameters supplied to the bulk SIM delete operation.
@@ -270,12 +274,12 @@ public interface SimsClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginBulkDelete(
-        String resourceGroupName, String simGroupName, SimDeleteList parameters);
+    SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner>
+        beginBulkDelete(String resourceGroupName, String simGroupName, SimDeleteList parameters);
 
     /**
      * Bulk delete SIMs from a SIM group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
      * @param parameters Parameters supplied to the bulk SIM delete operation.
@@ -286,12 +290,12 @@ public interface SimsClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginBulkDelete(
-        String resourceGroupName, String simGroupName, SimDeleteList parameters, Context context);
+    SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner>
+        beginBulkDelete(String resourceGroupName, String simGroupName, SimDeleteList parameters, Context context);
 
     /**
      * Bulk delete SIMs from a SIM group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
      * @param parameters Parameters supplied to the bulk SIM delete operation.
@@ -305,7 +309,7 @@ public interface SimsClient {
 
     /**
      * Bulk delete SIMs from a SIM group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
      * @param parameters Parameters supplied to the bulk SIM delete operation.
@@ -316,12 +320,12 @@ public interface SimsClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AsyncOperationStatusInner bulkDelete(
-        String resourceGroupName, String simGroupName, SimDeleteList parameters, Context context);
+    AsyncOperationStatusInner bulkDelete(String resourceGroupName, String simGroupName, SimDeleteList parameters,
+        Context context);
 
     /**
      * Bulk upload SIMs in encrypted form to a SIM group. The SIM credentials must be encrypted.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
      * @param parameters Parameters supplied to the encrypted SIMs upload operation.
@@ -331,12 +335,12 @@ public interface SimsClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginBulkUploadEncrypted(
-        String resourceGroupName, String simGroupName, EncryptedSimUploadList parameters);
+    SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner>
+        beginBulkUploadEncrypted(String resourceGroupName, String simGroupName, EncryptedSimUploadList parameters);
 
     /**
      * Bulk upload SIMs in encrypted form to a SIM group. The SIM credentials must be encrypted.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
      * @param parameters Parameters supplied to the encrypted SIMs upload operation.
@@ -352,7 +356,7 @@ public interface SimsClient {
 
     /**
      * Bulk upload SIMs in encrypted form to a SIM group. The SIM credentials must be encrypted.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
      * @param parameters Parameters supplied to the encrypted SIMs upload operation.
@@ -362,12 +366,12 @@ public interface SimsClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AsyncOperationStatusInner bulkUploadEncrypted(
-        String resourceGroupName, String simGroupName, EncryptedSimUploadList parameters);
+    AsyncOperationStatusInner bulkUploadEncrypted(String resourceGroupName, String simGroupName,
+        EncryptedSimUploadList parameters);
 
     /**
      * Bulk upload SIMs in encrypted form to a SIM group. The SIM credentials must be encrypted.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
      * @param parameters Parameters supplied to the encrypted SIMs upload operation.
@@ -378,6 +382,127 @@ public interface SimsClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AsyncOperationStatusInner bulkUploadEncrypted(
-        String resourceGroupName, String simGroupName, EncryptedSimUploadList parameters, Context context);
+    AsyncOperationStatusInner bulkUploadEncrypted(String resourceGroupName, String simGroupName,
+        EncryptedSimUploadList parameters, Context context);
+
+    /**
+     * Move SIMs to another SIM Group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to move the SIMs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginMove(String resourceGroupName,
+        String simGroupName, SimMove parameters);
+
+    /**
+     * Move SIMs to another SIM Group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to move the SIMs.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginMove(String resourceGroupName,
+        String simGroupName, SimMove parameters, Context context);
+
+    /**
+     * Move SIMs to another SIM Group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to move the SIMs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AsyncOperationStatusInner move(String resourceGroupName, String simGroupName, SimMove parameters);
+
+    /**
+     * Move SIMs to another SIM Group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to move the SIMs.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AsyncOperationStatusInner move(String resourceGroupName, String simGroupName, SimMove parameters, Context context);
+
+    /**
+     * Clone SIMs to another SIM Group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to clone the SIMs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginClone(String resourceGroupName,
+        String simGroupName, SimClone parameters);
+
+    /**
+     * Clone SIMs to another SIM Group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to clone the SIMs.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginClone(String resourceGroupName,
+        String simGroupName, SimClone parameters, Context context);
+
+    /**
+     * Clone SIMs to another SIM Group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to clone the SIMs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AsyncOperationStatusInner clone(String resourceGroupName, String simGroupName, SimClone parameters);
+
+    /**
+     * Clone SIMs to another SIM Group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to clone the SIMs.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AsyncOperationStatusInner clone(String resourceGroupName, String simGroupName, SimClone parameters,
+        Context context);
 }

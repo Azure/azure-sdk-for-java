@@ -9,7 +9,9 @@ import com.azure.resourcemanager.recoveryservices.models.JobsSummary;
 import com.azure.resourcemanager.recoveryservices.models.MonitoringSummary;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Replication usages of a vault. */
+/**
+ * Replication usages of a vault.
+ */
 @Fluent
 public final class ReplicationUsageInner {
     /*
@@ -48,13 +50,15 @@ public final class ReplicationUsageInner {
     @JsonProperty(value = "recoveryServicesProviderAuthType")
     private Integer recoveryServicesProviderAuthType;
 
-    /** Creates an instance of ReplicationUsageInner class. */
+    /**
+     * Creates an instance of ReplicationUsageInner class.
+     */
     public ReplicationUsageInner() {
     }
 
     /**
      * Get the monitoringSummary property: Summary of the replication monitoring data for this vault.
-     *
+     * 
      * @return the monitoringSummary value.
      */
     public MonitoringSummary monitoringSummary() {
@@ -63,7 +67,7 @@ public final class ReplicationUsageInner {
 
     /**
      * Set the monitoringSummary property: Summary of the replication monitoring data for this vault.
-     *
+     * 
      * @param monitoringSummary the monitoringSummary value to set.
      * @return the ReplicationUsageInner object itself.
      */
@@ -74,7 +78,7 @@ public final class ReplicationUsageInner {
 
     /**
      * Get the jobsSummary property: Summary of the replication jobs data for this vault.
-     *
+     * 
      * @return the jobsSummary value.
      */
     public JobsSummary jobsSummary() {
@@ -83,7 +87,7 @@ public final class ReplicationUsageInner {
 
     /**
      * Set the jobsSummary property: Summary of the replication jobs data for this vault.
-     *
+     * 
      * @param jobsSummary the jobsSummary value to set.
      * @return the ReplicationUsageInner object itself.
      */
@@ -94,7 +98,7 @@ public final class ReplicationUsageInner {
 
     /**
      * Get the protectedItemCount property: Number of replication protected items for this vault.
-     *
+     * 
      * @return the protectedItemCount value.
      */
     public Integer protectedItemCount() {
@@ -103,7 +107,7 @@ public final class ReplicationUsageInner {
 
     /**
      * Set the protectedItemCount property: Number of replication protected items for this vault.
-     *
+     * 
      * @param protectedItemCount the protectedItemCount value to set.
      * @return the ReplicationUsageInner object itself.
      */
@@ -114,7 +118,7 @@ public final class ReplicationUsageInner {
 
     /**
      * Get the recoveryPlanCount property: Number of replication recovery plans for this vault.
-     *
+     * 
      * @return the recoveryPlanCount value.
      */
     public Integer recoveryPlanCount() {
@@ -123,7 +127,7 @@ public final class ReplicationUsageInner {
 
     /**
      * Set the recoveryPlanCount property: Number of replication recovery plans for this vault.
-     *
+     * 
      * @param recoveryPlanCount the recoveryPlanCount value to set.
      * @return the ReplicationUsageInner object itself.
      */
@@ -134,7 +138,7 @@ public final class ReplicationUsageInner {
 
     /**
      * Get the registeredServersCount property: Number of servers registered to this vault.
-     *
+     * 
      * @return the registeredServersCount value.
      */
     public Integer registeredServersCount() {
@@ -143,7 +147,7 @@ public final class ReplicationUsageInner {
 
     /**
      * Set the registeredServersCount property: Number of servers registered to this vault.
-     *
+     * 
      * @param registeredServersCount the registeredServersCount value to set.
      * @return the ReplicationUsageInner object itself.
      */
@@ -155,7 +159,7 @@ public final class ReplicationUsageInner {
     /**
      * Get the recoveryServicesProviderAuthType property: The authentication type of recovery service providers in the
      * vault.
-     *
+     * 
      * @return the recoveryServicesProviderAuthType value.
      */
     public Integer recoveryServicesProviderAuthType() {
@@ -165,7 +169,7 @@ public final class ReplicationUsageInner {
     /**
      * Set the recoveryServicesProviderAuthType property: The authentication type of recovery service providers in the
      * vault.
-     *
+     * 
      * @param recoveryServicesProviderAuthType the recoveryServicesProviderAuthType value to set.
      * @return the ReplicationUsageInner object itself.
      */
@@ -176,7 +180,7 @@ public final class ReplicationUsageInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

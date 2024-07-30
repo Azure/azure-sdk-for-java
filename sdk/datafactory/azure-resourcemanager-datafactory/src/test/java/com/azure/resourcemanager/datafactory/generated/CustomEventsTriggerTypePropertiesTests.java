@@ -13,21 +13,23 @@ public final class CustomEventsTriggerTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomEventsTriggerTypeProperties model = BinaryData.fromString(
-            "{\"subjectBeginsWith\":\"hkm\",\"subjectEndsWith\":\"raoytkkqoaazvmn\",\"events\":[\"datadzfypdsrfpihvij\",\"datajtkpocqboyjjfx\"],\"scope\":\"njduyotqb\"}")
+            "{\"subjectBeginsWith\":\"gxnopdeqqfycwbu\",\"subjectEndsWith\":\"fikiu\",\"events\":[\"datavpxptqbwn\"],\"scope\":\"ilgamxnj\"}")
             .toObject(CustomEventsTriggerTypeProperties.class);
-        Assertions.assertEquals("hkm", model.subjectBeginsWith());
-        Assertions.assertEquals("raoytkkqoaazvmn", model.subjectEndsWith());
-        Assertions.assertEquals("njduyotqb", model.scope());
+        Assertions.assertEquals("gxnopdeqqfycwbu", model.subjectBeginsWith());
+        Assertions.assertEquals("fikiu", model.subjectEndsWith());
+        Assertions.assertEquals("ilgamxnj", model.scope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomEventsTriggerTypeProperties model = new CustomEventsTriggerTypeProperties().withSubjectBeginsWith("hkm")
-            .withSubjectEndsWith("raoytkkqoaazvmn")
-            .withEvents(Arrays.asList("datadzfypdsrfpihvij", "datajtkpocqboyjjfx")).withScope("njduyotqb");
+        CustomEventsTriggerTypeProperties model
+            = new CustomEventsTriggerTypeProperties().withSubjectBeginsWith("gxnopdeqqfycwbu")
+                .withSubjectEndsWith("fikiu")
+                .withEvents(Arrays.asList("datavpxptqbwn"))
+                .withScope("ilgamxnj");
         model = BinaryData.fromObject(model).toObject(CustomEventsTriggerTypeProperties.class);
-        Assertions.assertEquals("hkm", model.subjectBeginsWith());
-        Assertions.assertEquals("raoytkkqoaazvmn", model.subjectEndsWith());
-        Assertions.assertEquals("njduyotqb", model.scope());
+        Assertions.assertEquals("gxnopdeqqfycwbu", model.subjectBeginsWith());
+        Assertions.assertEquals("fikiu", model.subjectEndsWith());
+        Assertions.assertEquals("ilgamxnj", model.scope());
     }
 }

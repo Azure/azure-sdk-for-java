@@ -12,7 +12,9 @@ import com.azure.resourcemanager.frontdoor.models.State;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Defines the properties of an Experiment. */
+/**
+ * Defines the properties of an Experiment.
+ */
 @Fluent
 public final class ExperimentInner extends Resource {
     /*
@@ -21,27 +23,33 @@ public final class ExperimentInner extends Resource {
     @JsonProperty(value = "properties")
     private ExperimentProperties innerProperties;
 
-    /** Creates an instance of ExperimentInner class. */
+    /**
+     * Creates an instance of ExperimentInner class.
+     */
     public ExperimentInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of an Experiment.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ExperimentProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExperimentInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExperimentInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -50,7 +58,7 @@ public final class ExperimentInner extends Resource {
 
     /**
      * Get the description property: The description of the details or intents of the Experiment.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -59,7 +67,7 @@ public final class ExperimentInner extends Resource {
 
     /**
      * Set the description property: The description of the details or intents of the Experiment.
-     *
+     * 
      * @param description the description value to set.
      * @return the ExperimentInner object itself.
      */
@@ -73,7 +81,7 @@ public final class ExperimentInner extends Resource {
 
     /**
      * Get the endpointA property: The endpoint A of an experiment.
-     *
+     * 
      * @return the endpointA value.
      */
     public Endpoint endpointA() {
@@ -82,7 +90,7 @@ public final class ExperimentInner extends Resource {
 
     /**
      * Set the endpointA property: The endpoint A of an experiment.
-     *
+     * 
      * @param endpointA the endpointA value to set.
      * @return the ExperimentInner object itself.
      */
@@ -96,7 +104,7 @@ public final class ExperimentInner extends Resource {
 
     /**
      * Get the endpointB property: The endpoint B of an experiment.
-     *
+     * 
      * @return the endpointB value.
      */
     public Endpoint endpointB() {
@@ -105,7 +113,7 @@ public final class ExperimentInner extends Resource {
 
     /**
      * Set the endpointB property: The endpoint B of an experiment.
-     *
+     * 
      * @param endpointB the endpointB value to set.
      * @return the ExperimentInner object itself.
      */
@@ -119,7 +127,7 @@ public final class ExperimentInner extends Resource {
 
     /**
      * Get the enabledState property: The state of the Experiment.
-     *
+     * 
      * @return the enabledState value.
      */
     public State enabledState() {
@@ -128,7 +136,7 @@ public final class ExperimentInner extends Resource {
 
     /**
      * Set the enabledState property: The state of the Experiment.
-     *
+     * 
      * @param enabledState the enabledState value to set.
      * @return the ExperimentInner object itself.
      */
@@ -142,7 +150,7 @@ public final class ExperimentInner extends Resource {
 
     /**
      * Get the resourceState property: Resource status.
-     *
+     * 
      * @return the resourceState value.
      */
     public NetworkExperimentResourceState resourceState() {
@@ -151,7 +159,7 @@ public final class ExperimentInner extends Resource {
 
     /**
      * Get the status property: The description of Experiment status from the server side.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -160,7 +168,7 @@ public final class ExperimentInner extends Resource {
 
     /**
      * Get the scriptFileUri property: The uri to the Script used in the Experiment.
-     *
+     * 
      * @return the scriptFileUri value.
      */
     public String scriptFileUri() {
@@ -169,7 +177,7 @@ public final class ExperimentInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

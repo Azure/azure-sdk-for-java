@@ -28,6 +28,8 @@ public final class ShareFileUploadRangeOptions {
      * expected to produce the same values across subscriptions.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
+     * @throws NullPointerException If {@code dataFlux} is null.
+     * @throws IllegalArgumentException If {@code length} is less than 0 or greater than {@link Long#MAX_VALUE}.
      */
     public ShareFileUploadRangeOptions(Flux<ByteBuffer> dataFlux, long length) {
         StorageImplUtils.assertNotNull("dataFlux", dataFlux);
@@ -45,6 +47,8 @@ public final class ShareFileUploadRangeOptions {
      * mark support.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}. Value must be greater than or equal to 1.
+     * @throws NullPointerException If {@code dataStream} is null.
+     * @throws IllegalArgumentException If {@code length} is less than 1 or greater than {@link Long#MAX_VALUE}.
      */
     public ShareFileUploadRangeOptions(InputStream dataStream, long length) {
         StorageImplUtils.assertNotNull("dataStream", length);

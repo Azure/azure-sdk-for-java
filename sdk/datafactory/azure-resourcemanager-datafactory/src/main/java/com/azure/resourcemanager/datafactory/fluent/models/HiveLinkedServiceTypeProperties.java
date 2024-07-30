@@ -132,8 +132,8 @@ public final class HiveLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the host property: IP address or host name of the Hive server, separated by ';' for multiple hosts (only
-     * when serviceDiscoveryMode is enable).
+     * Get the host property: IP address or host name of the Hive server, separated by ';' for multiple hosts (only when
+     * serviceDiscoveryMode is enable).
      * 
      * @return the host value.
      */
@@ -142,8 +142,8 @@ public final class HiveLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the host property: IP address or host name of the Hive server, separated by ';' for multiple hosts (only
-     * when serviceDiscoveryMode is enable).
+     * Set the host property: IP address or host name of the Hive server, separated by ';' for multiple hosts (only when
+     * serviceDiscoveryMode is enable).
      * 
      * @param host the host value to set.
      * @return the HiveLinkedServiceTypeProperties object itself.
@@ -275,8 +275,8 @@ public final class HiveLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the useNativeQuery property: Specifies whether the driver uses native HiveQL queries,or converts them into
-     * an equivalent form in HiveQL.
+     * Get the useNativeQuery property: Specifies whether the driver uses native HiveQL queries,or converts them into an
+     * equivalent form in HiveQL.
      * 
      * @return the useNativeQuery value.
      */
@@ -285,8 +285,8 @@ public final class HiveLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the useNativeQuery property: Specifies whether the driver uses native HiveQL queries,or converts them into
-     * an equivalent form in HiveQL.
+     * Set the useNativeQuery property: Specifies whether the driver uses native HiveQL queries,or converts them into an
+     * equivalent form in HiveQL.
      * 
      * @param useNativeQuery the useNativeQuery value to set.
      * @return the HiveLinkedServiceTypeProperties object itself.
@@ -379,9 +379,9 @@ public final class HiveLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for
-     * verifying the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR.
-     * The default value is the cacerts.pem file installed with the IR.
+     * Get the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
+     * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
+     * value is the cacerts.pem file installed with the IR.
      * 
      * @return the trustedCertPath value.
      */
@@ -390,9 +390,9 @@ public final class HiveLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for
-     * verifying the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR.
-     * The default value is the cacerts.pem file installed with the IR.
+     * Set the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
+     * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
+     * value is the cacerts.pem file installed with the IR.
      * 
      * @param trustedCertPath the trustedCertPath value to set.
      * @return the HiveLinkedServiceTypeProperties object itself.
@@ -469,8 +469,8 @@ public final class HiveLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -479,8 +479,8 @@ public final class HiveLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the HiveLinkedServiceTypeProperties object itself.
@@ -497,12 +497,14 @@ public final class HiveLinkedServiceTypeProperties {
      */
     public void validate() {
         if (host() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property host in model HiveLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property host in model HiveLinkedServiceTypeProperties"));
         }
         if (authenticationType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property authenticationType in model HiveLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property authenticationType in model HiveLinkedServiceTypeProperties"));
         }
         if (password() != null) {
             password().validate();

@@ -6,7 +6,6 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -72,7 +71,6 @@ public final class ParagraphRole extends ExpandableStringEnum<ParagraphRole> {
      * @return the corresponding ParagraphRole.
      */
     @Generated
-    @JsonCreator
     public static ParagraphRole fromString(String name) {
         return fromString(name, ParagraphRole.class);
     }

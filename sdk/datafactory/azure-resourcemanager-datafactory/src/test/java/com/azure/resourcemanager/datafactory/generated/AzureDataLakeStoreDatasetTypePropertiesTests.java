@@ -15,18 +15,21 @@ public final class AzureDataLakeStoreDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureDataLakeStoreDatasetTypeProperties model = BinaryData.fromString(
-            "{\"folderPath\":\"dataailxqkdyqjvzvcg\",\"fileName\":\"dataspzesfkqqxuhvz\",\"format\":{\"type\":\"DatasetStorageFormat\",\"serializer\":\"datarouszxacdwukokgo\",\"deserializer\":\"dataj\",\"\":{\"h\":\"datatubcmu\",\"bcuufkrfn\":\"databtzvxxv\",\"wwp\":\"datacnihkswxmfurqmw\"}},\"compression\":{\"type\":\"dataum\",\"level\":\"dataahbqsvnkxm\",\"\":{\"edr\":\"datau\"}}}")
+            "{\"folderPath\":\"dataiqpmnufz\",\"fileName\":\"datachxwwuzdmh\",\"format\":{\"type\":\"DatasetStorageFormat\",\"serializer\":\"datavivjm\",\"deserializer\":\"datalitqdsjipdvi\",\"\":{\"qoemwsi\":\"datatyxbriifefndslv\",\"deotmfx\":\"dataeailwdqmqf\"}},\"compression\":{\"type\":\"datad\",\"level\":\"datawgnamkuuy\",\"\":{\"hdcfm\":\"datauafixlxicwgp\",\"fasfod\":\"dataz\",\"kwgqrn\":\"dataopalvngtwyu\"}}}")
             .toObject(AzureDataLakeStoreDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureDataLakeStoreDatasetTypeProperties model = new AzureDataLakeStoreDatasetTypeProperties()
-            .withFolderPath("dataailxqkdyqjvzvcg").withFileName("dataspzesfkqqxuhvz")
-            .withFormat(new DatasetStorageFormat().withSerializer("datarouszxacdwukokgo").withDeserializer("dataj")
-                .withAdditionalProperties(mapOf("type", "DatasetStorageFormat")))
-            .withCompression(new DatasetCompression().withType("dataum").withLevel("dataahbqsvnkxm")
-                .withAdditionalProperties(mapOf()));
+        AzureDataLakeStoreDatasetTypeProperties model
+            = new AzureDataLakeStoreDatasetTypeProperties().withFolderPath("dataiqpmnufz")
+                .withFileName("datachxwwuzdmh")
+                .withFormat(new DatasetStorageFormat().withSerializer("datavivjm")
+                    .withDeserializer("datalitqdsjipdvi")
+                    .withAdditionalProperties(mapOf("type", "DatasetStorageFormat")))
+                .withCompression(new DatasetCompression().withType("datad")
+                    .withLevel("datawgnamkuuy")
+                    .withAdditionalProperties(mapOf()));
         model = BinaryData.fromObject(model).toObject(AzureDataLakeStoreDatasetTypeProperties.class);
     }
 

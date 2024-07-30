@@ -27,8 +27,8 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
     private Object accountKey;
 
     /*
-     * The ID of the application used to authenticate against the Azure Data Lake Storage Gen2 account. Type: string
-     * (or Expression with resultType string).
+     * The ID of the application used to authenticate against the Azure Data Lake Storage Gen2 account. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
@@ -168,8 +168,8 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the servicePrincipalKey property: The Key of the application used to authenticate against the Azure Data
-     * Lake Storage Gen2 account.
+     * Get the servicePrincipalKey property: The Key of the application used to authenticate against the Azure Data Lake
+     * Storage Gen2 account.
      * 
      * @return the servicePrincipalKey value.
      */
@@ -178,8 +178,8 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the servicePrincipalKey property: The Key of the application used to authenticate against the Azure Data
-     * Lake Storage Gen2 account.
+     * Set the servicePrincipalKey property: The Key of the application used to authenticate against the Azure Data Lake
+     * Storage Gen2 account.
      * 
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the AzureBlobFSLinkedServiceTypeProperties object itself.
@@ -212,9 +212,9 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values
-     * are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud
-     * type. Type: string (or Expression with resultType string).
+     * Get the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
+     * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
+     * Type: string (or Expression with resultType string).
      * 
      * @return the azureCloudType value.
      */
@@ -223,9 +223,9 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values
-     * are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud
-     * type. Type: string (or Expression with resultType string).
+     * Set the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
+     * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
+     * Type: string (or Expression with resultType string).
      * 
      * @param azureCloudType the azureCloudType value to set.
      * @return the AzureBlobFSLinkedServiceTypeProperties object itself.
@@ -236,8 +236,8 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -246,8 +246,8 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureBlobFSLinkedServiceTypeProperties object itself.
@@ -278,9 +278,9 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the servicePrincipalCredentialType property: The service principal credential type to use in
-     * Server-To-Server authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate.
-     * Type: string (or Expression with resultType string).
+     * Get the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
+     * Expression with resultType string).
      * 
      * @return the servicePrincipalCredentialType value.
      */
@@ -289,9 +289,9 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the servicePrincipalCredentialType property: The service principal credential type to use in
-     * Server-To-Server authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate.
-     * Type: string (or Expression with resultType string).
+     * Set the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
+     * Expression with resultType string).
      * 
      * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
      * @return the AzureBlobFSLinkedServiceTypeProperties object itself.

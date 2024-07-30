@@ -53,8 +53,8 @@ public final class IntegrationRuntimeObjectMetadatasImpl implements IntegrationR
 
     public Response<SsisObjectMetadataListResponse> getWithResponse(String resourceGroupName, String factoryName,
         String integrationRuntimeName, GetSsisObjectMetadataRequest getMetadataRequest, Context context) {
-        Response<SsisObjectMetadataListResponseInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            factoryName, integrationRuntimeName, getMetadataRequest, context);
+        Response<SsisObjectMetadataListResponseInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, factoryName, integrationRuntimeName, getMetadataRequest, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SsisObjectMetadataListResponseImpl(inner.getValue(), this.manager()));

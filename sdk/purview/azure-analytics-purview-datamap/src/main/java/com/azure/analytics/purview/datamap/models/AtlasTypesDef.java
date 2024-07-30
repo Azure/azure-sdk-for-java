@@ -6,61 +6,58 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The definitions of types.
  */
 @Fluent
-public final class AtlasTypesDef {
+public final class AtlasTypesDef implements JsonSerializable<AtlasTypesDef> {
     /*
      * businessMetadataDefs
      */
     @Generated
-    @JsonProperty(value = "businessMetadataDefs")
     private List<AtlasBusinessMetadataDef> businessMetadataDefs;
 
     /*
      * An array of classification definitions.
      */
     @Generated
-    @JsonProperty(value = "classificationDefs")
     private List<AtlasClassificationDef> classificationDefs;
 
     /*
      * An array of entity definitions.
      */
     @Generated
-    @JsonProperty(value = "entityDefs")
     private List<AtlasEntityDef> entityDefs;
 
     /*
      * An array of enum definitions.
      */
     @Generated
-    @JsonProperty(value = "enumDefs")
     private List<AtlasEnumDef> enumDefs;
 
     /*
      * An array of relationship definitions.
      */
     @Generated
-    @JsonProperty(value = "relationshipDefs")
     private List<AtlasRelationshipDef> relationshipDefs;
 
     /*
      * An array of struct definitions.
      */
     @Generated
-    @JsonProperty(value = "structDefs")
     private List<AtlasStructDef> structDefs;
 
     /*
      * An array of term template definitions.
      */
     @Generated
-    @JsonProperty(value = "termTemplateDefs")
     private List<TermTemplateDef> termTemplateDefs;
 
     /**
@@ -222,5 +219,76 @@ public final class AtlasTypesDef {
     public AtlasTypesDef setTermTemplateDefs(List<TermTemplateDef> termTemplateDefs) {
         this.termTemplateDefs = termTemplateDefs;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("businessMetadataDefs", this.businessMetadataDefs,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("classificationDefs", this.classificationDefs,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("entityDefs", this.entityDefs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("enumDefs", this.enumDefs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("relationshipDefs", this.relationshipDefs,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("structDefs", this.structDefs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("termTemplateDefs", this.termTemplateDefs,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AtlasTypesDef from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AtlasTypesDef if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AtlasTypesDef.
+     */
+    @Generated
+    public static AtlasTypesDef fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AtlasTypesDef deserializedAtlasTypesDef = new AtlasTypesDef();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("businessMetadataDefs".equals(fieldName)) {
+                    List<AtlasBusinessMetadataDef> businessMetadataDefs
+                        = reader.readArray(reader1 -> AtlasBusinessMetadataDef.fromJson(reader1));
+                    deserializedAtlasTypesDef.businessMetadataDefs = businessMetadataDefs;
+                } else if ("classificationDefs".equals(fieldName)) {
+                    List<AtlasClassificationDef> classificationDefs
+                        = reader.readArray(reader1 -> AtlasClassificationDef.fromJson(reader1));
+                    deserializedAtlasTypesDef.classificationDefs = classificationDefs;
+                } else if ("entityDefs".equals(fieldName)) {
+                    List<AtlasEntityDef> entityDefs = reader.readArray(reader1 -> AtlasEntityDef.fromJson(reader1));
+                    deserializedAtlasTypesDef.entityDefs = entityDefs;
+                } else if ("enumDefs".equals(fieldName)) {
+                    List<AtlasEnumDef> enumDefs = reader.readArray(reader1 -> AtlasEnumDef.fromJson(reader1));
+                    deserializedAtlasTypesDef.enumDefs = enumDefs;
+                } else if ("relationshipDefs".equals(fieldName)) {
+                    List<AtlasRelationshipDef> relationshipDefs
+                        = reader.readArray(reader1 -> AtlasRelationshipDef.fromJson(reader1));
+                    deserializedAtlasTypesDef.relationshipDefs = relationshipDefs;
+                } else if ("structDefs".equals(fieldName)) {
+                    List<AtlasStructDef> structDefs = reader.readArray(reader1 -> AtlasStructDef.fromJson(reader1));
+                    deserializedAtlasTypesDef.structDefs = structDefs;
+                } else if ("termTemplateDefs".equals(fieldName)) {
+                    List<TermTemplateDef> termTemplateDefs
+                        = reader.readArray(reader1 -> TermTemplateDef.fromJson(reader1));
+                    deserializedAtlasTypesDef.termTemplateDefs = termTemplateDefs;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAtlasTypesDef;
+        });
     }
 }

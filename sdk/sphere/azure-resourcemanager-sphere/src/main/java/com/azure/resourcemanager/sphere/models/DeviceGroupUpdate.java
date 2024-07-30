@@ -5,154 +5,53 @@
 package com.azure.resourcemanager.sphere.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.sphere.fluent.models.DeviceGroupUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The type used for update operations of the DeviceGroup. */
+/**
+ * The type used for update operations of the DeviceGroup.
+ */
 @Fluent
 public final class DeviceGroupUpdate {
     /*
      * The updatable properties of the DeviceGroup.
      */
     @JsonProperty(value = "properties")
-    private DeviceGroupUpdateProperties innerProperties;
+    private DeviceGroupUpdateProperties properties;
 
-    /** Creates an instance of DeviceGroupUpdate class. */
+    /**
+     * Creates an instance of DeviceGroupUpdate class.
+     */
     public DeviceGroupUpdate() {
     }
 
     /**
-     * Get the innerProperties property: The updatable properties of the DeviceGroup.
-     *
-     * @return the innerProperties value.
+     * Get the properties property: The updatable properties of the DeviceGroup.
+     * 
+     * @return the properties value.
      */
-    private DeviceGroupUpdateProperties innerProperties() {
-        return this.innerProperties;
+    public DeviceGroupUpdateProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Get the description property: Description of the device group.
-     *
-     * @return the description value.
-     */
-    public String description() {
-        return this.innerProperties() == null ? null : this.innerProperties().description();
-    }
-
-    /**
-     * Set the description property: Description of the device group.
-     *
-     * @param description the description value to set.
+     * Set the properties property: The updatable properties of the DeviceGroup.
+     * 
+     * @param properties the properties value to set.
      * @return the DeviceGroupUpdate object itself.
      */
-    public DeviceGroupUpdate withDescription(String description) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DeviceGroupUpdateProperties();
-        }
-        this.innerProperties().withDescription(description);
-        return this;
-    }
-
-    /**
-     * Get the osFeedType property: Operating system feed type of the device group.
-     *
-     * @return the osFeedType value.
-     */
-    public OSFeedType osFeedType() {
-        return this.innerProperties() == null ? null : this.innerProperties().osFeedType();
-    }
-
-    /**
-     * Set the osFeedType property: Operating system feed type of the device group.
-     *
-     * @param osFeedType the osFeedType value to set.
-     * @return the DeviceGroupUpdate object itself.
-     */
-    public DeviceGroupUpdate withOsFeedType(OSFeedType osFeedType) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DeviceGroupUpdateProperties();
-        }
-        this.innerProperties().withOsFeedType(osFeedType);
-        return this;
-    }
-
-    /**
-     * Get the updatePolicy property: Update policy of the device group.
-     *
-     * @return the updatePolicy value.
-     */
-    public UpdatePolicy updatePolicy() {
-        return this.innerProperties() == null ? null : this.innerProperties().updatePolicy();
-    }
-
-    /**
-     * Set the updatePolicy property: Update policy of the device group.
-     *
-     * @param updatePolicy the updatePolicy value to set.
-     * @return the DeviceGroupUpdate object itself.
-     */
-    public DeviceGroupUpdate withUpdatePolicy(UpdatePolicy updatePolicy) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DeviceGroupUpdateProperties();
-        }
-        this.innerProperties().withUpdatePolicy(updatePolicy);
-        return this;
-    }
-
-    /**
-     * Get the allowCrashDumpsCollection property: Flag to define if the user allows for crash dump collection.
-     *
-     * @return the allowCrashDumpsCollection value.
-     */
-    public AllowCrashDumpCollection allowCrashDumpsCollection() {
-        return this.innerProperties() == null ? null : this.innerProperties().allowCrashDumpsCollection();
-    }
-
-    /**
-     * Set the allowCrashDumpsCollection property: Flag to define if the user allows for crash dump collection.
-     *
-     * @param allowCrashDumpsCollection the allowCrashDumpsCollection value to set.
-     * @return the DeviceGroupUpdate object itself.
-     */
-    public DeviceGroupUpdate withAllowCrashDumpsCollection(AllowCrashDumpCollection allowCrashDumpsCollection) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DeviceGroupUpdateProperties();
-        }
-        this.innerProperties().withAllowCrashDumpsCollection(allowCrashDumpsCollection);
-        return this;
-    }
-
-    /**
-     * Get the regionalDataBoundary property: Regional data boundary for the device group.
-     *
-     * @return the regionalDataBoundary value.
-     */
-    public RegionalDataBoundary regionalDataBoundary() {
-        return this.innerProperties() == null ? null : this.innerProperties().regionalDataBoundary();
-    }
-
-    /**
-     * Set the regionalDataBoundary property: Regional data boundary for the device group.
-     *
-     * @param regionalDataBoundary the regionalDataBoundary value to set.
-     * @return the DeviceGroupUpdate object itself.
-     */
-    public DeviceGroupUpdate withRegionalDataBoundary(RegionalDataBoundary regionalDataBoundary) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DeviceGroupUpdateProperties();
-        }
-        this.innerProperties().withRegionalDataBoundary(regionalDataBoundary);
+    public DeviceGroupUpdate withProperties(DeviceGroupUpdateProperties properties) {
+        this.properties = properties;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

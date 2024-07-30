@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.test;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -18,22 +17,20 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.ResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.test.policy.HttpDebugLoggingPolicy;
-import com.azure.resourcemanager.test.utils.AuthFile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.InvocationInterceptor;
 import org.junit.jupiter.api.extension.ReflectiveInvocationContext;
 import org.junit.jupiter.api.extension.RegisterExtension;
-import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -55,7 +52,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.interfaces.RSAPublicKey;
 import java.time.Duration;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -63,13 +59,20 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
  * Test base for resource manager SDK.
+ * <p>
+ * For LIVE/RECORD test, dev should
+ * 1. Sign-in Azure with CLI ("az login").
+ * 2. AZURE_TENANT_ID environment variable is set.
+ * 3. AZURE_SUBSCRIPTION_ID environment variable is set.
  */
 public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase {
     private static final String ZERO_UUID = "00000000-0000-0000-0000-000000000000";
+    private static final String SUBSCRIPTION_ID_REGEX = "(?<=/subscriptions/)([^/?]+)";
     private static final String ZERO_SUBSCRIPTION = ZERO_UUID;
     private static final String ZERO_TENANT = ZERO_UUID;
     private static final String PLAYBACK_URI_BASE = "https://localhost:";
@@ -109,7 +112,6 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
 
     private static final ClientLogger LOGGER = new ClientLogger(ResourceManagerTestProxyTestBase.class);
     private AzureProfile testProfile;
-    private AuthFile testAuthFile;
     private boolean isSkipInPlayback;
     private final List<TestProxySanitizer> sanitizers = new ArrayList<>();
 
@@ -120,6 +122,13 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
      */
     @RegisterExtension
     final PlaybackTimeoutInterceptor playbackTimeoutInterceptor = new PlaybackTimeoutInterceptor(() -> Duration.ofSeconds(60));
+
+    /**
+     * Initializes ResourceManagerTestProxyTestBase class.
+     */
+    protected ResourceManagerTestProxyTestBase() {
+
+    }
 
     /**
      * Generates a random resource name.
@@ -133,6 +142,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     }
 
     /**
+     * Generates a random UUID.
      * @return A randomly generated UUID.
      */
     protected String generateRandomUuid() {
@@ -140,6 +150,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     }
 
     /**
+     * Generates a random password.
      * @return random password
      */
     public static String password() {
@@ -152,6 +163,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     private static String sshPublicKey;
 
     /**
+     * Generates an SSH public key.
      * @return an SSH public key
      */
     public static String sshPublicKey() {
@@ -180,13 +192,18 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
         return sshPublicKey;
     }
 
+    private static final Pattern SUBSCRIPTION_ID_PATTERN = Pattern.compile(SUBSCRIPTION_ID_REGEX);
+
     /**
-     * Loads a credential from file.
+     * Asserts that the resource ID is same.
      *
-     * @return A credential loaded from a file.
+     * @param expected the expected resource ID.
+     * @param actual the actual resource ID.
      */
-    protected TokenCredential credentialFromFile() {
-        return testAuthFile.getCredential();
+    protected void assertResourceIdEquals(String expected, String actual) {
+        String sanitizedExpected = SUBSCRIPTION_ID_PATTERN.matcher(expected).replaceAll(ZERO_UUID);
+        String sanitizedActual = SUBSCRIPTION_ID_PATTERN.matcher(actual).replaceAll(ZERO_UUID);
+        Assertions.assertTrue(sanitizedExpected.equalsIgnoreCase(sanitizedActual), String.format("expected: %s but was: %s", expected, actual));
     }
 
     /**
@@ -195,11 +212,12 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
      * @return A client ID loaded from a file.
      */
     protected String clientIdFromFile() {
-        String clientId = testAuthFile == null ? null : testAuthFile.getClientId();
+        String clientId = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLIENT_ID);
         return testResourceNamer.recordValueFromConfig(clientId);
     }
 
     /**
+     * Gets the test profile.
      * @return The test profile.
      */
     protected AzureProfile profile() {
@@ -207,6 +225,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     }
 
     /**
+     * Checks whether test mode is {@link TestMode#PLAYBACK}.
      * @return Whether the test mode is {@link TestMode#PLAYBACK}.
      */
     protected boolean isPlaybackMode() {
@@ -214,6 +233,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     }
 
     /**
+     * Checks whether test should be skipped in playback.
      * @return Whether the test should be skipped in playback.
      */
     protected boolean skipInPlayback() {
@@ -254,50 +274,35 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
             testProfile = PLAYBACK_PROFILE;
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             httpPipeline = buildHttpPipeline(
-                request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new MockTokenCredential(),
                 testProfile,
                 new HttpLogOptions().setLogLevel(httpLogDetailLevel),
                 policies,
                 interceptorManager.getPlaybackClient());
             if (!testContextManager.doNotRecordTest()) {
                 // don't match api-version when matching url
-                interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("api-version"))));
+                interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("api-version")).setExcludedHeaders(Arrays.asList("If-Match"))));
                 addSanitizers();
+                removeSanitizers();
             }
         } else {
-            if (System.getenv(AZURE_AUTH_LOCATION) != null) { // Record mode
-                final File credFile = new File(System.getenv(AZURE_AUTH_LOCATION));
-                try {
-                    testAuthFile = AuthFile.parse(credFile);
-                } catch (IOException e) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException("Cannot parse auth file. Please check file format.", e));
-                }
-                credential = testAuthFile.getCredential();
-                testProfile = new AzureProfile(testAuthFile.getTenantId(), testAuthFile.getSubscriptionId(), testAuthFile.getEnvironment());
-            } else {
-                Configuration configuration = Configuration.getGlobalConfiguration();
-                String clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
-                String tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
-                String clientSecret = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_SECRET);
-                String subscriptionId = configuration.get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID);
-                if (clientId == null || tenantId == null || clientSecret == null || subscriptionId == null) {
-                    throw LOGGER.logExceptionAsError(
-                        new IllegalArgumentException("When running tests in record mode either 'AZURE_AUTH_LOCATION' or 'AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET and AZURE_SUBSCRIPTION_ID' needs to be set"));
-                }
-
-                credential = new ClientSecretCredentialBuilder()
-                    .tenantId(tenantId)
-                    .clientId(clientId)
-                    .clientSecret(clientSecret)
-                    .authorityHost(AzureEnvironment.AZURE.getActiveDirectoryEndpoint())
-                    .build();
-                testProfile = new AzureProfile(tenantId, subscriptionId, AzureEnvironment.AZURE);
-            }
+            Configuration configuration = Configuration.getGlobalConfiguration();
+            String tenantId = Objects.requireNonNull(
+                configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID),
+                "'AZURE_TENANT_ID' environment variable cannot be null.");
+            String subscriptionId = Objects.requireNonNull(
+                configuration.get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID),
+                "'AZURE_SUBSCRIPTION_ID' environment variable cannot be null.");
+            credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(AzureEnvironment.AZURE.getActiveDirectoryEndpoint())
+                .build();
+            testProfile = new AzureProfile(tenantId, subscriptionId, AzureEnvironment.AZURE);
 
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             if (interceptorManager.isRecordMode() && !testContextManager.doNotRecordTest()) {
                 policies.add(this.interceptorManager.getRecordPolicy());
                 addSanitizers();
+                removeSanitizers();
             }
             if (httpLogDetailLevel == HttpLogDetailLevel.BODY_AND_HEADERS) {
                 policies.add(new HttpDebugLoggingPolicy());
@@ -463,10 +468,12 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     private void addSanitizers() {
         List<TestProxySanitizer> sanitizers = new ArrayList<>(Arrays.asList(
             // subscription id
-            new TestProxySanitizer("(?<=/subscriptions/)([^/?]+)", ZERO_UUID, TestProxySanitizerType.URL),
+            new TestProxySanitizer(SUBSCRIPTION_ID_REGEX, ZERO_UUID, TestProxySanitizerType.URL),
             new TestProxySanitizer("(?<=%2Fsubscriptions%2F)([^/?]+)", ZERO_UUID, TestProxySanitizerType.URL),
             // Retry-After
             new TestProxySanitizer("Retry-After", null, "0", TestProxySanitizerType.HEADER),
+            // subscription id in body "id" property
+            new TestProxySanitizer("$..id", SUBSCRIPTION_ID_REGEX, ZERO_UUID, TestProxySanitizerType.BODY_KEY),
             // Microsoft Graph secret
             new TestProxySanitizer("$..secretText", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             // Storage secret
@@ -491,10 +498,22 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
             // ContainerRegistry
             new TestProxySanitizer("$..passwords[*].value", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             // ContainerService
-            new TestProxySanitizer("$..secret", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY)
+            new TestProxySanitizer("$..secret", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            // AppService
+            new TestProxySanitizer("$.properties.siteConfig.machineKey.decryptionKey", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            // Replace "AccountKey=<accountKey>;" with "AccountKey=REDACTED;"
+            new TestProxySanitizer("(?:AccountKey=)(?<accountKey>.*?)(?:;)", REDACTED_VALUE, TestProxySanitizerType.BODY_REGEX).setGroupForReplace("accountKey"),
+            new TestProxySanitizer("$.properties.WEBSITE_AUTH_ENCRYPTION_KEY", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$.properties.DOCKER_REGISTRY_SERVER_PASSWORD", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY)
         ));
         sanitizers.addAll(this.sanitizers);
         interceptorManager.addSanitizers(sanitizers);
+    }
+
+    private void removeSanitizers() {
+        // Remove sanitizer Location, operation-location, `id` and `name` from the list of common sanitizers.
+        // See https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/Common/SanitizerDictionary.cs for "testProxySanitizersId"
+        interceptorManager.removeSanitizers("AZSDK2003", "AZSDK2030", "AZSDK3430", "AZSDK3493");
     }
 
     /**

@@ -2,12 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.clienttelemetry;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
-import com.azure.cosmos.implementation.CosmosDaemonThreadFactory;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -36,8 +35,6 @@ import org.HdrHistogram.DoubleHistogram;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -51,7 +48,6 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -276,8 +272,9 @@ public class ClientTelemetry {
                         URI targetEndpoint = new URI(endpoint);
                         ByteBuffer byteBuffer =
                             InternalObjectNode.serializeJsonToByteBuffer(this.clientTelemetryInfo,
-                                ClientTelemetry.OBJECT_MAPPER,
-                                null);
+                                CosmosItemSerializer.DEFAULT_SERIALIZER,
+                                null,
+                                false);
                         byte[] tempBuffer = RxDocumentServiceRequest.toByteArray(byteBuffer);
                         Map<String, String> headers = new HashMap<>();
                         String date = Utils.nowAsRFC1123();

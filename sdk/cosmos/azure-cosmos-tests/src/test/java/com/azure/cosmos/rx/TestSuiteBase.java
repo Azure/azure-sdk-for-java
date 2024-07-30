@@ -26,6 +26,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.PathParser;
@@ -52,7 +53,6 @@ import com.azure.cosmos.models.CosmosUserResponse;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingPolicy;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
@@ -69,10 +69,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.mockito.stubbing.Answer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.ITestContext;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
+import org.testng.xml.XmlSuite;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -113,7 +115,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     protected final static ConsistencyLevel accountConsistency;
     protected static final ImmutableList<String> preferredLocations;
     private static final ImmutableList<ConsistencyLevel> desiredConsistencies;
-    private static final ImmutableList<Protocol> protocols;
+    protected static final ImmutableList<Protocol> protocols;
 
     protected static final AzureKeyCredential credential;
 
@@ -202,8 +204,8 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    @BeforeSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator", "split", "query", "cfp-split"}, timeOut = SUITE_SETUP_TIMEOUT)
-    public static void beforeSuite() {
+    @BeforeSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many"}, timeOut = SUITE_SETUP_TIMEOUT)
+    public void beforeSuite() {
 
         logger.info("beforeSuite Started");
 
@@ -218,8 +220,14 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    @AfterSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator", "split", "query", "cfp-split"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
-    public static void afterSuite() {
+    @BeforeSuite(groups = {"unit"})
+    public static void parallelizeUnitTests(ITestContext context) {
+        context.getSuite().getXmlSuite().setParallel(XmlSuite.ParallelMode.CLASSES);
+        context.getSuite().getXmlSuite().setThreadCount(Runtime.getRuntime().availableProcessors());
+    }
+
+    @AfterSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
+    public void afterSuite() {
 
         logger.info("afterSuite Started");
 
@@ -229,7 +237,70 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
+    protected static void cleanUpContainer(CosmosAsyncContainer cosmosContainer) {
+        CosmosContainerProperties cosmosContainerProperties = cosmosContainer.read().block().getProperties();
+        String cosmosContainerId = cosmosContainerProperties.getId();
+        logger.info("Truncating collection {} ...", cosmosContainerId);
+        List<String> paths = cosmosContainerProperties.getPartitionKeyDefinition().getPaths();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setCosmosEndToEndOperationLatencyPolicyConfig(
+            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofHours(1))
+                .build()
+        );
+        options.setMaxDegreeOfParallelism(-1);
+        int maxItemCount = 100;
+
+        cosmosContainer.queryItems("SELECT * FROM root", options, InternalObjectNode.class)
+            .byPage(maxItemCount)
+            .publishOn(Schedulers.parallel())
+            .flatMap(page -> Flux.fromIterable(page.getResults()))
+            .flatMap(doc -> {
+
+                PartitionKey partitionKey = null;
+
+                Object propertyValue = null;
+                if (paths != null && !paths.isEmpty()) {
+                    List<String> pkPath = PathParser.getPathParts(paths.get(0));
+                    propertyValue = doc.getObjectByPath(pkPath);
+                    if (propertyValue == null) {
+                        partitionKey = PartitionKey.NONE;
+                    } else {
+                        partitionKey = new PartitionKey(propertyValue);
+                    }
+                } else {
+                    partitionKey = new PartitionKey(null);
+                }
+
+                return cosmosContainer.deleteItem(doc.getId(), partitionKey);
+            }).then().block();
+    }
+
     protected static void truncateCollection(CosmosAsyncContainer cosmosContainer) {
+        int i = 0;
+        while (i < 100) {
+            try {
+                truncateCollectionInternal(cosmosContainer);
+                return;
+            } catch (CosmosException exception) {
+                if (exception.getStatusCode() != HttpConstants.StatusCodes.TOO_MANY_REQUESTS
+                    || exception.getSubStatusCode() != 3200) {
+
+                    logger.error("No retry of exception", exception);
+                    throw exception;
+                }
+
+                i++;
+                logger.info("Retrying truncation after 100ms - iteration " + i);
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
+
+    private static void truncateCollectionInternal(CosmosAsyncContainer cosmosContainer) {
         CosmosContainerProperties cosmosContainerProperties = cosmosContainer.read().block().getProperties();
         String cosmosContainerId = cosmosContainerProperties.getId();
         logger.info("Truncating collection {} ...", cosmosContainerId);
@@ -255,7 +326,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                            Object propertyValue = null;
                            if (paths != null && !paths.isEmpty()) {
                                List<String> pkPath = PathParser.getPathParts(paths.get(0));
-                               propertyValue = ModelBridgeInternal.getObjectByPathFromJsonSerializable(doc, pkPath);
+                               propertyValue = doc.getObjectByPath(pkPath);
                                if (propertyValue == null) {
                                    partitionKey = PartitionKey.NONE;
                                } else {
@@ -1098,6 +1169,13 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         };
     }
 
+    @DataProvider
+    public static Object[][] simpleGatewayClient() {
+        return new Object[][] {
+            { createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true, true) }
+        };
+    }
+
     private static Object[][] simpleClientBuildersWithDirect(
         boolean contentResponseOnWriteEnabled,
         Protocol... protocols) {
@@ -1229,11 +1307,11 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         return clientBuildersWithDirectSession(true, true);
     }
 
-    static Protocol[] toArray(List<Protocol> protocols) {
+    protected static Protocol[] toArray(List<Protocol> protocols) {
         return protocols.toArray(new Protocol[protocols.size()]);
     }
 
-    private static Object[][] clientBuildersWithDirectSession(boolean contentResponseOnWriteEnabled, boolean retryOnThrottledRequests, Protocol... protocols) {
+    protected static Object[][] clientBuildersWithDirectSession(boolean contentResponseOnWriteEnabled, boolean retryOnThrottledRequests, Protocol... protocols) {
         return clientBuildersWithDirect(new ArrayList<ConsistencyLevel>() {{
             add(ConsistencyLevel.SESSION);
         }}, contentResponseOnWriteEnabled, retryOnThrottledRequests, protocols);

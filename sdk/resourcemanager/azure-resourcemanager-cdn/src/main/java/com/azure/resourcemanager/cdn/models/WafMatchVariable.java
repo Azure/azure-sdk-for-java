@@ -8,38 +8,58 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Match variable to compare against. */
+/**
+ * Match variable to compare against.
+ */
 public final class WafMatchVariable extends ExpandableStringEnum<WafMatchVariable> {
-    /** Static value RemoteAddr for WafMatchVariable. */
+    /**
+     * Static value RemoteAddr for WafMatchVariable.
+     */
     public static final WafMatchVariable REMOTE_ADDR = fromString("RemoteAddr");
 
-    /** Static value SocketAddr for WafMatchVariable. */
+    /**
+     * Static value SocketAddr for WafMatchVariable.
+     */
     public static final WafMatchVariable SOCKET_ADDR = fromString("SocketAddr");
 
-    /** Static value RequestMethod for WafMatchVariable. */
+    /**
+     * Static value RequestMethod for WafMatchVariable.
+     */
     public static final WafMatchVariable REQUEST_METHOD = fromString("RequestMethod");
 
-    /** Static value RequestHeader for WafMatchVariable. */
+    /**
+     * Static value RequestHeader for WafMatchVariable.
+     */
     public static final WafMatchVariable REQUEST_HEADER = fromString("RequestHeader");
 
-    /** Static value RequestUri for WafMatchVariable. */
+    /**
+     * Static value RequestUri for WafMatchVariable.
+     */
     public static final WafMatchVariable REQUEST_URI = fromString("RequestUri");
 
-    /** Static value QueryString for WafMatchVariable. */
+    /**
+     * Static value QueryString for WafMatchVariable.
+     */
     public static final WafMatchVariable QUERY_STRING = fromString("QueryString");
 
-    /** Static value RequestBody for WafMatchVariable. */
+    /**
+     * Static value RequestBody for WafMatchVariable.
+     */
     public static final WafMatchVariable REQUEST_BODY = fromString("RequestBody");
 
-    /** Static value Cookies for WafMatchVariable. */
+    /**
+     * Static value Cookies for WafMatchVariable.
+     */
     public static final WafMatchVariable COOKIES = fromString("Cookies");
 
-    /** Static value PostArgs for WafMatchVariable. */
+    /**
+     * Static value PostArgs for WafMatchVariable.
+     */
     public static final WafMatchVariable POST_ARGS = fromString("PostArgs");
 
     /**
      * Creates a new instance of WafMatchVariable value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -48,7 +68,7 @@ public final class WafMatchVariable extends ExpandableStringEnum<WafMatchVariabl
 
     /**
      * Creates or finds a WafMatchVariable from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WafMatchVariable.
      */
@@ -59,7 +79,7 @@ public final class WafMatchVariable extends ExpandableStringEnum<WafMatchVariabl
 
     /**
      * Gets known WafMatchVariable values.
-     *
+     * 
      * @return known WafMatchVariable values.
      */
     public static Collection<WafMatchVariable> values() {

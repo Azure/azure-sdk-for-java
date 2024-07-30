@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The pool properties for partial update. Properties not provided in the update request will not be changed. */
+/**
+ * The pool properties for partial update. Properties not provided in the update request will not be changed.
+ */
 @Fluent
 public final class PoolUpdate extends TrackedResourceUpdate {
     /*
@@ -19,27 +21,33 @@ public final class PoolUpdate extends TrackedResourceUpdate {
     @JsonProperty(value = "properties")
     private PoolUpdateProperties innerProperties;
 
-    /** Creates an instance of PoolUpdate class. */
+    /**
+     * Creates an instance of PoolUpdate class.
+     */
     public PoolUpdate() {
     }
 
     /**
      * Get the innerProperties property: Properties of a pool to be updated.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PoolUpdateProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PoolUpdate withTags(Map<String, String> tags) {
         super.withTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PoolUpdate withLocation(String location) {
         super.withLocation(location);
@@ -48,7 +56,7 @@ public final class PoolUpdate extends TrackedResourceUpdate {
 
     /**
      * Get the devBoxDefinitionName property: Name of a Dev Box definition in parent Project of this Pool.
-     *
+     * 
      * @return the devBoxDefinitionName value.
      */
     public String devBoxDefinitionName() {
@@ -57,7 +65,7 @@ public final class PoolUpdate extends TrackedResourceUpdate {
 
     /**
      * Set the devBoxDefinitionName property: Name of a Dev Box definition in parent Project of this Pool.
-     *
+     * 
      * @param devBoxDefinitionName the devBoxDefinitionName value to set.
      * @return the PoolUpdate object itself.
      */
@@ -71,7 +79,7 @@ public final class PoolUpdate extends TrackedResourceUpdate {
 
     /**
      * Get the networkConnectionName property: Name of a Network Connection in parent Project of this Pool.
-     *
+     * 
      * @return the networkConnectionName value.
      */
     public String networkConnectionName() {
@@ -80,7 +88,7 @@ public final class PoolUpdate extends TrackedResourceUpdate {
 
     /**
      * Set the networkConnectionName property: Name of a Network Connection in parent Project of this Pool.
-     *
+     * 
      * @param networkConnectionName the networkConnectionName value to set.
      * @return the PoolUpdate object itself.
      */
@@ -95,7 +103,7 @@ public final class PoolUpdate extends TrackedResourceUpdate {
     /**
      * Get the licenseType property: Specifies the license type indicating the caller has already acquired licenses for
      * the Dev Boxes that will be created.
-     *
+     * 
      * @return the licenseType value.
      */
     public LicenseType licenseType() {
@@ -105,7 +113,7 @@ public final class PoolUpdate extends TrackedResourceUpdate {
     /**
      * Set the licenseType property: Specifies the license type indicating the caller has already acquired licenses for
      * the Dev Boxes that will be created.
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the PoolUpdate object itself.
      */
@@ -120,7 +128,7 @@ public final class PoolUpdate extends TrackedResourceUpdate {
     /**
      * Get the localAdministrator property: Indicates whether owners of Dev Boxes in this pool are added as local
      * administrators on the Dev Box.
-     *
+     * 
      * @return the localAdministrator value.
      */
     public LocalAdminStatus localAdministrator() {
@@ -130,7 +138,7 @@ public final class PoolUpdate extends TrackedResourceUpdate {
     /**
      * Set the localAdministrator property: Indicates whether owners of Dev Boxes in this pool are added as local
      * administrators on the Dev Box.
-     *
+     * 
      * @param localAdministrator the localAdministrator value to set.
      * @return the PoolUpdate object itself.
      */
@@ -144,7 +152,7 @@ public final class PoolUpdate extends TrackedResourceUpdate {
 
     /**
      * Get the stopOnDisconnect property: Stop on disconnect configuration settings for Dev Boxes created in this pool.
-     *
+     * 
      * @return the stopOnDisconnect value.
      */
     public StopOnDisconnectConfiguration stopOnDisconnect() {
@@ -153,7 +161,7 @@ public final class PoolUpdate extends TrackedResourceUpdate {
 
     /**
      * Set the stopOnDisconnect property: Stop on disconnect configuration settings for Dev Boxes created in this pool.
-     *
+     * 
      * @param stopOnDisconnect the stopOnDisconnect value to set.
      * @return the PoolUpdate object itself.
      */
@@ -168,7 +176,7 @@ public final class PoolUpdate extends TrackedResourceUpdate {
     /**
      * Get the singleSignOnStatus property: Indicates whether Dev Boxes in this pool are created with single sign on
      * enabled. The also requires that single sign on be enabled on the tenant.
-     *
+     * 
      * @return the singleSignOnStatus value.
      */
     public SingleSignOnStatus singleSignOnStatus() {
@@ -178,7 +186,7 @@ public final class PoolUpdate extends TrackedResourceUpdate {
     /**
      * Set the singleSignOnStatus property: Indicates whether Dev Boxes in this pool are created with single sign on
      * enabled. The also requires that single sign on be enabled on the tenant.
-     *
+     * 
      * @param singleSignOnStatus the singleSignOnStatus value to set.
      * @return the PoolUpdate object itself.
      */
@@ -192,7 +200,7 @@ public final class PoolUpdate extends TrackedResourceUpdate {
 
     /**
      * Get the displayName property: The display name of the pool.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -201,7 +209,7 @@ public final class PoolUpdate extends TrackedResourceUpdate {
 
     /**
      * Set the displayName property: The display name of the pool.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the PoolUpdate object itself.
      */
@@ -216,7 +224,7 @@ public final class PoolUpdate extends TrackedResourceUpdate {
     /**
      * Get the virtualNetworkType property: Indicates whether the pool uses a Virtual Network managed by Microsoft or a
      * customer provided network.
-     *
+     * 
      * @return the virtualNetworkType value.
      */
     public VirtualNetworkType virtualNetworkType() {
@@ -226,7 +234,7 @@ public final class PoolUpdate extends TrackedResourceUpdate {
     /**
      * Set the virtualNetworkType property: Indicates whether the pool uses a Virtual Network managed by Microsoft or a
      * customer provided network.
-     *
+     * 
      * @param virtualNetworkType the virtualNetworkType value to set.
      * @return the PoolUpdate object itself.
      */
@@ -241,7 +249,7 @@ public final class PoolUpdate extends TrackedResourceUpdate {
     /**
      * Get the managedVirtualNetworkRegions property: The regions of the managed virtual network (required when
      * managedNetworkType is Managed).
-     *
+     * 
      * @return the managedVirtualNetworkRegions value.
      */
     public List<String> managedVirtualNetworkRegions() {
@@ -251,7 +259,7 @@ public final class PoolUpdate extends TrackedResourceUpdate {
     /**
      * Set the managedVirtualNetworkRegions property: The regions of the managed virtual network (required when
      * managedNetworkType is Managed).
-     *
+     * 
      * @param managedVirtualNetworkRegions the managedVirtualNetworkRegions value to set.
      * @return the PoolUpdate object itself.
      */
@@ -265,7 +273,7 @@ public final class PoolUpdate extends TrackedResourceUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -28,10 +28,12 @@ public final class BackupManagementUsageInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupManagementUsageInner model
-            = new BackupManagementUsageInner().withUnit(UsagesUnit.COUNT).withQuotaPeriod("dvkaozw")
-                .withNextResetTime(OffsetDateTime.parse("2021-02-22T11:39:16Z")).withCurrentValue(4625530429549295340L)
-                .withLimit(4205096906528038378L).withName(new NameInfo().withValue("k").withLocalizedValue("yxolniwp"));
+        BackupManagementUsageInner model = new BackupManagementUsageInner().withUnit(UsagesUnit.COUNT)
+            .withQuotaPeriod("dvkaozw")
+            .withNextResetTime(OffsetDateTime.parse("2021-02-22T11:39:16Z"))
+            .withCurrentValue(4625530429549295340L)
+            .withLimit(4205096906528038378L)
+            .withName(new NameInfo().withValue("k").withLocalizedValue("yxolniwp"));
         model = BinaryData.fromObject(model).toObject(BackupManagementUsageInner.class);
         Assertions.assertEquals(UsagesUnit.COUNT, model.unit());
         Assertions.assertEquals("dvkaozw", model.quotaPeriod());

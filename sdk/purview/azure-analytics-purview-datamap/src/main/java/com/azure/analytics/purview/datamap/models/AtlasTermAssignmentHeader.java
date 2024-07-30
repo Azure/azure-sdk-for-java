@@ -6,74 +6,69 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The header for term assignment.
  */
 @Fluent
-public final class AtlasTermAssignmentHeader {
+public final class AtlasTermAssignmentHeader implements JsonSerializable<AtlasTermAssignmentHeader> {
     /*
      * The confidence of the term assignment.
      */
     @Generated
-    @JsonProperty(value = "confidence")
     private Integer confidence;
 
     /*
      * The user who created the record.
      */
     @Generated
-    @JsonProperty(value = "createdBy")
     private String createdBy;
 
     /*
      * The description of the term assignment.
      */
     @Generated
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The display text.
      */
     @Generated
-    @JsonProperty(value = "displayText")
     private String displayText;
 
     /*
      * The expression of the term assignment.
      */
     @Generated
-    @JsonProperty(value = "expression")
     private String expression;
 
     /*
      * The GUID of the relationship.
      */
     @Generated
-    @JsonProperty(value = "relationGuid")
     private String relationGuid;
 
     /*
      * The status of terms assignment.
      */
     @Generated
-    @JsonProperty(value = "status")
     private AtlasTermAssignmentStatus status;
 
     /*
      * The steward of the term.
      */
     @Generated
-    @JsonProperty(value = "steward")
     private String steward;
 
     /*
      * The GUID of the term.
      */
     @Generated
-    @JsonProperty(value = "termGuid")
     private String termGuid;
 
     /**
@@ -279,5 +274,68 @@ public final class AtlasTermAssignmentHeader {
     public AtlasTermAssignmentHeader setTermGuid(String termGuid) {
         this.termGuid = termGuid;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("confidence", this.confidence);
+        jsonWriter.writeStringField("createdBy", this.createdBy);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("displayText", this.displayText);
+        jsonWriter.writeStringField("expression", this.expression);
+        jsonWriter.writeStringField("relationGuid", this.relationGuid);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("steward", this.steward);
+        jsonWriter.writeStringField("termGuid", this.termGuid);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AtlasTermAssignmentHeader from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AtlasTermAssignmentHeader if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AtlasTermAssignmentHeader.
+     */
+    @Generated
+    public static AtlasTermAssignmentHeader fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AtlasTermAssignmentHeader deserializedAtlasTermAssignmentHeader = new AtlasTermAssignmentHeader();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("confidence".equals(fieldName)) {
+                    deserializedAtlasTermAssignmentHeader.confidence = reader.getNullable(JsonReader::getInt);
+                } else if ("createdBy".equals(fieldName)) {
+                    deserializedAtlasTermAssignmentHeader.createdBy = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedAtlasTermAssignmentHeader.description = reader.getString();
+                } else if ("displayText".equals(fieldName)) {
+                    deserializedAtlasTermAssignmentHeader.displayText = reader.getString();
+                } else if ("expression".equals(fieldName)) {
+                    deserializedAtlasTermAssignmentHeader.expression = reader.getString();
+                } else if ("relationGuid".equals(fieldName)) {
+                    deserializedAtlasTermAssignmentHeader.relationGuid = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedAtlasTermAssignmentHeader.status
+                        = AtlasTermAssignmentStatus.fromString(reader.getString());
+                } else if ("steward".equals(fieldName)) {
+                    deserializedAtlasTermAssignmentHeader.steward = reader.getString();
+                } else if ("termGuid".equals(fieldName)) {
+                    deserializedAtlasTermAssignmentHeader.termGuid = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAtlasTermAssignmentHeader;
+        });
     }
 }

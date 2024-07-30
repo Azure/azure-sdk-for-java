@@ -236,8 +236,7 @@ public final class PeerExpressRouteCircuitConnectionInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the peer express route circuit connection
-     * resource.
+     * Get the provisioningState property: The provisioning state of the peer express route circuit connection resource.
      * 
      * @return the provisioningState value.
      */

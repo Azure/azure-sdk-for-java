@@ -14,8 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity {
     /*
-     * User assigned identity to use for accessing key encryption key Url. Ex: /subscriptions/<sub
-     * uuid>/resourceGroups/<resource group>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId.
+     * User assigned identity to use for accessing key encryption key Url. Ex: /subscriptions/<sub uuid>/resourceGroups/<resource group>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId.
      */
     @JsonProperty(value = "userAssignedIdentityResourceId")
     private String userAssignedIdentityResourceId;

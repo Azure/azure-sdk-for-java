@@ -877,7 +877,8 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
     private Mono<FhirServiceInner> updateAsync(String resourceGroupName, String fhirServiceName, String workspaceName,
         FhirServicePatchResource fhirservicePatchResource, Context context) {
         return beginUpdateAsync(resourceGroupName, fhirServiceName, workspaceName, fhirservicePatchResource, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

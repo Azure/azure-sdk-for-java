@@ -19,6 +19,11 @@ public final class MetricAvailability {
         MetricsHelper.setMetricAvailabilityAccessor(MetricAvailability::setMetricAvailabilityProperties);
     }
 
+    /**
+     * Creates an instance of MetricAvailability.
+     */
+    public MetricAvailability() { }
+
     private void setMetricAvailabilityProperties(Duration retention, Duration granularity) {
         this.retention = retention;
         this.granularity = granularity;

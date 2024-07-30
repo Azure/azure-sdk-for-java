@@ -15,19 +15,19 @@ public final class GitHubOwnerInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GitHubOwnerInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningStatusMessage\":\"qpvwgfst\",\"provisioningStatusUpdateTimeUtc\":\"2021-09-24T09:32:29Z\",\"provisioningState\":\"Canceled\",\"ownerUrl\":\"zmdk\",\"gitHubInternalId\":\"oafcluqvox\",\"onboardingState\":\"NotOnboarded\"},\"id\":\"jimryvwgcwwpbmz\",\"name\":\"w\",\"type\":\"sydsxwefohe\"}")
+            "{\"properties\":{\"provisioningStatusMessage\":\"c\",\"provisioningStatusUpdateTimeUtc\":\"2021-07-25T12:28:37Z\",\"provisioningState\":\"DeletionFailure\",\"ownerUrl\":\"kpyyc\",\"gitHubInternalId\":\"wmpjprd\",\"onboardingState\":\"Onboarded\"},\"id\":\"pcfpcfj\",\"name\":\"wzlgzawkgy\",\"type\":\"peyamnnidmdiaw\"}")
             .toObject(GitHubOwnerInner.class);
-        Assertions.assertEquals(DevOpsProvisioningState.CANCELED, model.properties().provisioningState());
-        Assertions.assertEquals(OnboardingState.NOT_ONBOARDED, model.properties().onboardingState());
+        Assertions.assertEquals(DevOpsProvisioningState.DELETION_FAILURE, model.properties().provisioningState());
+        Assertions.assertEquals(OnboardingState.ONBOARDED, model.properties().onboardingState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GitHubOwnerInner model = new GitHubOwnerInner()
-            .withProperties(new GitHubOwnerProperties().withProvisioningState(DevOpsProvisioningState.CANCELED)
-                .withOnboardingState(OnboardingState.NOT_ONBOARDED));
+            .withProperties(new GitHubOwnerProperties().withProvisioningState(DevOpsProvisioningState.DELETION_FAILURE)
+                .withOnboardingState(OnboardingState.ONBOARDED));
         model = BinaryData.fromObject(model).toObject(GitHubOwnerInner.class);
-        Assertions.assertEquals(DevOpsProvisioningState.CANCELED, model.properties().provisioningState());
-        Assertions.assertEquals(OnboardingState.NOT_ONBOARDED, model.properties().onboardingState());
+        Assertions.assertEquals(DevOpsProvisioningState.DELETION_FAILURE, model.properties().provisioningState());
+        Assertions.assertEquals(OnboardingState.ONBOARDED, model.properties().onboardingState());
     }
 }

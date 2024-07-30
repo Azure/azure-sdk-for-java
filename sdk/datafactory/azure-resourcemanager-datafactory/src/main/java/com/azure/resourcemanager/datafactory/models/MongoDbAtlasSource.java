@@ -6,19 +6,27 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity source for a MongoDB Atlas database.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = MongoDbAtlasSource.class, visible = true)
 @JsonTypeName("MongoDbAtlasSource")
 @Fluent
 public final class MongoDbAtlasSource extends CopySource {
     /*
-     * Specifies selection filter using query operators. To return all documents in a collection, omit this parameter
-     * or pass an empty document ({}). Type: string (or Expression with resultType string).
+     * Copy source type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "MongoDbAtlasSource";
+
+    /*
+     * Specifies selection filter using query operators. To return all documents in a collection, omit this parameter or
+     * pass an empty document ({}). Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "filter")
     private Object filter;
@@ -55,6 +63,16 @@ public final class MongoDbAtlasSource extends CopySource {
      * Creates an instance of MongoDbAtlasSource class.
      */
     public MongoDbAtlasSource() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -103,8 +121,8 @@ public final class MongoDbAtlasSource extends CopySource {
 
     /**
      * Get the batchSize property: Specifies the number of documents to return in each batch of the response from
-     * MongoDB Atlas instance. In most cases, modifying the batch size will not affect the user or the application.
-     * This property's main purpose is to avoid hit the limitation of response size. Type: integer (or Expression with
+     * MongoDB Atlas instance. In most cases, modifying the batch size will not affect the user or the application. This
+     * property's main purpose is to avoid hit the limitation of response size. Type: integer (or Expression with
      * resultType integer).
      * 
      * @return the batchSize value.
@@ -115,8 +133,8 @@ public final class MongoDbAtlasSource extends CopySource {
 
     /**
      * Set the batchSize property: Specifies the number of documents to return in each batch of the response from
-     * MongoDB Atlas instance. In most cases, modifying the batch size will not affect the user or the application.
-     * This property's main purpose is to avoid hit the limitation of response size. Type: integer (or Expression with
+     * MongoDB Atlas instance. In most cases, modifying the batch size will not affect the user or the application. This
+     * property's main purpose is to avoid hit the limitation of response size. Type: integer (or Expression with
      * resultType integer).
      * 
      * @param batchSize the batchSize value to set.

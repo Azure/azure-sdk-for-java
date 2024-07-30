@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0-beta.6 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,201 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.5 (2024-04-29)
+
+- Azure Resource Manager MySql client library for Java. This package contains Microsoft Azure SDK for MySql Management SDK. The Microsoft Azure management API provides create, read, update, and delete functionality for Azure MySQL resources including servers, databases, firewall rules, VNET rules, log files and configurations with new business model. Package tag package-flexibleserver-2023-12-30. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.Identity` was removed
+
+* `models.Sku` was removed
+
+* `models.SkuTier` was removed
+
+#### `models.Server` was modified
+
+* `models.Identity identity()` -> `models.MySqlServerIdentity identity()`
+* `models.Sku sku()` -> `models.MySqlServerSku sku()`
+
+#### `models.ServerForUpdate` was modified
+
+* `withIdentity(models.Identity)` was removed
+* `models.Sku sku()` -> `models.MySqlServerSku sku()`
+* `models.Identity identity()` -> `models.MySqlServerIdentity identity()`
+* `withSku(models.Sku)` was removed
+
+#### `models.Server$Definition` was modified
+
+* `withIdentity(models.Identity)` was removed
+* `withSku(models.Sku)` was removed
+
+#### `models.Server$Update` was modified
+
+* `withIdentity(models.Identity)` was removed
+* `withSku(models.Sku)` was removed
+
+### Features Added
+
+* `models.BackupAndExportResponseType` was added
+
+* `models.ServerEditionCapabilityV2` was added
+
+* `models.AdvancedThreatProtectionState` was added
+
+* `models.SkuCapabilityV2` was added
+
+* `models.ServerSkuTier` was added
+
+* `models.AdvancedThreatProtectionProvisioningState` was added
+
+* `models.ImportFromStorageResponseType` was added
+
+* `models.ServerBackupV2ListResult` was added
+
+* `models.HighAvailabilityValidationEstimation` was added
+
+* `models.OperationProgressResponseType` was added
+
+* `models.PrivateEndpoint` was added
+
+* `models.OperationResults` was added
+
+* `models.ServerBackupV2$DefinitionStages` was added
+
+* `models.MySqlServerSku` was added
+
+* `models.ServerBackupV2$Definition` was added
+
+* `models.OperationStatusResult` was added
+
+* `models.MaintenanceUpdate` was added
+
+* `models.OperationStatusExtendedResult` was added
+
+* `models.ServersMigrations` was added
+
+* `models.AdvancedThreatProtectionSettings` was added
+
+* `models.LocationBasedCapabilitySets` was added
+
+* `models.ProvisioningState` was added
+
+* `models.ImportSourceStorageType` was added
+
+* `models.MaintenanceProvisioningState` was added
+
+* `models.CapabilitySetsList` was added
+
+* `models.ServerVersionCapabilityV2` was added
+
+* `models.AdvancedThreatProtectionName` was added
+
+* `models.MySqlServerIdentity` was added
+
+* `models.ImportSourceProperties` was added
+
+* `models.MaintenanceListResult` was added
+
+* `models.OperationProgressResult` was added
+
+* `models.PrivateEndpointConnection` was added
+
+* `models.PrivateLinkServiceConnectionState` was added
+
+* `models.AdvancedThreatProtectionListResult` was added
+
+* `models.ServerBackupV2` was added
+
+* `models.LongRunningBackups` was added
+
+* `models.ObjectType` was added
+
+* `models.Maintenances` was added
+
+* `models.MaintenanceType` was added
+
+* `models.AdvancedThreatProtection` was added
+
+* `models.PrivateEndpointServiceConnectionStatus` was added
+
+* `models.AdvancedThreatProtectionForUpdate` was added
+
+* `models.MaintenanceState` was added
+
+* `models.Capability` was added
+
+* `models.PrivateEndpointConnectionProvisioningState` was added
+
+* `models.Maintenance` was added
+
+* `models.BackupType` was added
+
+* `models.LongRunningBackupsOperations` was added
+
+* `models.OperationProgress` was added
+
+#### `models.FullBackupStoreDetails` was modified
+
+* `objectType()` was added
+
+#### `models.BackupStoreDetails` was modified
+
+* `objectType()` was added
+
+#### `models.Server` was modified
+
+* `importSourceProperties()` was added
+* `validateEstimateHighAvailability(fluent.models.HighAvailabilityValidationEstimationInner)` was added
+* `privateEndpointConnections()` was added
+* `validateEstimateHighAvailabilityWithResponse(fluent.models.HighAvailabilityValidationEstimationInner,com.azure.core.util.Context)` was added
+
+#### `models.BackupAndExportResponse` was modified
+
+* `systemData()` was added
+
+#### `models.ServerForUpdate` was modified
+
+* `withIdentity(models.MySqlServerIdentity)` was added
+* `withSku(models.MySqlServerSku)` was added
+
+#### `models.StorageEditionCapability` was modified
+
+* `minBackupIntervalHours()` was added
+* `maxBackupIntervalHours()` was added
+
+#### `MySqlManager` was modified
+
+* `serversMigrations()` was added
+* `locationBasedCapabilitySets()` was added
+* `operationProgress()` was added
+* `longRunningBackups()` was added
+* `maintenances()` was added
+* `operationResults()` was added
+* `advancedThreatProtectionSettings()` was added
+* `longRunningBackupsOperations()` was added
+
+#### `models.Server$Definition` was modified
+
+* `withSku(models.MySqlServerSku)` was added
+* `withIdentity(models.MySqlServerIdentity)` was added
+* `withImportSourceProperties(models.ImportSourceProperties)` was added
+
+#### `models.Servers` was modified
+
+* `validateEstimateHighAvailabilityWithResponse(java.lang.String,java.lang.String,fluent.models.HighAvailabilityValidationEstimationInner,com.azure.core.util.Context)` was added
+* `validateEstimateHighAvailability(java.lang.String,java.lang.String,fluent.models.HighAvailabilityValidationEstimationInner)` was added
+
+#### `models.Server$Update` was modified
+
+* `withIdentity(models.MySqlServerIdentity)` was added
+* `withSku(models.MySqlServerSku)` was added
+
+#### `models.Backup` was modified
+
+* `backupIntervalHours()` was added
+* `withBackupIntervalHours(java.lang.Integer)` was added
 
 ## 1.0.0-beta.4 (2023-05-18)
 

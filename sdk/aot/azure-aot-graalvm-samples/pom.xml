@@ -61,54 +61,54 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-data-appconfiguration</artifactId>
-            <version>1.5.2</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+            <version>1.6.2</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-identity</artifactId>
-            <version>1.11.4</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+            <version>1.13.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-security-keyvault-keys</artifactId>
-            <version>4.8.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
+            <version>4.8.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-storage-blob</artifactId>
-            <version>12.25.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+            <version>12.26.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
         </dependency>
 
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-security-keyvault-secrets</artifactId>
-            <version>4.8.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+            <version>4.8.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-security-keyvault-certificates</artifactId>
-            <version>4.6.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
+            <version>4.6.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
         </dependency>
 
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-messaging-eventhubs</artifactId>
-            <version>5.18.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+            <version>5.18.5</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-cosmos</artifactId>
-            <version>4.56.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+            <version>4.62.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-ai-formrecognizer</artifactId>
-            <version>4.1.5</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;dependency} -->
+            <version>4.1.9</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-ai-textanalytics</artifactId>
-            <version>5.4.3</version> <!-- {x-version-update;com.azure:azure-ai-textanalytics;dependency} -->
+            <version>5.4.7</version> <!-- {x-version-update;com.azure:azure-ai-textanalytics;dependency} -->
         </dependency>
 
 
@@ -144,7 +144,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>3.1.0</version>  <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
+                <version>3.2.0</version>  <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
                 <executions>
                     <execution>
                         <goals>
@@ -160,7 +160,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.3.0</version>  <!-- {x-version-update;org.apache.maven.plugins:maven-assembly-plugin;external_dependency} -->
+                <version>3.7.1</version>  <!-- {x-version-update;org.apache.maven.plugins:maven-assembly-plugin;external_dependency} -->
                 <configuration>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>

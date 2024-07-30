@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class ExpressRouteCircuitsGetStatsSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/ExpressRouteCircuitStats.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ExpressRouteCircuitStats.json
      */
     /**
      * Sample code: Get ExpressRoute Circuit Traffic Stats.
@@ -18,7 +18,10 @@ public final class ExpressRouteCircuitsGetStatsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getExpressRouteCircuitTrafficStats(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getExpressRouteCircuits().getStatsWithResponse("rg1", "circuitName",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getExpressRouteCircuits()
+            .getStatsWithResponse("rg1", "circuitName", com.azure.core.util.Context.NONE);
     }
 }

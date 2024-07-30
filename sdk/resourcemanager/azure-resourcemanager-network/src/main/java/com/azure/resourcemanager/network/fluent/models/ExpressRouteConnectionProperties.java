@@ -232,8 +232,9 @@ public final class ExpressRouteConnectionProperties {
      */
     public void validate() {
         if (expressRouteCircuitPeering() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property expressRouteCircuitPeering in model ExpressRouteConnectionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property expressRouteCircuitPeering in model ExpressRouteConnectionProperties"));
         } else {
             expressRouteCircuitPeering().validate();
         }

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.models.VpnGatewayPacketCaptureStartPara
  */
 public final class VpnGatewaysStartPacketCaptureSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * VpnGatewayStartPacketCaptureFilterData.json
      */
     /**
@@ -20,15 +20,18 @@ public final class VpnGatewaysStartPacketCaptureSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void startPacketCaptureOnVpnGatewayWithFilter(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVpnGateways().startPacketCapture("rg1", "vpngw",
-            new VpnGatewayPacketCaptureStartParameters().withFilterData(
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVpnGateways()
+            .startPacketCapture("rg1", "vpngw", new VpnGatewayPacketCaptureStartParameters().withFilterData(
                 "{'TracingFlags': 11,'MaxPacketBufferSize': 120,'MaxFileSize': 200,'Filters': [{'SourceSubnets': ['20.1.1.0/24'],'DestinationSubnets': ['10.1.1.0/24'],'SourcePort': [500],'DestinationPort': [4500],'Protocol': 6,'TcpFlags': 16,'CaptureSingleDirectionTrafficOnly': true}]}"),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VpnGatewayStartPacketCapture.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VpnGatewayStartPacketCapture.
      * json
      */
     /**
@@ -38,7 +41,10 @@ public final class VpnGatewaysStartPacketCaptureSamples {
      */
     public static void
         startPacketCaptureOnVpnGatewayWithoutFilter(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVpnGateways().startPacketCapture("rg1", "vpngw", null,
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVpnGateways()
+            .startPacketCapture("rg1", "vpngw", null, com.azure.core.util.Context.NONE);
     }
 }

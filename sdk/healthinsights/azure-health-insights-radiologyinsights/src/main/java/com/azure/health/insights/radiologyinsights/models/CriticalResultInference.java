@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -14,17 +15,29 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Critical results refer to findings of utmost importance that may require timely attention due to their potential
  * impact on patient care.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = CriticalResultInference.class,
+    visible = true)
 @JsonTypeName("criticalResult")
 @Immutable
-public final class CriticalResultInference extends FhirR4Extendible1 {
+public final class CriticalResultInference extends RadiologyInsightsInference {
+
+    /*
+     * Discriminator property for RadiologyInsightsInference.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.CRITICAL_RESULT;
 
     /*
      * The complete Critical Result, as outlined below, will be reused for the recommendation.
      */
     @Generated
     @JsonProperty(value = "result")
-    private CriticalResult result;
+    private final CriticalResult result;
 
     /**
      * Creates an instance of CriticalResultInference class.
@@ -35,6 +48,17 @@ public final class CriticalResultInference extends FhirR4Extendible1 {
     @JsonCreator
     private CriticalResultInference(@JsonProperty(value = "result") CriticalResult result) {
         this.result = result;
+    }
+
+    /**
+     * Get the kind property: Discriminator property for RadiologyInsightsInference.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public RadiologyInsightsInferenceType getKind() {
+        return this.kind;
     }
 
     /**

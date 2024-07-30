@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Managed Certificate used for https. */
+/**
+ * Managed Certificate used for https.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("ManagedCertificate")
 @Immutable
@@ -26,13 +28,15 @@ public final class ManagedCertificateParameters extends SecretParameters {
     @JsonProperty(value = "expirationDate", access = JsonProperty.Access.WRITE_ONLY)
     private String expirationDate;
 
-    /** Creates an instance of ManagedCertificateParameters class. */
+    /**
+     * Creates an instance of ManagedCertificateParameters class.
+     */
     public ManagedCertificateParameters() {
     }
 
     /**
      * Get the subject property: Subject name in the certificate.
-     *
+     * 
      * @return the subject value.
      */
     public String subject() {
@@ -41,7 +45,7 @@ public final class ManagedCertificateParameters extends SecretParameters {
 
     /**
      * Get the expirationDate property: Certificate expiration date.
-     *
+     * 
      * @return the expirationDate value.
      */
     public String expirationDate() {
@@ -50,7 +54,7 @@ public final class ManagedCertificateParameters extends SecretParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

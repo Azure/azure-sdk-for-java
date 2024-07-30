@@ -4,22 +4,20 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-/** Samples for Routes Get. */
+/**
+ * Samples for Routes Get.
+ */
 public final class RoutesGetSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Routes_Get.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2024-02-01/examples/Routes_Get.json
      */
     /**
      * Sample code: Routes_Get.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void routesGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cdnProfiles()
-            .manager()
-            .serviceClient()
-            .getRoutes()
-            .getWithResponse("RG", "profile1", "endpoint1", "route1", com.azure.core.util.Context.NONE);
+        azure.cdnProfiles().manager().serviceClient().getRoutes().getWithResponse("RG", "profile1", "endpoint1",
+            "route1", com.azure.core.util.Context.NONE);
     }
 }

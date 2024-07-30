@@ -13,7 +13,9 @@ import com.azure.resourcemanager.containerservicefleet.models.UpdateRunStatus;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateRunStrategy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A multi-stage process to perform update operations across members of a Fleet. */
+/**
+ * A multi-stage process to perform update operations across members of a Fleet.
+ */
 @Fluent
 public final class UpdateRunInner extends ProxyResource {
     /*
@@ -23,10 +25,7 @@ public final class UpdateRunInner extends ProxyResource {
     private UpdateRunProperties innerProperties;
 
     /*
-     * If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
-     * Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity
-     * tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section
-     * 14.27) header fields.
+     * If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields.
      */
     @JsonProperty(value = "eTag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
@@ -37,13 +36,15 @@ public final class UpdateRunInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of UpdateRunInner class. */
+    /**
+     * Creates an instance of UpdateRunInner class.
+     */
     public UpdateRunInner() {
     }
 
     /**
      * Get the innerProperties property: The resource-specific properties for this resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private UpdateRunProperties innerProperties() {
@@ -55,7 +56,7 @@ public final class UpdateRunInner extends ProxyResource {
      * normal etag convention. Entity tags are used for comparing two or more entities from the same requested resource.
      * HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26),
      * and If-Range (section 14.27) header fields.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -64,7 +65,7 @@ public final class UpdateRunInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -73,7 +74,7 @@ public final class UpdateRunInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the UpdateRun resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public UpdateRunProvisioningState provisioningState() {
@@ -82,18 +83,20 @@ public final class UpdateRunInner extends ProxyResource {
 
     /**
      * Get the updateStrategyId property: The resource id of the FleetUpdateStrategy resource to reference.
-     *
-     * <p>When creating a new run, there are three ways to define a strategy for the run: 1. Define a new strategy in
-     * place: Set the "strategy" field. 2. Use an existing strategy: Set the "updateStrategyId" field. (since
-     * 2023-08-15-preview) 3. Use the default strategy to update all the members one by one: Leave both
-     * "updateStrategyId" and "strategy" unset. (since 2023-08-15-preview)
-     *
-     * <p>Setting both "updateStrategyId" and "strategy" is invalid.
-     *
-     * <p>UpdateRuns created by "updateStrategyId" snapshot the referenced UpdateStrategy at the time of creation and
-     * store it in the "strategy" field. Subsequent changes to the referenced FleetUpdateStrategy resource do not
-     * propagate. UpdateRunStrategy changes can be made directly on the "strategy" field before launching the UpdateRun.
-     *
+     * 
+     * When creating a new run, there are three ways to define a strategy for the run:
+     * 1. Define a new strategy in place: Set the "strategy" field.
+     * 2. Use an existing strategy: Set the "updateStrategyId" field. (since 2023-08-15-preview)
+     * 3. Use the default strategy to update all the members one by one: Leave both "updateStrategyId" and "strategy"
+     * unset. (since 2023-08-15-preview)
+     * 
+     * Setting both "updateStrategyId" and "strategy" is invalid.
+     * 
+     * UpdateRuns created by "updateStrategyId" snapshot the referenced UpdateStrategy at the time of creation and store
+     * it in the "strategy" field.
+     * Subsequent changes to the referenced FleetUpdateStrategy resource do not propagate.
+     * UpdateRunStrategy changes can be made directly on the "strategy" field before launching the UpdateRun.
+     * 
      * @return the updateStrategyId value.
      */
     public String updateStrategyId() {
@@ -102,18 +105,20 @@ public final class UpdateRunInner extends ProxyResource {
 
     /**
      * Set the updateStrategyId property: The resource id of the FleetUpdateStrategy resource to reference.
-     *
-     * <p>When creating a new run, there are three ways to define a strategy for the run: 1. Define a new strategy in
-     * place: Set the "strategy" field. 2. Use an existing strategy: Set the "updateStrategyId" field. (since
-     * 2023-08-15-preview) 3. Use the default strategy to update all the members one by one: Leave both
-     * "updateStrategyId" and "strategy" unset. (since 2023-08-15-preview)
-     *
-     * <p>Setting both "updateStrategyId" and "strategy" is invalid.
-     *
-     * <p>UpdateRuns created by "updateStrategyId" snapshot the referenced UpdateStrategy at the time of creation and
-     * store it in the "strategy" field. Subsequent changes to the referenced FleetUpdateStrategy resource do not
-     * propagate. UpdateRunStrategy changes can be made directly on the "strategy" field before launching the UpdateRun.
-     *
+     * 
+     * When creating a new run, there are three ways to define a strategy for the run:
+     * 1. Define a new strategy in place: Set the "strategy" field.
+     * 2. Use an existing strategy: Set the "updateStrategyId" field. (since 2023-08-15-preview)
+     * 3. Use the default strategy to update all the members one by one: Leave both "updateStrategyId" and "strategy"
+     * unset. (since 2023-08-15-preview)
+     * 
+     * Setting both "updateStrategyId" and "strategy" is invalid.
+     * 
+     * UpdateRuns created by "updateStrategyId" snapshot the referenced UpdateStrategy at the time of creation and store
+     * it in the "strategy" field.
+     * Subsequent changes to the referenced FleetUpdateStrategy resource do not propagate.
+     * UpdateRunStrategy changes can be made directly on the "strategy" field before launching the UpdateRun.
+     * 
      * @param updateStrategyId the updateStrategyId value to set.
      * @return the UpdateRunInner object itself.
      */
@@ -126,10 +131,11 @@ public final class UpdateRunInner extends ProxyResource {
     }
 
     /**
-     * Get the strategy property: The strategy defines the order in which the clusters will be updated. If not set, all
-     * members will be updated sequentially. The UpdateRun status will show a single UpdateStage and a single
-     * UpdateGroup targeting all members. The strategy of the UpdateRun can be modified until the run is started.
-     *
+     * Get the strategy property: The strategy defines the order in which the clusters will be updated.
+     * If not set, all members will be updated sequentially. The UpdateRun status will show a single UpdateStage and a
+     * single UpdateGroup targeting all members.
+     * The strategy of the UpdateRun can be modified until the run is started.
+     * 
      * @return the strategy value.
      */
     public UpdateRunStrategy strategy() {
@@ -137,10 +143,11 @@ public final class UpdateRunInner extends ProxyResource {
     }
 
     /**
-     * Set the strategy property: The strategy defines the order in which the clusters will be updated. If not set, all
-     * members will be updated sequentially. The UpdateRun status will show a single UpdateStage and a single
-     * UpdateGroup targeting all members. The strategy of the UpdateRun can be modified until the run is started.
-     *
+     * Set the strategy property: The strategy defines the order in which the clusters will be updated.
+     * If not set, all members will be updated sequentially. The UpdateRun status will show a single UpdateStage and a
+     * single UpdateGroup targeting all members.
+     * The strategy of the UpdateRun can be modified until the run is started.
+     * 
      * @param strategy the strategy value to set.
      * @return the UpdateRunInner object itself.
      */
@@ -155,7 +162,7 @@ public final class UpdateRunInner extends ProxyResource {
     /**
      * Get the managedClusterUpdate property: The update to be applied to all clusters in the UpdateRun. The
      * managedClusterUpdate can be modified until the run is started.
-     *
+     * 
      * @return the managedClusterUpdate value.
      */
     public ManagedClusterUpdate managedClusterUpdate() {
@@ -165,7 +172,7 @@ public final class UpdateRunInner extends ProxyResource {
     /**
      * Set the managedClusterUpdate property: The update to be applied to all clusters in the UpdateRun. The
      * managedClusterUpdate can be modified until the run is started.
-     *
+     * 
      * @param managedClusterUpdate the managedClusterUpdate value to set.
      * @return the UpdateRunInner object itself.
      */
@@ -179,7 +186,7 @@ public final class UpdateRunInner extends ProxyResource {
 
     /**
      * Get the status property: The status of the UpdateRun.
-     *
+     * 
      * @return the status value.
      */
     public UpdateRunStatus status() {
@@ -188,7 +195,7 @@ public final class UpdateRunInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

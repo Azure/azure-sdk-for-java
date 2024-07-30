@@ -6,16 +6,24 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Represents a Log Analytics workspace scope identifier.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = LogAnalyticsIdentifier.class, visible = true)
 @JsonTypeName("LogAnalytics")
 @Immutable
 public final class LogAnalyticsIdentifier extends ResourceIdentifier {
+    /*
+     * There can be multiple identifiers of different type per alert, this field specify the identifier type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private ResourceIdentifierType type = ResourceIdentifierType.LOG_ANALYTICS;
+
     /*
      * The LogAnalytics workspace id that stores this alert.
      */
@@ -44,6 +52,17 @@ public final class LogAnalyticsIdentifier extends ResourceIdentifier {
      * Creates an instance of LogAnalyticsIdentifier class.
      */
     public LogAnalyticsIdentifier() {
+    }
+
+    /**
+     * Get the type property: There can be multiple identifiers of different type per alert, this field specify the
+     * identifier type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public ResourceIdentifierType type() {
+        return this.type;
     }
 
     /**

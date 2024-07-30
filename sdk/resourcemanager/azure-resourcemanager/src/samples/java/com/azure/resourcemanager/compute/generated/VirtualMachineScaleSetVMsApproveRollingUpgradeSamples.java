@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class VirtualMachineScaleSetVMsApproveRollingUpgradeSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_ApproveRollingUpgrade.json
      */
     /**
@@ -20,7 +20,11 @@ public final class VirtualMachineScaleSetVMsApproveRollingUpgradeSamples {
      */
     public static void
         virtualMachineScaleSetVMApproveRollingUpgrade(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetVMs().approveRollingUpgrade(
-            "rgcompute", "vmssToApproveRollingUpgradeOn", "0123", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetVMs()
+            .approveRollingUpgrade("rgcompute", "vmssToApproveRollingUpgradeOn", "0123",
+                com.azure.core.util.Context.NONE);
     }
 }

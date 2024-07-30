@@ -53,6 +53,11 @@ public final class EndpointType extends ExpandableStringEnum<EndpointType> {
     public static final EndpointType AZURE_VMSS = fromString("AzureVMSS");
 
     /**
+     * Static value AzureArcNetwork for EndpointType.
+     */
+    public static final EndpointType AZURE_ARC_NETWORK = fromString("AzureArcNetwork");
+
+    /**
      * Creates a new instance of EndpointType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

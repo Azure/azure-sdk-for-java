@@ -45,7 +45,6 @@ abstract class SparkE2EQueryITestBase
   // "spark.cosmos.read.partitioning.strategy" -> "Restrictive" is added to the query tests
   // to ensure we don't do sub-range feed-range
   // once emulator fixed switch back to default partitioning.
-
   "spark items DataSource version" can "be determined" in {
     CosmosItemsDataSource.version shouldEqual CosmosConstants.currentVersion
   }

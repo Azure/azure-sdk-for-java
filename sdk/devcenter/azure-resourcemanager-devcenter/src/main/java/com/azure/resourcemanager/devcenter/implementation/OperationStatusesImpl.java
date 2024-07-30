@@ -12,6 +12,7 @@ import com.azure.resourcemanager.devcenter.fluent.OperationStatusesClient;
 import com.azure.resourcemanager.devcenter.fluent.models.OperationStatusInner;
 import com.azure.resourcemanager.devcenter.models.OperationStatus;
 import com.azure.resourcemanager.devcenter.models.OperationStatuses;
+import com.azure.resourcemanager.devcenter.models.OperationStatusesGetResponse;
 
 public final class OperationStatusesImpl implements OperationStatuses {
     private static final ClientLogger LOGGER = new ClientLogger(OperationStatusesImpl.class);
@@ -20,19 +21,16 @@ public final class OperationStatusesImpl implements OperationStatuses {
 
     private final com.azure.resourcemanager.devcenter.DevCenterManager serviceManager;
 
-    public OperationStatusesImpl(
-        OperationStatusesClient innerClient, com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
+    public OperationStatusesImpl(OperationStatusesClient innerClient,
+        com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public Response<OperationStatus> getWithResponse(String location, String operationId, Context context) {
-        Response<OperationStatusInner> inner = this.serviceClient().getWithResponse(location, operationId, context);
+        OperationStatusesGetResponse inner = this.serviceClient().getWithResponse(location, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new OperationStatusImpl(inner.getValue(), this.manager()));
         } else {
             return null;

@@ -9,12 +9,12 @@ import com.azure.ai.openai.assistants.models.PageableList;
 import com.azure.ai.openai.assistants.models.RunStatus;
 import com.azure.ai.openai.assistants.models.RunStep;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
+import com.azure.ai.openai.assistants.models.ThreadMessageOptions;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.serializer.TypeReference;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -37,7 +37,7 @@ public class AzureRunThreadSyncTest extends AssistantsClientTestBase {
         String mathTutorAssistantId = createMathTutorAssistant(client);
         String threadId = createThread(client);
         submitMessageAndRunRunner(message -> {
-            ThreadMessage threadMessage = client.createMessage(threadId, MessageRole.USER, message);
+            ThreadMessage threadMessage = client.createMessage(threadId, new ThreadMessageOptions(MessageRole.USER, message));
             validateThreadMessage(threadMessage, threadId);
             // Submit the message and run
             ThreadRun run = client.createRun(threadId, new CreateRunOptions(mathTutorAssistantId));
@@ -51,11 +51,7 @@ public class AzureRunThreadSyncTest extends AssistantsClientTestBase {
             // Wait on Run and poll the Run in a loop
             do {
                 run = client.getRun(run.getThreadId(), run.getId());
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                sleepIfRunningAgainstService(1000);
             } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
 
             assertSame(RunStatus.COMPLETED, run.getStatus());
@@ -78,7 +74,7 @@ public class AzureRunThreadSyncTest extends AssistantsClientTestBase {
         String mathTutorAssistantId = createMathTutorAssistant(client);
         String threadId = createThread(client);
         submitMessageAndRunRunner(message -> {
-            ThreadMessage threadMessage = client.createMessage(threadId, MessageRole.USER, message);
+            ThreadMessage threadMessage = client.createMessage(threadId, new ThreadMessageOptions(MessageRole.USER, message));
             validateThreadMessage(threadMessage, threadId);
             // Submit the message and run
             Response<BinaryData> runWithResponse = client.createRunWithResponse(threadId,
@@ -95,11 +91,7 @@ public class AzureRunThreadSyncTest extends AssistantsClientTestBase {
             // Wait on Run and poll the Run in a loop
             do {
                 run = client.getRun(run.getThreadId(), run.getId());
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                sleepIfRunningAgainstService(1000);
             } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
 
             assertSame(RunStatus.COMPLETED, run.getStatus());
@@ -135,11 +127,7 @@ public class AzureRunThreadSyncTest extends AssistantsClientTestBase {
             // Wait on Run and poll the Run in a loop
             do {
                 run = client.getRun(run.getThreadId(), run.getId());
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                sleepIfRunningAgainstService(1000);
             } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
 
             assertSame(RunStatus.COMPLETED, run.getStatus());
@@ -177,11 +165,7 @@ public class AzureRunThreadSyncTest extends AssistantsClientTestBase {
             // Wait on Run and poll the Run in a loop
             do {
                 run = client.getRun(run.getThreadId(), run.getId());
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                sleepIfRunningAgainstService(1000);
             } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
 
             assertSame(RunStatus.COMPLETED, run.getStatus());
@@ -258,8 +242,8 @@ public class AzureRunThreadSyncTest extends AssistantsClientTestBase {
             validateThreadRun(run, data.get(0));
             // List runs with response
             Response<BinaryData> response = client.listRunsWithResponse(threadId, new RequestOptions());
-            PageableList<ThreadRun> runsWithResponse = assertAndGetValueFromResponse(response,
-                new TypeReference<PageableList<ThreadRun>>() {}, 200);
+            PageableList<ThreadRun> runsWithResponse = asserAndGetPageableListFromResponse(response, 200,
+                reader -> reader.readArray(ThreadRun::fromJson));
             List<ThreadRun> dataWithResponse = runsWithResponse.getData();
             assertNotNull(dataWithResponse);
             assertEquals(1, dataWithResponse.size());
@@ -284,11 +268,7 @@ public class AzureRunThreadSyncTest extends AssistantsClientTestBase {
             // Wait on Run and poll the Run in a loop
             do {
                 run = client.getRun(run.getThreadId(), run.getId());
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                sleepIfRunningAgainstService(1000);
             } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
 
             assertSame(RunStatus.COMPLETED, run.getStatus());
@@ -312,8 +292,8 @@ public class AzureRunThreadSyncTest extends AssistantsClientTestBase {
 
             // List run steps with response
             Response<BinaryData> response = client.listRunStepsWithResponse(threadId, runId, new RequestOptions());
-            PageableList<RunStep> runStepsWithResponse = assertAndGetValueFromResponse(response,
-                new TypeReference<PageableList<RunStep>>() {}, 200);
+            PageableList<RunStep> runStepsWithResponse = asserAndGetPageableListFromResponse(response, 200,
+                reader -> reader.readArray(RunStep::fromJson));
             assertNotNull(runStepsWithResponse);
             List<RunStep> runStepsDataWithResponse = runStepsWithResponse.getData();
             assertNotNull(runStepsDataWithResponse);

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -82,7 +83,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Get the enabled property: Whether the web application firewall is enabled or not.
-     * 
+     *
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -91,7 +92,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Set the enabled property: Whether the web application firewall is enabled or not.
-     * 
+     *
      * @param enabled the enabled value to set.
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
      */
@@ -102,7 +103,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Get the firewallMode property: Web application firewall mode.
-     * 
+     *
      * @return the firewallMode value.
      */
     public ApplicationGatewayFirewallMode firewallMode() {
@@ -111,7 +112,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Set the firewallMode property: Web application firewall mode.
-     * 
+     *
      * @param firewallMode the firewallMode value to set.
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
      */
@@ -123,7 +124,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Get the ruleSetType property: The type of the web application firewall rule set. Possible values are: 'OWASP'.
-     * 
+     *
      * @return the ruleSetType value.
      */
     public String ruleSetType() {
@@ -132,7 +133,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Set the ruleSetType property: The type of the web application firewall rule set. Possible values are: 'OWASP'.
-     * 
+     *
      * @param ruleSetType the ruleSetType value to set.
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
      */
@@ -143,7 +144,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Get the ruleSetVersion property: The version of the rule set type.
-     * 
+     *
      * @return the ruleSetVersion value.
      */
     public String ruleSetVersion() {
@@ -152,7 +153,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Set the ruleSetVersion property: The version of the rule set type.
-     * 
+     *
      * @param ruleSetVersion the ruleSetVersion value to set.
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
      */
@@ -163,7 +164,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Get the disabledRuleGroups property: The disabled rule groups.
-     * 
+     *
      * @return the disabledRuleGroups value.
      */
     public List<ApplicationGatewayFirewallDisabledRuleGroup> disabledRuleGroups() {
@@ -172,7 +173,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Set the disabledRuleGroups property: The disabled rule groups.
-     * 
+     *
      * @param disabledRuleGroups the disabledRuleGroups value to set.
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
      */
@@ -184,7 +185,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Get the requestBodyCheck property: Whether allow WAF to check request Body.
-     * 
+     *
      * @return the requestBodyCheck value.
      */
     public Boolean requestBodyCheck() {
@@ -193,7 +194,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Set the requestBodyCheck property: Whether allow WAF to check request Body.
-     * 
+     *
      * @param requestBodyCheck the requestBodyCheck value to set.
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
      */
@@ -204,7 +205,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Get the maxRequestBodySize property: Maximum request body size for WAF.
-     * 
+     *
      * @return the maxRequestBodySize value.
      */
     public Integer maxRequestBodySize() {
@@ -213,7 +214,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Set the maxRequestBodySize property: Maximum request body size for WAF.
-     * 
+     *
      * @param maxRequestBodySize the maxRequestBodySize value to set.
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
      */
@@ -224,7 +225,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Get the maxRequestBodySizeInKb property: Maximum request body size in Kb for WAF.
-     * 
+     *
      * @return the maxRequestBodySizeInKb value.
      */
     public Integer maxRequestBodySizeInKb() {
@@ -233,7 +234,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Set the maxRequestBodySizeInKb property: Maximum request body size in Kb for WAF.
-     * 
+     *
      * @param maxRequestBodySizeInKb the maxRequestBodySizeInKb value to set.
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
      */
@@ -245,7 +246,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Get the fileUploadLimitInMb property: Maximum file upload size in Mb for WAF.
-     * 
+     *
      * @return the fileUploadLimitInMb value.
      */
     public Integer fileUploadLimitInMb() {
@@ -254,7 +255,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Set the fileUploadLimitInMb property: Maximum file upload size in Mb for WAF.
-     * 
+     *
      * @param fileUploadLimitInMb the fileUploadLimitInMb value to set.
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
      */
@@ -265,7 +266,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Get the exclusions property: The exclusion list.
-     * 
+     *
      * @return the exclusions value.
      */
     public List<ApplicationGatewayFirewallExclusion> exclusions() {
@@ -274,7 +275,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Set the exclusions property: The exclusion list.
-     * 
+     *
      * @param exclusions the exclusions value to set.
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
      */
@@ -286,21 +287,24 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (firewallMode() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property firewallMode in model ApplicationGatewayWebApplicationFirewallConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property firewallMode in model ApplicationGatewayWebApplicationFirewallConfiguration"));
         }
         if (ruleSetType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property ruleSetType in model ApplicationGatewayWebApplicationFirewallConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property ruleSetType in model ApplicationGatewayWebApplicationFirewallConfiguration"));
         }
         if (ruleSetVersion() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property ruleSetVersion in model ApplicationGatewayWebApplicationFirewallConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property ruleSetVersion in model ApplicationGatewayWebApplicationFirewallConfiguration"));
         }
         if (disabledRuleGroups() != null) {
             disabledRuleGroups().forEach(e -> e.validate());

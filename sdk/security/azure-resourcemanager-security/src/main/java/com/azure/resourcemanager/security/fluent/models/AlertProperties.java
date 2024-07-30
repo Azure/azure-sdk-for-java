@@ -29,8 +29,7 @@ public final class AlertProperties {
     private String version;
 
     /*
-     * Unique identifier for the detection logic (all alert instances from the same detection logic will have the same
-     * alertType).
+     * Unique identifier for the detection logic (all alert instances from the same detection logic will have the same alertType).
      */
     @JsonProperty(value = "alertType", access = JsonProperty.Access.WRITE_ONLY)
     private String alertType;
@@ -42,8 +41,7 @@ public final class AlertProperties {
     private String systemAlertId;
 
     /*
-     * The name of Azure Security Center pricing tier which powering this alert. Learn more:
-     * https://docs.microsoft.com/en-us/azure/security-center/security-center-pricing
+     * The name of Azure Security Center pricing tier which powering this alert. Learn more: https://docs.microsoft.com/en-us/azure/security-center/security-center-pricing
      */
     @JsonProperty(value = "productComponentName", access = JsonProperty.Access.WRITE_ONLY)
     private String productComponentName;
@@ -61,15 +59,13 @@ public final class AlertProperties {
     private String description;
 
     /*
-     * The risk level of the threat that was detected. Learn more:
-     * https://docs.microsoft.com/en-us/azure/security-center/security-center-alerts-overview#how-are-alerts-classified.
+     * The risk level of the threat that was detected. Learn more: https://docs.microsoft.com/en-us/azure/security-center/security-center-alerts-overview#how-are-alerts-classified.
      */
     @JsonProperty(value = "severity", access = JsonProperty.Access.WRITE_ONLY)
     private AlertSeverity severity;
 
     /*
-     * The kill chain related intent behind the alert. For list of supported values, and explanations of Azure Security
-     * Center's supported kill chain intents.
+     * The kill chain related intent behind the alert. For list of supported values, and explanations of Azure Security Center's supported kill chain intents.
      */
     @JsonProperty(value = "intent", access = JsonProperty.Access.WRITE_ONLY)
     private Intent intent;
@@ -87,8 +83,7 @@ public final class AlertProperties {
     private OffsetDateTime endTimeUtc;
 
     /*
-     * The resource identifiers that can be used to direct the alert to the right product exposure group (tenant,
-     * workspace, subscription etc.). There can be multiple identifiers of different type per alert.
+     * The resource identifiers that can be used to direct the alert to the right product exposure group (tenant, workspace, subscription etc.). There can be multiple identifiers of different type per alert.
      */
     @JsonProperty(value = "resourceIdentifiers", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceIdentifier> resourceIdentifiers;
@@ -130,8 +125,7 @@ public final class AlertProperties {
     private OffsetDateTime timeGeneratedUtc;
 
     /*
-     * The name of the product which published this alert (Microsoft Sentinel, Microsoft Defender for Identity,
-     * Microsoft Defender for Endpoint, Microsoft Defender for Office, Microsoft Defender for Cloud Apps, and so on).
+     * The name of the product which published this alert (Microsoft Sentinel, Microsoft Defender for Identity, Microsoft Defender for Endpoint, Microsoft Defender for Office, Microsoft Defender for Cloud Apps, and so on).
      */
     @JsonProperty(value = "productName", access = JsonProperty.Access.WRITE_ONLY)
     private String productName;
@@ -149,8 +143,7 @@ public final class AlertProperties {
     private List<AlertEntity> entities;
 
     /*
-     * This field determines whether the alert is an incident (a compound grouping of several alerts) or a single
-     * alert.
+     * This field determines whether the alert is an incident (a compound grouping of several alerts) or a single alert.
      */
     @JsonProperty(value = "isIncident", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isIncident;

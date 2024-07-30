@@ -18,7 +18,8 @@ public final class IntegrationRuntimesStopSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void integrationRuntimesStop(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimes().stop("exampleResourceGroup", "exampleFactoryName",
-            "exampleManagedIntegrationRuntime", com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes()
+            .stop("exampleResourceGroup", "exampleFactoryName", "exampleManagedIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }

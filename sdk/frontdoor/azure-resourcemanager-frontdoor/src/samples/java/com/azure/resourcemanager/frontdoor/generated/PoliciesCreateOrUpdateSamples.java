@@ -24,129 +24,100 @@ import com.azure.resourcemanager.frontdoor.models.PolicyMode;
 import com.azure.resourcemanager.frontdoor.models.PolicyRequestBodyCheck;
 import com.azure.resourcemanager.frontdoor.models.PolicySettings;
 import com.azure.resourcemanager.frontdoor.models.RuleType;
+import com.azure.resourcemanager.frontdoor.models.ScrubbingRuleEntryMatchOperator;
+import com.azure.resourcemanager.frontdoor.models.ScrubbingRuleEntryMatchVariable;
+import com.azure.resourcemanager.frontdoor.models.ScrubbingRuleEntryState;
 import com.azure.resourcemanager.frontdoor.models.Sku;
 import com.azure.resourcemanager.frontdoor.models.SkuName;
 import com.azure.resourcemanager.frontdoor.models.TransformType;
+import com.azure.resourcemanager.frontdoor.models.WebApplicationFirewallScrubbingRules;
+import com.azure.resourcemanager.frontdoor.models.WebApplicationFirewallScrubbingState;
 import java.util.Arrays;
 
-/** Samples for Policies CreateOrUpdate. */
+/**
+ * Samples for Policies CreateOrUpdate.
+ */
 public final class PoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2022-05-01/examples/WafPolicyCreateOrUpdate.json
+     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2024-02-01/examples/WafPolicyCreateOrUpdate.json
      */
     /**
      * Sample code: Creates specific policy.
-     *
+     * 
      * @param manager Entry point to FrontDoorManager.
      */
     public static void createsSpecificPolicy(com.azure.resourcemanager.frontdoor.FrontDoorManager manager) {
-        manager
-            .policies()
+        manager.policies()
             .define("Policy1")
-            .withRegion((String) null)
+            .withRegion("WestUs")
             .withExistingResourceGroup("rg1")
-            .withSku(new Sku().withName(SkuName.CLASSIC_AZURE_FRONT_DOOR))
-            .withPolicySettings(
-                new PolicySettings()
-                    .withEnabledState(PolicyEnabledState.ENABLED)
-                    .withMode(PolicyMode.PREVENTION)
-                    .withRedirectUrl("http://www.bing.com")
-                    .withCustomBlockResponseStatusCode(499)
-                    .withCustomBlockResponseBody(
-                        "PGh0bWw+CjxoZWFkZXI+PHRpdGxlPkhlbGxvPC90aXRsZT48L2hlYWRlcj4KPGJvZHk+CkhlbGxvIHdvcmxkCjwvYm9keT4KPC9odG1sPg==")
-                    .withRequestBodyCheck(PolicyRequestBodyCheck.DISABLED))
-            .withCustomRules(
-                new CustomRuleList()
-                    .withRules(
-                        Arrays
-                            .asList(
-                                new CustomRule()
-                                    .withName("Rule1")
-                                    .withPriority(1)
-                                    .withRuleType(RuleType.RATE_LIMIT_RULE)
-                                    .withRateLimitThreshold(1000)
-                                    .withMatchConditions(
-                                        Arrays
-                                            .asList(
-                                                new MatchCondition()
-                                                    .withMatchVariable(MatchVariable.REMOTE_ADDR)
-                                                    .withOperator(Operator.IPMATCH)
-                                                    .withMatchValue(Arrays.asList("192.168.1.0/24", "10.0.0.0/24"))))
-                                    .withAction(ActionType.BLOCK),
-                                new CustomRule()
-                                    .withName("Rule2")
-                                    .withPriority(2)
-                                    .withRuleType(RuleType.MATCH_RULE)
-                                    .withMatchConditions(
-                                        Arrays
-                                            .asList(
-                                                new MatchCondition()
-                                                    .withMatchVariable(MatchVariable.REMOTE_ADDR)
-                                                    .withOperator(Operator.GEO_MATCH)
-                                                    .withMatchValue(Arrays.asList("CH")),
-                                                new MatchCondition()
-                                                    .withMatchVariable(MatchVariable.REQUEST_HEADER)
-                                                    .withSelector("UserAgent")
-                                                    .withOperator(Operator.CONTAINS)
-                                                    .withMatchValue(Arrays.asList("windows"))
-                                                    .withTransforms(Arrays.asList(TransformType.LOWERCASE))))
-                                    .withAction(ActionType.BLOCK))))
+            .withSku(new Sku().withName(SkuName.PREMIUM_AZURE_FRONT_DOOR))
+            .withPolicySettings(new PolicySettings().withEnabledState(PolicyEnabledState.ENABLED)
+                .withMode(PolicyMode.PREVENTION)
+                .withRedirectUrl("http://www.bing.com")
+                .withCustomBlockResponseStatusCode(429)
+                .withCustomBlockResponseBody(
+                    "PGh0bWw+CjxoZWFkZXI+PHRpdGxlPkhlbGxvPC90aXRsZT48L2hlYWRlcj4KPGJvZHk+CkhlbGxvIHdvcmxkCjwvYm9keT4KPC9odG1sPg==")
+                .withRequestBodyCheck(PolicyRequestBodyCheck.DISABLED)
+                .withJavascriptChallengeExpirationInMinutes(30)
+                .withState(WebApplicationFirewallScrubbingState.ENABLED)
+                .withScrubbingRules(Arrays.asList(new WebApplicationFirewallScrubbingRules()
+                    .withMatchVariable(ScrubbingRuleEntryMatchVariable.REQUEST_IPADDRESS)
+                    .withSelectorMatchOperator(ScrubbingRuleEntryMatchOperator.EQUALS_ANY)
+                    .withState(ScrubbingRuleEntryState.ENABLED))))
+            .withCustomRules(new CustomRuleList().withRules(Arrays.asList(
+                new CustomRule().withName("Rule1")
+                    .withPriority(1)
+                    .withRuleType(RuleType.RATE_LIMIT_RULE)
+                    .withRateLimitThreshold(1000)
+                    .withMatchConditions(Arrays.asList(new MatchCondition().withMatchVariable(MatchVariable.REMOTE_ADDR)
+                        .withOperator(Operator.IPMATCH)
+                        .withMatchValue(Arrays.asList("192.168.1.0/24", "10.0.0.0/24"))))
+                    .withAction(ActionType.BLOCK),
+                new CustomRule().withName("Rule2")
+                    .withPriority(2)
+                    .withRuleType(RuleType.MATCH_RULE)
+                    .withMatchConditions(Arrays.asList(
+                        new MatchCondition().withMatchVariable(MatchVariable.REMOTE_ADDR)
+                            .withOperator(Operator.GEO_MATCH)
+                            .withMatchValue(Arrays.asList("CH")),
+                        new MatchCondition().withMatchVariable(MatchVariable.REQUEST_HEADER)
+                            .withSelector("UserAgent")
+                            .withOperator(Operator.CONTAINS)
+                            .withMatchValue(Arrays.asList("windows"))
+                            .withTransforms(Arrays.asList(TransformType.LOWERCASE))))
+                    .withAction(ActionType.BLOCK))))
             .withManagedRules(
                 new ManagedRuleSetList()
                     .withManagedRuleSets(
                         Arrays
                             .asList(
-                                new ManagedRuleSet()
-                                    .withRuleSetType("DefaultRuleSet")
+                                new ManagedRuleSet().withRuleSetType("DefaultRuleSet")
                                     .withRuleSetVersion("1.0")
                                     .withRuleSetAction(ManagedRuleSetActionType.BLOCK)
-                                    .withExclusions(
-                                        Arrays
-                                            .asList(
-                                                new ManagedRuleExclusion()
+                                    .withExclusions(Arrays.asList(new ManagedRuleExclusion()
+                                        .withMatchVariable(ManagedRuleExclusionMatchVariable.REQUEST_HEADER_NAMES)
+                                        .withSelectorMatchOperator(ManagedRuleExclusionSelectorMatchOperator.EQUALS)
+                                        .withSelector("User-Agent")))
+                                    .withRuleGroupOverrides(Arrays.asList(new ManagedRuleGroupOverride()
+                                        .withRuleGroupName("SQLI")
+                                        .withExclusions(Arrays.asList(new ManagedRuleExclusion()
+                                            .withMatchVariable(ManagedRuleExclusionMatchVariable.REQUEST_COOKIE_NAMES)
+                                            .withSelectorMatchOperator(
+                                                ManagedRuleExclusionSelectorMatchOperator.STARTS_WITH)
+                                            .withSelector("token")))
+                                        .withRules(Arrays.asList(
+                                            new ManagedRuleOverride().withRuleId("942100")
+                                                .withEnabledState(ManagedRuleEnabledState.ENABLED)
+                                                .withAction(ActionType.REDIRECT)
+                                                .withExclusions(Arrays.asList(new ManagedRuleExclusion()
                                                     .withMatchVariable(
-                                                        ManagedRuleExclusionMatchVariable.REQUEST_HEADER_NAMES)
+                                                        ManagedRuleExclusionMatchVariable.QUERY_STRING_ARG_NAMES)
                                                     .withSelectorMatchOperator(
                                                         ManagedRuleExclusionSelectorMatchOperator.EQUALS)
-                                                    .withSelector("User-Agent")))
-                                    .withRuleGroupOverrides(
-                                        Arrays
-                                            .asList(
-                                                new ManagedRuleGroupOverride()
-                                                    .withRuleGroupName("SQLI")
-                                                    .withExclusions(
-                                                        Arrays
-                                                            .asList(
-                                                                new ManagedRuleExclusion()
-                                                                    .withMatchVariable(
-                                                                        ManagedRuleExclusionMatchVariable
-                                                                            .REQUEST_COOKIE_NAMES)
-                                                                    .withSelectorMatchOperator(
-                                                                        ManagedRuleExclusionSelectorMatchOperator
-                                                                            .STARTS_WITH)
-                                                                    .withSelector("token")))
-                                                    .withRules(
-                                                        Arrays
-                                                            .asList(
-                                                                new ManagedRuleOverride()
-                                                                    .withRuleId("942100")
-                                                                    .withEnabledState(ManagedRuleEnabledState.ENABLED)
-                                                                    .withAction(ActionType.REDIRECT)
-                                                                    .withExclusions(
-                                                                        Arrays
-                                                                            .asList(
-                                                                                new ManagedRuleExclusion()
-                                                                                    .withMatchVariable(
-                                                                                        ManagedRuleExclusionMatchVariable
-                                                                                            .QUERY_STRING_ARG_NAMES)
-                                                                                    .withSelectorMatchOperator(
-                                                                                        ManagedRuleExclusionSelectorMatchOperator
-                                                                                            .EQUALS)
-                                                                                    .withSelector("query"))),
-                                                                new ManagedRuleOverride()
-                                                                    .withRuleId("942110")
-                                                                    .withEnabledState(
-                                                                        ManagedRuleEnabledState.DISABLED))))))))
+                                                    .withSelector("query"))),
+                                            new ManagedRuleOverride().withRuleId("942110")
+                                                .withEnabledState(ManagedRuleEnabledState.DISABLED))))))))
             .create();
     }
 }

@@ -14,27 +14,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PortReuseHoldTimes {
     /*
-     * Minimum time in seconds that will pass before a TCP port that was used by a closed pinhole can be reused.
-     * Default for TCP is 2 minutes.
+     * Minimum time in seconds that will pass before a TCP port that was used by a closed pinhole can be reused. Default for TCP is 2 minutes.
      */
     @JsonProperty(value = "tcp")
     private Integer tcp;
 
     /*
-     * Minimum time in seconds that will pass before a UDP port that was used by a closed pinhole can be reused.
-     * Default for UDP is 1 minute.
+     * Minimum time in seconds that will pass before a UDP port that was used by a closed pinhole can be reused. Default for UDP is 1 minute.
      */
     @JsonProperty(value = "udp")
     private Integer udp;
 
-    /** Creates an instance of PortReuseHoldTimes class. */
+    /**
+     * Creates an instance of PortReuseHoldTimes class.
+     */
     public PortReuseHoldTimes() {
     }
 
     /**
      * Get the tcp property: Minimum time in seconds that will pass before a TCP port that was used by a closed pinhole
      * can be reused. Default for TCP is 2 minutes.
-     *
+     * 
      * @return the tcp value.
      */
     public Integer tcp() {
@@ -44,7 +44,7 @@ public final class PortReuseHoldTimes {
     /**
      * Set the tcp property: Minimum time in seconds that will pass before a TCP port that was used by a closed pinhole
      * can be reused. Default for TCP is 2 minutes.
-     *
+     * 
      * @param tcp the tcp value to set.
      * @return the PortReuseHoldTimes object itself.
      */
@@ -56,7 +56,7 @@ public final class PortReuseHoldTimes {
     /**
      * Get the udp property: Minimum time in seconds that will pass before a UDP port that was used by a closed pinhole
      * can be reused. Default for UDP is 1 minute.
-     *
+     * 
      * @return the udp value.
      */
     public Integer udp() {
@@ -66,7 +66,7 @@ public final class PortReuseHoldTimes {
     /**
      * Set the udp property: Minimum time in seconds that will pass before a UDP port that was used by a closed pinhole
      * can be reused. Default for UDP is 1 minute.
-     *
+     * 
      * @param udp the udp value to set.
      * @return the PortReuseHoldTimes object itself.
      */
@@ -77,7 +77,7 @@ public final class PortReuseHoldTimes {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

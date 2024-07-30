@@ -8,23 +8,23 @@ import com.azure.resourcemanager.mobilenetwork.models.Site;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Sites UpdateTags. */
+/**
+ * Samples for Sites UpdateTags.
+ */
 public final class SitesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SiteUpdateTags.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SiteUpdateTags.json
      */
     /**
      * Sample code: Update mobile network site tags.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void updateMobileNetworkSiteTags(
-        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        Site resource =
-            manager
-                .sites()
-                .getWithResponse("rg1", "testMobileNetwork", "testSite", com.azure.core.util.Context.NONE)
-                .getValue();
+    public static void
+        updateMobileNetworkSiteTags(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+        Site resource = manager.sites()
+            .getWithResponse("rg1", "testMobileNetwork", "testSite", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 

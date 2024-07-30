@@ -6,16 +6,24 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity source for Microsoft Fabric LakeHouse Table.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = LakeHouseTableSource.class, visible = true)
 @JsonTypeName("LakeHouseTableSource")
 @Fluent
 public final class LakeHouseTableSource extends CopySource {
+    /*
+     * Copy source type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "LakeHouseTableSource";
+
     /*
      * Query an older snapshot by timestamp. Type: string (or Expression with resultType string).
      */
@@ -42,8 +50,18 @@ public final class LakeHouseTableSource extends CopySource {
     }
 
     /**
-     * Get the timestampAsOf property: Query an older snapshot by timestamp. Type: string (or Expression with
-     * resultType string).
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the timestampAsOf property: Query an older snapshot by timestamp. Type: string (or Expression with resultType
+     * string).
      * 
      * @return the timestampAsOf value.
      */
@@ -52,8 +70,8 @@ public final class LakeHouseTableSource extends CopySource {
     }
 
     /**
-     * Set the timestampAsOf property: Query an older snapshot by timestamp. Type: string (or Expression with
-     * resultType string).
+     * Set the timestampAsOf property: Query an older snapshot by timestamp. Type: string (or Expression with resultType
+     * string).
      * 
      * @param timestampAsOf the timestampAsOf value to set.
      * @return the LakeHouseTableSource object itself.

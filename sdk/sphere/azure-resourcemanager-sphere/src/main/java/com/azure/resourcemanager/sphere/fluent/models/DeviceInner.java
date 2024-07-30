@@ -6,117 +6,70 @@ package com.azure.resourcemanager.sphere.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.resourcemanager.sphere.models.ProvisioningState;
+import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.sphere.models.DeviceProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.OffsetDateTime;
 
-/** An device resource belonging to a device group resource. */
+/**
+ * An device resource belonging to a device group resource.
+ */
 @Fluent
 public final class DeviceInner extends ProxyResource {
     /*
      * The resource-specific properties for this resource.
      */
     @JsonProperty(value = "properties")
-    private DeviceProperties innerProperties;
+    private DeviceProperties properties;
 
-    /** Creates an instance of DeviceInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Creates an instance of DeviceInner class.
+     */
     public DeviceInner() {
     }
 
     /**
-     * Get the innerProperties property: The resource-specific properties for this resource.
-     *
-     * @return the innerProperties value.
+     * Get the properties property: The resource-specific properties for this resource.
+     * 
+     * @return the properties value.
      */
-    private DeviceProperties innerProperties() {
-        return this.innerProperties;
+    public DeviceProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Get the deviceId property: Device ID.
-     *
-     * @return the deviceId value.
-     */
-    public String deviceId() {
-        return this.innerProperties() == null ? null : this.innerProperties().deviceId();
-    }
-
-    /**
-     * Set the deviceId property: Device ID.
-     *
-     * @param deviceId the deviceId value to set.
+     * Set the properties property: The resource-specific properties for this resource.
+     * 
+     * @param properties the properties value to set.
      * @return the DeviceInner object itself.
      */
-    public DeviceInner withDeviceId(String deviceId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DeviceProperties();
-        }
-        this.innerProperties().withDeviceId(deviceId);
+    public DeviceInner withProperties(DeviceProperties properties) {
+        this.properties = properties;
         return this;
     }
 
     /**
-     * Get the chipSku property: SKU of the chip.
-     *
-     * @return the chipSku value.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    public String chipSku() {
-        return this.innerProperties() == null ? null : this.innerProperties().chipSku();
-    }
-
-    /**
-     * Get the lastAvailableOsVersion property: OS version available for installation when update requested.
-     *
-     * @return the lastAvailableOsVersion value.
-     */
-    public String lastAvailableOsVersion() {
-        return this.innerProperties() == null ? null : this.innerProperties().lastAvailableOsVersion();
-    }
-
-    /**
-     * Get the lastInstalledOsVersion property: OS version running on device when update requested.
-     *
-     * @return the lastInstalledOsVersion value.
-     */
-    public String lastInstalledOsVersion() {
-        return this.innerProperties() == null ? null : this.innerProperties().lastInstalledOsVersion();
-    }
-
-    /**
-     * Get the lastOsUpdateUtc property: Time when update requested and new OS version available.
-     *
-     * @return the lastOsUpdateUtc value.
-     */
-    public OffsetDateTime lastOsUpdateUtc() {
-        return this.innerProperties() == null ? null : this.innerProperties().lastOsUpdateUtc();
-    }
-
-    /**
-     * Get the lastUpdateRequestUtc property: Time when update was last requested.
-     *
-     * @return the lastUpdateRequestUtc value.
-     */
-    public OffsetDateTime lastUpdateRequestUtc() {
-        return this.innerProperties() == null ? null : this.innerProperties().lastUpdateRequestUtc();
-    }
-
-    /**
-     * Get the provisioningState property: The status of the last operation.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

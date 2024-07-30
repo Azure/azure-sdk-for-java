@@ -20,7 +20,7 @@ public final class MessageTemplate {
      */
     @Generated
     @JsonProperty(value = "name")
-    private String name;
+    private final String name;
 
     /*
      * The template's language, in the ISO 639 format, consist of a two-letter language code followed by an optional
@@ -28,7 +28,7 @@ public final class MessageTemplate {
      */
     @Generated
     @JsonProperty(value = "language")
-    private String language;
+    private final String language;
 
     /*
      * The template values.

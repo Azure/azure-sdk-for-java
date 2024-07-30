@@ -75,9 +75,30 @@ public interface HelpRP {
     SolutionOperationsClient getSolutionOperations();
 
     /**
+     * Gets the SimplifiedSolutionsClient object to access its operations.
+     * 
+     * @return the SimplifiedSolutionsClient object.
+     */
+    SimplifiedSolutionsClient getSimplifiedSolutions();
+
+    /**
      * Gets the TroubleshootersClient object to access its operations.
      * 
      * @return the TroubleshootersClient object.
      */
     TroubleshootersClient getTroubleshooters();
+
+    /**
+     * Gets the SolutionSelfHelpsClient object to access its operations.
+     * 
+     * @return the SolutionSelfHelpsClient object.
+     */
+    SolutionSelfHelpsClient getSolutionSelfHelps();
+
+    /**
+     * Gets the DiscoverySolutionNlpsClient object to access its operations.
+     * 
+     * @return the DiscoverySolutionNlpsClient object.
+     */
+    DiscoverySolutionNlpsClient getDiscoverySolutionNlps();
 }

@@ -15,9 +15,9 @@ public final class PoolPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PoolProperties model = BinaryData.fromString(
-            "{\"poolId\":\"xznelixhnrztf\",\"size\":8485001570661257107,\"serviceLevel\":\"StandardZRS\",\"provisioningState\":\"xknalaulppg\",\"totalThroughputMibps\":96.281746,\"utilizedThroughputMibps\":91.14523,\"qosType\":\"Manual\",\"coolAccess\":false,\"encryptionType\":\"Double\"}")
+            "{\"poolId\":\"ro\",\"size\":4284842638181152780,\"serviceLevel\":\"StandardZRS\",\"provisioningState\":\"rmcqiby\",\"totalThroughputMibps\":97.50943,\"utilizedThroughputMibps\":0.45861602,\"qosType\":\"Manual\",\"coolAccess\":false,\"encryptionType\":\"Double\"}")
             .toObject(PoolProperties.class);
-        Assertions.assertEquals(8485001570661257107L, model.size());
+        Assertions.assertEquals(4284842638181152780L, model.size());
         Assertions.assertEquals(ServiceLevel.STANDARD_ZRS, model.serviceLevel());
         Assertions.assertEquals(QosType.MANUAL, model.qosType());
         Assertions.assertEquals(false, model.coolAccess());
@@ -26,11 +26,13 @@ public final class PoolPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PoolProperties model
-            = new PoolProperties().withSize(8485001570661257107L).withServiceLevel(ServiceLevel.STANDARD_ZRS)
-                .withQosType(QosType.MANUAL).withCoolAccess(false).withEncryptionType(EncryptionType.DOUBLE);
+        PoolProperties model = new PoolProperties().withSize(4284842638181152780L)
+            .withServiceLevel(ServiceLevel.STANDARD_ZRS)
+            .withQosType(QosType.MANUAL)
+            .withCoolAccess(false)
+            .withEncryptionType(EncryptionType.DOUBLE);
         model = BinaryData.fromObject(model).toObject(PoolProperties.class);
-        Assertions.assertEquals(8485001570661257107L, model.size());
+        Assertions.assertEquals(4284842638181152780L, model.size());
         Assertions.assertEquals(ServiceLevel.STANDARD_ZRS, model.serviceLevel());
         Assertions.assertEquals(QosType.MANUAL, model.qosType());
         Assertions.assertEquals(false, model.coolAccess());

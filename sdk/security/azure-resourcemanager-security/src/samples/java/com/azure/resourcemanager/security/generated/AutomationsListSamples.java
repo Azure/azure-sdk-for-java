@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class AutomationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/
-     * GetAutomationsSubscription_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/GetAutomationsSubscription_example.json
      */
     /**
      * Sample code: List all security automations of a specified subscription.

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.migrationdiscoverysap.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.migrationdiscoverysap.fluent.models.ServerInstanceProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**

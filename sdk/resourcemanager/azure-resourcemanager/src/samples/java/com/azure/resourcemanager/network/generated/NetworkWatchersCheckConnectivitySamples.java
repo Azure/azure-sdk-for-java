@@ -14,7 +14,7 @@ import com.azure.resourcemanager.network.models.IpVersion;
  */
 public final class NetworkWatchersCheckConnectivitySamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * NetworkWatcherConnectivityCheck.json
      */
     /**
@@ -23,12 +23,16 @@ public final class NetworkWatchersCheckConnectivitySamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void checkConnectivity(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getNetworkWatchers().checkConnectivity("rg1", "nw1",
-            new ConnectivityParameters()
-                .withSource(new ConnectivitySource().withResourceId(
-                    "/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Compute/virtualMachines/vm1"))
-                .withDestination(new ConnectivityDestination().withAddress("192.168.100.4").withPort(3389))
-                .withPreferredIpVersion(IpVersion.IPV4),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getNetworkWatchers()
+            .checkConnectivity("rg1", "nw1",
+                new ConnectivityParameters()
+                    .withSource(new ConnectivitySource().withResourceId(
+                        "/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Compute/virtualMachines/vm1"))
+                    .withDestination(new ConnectivityDestination().withAddress("192.168.100.4").withPort(3389))
+                    .withPreferredIpVersion(IpVersion.IPV4),
+                com.azure.core.util.Context.NONE);
     }
 }

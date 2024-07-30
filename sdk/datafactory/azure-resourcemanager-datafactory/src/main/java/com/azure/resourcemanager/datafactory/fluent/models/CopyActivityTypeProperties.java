@@ -442,14 +442,16 @@ public final class CopyActivityTypeProperties {
      */
     public void validate() {
         if (source() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property source in model CopyActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property source in model CopyActivityTypeProperties"));
         } else {
             source().validate();
         }
         if (sink() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property sink in model CopyActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property sink in model CopyActivityTypeProperties"));
         } else {
             sink().validate();
         }

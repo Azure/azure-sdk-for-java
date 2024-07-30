@@ -13,14 +13,15 @@ public final class DatasetSchemaDataElementTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatasetSchemaDataElement model = BinaryData.fromString(
-            "{\"name\":\"datamgsdaluyckhefrbh\",\"type\":\"datauerbgpxebjl\",\"\":{\"tnsewou\":\"dataaytujraxdtpryjm\",\"s\":\"dataly\",\"lmpctwj\":\"datavyljurkeposehqq\",\"erxxxoteehkhowgo\":\"datadsdlzmk\"}}")
+            "{\"name\":\"datakhoitw\",\"type\":\"datajsdmm\",\"\":{\"hzqpxzbawkikcdgf\":\"datanckidbjpg\",\"decfiwhagxsure\":\"databssdpjeyoqxd\",\"zjk\":\"dataqrshzzbgullcxiq\",\"rouigdmfivjqte\":\"dataxdupnamg\"}}")
             .toObject(DatasetSchemaDataElement.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatasetSchemaDataElement model = new DatasetSchemaDataElement().withName("datamgsdaluyckhefrbh")
-            .withType("datauerbgpxebjl").withAdditionalProperties(mapOf());
+        DatasetSchemaDataElement model = new DatasetSchemaDataElement().withName("datakhoitw")
+            .withType("datajsdmm")
+            .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(DatasetSchemaDataElement.class);
     }
 

@@ -40,9 +40,10 @@ import com.azure.resourcemanager.cosmos.models.ContinuousBackupRestoreLocation;
 import com.azure.resourcemanager.cosmos.models.TableCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.TableListResult;
 import com.azure.resourcemanager.cosmos.models.ThroughputSettingsUpdateParameters;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in TableResourcesClient.
@@ -60,7 +61,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Initializes an instance of TableResourcesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     TableResourcesClientImpl(CosmosDBManagementClientImpl client) {
@@ -170,7 +171,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Lists the Tables under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -208,7 +209,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Lists the Tables under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -247,7 +248,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Lists the Tables under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -263,7 +264,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Lists the Tables under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -281,7 +282,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Lists the Tables under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -297,7 +298,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Lists the Tables under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -315,7 +316,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Gets the Tables under an existing Azure Cosmos DB database account with the provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -355,7 +356,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Gets the Tables under an existing Azure Cosmos DB database account with the provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -395,7 +396,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Gets the Tables under an existing Azure Cosmos DB database account with the provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -413,7 +414,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Gets the Tables under an existing Azure Cosmos DB database account with the provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -432,7 +433,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Gets the Tables under an existing Azure Cosmos DB database account with the provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -448,7 +449,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -495,7 +496,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -542,7 +543,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -564,7 +565,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -588,7 +589,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -608,7 +609,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -623,13 +624,15 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     public SyncPoller<PollResult<TableGetResultsInner>, TableGetResultsInner> beginCreateUpdateTable(
         String resourceGroupName, String accountName, String tableName,
         TableCreateUpdateParameters createUpdateTableParameters, Context context) {
-        return this.beginCreateUpdateTableAsync(resourceGroupName, accountName, tableName, createUpdateTableParameters,
-            context).getSyncPoller();
+        return this
+            .beginCreateUpdateTableAsync(resourceGroupName, accountName, tableName, createUpdateTableParameters,
+                context)
+            .getSyncPoller();
     }
 
     /**
      * Create or update an Azure Cosmos DB Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -643,12 +646,13 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     public Mono<TableGetResultsInner> createUpdateTableAsync(String resourceGroupName, String accountName,
         String tableName, TableCreateUpdateParameters createUpdateTableParameters) {
         return beginCreateUpdateTableAsync(resourceGroupName, accountName, tableName, createUpdateTableParameters)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update an Azure Cosmos DB Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -668,7 +672,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -686,7 +690,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -706,7 +710,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -744,7 +748,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -782,7 +786,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -801,7 +805,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -823,7 +827,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -840,7 +844,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -858,7 +862,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -875,7 +879,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -894,7 +898,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -909,7 +913,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -925,7 +929,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Gets the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -966,7 +970,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Gets the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1006,7 +1010,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Gets the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1025,7 +1029,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Gets the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1044,7 +1048,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Gets the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1062,7 +1066,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1110,7 +1114,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1159,7 +1163,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1182,7 +1186,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1207,7 +1211,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1228,7 +1232,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1243,13 +1247,15 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateTableThroughput(String resourceGroupName, String accountName, String tableName,
             ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
-        return this.beginUpdateTableThroughputAsync(resourceGroupName, accountName, tableName,
-            updateThroughputParameters, context).getSyncPoller();
+        return this
+            .beginUpdateTableThroughputAsync(resourceGroupName, accountName, tableName, updateThroughputParameters,
+                context)
+            .getSyncPoller();
     }
 
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1263,12 +1269,13 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     public Mono<ThroughputSettingsGetResultsInner> updateTableThroughputAsync(String resourceGroupName,
         String accountName, String tableName, ThroughputSettingsUpdateParameters updateThroughputParameters) {
         return beginUpdateTableThroughputAsync(resourceGroupName, accountName, tableName, updateThroughputParameters)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1289,7 +1296,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1308,7 +1315,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1328,7 +1335,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1369,7 +1376,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1409,7 +1416,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1430,7 +1437,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1454,7 +1461,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1471,7 +1478,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1490,7 +1497,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1508,7 +1515,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1527,7 +1534,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1544,7 +1551,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1562,7 +1569,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1603,7 +1610,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1643,7 +1650,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1664,7 +1671,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1688,7 +1695,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1705,7 +1712,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1725,7 +1732,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1743,7 +1750,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1762,7 +1769,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1779,7 +1786,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1797,7 +1804,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Retrieves continuous backup information for a table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1843,7 +1850,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Retrieves continuous backup information for a table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1889,7 +1896,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Retrieves continuous backup information for a table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1912,7 +1919,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Retrieves continuous backup information for a table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1936,7 +1943,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Retrieves continuous backup information for a table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1956,7 +1963,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Retrieves continuous backup information for a table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1978,7 +1985,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Retrieves continuous backup information for a table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -1997,7 +2004,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Retrieves continuous backup information for a table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -2017,7 +2024,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Retrieves continuous backup information for a table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
@@ -2035,7 +2042,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
     /**
      * Retrieves continuous backup information for a table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.

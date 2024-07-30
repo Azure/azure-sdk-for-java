@@ -13,20 +13,19 @@ import java.util.Map;
 public final class ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment model =
-            BinaryData
-                .fromString(
-                    "{\"roles\":{\"tfolhbnx\":{\"roleName\":\"awjoyaqcslyjp\",\"description\":\"idzyexznelixhnr\"},\"gylgqgitxmedjvcs\":{\"roleName\":\"alaulppggdtpnapn\",\"description\":\"ropuhpigv\"}}}")
-                .toObject(ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment.class);
+        ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment model = BinaryData.fromString(
+            "{\"roles\":{\"eqidbqfatpx\":{\"roleName\":\"dgqggebdu\",\"description\":\"g\"},\"jqbjhhy\":{\"roleName\":\"rxcyjmoad\",\"description\":\"varmywdmj\"},\"uhpkxkgymar\":{\"roleName\":\"rw\",\"description\":\"co\"},\"ssofwqmzqa\":{\"roleName\":\"n\",\"description\":\"xqugjhkycubedd\"}}}")
+            .toObject(ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment model =
-            new ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment()
-                .withRoles(mapOf("tfolhbnx", new EnvironmentRole(), "gylgqgitxmedjvcs", new EnvironmentRole()));
-        model =
-            BinaryData.fromObject(model).toObject(ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment.class);
+        ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment model
+            = new ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment()
+                .withRoles(mapOf("eqidbqfatpx", new EnvironmentRole(), "jqbjhhy", new EnvironmentRole(), "uhpkxkgymar",
+                    new EnvironmentRole(), "ssofwqmzqa", new EnvironmentRole()));
+        model
+            = BinaryData.fromObject(model).toObject(ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment.class);
     }
 
     // Use "Map.of" if available

@@ -37,7 +37,7 @@ public class AnalyzeCustomDocumentFromUrl {
 
         String documentUrl = "{document-url}";
         String modelId = "{custom-built-model-ID}";
-        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeDocumentPoller = client.beginAnalyzeDocument(modelId,
+        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeDocumentPoller = client.beginAnalyzeDocument(modelId,
             "1",
             "en-US",
             StringIndexType.TEXT_ELEMENTS,
@@ -46,7 +46,7 @@ public class AnalyzeCustomDocumentFromUrl {
             ContentFormat.TEXT,
             new AnalyzeDocumentRequest().setUrlSource(documentUrl));
 
-        AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult().getAnalyzeResult();
+        AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
 
         for (int i = 0; i < analyzeResult.getDocuments().size(); i++) {
             final Document analyzedDocument = analyzeResult.getDocuments().get(i);

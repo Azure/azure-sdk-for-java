@@ -174,14 +174,16 @@ public final class CacheImpl implements Cache, Cache.Definition, Cache.Update {
     }
 
     public Cache create() {
-        this.innerObject = serviceManager.serviceClient().getCaches().createOrUpdate(resourceGroupName, cacheName,
-            this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getCaches()
+            .createOrUpdate(resourceGroupName, cacheName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Cache create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getCaches().createOrUpdate(resourceGroupName, cacheName,
-            this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getCaches()
+            .createOrUpdate(resourceGroupName, cacheName, this.innerModel(), context);
         return this;
     }
 
@@ -196,14 +198,16 @@ public final class CacheImpl implements Cache, Cache.Definition, Cache.Update {
     }
 
     public Cache apply() {
-        this.innerObject = serviceManager.serviceClient().getCaches().update(resourceGroupName, cacheName,
-            this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getCaches()
+            .update(resourceGroupName, cacheName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Cache apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getCaches().update(resourceGroupName, cacheName,
-            this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getCaches()
+            .update(resourceGroupName, cacheName, this.innerModel(), context);
         return this;
     }
 
@@ -215,14 +219,18 @@ public final class CacheImpl implements Cache, Cache.Definition, Cache.Update {
     }
 
     public Cache refresh() {
-        this.innerObject = serviceManager.serviceClient().getCaches()
-            .getByResourceGroupWithResponse(resourceGroupName, cacheName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCaches()
+            .getByResourceGroupWithResponse(resourceGroupName, cacheName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Cache refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getCaches()
-            .getByResourceGroupWithResponse(resourceGroupName, cacheName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCaches()
+            .getByResourceGroupWithResponse(resourceGroupName, cacheName, context)
+            .getValue();
         return this;
     }
 

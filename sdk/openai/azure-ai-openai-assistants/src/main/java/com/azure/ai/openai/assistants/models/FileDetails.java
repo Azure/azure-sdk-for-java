@@ -8,25 +8,25 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
 
 /**
- * The file details model for the file.
+ * The file details for the "file" field.
  */
 @Fluent
 public final class FileDetails {
 
     /*
-     * The content of the file
+     * The content of the file.
      */
     @Generated
-    private BinaryData content;
+    private final BinaryData content;
 
     /*
-     * The filename of the file
+     * The filename of the file.
      */
     @Generated
     private String filename;
 
     /*
-     * The content-type of the file
+     * The content-type of the file.
      */
     @Generated
     private String contentType = "application/octet-stream";
@@ -36,9 +36,19 @@ public final class FileDetails {
      *
      * @param content the content value to set.
      */
-    @Generated
-    public FileDetails(BinaryData content) {
+    FileDetails(BinaryData content) {
         this.content = content;
+    }
+
+    /**
+     * Creates an instance of FileDetails class.
+     *
+     * @param content the content value to set.
+     * @param filename the filename of the file.
+     */
+    public FileDetails(BinaryData content, String filename) {
+        this.content = content;
+        this.filename = filename;
     }
 
     /**

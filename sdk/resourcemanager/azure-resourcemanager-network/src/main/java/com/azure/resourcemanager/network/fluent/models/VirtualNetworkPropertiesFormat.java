@@ -234,8 +234,8 @@ public final class VirtualNetworkPropertiesFormat {
     }
 
     /**
-     * Get the enableDdosProtection property: Indicates if DDoS protection is enabled for all the protected resources
-     * in the virtual network. It requires a DDoS protection plan associated with the resource.
+     * Get the enableDdosProtection property: Indicates if DDoS protection is enabled for all the protected resources in
+     * the virtual network. It requires a DDoS protection plan associated with the resource.
      * 
      * @return the enableDdosProtection value.
      */
@@ -244,8 +244,8 @@ public final class VirtualNetworkPropertiesFormat {
     }
 
     /**
-     * Set the enableDdosProtection property: Indicates if DDoS protection is enabled for all the protected resources
-     * in the virtual network. It requires a DDoS protection plan associated with the resource.
+     * Set the enableDdosProtection property: Indicates if DDoS protection is enabled for all the protected resources in
+     * the virtual network. It requires a DDoS protection plan associated with the resource.
      * 
      * @param enableDdosProtection the enableDdosProtection value to set.
      * @return the VirtualNetworkPropertiesFormat object itself.
@@ -298,8 +298,8 @@ public final class VirtualNetworkPropertiesFormat {
     }
 
     /**
-     * Get the bgpCommunities property: Bgp Communities sent over ExpressRoute with each route corresponding to a
-     * prefix in this VNET.
+     * Get the bgpCommunities property: Bgp Communities sent over ExpressRoute with each route corresponding to a prefix
+     * in this VNET.
      * 
      * @return the bgpCommunities value.
      */
@@ -308,8 +308,8 @@ public final class VirtualNetworkPropertiesFormat {
     }
 
     /**
-     * Set the bgpCommunities property: Bgp Communities sent over ExpressRoute with each route corresponding to a
-     * prefix in this VNET.
+     * Set the bgpCommunities property: Bgp Communities sent over ExpressRoute with each route corresponding to a prefix
+     * in this VNET.
      * 
      * @param bgpCommunities the bgpCommunities value to set.
      * @return the VirtualNetworkPropertiesFormat object itself.

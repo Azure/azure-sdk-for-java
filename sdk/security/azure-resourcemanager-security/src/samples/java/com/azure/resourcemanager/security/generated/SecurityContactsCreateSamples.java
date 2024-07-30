@@ -19,9 +19,7 @@ import java.util.Arrays;
  */
 public final class SecurityContactsCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/SecurityContacts/
-     * CreateSecurityContact_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/SecurityContacts/CreateSecurityContact_example.json
      */
     /**
      * Sample code: Create security contact data.
@@ -29,13 +27,17 @@ public final class SecurityContactsCreateSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void createSecurityContactData(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.securityContacts().define(SecurityContactName.DEFAULT).withEmails("john@contoso.com;jane@contoso.com")
-            .withPhone("(214)275-4038").withIsEnabled(true)
+        manager.securityContacts()
+            .define(SecurityContactName.DEFAULT)
+            .withEmails("john@contoso.com;jane@contoso.com")
+            .withPhone("(214)275-4038")
+            .withIsEnabled(true)
             .withNotificationsSources(
                 Arrays.asList(new NotificationsSourceAttackPath().withMinimalRiskLevel(MinimalRiskLevel.CRITICAL),
                     new NotificationsSourceAlert().withMinimalSeverity(MinimalSeverity.MEDIUM)))
-            .withNotificationsByRole(new SecurityContactPropertiesNotificationsByRole()
-                .withState(State.fromString("On")).withRoles(Arrays.asList(SecurityContactRole.OWNER)))
+            .withNotificationsByRole(
+                new SecurityContactPropertiesNotificationsByRole().withState(State.fromString("On"))
+                    .withRoles(Arrays.asList(SecurityContactRole.OWNER)))
             .create();
     }
 }

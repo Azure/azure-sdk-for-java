@@ -5,28 +5,29 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The error information associated with a failed run step.
  */
 @Immutable
-public final class RunStepError {
+public final class RunStepError implements JsonSerializable<RunStepError> {
 
     /*
      * The error code for this error.
      */
     @Generated
-    @JsonProperty(value = "code")
-    private RunStepErrorCode code;
+    private final RunStepErrorCode code;
 
     /*
      * The human-readable text associated with this error.
      */
     @Generated
-    @JsonProperty(value = "message")
-    private String message;
+    private final String message;
 
     /**
      * Creates an instance of RunStepError class.
@@ -35,9 +36,7 @@ public final class RunStepError {
      * @param message the message value to set.
      */
     @Generated
-    @JsonCreator
-    private RunStepError(@JsonProperty(value = "code") RunStepErrorCode code,
-        @JsonProperty(value = "message") String message) {
+    private RunStepError(RunStepErrorCode code, String message) {
         this.code = code;
         this.message = message;
     }
@@ -60,5 +59,46 @@ public final class RunStepError {
     @Generated
     public String getMessage() {
         return this.message;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code == null ? null : this.code.toString());
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunStepError from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunStepError if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RunStepError.
+     */
+    @Generated
+    public static RunStepError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RunStepErrorCode code = null;
+            String message = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("code".equals(fieldName)) {
+                    code = RunStepErrorCode.fromString(reader.getString());
+                } else if ("message".equals(fieldName)) {
+                    message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new RunStepError(code, message);
+        });
     }
 }

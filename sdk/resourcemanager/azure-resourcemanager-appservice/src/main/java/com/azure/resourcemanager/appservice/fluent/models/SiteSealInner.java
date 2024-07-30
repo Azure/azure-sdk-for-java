@@ -52,8 +52,8 @@ public final class SiteSealInner {
      */
     public void validate() {
         if (html() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property html in model SiteSealInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property html in model SiteSealInner"));
         }
     }
 

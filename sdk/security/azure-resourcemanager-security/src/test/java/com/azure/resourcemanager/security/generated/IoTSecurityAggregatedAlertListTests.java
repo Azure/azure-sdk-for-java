@@ -16,19 +16,19 @@ public final class IoTSecurityAggregatedAlertListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IoTSecurityAggregatedAlertList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"alertType\":\"qllzsauzpjlxeehu\",\"alertDisplayName\":\"qhzlray\",\"vendorName\":\"xls\",\"reportedSeverity\":\"Informational\",\"remediationSteps\":\"xrfdsajre\",\"description\":\"wyyshtuwgm\",\"count\":2833503135387262592,\"effectedResourceType\":\"pwzyi\",\"systemSource\":\"kgwl\",\"actionTaken\":\"eqipxgzdy\",\"logAnalyticsQuery\":\"sfayorpravkjoges\",\"topDevicesList\":[{\"deviceId\":\"smjkwynqxaekqsy\",\"alertsCount\":3978389628787245552,\"lastOccurrence\":\"qpkevmyltjc\"},{\"deviceId\":\"pxklurccl\",\"alertsCount\":1208047190142685150,\"lastOccurrence\":\"n\"},{\"deviceId\":\"ytzpo\",\"alertsCount\":7653435273917331405,\"lastOccurrence\":\"gpxvkqmaupxvpi\"},{\"deviceId\":\"f\",\"alertsCount\":2060318117657387366,\"lastOccurrence\":\"yzeyuubeid\"}]},\"tags\":{\"hgygvfltgvd\":\"fytoi\"},\"id\":\"hoynk\",\"name\":\"xwetwkdrcyrucpc\",\"type\":\"nn\"},{\"properties\":{\"alertType\":\"qumoeno\",\"alertDisplayName\":\"aienhqhsknd\",\"vendorName\":\"qkaadlknw\",\"reportedSeverity\":\"High\",\"remediationSteps\":\"n\",\"description\":\"op\",\"count\":3190184205890149822,\"effectedResourceType\":\"cnrly\",\"systemSource\":\"ucae\",\"actionTaken\":\"blkwqpatvbqs\",\"logAnalyticsQuery\":\"cjbctviv\",\"topDevicesList\":[{\"deviceId\":\"mtuowogtgitsqhzv\",\"alertsCount\":4635792579530033290,\"lastOccurrence\":\"banf\"},{\"deviceId\":\"ds\",\"alertsCount\":6993636596819734616,\"lastOccurrence\":\"atkdbmwnrd\"},{\"deviceId\":\"ibqbnaomhjrm\",\"alertsCount\":1644821874344755658,\"lastOccurrence\":\"xljalfihc\"},{\"deviceId\":\"obcancdexxqcw\",\"alertsCount\":1216316457337333714,\"lastOccurrence\":\"vaknokzwjj\"}]},\"tags\":{\"x\":\"tixldzyyfytpqs\",\"vyqlkjuvsmbmslzo\":\"mmpuj\",\"mx\":\"ovwzdbpqvybefg\",\"vcuartrhun\":\"okcvtlubses\"},\"id\":\"pirykycndzfqiv\",\"name\":\"reuykbbmnwagl\",\"type\":\"bxoeeonql\"}],\"nextLink\":\"wmyymvqdbpbhf\"}")
+            "{\"value\":[{\"properties\":{\"alertType\":\"quflqbctq\",\"alertDisplayName\":\"mzjr\",\"vendorName\":\"qzeqyjleziunjxdf\",\"reportedSeverity\":\"Low\",\"remediationSteps\":\"kwcegyamlbn\",\"description\":\"qa\",\"count\":4156947054190686278,\"effectedResourceType\":\"ilguooqjagmditg\",\"systemSource\":\"iookjbsah\",\"actionTaken\":\"dt\",\"logAnalyticsQuery\":\"elqacslmot\",\"topDevicesList\":[{\"deviceId\":\"fxof\",\"alertsCount\":4362718949331625843,\"lastOccurrence\":\"dirazf\"},{\"deviceId\":\"ejwabmdujtmvco\",\"alertsCount\":9128838673004505379,\"lastOccurrence\":\"jurbuhhlkyqltqsr\"}]},\"tags\":{\"vclglxnfuij\":\"uwkffdjktsysid\",\"sfikayiansharuj\":\"kbusqo\"},\"id\":\"ji\",\"name\":\"xfz\",\"type\":\"j\"},{\"properties\":{\"alertType\":\"vwkpqh\",\"alertDisplayName\":\"enuygbq\",\"vendorName\":\"ekewvnqvcdlguauc\",\"reportedSeverity\":\"High\",\"remediationSteps\":\"wnlaxpu\",\"description\":\"qikczvvita\",\"count\":3568966968483564118,\"effectedResourceType\":\"csserxht\",\"systemSource\":\"oxhlw\",\"actionTaken\":\"sjgqrsxyp\",\"logAnalyticsQuery\":\"uuybnchrsz\",\"topDevicesList\":[{\"deviceId\":\"uelyetndn\",\"alertsCount\":8501901054042456156,\"lastOccurrence\":\"gagflnlgmtrwah\"},{\"deviceId\":\"mu\",\"alertsCount\":1604192815314271002,\"lastOccurrence\":\"r\"},{\"deviceId\":\"rohkpigqfusu\",\"alertsCount\":3928336746922164114,\"lastOccurrence\":\"wklsnoxaxmqe\"}]},\"tags\":{\"jnhgwydyyn\":\"h\",\"ta\":\"svkhgbv\"},\"id\":\"arfdlpukhpyrnei\",\"name\":\"jcpeogkhnmg\",\"type\":\"ro\"}],\"nextLink\":\"ddbhf\"}")
             .toObject(IoTSecurityAggregatedAlertList.class);
-        Assertions.assertEquals("fytoi", model.value().get(0).tags().get("hgygvfltgvd"));
+        Assertions.assertEquals("uwkffdjktsysid", model.value().get(0).tags().get("vclglxnfuij"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IoTSecurityAggregatedAlertList model = new IoTSecurityAggregatedAlertList()
-            .withValue(Arrays.asList(new IoTSecurityAggregatedAlertInner().withTags(mapOf("hgygvfltgvd", "fytoi")),
-                new IoTSecurityAggregatedAlertInner().withTags(mapOf("x", "tixldzyyfytpqs", "vyqlkjuvsmbmslzo", "mmpuj",
-                    "mx", "ovwzdbpqvybefg", "vcuartrhun", "okcvtlubses"))));
+        IoTSecurityAggregatedAlertList model = new IoTSecurityAggregatedAlertList().withValue(Arrays.asList(
+            new IoTSecurityAggregatedAlertInner()
+                .withTags(mapOf("vclglxnfuij", "uwkffdjktsysid", "sfikayiansharuj", "kbusqo")),
+            new IoTSecurityAggregatedAlertInner().withTags(mapOf("jnhgwydyyn", "h", "ta", "svkhgbv"))));
         model = BinaryData.fromObject(model).toObject(IoTSecurityAggregatedAlertList.class);
-        Assertions.assertEquals("fytoi", model.value().get(0).tags().get("hgygvfltgvd"));
+        Assertions.assertEquals("uwkffdjktsysid", model.value().get(0).tags().get("vclglxnfuij"));
     }
 
     // Use "Map.of" if available

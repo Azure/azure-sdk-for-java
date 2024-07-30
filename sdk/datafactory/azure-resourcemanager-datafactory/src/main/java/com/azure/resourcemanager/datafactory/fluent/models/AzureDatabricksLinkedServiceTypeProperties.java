@@ -32,8 +32,8 @@ public final class AzureDatabricksLinkedServiceTypeProperties {
     private SecretBase accessToken;
 
     /*
-     * Required to specify MSI, if using Workspace resource id for databricks REST API. Type: string (or Expression
-     * with resultType string).
+     * Required to specify MSI, if using Workspace resource id for databricks REST API. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "authentication")
     private Object authentication;
@@ -68,9 +68,9 @@ public final class AzureDatabricksLinkedServiceTypeProperties {
 
     /*
      * If not using an existing interactive cluster, this specifies the number of worker nodes to use for the new job
-     * cluster or instance pool. For new job clusters, this a string-formatted Int32, like '1' means numOfWorker is 1
-     * or '1:10' means auto-scale from 1 (min) to 10 (max). For instance pools, this is a string-formatted Int32, and
-     * can only specify a fixed number of worker nodes, such as '2'. Required if newClusterVersion is specified. Type:
+     * cluster or instance pool. For new job clusters, this a string-formatted Int32, like '1' means numOfWorker is 1 or
+     * '1:10' means auto-scale from 1 (min) to 10 (max). For instance pools, this is a string-formatted Int32, and can
+     * only specify a fixed number of worker nodes, such as '2'. Required if newClusterVersion is specified. Type:
      * string (or Expression with resultType string).
      */
     @JsonProperty(value = "newClusterNumOfWorker")
@@ -128,8 +128,7 @@ public final class AzureDatabricksLinkedServiceTypeProperties {
 
     /*
      * Enable the elastic disk on the new cluster. This property is now ignored, and takes the default elastic disk
-     * behavior in Databricks (elastic disks are always enabled). Type: boolean (or Expression with resultType
-     * boolean).
+     * behavior in Databricks (elastic disks are always enabled). Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "newClusterEnableElasticDisk")
     private Object newClusterEnableElasticDisk;
@@ -207,8 +206,8 @@ public final class AzureDatabricksLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the authentication property: Required to specify MSI, if using Workspace resource id for databricks REST
-     * API. Type: string (or Expression with resultType string).
+     * Get the authentication property: Required to specify MSI, if using Workspace resource id for databricks REST API.
+     * Type: string (or Expression with resultType string).
      * 
      * @return the authentication value.
      */
@@ -217,8 +216,8 @@ public final class AzureDatabricksLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the authentication property: Required to specify MSI, if using Workspace resource id for databricks REST
-     * API. Type: string (or Expression with resultType string).
+     * Set the authentication property: Required to specify MSI, if using Workspace resource id for databricks REST API.
+     * Type: string (or Expression with resultType string).
      * 
      * @param authentication the authentication value to set.
      * @return the AzureDatabricksLinkedServiceTypeProperties object itself.
@@ -348,8 +347,8 @@ public final class AzureDatabricksLinkedServiceTypeProperties {
 
     /**
      * Get the newClusterNodeType property: The node type of the new job cluster. This property is required if
-     * newClusterVersion is specified and instancePoolId is not specified. If instancePoolId is specified, this
-     * property is ignored. Type: string (or Expression with resultType string).
+     * newClusterVersion is specified and instancePoolId is not specified. If instancePoolId is specified, this property
+     * is ignored. Type: string (or Expression with resultType string).
      * 
      * @return the newClusterNodeType value.
      */
@@ -359,8 +358,8 @@ public final class AzureDatabricksLinkedServiceTypeProperties {
 
     /**
      * Set the newClusterNodeType property: The node type of the new job cluster. This property is required if
-     * newClusterVersion is specified and instancePoolId is not specified. If instancePoolId is specified, this
-     * property is ignored. Type: string (or Expression with resultType string).
+     * newClusterVersion is specified and instancePoolId is not specified. If instancePoolId is specified, this property
+     * is ignored. Type: string (or Expression with resultType string).
      * 
      * @param newClusterNodeType the newClusterNodeType value to set.
      * @return the AzureDatabricksLinkedServiceTypeProperties object itself.
@@ -459,8 +458,8 @@ public final class AzureDatabricksLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the newClusterDriverNodeType property: The driver node type for the new job cluster. This property is
-     * ignored in instance pool configurations. Type: string (or Expression with resultType string).
+     * Get the newClusterDriverNodeType property: The driver node type for the new job cluster. This property is ignored
+     * in instance pool configurations. Type: string (or Expression with resultType string).
      * 
      * @return the newClusterDriverNodeType value.
      */
@@ -469,8 +468,8 @@ public final class AzureDatabricksLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the newClusterDriverNodeType property: The driver node type for the new job cluster. This property is
-     * ignored in instance pool configurations. Type: string (or Expression with resultType string).
+     * Set the newClusterDriverNodeType property: The driver node type for the new job cluster. This property is ignored
+     * in instance pool configurations. Type: string (or Expression with resultType string).
      * 
      * @param newClusterDriverNodeType the newClusterDriverNodeType value to set.
      * @return the AzureDatabricksLinkedServiceTypeProperties object itself.
@@ -528,8 +527,8 @@ public final class AzureDatabricksLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -538,8 +537,8 @@ public final class AzureDatabricksLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureDatabricksLinkedServiceTypeProperties object itself.
@@ -598,8 +597,9 @@ public final class AzureDatabricksLinkedServiceTypeProperties {
      */
     public void validate() {
         if (domain() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property domain in model AzureDatabricksLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property domain in model AzureDatabricksLinkedServiceTypeProperties"));
         }
         if (accessToken() != null) {
             accessToken().validate();

@@ -7,10 +7,13 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.implementation.util.HttpHeadersAccessHelper;
+import io.netty.util.AsciiString;
 import reactor.netty.http.client.HttpClientResponse;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Base response class for Reactor Netty with implementations for response metadata.
@@ -40,8 +43,19 @@ public abstract class NettyAsyncHttpResponseBase extends HttpResponse {
             while (nettyHeadersIterator.hasNext()) {
                 Map.Entry<CharSequence, CharSequence> next = nettyHeadersIterator.next();
                 // Value may be null and that needs to be guarded but key should never be null.
-                CharSequence value = next.getValue();
-                this.headers.add(next.getKey().toString(), (value == null) ? null : value.toString());
+                String value = Objects.toString(next.getValue(), null);
+                CharSequence key = next.getKey();
+
+                // Check for the header name being a Netty AsciiString as it has optimizations around lowercasing.
+                if (key instanceof AsciiString) {
+                    // Hook into optimizations exposed through shared implementation to speed up the conversion.
+                    AsciiString asciiString = (AsciiString) key;
+                    HttpHeadersAccessHelper.addInternal(headers, asciiString.toLowerCase().toString(),
+                        asciiString.toString(), value);
+                } else {
+                    // If it isn't an AsciiString, then fallback to the shared, albeit, slower path.
+                    this.headers.add(key.toString(), value);
+                }
             }
         } else {
             this.headers = new NettyToAzureCoreHttpHeadersWrapper(nettyHeaders);

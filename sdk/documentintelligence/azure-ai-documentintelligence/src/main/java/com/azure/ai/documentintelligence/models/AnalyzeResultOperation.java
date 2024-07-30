@@ -6,48 +6,48 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Status and result of the analyze operation.
  */
 @Immutable
-public final class AnalyzeResultOperation {
+public final class AnalyzeResultOperation implements JsonSerializable<AnalyzeResultOperation> {
     /*
      * Operation status. notStarted, running, succeeded, or failed
      */
     @Generated
-    @JsonProperty(value = "status")
-    private OperationStatus status;
+    private final OperationStatus status;
 
     /*
      * Date and time (UTC) when the analyze operation was submitted.
      */
     @Generated
-    @JsonProperty(value = "createdDateTime")
-    private OffsetDateTime createdDateTime;
+    private final OffsetDateTime createdDateTime;
 
     /*
      * Date and time (UTC) when the status was last updated.
      */
     @Generated
-    @JsonProperty(value = "lastUpdatedDateTime")
-    private OffsetDateTime lastUpdatedDateTime;
+    private final OffsetDateTime lastUpdatedDateTime;
 
     /*
      * Encountered error during document analysis.
      */
     @Generated
-    @JsonProperty(value = "error")
     private Error error;
 
     /*
      * Document analysis result.
      */
     @Generated
-    @JsonProperty(value = "analyzeResult")
     private AnalyzeResult analyzeResult;
 
     /**
@@ -58,10 +58,8 @@ public final class AnalyzeResultOperation {
      * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
      */
     @Generated
-    @JsonCreator
-    private AnalyzeResultOperation(@JsonProperty(value = "status") OperationStatus status,
-        @JsonProperty(value = "createdDateTime") OffsetDateTime createdDateTime,
-        @JsonProperty(value = "lastUpdatedDateTime") OffsetDateTime lastUpdatedDateTime) {
+    private AnalyzeResultOperation(OperationStatus status, OffsetDateTime createdDateTime,
+        OffsetDateTime lastUpdatedDateTime) {
         this.status = status;
         this.createdDateTime = createdDateTime;
         this.lastUpdatedDateTime = lastUpdatedDateTime;
@@ -115,5 +113,70 @@ public final class AnalyzeResultOperation {
     @Generated
     public AnalyzeResult getAnalyzeResult() {
         return this.analyzeResult;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("createdDateTime",
+            this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
+        jsonWriter.writeStringField("lastUpdatedDateTime",
+            this.lastUpdatedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedDateTime));
+        jsonWriter.writeJsonField("error", this.error);
+        jsonWriter.writeJsonField("analyzeResult", this.analyzeResult);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AnalyzeResultOperation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AnalyzeResultOperation if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AnalyzeResultOperation.
+     */
+    @Generated
+    public static AnalyzeResultOperation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationStatus status = null;
+            OffsetDateTime createdDateTime = null;
+            OffsetDateTime lastUpdatedDateTime = null;
+            Error error = null;
+            AnalyzeResult analyzeResult = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    status = OperationStatus.fromString(reader.getString());
+                } else if ("createdDateTime".equals(fieldName)) {
+                    createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastUpdatedDateTime".equals(fieldName)) {
+                    lastUpdatedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("error".equals(fieldName)) {
+                    error = Error.fromJson(reader);
+                } else if ("analyzeResult".equals(fieldName)) {
+                    analyzeResult = AnalyzeResult.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            AnalyzeResultOperation deserializedAnalyzeResultOperation
+                = new AnalyzeResultOperation(status, createdDateTime, lastUpdatedDateTime);
+            deserializedAnalyzeResultOperation.error = error;
+            deserializedAnalyzeResultOperation.analyzeResult = analyzeResult;
+
+            return deserializedAnalyzeResultOperation;
+        });
     }
 }

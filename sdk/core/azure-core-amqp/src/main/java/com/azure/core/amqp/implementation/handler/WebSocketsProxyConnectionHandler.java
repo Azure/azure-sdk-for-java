@@ -190,8 +190,10 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
         final URI url = createURI(fullyQualifiedNamespace, port);
         final InetSocketAddress address = new InetSocketAddress(hostNameParts[0], port);
 
-        logger.atError()
-            .log("Failed to connect to url: '{}', proxy host: '{}'", url, address.getHostString(), ioException);
+        logger.atWarning()
+            .addKeyValue("url", url)
+            .addKeyValue("proxyHost", address.getHostString())
+            .log("Failed to connect.", ioException);
 
         final ProxySelector proxySelector = ProxySelector.getDefault();
         if (proxySelector != null) {

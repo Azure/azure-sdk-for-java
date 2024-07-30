@@ -14,8 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class HttpSettings {
     /*
-     * <code>false</code> if the authentication/authorization responses not having the HTTPS scheme are permissible;
-     * otherwise, <code>true</code>.
+     * <code>false</code> if the authentication/authorization responses not having the HTTPS scheme are permissible; otherwise, <code>true</code>.
      */
     @JsonProperty(value = "requireHttps")
     private Boolean requireHttps;

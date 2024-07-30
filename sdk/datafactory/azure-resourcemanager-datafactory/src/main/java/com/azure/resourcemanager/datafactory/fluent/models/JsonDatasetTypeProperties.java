@@ -115,8 +115,9 @@ public final class JsonDatasetTypeProperties {
      */
     public void validate() {
         if (location() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property location in model JsonDatasetTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model JsonDatasetTypeProperties"));
         } else {
             location().validate();
         }

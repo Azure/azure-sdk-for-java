@@ -18,28 +18,36 @@ public final class GlobalParameterListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GlobalParameterListResponse model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"mg\":{\"type\":\"String\",\"value\":\"datayrrueqth\"},\"cbbxigdhxi\":{\"type\":\"String\",\"value\":\"datab\"}},\"name\":\"lopedbwdpyqyyb\",\"type\":\"bmdnafcbqwre\",\"etag\":\"ela\",\"id\":\"cigeleohdbvqvw\"}],\"nextLink\":\"jopwbeonrlkwz\"}")
+            "{\"value\":[{\"properties\":{\"nuilee\":{\"type\":\"Array\",\"value\":\"datamyqwcab\"},\"rxwtoaukhfkvc\":{\"type\":\"Object\",\"value\":\"dataswlpaugmrmfj\"},\"jwuive\":{\"type\":\"Int\",\"value\":\"dataizmoaeds\"},\"xeiqbpsmg\":{\"type\":\"String\",\"value\":\"datacgyee\"}},\"name\":\"guamlj\",\"type\":\"rgmsplzga\",\"etag\":\"cshhv\",\"id\":\"wgnxkympqanxrj\"},{\"properties\":{\"taoypnyghshxc\":{\"type\":\"Bool\",\"value\":\"datatw\"}},\"name\":\"hkgmnsg\",\"type\":\"xycphdrwjjkh\",\"etag\":\"omacluzvxnqmhr\",\"id\":\"pd\"}],\"nextLink\":\"mkoisqcssf\"}")
             .toObject(GlobalParameterListResponse.class);
-        Assertions.assertEquals("cigeleohdbvqvw", model.value().get(0).id());
-        Assertions.assertEquals(GlobalParameterType.STRING, model.value().get(0).properties().get("mg").type());
-        Assertions.assertEquals("jopwbeonrlkwz", model.nextLink());
+        Assertions.assertEquals("wgnxkympqanxrj", model.value().get(0).id());
+        Assertions.assertEquals(GlobalParameterType.ARRAY, model.value().get(0).properties().get("nuilee").type());
+        Assertions.assertEquals("mkoisqcssf", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GlobalParameterListResponse model
-            = new GlobalParameterListResponse()
-                .withValue(Arrays.asList(new GlobalParameterResourceInner().withId("cigeleohdbvqvw")
-                    .withProperties(mapOf("mg",
+        GlobalParameterListResponse model = new GlobalParameterListResponse()
+            .withValue(Arrays.asList(
+                new GlobalParameterResourceInner().withId("wgnxkympqanxrj")
+                    .withProperties(mapOf("nuilee",
+                        new GlobalParameterSpecification().withType(GlobalParameterType.ARRAY).withValue("datamyqwcab"),
+                        "rxwtoaukhfkvc",
+                        new GlobalParameterSpecification().withType(GlobalParameterType.OBJECT)
+                            .withValue("dataswlpaugmrmfj"),
+                        "jwuive",
+                        new GlobalParameterSpecification().withType(GlobalParameterType.INT).withValue("dataizmoaeds"),
+                        "xeiqbpsmg",
                         new GlobalParameterSpecification().withType(GlobalParameterType.STRING)
-                            .withValue("datayrrueqth"),
-                        "cbbxigdhxi",
-                        new GlobalParameterSpecification().withType(GlobalParameterType.STRING).withValue("datab")))))
-                .withNextLink("jopwbeonrlkwz");
+                            .withValue("datacgyee"))),
+                new GlobalParameterResourceInner().withId("pd")
+                    .withProperties(mapOf("taoypnyghshxc",
+                        new GlobalParameterSpecification().withType(GlobalParameterType.BOOL).withValue("datatw")))))
+            .withNextLink("mkoisqcssf");
         model = BinaryData.fromObject(model).toObject(GlobalParameterListResponse.class);
-        Assertions.assertEquals("cigeleohdbvqvw", model.value().get(0).id());
-        Assertions.assertEquals(GlobalParameterType.STRING, model.value().get(0).properties().get("mg").type());
-        Assertions.assertEquals("jopwbeonrlkwz", model.nextLink());
+        Assertions.assertEquals("wgnxkympqanxrj", model.value().get(0).id());
+        Assertions.assertEquals(GlobalParameterType.ARRAY, model.value().get(0).properties().get("nuilee").type());
+        Assertions.assertEquals("mkoisqcssf", model.nextLink());
     }
 
     // Use "Map.of" if available

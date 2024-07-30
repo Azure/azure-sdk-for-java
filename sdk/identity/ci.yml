@@ -51,7 +51,7 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: identity
-    EnableBatchRelease: true
+    TimeoutInMinutes: 90
     ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
     Artifacts:
       - name: azure-identity
@@ -74,7 +74,15 @@ extends:
           CalledFromClient: true
           ServiceDirectory: identity
           SupportedClouds: 'Public,UsGov,China'
+          EnvVars:
+            SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+          CloudConfig:
+            Public:
+              SubscriptionConfigurations:
+                - $(sub-config-azure-cloud-test-resources)
+                - $(sub-config-identity-test-resources)
           Artifacts:
             - name: azure-identity
               groupId: com.azure
               safeName: azureidentity
+

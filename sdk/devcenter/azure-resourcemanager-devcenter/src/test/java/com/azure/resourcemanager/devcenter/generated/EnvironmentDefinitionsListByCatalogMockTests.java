@@ -6,62 +6,32 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
 import com.azure.resourcemanager.devcenter.models.EnvironmentDefinition;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class EnvironmentDefinitionsListByCatalogMockTests {
     @Test
     public void testListByCatalog() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"description\":\"zqn\",\"parameters\":[{\"id\":\"ql\",\"name\":\"zoibgsxg\",\"description\":\"fyq\",\"type\":\"number\",\"readOnly\":false,\"required\":false},{\"id\":\"dofdbxiqx\",\"name\":\"iqbi\",\"description\":\"tmwwi\",\"type\":\"boolean\",\"readOnly\":false,\"required\":false},{\"id\":\"fvwbcb\",\"name\":\"mbnkb\",\"description\":\"qvxkd\",\"type\":\"boolean\",\"readOnly\":false,\"required\":false},{\"id\":\"tswbzuwfmd\",\"name\":\"agegiz\",\"description\":\"jfelisdjubggbqig\",\"type\":\"string\",\"readOnly\":true,\"required\":true}],\"templatePath\":\"akgacyrcmjdm\",\"validationStatus\":\"Unknown\"},\"id\":\"apvu\",\"name\":\"rylniofrzg\",\"type\":\"zjedmstkvnlv\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"description\":\"qhibtozipqwjedm\",\"parameters\":[{\"id\":\"x\",\"name\":\"wpktvqylkmqpzoyh\",\"description\":\"bcg\",\"type\":\"object\",\"readOnly\":false,\"required\":true}],\"templatePath\":\"bqinjipnwjfu\",\"validationStatus\":\"Pending\"},\"id\":\"fcbahhp\",\"name\":\"pofoi\",\"type\":\"jwpfilkm\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DevCenterManager manager = DevCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<EnvironmentDefinition> response = manager.environmentDefinitions()
+            .listByCatalog("ryuzcbmqqv", "mv", "fgtayxonsup", 1417437720, com.azure.core.util.Context.NONE);
 
-        DevCenterManager manager =
-            DevCenterManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<EnvironmentDefinition> response =
-            manager
-                .environmentDefinitions()
-                .listByCatalog("uzphdugnei", "n", "gox", 679525953, com.azure.core.util.Context.NONE);
     }
 }

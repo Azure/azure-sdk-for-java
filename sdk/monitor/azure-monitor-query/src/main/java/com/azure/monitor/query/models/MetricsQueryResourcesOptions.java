@@ -20,8 +20,12 @@ public final class MetricsQueryResourcesOptions {
     private String orderBy;
     private String filter;
 
-    private String rollupBy;
+    /**
+     * Creates an instance of MetricsQueryResourcesOptions.
+     */
+    public MetricsQueryResourcesOptions() { }
 
+    private String rollupBy;
 
     /**
      * Returns the time span for which the metrics data is queried.

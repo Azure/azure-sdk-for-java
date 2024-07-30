@@ -10,8 +10,8 @@ import com.azure.resourcemanager.security.models.VendorReference;
 public final class VendorReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VendorReference model
-            = BinaryData.fromString("{\"title\":\"satroia\",\"link\":\"sugmocpcjyc\"}").toObject(VendorReference.class);
+        VendorReference model = BinaryData.fromString("{\"title\":\"fculzjrmhpfyw\",\"link\":\"ldqpzf\"}")
+            .toObject(VendorReference.class);
     }
 
     @org.junit.jupiter.api.Test

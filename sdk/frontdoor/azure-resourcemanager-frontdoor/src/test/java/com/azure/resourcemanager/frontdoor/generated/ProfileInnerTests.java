@@ -14,41 +14,29 @@ import org.junit.jupiter.api.Assertions;
 public final class ProfileInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProfileInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"resourceState\":\"Disabled\",\"enabledState\":\"Disabled\"},\"etag\":\"ztzp\",\"location\":\"fn\",\"tags\":{\"zfeqztppri\":\"wyfzqwhxxbuyqa\",\"bqwcsdbnwdcf\":\"lxorjaltolmncws\",\"jcanvxbvtvudut\":\"ucqdpfuvglsb\",\"xqtvcofu\":\"cormr\"},\"id\":\"f\",\"name\":\"vkg\",\"type\":\"u\"}")
-                .toObject(ProfileInner.class);
-        Assertions.assertEquals("fn", model.location());
-        Assertions.assertEquals("wyfzqwhxxbuyqa", model.tags().get("zfeqztppri"));
-        Assertions.assertEquals("ztzp", model.etag());
+        ProfileInner model = BinaryData.fromString(
+            "{\"properties\":{\"resourceState\":\"Enabled\",\"enabledState\":\"Disabled\"},\"etag\":\"ttijfybvpoekrs\",\"location\":\"sgbdhuz\",\"tags\":{\"gkynscliqh\":\"j\",\"mtk\":\"vhxnk\",\"ppnvdxz\":\"bo\"},\"id\":\"hihfrbbcevqagtlt\",\"name\":\"hlfkqojpy\",\"type\":\"vgtrdcnifmzzs\"}")
+            .toObject(ProfileInner.class);
+        Assertions.assertEquals("sgbdhuz", model.location());
+        Assertions.assertEquals("j", model.tags().get("gkynscliqh"));
+        Assertions.assertEquals("ttijfybvpoekrs", model.etag());
         Assertions.assertEquals(State.DISABLED, model.enabledState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProfileInner model =
-            new ProfileInner()
-                .withLocation("fn")
-                .withTags(
-                    mapOf(
-                        "zfeqztppri",
-                        "wyfzqwhxxbuyqa",
-                        "bqwcsdbnwdcf",
-                        "lxorjaltolmncws",
-                        "jcanvxbvtvudut",
-                        "ucqdpfuvglsb",
-                        "xqtvcofu",
-                        "cormr"))
-                .withEtag("ztzp")
-                .withEnabledState(State.DISABLED);
+        ProfileInner model = new ProfileInner().withLocation("sgbdhuz")
+            .withTags(mapOf("gkynscliqh", "j", "mtk", "vhxnk", "ppnvdxz", "bo"))
+            .withEtag("ttijfybvpoekrs")
+            .withEnabledState(State.DISABLED);
         model = BinaryData.fromObject(model).toObject(ProfileInner.class);
-        Assertions.assertEquals("fn", model.location());
-        Assertions.assertEquals("wyfzqwhxxbuyqa", model.tags().get("zfeqztppri"));
-        Assertions.assertEquals("ztzp", model.etag());
+        Assertions.assertEquals("sgbdhuz", model.location());
+        Assertions.assertEquals("j", model.tags().get("gkynscliqh"));
+        Assertions.assertEquals("ttijfybvpoekrs", model.etag());
         Assertions.assertEquals(State.DISABLED, model.enabledState());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

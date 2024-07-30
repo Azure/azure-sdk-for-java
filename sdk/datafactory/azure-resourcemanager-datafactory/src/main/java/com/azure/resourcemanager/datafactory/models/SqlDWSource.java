@@ -6,16 +6,24 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity SQL Data Warehouse source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = SqlDWSource.class, visible = true)
 @JsonTypeName("SqlDWSource")
 @Fluent
 public final class SqlDWSource extends TabularSource {
+    /*
+     * Copy source type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "SqlDWSource";
+
     /*
      * SQL Data Warehouse reader query. Type: string (or Expression with resultType string).
      */
@@ -30,8 +38,8 @@ public final class SqlDWSource extends TabularSource {
     private Object sqlReaderStoredProcedureName;
 
     /*
-     * Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}".
-     * Type: object (or Expression with resultType object), itemType: StoredProcedureParameter.
+     * Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}". Type:
+     * object (or Expression with resultType object), itemType: StoredProcedureParameter.
      */
     @JsonProperty(value = "storedProcedureParameters")
     private Object storedProcedureParameters;
@@ -64,6 +72,16 @@ public final class SqlDWSource extends TabularSource {
     }
 
     /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the sqlReaderQuery property: SQL Data Warehouse reader query. Type: string (or Expression with resultType
      * string).
      * 
@@ -86,8 +104,8 @@ public final class SqlDWSource extends TabularSource {
     }
 
     /**
-     * Get the sqlReaderStoredProcedureName property: Name of the stored procedure for a SQL Data Warehouse source.
-     * This cannot be used at the same time as SqlReaderQuery. Type: string (or Expression with resultType string).
+     * Get the sqlReaderStoredProcedureName property: Name of the stored procedure for a SQL Data Warehouse source. This
+     * cannot be used at the same time as SqlReaderQuery. Type: string (or Expression with resultType string).
      * 
      * @return the sqlReaderStoredProcedureName value.
      */
@@ -96,8 +114,8 @@ public final class SqlDWSource extends TabularSource {
     }
 
     /**
-     * Set the sqlReaderStoredProcedureName property: Name of the stored procedure for a SQL Data Warehouse source.
-     * This cannot be used at the same time as SqlReaderQuery. Type: string (or Expression with resultType string).
+     * Set the sqlReaderStoredProcedureName property: Name of the stored procedure for a SQL Data Warehouse source. This
+     * cannot be used at the same time as SqlReaderQuery. Type: string (or Expression with resultType string).
      * 
      * @param sqlReaderStoredProcedureName the sqlReaderStoredProcedureName value to set.
      * @return the SqlDWSource object itself.

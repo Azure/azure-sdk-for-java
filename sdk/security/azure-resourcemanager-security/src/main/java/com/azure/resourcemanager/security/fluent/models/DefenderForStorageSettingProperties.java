@@ -32,8 +32,7 @@ public final class DefenderForStorageSettingProperties {
     private SensitiveDataDiscoveryProperties innerSensitiveDataDiscovery;
 
     /*
-     * Indicates whether the settings defined for this storage account should override the settings defined for the
-     * subscription.
+     * Indicates whether the settings defined for this storage account should override the settings defined for the subscription.
      */
     @JsonProperty(value = "overrideSubscriptionLevelSettings")
     private Boolean overrideSubscriptionLevelSettings;
@@ -112,7 +111,8 @@ public final class DefenderForStorageSettingProperties {
      * @return the scanResultsEventGridTopicResourceId value.
      */
     public String scanResultsEventGridTopicResourceId() {
-        return this.innerMalwareScanning() == null ? null
+        return this.innerMalwareScanning() == null
+            ? null
             : this.innerMalwareScanning().scanResultsEventGridTopicResourceId();
     }
 

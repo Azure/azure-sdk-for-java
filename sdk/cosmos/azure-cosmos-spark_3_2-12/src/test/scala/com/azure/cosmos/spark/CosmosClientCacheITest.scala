@@ -49,6 +49,7 @@ class CosmosClientCacheITest
           Some("SampleApplicationName"),
           "SampleApplicationName",
           useGatewayMode = true,
+          enforceNativeTransport = false,
           proactiveConnectionInitialization = None,
           proactiveConnectionInitializationDurationInSeconds = 120,
           httpConnectionPoolSize = 1000,
@@ -61,7 +62,8 @@ class CosmosClientCacheITest
           tenantId = None,
           resourceGroupName = None,
           azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
-          sparkEnvironmentInfo = "")
+          sparkEnvironmentInfo = "",
+          clientBuilderInterceptors = None)
       ),
       (
         "StandardCtorWithEmptyPreferredRegions",
@@ -72,6 +74,7 @@ class CosmosClientCacheITest
           Some("SampleApplicationName"),
           "SampleApplicationName",
           useGatewayMode = true,
+          enforceNativeTransport = false,
           proactiveConnectionInitialization = None,
           proactiveConnectionInitializationDurationInSeconds = 120,
           httpConnectionPoolSize = 1000,
@@ -84,7 +87,8 @@ class CosmosClientCacheITest
           tenantId = None,
           resourceGroupName = None,
           azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
-          sparkEnvironmentInfo = "")
+          sparkEnvironmentInfo = "",
+          clientBuilderInterceptors = None)
       ),
       (
         "StandardCtorWithOnePreferredRegion",
@@ -95,6 +99,7 @@ class CosmosClientCacheITest
           None,
           "SampleApplicationName",
           useGatewayMode = true,
+          enforceNativeTransport = false,
           proactiveConnectionInitialization = None,
           proactiveConnectionInitializationDurationInSeconds = 120,
           httpConnectionPoolSize = 1000,
@@ -107,7 +112,8 @@ class CosmosClientCacheITest
           tenantId = None,
           resourceGroupName = None,
           azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
-          sparkEnvironmentInfo = "")
+          sparkEnvironmentInfo = "",
+          clientBuilderInterceptors = None)
       ),
       (
         "StandardCtorWithTwoPreferredRegions",
@@ -118,6 +124,7 @@ class CosmosClientCacheITest
           None,
           "SampleApplicationName",
           useGatewayMode = true,
+          enforceNativeTransport = false,
           proactiveConnectionInitialization = None,
           proactiveConnectionInitializationDurationInSeconds = 120,
           httpConnectionPoolSize = 1000,
@@ -130,7 +137,8 @@ class CosmosClientCacheITest
           tenantId = None,
           resourceGroupName = None,
           azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
-          sparkEnvironmentInfo = "")
+          sparkEnvironmentInfo = "",
+          clientBuilderInterceptors = None)
       )
     )
 
@@ -145,6 +153,7 @@ class CosmosClientCacheITest
         userConfig.customApplicationNameSuffix,
         userConfig.applicationName,
         userConfig.useGatewayMode,
+        userConfig.enforceNativeTransport,
         userConfig.proactiveConnectionInitialization,
         userConfig.proactiveConnectionInitializationDurationInSeconds,
         userConfig.httpConnectionPoolSize,
@@ -160,7 +169,8 @@ class CosmosClientCacheITest
         userConfig.tenantId,
         userConfig.resourceGroupName,
         userConfig.azureEnvironmentEndpoints,
-        sparkEnvironmentInfo = ""
+        sparkEnvironmentInfo = "",
+        clientBuilderInterceptors = None
       )
 
       logInfo(s"TestCase: {$testCaseName}")

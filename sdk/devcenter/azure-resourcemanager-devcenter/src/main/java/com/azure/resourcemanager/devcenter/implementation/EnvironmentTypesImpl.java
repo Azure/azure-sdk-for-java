@@ -21,34 +21,31 @@ public final class EnvironmentTypesImpl implements EnvironmentTypes {
 
     private final com.azure.resourcemanager.devcenter.DevCenterManager serviceManager;
 
-    public EnvironmentTypesImpl(
-        EnvironmentTypesClient innerClient, com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
+    public EnvironmentTypesImpl(EnvironmentTypesClient innerClient,
+        com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<EnvironmentType> listByDevCenter(String resourceGroupName, String devCenterName) {
-        PagedIterable<EnvironmentTypeInner> inner =
-            this.serviceClient().listByDevCenter(resourceGroupName, devCenterName);
-        return Utils.mapPage(inner, inner1 -> new EnvironmentTypeImpl(inner1, this.manager()));
+        PagedIterable<EnvironmentTypeInner> inner
+            = this.serviceClient().listByDevCenter(resourceGroupName, devCenterName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EnvironmentTypeImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<EnvironmentType> listByDevCenter(
-        String resourceGroupName, String devCenterName, Integer top, Context context) {
-        PagedIterable<EnvironmentTypeInner> inner =
-            this.serviceClient().listByDevCenter(resourceGroupName, devCenterName, top, context);
-        return Utils.mapPage(inner, inner1 -> new EnvironmentTypeImpl(inner1, this.manager()));
+    public PagedIterable<EnvironmentType> listByDevCenter(String resourceGroupName, String devCenterName, Integer top,
+        Context context) {
+        PagedIterable<EnvironmentTypeInner> inner
+            = this.serviceClient().listByDevCenter(resourceGroupName, devCenterName, top, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EnvironmentTypeImpl(inner1, this.manager()));
     }
 
-    public Response<EnvironmentType> getWithResponse(
-        String resourceGroupName, String devCenterName, String environmentTypeName, Context context) {
-        Response<EnvironmentTypeInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, devCenterName, environmentTypeName, context);
+    public Response<EnvironmentType> getWithResponse(String resourceGroupName, String devCenterName,
+        String environmentTypeName, Context context) {
+        Response<EnvironmentTypeInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, devCenterName, environmentTypeName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new EnvironmentTypeImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -64,8 +61,8 @@ public final class EnvironmentTypesImpl implements EnvironmentTypes {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String devCenterName, String environmentTypeName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String devCenterName, String environmentTypeName,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, devCenterName, environmentTypeName, context);
     }
 
@@ -74,113 +71,77 @@ public final class EnvironmentTypesImpl implements EnvironmentTypes {
     }
 
     public EnvironmentType getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String devCenterName = Utils.getValueFromIdByName(id, "devcenters");
+        String devCenterName = ResourceManagerUtils.getValueFromIdByName(id, "devcenters");
         if (devCenterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'devcenters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'devcenters'.", id)));
         }
-        String environmentTypeName = Utils.getValueFromIdByName(id, "environmentTypes");
+        String environmentTypeName = ResourceManagerUtils.getValueFromIdByName(id, "environmentTypes");
         if (environmentTypeName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'environmentTypes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'environmentTypes'.", id)));
         }
         return this.getWithResponse(resourceGroupName, devCenterName, environmentTypeName, Context.NONE).getValue();
     }
 
     public Response<EnvironmentType> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String devCenterName = Utils.getValueFromIdByName(id, "devcenters");
+        String devCenterName = ResourceManagerUtils.getValueFromIdByName(id, "devcenters");
         if (devCenterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'devcenters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'devcenters'.", id)));
         }
-        String environmentTypeName = Utils.getValueFromIdByName(id, "environmentTypes");
+        String environmentTypeName = ResourceManagerUtils.getValueFromIdByName(id, "environmentTypes");
         if (environmentTypeName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'environmentTypes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'environmentTypes'.", id)));
         }
         return this.getWithResponse(resourceGroupName, devCenterName, environmentTypeName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String devCenterName = Utils.getValueFromIdByName(id, "devcenters");
+        String devCenterName = ResourceManagerUtils.getValueFromIdByName(id, "devcenters");
         if (devCenterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'devcenters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'devcenters'.", id)));
         }
-        String environmentTypeName = Utils.getValueFromIdByName(id, "environmentTypes");
+        String environmentTypeName = ResourceManagerUtils.getValueFromIdByName(id, "environmentTypes");
         if (environmentTypeName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'environmentTypes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'environmentTypes'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, devCenterName, environmentTypeName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String devCenterName = Utils.getValueFromIdByName(id, "devcenters");
+        String devCenterName = ResourceManagerUtils.getValueFromIdByName(id, "devcenters");
         if (devCenterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'devcenters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'devcenters'.", id)));
         }
-        String environmentTypeName = Utils.getValueFromIdByName(id, "environmentTypes");
+        String environmentTypeName = ResourceManagerUtils.getValueFromIdByName(id, "environmentTypes");
         if (environmentTypeName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'environmentTypes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'environmentTypes'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, devCenterName, environmentTypeName, context);
     }

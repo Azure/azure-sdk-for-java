@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.recoveryservicesbackup.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -12,8 +13,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -34,10 +35,10 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupProtectionI
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupResourceEncryptionConfigsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupResourceStorageConfigsNonCrrsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupResourceVaultConfigsClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupStatusClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupUsageSummariesClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupWorkloadItemsClient;
-import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BmsPrepareDataMoveOperationResultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.DeletedProtectionContainersClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ExportJobsOperationResultsClient;
@@ -74,8 +75,8 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.RestoresClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.SecurityPINsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.TieringCostOperationStatusClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ValidateOperationResultsClient;
-import com.azure.resourcemanager.recoveryservicesbackup.fluent.ValidateOperationStatusesClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ValidateOperationsClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.ValidateOperationStatusesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -933,7 +934,7 @@ public final class RecoveryServicesBackupClientImpl implements RecoveryServicesB
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-06-01";
+        this.apiVersion = "2024-04-01";
         this.backupResourceStorageConfigsNonCrrs = new BackupResourceStorageConfigsNonCrrsClientImpl(this);
         this.protectionIntents = new ProtectionIntentsClientImpl(this);
         this.backupStatus = new BackupStatusClientImpl(this);
@@ -1050,8 +1051,8 @@ public final class RecoveryServicesBackupClientImpl implements RecoveryServicesB
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError = this.getSerializerAdapter().deserialize(errorBody, ManagementError.class,
-                            SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -1092,7 +1093,7 @@ public final class RecoveryServicesBackupClientImpl implements RecoveryServicesB
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

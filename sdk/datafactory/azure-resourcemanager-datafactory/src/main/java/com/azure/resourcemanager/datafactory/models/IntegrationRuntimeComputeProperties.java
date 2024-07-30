@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -141,8 +141,8 @@ public final class IntegrationRuntimeComputeProperties {
     }
 
     /**
-     * Get the maxParallelExecutionsPerNode property: Maximum parallel executions count per node for managed
-     * integration runtime.
+     * Get the maxParallelExecutionsPerNode property: Maximum parallel executions count per node for managed integration
+     * runtime.
      * 
      * @return the maxParallelExecutionsPerNode value.
      */
@@ -151,8 +151,8 @@ public final class IntegrationRuntimeComputeProperties {
     }
 
     /**
-     * Set the maxParallelExecutionsPerNode property: Maximum parallel executions count per node for managed
-     * integration runtime.
+     * Set the maxParallelExecutionsPerNode property: Maximum parallel executions count per node for managed integration
+     * runtime.
      * 
      * @param maxParallelExecutionsPerNode the maxParallelExecutionsPerNode value to set.
      * @return the IntegrationRuntimeComputeProperties object itself.
@@ -271,7 +271,7 @@ public final class IntegrationRuntimeComputeProperties {
     @JsonAnySetter
     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }

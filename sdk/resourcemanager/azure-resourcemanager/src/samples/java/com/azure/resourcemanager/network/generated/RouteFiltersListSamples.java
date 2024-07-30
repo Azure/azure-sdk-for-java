@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class RouteFiltersListSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/RouteFilterList.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/RouteFilterList.json
      */
     /**
      * Sample code: RouteFilterList.

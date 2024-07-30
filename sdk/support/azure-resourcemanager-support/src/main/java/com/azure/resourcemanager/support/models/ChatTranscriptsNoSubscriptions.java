@@ -4,14 +4,40 @@
 
 package com.azure.resourcemanager.support.models;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ChatTranscriptsNoSubscriptions. */
+/**
+ * Resource collection API of ChatTranscriptsNoSubscriptions.
+ */
 public interface ChatTranscriptsNoSubscriptions {
     /**
+     * Lists all chat transcripts for a support ticket.
+     * 
+     * @param supportTicketName Support ticket name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of Chat Transcripts resources as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<ChatTranscriptDetails> list(String supportTicketName);
+
+    /**
+     * Lists all chat transcripts for a support ticket.
+     * 
+     * @param supportTicketName Support ticket name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of Chat Transcripts resources as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<ChatTranscriptDetails> list(String supportTicketName, Context context);
+
+    /**
      * Returns chatTranscript details for a no subscription support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param chatTranscriptName ChatTranscript name.
      * @param context The context to associate with this operation.
@@ -20,12 +46,12 @@ public interface ChatTranscriptsNoSubscriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that represents a Chat Transcript resource along with {@link Response}.
      */
-    Response<ChatTranscriptDetails> getWithResponse(
-        String supportTicketName, String chatTranscriptName, Context context);
+    Response<ChatTranscriptDetails> getWithResponse(String supportTicketName, String chatTranscriptName,
+        Context context);
 
     /**
      * Returns chatTranscript details for a no subscription support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param chatTranscriptName ChatTranscript name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

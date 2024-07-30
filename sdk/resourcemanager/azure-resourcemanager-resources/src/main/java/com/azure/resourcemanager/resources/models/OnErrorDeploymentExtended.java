@@ -7,7 +7,9 @@ package com.azure.resourcemanager.resources.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Deployment on error behavior with additional details. */
+/**
+ * Deployment on error behavior with additional details.
+ */
 @Fluent
 public final class OnErrorDeploymentExtended {
     /*
@@ -28,13 +30,15 @@ public final class OnErrorDeploymentExtended {
     @JsonProperty(value = "deploymentName")
     private String deploymentName;
 
-    /** Creates an instance of OnErrorDeploymentExtended class. */
+    /**
+     * Creates an instance of OnErrorDeploymentExtended class.
+     */
     public OnErrorDeploymentExtended() {
     }
 
     /**
      * Get the provisioningState property: The state of the provisioning for the on error deployment.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -44,7 +48,7 @@ public final class OnErrorDeploymentExtended {
     /**
      * Get the type property: The deployment on error behavior type. Possible values are LastSuccessful and
      * SpecificDeployment.
-     *
+     * 
      * @return the type value.
      */
     public OnErrorDeploymentType type() {
@@ -54,7 +58,7 @@ public final class OnErrorDeploymentExtended {
     /**
      * Set the type property: The deployment on error behavior type. Possible values are LastSuccessful and
      * SpecificDeployment.
-     *
+     * 
      * @param type the type value to set.
      * @return the OnErrorDeploymentExtended object itself.
      */
@@ -65,7 +69,7 @@ public final class OnErrorDeploymentExtended {
 
     /**
      * Get the deploymentName property: The deployment to be used on error case.
-     *
+     * 
      * @return the deploymentName value.
      */
     public String deploymentName() {
@@ -74,7 +78,7 @@ public final class OnErrorDeploymentExtended {
 
     /**
      * Set the deploymentName property: The deployment to be used on error case.
-     *
+     * 
      * @param deploymentName the deploymentName value to set.
      * @return the OnErrorDeploymentExtended object itself.
      */
@@ -85,7 +89,7 @@ public final class OnErrorDeploymentExtended {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

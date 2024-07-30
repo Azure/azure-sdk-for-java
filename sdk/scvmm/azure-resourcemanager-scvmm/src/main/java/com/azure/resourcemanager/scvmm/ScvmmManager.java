@@ -11,8 +11,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -26,20 +26,24 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.scvmm.fluent.ScvmmClient;
 import com.azure.resourcemanager.scvmm.implementation.AvailabilitySetsImpl;
 import com.azure.resourcemanager.scvmm.implementation.CloudsImpl;
+import com.azure.resourcemanager.scvmm.implementation.GuestAgentsImpl;
 import com.azure.resourcemanager.scvmm.implementation.InventoryItemsImpl;
 import com.azure.resourcemanager.scvmm.implementation.OperationsImpl;
 import com.azure.resourcemanager.scvmm.implementation.ScvmmClientBuilder;
+import com.azure.resourcemanager.scvmm.implementation.VirtualMachineInstancesImpl;
 import com.azure.resourcemanager.scvmm.implementation.VirtualMachineTemplatesImpl;
-import com.azure.resourcemanager.scvmm.implementation.VirtualMachinesImpl;
 import com.azure.resourcemanager.scvmm.implementation.VirtualNetworksImpl;
+import com.azure.resourcemanager.scvmm.implementation.VmInstanceHybridIdentityMetadatasImpl;
 import com.azure.resourcemanager.scvmm.implementation.VmmServersImpl;
 import com.azure.resourcemanager.scvmm.models.AvailabilitySets;
 import com.azure.resourcemanager.scvmm.models.Clouds;
+import com.azure.resourcemanager.scvmm.models.GuestAgents;
 import com.azure.resourcemanager.scvmm.models.InventoryItems;
 import com.azure.resourcemanager.scvmm.models.Operations;
+import com.azure.resourcemanager.scvmm.models.VirtualMachineInstances;
 import com.azure.resourcemanager.scvmm.models.VirtualMachineTemplates;
-import com.azure.resourcemanager.scvmm.models.VirtualMachines;
 import com.azure.resourcemanager.scvmm.models.VirtualNetworks;
+import com.azure.resourcemanager.scvmm.models.VmInstanceHybridIdentityMetadatas;
 import com.azure.resourcemanager.scvmm.models.VmmServers;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -48,21 +52,28 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to ScvmmManager. SCVMM Client. */
+/**
+ * Entry point to ScvmmManager.
+ * SCVMM Client.
+ */
 public final class ScvmmManager {
-    private VmmServers vmmServers;
+    private VirtualMachineInstances virtualMachineInstances;
+
+    private GuestAgents guestAgents;
+
+    private VmInstanceHybridIdentityMetadatas vmInstanceHybridIdentityMetadatas;
 
     private Operations operations;
 
+    private AvailabilitySets availabilitySets;
+
     private Clouds clouds;
-
-    private VirtualNetworks virtualNetworks;
-
-    private VirtualMachines virtualMachines;
 
     private VirtualMachineTemplates virtualMachineTemplates;
 
-    private AvailabilitySets availabilitySets;
+    private VirtualNetworks virtualNetworks;
+
+    private VmmServers vmmServers;
 
     private InventoryItems inventoryItems;
 
@@ -71,18 +82,16 @@ public final class ScvmmManager {
     private ScvmmManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new ScvmmClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new ScvmmClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
      * Creates an instance of Scvmm service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the Scvmm service API instance.
@@ -95,7 +104,7 @@ public final class ScvmmManager {
 
     /**
      * Creates an instance of Scvmm service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the Scvmm service API instance.
@@ -108,14 +117,16 @@ public final class ScvmmManager {
 
     /**
      * Gets a Configurable instance that can be used to create ScvmmManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new ScvmmManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -187,8 +198,8 @@ public final class ScvmmManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -205,8 +216,8 @@ public final class ScvmmManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -226,15 +237,13 @@ public final class ScvmmManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
+            userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.scvmm")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
+                userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -259,50 +268,66 @@ public final class ScvmmManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new ScvmmManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
     /**
-     * Gets the resource collection API of VmmServers.
-     *
-     * @return Resource collection API of VmmServers.
+     * Gets the resource collection API of VirtualMachineInstances.
+     * 
+     * @return Resource collection API of VirtualMachineInstances.
      */
-    public VmmServers vmmServers() {
-        if (this.vmmServers == null) {
-            this.vmmServers = new VmmServersImpl(clientObject.getVmmServers(), this);
+    public VirtualMachineInstances virtualMachineInstances() {
+        if (this.virtualMachineInstances == null) {
+            this.virtualMachineInstances
+                = new VirtualMachineInstancesImpl(clientObject.getVirtualMachineInstances(), this);
         }
-        return vmmServers;
+        return virtualMachineInstances;
+    }
+
+    /**
+     * Gets the resource collection API of GuestAgents.
+     * 
+     * @return Resource collection API of GuestAgents.
+     */
+    public GuestAgents guestAgents() {
+        if (this.guestAgents == null) {
+            this.guestAgents = new GuestAgentsImpl(clientObject.getGuestAgents(), this);
+        }
+        return guestAgents;
+    }
+
+    /**
+     * Gets the resource collection API of VmInstanceHybridIdentityMetadatas.
+     * 
+     * @return Resource collection API of VmInstanceHybridIdentityMetadatas.
+     */
+    public VmInstanceHybridIdentityMetadatas vmInstanceHybridIdentityMetadatas() {
+        if (this.vmInstanceHybridIdentityMetadatas == null) {
+            this.vmInstanceHybridIdentityMetadatas
+                = new VmInstanceHybridIdentityMetadatasImpl(clientObject.getVmInstanceHybridIdentityMetadatas(), this);
+        }
+        return vmInstanceHybridIdentityMetadatas;
     }
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -313,57 +338,8 @@ public final class ScvmmManager {
     }
 
     /**
-     * Gets the resource collection API of Clouds.
-     *
-     * @return Resource collection API of Clouds.
-     */
-    public Clouds clouds() {
-        if (this.clouds == null) {
-            this.clouds = new CloudsImpl(clientObject.getClouds(), this);
-        }
-        return clouds;
-    }
-
-    /**
-     * Gets the resource collection API of VirtualNetworks.
-     *
-     * @return Resource collection API of VirtualNetworks.
-     */
-    public VirtualNetworks virtualNetworks() {
-        if (this.virtualNetworks == null) {
-            this.virtualNetworks = new VirtualNetworksImpl(clientObject.getVirtualNetworks(), this);
-        }
-        return virtualNetworks;
-    }
-
-    /**
-     * Gets the resource collection API of VirtualMachines.
-     *
-     * @return Resource collection API of VirtualMachines.
-     */
-    public VirtualMachines virtualMachines() {
-        if (this.virtualMachines == null) {
-            this.virtualMachines = new VirtualMachinesImpl(clientObject.getVirtualMachines(), this);
-        }
-        return virtualMachines;
-    }
-
-    /**
-     * Gets the resource collection API of VirtualMachineTemplates.
-     *
-     * @return Resource collection API of VirtualMachineTemplates.
-     */
-    public VirtualMachineTemplates virtualMachineTemplates() {
-        if (this.virtualMachineTemplates == null) {
-            this.virtualMachineTemplates =
-                new VirtualMachineTemplatesImpl(clientObject.getVirtualMachineTemplates(), this);
-        }
-        return virtualMachineTemplates;
-    }
-
-    /**
-     * Gets the resource collection API of AvailabilitySets.
-     *
+     * Gets the resource collection API of AvailabilitySets. It manages AvailabilitySet.
+     * 
      * @return Resource collection API of AvailabilitySets.
      */
     public AvailabilitySets availabilitySets() {
@@ -374,8 +350,57 @@ public final class ScvmmManager {
     }
 
     /**
-     * Gets the resource collection API of InventoryItems.
-     *
+     * Gets the resource collection API of Clouds. It manages Cloud.
+     * 
+     * @return Resource collection API of Clouds.
+     */
+    public Clouds clouds() {
+        if (this.clouds == null) {
+            this.clouds = new CloudsImpl(clientObject.getClouds(), this);
+        }
+        return clouds;
+    }
+
+    /**
+     * Gets the resource collection API of VirtualMachineTemplates. It manages VirtualMachineTemplate.
+     * 
+     * @return Resource collection API of VirtualMachineTemplates.
+     */
+    public VirtualMachineTemplates virtualMachineTemplates() {
+        if (this.virtualMachineTemplates == null) {
+            this.virtualMachineTemplates
+                = new VirtualMachineTemplatesImpl(clientObject.getVirtualMachineTemplates(), this);
+        }
+        return virtualMachineTemplates;
+    }
+
+    /**
+     * Gets the resource collection API of VirtualNetworks. It manages VirtualNetwork.
+     * 
+     * @return Resource collection API of VirtualNetworks.
+     */
+    public VirtualNetworks virtualNetworks() {
+        if (this.virtualNetworks == null) {
+            this.virtualNetworks = new VirtualNetworksImpl(clientObject.getVirtualNetworks(), this);
+        }
+        return virtualNetworks;
+    }
+
+    /**
+     * Gets the resource collection API of VmmServers. It manages VmmServer.
+     * 
+     * @return Resource collection API of VmmServers.
+     */
+    public VmmServers vmmServers() {
+        if (this.vmmServers == null) {
+            this.vmmServers = new VmmServersImpl(clientObject.getVmmServers(), this);
+        }
+        return vmmServers;
+    }
+
+    /**
+     * Gets the resource collection API of InventoryItems. It manages InventoryItem.
+     * 
      * @return Resource collection API of InventoryItems.
      */
     public InventoryItems inventoryItems() {
@@ -386,8 +411,10 @@ public final class ScvmmManager {
     }
 
     /**
-     * @return Wrapped service client ScvmmClient providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * Gets wrapped service client ScvmmClient providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client ScvmmClient.
      */
     public ScvmmClient serviceClient() {
         return this.clientObject;

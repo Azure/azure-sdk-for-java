@@ -3,9 +3,6 @@
 
 package com.azure.storage.file.share.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * SMB Properties to copy from the source file.
  */
@@ -30,7 +27,6 @@ public enum CopyableFileSmbProperties {
      * @param value the serialized value to parse.
      * @return the parsed CopyableFileSmbProperties object, or null if unable to parse.
      */
-    @JsonCreator
     public static CopyableFileSmbProperties fromString(String value) {
         CopyableFileSmbProperties[] items = CopyableFileSmbProperties.values();
         for (CopyableFileSmbProperties item : items) {
@@ -41,7 +37,6 @@ public enum CopyableFileSmbProperties {
         return null;
     }
 
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

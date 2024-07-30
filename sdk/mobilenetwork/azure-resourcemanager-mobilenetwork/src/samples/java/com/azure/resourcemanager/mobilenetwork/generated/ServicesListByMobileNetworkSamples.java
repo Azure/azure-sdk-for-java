@@ -4,20 +4,21 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-/** Samples for Services ListByMobileNetwork. */
+/**
+ * Samples for Services ListByMobileNetwork.
+ */
 public final class ServicesListByMobileNetworkSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/ServiceListByMobileNetwork.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/ServiceListByMobileNetwork.json
      */
     /**
      * Sample code: List services in a mobile network.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void listServicesInAMobileNetwork(
-        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .services()
+    public static void
+        listServicesInAMobileNetwork(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+        manager.services()
             .listByMobileNetwork("testResourceGroupName", "testMobileNetwork", com.azure.core.util.Context.NONE);
     }
 }

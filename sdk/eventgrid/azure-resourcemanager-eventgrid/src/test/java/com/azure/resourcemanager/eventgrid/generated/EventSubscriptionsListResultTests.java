@@ -25,27 +25,28 @@ public final class EventSubscriptionsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EventSubscriptionsListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"topic\":\"jylwbtlhflsj\",\"provisioningState\":\"Failed\",\"destination\":{\"endpointType\":\"EventSubscriptionDestination\"},\"deliveryWithResourceIdentity\":{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"bgofeljag\"},\"destination\":{\"endpointType\":\"EventSubscriptionDestination\"}},\"filter\":{\"subjectBeginsWith\":\"hldvriii\",\"subjectEndsWith\":\"nalghfkvtvsexso\",\"includedEventTypes\":[\"luqhhahhxv\"],\"isSubjectCaseSensitive\":false,\"enableAdvancedFilteringOnArrays\":true,\"advancedFilters\":[{\"operatorType\":\"AdvancedFilter\"},{\"operatorType\":\"AdvancedFilter\"},{\"operatorType\":\"AdvancedFilter\"}]},\"labels\":[\"wws\"],\"expirationTimeUtc\":\"2021-03-06T02:41:14Z\",\"eventDeliverySchema\":\"CustomInputSchema\",\"retryPolicy\":{\"maxDeliveryAttempts\":1926831328,\"eventTimeToLiveInMinutes\":1227202155},\"deadLetterDestination\":{\"endpointType\":\"DeadLetterDestination\"},\"deadLetterWithResourceIdentity\":{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"kndxdigrjgu\"},\"deadLetterDestination\":{\"endpointType\":\"DeadLetterDestination\"}}},\"id\":\"dmsyqtfihwhbo\",\"name\":\"z\",\"type\":\"ngamvpphosz\"}],\"nextLink\":\"udphqamvdkfwyn\"}")
+            "{\"value\":[{\"properties\":{\"topic\":\"hmtnvy\",\"provisioningState\":\"Succeeded\",\"destination\":{\"endpointType\":\"EventSubscriptionDestination\"},\"deliveryWithResourceIdentity\":{\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"npwzcjaes\"},\"destination\":{\"endpointType\":\"EventSubscriptionDestination\"}},\"filter\":{\"subjectBeginsWith\":\"ccyajg\",\"subjectEndsWith\":\"fhwygzlvdnkfxus\",\"includedEventTypes\":[\"wzrmuh\",\"pfcqdp\"],\"isSubjectCaseSensitive\":false,\"enableAdvancedFilteringOnArrays\":true,\"advancedFilters\":[{\"operatorType\":\"AdvancedFilter\"}]},\"labels\":[\"oymgccelvezr\",\"pqlmfe\",\"kerqwkyh\",\"ob\"],\"expirationTimeUtc\":\"2021-08-24T12:29:29Z\",\"eventDeliverySchema\":\"CloudEventSchemaV1_0\",\"retryPolicy\":{\"maxDeliveryAttempts\":1041237961,\"eventTimeToLiveInMinutes\":615107136},\"deadLetterDestination\":{\"endpointType\":\"DeadLetterDestination\"},\"deadLetterWithResourceIdentity\":{\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"fkbw\"},\"deadLetterDestination\":{\"endpointType\":\"DeadLetterDestination\"}}},\"id\":\"njv\",\"name\":\"dw\",\"type\":\"lpqekf\"}],\"nextLink\":\"khtj\"}")
             .toObject(EventSubscriptionsListResult.class);
-        Assertions.assertEquals(EventSubscriptionIdentityType.USER_ASSIGNED,
+        Assertions.assertEquals(EventSubscriptionIdentityType.SYSTEM_ASSIGNED,
             model.value().get(0).deliveryWithResourceIdentity().identity().type());
-        Assertions.assertEquals("bgofeljag",
+        Assertions.assertEquals("npwzcjaes",
             model.value().get(0).deliveryWithResourceIdentity().identity().userAssignedIdentity());
-        Assertions.assertEquals("hldvriii", model.value().get(0).filter().subjectBeginsWith());
-        Assertions.assertEquals("nalghfkvtvsexso", model.value().get(0).filter().subjectEndsWith());
-        Assertions.assertEquals("luqhhahhxv", model.value().get(0).filter().includedEventTypes().get(0));
+        Assertions.assertEquals("ccyajg", model.value().get(0).filter().subjectBeginsWith());
+        Assertions.assertEquals("fhwygzlvdnkfxus", model.value().get(0).filter().subjectEndsWith());
+        Assertions.assertEquals("wzrmuh", model.value().get(0).filter().includedEventTypes().get(0));
         Assertions.assertEquals(false, model.value().get(0).filter().isSubjectCaseSensitive());
         Assertions.assertEquals(true, model.value().get(0).filter().enableAdvancedFilteringOnArrays());
-        Assertions.assertEquals("wws", model.value().get(0).labels().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-06T02:41:14Z"), model.value().get(0).expirationTimeUtc());
-        Assertions.assertEquals(EventDeliverySchema.CUSTOM_INPUT_SCHEMA, model.value().get(0).eventDeliverySchema());
-        Assertions.assertEquals(1926831328, model.value().get(0).retryPolicy().maxDeliveryAttempts());
-        Assertions.assertEquals(1227202155, model.value().get(0).retryPolicy().eventTimeToLiveInMinutes());
-        Assertions.assertEquals(EventSubscriptionIdentityType.USER_ASSIGNED,
+        Assertions.assertEquals("oymgccelvezr", model.value().get(0).labels().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-24T12:29:29Z"), model.value().get(0).expirationTimeUtc());
+        Assertions.assertEquals(EventDeliverySchema.CLOUD_EVENT_SCHEMA_V1_0,
+            model.value().get(0).eventDeliverySchema());
+        Assertions.assertEquals(1041237961, model.value().get(0).retryPolicy().maxDeliveryAttempts());
+        Assertions.assertEquals(615107136, model.value().get(0).retryPolicy().eventTimeToLiveInMinutes());
+        Assertions.assertEquals(EventSubscriptionIdentityType.SYSTEM_ASSIGNED,
             model.value().get(0).deadLetterWithResourceIdentity().identity().type());
-        Assertions.assertEquals("kndxdigrjgu",
+        Assertions.assertEquals("fkbw",
             model.value().get(0).deadLetterWithResourceIdentity().identity().userAssignedIdentity());
-        Assertions.assertEquals("udphqamvdkfwyn", model.nextLink());
+        Assertions.assertEquals("khtj", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -55,45 +56,47 @@ public final class EventSubscriptionsListResultTests {
                 Arrays.asList(new EventSubscriptionInner().withDestination(new EventSubscriptionDestination())
                     .withDeliveryWithResourceIdentity(new DeliveryWithResourceIdentity()
                         .withIdentity(
-                            new EventSubscriptionIdentity().withType(EventSubscriptionIdentityType.USER_ASSIGNED)
-                                .withUserAssignedIdentity("bgofeljag"))
+                            new EventSubscriptionIdentity().withType(EventSubscriptionIdentityType.SYSTEM_ASSIGNED)
+                                .withUserAssignedIdentity("npwzcjaes"))
                         .withDestination(new EventSubscriptionDestination()))
-                    .withFilter(new EventSubscriptionFilter().withSubjectBeginsWith("hldvriii")
-                        .withSubjectEndsWith("nalghfkvtvsexso").withIncludedEventTypes(Arrays.asList("luqhhahhxv"))
-                        .withIsSubjectCaseSensitive(false).withEnableAdvancedFilteringOnArrays(true)
-                        .withAdvancedFilters(
-                            Arrays.asList(new AdvancedFilter(), new AdvancedFilter(), new AdvancedFilter())))
-                    .withLabels(Arrays.asList("wws"))
-                    .withExpirationTimeUtc(OffsetDateTime.parse("2021-03-06T02:41:14Z"))
-                    .withEventDeliverySchema(EventDeliverySchema.CUSTOM_INPUT_SCHEMA)
+                    .withFilter(new EventSubscriptionFilter().withSubjectBeginsWith("ccyajg")
+                        .withSubjectEndsWith("fhwygzlvdnkfxus")
+                        .withIncludedEventTypes(Arrays.asList("wzrmuh", "pfcqdp"))
+                        .withIsSubjectCaseSensitive(false)
+                        .withEnableAdvancedFilteringOnArrays(true)
+                        .withAdvancedFilters(Arrays.asList(new AdvancedFilter())))
+                    .withLabels(Arrays.asList("oymgccelvezr", "pqlmfe", "kerqwkyh", "ob"))
+                    .withExpirationTimeUtc(OffsetDateTime.parse("2021-08-24T12:29:29Z"))
+                    .withEventDeliverySchema(EventDeliverySchema.CLOUD_EVENT_SCHEMA_V1_0)
                     .withRetryPolicy(
-                        new RetryPolicy().withMaxDeliveryAttempts(1926831328).withEventTimeToLiveInMinutes(1227202155))
+                        new RetryPolicy().withMaxDeliveryAttempts(1041237961).withEventTimeToLiveInMinutes(615107136))
                     .withDeadLetterDestination(new DeadLetterDestination())
                     .withDeadLetterWithResourceIdentity(new DeadLetterWithResourceIdentity()
                         .withIdentity(
-                            new EventSubscriptionIdentity().withType(EventSubscriptionIdentityType.USER_ASSIGNED)
-                                .withUserAssignedIdentity("kndxdigrjgu"))
+                            new EventSubscriptionIdentity().withType(EventSubscriptionIdentityType.SYSTEM_ASSIGNED)
+                                .withUserAssignedIdentity("fkbw"))
                         .withDeadLetterDestination(new DeadLetterDestination()))))
-                .withNextLink("udphqamvdkfwyn");
+                .withNextLink("khtj");
         model = BinaryData.fromObject(model).toObject(EventSubscriptionsListResult.class);
-        Assertions.assertEquals(EventSubscriptionIdentityType.USER_ASSIGNED,
+        Assertions.assertEquals(EventSubscriptionIdentityType.SYSTEM_ASSIGNED,
             model.value().get(0).deliveryWithResourceIdentity().identity().type());
-        Assertions.assertEquals("bgofeljag",
+        Assertions.assertEquals("npwzcjaes",
             model.value().get(0).deliveryWithResourceIdentity().identity().userAssignedIdentity());
-        Assertions.assertEquals("hldvriii", model.value().get(0).filter().subjectBeginsWith());
-        Assertions.assertEquals("nalghfkvtvsexso", model.value().get(0).filter().subjectEndsWith());
-        Assertions.assertEquals("luqhhahhxv", model.value().get(0).filter().includedEventTypes().get(0));
+        Assertions.assertEquals("ccyajg", model.value().get(0).filter().subjectBeginsWith());
+        Assertions.assertEquals("fhwygzlvdnkfxus", model.value().get(0).filter().subjectEndsWith());
+        Assertions.assertEquals("wzrmuh", model.value().get(0).filter().includedEventTypes().get(0));
         Assertions.assertEquals(false, model.value().get(0).filter().isSubjectCaseSensitive());
         Assertions.assertEquals(true, model.value().get(0).filter().enableAdvancedFilteringOnArrays());
-        Assertions.assertEquals("wws", model.value().get(0).labels().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-06T02:41:14Z"), model.value().get(0).expirationTimeUtc());
-        Assertions.assertEquals(EventDeliverySchema.CUSTOM_INPUT_SCHEMA, model.value().get(0).eventDeliverySchema());
-        Assertions.assertEquals(1926831328, model.value().get(0).retryPolicy().maxDeliveryAttempts());
-        Assertions.assertEquals(1227202155, model.value().get(0).retryPolicy().eventTimeToLiveInMinutes());
-        Assertions.assertEquals(EventSubscriptionIdentityType.USER_ASSIGNED,
+        Assertions.assertEquals("oymgccelvezr", model.value().get(0).labels().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-24T12:29:29Z"), model.value().get(0).expirationTimeUtc());
+        Assertions.assertEquals(EventDeliverySchema.CLOUD_EVENT_SCHEMA_V1_0,
+            model.value().get(0).eventDeliverySchema());
+        Assertions.assertEquals(1041237961, model.value().get(0).retryPolicy().maxDeliveryAttempts());
+        Assertions.assertEquals(615107136, model.value().get(0).retryPolicy().eventTimeToLiveInMinutes());
+        Assertions.assertEquals(EventSubscriptionIdentityType.SYSTEM_ASSIGNED,
             model.value().get(0).deadLetterWithResourceIdentity().identity().type());
-        Assertions.assertEquals("kndxdigrjgu",
+        Assertions.assertEquals("fkbw",
             model.value().get(0).deadLetterWithResourceIdentity().identity().userAssignedIdentity());
-        Assertions.assertEquals("udphqamvdkfwyn", model.nextLink());
+        Assertions.assertEquals("khtj", model.nextLink());
     }
 }

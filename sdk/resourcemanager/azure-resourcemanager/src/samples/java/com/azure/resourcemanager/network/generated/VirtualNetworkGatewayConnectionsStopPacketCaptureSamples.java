@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.models.VpnPacketCaptureStopParameters;
  */
 public final class VirtualNetworkGatewayConnectionsStopPacketCaptureSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * VirtualNetworkGatewayConnectionStopPacketCapture.json
      */
     /**
@@ -21,7 +21,10 @@ public final class VirtualNetworkGatewayConnectionsStopPacketCaptureSamples {
      */
     public static void
         stopPacketCaptureOnVirtualNetworkGatewayConnection(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualNetworkGatewayConnections()
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworkGatewayConnections()
             .stopPacketCapture("rg1", "vpngwcn1", new VpnPacketCaptureStopParameters().withSasUrl(
                 "https://teststorage.blob.core.windows.net/?sv=2018-03-28&ss=bfqt&srt=sco&sp=rwdlacup&se=2019-09-13T07:44:05Z&st=2019-09-06T23:44:05Z&spr=https&sig=V1h9D1riltvZMI69d6ihENnFo%2FrCvTqGgjO2lf%2FVBhE%3D"),
                 com.azure.core.util.Context.NONE);

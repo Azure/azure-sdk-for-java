@@ -16,9 +16,9 @@ import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import com.azure.cosmos.implementation.guava25.base.CaseFormat;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
-import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CompositePathSortOrder;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.IncludedPath;
@@ -38,10 +38,12 @@ import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.ITestContext;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
+import org.testng.xml.XmlSuite;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -160,6 +162,12 @@ public class TestSuiteBase extends DocumentClientTest {
         }
     }
 
+    @BeforeSuite(groups = {"unit"})
+    public static void parallelizeUnitTests(ITestContext context) {
+        context.getSuite().getXmlSuite().setParallel(XmlSuite.ParallelMode.CLASSES);
+        context.getSuite().getXmlSuite().setThreadCount(Runtime.getRuntime().availableProcessors());
+    }
+
     @AfterSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator", "split", "query", "cfp-split"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
     public static void afterSuite() {
         logger.info("afterSuite Started");
@@ -208,7 +216,7 @@ public class TestSuiteBase extends DocumentClientTest {
 
                         if (paths != null && !paths.isEmpty()) {
                             List<String> pkPath = PathParser.getPathParts(paths.get(0));
-                            Object propertyValue = ModelBridgeInternal.getObjectByPathFromJsonSerializable(doc, pkPath);
+                            Object propertyValue = doc.getObjectByPath(pkPath);
                             if (propertyValue == null) {
                                 propertyValue = Undefined.value();
                             }
@@ -578,24 +586,11 @@ public class TestSuiteBase extends DocumentClientTest {
                     Document.class)
                 .single().block().getResults();
         if (!res.isEmpty()) {
-            deleteDocument(client, TestUtils.getDocumentNameLink(databaseId, collectionId, docId), pk);
+            deleteDocument(client, TestUtils.getDocumentNameLink(databaseId, collectionId, docId), pk, TestUtils.getCollectionNameLink(databaseId, collectionId));
         }
     }
 
-    public static void safeDeleteDocument(AsyncDocumentClient client, String documentLink, RequestOptions options) {
-        if (client != null && documentLink != null) {
-            try {
-                client.deleteDocument(documentLink, options).block();
-            } catch (Exception e) {
-                CosmosException dce = Utils.as(e, CosmosException.class);
-                if (dce == null || dce.getStatusCode() != 404) {
-                    throw e;
-                }
-            }
-        }
-    }
-
-    public static void deleteDocument(AsyncDocumentClient client, String documentLink, PartitionKey pk) {
+    public static void deleteDocument(AsyncDocumentClient client, String documentLink, PartitionKey pk, String collectionLink) {
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(pk);
         client.deleteDocument(documentLink, options).block();

@@ -14,7 +14,7 @@ import java.util.Map;
 public final class VirtualWansCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualWANPut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualWANPut.json
      */
     /**
      * Sample code: VirtualWANCreate.
@@ -22,10 +22,16 @@ public final class VirtualWansCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualWANCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualWans().createOrUpdate("rg1", "wan1",
-            new VirtualWanInner().withLocation("West US").withTags(mapOf("key1", "fakeTokenPlaceholder"))
-                .withDisableVpnEncryption(false).withTypePropertiesType("Basic"),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualWans()
+            .createOrUpdate("rg1", "wan1",
+                new VirtualWanInner().withLocation("West US")
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+                    .withDisableVpnEncryption(false)
+                    .withTypePropertiesType("Basic"),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

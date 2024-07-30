@@ -5,7 +5,6 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -52,7 +51,6 @@ public final class RestServiceAuthenticationType extends ExpandableStringEnum<Re
      * @param name a name to look for.
      * @return the corresponding RestServiceAuthenticationType.
      */
-    @JsonCreator
     public static RestServiceAuthenticationType fromString(String name) {
         return fromString(name, RestServiceAuthenticationType.class);
     }

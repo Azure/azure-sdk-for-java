@@ -7,6 +7,7 @@ package com.azure.resourcemanager.cosmos.generated;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.SqlDatabaseCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.SqlDatabaseResource;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,20 +16,24 @@ import java.util.Map;
  */
 public final class SqlResourcesCreateUpdateSqlDatabaseSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
-     * CosmosDBSqlDatabaseCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlDatabaseCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBSqlDatabaseCreateUpdate.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBSqlDatabaseCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getSqlResources().createUpdateSqlDatabase("rg1", "ddb1",
-            "databaseName",
-            new SqlDatabaseCreateUpdateParameters().withLocation("West US").withTags(mapOf())
-                .withResource(new SqlDatabaseResource().withId("databaseName")).withOptions(new CreateUpdateOptions()),
-            com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getSqlResources()
+            .createUpdateSqlDatabase("rg1", "ddb1", "databaseName",
+                new SqlDatabaseCreateUpdateParameters().withLocation("West US")
+                    .withTags(mapOf())
+                    .withResource(new SqlDatabaseResource().withId("databaseName"))
+                    .withOptions(new CreateUpdateOptions()),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

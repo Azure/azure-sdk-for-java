@@ -11,14 +11,14 @@ public final class AmazonRdsForOracleTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AmazonRdsForOracleTableDatasetTypeProperties model
-            = BinaryData.fromString("{\"schema\":\"datahk\",\"table\":\"datageuufkb\"}")
+            = BinaryData.fromString("{\"schema\":\"datanfywtkq\",\"table\":\"datasdlkhcz\"}")
                 .toObject(AmazonRdsForOracleTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AmazonRdsForOracleTableDatasetTypeProperties model
-            = new AmazonRdsForOracleTableDatasetTypeProperties().withSchema("datahk").withTable("datageuufkb");
+            = new AmazonRdsForOracleTableDatasetTypeProperties().withSchema("datanfywtkq").withTable("datasdlkhcz");
         model = BinaryData.fromObject(model).toObject(AmazonRdsForOracleTableDatasetTypeProperties.class);
     }
 }

@@ -17,23 +17,19 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     private final com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager;
 
-    public ResourceProvidersImpl(
-        ResourceProvidersClient innerClient,
+    public ResourceProvidersImpl(ResourceProvidersClient innerClient,
         com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public void upgradeExtensions(
-        String resourceGroupName, String machineName, MachineExtensionUpgrade extensionUpgradeParameters) {
+    public void upgradeExtensions(String resourceGroupName, String machineName,
+        MachineExtensionUpgrade extensionUpgradeParameters) {
         this.serviceClient().upgradeExtensions(resourceGroupName, machineName, extensionUpgradeParameters);
     }
 
-    public void upgradeExtensions(
-        String resourceGroupName,
-        String machineName,
-        MachineExtensionUpgrade extensionUpgradeParameters,
-        Context context) {
+    public void upgradeExtensions(String resourceGroupName, String machineName,
+        MachineExtensionUpgrade extensionUpgradeParameters, Context context) {
         this.serviceClient().upgradeExtensions(resourceGroupName, machineName, extensionUpgradeParameters, context);
     }
 

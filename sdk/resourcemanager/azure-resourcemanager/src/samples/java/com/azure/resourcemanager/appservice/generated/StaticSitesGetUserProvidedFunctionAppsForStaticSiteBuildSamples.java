@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
-     * GetUserProvidedFunctionAppsForStaticSiteBuild.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetUserProvidedFunctionAppsForStaticSiteBuild.json
      */
     /**
      * Sample code: Get details of the user provided function apps registered with a static site build.
@@ -19,7 +18,11 @@ public final class StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildSampl
      */
     public static void getDetailsOfTheUserProvidedFunctionAppsRegisteredWithAStaticSiteBuild(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getStaticSites().getUserProvidedFunctionAppsForStaticSiteBuild("rg",
-            "testStaticSite0", "default", com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getStaticSites()
+            .getUserProvidedFunctionAppsForStaticSiteBuild("rg", "testStaticSite0", "default",
+                com.azure.core.util.Context.NONE);
     }
 }

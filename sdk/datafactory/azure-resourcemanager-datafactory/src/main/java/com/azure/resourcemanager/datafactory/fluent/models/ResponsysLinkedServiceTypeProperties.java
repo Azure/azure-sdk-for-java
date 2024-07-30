@@ -27,8 +27,7 @@ public final class ResponsysLinkedServiceTypeProperties {
     private Object clientId;
 
     /*
-     * The client secret associated with the Responsys application. Type: string (or Expression with resultType
-     * string).
+     * The client secret associated with the Responsys application. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "clientSecret")
     private SecretBase clientSecret;
@@ -48,8 +47,8 @@ public final class ResponsysLinkedServiceTypeProperties {
     private Object useHostVerification;
 
     /*
-     * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
-     * Type: boolean (or Expression with resultType boolean).
+     * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true. Type:
+     * boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "usePeerVerification")
     private Object usePeerVerification;
@@ -178,8 +177,8 @@ public final class ResponsysLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
+     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
+     * SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
      * 
      * @return the usePeerVerification value.
      */
@@ -188,8 +187,8 @@ public final class ResponsysLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
+     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
+     * SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
      * 
      * @param usePeerVerification the usePeerVerification value to set.
      * @return the ResponsysLinkedServiceTypeProperties object itself.
@@ -200,8 +199,8 @@ public final class ResponsysLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -210,8 +209,8 @@ public final class ResponsysLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the ResponsysLinkedServiceTypeProperties object itself.
@@ -228,12 +227,14 @@ public final class ResponsysLinkedServiceTypeProperties {
      */
     public void validate() {
         if (endpoint() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property endpoint in model ResponsysLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property endpoint in model ResponsysLinkedServiceTypeProperties"));
         }
         if (clientId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property clientId in model ResponsysLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property clientId in model ResponsysLinkedServiceTypeProperties"));
         }
         if (clientSecret() != null) {
             clientSecret().validate();

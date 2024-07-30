@@ -110,7 +110,7 @@ public class AutoscaleTests extends MonitorManagementTest {
 
             Assertions.assertNotNull(setting);
             Assertions.assertEquals("somesettingZ", setting.name());
-            Assertions.assertEquals(servicePlan.id(), setting.targetResourceId());
+            assertResourceIdEquals(servicePlan.id(), setting.targetResourceId());
             Assertions.assertTrue(setting.adminEmailNotificationEnabled());
             Assertions.assertTrue(setting.coAdminEmailNotificationEnabled());
             Assertions.assertFalse(setting.autoscaleEnabled());
@@ -162,7 +162,7 @@ public class AutoscaleTests extends MonitorManagementTest {
             Assertions.assertNotNull(tempProfile.rules());
             Assertions.assertEquals(1, tempProfile.rules().size());
             ScaleRule rule = tempProfile.rules().get(0);
-            Assertions.assertEquals(servicePlan.id(), rule.metricSource());
+            assertResourceIdEquals(servicePlan.id(), rule.metricSource());
             Assertions.assertEquals("CPUPercentage", rule.metricName());
             Assertions.assertEquals(Duration.ofMinutes(10), rule.duration());
             Assertions.assertEquals(Duration.ofMinutes(1), rule.frequency());
@@ -195,7 +195,7 @@ public class AutoscaleTests extends MonitorManagementTest {
             Assertions.assertNotNull(tempProfile.rules());
             Assertions.assertEquals(1, tempProfile.rules().size());
             rule = tempProfile.rules().get(0);
-            Assertions.assertEquals(servicePlan.id(), rule.metricSource());
+            assertResourceIdEquals(servicePlan.id(), rule.metricSource());
             Assertions.assertEquals("CPUPercentage", rule.metricName());
             Assertions.assertEquals(Duration.ofMinutes(10), rule.duration());
             Assertions.assertEquals(Duration.ofMinutes(1), rule.frequency());
@@ -212,7 +212,7 @@ public class AutoscaleTests extends MonitorManagementTest {
             AutoscaleSetting settingFromGet = monitorManager.autoscaleSettings().getById(setting.id());
             Assertions.assertNotNull(settingFromGet);
             Assertions.assertEquals("somesettingZ", settingFromGet.name());
-            Assertions.assertEquals(servicePlan.id(), settingFromGet.targetResourceId());
+            assertResourceIdEquals(servicePlan.id(), settingFromGet.targetResourceId());
             Assertions.assertTrue(settingFromGet.adminEmailNotificationEnabled());
             Assertions.assertTrue(settingFromGet.coAdminEmailNotificationEnabled());
             Assertions.assertFalse(settingFromGet.autoscaleEnabled());
@@ -264,7 +264,7 @@ public class AutoscaleTests extends MonitorManagementTest {
             Assertions.assertNotNull(tempProfile.rules());
             Assertions.assertEquals(1, tempProfile.rules().size());
             rule = tempProfile.rules().get(0);
-            Assertions.assertEquals(servicePlan.id(), rule.metricSource());
+            assertResourceIdEquals(servicePlan.id(), rule.metricSource());
             Assertions.assertEquals("CPUPercentage", rule.metricName());
             Assertions.assertEquals(Duration.ofMinutes(10), rule.duration());
             Assertions.assertEquals(Duration.ofMinutes(1), rule.frequency());
@@ -297,7 +297,7 @@ public class AutoscaleTests extends MonitorManagementTest {
             Assertions.assertNotNull(tempProfile.rules());
             Assertions.assertEquals(1, tempProfile.rules().size());
             rule = tempProfile.rules().get(0);
-            Assertions.assertEquals(servicePlan.id(), rule.metricSource());
+            assertResourceIdEquals(servicePlan.id(), rule.metricSource());
             Assertions.assertEquals("CPUPercentage", rule.metricName());
             Assertions.assertEquals(Duration.ofMinutes(10), rule.duration());
             Assertions.assertEquals(Duration.ofMinutes(1), rule.frequency());
@@ -350,7 +350,7 @@ public class AutoscaleTests extends MonitorManagementTest {
 
             Assertions.assertNotNull(setting);
             Assertions.assertEquals("somesettingZ", setting.name());
-            Assertions.assertEquals(servicePlan.id(), setting.targetResourceId());
+            assertResourceIdEquals(servicePlan.id(), setting.targetResourceId());
             Assertions.assertTrue(setting.adminEmailNotificationEnabled());
             Assertions.assertFalse(setting.coAdminEmailNotificationEnabled());
             Assertions.assertTrue(setting.autoscaleEnabled());
@@ -413,7 +413,7 @@ public class AutoscaleTests extends MonitorManagementTest {
             Assertions.assertNotNull(tempProfile.rules());
             Assertions.assertEquals(1, tempProfile.rules().size());
             rule = tempProfile.rules().get(0);
-            Assertions.assertEquals(servicePlan.id(), rule.metricSource());
+            assertResourceIdEquals(servicePlan.id(), rule.metricSource());
             Assertions.assertEquals("CPUPercentage", rule.metricName());
             Assertions.assertEquals(Duration.ofHours(10), rule.duration());
             Assertions.assertEquals(Duration.ofHours(1), rule.frequency());
@@ -443,7 +443,7 @@ public class AutoscaleTests extends MonitorManagementTest {
             Assertions.assertNotNull(tempProfile.rules());
             Assertions.assertEquals(1, tempProfile.rules().size());
             rule = tempProfile.rules().get(0);
-            Assertions.assertEquals(servicePlan.id(), rule.metricSource());
+            assertResourceIdEquals(servicePlan.id(), rule.metricSource());
             Assertions.assertEquals("CPUPercentage", rule.metricName());
             Assertions.assertEquals(Duration.ofMinutes(15), rule.duration());
             Assertions.assertEquals(Duration.ofMinutes(1), rule.frequency());
@@ -461,7 +461,7 @@ public class AutoscaleTests extends MonitorManagementTest {
 
             Assertions.assertNotNull(settingFromGet);
             Assertions.assertEquals("somesettingZ", settingFromGet.name());
-            Assertions.assertEquals(servicePlan.id(), settingFromGet.targetResourceId());
+            assertResourceIdEquals(servicePlan.id(), settingFromGet.targetResourceId());
             Assertions.assertTrue(settingFromGet.adminEmailNotificationEnabled());
             Assertions.assertFalse(settingFromGet.coAdminEmailNotificationEnabled());
             Assertions.assertTrue(settingFromGet.autoscaleEnabled());
@@ -524,7 +524,7 @@ public class AutoscaleTests extends MonitorManagementTest {
             Assertions.assertNotNull(tempProfile.rules());
             Assertions.assertEquals(1, tempProfile.rules().size());
             rule = tempProfile.rules().get(0);
-            Assertions.assertEquals(servicePlan.id(), rule.metricSource());
+            assertResourceIdEquals(servicePlan.id(), rule.metricSource());
             Assertions.assertEquals("CPUPercentage", rule.metricName());
             Assertions.assertEquals(Duration.ofHours(10), rule.duration());
             Assertions.assertEquals(Duration.ofHours(1), rule.frequency());
@@ -554,7 +554,7 @@ public class AutoscaleTests extends MonitorManagementTest {
             Assertions.assertNotNull(tempProfile.rules());
             Assertions.assertEquals(1, tempProfile.rules().size());
             rule = tempProfile.rules().get(0);
-            Assertions.assertEquals(servicePlan.id(), rule.metricSource());
+            assertResourceIdEquals(servicePlan.id(), rule.metricSource());
             Assertions.assertEquals("CPUPercentage", rule.metricName());
             Assertions.assertEquals(Duration.ofMinutes(15), rule.duration());
             Assertions.assertEquals(Duration.ofMinutes(1), rule.frequency());

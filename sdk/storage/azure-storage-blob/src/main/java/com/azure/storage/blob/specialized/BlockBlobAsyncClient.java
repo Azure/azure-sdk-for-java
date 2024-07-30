@@ -756,11 +756,9 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         Objects.requireNonNull(data, "data must not be null");
         Objects.requireNonNull(data.getLength(), "data must have defined length");
         context = context == null ? Context.NONE : context;
-        return this.azureBlobStorage.getBlockBlobs().stageBlockWithResponseAsync(containerName, blobName,
-                base64BlockId, data.getLength(), data, contentMd5, null, null,
-                leaseId, null, getCustomerProvidedKey(),
-                encryptionScope, context)
-            .map(response -> new SimpleResponse<>(response, null));
+        return this.azureBlobStorage.getBlockBlobs().stageBlockNoCustomHeadersWithResponseAsync(containerName, blobName,
+            base64BlockId, data.getLength(), data, contentMd5, null, null, leaseId, null, getCustomerProvidedKey(),
+            encryptionScope, context);
     }
 
     /**
@@ -881,13 +879,12 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         String sourceAuth = options.getSourceAuthorization() == null
             ? null : options.getSourceAuthorization().toString();
 
-        return this.azureBlobStorage.getBlockBlobs().stageBlockFromURLWithResponseAsync(containerName, blobName,
-            options.getBase64BlockId(), 0, options.getSourceUrl(), sourceRange.toHeaderValue(), options.getSourceContentMd5(), null, null,
-            options.getLeaseId(), sourceRequestConditions.getIfModifiedSince(),
-            sourceRequestConditions.getIfUnmodifiedSince(), sourceRequestConditions.getIfMatch(),
-            sourceRequestConditions.getIfNoneMatch(), null, sourceAuth, getCustomerProvidedKey(),
-            encryptionScope, context)
-            .map(response -> new SimpleResponse<>(response, null));
+        return this.azureBlobStorage.getBlockBlobs().stageBlockFromURLNoCustomHeadersWithResponseAsync(containerName,
+            blobName, options.getBase64BlockId(), 0, options.getSourceUrl(), sourceRange.toHeaderValue(),
+            options.getSourceContentMd5(), null, null, options.getLeaseId(),
+            sourceRequestConditions.getIfModifiedSince(), sourceRequestConditions.getIfUnmodifiedSince(),
+            sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(), null, sourceAuth,
+            getCustomerProvidedKey(), encryptionScope, context);
     }
 
     /**

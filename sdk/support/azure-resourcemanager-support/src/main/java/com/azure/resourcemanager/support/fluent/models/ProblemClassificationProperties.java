@@ -9,7 +9,9 @@ import com.azure.resourcemanager.support.models.SecondaryConsentEnabled;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Details about a problem classification available for an Azure service. */
+/**
+ * Details about a problem classification available for an Azure service.
+ */
 @Fluent
 public final class ProblemClassificationProperties {
     /*
@@ -24,13 +26,15 @@ public final class ProblemClassificationProperties {
     @JsonProperty(value = "secondaryConsentEnabled")
     private List<SecondaryConsentEnabled> secondaryConsentEnabled;
 
-    /** Creates an instance of ProblemClassificationProperties class. */
+    /**
+     * Creates an instance of ProblemClassificationProperties class.
+     */
     public ProblemClassificationProperties() {
     }
 
     /**
      * Get the displayName property: Localized name of problem classification.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -39,7 +43,7 @@ public final class ProblemClassificationProperties {
 
     /**
      * Set the displayName property: Localized name of problem classification.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ProblemClassificationProperties object itself.
      */
@@ -51,7 +55,7 @@ public final class ProblemClassificationProperties {
     /**
      * Get the secondaryConsentEnabled property: This property indicates whether secondary consent is present for
      * problem classification.
-     *
+     * 
      * @return the secondaryConsentEnabled value.
      */
     public List<SecondaryConsentEnabled> secondaryConsentEnabled() {
@@ -61,19 +65,19 @@ public final class ProblemClassificationProperties {
     /**
      * Set the secondaryConsentEnabled property: This property indicates whether secondary consent is present for
      * problem classification.
-     *
+     * 
      * @param secondaryConsentEnabled the secondaryConsentEnabled value to set.
      * @return the ProblemClassificationProperties object itself.
      */
-    public ProblemClassificationProperties withSecondaryConsentEnabled(
-        List<SecondaryConsentEnabled> secondaryConsentEnabled) {
+    public ProblemClassificationProperties
+        withSecondaryConsentEnabled(List<SecondaryConsentEnabled> secondaryConsentEnabled) {
         this.secondaryConsentEnabled = secondaryConsentEnabled;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

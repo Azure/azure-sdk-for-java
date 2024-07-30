@@ -11,7 +11,7 @@ public final class ServerThreatProtectionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServerThreatProtectionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"state\":\"Enabled\",\"creationTime\":\"2021-11-23T16:36:18Z\"},\"id\":\"ublwpcesutrg\",\"name\":\"upauut\",\"type\":\"woqhihe\"},{\"properties\":{\"state\":\"Enabled\",\"creationTime\":\"2021-11-12T23:28:54Z\"},\"id\":\"nfqn\",\"name\":\"cypsxjv\",\"type\":\"oimwkslirc\"}],\"nextLink\":\"jxv\"}")
+            "{\"value\":[{\"properties\":{\"state\":\"Disabled\",\"creationTime\":\"2021-05-10T08:06:55Z\"},\"id\":\"iwyczuh\",\"name\":\"a\",\"type\":\"pqjlihhyusps\"},{\"properties\":{\"state\":\"Disabled\",\"creationTime\":\"2021-06-21T01:18:29Z\"},\"id\":\"mfwdgzxu\",\"name\":\"ucvpamrs\",\"type\":\"euzvx\"},{\"properties\":{\"state\":\"Enabled\",\"creationTime\":\"2021-08-12T14:06:46Z\"},\"id\":\"hn\",\"name\":\"txifqj\",\"type\":\"gxmrhublwp\"}],\"nextLink\":\"sutrgjup\"}")
             .toObject(ServerThreatProtectionListResult.class);
     }
 

@@ -6,20 +6,17 @@ package com.azure.resourcemanager.appcomplianceautomation.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcomplianceautomation.models.Control;
-import org.junit.jupiter.api.Test;
 
 public final class ControlTests {
-    @Test
-    public void testDeserialize() {
-        Control model =
-            BinaryData
-                .fromString(
-                    "{\"controlId\":\"hctbqvudwxdn\",\"controlShortName\":\"vo\",\"controlFullName\":\"ujjugwdkcglh\",\"controlType\":\"Manual\",\"controlDescription\":\"jdyggdtji\",\"controlDescriptionHyperLink\":\"b\",\"controlStatus\":\"NotApplicable\",\"assessments\":[{\"name\":\"e\",\"severity\":\"Low\",\"description\":\"enevfyexfwhybci\",\"remediation\":\"yvdcsitynnaa\",\"isPass\":\"True\",\"policyId\":\"tehfiqscjeypvh\",\"resourceList\":[]},{\"name\":\"gqhcjrefovg\",\"severity\":\"Medium\",\"description\":\"leyyvx\",\"remediation\":\"jpkcattpng\",\"isPass\":\"False\",\"policyId\":\"czsqpjhvm\",\"resourceList\":[]},{\"name\":\"nysounqe\",\"severity\":\"Low\",\"description\":\"ae\",\"remediation\":\"fhyhltrpmopjmcma\",\"isPass\":\"True\",\"policyId\":\"thfuiuaodsfcpkvx\",\"resourceList\":[]}]}")
-                .toObject(Control.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        Control model = BinaryData.fromString(
+            "{\"controlId\":\"ae\",\"controlName\":\"ojvdcpzfoqo\",\"controlFullName\":\"cybxa\",\"controlDescription\":\"gszufoxciqopid\",\"controlDescriptionHyperLink\":\"mciodhkhazxkhn\",\"controlStatus\":\"NotApplicable\",\"responsibilities\":[{\"responsibilityId\":\"ntoe\",\"responsibilityTitle\":\"kdwbwhkszz\",\"responsibilityDescription\":\"rvexztvb\",\"responsibilityType\":\"Automated\",\"responsibilitySeverity\":\"Medium\",\"responsibilityStatus\":\"Failed\",\"responsibilityEnvironment\":\"GCP\",\"failedResourceCount\":1573760550,\"totalResourceCount\":1614629592,\"resourceList\":[{\"resourceId\":\"mnguxawqaldsyu\",\"accountId\":\"imerqfobwyznk\",\"resourceType\":\"kutwpf\",\"resourceOrigin\":\"GCP\",\"resourceStatus\":\"Healthy\",\"resourceStatusChangeDate\":\"2021-06-27T09:44:07Z\",\"recommendationIds\":[\"dsnfdsdoakgtdl\",\"kkze\",\"dlhewp\",\"sdsttwvog\"]},{\"resourceId\":\"bejdcn\",\"accountId\":\"qmoa\",\"resourceType\":\"fgmjzrwrdgrt\",\"resourceOrigin\":\"Azure\",\"resourceStatus\":\"Healthy\",\"resourceStatusChangeDate\":\"2021-09-26T20:30:12Z\",\"recommendationIds\":[\"pbminr\",\"dwoyuhhziuiefoz\",\"hdmsmlmzqhoftrm\"]}],\"recommendationList\":[{\"recommendationId\":\"iahxicsl\",\"recommendationShortName\":\"oqzpiyylha\",\"recommendationSolutions\":[{},{},{}]}],\"guidance\":\"hc\",\"justification\":\"ph\",\"evidenceFiles\":[\"vwitqscyw\",\"ggwoluhczb\",\"emh\",\"i\"]},{\"responsibilityId\":\"brgz\",\"responsibilityTitle\":\"msweypqwdxggicc\",\"responsibilityDescription\":\"xqhuexm\",\"responsibilityType\":\"Automated\",\"responsibilitySeverity\":\"High\",\"responsibilityStatus\":\"Passed\",\"responsibilityEnvironment\":\"General\",\"failedResourceCount\":596743052,\"totalResourceCount\":1168209336,\"resourceList\":[{\"resourceId\":\"ncsdtclusiyp\",\"accountId\":\"fgytguslfeadcyg\",\"resourceType\":\"kyhejhzisxgf\",\"resourceOrigin\":\"AWS\",\"resourceStatus\":\"Unhealthy\",\"resourceStatusChangeDate\":\"2021-05-16T06:26:11Z\",\"recommendationIds\":[\"srp\",\"vu\"]},{\"resourceId\":\"raehtwdwrft\",\"accountId\":\"iby\",\"resourceType\":\"dl\",\"resourceOrigin\":\"Azure\",\"resourceStatus\":\"Unhealthy\",\"resourceStatusChangeDate\":\"2021-04-24T14:19:46Z\",\"recommendationIds\":[\"cstwity\",\"hevxcced\",\"pnmdyodnwzxltjcv\"]}],\"recommendationList\":[{\"recommendationId\":\"iugcxnavvwxq\",\"recommendationShortName\":\"y\",\"recommendationSolutions\":[{},{},{},{}]},{\"recommendationId\":\"owx\",\"recommendationShortName\":\"mdjrkvfgbvfvp\",\"recommendationSolutions\":[{},{}]},{\"recommendationId\":\"acizsjqlhkrr\",\"recommendationShortName\":\"deibqip\",\"recommendationSolutions\":[{},{},{},{}]}],\"guidance\":\"vxndz\",\"justification\":\"krefajpjo\",\"evidenceFiles\":[\"qnyhgb\",\"j\"]}]}")
+            .toObject(Control.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         Control model = new Control();
         model = BinaryData.fromObject(model).toObject(Control.class);
     }

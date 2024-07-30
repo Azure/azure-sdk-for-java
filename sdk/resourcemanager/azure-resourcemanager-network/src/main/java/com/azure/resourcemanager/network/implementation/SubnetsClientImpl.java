@@ -175,7 +175,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, virtualNetworkName,
@@ -217,7 +217,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, virtualNetworkName, subnetName, apiVersion,
@@ -403,7 +403,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, virtualNetworkName,
@@ -447,7 +447,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, virtualNetworkName, subnetName, apiVersion,
@@ -549,7 +549,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
         } else {
             subnetParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -600,7 +600,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
         } else {
             subnetParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, virtualNetworkName, subnetName,
@@ -727,7 +727,8 @@ public final class SubnetsClientImpl implements SubnetsClient {
     private Mono<SubnetInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName,
         String subnetName, SubnetInner subnetParameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -810,7 +811,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
         } else {
             prepareNetworkPoliciesRequestParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.prepareNetworkPolicies(this.client.getEndpoint(), resourceGroupName,
@@ -862,7 +863,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
         } else {
             prepareNetworkPoliciesRequestParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.prepareNetworkPolicies(this.client.getEndpoint(), resourceGroupName, virtualNetworkName,
@@ -935,8 +936,10 @@ public final class SubnetsClientImpl implements SubnetsClient {
     public SyncPoller<PollResult<Void>, Void> beginPrepareNetworkPolicies(String resourceGroupName,
         String virtualNetworkName, String subnetName,
         PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters) {
-        return this.beginPrepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName,
-            prepareNetworkPoliciesRequestParameters).getSyncPoller();
+        return this
+            .beginPrepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName,
+                prepareNetworkPoliciesRequestParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -957,8 +960,10 @@ public final class SubnetsClientImpl implements SubnetsClient {
     public SyncPoller<PollResult<Void>, Void> beginPrepareNetworkPolicies(String resourceGroupName,
         String virtualNetworkName, String subnetName,
         PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters, Context context) {
-        return this.beginPrepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName,
-            prepareNetworkPoliciesRequestParameters, context).getSyncPoller();
+        return this
+            .beginPrepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName,
+                prepareNetworkPoliciesRequestParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1083,7 +1088,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
         } else {
             unprepareNetworkPoliciesRequestParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.unprepareNetworkPolicies(this.client.getEndpoint(), resourceGroupName,
@@ -1135,7 +1140,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
         } else {
             unprepareNetworkPoliciesRequestParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.unprepareNetworkPolicies(this.client.getEndpoint(), resourceGroupName, virtualNetworkName,
@@ -1208,8 +1213,10 @@ public final class SubnetsClientImpl implements SubnetsClient {
     public SyncPoller<PollResult<Void>, Void> beginUnprepareNetworkPolicies(String resourceGroupName,
         String virtualNetworkName, String subnetName,
         UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters) {
-        return this.beginUnprepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName,
-            unprepareNetworkPoliciesRequestParameters).getSyncPoller();
+        return this
+            .beginUnprepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName,
+                unprepareNetworkPoliciesRequestParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -1230,8 +1237,10 @@ public final class SubnetsClientImpl implements SubnetsClient {
     public SyncPoller<PollResult<Void>, Void> beginUnprepareNetworkPolicies(String resourceGroupName,
         String virtualNetworkName, String subnetName,
         UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters, Context context) {
-        return this.beginUnprepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName,
-            unprepareNetworkPoliciesRequestParameters, context).getSyncPoller();
+        return this
+            .beginUnprepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName,
+                unprepareNetworkPoliciesRequestParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1343,7 +1352,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, virtualNetworkName,
@@ -1384,7 +1393,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1461,9 +1470,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1489,9 +1496,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes properties of the IP address. */
+/**
+ * Describes properties of the IP address.
+ */
 @Fluent
-public final class IpAddress {
+public final class IpAddress implements JsonSerializable<IpAddress> {
     /*
      * Represents the IP Address.
      */
-    @JsonProperty(value = "address")
     private String address;
 
     /*
      * Represents the Ip Address Version.
      */
-    @JsonProperty(value = "ipAddressVersion")
     private String ipAddressVersion;
 
     /*
      * The subnet to which this IP address belongs.
      */
-    @JsonProperty(value = "subnet", access = JsonProperty.Access.WRITE_ONLY)
     private Subnet subnet;
 
-    /** Creates an instance of IpAddress class. */
+    /**
+     * Creates an instance of IpAddress class.
+     */
     public IpAddress() {
     }
 
     /**
      * Get the address property: Represents the IP Address.
-     *
+     * 
      * @return the address value.
      */
     public String address() {
@@ -43,7 +48,7 @@ public final class IpAddress {
 
     /**
      * Set the address property: Represents the IP Address.
-     *
+     * 
      * @param address the address value to set.
      * @return the IpAddress object itself.
      */
@@ -54,7 +59,7 @@ public final class IpAddress {
 
     /**
      * Get the ipAddressVersion property: Represents the Ip Address Version.
-     *
+     * 
      * @return the ipAddressVersion value.
      */
     public String ipAddressVersion() {
@@ -63,7 +68,7 @@ public final class IpAddress {
 
     /**
      * Set the ipAddressVersion property: Represents the Ip Address Version.
-     *
+     * 
      * @param ipAddressVersion the ipAddressVersion value to set.
      * @return the IpAddress object itself.
      */
@@ -74,7 +79,7 @@ public final class IpAddress {
 
     /**
      * Get the subnet property: The subnet to which this IP address belongs.
-     *
+     * 
      * @return the subnet value.
      */
     public Subnet subnet() {
@@ -83,12 +88,53 @@ public final class IpAddress {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (subnet() != null) {
             subnet().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("address", this.address);
+        jsonWriter.writeStringField("ipAddressVersion", this.ipAddressVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IpAddress from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IpAddress if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the IpAddress.
+     */
+    public static IpAddress fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IpAddress deserializedIpAddress = new IpAddress();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("address".equals(fieldName)) {
+                    deserializedIpAddress.address = reader.getString();
+                } else if ("ipAddressVersion".equals(fieldName)) {
+                    deserializedIpAddress.ipAddressVersion = reader.getString();
+                } else if ("subnet".equals(fieldName)) {
+                    deserializedIpAddress.subnet = Subnet.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIpAddress;
+        });
     }
 }

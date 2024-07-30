@@ -9,7 +9,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.test.TestMode;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.data.appconfiguration.ConfigurationClient;
@@ -20,11 +20,8 @@ import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
-import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInfo;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
@@ -38,15 +35,8 @@ import java.util.zip.GZIPInputStream;
 import static com.azure.core.util.tracing.Tracer.DISABLE_TRACING_KEY;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@LiveOnly
 public class AppConfigurationExporterIntegrationTest extends MonitorExporterClientTestBase {
-
-    @Override
-    @BeforeEach
-    public void setupTest(TestInfo testInfo) {
-        Assumptions.assumeFalse(getTestMode() == TestMode.PLAYBACK, "Skipping playback tests");
-        super.setupTest(testInfo);
-    }
-
     @Test
     public void setConfigurationTest() throws InterruptedException {
         CountDownLatch exporterCountDown = new CountDownLatch(1);

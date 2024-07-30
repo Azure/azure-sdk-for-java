@@ -33,7 +33,6 @@ import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.Session;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
@@ -61,6 +60,7 @@ import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
 import static com.azure.core.amqp.implementation.ClientConstants.SESSION_NAME_KEY;
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * Represents an AMQP session using proton-j reactor.
@@ -149,8 +149,9 @@ public class ReactorSession implements AmqpSession {
 
         shutdownSignals = amqpConnection.getShutdownSignals();
         subscriptions.add(this.endpointStates.subscribe());
-        subscriptions
-            .add(shutdownSignals.flatMap(signal -> closeAsync("Shutdown signal received", null, false)).subscribe());
+        subscriptions.add(shutdownSignals
+            .flatMap(signal -> closeAsync("Shutdown signal received (" + signal.toString() + ")", null, false))
+            .subscribe());
 
         session.open();
     }
@@ -297,11 +298,9 @@ public class ReactorSession implements AmqpSession {
     @Override
     public Mono<? extends AmqpTransactionCoordinator> getOrCreateTransactionCoordinator() {
         if (isDisposed()) {
-            return Mono.error(logger.atError()
-                .addKeyValue(SESSION_NAME_KEY, sessionName)
-                .log(new AmqpException(true, String
-                    .format("Cannot create coordinator send link %s from a closed session.", TRANSACTION_LINK_NAME),
-                    sessionHandler.getErrorContext())));
+            return monoError(logger.atWarning().addKeyValue(SESSION_NAME_KEY, sessionName), new AmqpException(true,
+                String.format("Cannot create coordinator send link %s from a closed session.", TRANSACTION_LINK_NAME),
+                sessionHandler.getErrorContext()));
         }
 
         final TransactionCoordinator existing = transactionCoordinator.get();
@@ -354,16 +353,13 @@ public class ReactorSession implements AmqpSession {
         ConsumerFactory consumerFactory) {
 
         if (isDisposed()) {
-            LoggingEventBuilder logBuilder = logger.atError()
+            LoggingEventBuilder logBuilder = logger.atWarning()
                 .addKeyValue(SESSION_NAME_KEY, sessionName)
                 .addKeyValue(ENTITY_PATH_KEY, entityPath)
                 .addKeyValue(LINK_NAME_KEY, linkName);
 
-            // TODO(limolkova) this can be simplified with FluxUtil.monoError(LoggingEventBuilder), not using it for now
-            // to allow using azure-core-amqp with stable azure-core 1.24.0 to simplify dependency management
-            // we should switch to it once monoError(LoggingEventBuilder) ships in stable azure-core
-            return Mono.error(logBuilder.log(Exceptions.propagate(new AmqpException(true,
-                "Cannot create receive link from a closed session.", sessionHandler.getErrorContext()))));
+            return monoError(logBuilder, new AmqpException(true, "Cannot create receive link from a closed session.",
+                sessionHandler.getErrorContext()));
         }
 
         final LinkSubscription<AmqpReceiveLink> existingLink = openReceiveLinks.get(linkName);
@@ -447,16 +443,13 @@ public class ReactorSession implements AmqpSession {
         Map<Symbol, Object> linkProperties, boolean requiresAuthorization) {
 
         if (isDisposed()) {
-            LoggingEventBuilder logBuilder = logger.atError()
+            LoggingEventBuilder logBuilder = logger.atWarning()
                 .addKeyValue(SESSION_NAME_KEY, sessionName)
                 .addKeyValue(ENTITY_PATH_KEY, entityPath)
                 .addKeyValue(LINK_NAME_KEY, linkName);
 
-            // TODO(limolkova) this can be simplified with FluxUtil.monoError(LoggingEventBuilder), not using it for now
-            // to allow using azure-core-amqp with stable azure-core 1.24.0 to simplify dependency management
-            // we should switch to it once monoError(LoggingEventBuilder) ships in stable azure-core
-            return Mono.error(logBuilder.log(Exceptions.propagate(new AmqpException(true,
-                "Cannot create send link from a closed session.", sessionHandler.getErrorContext()))));
+            return monoError(logBuilder, new AmqpException(true, "Cannot create send link from a closed session.",
+                sessionHandler.getErrorContext()));
         }
 
         final LinkSubscription<AmqpSendLink> existing = openSendLinks.get(linkName);
@@ -666,10 +659,7 @@ public class ReactorSession implements AmqpSession {
             final AmqpException exception = ((AmqpException) error);
             final String errorCondition
                 = exception.getErrorCondition() != null ? exception.getErrorCondition().getErrorCondition() : "UNKNOWN";
-
             condition = new ErrorCondition(Symbol.getSymbol(errorCondition), exception.getMessage());
-
-            closeAsync(exception.getMessage(), condition, true).subscribe();
         } else {
             condition = null;
         }

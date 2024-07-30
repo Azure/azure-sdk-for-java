@@ -7,16 +7,24 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity Dynamics CRM sink.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = DynamicsCrmSink.class, visible = true)
 @JsonTypeName("DynamicsCrmSink")
 @Fluent
 public final class DynamicsCrmSink extends CopySink {
+    /*
+     * Copy sink type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "DynamicsCrmSink";
+
     /*
      * The write behavior for the operation.
      */
@@ -31,8 +39,8 @@ public final class DynamicsCrmSink extends CopySink {
     private Object ignoreNullValues;
 
     /*
-     * The logical name of the alternate key which will be used when upserting records. Type: string (or Expression
-     * with resultType string).
+     * The logical name of the alternate key which will be used when upserting records. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "alternateKeyName")
     private Object alternateKeyName;
@@ -41,6 +49,16 @@ public final class DynamicsCrmSink extends CopySink {
      * Creates an instance of DynamicsCrmSink class.
      */
     public DynamicsCrmSink() {
+    }
+
+    /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -170,8 +188,8 @@ public final class DynamicsCrmSink extends CopySink {
     public void validate() {
         super.validate();
         if (writeBehavior() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property writeBehavior in model DynamicsCrmSink"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property writeBehavior in model DynamicsCrmSink"));
         }
     }
 

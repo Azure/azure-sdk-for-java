@@ -12,8 +12,9 @@ import java.util.Arrays;
  */
 public final class SnapshotsRestoreFilesSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/
-     * Snapshots_SingleFileRestore.json
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/Snapshots_SingleFileRestore.
+     * json
      */
     /**
      * Sample code: Snapshots_SingleFileRestore.
@@ -21,8 +22,9 @@ public final class SnapshotsRestoreFilesSamples {
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void snapshotsSingleFileRestore(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.snapshots().restoreFiles("myRG", "account1", "pool1", "volume1", "snapshot1",
-            new SnapshotRestoreFiles().withFilePaths(Arrays.asList("/dir1/customer1.db", "/dir1/customer2.db")),
-            com.azure.core.util.Context.NONE);
+        manager.snapshots()
+            .restoreFiles("myRG", "account1", "pool1", "volume1", "snapshot1",
+                new SnapshotRestoreFiles().withFilePaths(Arrays.asList("/dir1/customer1.db", "/dir1/customer2.db")),
+                com.azure.core.util.Context.NONE);
     }
 }

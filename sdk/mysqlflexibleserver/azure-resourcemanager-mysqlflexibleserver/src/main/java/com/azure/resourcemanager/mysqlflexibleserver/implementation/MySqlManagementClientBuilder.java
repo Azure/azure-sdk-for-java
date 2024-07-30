@@ -14,17 +14,19 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the MySqlManagementClientImpl type. */
-@ServiceClientBuilder(serviceClients = {MySqlManagementClientImpl.class})
+/**
+ * A builder for creating a new instance of the MySqlManagementClientImpl type.
+ */
+@ServiceClientBuilder(serviceClients = { MySqlManagementClientImpl.class })
 public final class MySqlManagementClientBuilder {
     /*
-     * The ID of the target subscription.
+     * The ID of the target subscription. The value must be an UUID.
      */
     private String subscriptionId;
 
     /**
-     * Sets The ID of the target subscription.
-     *
+     * Sets The ID of the target subscription. The value must be an UUID.
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the MySqlManagementClientBuilder.
      */
@@ -40,7 +42,7 @@ public final class MySqlManagementClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the MySqlManagementClientBuilder.
      */
@@ -56,7 +58,7 @@ public final class MySqlManagementClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the MySqlManagementClientBuilder.
      */
@@ -72,7 +74,7 @@ public final class MySqlManagementClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the MySqlManagementClientBuilder.
      */
@@ -88,7 +90,7 @@ public final class MySqlManagementClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the MySqlManagementClientBuilder.
      */
@@ -104,7 +106,7 @@ public final class MySqlManagementClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the MySqlManagementClientBuilder.
      */
@@ -115,30 +117,22 @@ public final class MySqlManagementClientBuilder {
 
     /**
      * Builds an instance of MySqlManagementClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of MySqlManagementClientImpl.
      */
     public MySqlManagementClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline =
-            (pipeline != null)
-                ? pipeline
-                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        Duration localDefaultPollInterval =
-            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter =
-            (serializerAdapter != null)
-                ? serializerAdapter
-                : SerializerFactory.createDefaultManagementSerializerAdapter();
-        MySqlManagementClientImpl client =
-            new MySqlManagementClientImpl(
-                localPipeline,
-                localSerializerAdapter,
-                localDefaultPollInterval,
-                localEnvironment,
-                subscriptionId,
-                localEndpoint);
+        HttpPipeline localPipeline = (pipeline != null)
+            ? pipeline
+            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval
+            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
+            ? serializerAdapter
+            : SerializerFactory.createDefaultManagementSerializerAdapter();
+        MySqlManagementClientImpl client = new MySqlManagementClientImpl(localPipeline, localSerializerAdapter,
+            localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }

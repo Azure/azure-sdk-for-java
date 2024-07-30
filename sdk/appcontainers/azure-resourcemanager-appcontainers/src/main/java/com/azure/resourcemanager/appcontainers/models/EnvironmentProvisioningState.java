@@ -5,47 +5,68 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Provisioning state of the Environment. */
+/**
+ * Provisioning state of the Environment.
+ */
 public final class EnvironmentProvisioningState extends ExpandableStringEnum<EnvironmentProvisioningState> {
-    /** Static value Succeeded for EnvironmentProvisioningState. */
+    /**
+     * Static value Succeeded for EnvironmentProvisioningState.
+     */
     public static final EnvironmentProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for EnvironmentProvisioningState. */
+    /**
+     * Static value Failed for EnvironmentProvisioningState.
+     */
     public static final EnvironmentProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Canceled for EnvironmentProvisioningState. */
+    /**
+     * Static value Canceled for EnvironmentProvisioningState.
+     */
     public static final EnvironmentProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value Waiting for EnvironmentProvisioningState. */
+    /**
+     * Static value Waiting for EnvironmentProvisioningState.
+     */
     public static final EnvironmentProvisioningState WAITING = fromString("Waiting");
 
-    /** Static value InitializationInProgress for EnvironmentProvisioningState. */
-    public static final EnvironmentProvisioningState INITIALIZATION_IN_PROGRESS =
-        fromString("InitializationInProgress");
+    /**
+     * Static value InitializationInProgress for EnvironmentProvisioningState.
+     */
+    public static final EnvironmentProvisioningState INITIALIZATION_IN_PROGRESS
+        = fromString("InitializationInProgress");
 
-    /** Static value InfrastructureSetupInProgress for EnvironmentProvisioningState. */
-    public static final EnvironmentProvisioningState INFRASTRUCTURE_SETUP_IN_PROGRESS =
-        fromString("InfrastructureSetupInProgress");
+    /**
+     * Static value InfrastructureSetupInProgress for EnvironmentProvisioningState.
+     */
+    public static final EnvironmentProvisioningState INFRASTRUCTURE_SETUP_IN_PROGRESS
+        = fromString("InfrastructureSetupInProgress");
 
-    /** Static value InfrastructureSetupComplete for EnvironmentProvisioningState. */
-    public static final EnvironmentProvisioningState INFRASTRUCTURE_SETUP_COMPLETE =
-        fromString("InfrastructureSetupComplete");
+    /**
+     * Static value InfrastructureSetupComplete for EnvironmentProvisioningState.
+     */
+    public static final EnvironmentProvisioningState INFRASTRUCTURE_SETUP_COMPLETE
+        = fromString("InfrastructureSetupComplete");
 
-    /** Static value ScheduledForDelete for EnvironmentProvisioningState. */
+    /**
+     * Static value ScheduledForDelete for EnvironmentProvisioningState.
+     */
     public static final EnvironmentProvisioningState SCHEDULED_FOR_DELETE = fromString("ScheduledForDelete");
 
-    /** Static value UpgradeRequested for EnvironmentProvisioningState. */
+    /**
+     * Static value UpgradeRequested for EnvironmentProvisioningState.
+     */
     public static final EnvironmentProvisioningState UPGRADE_REQUESTED = fromString("UpgradeRequested");
 
-    /** Static value UpgradeFailed for EnvironmentProvisioningState. */
+    /**
+     * Static value UpgradeFailed for EnvironmentProvisioningState.
+     */
     public static final EnvironmentProvisioningState UPGRADE_FAILED = fromString("UpgradeFailed");
 
     /**
      * Creates a new instance of EnvironmentProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -54,18 +75,17 @@ public final class EnvironmentProvisioningState extends ExpandableStringEnum<Env
 
     /**
      * Creates or finds a EnvironmentProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EnvironmentProvisioningState.
      */
-    @JsonCreator
     public static EnvironmentProvisioningState fromString(String name) {
         return fromString(name, EnvironmentProvisioningState.class);
     }
 
     /**
      * Gets known EnvironmentProvisioningState values.
-     *
+     * 
      * @return known EnvironmentProvisioningState values.
      */
     public static Collection<EnvironmentProvisioningState> values() {

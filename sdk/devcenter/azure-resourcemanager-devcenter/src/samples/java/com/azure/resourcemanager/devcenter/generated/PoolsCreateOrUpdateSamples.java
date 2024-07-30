@@ -12,19 +12,20 @@ import com.azure.resourcemanager.devcenter.models.StopOnDisconnectEnableStatus;
 import com.azure.resourcemanager.devcenter.models.VirtualNetworkType;
 import java.util.Arrays;
 
-/** Samples for Pools CreateOrUpdate. */
+/**
+ * Samples for Pools CreateOrUpdate.
+ */
 public final class PoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2023-10-01-preview/examples/Pools_Put.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Pools_Put.json
      */
     /**
      * Sample code: Pools_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DevCenterManager.
      */
     public static void poolsCreateOrUpdate(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
-        manager
-            .pools()
+        manager.pools()
             .define("DevPool")
             .withRegion("centralus")
             .withExistingProject("rg1", "DevProject")
@@ -32,10 +33,8 @@ public final class PoolsCreateOrUpdateSamples {
             .withNetworkConnectionName("Network1-westus2")
             .withLicenseType(LicenseType.WINDOWS_CLIENT)
             .withLocalAdministrator(LocalAdminStatus.ENABLED)
-            .withStopOnDisconnect(
-                new StopOnDisconnectConfiguration()
-                    .withStatus(StopOnDisconnectEnableStatus.ENABLED)
-                    .withGracePeriodMinutes(60))
+            .withStopOnDisconnect(new StopOnDisconnectConfiguration().withStatus(StopOnDisconnectEnableStatus.ENABLED)
+                .withGracePeriodMinutes(60))
             .withSingleSignOnStatus(SingleSignOnStatus.DISABLED)
             .withDisplayName("Developer Pool")
             .withVirtualNetworkType(VirtualNetworkType.UNMANAGED)
@@ -43,17 +42,16 @@ public final class PoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2023-10-01-preview/examples/Pools_PutWithManagedNetwork.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Pools_PutWithManagedNetwork.json
      */
     /**
      * Sample code: Pools_CreateOrUpdateWithManagedNetwork.
-     *
+     * 
      * @param manager Entry point to DevCenterManager.
      */
-    public static void poolsCreateOrUpdateWithManagedNetwork(
-        com.azure.resourcemanager.devcenter.DevCenterManager manager) {
-        manager
-            .pools()
+    public static void
+        poolsCreateOrUpdateWithManagedNetwork(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
+        manager.pools()
             .define("DevPool")
             .withRegion("centralus")
             .withExistingProject("rg1", "DevProject")
@@ -61,10 +59,8 @@ public final class PoolsCreateOrUpdateSamples {
             .withNetworkConnectionName("managedNetwork")
             .withLicenseType(LicenseType.WINDOWS_CLIENT)
             .withLocalAdministrator(LocalAdminStatus.ENABLED)
-            .withStopOnDisconnect(
-                new StopOnDisconnectConfiguration()
-                    .withStatus(StopOnDisconnectEnableStatus.ENABLED)
-                    .withGracePeriodMinutes(60))
+            .withStopOnDisconnect(new StopOnDisconnectConfiguration().withStatus(StopOnDisconnectEnableStatus.ENABLED)
+                .withGracePeriodMinutes(60))
             .withSingleSignOnStatus(SingleSignOnStatus.DISABLED)
             .withDisplayName("Developer Pool")
             .withVirtualNetworkType(VirtualNetworkType.MANAGED)

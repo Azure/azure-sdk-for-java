@@ -95,12 +95,14 @@ public final class RecommendationConfigurationProperties {
      */
     public void validate() {
         if (recommendationType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property recommendationType in model RecommendationConfigurationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property recommendationType in model RecommendationConfigurationProperties"));
         }
         if (status() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property status in model RecommendationConfigurationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property status in model RecommendationConfigurationProperties"));
         }
     }
 

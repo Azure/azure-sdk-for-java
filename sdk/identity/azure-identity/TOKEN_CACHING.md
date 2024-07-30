@@ -54,7 +54,7 @@ ClientSecretCredential clientCredential = new ClientSecretCredentialBuilder()
         .build();
 ```
 
-#### Persist user authentication record
+#### Silently authenticating a user with AuthenticationRecord and TokenCachePersistenceOptions
 When authenticating a user via `InteractiveBrowserCredential`, `DeviceCodeCredential`, or `UsernamePasswordCredential`, an `AuthenticationRecord` can be persisted as well. The authentication record is:
 
 - Returned from the `authenticate` API and contains data identifying an authenticated account.
@@ -62,39 +62,46 @@ When authenticating a user via `InteractiveBrowserCredential`, `DeviceCodeCreden
 
 There's no sensitive data in the `AuthenticationRecord`, so it can be persisted in a non-protected state.
 
+Once an app has persisted an `AuthenticationRecord`, future authentications can be performed silently by setting `TokenCachePersistenceOptions` and `AuthenticationRecord` on the builder.
+
 Here's an example of an app storing the `AuthenticationRecord` to the local file system after authenticating the user:
 
-```java
-InteractiveBrowserCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder()
-    .tokenCachePersistenceOptions(new TokenCachePersistenceOptions())
-    .build();
+```java com.azure.identity.silentauthentication
+String authenticationRecordPath = "path/to/authentication-record.json";
+AuthenticationRecord authenticationRecord = null;
+try {
+    // If we have an existing record, deserialize it.
+    if (Files.exists(new File(authenticationRecordPath).toPath())) {
+         authenticationRecord = AuthenticationRecord.deserialize(new FileInputStream(authenticationRecordPath));
+    }
+} catch (FileNotFoundException e) {
+    // Handle error as appropriate.
+}
 
-String authRecordFilePath = "./tokencache.bin";
-
-interactiveBrowserCredential.authenticate()
-    .flatMap(authenticationRecord -> {
+DeviceCodeCredentialBuilder builder = new DeviceCodeCredentialBuilder()
+    .clientId(clientId)
+    .tenantId(tenantId);
+if (authenticationRecord != null) {
+    // As we have a record, configure the builder to use it.
+    builder.authenticationRecord(authenticationRecord);
+}
+DeviceCodeCredential credential = builder.build();
+TokenRequestContext trc = new TokenRequestContext().addScopes("your-appropriate-scope");
+if (authenticationRecord == null) {
+    // We don't have a record, so we get one and store it. The next authentication will use it.
+    credential.authenticate(trc).flatMap(record -> {
         try {
-            return authenticationRecord.serializeAsync(new FileOutputStream(authRecordFilePath));
-        
+            return record.serializeAsync(new FileOutputStream(authenticationRecordPath));
         } catch (FileNotFoundException e) {
             return Mono.error(e);
         }
     }).subscribe();
+}
+
+// Now the credential can be passed to another service client or used directly.
+AccessToken token = credential.getTokenSync(trc);
+
 ```
-
-#### Silently authenticating a user with AuthenticationRecord and TokenCachePersistenceOptions
-
-Once an app has configured an `InteractiveBrowserCredential`, `DeviceCodeCredential`, or `UsernamePasswordCredential` to persist token data and an `AuthenticationRecord`, it's possible to silently authenticate. This example demonstrates an app setting the `TokenCachePersistenceOptions` and retrieving an `AuthenticationRecord` from the local file system to create an `InteractiveBrowserCredential` capable of silent authentication:
-
-```java
-AuthenticationRecord authenticationRecord = AuthenticationRecord.deserialize(new FileInputStream(authRecordFilePath));
-InteractiveBrowserCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder()
-        .tokenCachePersistenceOptions(new TokenCachePersistenceOptions())
-        .authenticationRecord(authenticationRecord)
-        .build();
-```
-
-The credential created in this example will silently authenticate given that a valid token for corresponding to the `AuthenticationRecord` still exists in the persisted token data. There are some cases where interaction will still be required such as on token expiry, or when additional authentication is required for a particular resource.
 
 ### Credentials supporting token caching
 
@@ -102,21 +109,22 @@ The following table indicates the state of in-memory and persistent caching in e
 
 **Note:** In-memory caching is activated by default. Persistent token caching needs to be enabled as shown in this [code sample](#code-sample).
 
-| Credential                     | In-memory token caching                                                | Persistent disk token caching |
-|--------------------------------|------------------------------------------------------------------------|-------------------------------|
-| `AuthorizationCodeCredential`  | Supported                                                              | Supported                     |
-| `AzureCliCredential`           | Not Supported                                                          | Not Supported                 |
-| `AzureDeveloperCliCredential`  | Not Supported                                                          | Not Supported                 |
-| `AzurePowershellCredential`    | Not Supported                                                          | Not Supported                 |
-| `ClientAssertionCredential`    | Supported                                                              | Supported                     |
-| `ClientCertificateCredential`  | Supported                                                              | Supported                     |
-| `ClientSecretCredential`       | Supported                                                              | Supported                     |
-| `DefaultAzureCredential`       | Supported if the target credential in the credential chain supports it | Not Supported                 |
-| `DeviceCodeCredential`         | Supported                                                              | Supported                     |
-| `EnvironmentCredential`        | Supported                                                              | Supported                     |
-| `IntelliJCredential`           | Supported                                                              | Not Supported                 |
-| `InteractiveBrowserCredential` | Supported                                                              | Supported                     |
-| `ManagedIdentityCredential`    | Supported                                                              | Not Supported                 |
-| `OnBehalfOfCredential`         | Supported                                                              | Supported                     |
-| `UsernamePasswordCredential`   | Supported                                                              | Supported                     |
-| `WorkloadIdentityCredential`   | Supported                                                              | Supported                     |
+| Credential                     | In-memory token caching                                                 | Persistent disk token caching |
+|--------------------------------|-------------------------------------------------------------------------|-------------------------------|
+| `AuthorizationCodeCredential`  | Supported                                                               | Supported                     |
+| `AzureCliCredential`           | Not Supported                                                           | Not Supported                 |
+| `AzureDeveloperCliCredential`  | Not Supported                                                           | Not Supported                 |
+| `AzurePipelinesCredential`     | Supported                                                               | Supported                     | 
+| `AzurePowershellCredential`    | Not Supported                                                           | Not Supported                 |
+| `ClientAssertionCredential`    | Supported                                                               | Supported                     |
+| `ClientCertificateCredential`  | Supported                                                               | Supported                     |
+| `ClientSecretCredential`       | Supported                                                               | Supported                     |
+| `DefaultAzureCredential`       | Supported if the target credential in the credential chain supports it  | Not Supported                 |
+| `DeviceCodeCredential`         | Supported                                                               | Supported                     |
+| `EnvironmentCredential`        | Supported                                                               | Supported                     |
+| `IntelliJCredential`           | Supported                                                               | Not Supported                 |
+| `InteractiveBrowserCredential` | Supported                                                               | Supported                     |
+| `ManagedIdentityCredential`    | Supported                                                               | Not Supported                 |
+| `OnBehalfOfCredential`         | Supported                                                               | Supported                     |
+| `UsernamePasswordCredential`   | Supported                                                               | Supported                     |
+| `WorkloadIdentityCredential`   | Supported                                                               | Supported                     |

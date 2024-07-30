@@ -970,7 +970,7 @@ public class RoomsClientTest extends RoomsTestBase {
         RoomsClientBuilder builder = getRoomsClientWithConnectionString(
                 buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient()
                 : httpClient),
-                RoomsServiceVersion.V2023_10_30_PREVIEW);
+                RoomsServiceVersion.V2024_04_15);
 
         communicationClient = getCommunicationIdentityClientBuilder(httpClient).buildClient();
 

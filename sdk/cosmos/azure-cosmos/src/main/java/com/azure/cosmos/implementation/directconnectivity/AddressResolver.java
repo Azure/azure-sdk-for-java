@@ -82,7 +82,6 @@ public class AddressResolver implements IAddressResolver {
             }
 
             request.requestContext.resolvedPartitionKeyRange = result.TargetPartitionKeyRange;
-
             return Mono.just(result.Addresses);
         });
     }
@@ -180,7 +179,7 @@ public class AddressResolver implements IAddressResolver {
 
             if (logger.isDebugEnabled()) {
                 logger.debug(
-                    "Routing map for request with partitionkeyrageid {} was not found",
+                    "Routing map for request with partitionkeyrangeid {} was not found",
                     request.getPartitionKeyRangeIdentity().toHeader());
             }
             InvalidPartitionException invalidPartitionException = new InvalidPartitionException();
@@ -681,7 +680,10 @@ public class AddressResolver implements IAddressResolver {
             // partition getKey definition cached - like if collection with same getName but with RANGE partitioning is created.
             // In this case server will not pass x-ms-documentdb-collection-rid check and will return back InvalidPartitionException.
             // GATEWAY will refresh its cache and retry.
-            String effectivePartitionKey = PartitionKeyInternalHelper.getEffectivePartitionKeyString(partitionKey, collection.getPartitionKey());
+            String effectivePartitionKey = StringUtils.isNotEmpty(request.getEffectivePartitionKey())
+                ? request.getEffectivePartitionKey() : PartitionKeyInternalHelper.getEffectivePartitionKeyString(partitionKey, collection.getPartitionKey());
+
+            request.setEffectivePartitionKey(effectivePartitionKey);
 
             // There should be exactly one range which contains a partition key. Always.
             return routingMap.getRangeByEffectivePartitionKey(effectivePartitionKey);

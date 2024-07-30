@@ -6,8 +6,12 @@ package com.azure.resourcemanager.confidentialledger.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.confidentialledger.fluent.models.ConfidentialLedgerInner;
+import com.azure.resourcemanager.confidentialledger.models.AadBasedSecurityPrincipal;
+import com.azure.resourcemanager.confidentialledger.models.CertBasedSecurityPrincipal;
 import com.azure.resourcemanager.confidentialledger.models.ConfidentialLedgerList;
 import com.azure.resourcemanager.confidentialledger.models.LedgerProperties;
+import com.azure.resourcemanager.confidentialledger.models.LedgerRoleName;
+import com.azure.resourcemanager.confidentialledger.models.LedgerSku;
 import com.azure.resourcemanager.confidentialledger.models.LedgerType;
 import com.azure.resourcemanager.confidentialledger.models.RunningState;
 import java.util.Arrays;
@@ -18,68 +22,115 @@ import org.junit.jupiter.api.Assertions;
 public final class ConfidentialLedgerListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConfidentialLedgerList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"ledgerName\":\"wjzrnfygxgisp\",\"ledgerUri\":\"vtz\",\"identityServiceUri\":\"ufubl\",\"ledgerInternalNamespace\":\"fxqeof\",\"runningState\":\"Active\",\"ledgerType\":\"Private\",\"provisioningState\":\"Creating\",\"aadBasedSecurityPrincipals\":[],\"certBasedSecurityPrincipals\":[]},\"location\":\"s\",\"tags\":{\"nbybkzgcwrwcl\":\"mjqulngsn\",\"cjdkwtnhxbnjbi\":\"xwrljdouskcqvkoc\",\"jwnzlljfmp\":\"sqrglssainq\",\"yqduujit\":\"eebvmgxsab\"},\"id\":\"jczdzevndh\",\"name\":\"rwpdappdsbdkvwrw\",\"type\":\"feusnhut\"},{\"properties\":{\"ledgerName\":\"tmrldhugjzzdatq\",\"ledgerUri\":\"oc\",\"identityServiceUri\":\"eablg\",\"ledgerInternalNamespace\":\"uticndvkaozwyif\",\"runningState\":\"Resuming\",\"ledgerType\":\"Private\",\"provisioningState\":\"Unknown\",\"aadBasedSecurityPrincipals\":[],\"certBasedSecurityPrincipals\":[]},\"location\":\"tyxolniwpwc\",\"tags\":{\"ryplwckbasyypn\":\"fkgiawxk\",\"phejkotynqgoulz\":\"dhsgcba\",\"gakeqsr\":\"dlikwyqkgfgibma\"},\"id\":\"yb\",\"name\":\"qqedqytbciqfou\",\"type\":\"lmmnkzsmodmglo\"}],\"nextLink\":\"pbkwtmu\"}")
-                .toObject(ConfidentialLedgerList.class);
-        Assertions.assertEquals("s", model.value().get(0).location());
-        Assertions.assertEquals("mjqulngsn", model.value().get(0).tags().get("nbybkzgcwrwcl"));
-        Assertions.assertEquals(RunningState.ACTIVE, model.value().get(0).properties().runningState());
-        Assertions.assertEquals(LedgerType.PRIVATE, model.value().get(0).properties().ledgerType());
-        Assertions.assertEquals("pbkwtmu", model.nextLink());
+        ConfidentialLedgerList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"ledgerName\":\"clxxwrljdo\",\"ledgerUri\":\"kcqvkocrc\",\"identityServiceUri\":\"kwt\",\"ledgerInternalNamespace\":\"xbnjbiksq\",\"runningState\":\"Unknown\",\"ledgerType\":\"Public\",\"provisioningState\":\"Failed\",\"ledgerSku\":\"Standard\",\"aadBasedSecurityPrincipals\":[{\"principalId\":\"nzl\",\"tenantId\":\"fmppe\",\"ledgerRoleName\":\"Contributor\"},{\"principalId\":\"gxsabkyq\",\"tenantId\":\"ujitcjcz\",\"ledgerRoleName\":\"Contributor\"},{\"principalId\":\"ndhkrw\",\"tenantId\":\"appd\",\"ledgerRoleName\":\"Reader\"}],\"certBasedSecurityPrincipals\":[{\"cert\":\"rwjfe\",\"ledgerRoleName\":\"Reader\"},{\"cert\":\"utjeltmrldhugj\",\"ledgerRoleName\":\"Reader\"}]},\"location\":\"tqxhocdgeab\",\"tags\":{\"wyiftyhxhur\":\"huticndvkao\"},\"id\":\"k\",\"name\":\"tyxolniwpwc\",\"type\":\"kjfkg\"},{\"properties\":{\"ledgerName\":\"xklrypl\",\"ledgerUri\":\"kbasyypn\",\"identityServiceUri\":\"hsgcbacphejkot\",\"ledgerInternalNamespace\":\"qgoulznd\",\"runningState\":\"Active\",\"ledgerType\":\"Public\",\"provisioningState\":\"Creating\",\"ledgerSku\":\"Unknown\",\"aadBasedSecurityPrincipals\":[{\"principalId\":\"madgakeqsrxyb\",\"tenantId\":\"qedqytbciqfoufl\",\"ledgerRoleName\":\"Contributor\"},{\"principalId\":\"zsm\",\"tenantId\":\"mglougpbkw\",\"ledgerRoleName\":\"Contributor\"},{\"principalId\":\"duqkt\",\"tenantId\":\"spwgcuertumkdosv\",\"ledgerRoleName\":\"Reader\"},{\"principalId\":\"mdgbbjfdd\",\"tenantId\":\"bmbexppbhtqqro\",\"ledgerRoleName\":\"Reader\"}],\"certBasedSecurityPrincipals\":[{\"cert\":\"algbquxigjyjg\",\"ledgerRoleName\":\"Administrator\"},{\"cert\":\"yfhrtxilnerkujy\",\"ledgerRoleName\":\"Contributor\"},{\"cert\":\"juvf\",\"ledgerRoleName\":\"Reader\"}]},\"location\":\"lyxwjkcprbnwbx\",\"tags\":{\"qguhmuo\":\"tbvpysszdnru\"},\"id\":\"qfprwzwbn\",\"name\":\"uitnwuiz\",\"type\":\"a\"},{\"properties\":{\"ledgerName\":\"fizuckyf\",\"ledgerUri\":\"rfidfvzwdz\",\"identityServiceUri\":\"tymw\",\"ledgerInternalNamespace\":\"dkfthwxmnt\",\"runningState\":\"Paused\",\"ledgerType\":\"Unknown\",\"provisioningState\":\"Succeeded\",\"ledgerSku\":\"Standard\",\"aadBasedSecurityPrincipals\":[{\"principalId\":\"mmxdcu\",\"tenantId\":\"fsrpymzidnse\",\"ledgerRoleName\":\"Contributor\"},{\"principalId\":\"bzsgfyccsne\",\"tenantId\":\"dwzjeiach\",\"ledgerRoleName\":\"Contributor\"},{\"principalId\":\"flnrosfqpteehzz\",\"tenantId\":\"pyqr\",\"ledgerRoleName\":\"Reader\"},{\"principalId\":\"npvswjdkirso\",\"tenantId\":\"qxhcrmn\",\"ledgerRoleName\":\"Administrator\"}],\"certBasedSecurityPrincipals\":[{\"cert\":\"whdsoifiyip\",\"ledgerRoleName\":\"Contributor\"},{\"cert\":\"wpgrjbzno\",\"ledgerRoleName\":\"Reader\"}]},\"location\":\"vsnb\",\"tags\":{\"zafb\":\"abnmocpcyshu\",\"oq\":\"jjgpb\"},\"id\":\"jmkljavbqidtqajz\",\"name\":\"ulpkudjkrl\",\"type\":\"hbzhfepg\"}],\"nextLink\":\"qex\"}")
+            .toObject(ConfidentialLedgerList.class);
+        Assertions.assertEquals("tqxhocdgeab", model.value().get(0).location());
+        Assertions.assertEquals("huticndvkao", model.value().get(0).tags().get("wyiftyhxhur"));
+        Assertions.assertEquals(RunningState.UNKNOWN, model.value().get(0).properties().runningState());
+        Assertions.assertEquals(LedgerType.PUBLIC, model.value().get(0).properties().ledgerType());
+        Assertions.assertEquals(LedgerSku.STANDARD, model.value().get(0).properties().ledgerSku());
+        Assertions.assertEquals("nzl",
+            model.value().get(0).properties().aadBasedSecurityPrincipals().get(0).principalId());
+        Assertions.assertEquals("fmppe",
+            model.value().get(0).properties().aadBasedSecurityPrincipals().get(0).tenantId());
+        Assertions.assertEquals(LedgerRoleName.CONTRIBUTOR,
+            model.value().get(0).properties().aadBasedSecurityPrincipals().get(0).ledgerRoleName());
+        Assertions.assertEquals("rwjfe", model.value().get(0).properties().certBasedSecurityPrincipals().get(0).cert());
+        Assertions.assertEquals(LedgerRoleName.READER,
+            model.value().get(0).properties().certBasedSecurityPrincipals().get(0).ledgerRoleName());
+        Assertions.assertEquals("qex", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfidentialLedgerList model =
-            new ConfidentialLedgerList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ConfidentialLedgerInner()
-                                .withLocation("s")
-                                .withTags(
-                                    mapOf(
-                                        "nbybkzgcwrwcl",
-                                        "mjqulngsn",
-                                        "cjdkwtnhxbnjbi",
-                                        "xwrljdouskcqvkoc",
-                                        "jwnzlljfmp",
-                                        "sqrglssainq",
-                                        "yqduujit",
-                                        "eebvmgxsab"))
-                                .withProperties(
-                                    new LedgerProperties()
-                                        .withRunningState(RunningState.ACTIVE)
-                                        .withLedgerType(LedgerType.PRIVATE)
-                                        .withAadBasedSecurityPrincipals(Arrays.asList())
-                                        .withCertBasedSecurityPrincipals(Arrays.asList())),
-                            new ConfidentialLedgerInner()
-                                .withLocation("tyxolniwpwc")
-                                .withTags(
-                                    mapOf(
-                                        "ryplwckbasyypn",
-                                        "fkgiawxk",
-                                        "phejkotynqgoulz",
-                                        "dhsgcba",
-                                        "gakeqsr",
-                                        "dlikwyqkgfgibma"))
-                                .withProperties(
-                                    new LedgerProperties()
-                                        .withRunningState(RunningState.RESUMING)
-                                        .withLedgerType(LedgerType.PRIVATE)
-                                        .withAadBasedSecurityPrincipals(Arrays.asList())
-                                        .withCertBasedSecurityPrincipals(Arrays.asList()))))
-                .withNextLink("pbkwtmu");
+        ConfidentialLedgerList model = new ConfidentialLedgerList().withValue(Arrays.asList(
+            new ConfidentialLedgerInner().withLocation("tqxhocdgeab")
+                .withTags(mapOf("wyiftyhxhur", "huticndvkao"))
+                .withProperties(new LedgerProperties().withRunningState(RunningState.UNKNOWN)
+                    .withLedgerType(LedgerType.PUBLIC)
+                    .withLedgerSku(LedgerSku.STANDARD)
+                    .withAadBasedSecurityPrincipals(Arrays.asList(
+                        new AadBasedSecurityPrincipal().withPrincipalId("nzl")
+                            .withTenantId("fmppe")
+                            .withLedgerRoleName(LedgerRoleName.CONTRIBUTOR),
+                        new AadBasedSecurityPrincipal().withPrincipalId("gxsabkyq")
+                            .withTenantId("ujitcjcz")
+                            .withLedgerRoleName(LedgerRoleName.CONTRIBUTOR),
+                        new AadBasedSecurityPrincipal().withPrincipalId("ndhkrw")
+                            .withTenantId("appd")
+                            .withLedgerRoleName(LedgerRoleName.READER)))
+                    .withCertBasedSecurityPrincipals(Arrays.asList(
+                        new CertBasedSecurityPrincipal().withCert("rwjfe").withLedgerRoleName(LedgerRoleName.READER),
+                        new CertBasedSecurityPrincipal().withCert("utjeltmrldhugj")
+                            .withLedgerRoleName(LedgerRoleName.READER)))),
+            new ConfidentialLedgerInner().withLocation("lyxwjkcprbnwbx")
+                .withTags(mapOf("qguhmuo", "tbvpysszdnru"))
+                .withProperties(new LedgerProperties().withRunningState(RunningState.ACTIVE)
+                    .withLedgerType(LedgerType.PUBLIC)
+                    .withLedgerSku(LedgerSku.UNKNOWN)
+                    .withAadBasedSecurityPrincipals(Arrays.asList(
+                        new AadBasedSecurityPrincipal().withPrincipalId("madgakeqsrxyb")
+                            .withTenantId("qedqytbciqfoufl")
+                            .withLedgerRoleName(LedgerRoleName.CONTRIBUTOR),
+                        new AadBasedSecurityPrincipal().withPrincipalId("zsm")
+                            .withTenantId("mglougpbkw")
+                            .withLedgerRoleName(LedgerRoleName.CONTRIBUTOR),
+                        new AadBasedSecurityPrincipal().withPrincipalId("duqkt")
+                            .withTenantId("spwgcuertumkdosv")
+                            .withLedgerRoleName(LedgerRoleName.READER),
+                        new AadBasedSecurityPrincipal().withPrincipalId("mdgbbjfdd")
+                            .withTenantId("bmbexppbhtqqro")
+                            .withLedgerRoleName(LedgerRoleName.READER)))
+                    .withCertBasedSecurityPrincipals(Arrays.asList(
+                        new CertBasedSecurityPrincipal().withCert("algbquxigjyjg")
+                            .withLedgerRoleName(LedgerRoleName.ADMINISTRATOR),
+                        new CertBasedSecurityPrincipal().withCert("yfhrtxilnerkujy")
+                            .withLedgerRoleName(LedgerRoleName.CONTRIBUTOR),
+                        new CertBasedSecurityPrincipal().withCert("juvf").withLedgerRoleName(LedgerRoleName.READER)))),
+            new ConfidentialLedgerInner().withLocation("vsnb")
+                .withTags(mapOf("zafb", "abnmocpcyshu", "oq", "jjgpb"))
+                .withProperties(new LedgerProperties().withRunningState(RunningState.PAUSED)
+                    .withLedgerType(LedgerType.UNKNOWN)
+                    .withLedgerSku(LedgerSku.STANDARD)
+                    .withAadBasedSecurityPrincipals(Arrays.asList(
+                        new AadBasedSecurityPrincipal().withPrincipalId("mmxdcu")
+                            .withTenantId("fsrpymzidnse")
+                            .withLedgerRoleName(LedgerRoleName.CONTRIBUTOR),
+                        new AadBasedSecurityPrincipal().withPrincipalId("bzsgfyccsne")
+                            .withTenantId("dwzjeiach")
+                            .withLedgerRoleName(LedgerRoleName.CONTRIBUTOR),
+                        new AadBasedSecurityPrincipal().withPrincipalId("flnrosfqpteehzz")
+                            .withTenantId("pyqr")
+                            .withLedgerRoleName(LedgerRoleName.READER),
+                        new AadBasedSecurityPrincipal().withPrincipalId("npvswjdkirso")
+                            .withTenantId("qxhcrmn")
+                            .withLedgerRoleName(LedgerRoleName.ADMINISTRATOR)))
+                    .withCertBasedSecurityPrincipals(Arrays.asList(
+                        new CertBasedSecurityPrincipal().withCert("whdsoifiyip")
+                            .withLedgerRoleName(LedgerRoleName.CONTRIBUTOR),
+                        new CertBasedSecurityPrincipal().withCert("wpgrjbzno")
+                            .withLedgerRoleName(LedgerRoleName.READER))))))
+            .withNextLink("qex");
         model = BinaryData.fromObject(model).toObject(ConfidentialLedgerList.class);
-        Assertions.assertEquals("s", model.value().get(0).location());
-        Assertions.assertEquals("mjqulngsn", model.value().get(0).tags().get("nbybkzgcwrwcl"));
-        Assertions.assertEquals(RunningState.ACTIVE, model.value().get(0).properties().runningState());
-        Assertions.assertEquals(LedgerType.PRIVATE, model.value().get(0).properties().ledgerType());
-        Assertions.assertEquals("pbkwtmu", model.nextLink());
+        Assertions.assertEquals("tqxhocdgeab", model.value().get(0).location());
+        Assertions.assertEquals("huticndvkao", model.value().get(0).tags().get("wyiftyhxhur"));
+        Assertions.assertEquals(RunningState.UNKNOWN, model.value().get(0).properties().runningState());
+        Assertions.assertEquals(LedgerType.PUBLIC, model.value().get(0).properties().ledgerType());
+        Assertions.assertEquals(LedgerSku.STANDARD, model.value().get(0).properties().ledgerSku());
+        Assertions.assertEquals("nzl",
+            model.value().get(0).properties().aadBasedSecurityPrincipals().get(0).principalId());
+        Assertions.assertEquals("fmppe",
+            model.value().get(0).properties().aadBasedSecurityPrincipals().get(0).tenantId());
+        Assertions.assertEquals(LedgerRoleName.CONTRIBUTOR,
+            model.value().get(0).properties().aadBasedSecurityPrincipals().get(0).ledgerRoleName());
+        Assertions.assertEquals("rwjfe", model.value().get(0).properties().certBasedSecurityPrincipals().get(0).cert());
+        Assertions.assertEquals(LedgerRoleName.READER,
+            model.value().get(0).properties().certBasedSecurityPrincipals().get(0).ledgerRoleName());
+        Assertions.assertEquals("qex", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

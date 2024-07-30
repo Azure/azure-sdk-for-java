@@ -6,17 +6,22 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RestoreRequest;
+import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 
 public final class RestoreRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RestoreRequest model
-            = BinaryData.fromString("{\"objectType\":\"RestoreRequest\"}").toObject(RestoreRequest.class);
+        RestoreRequest model = BinaryData
+            .fromString("{\"objectType\":\"RestoreRequest\",\"resourceGuardOperationRequests\":[\"zywbiex\",\"fey\"]}")
+            .toObject(RestoreRequest.class);
+        Assertions.assertEquals("zywbiex", model.resourceGuardOperationRequests().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RestoreRequest model = new RestoreRequest();
+        RestoreRequest model = new RestoreRequest().withResourceGuardOperationRequests(Arrays.asList("zywbiex", "fey"));
         model = BinaryData.fromObject(model).toObject(RestoreRequest.class);
+        Assertions.assertEquals("zywbiex", model.resourceGuardOperationRequests().get(0));
     }
 }

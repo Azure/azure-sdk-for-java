@@ -3,6 +3,7 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CompositePathSortOrder;
@@ -313,8 +314,8 @@ public class CollectionCrudTest extends TestSuiteBase {
 
             InternalObjectNode document = new InternalObjectNode();
             document.setId("doc");
-            BridgeInternal.setProperty(document, "name", "New Document");
-            BridgeInternal.setProperty(document, "mypk", "mypkValue");
+            document.set("name", "New Document", CosmosItemSerializer.DEFAULT_SERIALIZER);
+            document.set("mypk", "mypkValue", CosmosItemSerializer.DEFAULT_SERIALIZER);
             createDocument(collection, document);
             CosmosItemRequestOptions options = new CosmosItemRequestOptions();
             CosmosItemResponse<InternalObjectNode> readDocumentResponse =
@@ -322,7 +323,7 @@ public class CollectionCrudTest extends TestSuiteBase {
             logger.info("Client 1 READ Document Client Side Request Statistics {}", readDocumentResponse.getDiagnostics());
             logger.info("Client 1 READ Document Latency {}", readDocumentResponse.getDuration());
 
-            BridgeInternal.setProperty(document, "name", "New Updated Document");
+            document.set("name", "New Updated Document", CosmosItemSerializer.DEFAULT_SERIALIZER);
             CosmosItemResponse<InternalObjectNode> upsertDocumentResponse = collection.upsertItem(document).block();
             logger.info("Client 1 Upsert Document Client Side Request Statistics {}", upsertDocumentResponse.getDiagnostics());
             logger.info("Client 1 Upsert Document Latency {}", upsertDocumentResponse.getDuration());
@@ -334,14 +335,14 @@ public class CollectionCrudTest extends TestSuiteBase {
 
             InternalObjectNode newDocument = new InternalObjectNode();
             newDocument.setId("doc");
-            BridgeInternal.setProperty(newDocument, "name", "New Created Document");
-            BridgeInternal.setProperty(newDocument, "mypk", "mypk");
+            newDocument.set("name", "New Created Document", CosmosItemSerializer.DEFAULT_SERIALIZER);
+            newDocument.set("mypk", "mypk", CosmosItemSerializer.DEFAULT_SERIALIZER);
             createDocument(collection2, newDocument);
 
             readDocumentResponse = client1.getDatabase(dbId)
                                        .getContainer(collectionId)
                                        .readItem(newDocument.getId(),
-                                                 new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(newDocument, "mypk")),
+                                                 new PartitionKey(newDocument.get("mypk")),
                                                  InternalObjectNode.class)
                                        .block();
             logger.info("Client 2 READ Document Client Side Request Statistics {}", readDocumentResponse.getDiagnostics());
@@ -350,8 +351,8 @@ public class CollectionCrudTest extends TestSuiteBase {
             InternalObjectNode readDocument = BridgeInternal.getProperties(readDocumentResponse);
 
             assertThat(readDocument.getId().equals(newDocument.getId())).isTrue();
-            assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(readDocument, "name")
-                                          .equals(ModelBridgeInternal.getObjectFromJsonSerializable(newDocument, "name"))).isTrue();
+            assertThat(readDocument.get("name")
+                                          .equals(newDocument.get("name"))).isTrue();
         } finally {
             safeDeleteDatabase(db);
             safeClose(client1);

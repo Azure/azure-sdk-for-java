@@ -10,11 +10,9 @@ import com.azure.resourcemanager.mysqlflexibleserver.models.CapabilitiesListResu
 public final class CapabilitiesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CapabilitiesListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"zone\":\"jcrcczsqpjhvmda\",\"supportedHAMode\":[\"ysou\",\"q\"],\"supportedGeoBackupRegions\":[\"noae\"],\"supportedFlexibleServerEditions\":[]}],\"nextLink\":\"yhltrpmopjmcm\"}")
-                .toObject(CapabilitiesListResult.class);
+        CapabilitiesListResult model = BinaryData.fromString(
+            "{\"value\":[{\"zone\":\"htxfvgxbfsmxnehm\",\"supportedHAMode\":[\"cxgod\"],\"supportedGeoBackupRegions\":[\"qkkrb\",\"pukgriwflzlfb\"],\"supportedFlexibleServerEditions\":[{\"name\":\"zycispn\",\"supportedStorageEditions\":[{},{}],\"supportedServerVersions\":[{},{},{},{}]}]},{\"zone\":\"kbrpyydhibnuq\",\"supportedHAMode\":[\"ik\",\"drgvtqagn\"],\"supportedGeoBackupRegions\":[\"nhijggmebfsi\",\"rbu\",\"rcvpnazzmhjrunmp\"],\"supportedFlexibleServerEditions\":[{\"name\":\"bh\",\"supportedStorageEditions\":[{},{},{}],\"supportedServerVersions\":[{},{},{},{}]},{\"name\":\"kx\",\"supportedStorageEditions\":[{},{},{},{}],\"supportedServerVersions\":[{}]},{\"name\":\"henbtkcxywnytn\",\"supportedStorageEditions\":[{}],\"supportedServerVersions\":[{},{}]}]}],\"nextLink\":\"idybyxczf\"}")
+            .toObject(CapabilitiesListResult.class);
     }
 
     @org.junit.jupiter.api.Test

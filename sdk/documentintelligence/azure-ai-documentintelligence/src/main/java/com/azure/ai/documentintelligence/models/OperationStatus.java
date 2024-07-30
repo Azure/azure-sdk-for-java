@@ -6,7 +6,6 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -66,7 +65,6 @@ public final class OperationStatus extends ExpandableStringEnum<OperationStatus>
      * @return the corresponding OperationStatus.
      */
     @Generated
-    @JsonCreator
     public static OperationStatus fromString(String name) {
         return fromString(name, OperationStatus.class);
     }

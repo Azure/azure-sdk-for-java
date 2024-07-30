@@ -5,7 +5,6 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -44,7 +43,6 @@ public final class ChatCompletionsToolSelectionPreset extends ExpandableStringEn
      * @return the corresponding ChatCompletionsToolSelectionPreset.
      */
     @Generated
-    @JsonCreator
     public static ChatCompletionsToolSelectionPreset fromString(String name) {
         return fromString(name, ChatCompletionsToolSelectionPreset.class);
     }

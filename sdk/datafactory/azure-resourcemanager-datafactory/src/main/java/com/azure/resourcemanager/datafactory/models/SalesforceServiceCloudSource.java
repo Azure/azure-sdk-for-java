@@ -6,16 +6,28 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity Salesforce Service Cloud source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = SalesforceServiceCloudSource.class,
+    visible = true)
 @JsonTypeName("SalesforceServiceCloudSource")
 @Fluent
 public final class SalesforceServiceCloudSource extends CopySource {
+    /*
+     * Copy source type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "SalesforceServiceCloudSource";
+
     /*
      * Database query. Type: string (or Expression with resultType string).
      */
@@ -40,6 +52,16 @@ public final class SalesforceServiceCloudSource extends CopySource {
      * Creates an instance of SalesforceServiceCloudSource class.
      */
     public SalesforceServiceCloudSource() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

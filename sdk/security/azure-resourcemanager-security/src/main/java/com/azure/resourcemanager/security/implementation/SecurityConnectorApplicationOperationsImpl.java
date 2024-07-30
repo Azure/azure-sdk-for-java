@@ -49,8 +49,8 @@ public final class SecurityConnectorApplicationOperationsImpl implements Securit
 
     public Response<Application> createOrUpdateWithResponse(String resourceGroupName, String securityConnectorName,
         String applicationId, ApplicationInner application, Context context) {
-        Response<ApplicationInner> inner = this.serviceClient().createOrUpdateWithResponse(resourceGroupName,
-            securityConnectorName, applicationId, application, context);
+        Response<ApplicationInner> inner = this.serviceClient()
+            .createOrUpdateWithResponse(resourceGroupName, securityConnectorName, applicationId, application, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ApplicationImpl(inner.getValue(), this.manager()));
@@ -72,8 +72,8 @@ public final class SecurityConnectorApplicationOperationsImpl implements Securit
 
     public Response<Void> deleteWithResponse(String resourceGroupName, String securityConnectorName,
         String applicationId, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, securityConnectorName, applicationId,
-            context);
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, securityConnectorName, applicationId, context);
     }
 
     public void delete(String resourceGroupName, String securityConnectorName, String applicationId) {

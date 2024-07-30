@@ -6,16 +6,24 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity Salesforce sink.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = SalesforceSink.class, visible = true)
 @JsonTypeName("SalesforceSink")
 @Fluent
 public final class SalesforceSink extends CopySink {
+    /*
+     * Copy sink type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "SalesforceSink";
+
     /*
      * The write behavior for the operation. Default is Insert.
      */
@@ -23,8 +31,8 @@ public final class SalesforceSink extends CopySink {
     private SalesforceSinkWriteBehavior writeBehavior;
 
     /*
-     * The name of the external ID field for upsert operation. Default value is 'Id' column. Type: string (or
-     * Expression with resultType string).
+     * The name of the external ID field for upsert operation. Default value is 'Id' column. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "externalIdFieldName")
     private Object externalIdFieldName;
@@ -32,9 +40,9 @@ public final class SalesforceSink extends CopySink {
     /*
      * The flag indicating whether or not to ignore null values from input dataset (except key fields) during write
      * operation. Default value is false. If set it to true, it means ADF will leave the data in the destination object
-     * unchanged when doing upsert/update operation and insert defined default value when doing insert operation,
-     * versus ADF will update the data in the destination object to NULL when doing upsert/update operation and insert
-     * NULL value when doing insert operation. Type: boolean (or Expression with resultType boolean).
+     * unchanged when doing upsert/update operation and insert defined default value when doing insert operation, versus
+     * ADF will update the data in the destination object to NULL when doing upsert/update operation and insert NULL
+     * value when doing insert operation. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "ignoreNullValues")
     private Object ignoreNullValues;
@@ -43,6 +51,16 @@ public final class SalesforceSink extends CopySink {
      * Creates an instance of SalesforceSink class.
      */
     public SalesforceSink() {
+    }
+
+    /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

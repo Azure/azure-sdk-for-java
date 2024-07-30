@@ -18,15 +18,13 @@ import java.util.List;
 @Fluent
 public final class SecurityConnectorProperties {
     /*
-     * The multi cloud resource identifier (account id in case of AWS connector, project number in case of GCP
-     * connector).
+     * The multi cloud resource identifier (account id in case of AWS connector, project number in case of GCP connector).
      */
     @JsonProperty(value = "hierarchyIdentifier")
     private String hierarchyIdentifier;
 
     /*
-     * The date on which the trial period will end, if applicable. Trial period exists for 30 days after upgrading to
-     * payed offerings.
+     * The date on which the trial period will end, if applicable. Trial period exists for 30 days after upgrading to payed offerings.
      */
     @JsonProperty(value = "hierarchyIdentifierTrialEndDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime hierarchyIdentifierTrialEndDate;

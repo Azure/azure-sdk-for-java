@@ -38,8 +38,7 @@ public final class CacheActiveDirectorySettings {
     private String domainNetBiosName;
 
     /*
-     * The NetBIOS name to assign to the HPC Cache when it joins the Active Directory domain as a server. Length must
-     * 1-15 characters from the class [-0-9a-zA-Z].
+     * The NetBIOS name to assign to the HPC Cache when it joins the Active Directory domain as a server. Length must 1-15 characters from the class [-0-9a-zA-Z].
      */
     @JsonProperty(value = "cacheNetBiosName", required = true)
     private String cacheNetBiosName;
@@ -147,8 +146,8 @@ public final class CacheActiveDirectorySettings {
     }
 
     /**
-     * Get the cacheNetBiosName property: The NetBIOS name to assign to the HPC Cache when it joins the Active
-     * Directory domain as a server. Length must 1-15 characters from the class [-0-9a-zA-Z].
+     * Get the cacheNetBiosName property: The NetBIOS name to assign to the HPC Cache when it joins the Active Directory
+     * domain as a server. Length must 1-15 characters from the class [-0-9a-zA-Z].
      * 
      * @return the cacheNetBiosName value.
      */
@@ -157,8 +156,8 @@ public final class CacheActiveDirectorySettings {
     }
 
     /**
-     * Set the cacheNetBiosName property: The NetBIOS name to assign to the HPC Cache when it joins the Active
-     * Directory domain as a server. Length must 1-15 characters from the class [-0-9a-zA-Z].
+     * Set the cacheNetBiosName property: The NetBIOS name to assign to the HPC Cache when it joins the Active Directory
+     * domain as a server. Length must 1-15 characters from the class [-0-9a-zA-Z].
      * 
      * @param cacheNetBiosName the cacheNetBiosName value to set.
      * @return the CacheActiveDirectorySettings object itself.
@@ -204,20 +203,24 @@ public final class CacheActiveDirectorySettings {
      */
     public void validate() {
         if (primaryDnsIpAddress() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property primaryDnsIpAddress in model CacheActiveDirectorySettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property primaryDnsIpAddress in model CacheActiveDirectorySettings"));
         }
         if (domainName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property domainName in model CacheActiveDirectorySettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property domainName in model CacheActiveDirectorySettings"));
         }
         if (domainNetBiosName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property domainNetBiosName in model CacheActiveDirectorySettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property domainNetBiosName in model CacheActiveDirectorySettings"));
         }
         if (cacheNetBiosName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property cacheNetBiosName in model CacheActiveDirectorySettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property cacheNetBiosName in model CacheActiveDirectorySettings"));
         }
         if (credentials() != null) {
             credentials().validate();

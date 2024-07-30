@@ -49,9 +49,9 @@ public final class AzureMLBatchExecutionActivityTypeProperties {
     }
 
     /**
-     * Get the globalParameters property: Key,Value pairs to be passed to the Azure ML Batch Execution Service
-     * endpoint. Keys must match the names of web service parameters defined in the published Azure ML web service.
-     * Values will be passed in the GlobalParameters property of the Azure ML batch execution request.
+     * Get the globalParameters property: Key,Value pairs to be passed to the Azure ML Batch Execution Service endpoint.
+     * Keys must match the names of web service parameters defined in the published Azure ML web service. Values will be
+     * passed in the GlobalParameters property of the Azure ML batch execution request.
      * 
      * @return the globalParameters value.
      */
@@ -60,9 +60,9 @@ public final class AzureMLBatchExecutionActivityTypeProperties {
     }
 
     /**
-     * Set the globalParameters property: Key,Value pairs to be passed to the Azure ML Batch Execution Service
-     * endpoint. Keys must match the names of web service parameters defined in the published Azure ML web service.
-     * Values will be passed in the GlobalParameters property of the Azure ML batch execution request.
+     * Set the globalParameters property: Key,Value pairs to be passed to the Azure ML Batch Execution Service endpoint.
+     * Keys must match the names of web service parameters defined in the published Azure ML web service. Values will be
+     * passed in the GlobalParameters property of the Azure ML batch execution request.
      * 
      * @param globalParameters the globalParameters value to set.
      * @return the AzureMLBatchExecutionActivityTypeProperties object itself.
@@ -73,9 +73,9 @@ public final class AzureMLBatchExecutionActivityTypeProperties {
     }
 
     /**
-     * Get the webServiceOutputs property: Key,Value pairs, mapping the names of Azure ML endpoint's Web Service
-     * Outputs to AzureMLWebServiceFile objects specifying the output Blob locations. This information will be passed
-     * in the WebServiceOutputs property of the Azure ML batch execution request.
+     * Get the webServiceOutputs property: Key,Value pairs, mapping the names of Azure ML endpoint's Web Service Outputs
+     * to AzureMLWebServiceFile objects specifying the output Blob locations. This information will be passed in the
+     * WebServiceOutputs property of the Azure ML batch execution request.
      * 
      * @return the webServiceOutputs value.
      */
@@ -84,9 +84,9 @@ public final class AzureMLBatchExecutionActivityTypeProperties {
     }
 
     /**
-     * Set the webServiceOutputs property: Key,Value pairs, mapping the names of Azure ML endpoint's Web Service
-     * Outputs to AzureMLWebServiceFile objects specifying the output Blob locations. This information will be passed
-     * in the WebServiceOutputs property of the Azure ML batch execution request.
+     * Set the webServiceOutputs property: Key,Value pairs, mapping the names of Azure ML endpoint's Web Service Outputs
+     * to AzureMLWebServiceFile objects specifying the output Blob locations. This information will be passed in the
+     * WebServiceOutputs property of the Azure ML batch execution request.
      * 
      * @param webServiceOutputs the webServiceOutputs value to set.
      * @return the AzureMLBatchExecutionActivityTypeProperties object itself.

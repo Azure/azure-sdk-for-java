@@ -8,44 +8,68 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Describes operator to apply to the match condition. */
+/**
+ * Describes operator to apply to the match condition.
+ */
 public final class RulesEngineOperator extends ExpandableStringEnum<RulesEngineOperator> {
-    /** Static value Any for RulesEngineOperator. */
+    /**
+     * Static value Any for RulesEngineOperator.
+     */
     public static final RulesEngineOperator ANY = fromString("Any");
 
-    /** Static value IPMatch for RulesEngineOperator. */
+    /**
+     * Static value IPMatch for RulesEngineOperator.
+     */
     public static final RulesEngineOperator IPMATCH = fromString("IPMatch");
 
-    /** Static value GeoMatch for RulesEngineOperator. */
+    /**
+     * Static value GeoMatch for RulesEngineOperator.
+     */
     public static final RulesEngineOperator GEO_MATCH = fromString("GeoMatch");
 
-    /** Static value Equal for RulesEngineOperator. */
+    /**
+     * Static value Equal for RulesEngineOperator.
+     */
     public static final RulesEngineOperator EQUAL = fromString("Equal");
 
-    /** Static value Contains for RulesEngineOperator. */
+    /**
+     * Static value Contains for RulesEngineOperator.
+     */
     public static final RulesEngineOperator CONTAINS = fromString("Contains");
 
-    /** Static value LessThan for RulesEngineOperator. */
+    /**
+     * Static value LessThan for RulesEngineOperator.
+     */
     public static final RulesEngineOperator LESS_THAN = fromString("LessThan");
 
-    /** Static value GreaterThan for RulesEngineOperator. */
+    /**
+     * Static value GreaterThan for RulesEngineOperator.
+     */
     public static final RulesEngineOperator GREATER_THAN = fromString("GreaterThan");
 
-    /** Static value LessThanOrEqual for RulesEngineOperator. */
+    /**
+     * Static value LessThanOrEqual for RulesEngineOperator.
+     */
     public static final RulesEngineOperator LESS_THAN_OR_EQUAL = fromString("LessThanOrEqual");
 
-    /** Static value GreaterThanOrEqual for RulesEngineOperator. */
+    /**
+     * Static value GreaterThanOrEqual for RulesEngineOperator.
+     */
     public static final RulesEngineOperator GREATER_THAN_OR_EQUAL = fromString("GreaterThanOrEqual");
 
-    /** Static value BeginsWith for RulesEngineOperator. */
+    /**
+     * Static value BeginsWith for RulesEngineOperator.
+     */
     public static final RulesEngineOperator BEGINS_WITH = fromString("BeginsWith");
 
-    /** Static value EndsWith for RulesEngineOperator. */
+    /**
+     * Static value EndsWith for RulesEngineOperator.
+     */
     public static final RulesEngineOperator ENDS_WITH = fromString("EndsWith");
 
     /**
      * Creates a new instance of RulesEngineOperator value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -54,7 +78,7 @@ public final class RulesEngineOperator extends ExpandableStringEnum<RulesEngineO
 
     /**
      * Creates or finds a RulesEngineOperator from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RulesEngineOperator.
      */
@@ -65,7 +89,7 @@ public final class RulesEngineOperator extends ExpandableStringEnum<RulesEngineO
 
     /**
      * Gets known RulesEngineOperator values.
-     *
+     * 
      * @return known RulesEngineOperator values.
      */
     public static Collection<RulesEngineOperator> values() {

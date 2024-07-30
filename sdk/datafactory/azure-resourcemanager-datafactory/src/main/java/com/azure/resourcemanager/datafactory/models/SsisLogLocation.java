@@ -146,16 +146,17 @@ public final class SsisLogLocation {
      */
     public void validate() {
         if (logPath() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property logPath in model SsisLogLocation"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property logPath in model SsisLogLocation"));
         }
         if (type() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property type in model SsisLogLocation"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model SsisLogLocation"));
         }
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property innerTypeProperties in model SsisLogLocation"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model SsisLogLocation"));
         } else {
             innerTypeProperties().validate();
         }

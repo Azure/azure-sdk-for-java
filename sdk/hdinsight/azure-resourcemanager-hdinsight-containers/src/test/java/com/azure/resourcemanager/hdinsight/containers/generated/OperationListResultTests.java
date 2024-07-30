@@ -10,11 +10,9 @@ import com.azure.resourcemanager.hdinsight.containers.models.OperationListResult
 public final class OperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"qztpp\",\"isDataAction\":false,\"display\":{\"provider\":\"or\",\"resource\":\"lt\",\"operation\":\"mncwsobqwcsdb\",\"description\":\"dcfhucqdpf\"},\"origin\":\"system\",\"actionType\":\"Internal\"},{\"name\":\"jjcanvxbvtv\",\"isDataAction\":false,\"display\":{\"provider\":\"cormr\",\"resource\":\"qtvcofudflvkgj\",\"operation\":\"gdknnqv\",\"description\":\"znqntoru\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"},{\"name\":\"mkycgra\",\"isDataAction\":true,\"display\":{\"provider\":\"taeburuvdm\",\"resource\":\"s\",\"operation\":\"l\",\"description\":\"ab\"},\"origin\":\"user\",\"actionType\":\"Internal\"}],\"nextLink\":\"ifrvtpu\"}")
-                .toObject(OperationListResult.class);
+        OperationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"lstvlzywe\",\"isDataAction\":false,\"display\":{\"provider\":\"csdtclusiypbs\",\"resource\":\"ytguslf\",\"operation\":\"dcygqukyhejhz\",\"description\":\"xgfpelolppv\"},\"origin\":\"system\",\"actionType\":\"Internal\"},{\"name\":\"ujzra\",\"isDataAction\":false,\"display\":{\"provider\":\"wrft\",\"resource\":\"iby\",\"operation\":\"dl\",\"description\":\"shfwpracstwity\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"},{\"name\":\"cedcpnmdy\",\"isDataAction\":true,\"display\":{\"provider\":\"xltjcvnhltiu\",\"resource\":\"xnavvwxq\",\"operation\":\"y\",\"description\":\"nyowxwlmdjrkvfg\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"},{\"name\":\"bodacizsjq\",\"isDataAction\":true,\"display\":{\"provider\":\"ibdeibq\",\"resource\":\"qkgh\",\"operation\":\"ndzwmkrefa\",\"description\":\"jorwkqnyhgbij\"},\"origin\":\"user\",\"actionType\":\"Internal\"}],\"nextLink\":\"zs\"}")
+            .toObject(OperationListResult.class);
     }
 
     @org.junit.jupiter.api.Test

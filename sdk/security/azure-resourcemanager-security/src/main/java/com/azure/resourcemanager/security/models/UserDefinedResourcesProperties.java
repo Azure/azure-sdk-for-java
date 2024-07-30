@@ -15,8 +15,7 @@ import java.util.List;
 @Fluent
 public final class UserDefinedResourcesProperties {
     /*
-     * Azure Resource Graph query which represents the security solution's user defined resources. Required to start
-     * with "where type != "Microsoft.Devices/IotHubs""
+     * Azure Resource Graph query which represents the security solution's user defined resources. Required to start with "where type != "Microsoft.Devices/IotHubs""
      */
     @JsonProperty(value = "query", required = true)
     private String query;
@@ -84,12 +83,14 @@ public final class UserDefinedResourcesProperties {
      */
     public void validate() {
         if (query() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property query in model UserDefinedResourcesProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property query in model UserDefinedResourcesProperties"));
         }
         if (querySubscriptions() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property querySubscriptions in model UserDefinedResourcesProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property querySubscriptions in model UserDefinedResourcesProperties"));
         }
     }
 

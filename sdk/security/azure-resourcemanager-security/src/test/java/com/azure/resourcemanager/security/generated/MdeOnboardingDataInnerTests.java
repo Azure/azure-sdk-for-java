@@ -10,9 +10,9 @@ import com.azure.resourcemanager.security.fluent.models.MdeOnboardingDataInner;
 public final class MdeOnboardingDataInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MdeOnboardingDataInner model
-            = BinaryData.fromString("{\"properties\":{},\"id\":\"wm\",\"name\":\"refajpjorwkqnyh\",\"type\":\"b\"}")
-                .toObject(MdeOnboardingDataInner.class);
+        MdeOnboardingDataInner model = BinaryData
+            .fromString("{\"properties\":{},\"id\":\"ckcb\",\"name\":\"uejrjxgc\",\"type\":\"qibrhosxsdqrhzoy\"}")
+            .toObject(MdeOnboardingDataInner.class);
     }
 
     @org.junit.jupiter.api.Test

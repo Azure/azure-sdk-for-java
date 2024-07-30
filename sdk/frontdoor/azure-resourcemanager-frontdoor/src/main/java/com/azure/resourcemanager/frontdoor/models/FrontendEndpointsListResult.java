@@ -27,13 +27,15 @@ public final class FrontendEndpointsListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of FrontendEndpointsListResult class. */
+    /**
+     * Creates an instance of FrontendEndpointsListResult class.
+     */
     public FrontendEndpointsListResult() {
     }
 
     /**
      * Get the value property: List of Frontend endpoints within a Front Door.
-     *
+     * 
      * @return the value value.
      */
     public List<FrontendEndpointInner> value() {
@@ -42,7 +44,7 @@ public final class FrontendEndpointsListResult {
 
     /**
      * Get the nextLink property: URL to get the next set of frontend endpoints if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -51,7 +53,7 @@ public final class FrontendEndpointsListResult {
 
     /**
      * Set the nextLink property: URL to get the next set of frontend endpoints if there are any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the FrontendEndpointsListResult object itself.
      */
@@ -62,7 +64,7 @@ public final class FrontendEndpointsListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

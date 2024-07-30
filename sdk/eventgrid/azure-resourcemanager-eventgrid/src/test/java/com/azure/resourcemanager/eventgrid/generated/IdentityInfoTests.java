@@ -27,7 +27,8 @@ public final class IdentityInfoTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IdentityInfo model = new IdentityInfo().withType(IdentityType.USER_ASSIGNED).withPrincipalId("vriuhprwmdyvx")
+        IdentityInfo model = new IdentityInfo().withType(IdentityType.USER_ASSIGNED)
+            .withPrincipalId("vriuhprwmdyvx")
             .withTenantId("ayriwwroyqbexrm")
             .withUserAssignedIdentities(mapOf("pjyzhpv",
                 new UserIdentityProperties().withPrincipalId("ycnojvknmefqsg").withClientId("ah"), "hzovawjvzunlut",

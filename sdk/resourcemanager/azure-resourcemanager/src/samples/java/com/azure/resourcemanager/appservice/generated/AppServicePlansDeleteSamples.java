@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class AppServicePlansDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/DeleteAppServicePlan.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/DeleteAppServicePlan.json
      */
     /**
      * Sample code: Delete App Service plan.
@@ -18,7 +17,10 @@ public final class AppServicePlansDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteAppServicePlan(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getAppServicePlans().deleteWithResponse("testrg123", "testsf6141",
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getAppServicePlans()
+            .deleteWithResponse("testrg123", "testsf6141", com.azure.core.util.Context.NONE);
     }
 }

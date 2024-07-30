@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.maintenance.generated;
 
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2023-04-01/examples/Operations_List.json
+     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2023-10-01-preview/examples/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
-     *
+     * 
      * @param manager Entry point to MaintenanceManager.
      */
     public static void operationsList(com.azure.resourcemanager.maintenance.MaintenanceManager manager) {

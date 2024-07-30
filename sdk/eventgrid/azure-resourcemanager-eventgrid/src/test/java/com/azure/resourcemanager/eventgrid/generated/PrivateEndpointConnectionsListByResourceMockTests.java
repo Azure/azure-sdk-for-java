@@ -6,64 +6,46 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.PersistedConnectionStatus;
 import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnectionsParentType;
 import com.azure.resourcemanager.eventgrid.models.ResourceProvisioningState;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PrivateEndpointConnectionsListByResourceMockTests {
     @Test
     public void testListByResource() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"gkord\"},\"groupIds\":[\"jpecwzvcmb\",\"wdlu\"],\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"ldidwmtffb\",\"actionsRequired\":\"zldzchubagwnl\"},\"provisioningState\":\"Deleting\"},\"id\":\"igvlghfrbzakpjtc\",\"name\":\"raqp\",\"type\":\"jpsucmxi\"}]}";
+            = "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"vuftrsvjmnsvu\"},\"groupIds\":[\"ktvole\",\"cjisepkdbxotfbja\"],\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"lannmxynlsuqbw\",\"actionsRequired\":\"trkt\"},\"provisioningState\":\"Succeeded\"},\"id\":\"atr\",\"name\":\"jjktfin\",\"type\":\"hoksmmculwk\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        EventGridManager manager = EventGridManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        EventGridManager manager = EventGridManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        PagedIterable<PrivateEndpointConnection> response = manager.privateEndpointConnections()
+            .listByResource("kwopswnyinxupr", PrivateEndpointConnectionsParentType.NAMESPACES, "yxwjezb", "qployu",
+                1539434217, com.azure.core.util.Context.NONE);
 
-        PagedIterable<PrivateEndpointConnection> response = manager.privateEndpointConnections().listByResource(
-            "lhwyykgvrccpumd", PrivateEndpointConnectionsParentType.DOMAINS, "gajkrdyddtpfcud", "afnbfbqve", 1548823667,
-            com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("gkord", response.iterator().next().privateEndpoint().id());
-        Assertions.assertEquals("jpecwzvcmb", response.iterator().next().groupIds().get(0));
-        Assertions.assertEquals(PersistedConnectionStatus.APPROVED,
+        Assertions.assertEquals("vuftrsvjmnsvu", response.iterator().next().privateEndpoint().id());
+        Assertions.assertEquals("ktvole", response.iterator().next().groupIds().get(0));
+        Assertions.assertEquals(PersistedConnectionStatus.DISCONNECTED,
             response.iterator().next().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("ldidwmtffb",
+        Assertions.assertEquals("lannmxynlsuqbw",
             response.iterator().next().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("zldzchubagwnl",
+        Assertions.assertEquals("trkt",
             response.iterator().next().privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals(ResourceProvisioningState.DELETING, response.iterator().next().provisioningState());
+        Assertions.assertEquals(ResourceProvisioningState.SUCCEEDED, response.iterator().next().provisioningState());
     }
 }

@@ -33,7 +33,7 @@ public final class PrivateEndpointConnectionsListByBatchAccountMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"rsukokwbqplh\"},\"groupIds\":[\"uuepzlrphwzsoldw\",\"yuqdu\",\"vmnnrw\"],\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"rk\",\"actionsRequired\":\"lywjhh\"}},\"etag\":\"nhxmsi\",\"id\":\"fomiloxgg\",\"name\":\"ufiqndieuzaof\",\"type\":\"chvcyyysfgdo\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"privateEndpoint\":{\"id\":\"stvdxeclz\"},\"groupIds\":[\"bcvhzlhpl\",\"dqkdlwwqfbu\",\"lkxt\"],\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"smlmbtxhwgfwsrta\",\"actionsRequired\":\"oezbrhubsk\"}},\"etag\":\"dyg\",\"id\":\"ookk\",\"name\":\"fqjbvleo\",\"type\":\"fmluiqtqzfavyvn\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -51,10 +51,11 @@ public final class PrivateEndpointConnectionsListByBatchAccountMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<PrivateEndpointConnection> response = manager.privateEndpointConnections()
-            .listByBatchAccount("epn", "bjcrxgibbdaxco", 456255387, com.azure.core.util.Context.NONE);
+            .listByBatchAccount("uudl", "zibt", 1621588970, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.APPROVED,
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.DISCONNECTED,
             response.iterator().next().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("rk", response.iterator().next().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("smlmbtxhwgfwsrta",
+            response.iterator().next().privateLinkServiceConnectionState().description());
     }
 }

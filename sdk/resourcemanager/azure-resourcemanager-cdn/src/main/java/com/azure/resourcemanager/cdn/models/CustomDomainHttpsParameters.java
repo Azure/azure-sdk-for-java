@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The JSON object that contains the properties to secure a custom domain. */
+/**
+ * The JSON object that contains the properties to secure a custom domain.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -20,8 +22,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("CustomDomainHttpsParameters")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Cdn", value = CdnManagedHttpsParameters.class),
-    @JsonSubTypes.Type(name = "AzureKeyVault", value = UserManagedHttpsParameters.class)
-})
+    @JsonSubTypes.Type(name = "AzureKeyVault", value = UserManagedHttpsParameters.class) })
 @Fluent
 public class CustomDomainHttpsParameters {
     /*
@@ -36,13 +37,15 @@ public class CustomDomainHttpsParameters {
     @JsonProperty(value = "minimumTlsVersion")
     private MinimumTlsVersion minimumTlsVersion;
 
-    /** Creates an instance of CustomDomainHttpsParameters class. */
+    /**
+     * Creates an instance of CustomDomainHttpsParameters class.
+     */
     public CustomDomainHttpsParameters() {
     }
 
     /**
      * Get the protocolType property: Defines the TLS extension protocol that is used for secure delivery.
-     *
+     * 
      * @return the protocolType value.
      */
     public ProtocolType protocolType() {
@@ -51,7 +54,7 @@ public class CustomDomainHttpsParameters {
 
     /**
      * Set the protocolType property: Defines the TLS extension protocol that is used for secure delivery.
-     *
+     * 
      * @param protocolType the protocolType value to set.
      * @return the CustomDomainHttpsParameters object itself.
      */
@@ -62,7 +65,7 @@ public class CustomDomainHttpsParameters {
 
     /**
      * Get the minimumTlsVersion property: TLS protocol version that will be used for Https.
-     *
+     * 
      * @return the minimumTlsVersion value.
      */
     public MinimumTlsVersion minimumTlsVersion() {
@@ -71,7 +74,7 @@ public class CustomDomainHttpsParameters {
 
     /**
      * Set the minimumTlsVersion property: TLS protocol version that will be used for Https.
-     *
+     * 
      * @param minimumTlsVersion the minimumTlsVersion value to set.
      * @return the CustomDomainHttpsParameters object itself.
      */
@@ -82,15 +85,13 @@ public class CustomDomainHttpsParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (protocolType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property protocolType in model CustomDomainHttpsParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property protocolType in model CustomDomainHttpsParameters"));
         }
     }
 

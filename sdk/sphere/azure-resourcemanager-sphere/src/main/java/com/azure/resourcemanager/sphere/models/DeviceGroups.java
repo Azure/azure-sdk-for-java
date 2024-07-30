@@ -8,12 +8,14 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of DeviceGroups. */
+/**
+ * Resource collection API of DeviceGroups.
+ */
 public interface DeviceGroups {
     /**
      * List DeviceGroup resources by Product. '.default' and '.unassigned' are system defined values and cannot be used
      * for product name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -27,7 +29,7 @@ public interface DeviceGroups {
     /**
      * List DeviceGroup resources by Product. '.default' and '.unassigned' are system defined values and cannot be used
      * for product name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -41,20 +43,13 @@ public interface DeviceGroups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a DeviceGroup list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DeviceGroup> listByProduct(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Integer maxpagesize,
-        Context context);
+    PagedIterable<DeviceGroup> listByProduct(String resourceGroupName, String catalogName, String productName,
+        String filter, Integer top, Integer skip, Integer maxpagesize, Context context);
 
     /**
      * Get a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -65,13 +60,13 @@ public interface DeviceGroups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a DeviceGroup along with {@link Response}.
      */
-    Response<DeviceGroup> getWithResponse(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName, Context context);
+    Response<DeviceGroup> getWithResponse(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, Context context);
 
     /**
      * Get a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -86,7 +81,7 @@ public interface DeviceGroups {
     /**
      * Delete a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -100,7 +95,7 @@ public interface DeviceGroups {
     /**
      * Delete a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -110,13 +105,13 @@ public interface DeviceGroups {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName, Context context);
+    void delete(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
+        Context context);
 
     /**
      * Bulk claims the devices. Use '.unassigned' or '.default' for the device group and product names when bulk
      * claiming devices to a catalog only.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -126,17 +121,13 @@ public interface DeviceGroups {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void claimDevices(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
+    void claimDevices(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
         ClaimDevicesRequest claimDevicesRequest);
 
     /**
      * Bulk claims the devices. Use '.unassigned' or '.default' for the device group and product names when bulk
      * claiming devices to a catalog only.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -147,18 +138,13 @@ public interface DeviceGroups {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void claimDevices(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        ClaimDevicesRequest claimDevicesRequest,
-        Context context);
+    void claimDevices(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
+        ClaimDevicesRequest claimDevicesRequest, Context context);
 
     /**
      * Counts devices in device group. '.default' and '.unassigned' are system defined values and cannot be used for
      * product or device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -169,13 +155,13 @@ public interface DeviceGroups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response to the action call for count devices in a catalog along with {@link Response}.
      */
-    Response<CountDeviceResponse> countDevicesWithResponse(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName, Context context);
+    Response<CountDevicesResponse> countDevicesWithResponse(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, Context context);
 
     /**
      * Counts devices in device group. '.default' and '.unassigned' are system defined values and cannot be used for
      * product or device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -185,13 +171,13 @@ public interface DeviceGroups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response to the action call for count devices in a catalog.
      */
-    CountDeviceResponse countDevices(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName);
+    CountDevicesResponse countDevices(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName);
 
     /**
      * Get a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -203,7 +189,7 @@ public interface DeviceGroups {
     /**
      * Get a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -216,7 +202,7 @@ public interface DeviceGroups {
     /**
      * Delete a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -227,7 +213,7 @@ public interface DeviceGroups {
     /**
      * Delete a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -238,7 +224,7 @@ public interface DeviceGroups {
 
     /**
      * Begins definition for a new DeviceGroup resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new DeviceGroup definition.
      */

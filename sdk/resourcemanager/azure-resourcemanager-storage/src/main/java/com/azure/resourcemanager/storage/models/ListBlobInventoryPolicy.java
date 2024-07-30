@@ -9,7 +9,9 @@ import com.azure.resourcemanager.storage.fluent.models.BlobInventoryPolicyInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of blob inventory policies returned. */
+/**
+ * List of blob inventory policies returned.
+ */
 @Immutable
 public final class ListBlobInventoryPolicy {
     /*
@@ -18,13 +20,15 @@ public final class ListBlobInventoryPolicy {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<BlobInventoryPolicyInner> value;
 
-    /** Creates an instance of ListBlobInventoryPolicy class. */
+    /**
+     * Creates an instance of ListBlobInventoryPolicy class.
+     */
     public ListBlobInventoryPolicy() {
     }
 
     /**
      * Get the value property: List of blob inventory policies.
-     *
+     * 
      * @return the value value.
      */
     public List<BlobInventoryPolicyInner> value() {
@@ -33,7 +37,7 @@ public final class ListBlobInventoryPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

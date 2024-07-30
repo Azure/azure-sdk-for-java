@@ -7,7 +7,9 @@ package com.azure.resourcemanager.devcenter.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties for a range of values. */
+/**
+ * Properties for a range of values.
+ */
 @Immutable
 public final class ResourceRange {
     /*
@@ -22,13 +24,15 @@ public final class ResourceRange {
     @JsonProperty(value = "max", access = JsonProperty.Access.WRITE_ONLY)
     private Integer max;
 
-    /** Creates an instance of ResourceRange class. */
+    /**
+     * Creates an instance of ResourceRange class.
+     */
     public ResourceRange() {
     }
 
     /**
      * Get the min property: Minimum value.
-     *
+     * 
      * @return the min value.
      */
     public Integer min() {
@@ -37,7 +41,7 @@ public final class ResourceRange {
 
     /**
      * Get the max property: Maximum value.
-     *
+     * 
      * @return the max value.
      */
     public Integer max() {
@@ -46,7 +50,7 @@ public final class ResourceRange {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

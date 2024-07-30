@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.fluent.models.ThroughputSettingsUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Map;
 
 /**
@@ -29,7 +30,7 @@ public final class ThroughputSettingsUpdateParameters extends ArmResourcePropert
 
     /**
      * Get the innerProperties property: Properties to update Azure Cosmos DB resource throughput.
-     * 
+     *
      * @return the innerProperties value.
      */
     private ThroughputSettingsUpdateProperties innerProperties() {
@@ -56,7 +57,7 @@ public final class ThroughputSettingsUpdateParameters extends ArmResourcePropert
 
     /**
      * Get the resource property: The standard JSON format of a resource throughput.
-     * 
+     *
      * @return the resource value.
      */
     public ThroughputSettingsResource resource() {
@@ -65,7 +66,7 @@ public final class ThroughputSettingsUpdateParameters extends ArmResourcePropert
 
     /**
      * Set the resource property: The standard JSON format of a resource throughput.
-     * 
+     *
      * @param resource the resource value to set.
      * @return the ThroughputSettingsUpdateParameters object itself.
      */
@@ -79,15 +80,16 @@ public final class ThroughputSettingsUpdateParameters extends ArmResourcePropert
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model ThroughputSettingsUpdateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model ThroughputSettingsUpdateParameters"));
         } else {
             innerProperties().validate();
         }

@@ -4,11 +4,14 @@
 
 package com.azure.resourcemanager.devcenter.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
-/** Stats of the synchronization. */
-@Immutable
+/**
+ * Stats of the synchronization.
+ */
+@Fluent
 public final class SyncStats {
     /*
      * Count of catalog items added during synchronization.
@@ -46,13 +49,21 @@ public final class SyncStats {
     @JsonProperty(value = "synchronizationErrors", access = JsonProperty.Access.WRITE_ONLY)
     private Integer synchronizationErrors;
 
-    /** Creates an instance of SyncStats class. */
+    /*
+     * Indicates catalog item types that were synced.
+     */
+    @JsonProperty(value = "syncedCatalogItemTypes")
+    private List<CatalogItemType> syncedCatalogItemTypes;
+
+    /**
+     * Creates an instance of SyncStats class.
+     */
     public SyncStats() {
     }
 
     /**
      * Get the added property: Count of catalog items added during synchronization.
-     *
+     * 
      * @return the added value.
      */
     public Integer added() {
@@ -61,7 +72,7 @@ public final class SyncStats {
 
     /**
      * Get the updated property: Count of catalog items updated during synchronization.
-     *
+     * 
      * @return the updated value.
      */
     public Integer updated() {
@@ -70,7 +81,7 @@ public final class SyncStats {
 
     /**
      * Get the unchanged property: Count of catalog items that were unchanged during synchronization.
-     *
+     * 
      * @return the unchanged value.
      */
     public Integer unchanged() {
@@ -79,7 +90,7 @@ public final class SyncStats {
 
     /**
      * Get the removed property: Count of catalog items removed during synchronization.
-     *
+     * 
      * @return the removed value.
      */
     public Integer removed() {
@@ -88,7 +99,7 @@ public final class SyncStats {
 
     /**
      * Get the validationErrors property: Count of catalog items that had validation errors during synchronization.
-     *
+     * 
      * @return the validationErrors value.
      */
     public Integer validationErrors() {
@@ -97,7 +108,7 @@ public final class SyncStats {
 
     /**
      * Get the synchronizationErrors property: Count of synchronization errors that occured during synchronization.
-     *
+     * 
      * @return the synchronizationErrors value.
      */
     public Integer synchronizationErrors() {
@@ -105,8 +116,28 @@ public final class SyncStats {
     }
 
     /**
+     * Get the syncedCatalogItemTypes property: Indicates catalog item types that were synced.
+     * 
+     * @return the syncedCatalogItemTypes value.
+     */
+    public List<CatalogItemType> syncedCatalogItemTypes() {
+        return this.syncedCatalogItemTypes;
+    }
+
+    /**
+     * Set the syncedCatalogItemTypes property: Indicates catalog item types that were synced.
+     * 
+     * @param syncedCatalogItemTypes the syncedCatalogItemTypes value to set.
+     * @return the SyncStats object itself.
+     */
+    public SyncStats withSyncedCatalogItemTypes(List<CatalogItemType> syncedCatalogItemTypes) {
+        this.syncedCatalogItemTypes = syncedCatalogItemTypes;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

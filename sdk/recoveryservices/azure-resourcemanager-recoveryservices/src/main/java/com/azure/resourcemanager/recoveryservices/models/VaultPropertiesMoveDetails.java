@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The details of the latest move operation performed on the Azure Resource. */
+/**
+ * The details of the latest move operation performed on the Azure Resource.
+ */
 @Immutable
 public final class VaultPropertiesMoveDetails {
     /*
@@ -41,13 +43,15 @@ public final class VaultPropertiesMoveDetails {
     @JsonProperty(value = "targetResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String targetResourceId;
 
-    /** Creates an instance of VaultPropertiesMoveDetails class. */
+    /**
+     * Creates an instance of VaultPropertiesMoveDetails class.
+     */
     public VaultPropertiesMoveDetails() {
     }
 
     /**
      * Get the operationId property: OperationId of the Resource Move Operation.
-     *
+     * 
      * @return the operationId value.
      */
     public String operationId() {
@@ -56,7 +60,7 @@ public final class VaultPropertiesMoveDetails {
 
     /**
      * Get the startTimeUtc property: Start Time of the Resource Move Operation.
-     *
+     * 
      * @return the startTimeUtc value.
      */
     public OffsetDateTime startTimeUtc() {
@@ -65,7 +69,7 @@ public final class VaultPropertiesMoveDetails {
 
     /**
      * Get the completionTimeUtc property: End Time of the Resource Move Operation.
-     *
+     * 
      * @return the completionTimeUtc value.
      */
     public OffsetDateTime completionTimeUtc() {
@@ -74,7 +78,7 @@ public final class VaultPropertiesMoveDetails {
 
     /**
      * Get the sourceResourceId property: Source Resource of the Resource Move Operation.
-     *
+     * 
      * @return the sourceResourceId value.
      */
     public String sourceResourceId() {
@@ -83,7 +87,7 @@ public final class VaultPropertiesMoveDetails {
 
     /**
      * Get the targetResourceId property: Target Resource of the Resource Move Operation.
-     *
+     * 
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -92,7 +96,7 @@ public final class VaultPropertiesMoveDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

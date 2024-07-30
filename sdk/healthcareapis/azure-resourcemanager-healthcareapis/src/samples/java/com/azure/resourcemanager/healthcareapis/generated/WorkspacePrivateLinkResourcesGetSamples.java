@@ -9,9 +9,7 @@ package com.azure.resourcemanager.healthcareapis.generated;
  */
 public final class WorkspacePrivateLinkResourcesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/privatelink/
-     * WorkspacePrivateLinkResourceGet.json
+     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/privatelink/WorkspacePrivateLinkResourceGet.json
      */
     /**
      * Sample code: WorkspacePrivateLinkResources_Get.
@@ -20,7 +18,7 @@ public final class WorkspacePrivateLinkResourcesGetSamples {
      */
     public static void
         workspacePrivateLinkResourcesGet(com.azure.resourcemanager.healthcareapis.HealthcareApisManager manager) {
-        manager.workspacePrivateLinkResources().getWithResponse("testRG", "workspace1", "healthcareworkspace",
-            com.azure.core.util.Context.NONE);
+        manager.workspacePrivateLinkResources()
+            .getWithResponse("testRG", "workspace1", "healthcareworkspace", com.azure.core.util.Context.NONE);
     }
 }

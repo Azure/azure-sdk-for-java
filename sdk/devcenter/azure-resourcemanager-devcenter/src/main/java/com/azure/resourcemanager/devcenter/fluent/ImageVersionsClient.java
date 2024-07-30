@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.fluent.models.ImageVersionInner;
 
-/** An instance of this class provides access to all the operations defined in ImageVersionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ImageVersionsClient.
+ */
 public interface ImageVersionsClient {
     /**
      * Lists versions for an image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
@@ -26,12 +28,12 @@ public interface ImageVersionsClient {
      * @return results of the image version list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ImageVersionInner> listByImage(
-        String resourceGroupName, String devCenterName, String galleryName, String imageName);
+    PagedIterable<ImageVersionInner> listByImage(String resourceGroupName, String devCenterName, String galleryName,
+        String imageName);
 
     /**
      * Lists versions for an image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
@@ -43,12 +45,12 @@ public interface ImageVersionsClient {
      * @return results of the image version list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ImageVersionInner> listByImage(
-        String resourceGroupName, String devCenterName, String galleryName, String imageName, Context context);
+    PagedIterable<ImageVersionInner> listByImage(String resourceGroupName, String devCenterName, String galleryName,
+        String imageName, Context context);
 
     /**
      * Gets an image version.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
@@ -61,17 +63,12 @@ public interface ImageVersionsClient {
      * @return an image version along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ImageVersionInner> getWithResponse(
-        String resourceGroupName,
-        String devCenterName,
-        String galleryName,
-        String imageName,
-        String versionName,
-        Context context);
+    Response<ImageVersionInner> getWithResponse(String resourceGroupName, String devCenterName, String galleryName,
+        String imageName, String versionName, Context context);
 
     /**
      * Gets an image version.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
@@ -83,6 +80,6 @@ public interface ImageVersionsClient {
      * @return an image version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ImageVersionInner get(
-        String resourceGroupName, String devCenterName, String galleryName, String imageName, String versionName);
+    ImageVersionInner get(String resourceGroupName, String devCenterName, String galleryName, String imageName,
+        String versionName);
 }

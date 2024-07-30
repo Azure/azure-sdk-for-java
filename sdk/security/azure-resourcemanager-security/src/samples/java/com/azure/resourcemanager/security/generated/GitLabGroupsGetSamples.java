@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class GitLabGroupsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2023-09-01-preview/examples/
-     * SecurityConnectorsDevOps/GetGitLabGroups_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/GetGitLabGroups_example.json
      */
     /**
      * Sample code: Get_GitLabGroups.
@@ -19,7 +17,8 @@ public final class GitLabGroupsGetSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void getGitLabGroups(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.gitLabGroups().getWithResponse("myRg", "mySecurityConnectorName", "myGitLabGroup$mySubGroup",
-            com.azure.core.util.Context.NONE);
+        manager.gitLabGroups()
+            .getWithResponse("myRg", "mySecurityConnectorName", "myGitLabGroup$mySubGroup",
+                com.azure.core.util.Context.NONE);
     }
 }

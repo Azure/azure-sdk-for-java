@@ -13,8 +13,8 @@ public final class ExtensionValueImpl implements ExtensionValue {
 
     private final com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager;
 
-    ExtensionValueImpl(
-        ExtensionValueInner innerObject, com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager) {
+    ExtensionValueImpl(ExtensionValueInner innerObject,
+        com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

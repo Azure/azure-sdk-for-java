@@ -76,8 +76,8 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
     }
 
     /**
-     * The interface defining all the services for NetworkManagementClientVirtualHubs to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for NetworkManagementClientVirtualHubs to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
@@ -218,7 +218,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(),
@@ -255,7 +255,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -345,7 +345,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         } else {
             virtualHubParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -389,7 +389,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         } else {
             virtualHubParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -581,7 +581,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         } else {
             virtualHubParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -625,7 +625,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         } else {
             virtualHubParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -712,7 +712,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -749,7 +749,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -911,7 +911,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
@@ -947,7 +947,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1035,7 +1035,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
@@ -1065,7 +1065,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
@@ -1159,7 +1159,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         if (effectiveRoutesParameters != null) {
             effectiveRoutesParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getEffectiveVirtualHubRoutes(this.client.getEndpoint(),
@@ -1202,7 +1202,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         if (effectiveRoutesParameters != null) {
             effectiveRoutesParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getEffectiveVirtualHubRoutes(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -1315,8 +1315,10 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
     public SyncPoller<PollResult<VirtualHubEffectiveRouteListInner>, VirtualHubEffectiveRouteListInner>
         beginGetEffectiveVirtualHubRoutes(String resourceGroupName, String virtualHubName,
             EffectiveRoutesParameters effectiveRoutesParameters, Context context) {
-        return this.beginGetEffectiveVirtualHubRoutesAsync(resourceGroupName, virtualHubName, effectiveRoutesParameters,
-            context).getSyncPoller();
+        return this
+            .beginGetEffectiveVirtualHubRoutesAsync(resourceGroupName, virtualHubName, effectiveRoutesParameters,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -1335,7 +1337,8 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
     public Mono<VirtualHubEffectiveRouteListInner> getEffectiveVirtualHubRoutesAsync(String resourceGroupName,
         String virtualHubName, EffectiveRoutesParameters effectiveRoutesParameters) {
         return beginGetEffectiveVirtualHubRoutesAsync(resourceGroupName, virtualHubName, effectiveRoutesParameters)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1354,7 +1357,8 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         String virtualHubName) {
         final EffectiveRoutesParameters effectiveRoutesParameters = null;
         return beginGetEffectiveVirtualHubRoutesAsync(resourceGroupName, virtualHubName, effectiveRoutesParameters)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1449,7 +1453,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         } else {
             getInboundRoutesParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getInboundRoutes(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -1494,7 +1498,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         } else {
             getInboundRoutesParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getInboundRoutes(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -1700,7 +1704,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         } else {
             getOutboundRoutesParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1746,7 +1750,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
         } else {
             getOutboundRoutesParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getOutboundRoutes(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -1878,7 +1882,8 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
     private Mono<EffectiveRouteMapRouteListInner> getOutboundRoutesAsync(String resourceGroupName,
         String virtualHubName, GetOutboundRoutesParameters getOutboundRoutesParameters, Context context) {
         return beginGetOutboundRoutesAsync(resourceGroupName, virtualHubName, getOutboundRoutesParameters, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1919,9 +1924,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1949,9 +1952,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1979,9 +1980,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2007,9 +2006,7 @@ public final class VirtualHubsClientImpl implements InnerSupportsGet<VirtualHubI
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

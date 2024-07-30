@@ -21,8 +21,10 @@ public final class ExposureControlGetFeatureValueSamples {
      */
     public static void
         exposureControlGetFeatureValue(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.exposureControls().getFeatureValueWithResponse("WestEurope",
-            new ExposureControlRequest().withFeatureName("ADFIntegrationRuntimeSharingRbac").withFeatureType("Feature"),
-            com.azure.core.util.Context.NONE);
+        manager.exposureControls()
+            .getFeatureValueWithResponse("WestEurope",
+                new ExposureControlRequest().withFeatureName("ADFIntegrationRuntimeSharingRbac")
+                    .withFeatureType("Feature"),
+                com.azure.core.util.Context.NONE);
     }
 }

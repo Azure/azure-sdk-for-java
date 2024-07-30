@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.frontdoor.models.State;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines the properties of an experiment. */
+/**
+ * Defines the properties of an experiment.
+ */
 @Fluent
 public final class ExperimentUpdateProperties {
     /*
@@ -23,13 +25,15 @@ public final class ExperimentUpdateProperties {
     @JsonProperty(value = "enabledState")
     private State enabledState;
 
-    /** Creates an instance of ExperimentUpdateProperties class. */
+    /**
+     * Creates an instance of ExperimentUpdateProperties class.
+     */
     public ExperimentUpdateProperties() {
     }
 
     /**
      * Get the description property: The description of the intent or details of the Experiment.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -38,7 +42,7 @@ public final class ExperimentUpdateProperties {
 
     /**
      * Set the description property: The description of the intent or details of the Experiment.
-     *
+     * 
      * @param description the description value to set.
      * @return the ExperimentUpdateProperties object itself.
      */
@@ -49,7 +53,7 @@ public final class ExperimentUpdateProperties {
 
     /**
      * Get the enabledState property: The state of the Experiment.
-     *
+     * 
      * @return the enabledState value.
      */
     public State enabledState() {
@@ -58,7 +62,7 @@ public final class ExperimentUpdateProperties {
 
     /**
      * Set the enabledState property: The state of the Experiment.
-     *
+     * 
      * @param enabledState the enabledState value to set.
      * @return the ExperimentUpdateProperties object itself.
      */
@@ -69,7 +73,7 @@ public final class ExperimentUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

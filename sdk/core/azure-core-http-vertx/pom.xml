@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-vertx</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.17</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;current} -->
+  <version>1.0.0-beta.20</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;current} -->
 
   <name>Microsoft Azure Vert.x HTTP Client Library</name>
   <description>This package contains the Vert.x HTTP client plugin for azure-core.</description>
@@ -65,6 +65,7 @@
     <spotbugs.skip>false</spotbugs.skip>
     <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
     <spotless.skip>false</spotless.skip>
+    <animal.sniffer.skip>false</animal.sniffer.skip>
   </properties>
 
   <developers>
@@ -78,54 +79,48 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.48.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.51.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <!-- Required to satisfy the -Xlint:classfile compiler option -->
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-codegen</artifactId>
-      <version>4.5.4</version> <!-- {x-version-update;io.vertx:vertx-codegen;external_dependency} -->
+      <version>4.5.8</version> <!-- {x-version-update;io.vertx:vertx-codegen;external_dependency} -->
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-core</artifactId>
-      <version>4.5.4</version> <!-- {x-version-update;io.vertx:vertx-core;external_dependency} -->
-    </dependency>
-
-    <dependency>
-      <groupId>io.vertx</groupId>
-      <artifactId>vertx-reactive-streams</artifactId>
-      <version>4.5.4</version> <!-- {x-version-update;io.vertx:vertx-reactive-streams;external_dependency} -->
+      <version>4.5.8</version> <!-- {x-version-update;io.vertx:vertx-core;external_dependency} -->
     </dependency>
 
     <!-- test dependencies on azure-core, because we want to run tests inherited from this module using Vert.x Web Client -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.48.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.51.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.25.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <version>1.27.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.25.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <version>1.27.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.34</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.38</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -159,13 +154,13 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.14.8</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.14.12</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.14.8</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.14.12</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -175,14 +170,14 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.vertx:vertx-codegen:[4.5.4]</include> <!-- {x-include-update;io.vertx:vertx-codegen;external_dependency} -->
-                <include>io.vertx:vertx-core:[4.5.4]</include> <!-- {x-include-update;io.vertx:vertx-core;external_dependency} -->
-                <include>io.vertx:vertx-reactive-streams:[4.5.4]</include> <!-- {x-include-update;io.vertx:vertx-reactive-streams;external_dependency} -->
+                <include>io.vertx:vertx-codegen:[4.5.8]</include> <!-- {x-include-update;io.vertx:vertx-codegen;external_dependency} -->
+                <include>io.vertx:vertx-core:[4.5.8]</include> <!-- {x-include-update;io.vertx:vertx-core;external_dependency} -->
+                <include>io.vertx:vertx-reactive-streams:[4.5.8]</include> <!-- {x-include-update;io.vertx:vertx-reactive-streams;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

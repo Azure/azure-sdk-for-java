@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class PacketCoreControlPlaneResourceIdTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PacketCoreControlPlaneResourceId model =
-            BinaryData.fromString("{\"id\":\"rxpdlcgqlsi\"}").toObject(PacketCoreControlPlaneResourceId.class);
-        Assertions.assertEquals("rxpdlcgqlsi", model.id());
+        PacketCoreControlPlaneResourceId model
+            = BinaryData.fromString("{\"id\":\"ud\"}").toObject(PacketCoreControlPlaneResourceId.class);
+        Assertions.assertEquals("ud", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PacketCoreControlPlaneResourceId model = new PacketCoreControlPlaneResourceId().withId("rxpdlcgqlsi");
+        PacketCoreControlPlaneResourceId model = new PacketCoreControlPlaneResourceId().withId("ud");
         model = BinaryData.fromObject(model).toObject(PacketCoreControlPlaneResourceId.class);
-        Assertions.assertEquals("rxpdlcgqlsi", model.id());
+        Assertions.assertEquals("ud", model.id());
     }
 }

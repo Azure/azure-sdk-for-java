@@ -15,59 +15,69 @@ public final class AzureBackupServerEngineTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBackupServerEngine model = BinaryData.fromString(
-            "{\"backupEngineType\":\"AzureBackupServerEngine\",\"friendlyName\":\"hlowkx\",\"backupManagementType\":\"MAB\",\"registrationStatus\":\"rdfjmzsyzfhotl\",\"backupEngineState\":\"k\",\"healthStatus\":\"ychunsjlpjrtwszh\",\"canReRegister\":false,\"backupEngineId\":\"c\",\"dpmVersion\":\"vtrrmhwrbfdpyflu\",\"azureBackupAgentVersion\":\"vjglrocuyzlwhhme\",\"isAzureBackupAgentUpgradeAvailable\":false,\"isDpmUpgradeAvailable\":true,\"extendedInfo\":{\"databaseName\":\"tnpqmemczjk\",\"protectedItemsCount\":2087898148,\"protectedServersCount\":1252342412,\"diskCount\":1879965141,\"usedDiskSpace\":35.50652285164764,\"availableDiskSpace\":83.93859393258009,\"refreshedAt\":\"2021-09-28T04:14:11Z\",\"azureProtectedInstances\":2045449859}}")
+            "{\"backupEngineType\":\"AzureBackupServerEngine\",\"friendlyName\":\"gv\",\"backupManagementType\":\"AzureIaasVM\",\"registrationStatus\":\"rrkolawjmjs\",\"backupEngineState\":\"rokcdxfzzzwyjaf\",\"healthStatus\":\"lhguyn\",\"canReRegister\":true,\"backupEngineId\":\"gmltxdw\",\"dpmVersion\":\"ozusgz\",\"azureBackupAgentVersion\":\"ns\",\"isAzureBackupAgentUpgradeAvailable\":true,\"isDpmUpgradeAvailable\":true,\"extendedInfo\":{\"databaseName\":\"folpymwamxqzra\",\"protectedItemsCount\":520460830,\"protectedServersCount\":1456330987,\"diskCount\":36085311,\"usedDiskSpace\":77.45310615268932,\"availableDiskSpace\":3.1510208685722407,\"refreshedAt\":\"2021-09-16T17:21:57Z\",\"azureProtectedInstances\":1390786576}}")
             .toObject(AzureBackupServerEngine.class);
-        Assertions.assertEquals("hlowkx", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());
-        Assertions.assertEquals("rdfjmzsyzfhotl", model.registrationStatus());
-        Assertions.assertEquals("k", model.backupEngineState());
-        Assertions.assertEquals("ychunsjlpjrtwszh", model.healthStatus());
-        Assertions.assertEquals(false, model.canReRegister());
-        Assertions.assertEquals("c", model.backupEngineId());
-        Assertions.assertEquals("vtrrmhwrbfdpyflu", model.dpmVersion());
-        Assertions.assertEquals("vjglrocuyzlwhhme", model.azureBackupAgentVersion());
-        Assertions.assertEquals(false, model.isAzureBackupAgentUpgradeAvailable());
+        Assertions.assertEquals("gv", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_IAAS_VM, model.backupManagementType());
+        Assertions.assertEquals("rrkolawjmjs", model.registrationStatus());
+        Assertions.assertEquals("rokcdxfzzzwyjaf", model.backupEngineState());
+        Assertions.assertEquals("lhguyn", model.healthStatus());
+        Assertions.assertEquals(true, model.canReRegister());
+        Assertions.assertEquals("gmltxdw", model.backupEngineId());
+        Assertions.assertEquals("ozusgz", model.dpmVersion());
+        Assertions.assertEquals("ns", model.azureBackupAgentVersion());
+        Assertions.assertEquals(true, model.isAzureBackupAgentUpgradeAvailable());
         Assertions.assertEquals(true, model.isDpmUpgradeAvailable());
-        Assertions.assertEquals("tnpqmemczjk", model.extendedInfo().databaseName());
-        Assertions.assertEquals(2087898148, model.extendedInfo().protectedItemsCount());
-        Assertions.assertEquals(1252342412, model.extendedInfo().protectedServersCount());
-        Assertions.assertEquals(1879965141, model.extendedInfo().diskCount());
-        Assertions.assertEquals(35.50652285164764D, model.extendedInfo().usedDiskSpace());
-        Assertions.assertEquals(83.93859393258009D, model.extendedInfo().availableDiskSpace());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-28T04:14:11Z"), model.extendedInfo().refreshedAt());
-        Assertions.assertEquals(2045449859, model.extendedInfo().azureProtectedInstances());
+        Assertions.assertEquals("folpymwamxqzra", model.extendedInfo().databaseName());
+        Assertions.assertEquals(520460830, model.extendedInfo().protectedItemsCount());
+        Assertions.assertEquals(1456330987, model.extendedInfo().protectedServersCount());
+        Assertions.assertEquals(36085311, model.extendedInfo().diskCount());
+        Assertions.assertEquals(77.45310615268932D, model.extendedInfo().usedDiskSpace());
+        Assertions.assertEquals(3.1510208685722407D, model.extendedInfo().availableDiskSpace());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-16T17:21:57Z"), model.extendedInfo().refreshedAt());
+        Assertions.assertEquals(1390786576, model.extendedInfo().azureProtectedInstances());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureBackupServerEngine model = new AzureBackupServerEngine().withFriendlyName("hlowkx")
-            .withBackupManagementType(BackupManagementType.MAB).withRegistrationStatus("rdfjmzsyzfhotl")
-            .withBackupEngineState("k").withHealthStatus("ychunsjlpjrtwszh").withCanReRegister(false)
-            .withBackupEngineId("c").withDpmVersion("vtrrmhwrbfdpyflu").withAzureBackupAgentVersion("vjglrocuyzlwhhme")
-            .withIsAzureBackupAgentUpgradeAvailable(false).withIsDpmUpgradeAvailable(true)
-            .withExtendedInfo(new BackupEngineExtendedInfo().withDatabaseName("tnpqmemczjk")
-                .withProtectedItemsCount(2087898148).withProtectedServersCount(1252342412).withDiskCount(1879965141)
-                .withUsedDiskSpace(35.50652285164764D).withAvailableDiskSpace(83.93859393258009D)
-                .withRefreshedAt(OffsetDateTime.parse("2021-09-28T04:14:11Z")).withAzureProtectedInstances(2045449859));
+        AzureBackupServerEngine model = new AzureBackupServerEngine().withFriendlyName("gv")
+            .withBackupManagementType(BackupManagementType.AZURE_IAAS_VM)
+            .withRegistrationStatus("rrkolawjmjs")
+            .withBackupEngineState("rokcdxfzzzwyjaf")
+            .withHealthStatus("lhguyn")
+            .withCanReRegister(true)
+            .withBackupEngineId("gmltxdw")
+            .withDpmVersion("ozusgz")
+            .withAzureBackupAgentVersion("ns")
+            .withIsAzureBackupAgentUpgradeAvailable(true)
+            .withIsDpmUpgradeAvailable(true)
+            .withExtendedInfo(new BackupEngineExtendedInfo().withDatabaseName("folpymwamxqzra")
+                .withProtectedItemsCount(520460830)
+                .withProtectedServersCount(1456330987)
+                .withDiskCount(36085311)
+                .withUsedDiskSpace(77.45310615268932D)
+                .withAvailableDiskSpace(3.1510208685722407D)
+                .withRefreshedAt(OffsetDateTime.parse("2021-09-16T17:21:57Z"))
+                .withAzureProtectedInstances(1390786576));
         model = BinaryData.fromObject(model).toObject(AzureBackupServerEngine.class);
-        Assertions.assertEquals("hlowkx", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());
-        Assertions.assertEquals("rdfjmzsyzfhotl", model.registrationStatus());
-        Assertions.assertEquals("k", model.backupEngineState());
-        Assertions.assertEquals("ychunsjlpjrtwszh", model.healthStatus());
-        Assertions.assertEquals(false, model.canReRegister());
-        Assertions.assertEquals("c", model.backupEngineId());
-        Assertions.assertEquals("vtrrmhwrbfdpyflu", model.dpmVersion());
-        Assertions.assertEquals("vjglrocuyzlwhhme", model.azureBackupAgentVersion());
-        Assertions.assertEquals(false, model.isAzureBackupAgentUpgradeAvailable());
+        Assertions.assertEquals("gv", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_IAAS_VM, model.backupManagementType());
+        Assertions.assertEquals("rrkolawjmjs", model.registrationStatus());
+        Assertions.assertEquals("rokcdxfzzzwyjaf", model.backupEngineState());
+        Assertions.assertEquals("lhguyn", model.healthStatus());
+        Assertions.assertEquals(true, model.canReRegister());
+        Assertions.assertEquals("gmltxdw", model.backupEngineId());
+        Assertions.assertEquals("ozusgz", model.dpmVersion());
+        Assertions.assertEquals("ns", model.azureBackupAgentVersion());
+        Assertions.assertEquals(true, model.isAzureBackupAgentUpgradeAvailable());
         Assertions.assertEquals(true, model.isDpmUpgradeAvailable());
-        Assertions.assertEquals("tnpqmemczjk", model.extendedInfo().databaseName());
-        Assertions.assertEquals(2087898148, model.extendedInfo().protectedItemsCount());
-        Assertions.assertEquals(1252342412, model.extendedInfo().protectedServersCount());
-        Assertions.assertEquals(1879965141, model.extendedInfo().diskCount());
-        Assertions.assertEquals(35.50652285164764D, model.extendedInfo().usedDiskSpace());
-        Assertions.assertEquals(83.93859393258009D, model.extendedInfo().availableDiskSpace());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-28T04:14:11Z"), model.extendedInfo().refreshedAt());
-        Assertions.assertEquals(2045449859, model.extendedInfo().azureProtectedInstances());
+        Assertions.assertEquals("folpymwamxqzra", model.extendedInfo().databaseName());
+        Assertions.assertEquals(520460830, model.extendedInfo().protectedItemsCount());
+        Assertions.assertEquals(1456330987, model.extendedInfo().protectedServersCount());
+        Assertions.assertEquals(36085311, model.extendedInfo().diskCount());
+        Assertions.assertEquals(77.45310615268932D, model.extendedInfo().usedDiskSpace());
+        Assertions.assertEquals(3.1510208685722407D, model.extendedInfo().availableDiskSpace());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-16T17:21:57Z"), model.extendedInfo().refreshedAt());
+        Assertions.assertEquals(1390786576, model.extendedInfo().azureProtectedInstances());
     }
 }

@@ -10,19 +10,16 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * A copy activity source.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = CopySource.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = CopySource.class, visible = true)
 @JsonTypeName("CopySource")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AvroSource", value = AvroSource.class),
@@ -68,6 +65,13 @@ import java.util.Map;
 @Fluent
 public class CopySource {
     /*
+     * Copy source type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "CopySource";
+
+    /*
      * Source retry count. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "sourceRetryCount")
@@ -104,6 +108,15 @@ public class CopySource {
      * Creates an instance of CopySource class.
      */
     public CopySource() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -216,7 +229,7 @@ public class CopySource {
     @JsonAnySetter
     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }

@@ -22,54 +22,57 @@ public final class ScheduleTriggerTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduleTriggerTypeProperties model = BinaryData.fromString(
-            "{\"recurrence\":{\"frequency\":\"NotSpecified\",\"interval\":1095256215,\"startTime\":\"2021-02-27T12:11:30Z\",\"endTime\":\"2021-02-18T05:00:01Z\",\"timeZone\":\"vlsspptxdraji\",\"schedule\":{\"minutes\":[1667593447,1271402426,1565030338,906533139],\"hours\":[1448334718],\"weekDays\":[\"Friday\",\"Friday\"],\"monthDays\":[605430402,547584072],\"monthlyOccurrences\":[{\"day\":\"Thursday\",\"occurrence\":1741967093,\"\":{\"yamijgquizvvwyhs\":\"databrent\",\"iwyt\":\"dataewhzaiuoibw\",\"r\":\"datakp\"}},{\"day\":\"Friday\",\"occurrence\":1418940268,\"\":{\"ttiqac\":\"datanxlhdind\",\"jli\":\"datay\",\"hcylvjzufznaed\":\"datagkxrevwvjwtf\",\"dphyxlxvo\":\"datayuxrufwdbimj\"}},{\"day\":\"Wednesday\",\"occurrence\":1510978008,\"\":{\"pcbn\":\"datayttkaufab\"}}],\"\":{\"hllw\":\"datankvsnsi\",\"xtzgxdxq\":\"dataedzodvz\"}},\"\":{\"tuimi\":\"datazub\",\"encgfz\":\"dataccnubynr\",\"hxtbcqjvyzotxkhy\":\"databtzuddqt\"}}}")
+            "{\"recurrence\":{\"frequency\":\"Month\",\"interval\":344035972,\"startTime\":\"2021-10-09T02:30:24Z\",\"endTime\":\"2021-01-05T14:10:51Z\",\"timeZone\":\"ekmwzsmyak\",\"schedule\":{\"minutes\":[1052879269,348269140],\"hours\":[1766816008,2054418512,2101542608,699538918],\"weekDays\":[\"Monday\",\"Saturday\"],\"monthDays\":[1038176636,390845598,1063219120,1945461682],\"monthlyOccurrences\":[{\"day\":\"Sunday\",\"occurrence\":1187472245,\"\":{\"uwttrvgzjfptprfq\":\"dataoghkhzwfns\"}},{\"day\":\"Friday\",\"occurrence\":2051440417,\"\":{\"qtkxiyj\":\"datadzvtfkd\",\"dhpi\":\"databezvxe\",\"gwbkfcajtxzduqth\":\"datakrqkylmfydiod\"}},{\"day\":\"Thursday\",\"occurrence\":1550901884,\"\":{\"fvjfaqah\":\"dataaexewftqo\",\"bdajc\":\"dataeskdsbp\",\"jryppvdhklcczg\":\"datarlnxjucoj\"}}],\"\":{\"rbuvwug\":\"datagzstcfwbfta\",\"umejpqxuiodwblau\":\"datawrclxhvesoodxmmt\"}},\"\":{\"mtzlcvokvo\":\"dataxydvceuywy\",\"znnlsqymvihhgp\":\"datajbjdyoccnlvyhiet\"}}}")
             .toObject(ScheduleTriggerTypeProperties.class);
-        Assertions.assertEquals(RecurrenceFrequency.NOT_SPECIFIED, model.recurrence().frequency());
-        Assertions.assertEquals(1095256215, model.recurrence().interval());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-27T12:11:30Z"), model.recurrence().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-18T05:00:01Z"), model.recurrence().endTime());
-        Assertions.assertEquals("vlsspptxdraji", model.recurrence().timeZone());
-        Assertions.assertEquals(1667593447, model.recurrence().schedule().minutes().get(0));
-        Assertions.assertEquals(1448334718, model.recurrence().schedule().hours().get(0));
-        Assertions.assertEquals(DaysOfWeek.FRIDAY, model.recurrence().schedule().weekDays().get(0));
-        Assertions.assertEquals(605430402, model.recurrence().schedule().monthDays().get(0));
-        Assertions.assertEquals(DayOfWeek.THURSDAY, model.recurrence().schedule().monthlyOccurrences().get(0).day());
-        Assertions.assertEquals(1741967093, model.recurrence().schedule().monthlyOccurrences().get(0).occurrence());
+        Assertions.assertEquals(RecurrenceFrequency.MONTH, model.recurrence().frequency());
+        Assertions.assertEquals(344035972, model.recurrence().interval());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-09T02:30:24Z"), model.recurrence().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-05T14:10:51Z"), model.recurrence().endTime());
+        Assertions.assertEquals("ekmwzsmyak", model.recurrence().timeZone());
+        Assertions.assertEquals(1052879269, model.recurrence().schedule().minutes().get(0));
+        Assertions.assertEquals(1766816008, model.recurrence().schedule().hours().get(0));
+        Assertions.assertEquals(DaysOfWeek.MONDAY, model.recurrence().schedule().weekDays().get(0));
+        Assertions.assertEquals(1038176636, model.recurrence().schedule().monthDays().get(0));
+        Assertions.assertEquals(DayOfWeek.SUNDAY, model.recurrence().schedule().monthlyOccurrences().get(0).day());
+        Assertions.assertEquals(1187472245, model.recurrence().schedule().monthlyOccurrences().get(0).occurrence());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScheduleTriggerTypeProperties model
-            = new ScheduleTriggerTypeProperties()
-                .withRecurrence(new ScheduleTriggerRecurrence().withFrequency(RecurrenceFrequency.NOT_SPECIFIED)
-                    .withInterval(1095256215).withStartTime(OffsetDateTime.parse("2021-02-27T12:11:30Z"))
-                    .withEndTime(OffsetDateTime.parse("2021-02-18T05:00:01Z")).withTimeZone("vlsspptxdraji")
-                    .withSchedule(new RecurrenceSchedule()
-                        .withMinutes(Arrays.asList(1667593447, 1271402426, 1565030338, 906533139))
-                        .withHours(Arrays.asList(1448334718))
-                        .withWeekDays(Arrays.asList(DaysOfWeek.FRIDAY, DaysOfWeek.FRIDAY))
-                        .withMonthDays(Arrays.asList(605430402, 547584072))
-                        .withMonthlyOccurrences(Arrays.asList(
-                            new RecurrenceScheduleOccurrence().withDay(DayOfWeek.THURSDAY).withOccurrence(1741967093)
-                                .withAdditionalProperties(mapOf()),
-                            new RecurrenceScheduleOccurrence().withDay(DayOfWeek.FRIDAY).withOccurrence(1418940268)
-                                .withAdditionalProperties(mapOf()),
-                            new RecurrenceScheduleOccurrence().withDay(DayOfWeek.WEDNESDAY).withOccurrence(1510978008)
-                                .withAdditionalProperties(mapOf())))
-                        .withAdditionalProperties(mapOf()))
-                    .withAdditionalProperties(mapOf()));
+        ScheduleTriggerTypeProperties model = new ScheduleTriggerTypeProperties()
+            .withRecurrence(new ScheduleTriggerRecurrence().withFrequency(RecurrenceFrequency.MONTH)
+                .withInterval(344035972)
+                .withStartTime(OffsetDateTime.parse("2021-10-09T02:30:24Z"))
+                .withEndTime(OffsetDateTime.parse("2021-01-05T14:10:51Z"))
+                .withTimeZone("ekmwzsmyak")
+                .withSchedule(new RecurrenceSchedule().withMinutes(Arrays.asList(1052879269, 348269140))
+                    .withHours(Arrays.asList(1766816008, 2054418512, 2101542608, 699538918))
+                    .withWeekDays(Arrays.asList(DaysOfWeek.MONDAY, DaysOfWeek.SATURDAY))
+                    .withMonthDays(Arrays.asList(1038176636, 390845598, 1063219120, 1945461682))
+                    .withMonthlyOccurrences(Arrays.asList(
+                        new RecurrenceScheduleOccurrence().withDay(DayOfWeek.SUNDAY)
+                            .withOccurrence(1187472245)
+                            .withAdditionalProperties(mapOf()),
+                        new RecurrenceScheduleOccurrence().withDay(DayOfWeek.FRIDAY)
+                            .withOccurrence(2051440417)
+                            .withAdditionalProperties(mapOf()),
+                        new RecurrenceScheduleOccurrence().withDay(DayOfWeek.THURSDAY)
+                            .withOccurrence(1550901884)
+                            .withAdditionalProperties(mapOf())))
+                    .withAdditionalProperties(mapOf()))
+                .withAdditionalProperties(mapOf()));
         model = BinaryData.fromObject(model).toObject(ScheduleTriggerTypeProperties.class);
-        Assertions.assertEquals(RecurrenceFrequency.NOT_SPECIFIED, model.recurrence().frequency());
-        Assertions.assertEquals(1095256215, model.recurrence().interval());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-27T12:11:30Z"), model.recurrence().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-18T05:00:01Z"), model.recurrence().endTime());
-        Assertions.assertEquals("vlsspptxdraji", model.recurrence().timeZone());
-        Assertions.assertEquals(1667593447, model.recurrence().schedule().minutes().get(0));
-        Assertions.assertEquals(1448334718, model.recurrence().schedule().hours().get(0));
-        Assertions.assertEquals(DaysOfWeek.FRIDAY, model.recurrence().schedule().weekDays().get(0));
-        Assertions.assertEquals(605430402, model.recurrence().schedule().monthDays().get(0));
-        Assertions.assertEquals(DayOfWeek.THURSDAY, model.recurrence().schedule().monthlyOccurrences().get(0).day());
-        Assertions.assertEquals(1741967093, model.recurrence().schedule().monthlyOccurrences().get(0).occurrence());
+        Assertions.assertEquals(RecurrenceFrequency.MONTH, model.recurrence().frequency());
+        Assertions.assertEquals(344035972, model.recurrence().interval());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-09T02:30:24Z"), model.recurrence().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-05T14:10:51Z"), model.recurrence().endTime());
+        Assertions.assertEquals("ekmwzsmyak", model.recurrence().timeZone());
+        Assertions.assertEquals(1052879269, model.recurrence().schedule().minutes().get(0));
+        Assertions.assertEquals(1766816008, model.recurrence().schedule().hours().get(0));
+        Assertions.assertEquals(DaysOfWeek.MONDAY, model.recurrence().schedule().weekDays().get(0));
+        Assertions.assertEquals(1038176636, model.recurrence().schedule().monthDays().get(0));
+        Assertions.assertEquals(DayOfWeek.SUNDAY, model.recurrence().schedule().monthlyOccurrences().get(0).day());
+        Assertions.assertEquals(1187472245, model.recurrence().schedule().monthlyOccurrences().get(0).occurrence());
     }
 
     // Use "Map.of" if available

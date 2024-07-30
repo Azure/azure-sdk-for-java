@@ -28,7 +28,8 @@ public final class PrivateEndpointConnectionTests {
         PrivateEndpointConnection model = new PrivateEndpointConnection().withPrivateEndpoint(new PrivateEndpoint())
             .withPrivateLinkServiceConnectionState(
                 new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)
-                    .withDescription("jddeqsrdeupewnw").withActionsRequired("itjz"));
+                    .withDescription("jddeqsrdeupewnw")
+                    .withActionsRequired("itjz"));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnection.class);
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
             model.privateLinkServiceConnectionState().status());

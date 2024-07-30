@@ -23,14 +23,14 @@ public final class BackupAndExportsImpl implements BackupAndExports {
 
     private final com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager;
 
-    public BackupAndExportsImpl(
-        BackupAndExportsClient innerClient, com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager) {
+    public BackupAndExportsImpl(BackupAndExportsClient innerClient,
+        com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public BackupAndExportResponse create(
-        String resourceGroupName, String serverName, BackupAndExportRequest parameters) {
+    public BackupAndExportResponse create(String resourceGroupName, String serverName,
+        BackupAndExportRequest parameters) {
         BackupAndExportResponseInner inner = this.serviceClient().create(resourceGroupName, serverName, parameters);
         if (inner != null) {
             return new BackupAndExportResponseImpl(inner, this.manager());
@@ -39,10 +39,10 @@ public final class BackupAndExportsImpl implements BackupAndExports {
         }
     }
 
-    public BackupAndExportResponse create(
-        String resourceGroupName, String serverName, BackupAndExportRequest parameters, Context context) {
-        BackupAndExportResponseInner inner =
-            this.serviceClient().create(resourceGroupName, serverName, parameters, context);
+    public BackupAndExportResponse create(String resourceGroupName, String serverName,
+        BackupAndExportRequest parameters, Context context) {
+        BackupAndExportResponseInner inner
+            = this.serviceClient().create(resourceGroupName, serverName, parameters, context);
         if (inner != null) {
             return new BackupAndExportResponseImpl(inner, this.manager());
         } else {
@@ -50,15 +50,12 @@ public final class BackupAndExportsImpl implements BackupAndExports {
         }
     }
 
-    public Response<ValidateBackupResponse> validateBackupWithResponse(
-        String resourceGroupName, String serverName, Context context) {
-        Response<ValidateBackupResponseInner> inner =
-            this.serviceClient().validateBackupWithResponse(resourceGroupName, serverName, context);
+    public Response<ValidateBackupResponse> validateBackupWithResponse(String resourceGroupName, String serverName,
+        Context context) {
+        Response<ValidateBackupResponseInner> inner
+            = this.serviceClient().validateBackupWithResponse(resourceGroupName, serverName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ValidateBackupResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;

@@ -6,60 +6,44 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.DataFlowDebugCommandPayload;
 import com.azure.resourcemanager.datafactory.models.DataFlowDebugCommandRequest;
 import com.azure.resourcemanager.datafactory.models.DataFlowDebugCommandResponse;
 import com.azure.resourcemanager.datafactory.models.DataFlowDebugCommandType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DataFlowDebugSessionsExecuteCommandMockTests {
     @Test
     public void testExecuteCommand() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr = "{\"status\":\"klnrzoafxoyddush\",\"data\":\"jhh\"}";
 
-        String responseStr = "{\"status\":\"lnjhoemlwea\",\"data\":\"xmshaugenpi\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DataFactoryManager manager = DataFactoryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        DataFlowDebugCommandResponse response = manager.dataFlowDebugSessions()
+            .executeCommand("psbdcheydctsqxw", "sszdw",
+                new DataFlowDebugCommandRequest().withSessionId("gbzmcprtanag")
+                    .withCommand(DataFlowDebugCommandType.EXECUTE_EXPRESSION_QUERY)
+                    .withCommandPayload(new DataFlowDebugCommandPayload().withStreamName("hwkaatjssebyd")
+                        .withRowLimits(2122847597)
+                        .withColumns(Arrays.asList("lpiccx"))
+                        .withExpression("twstqgc")),
+                com.azure.core.util.Context.NONE);
 
-        DataFactoryManager manager = DataFactoryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        DataFlowDebugCommandResponse response = manager.dataFlowDebugSessions().executeCommand("rphdakwwiezeut", "r",
-            new DataFlowDebugCommandRequest().withSessionId("wmo")
-                .withCommand(DataFlowDebugCommandType.EXECUTE_PREVIEW_QUERY).withCommandPayload(
-                    new DataFlowDebugCommandPayload().withStreamName("wzatvne").withRowLimits(1961533079)
-                        .withColumns(Arrays.asList("qladlpqlwtxshvo", "hhzlmwvc", "hkvafcjektkg", "xrifyr"))
-                        .withExpression("rgiaeqc")),
-            com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("lnjhoemlwea", response.status());
-        Assertions.assertEquals("xmshaugenpi", response.data());
+        Assertions.assertEquals("klnrzoafxoyddush", response.status());
+        Assertions.assertEquals("jhh", response.data());
     }
 }

@@ -224,8 +224,8 @@ public final class ApplicationGatewayProbeInner extends SubResource {
     }
 
     /**
-     * Get the unhealthyThreshold property: The probe retry count. Backend server is marked down after consecutive
-     * probe failure count reaches UnhealthyThreshold. Acceptable values are from 1 second to 20.
+     * Get the unhealthyThreshold property: The probe retry count. Backend server is marked down after consecutive probe
+     * failure count reaches UnhealthyThreshold. Acceptable values are from 1 second to 20.
      * 
      * @return the unhealthyThreshold value.
      */
@@ -234,8 +234,8 @@ public final class ApplicationGatewayProbeInner extends SubResource {
     }
 
     /**
-     * Set the unhealthyThreshold property: The probe retry count. Backend server is marked down after consecutive
-     * probe failure count reaches UnhealthyThreshold. Acceptable values are from 1 second to 20.
+     * Set the unhealthyThreshold property: The probe retry count. Backend server is marked down after consecutive probe
+     * failure count reaches UnhealthyThreshold. Acceptable values are from 1 second to 20.
      * 
      * @param unhealthyThreshold the unhealthyThreshold value to set.
      * @return the ApplicationGatewayProbeInner object itself.

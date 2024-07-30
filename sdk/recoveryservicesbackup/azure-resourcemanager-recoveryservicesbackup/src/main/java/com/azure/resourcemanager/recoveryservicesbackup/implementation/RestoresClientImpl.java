@@ -279,8 +279,10 @@ public final class RestoresClientImpl implements RestoresClient {
     public SyncPoller<PollResult<Void>, Void> beginTrigger(String vaultName, String resourceGroupName,
         String fabricName, String containerName, String protectedItemName, String recoveryPointId,
         RestoreRequestResource parameters) {
-        return this.beginTriggerAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
-            recoveryPointId, parameters).getSyncPoller();
+        return this
+            .beginTriggerAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+                recoveryPointId, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -305,8 +307,10 @@ public final class RestoresClientImpl implements RestoresClient {
     public SyncPoller<PollResult<Void>, Void> beginTrigger(String vaultName, String resourceGroupName,
         String fabricName, String containerName, String protectedItemName, String recoveryPointId,
         RestoreRequestResource parameters, Context context) {
-        return this.beginTriggerAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
-            recoveryPointId, parameters, context).getSyncPoller();
+        return this
+            .beginTriggerAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+                recoveryPointId, parameters, context)
+            .getSyncPoller();
     }
 
     /**

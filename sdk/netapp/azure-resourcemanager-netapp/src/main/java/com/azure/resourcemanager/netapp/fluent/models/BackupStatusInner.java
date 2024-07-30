@@ -5,67 +5,62 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.MirrorState;
 import com.azure.resourcemanager.netapp.models.RelationshipStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Backup status.
  */
 @Immutable
-public final class BackupStatusInner {
+public final class BackupStatusInner implements JsonSerializable<BackupStatusInner> {
     /*
      * Backup health status
      */
-    @JsonProperty(value = "healthy", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean healthy;
 
     /*
      * Status of the backup mirror relationship
      */
-    @JsonProperty(value = "relationshipStatus", access = JsonProperty.Access.WRITE_ONLY)
     private RelationshipStatus relationshipStatus;
 
     /*
      * The status of the backup
      */
-    @JsonProperty(value = "mirrorState", access = JsonProperty.Access.WRITE_ONLY)
     private MirrorState mirrorState;
 
     /*
      * Reason for the unhealthy backup relationship
      */
-    @JsonProperty(value = "unhealthyReason", access = JsonProperty.Access.WRITE_ONLY)
     private String unhealthyReason;
 
     /*
      * Displays error message if the backup is in an error state
      */
-    @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String errorMessage;
 
     /*
      * Displays the last transfer size
      */
-    @JsonProperty(value = "lastTransferSize", access = JsonProperty.Access.WRITE_ONLY)
     private Long lastTransferSize;
 
     /*
      * Displays the last transfer type
      */
-    @JsonProperty(value = "lastTransferType", access = JsonProperty.Access.WRITE_ONLY)
     private String lastTransferType;
 
     /*
      * Displays the total bytes transferred
      */
-    @JsonProperty(value = "totalTransferBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long totalTransferBytes;
 
     /*
      * Displays the total number of bytes transferred for the ongoing operation
      */
-    @JsonProperty(value = "transferProgressBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long transferProgressBytes;
 
     /**
@@ -147,8 +142,7 @@ public final class BackupStatusInner {
     }
 
     /**
-     * Get the transferProgressBytes property: Displays the total number of bytes transferred for the ongoing
-     * operation.
+     * Get the transferProgressBytes property: Displays the total number of bytes transferred for the ongoing operation.
      * 
      * @return the transferProgressBytes value.
      */
@@ -162,5 +156,57 @@ public final class BackupStatusInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackupStatusInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackupStatusInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BackupStatusInner.
+     */
+    public static BackupStatusInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackupStatusInner deserializedBackupStatusInner = new BackupStatusInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("healthy".equals(fieldName)) {
+                    deserializedBackupStatusInner.healthy = reader.getNullable(JsonReader::getBoolean);
+                } else if ("relationshipStatus".equals(fieldName)) {
+                    deserializedBackupStatusInner.relationshipStatus
+                        = RelationshipStatus.fromString(reader.getString());
+                } else if ("mirrorState".equals(fieldName)) {
+                    deserializedBackupStatusInner.mirrorState = MirrorState.fromString(reader.getString());
+                } else if ("unhealthyReason".equals(fieldName)) {
+                    deserializedBackupStatusInner.unhealthyReason = reader.getString();
+                } else if ("errorMessage".equals(fieldName)) {
+                    deserializedBackupStatusInner.errorMessage = reader.getString();
+                } else if ("lastTransferSize".equals(fieldName)) {
+                    deserializedBackupStatusInner.lastTransferSize = reader.getNullable(JsonReader::getLong);
+                } else if ("lastTransferType".equals(fieldName)) {
+                    deserializedBackupStatusInner.lastTransferType = reader.getString();
+                } else if ("totalTransferBytes".equals(fieldName)) {
+                    deserializedBackupStatusInner.totalTransferBytes = reader.getNullable(JsonReader::getLong);
+                } else if ("transferProgressBytes".equals(fieldName)) {
+                    deserializedBackupStatusInner.transferProgressBytes = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackupStatusInner;
+        });
     }
 }

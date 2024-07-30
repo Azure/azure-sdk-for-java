@@ -13,7 +13,6 @@ import com.azure.storage.common.implementation.StorageImplUtils;
  */
 @Fluent
 public final class ParallelTransferOptions {
-
     private Long blockSize;
     private Integer maxConcurrency;
     private ProgressReceiver progressReceiver;
@@ -196,6 +195,8 @@ public final class ParallelTransferOptions {
     }
 
     /**
+     * Sets the maximum number of parallel requests that will be issued at any given time.
+     *
      * @param maxConcurrency The maximum number of parallel requests that will be issued at any given time as a part of
      * a single parallel transfer. This value applies per api. For example, if two calls to uploadFromFile are made at
      * the same time, and each specifies a maxConcurrency of 5, there may be up to 10 outstanding, concurrent requests,

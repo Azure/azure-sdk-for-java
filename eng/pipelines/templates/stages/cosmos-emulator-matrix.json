@@ -9,27 +9,14 @@
           "PROTOCOLS": "[\"Tcp\"]",
           "DESIRED_CONSISTENCIES": "[\"Strong\", \"Session\"]",
           "JavaTestVersion": "1.8",
-          "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/\""
+          "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true\""
       },
       "Emulator Only Integration Tests Tcp - Java 17": {
         "ProfileFlag": "-Pemulator",
         "PROTOCOLS": "[\"Tcp\"]",
         "DESIRED_CONSISTENCIES": "[\"Strong\", \"Session\"]",
         "JavaTestVersion": "1.17",
-        "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/\""
-      },
-      "Spring Emulator Only Integration Tests - Java 8": {
-        "ProfileFlag": "-Pintegration-test-emulator",
-        "JavaTestVersion": "1.8",
-        "ACCOUNT_HOST": "https://localhost:8081/",
-        "ACCOUNT_KEY": "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
-        "SECONDARY_ACCOUNT_KEY": "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
-        "NEW_ACCOUNT_HOST": "https://localhost:8081/",
-        "NEW_ACCOUNT_KEY": "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
-        "NEW_SECONDARY_ACCOUNT_KEY": "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
-        "TestFromSource": true,
-        "AdditionalArgs": "-Dspring-e2e",
-        "Language": "Spring"
+        "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true\""
       },
       "Spring Emulator Only Integration Tests - Java 17": {
           "ProfileFlag": "-Pintegration-test-emulator",
@@ -41,7 +28,7 @@
           "NEW_ACCOUNT_KEY": "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
           "NEW_SECONDARY_ACCOUNT_KEY": "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
           "TestFromSource": true,
-          "AdditionalArgs": "-Dspring-e2e",
+          "AdditionalArgs": "-Dspring-e2e -DargLine=-DACCOUNT_HOST=https://localhost:8081/ -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true",
           "Language": "Spring"
       },
       "Encryption Emulator Only Integration Tests": {
@@ -49,56 +36,84 @@
           "PROTOCOLS": "[\"Tcp\"]",
           "DESIRED_CONSISTENCIES": "[\"Session\"]",
           "JavaTestVersion": "1.8",
-          "AdditionalArgs": "-Dencryption-e2e -DargLine=\"-DACCOUNT_HOST=https://localhost:8081/\""
+          "AdditionalArgs": "-Dencryption-e2e -DargLine=-DACCOUNT_HOST=https://localhost:8081/ -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true"
       },
       "Spark 3.1 Integration Tests targeting Cosmos Emulator - Java 8'": {
         "ProfileFlag": "-Dspark-e2e_3-1",
         "PROTOCOLS": "[\"Tcp\"]",
         "DESIRED_CONSISTENCIES": "[\"Session\"]",
         "JavaTestVersion": "1.8",
-        "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop\""
+        "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true\""
       },
       "Spark 3.2 Integration Tests targeting Cosmos Emulator - Java 8'": {
         "ProfileFlag": "-Dspark-e2e_3-2",
         "PROTOCOLS": "[\"Tcp\"]",
         "DESIRED_CONSISTENCIES": "[\"Session\"]",
         "JavaTestVersion": "1.8",
-        "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop\""
+        "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true\""
       },
       "Spark 3.2 Integration Tests targeting Cosmos Emulator - Java 11'": {
         "ProfileFlag": "-Dspark-e2e_3-2",
         "PROTOCOLS": "[\"Tcp\"]",
         "DESIRED_CONSISTENCIES": "[\"Session\"]",
         "JavaTestVersion": "1.11",
-        "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop\""
+        "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true\""
       },
       "Spark 3.3 Integration Tests targeting Cosmos Emulator - Java 8'": {
         "ProfileFlag": "-Dspark-e2e_3-3",
         "PROTOCOLS": "[\"Tcp\"]",
         "DESIRED_CONSISTENCIES": "[\"Session\"]",
         "JavaTestVersion": "1.8",
-        "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop\""
+        "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true\""
       },
       "Spark 3.3 Integration Tests targeting Cosmos Emulator - Java 11'": {
         "ProfileFlag": "-Dspark-e2e_3-3",
         "PROTOCOLS": "[\"Tcp\"]",
         "DESIRED_CONSISTENCIES": "[\"Session\"]",
         "JavaTestVersion": "1.11",
-        "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop\""
+        "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true\""
       },
       "Spark 3.4 Integration Tests targeting Cosmos Emulator - Java 8'": {
         "ProfileFlag": "-Dspark-e2e_3-4",
         "PROTOCOLS": "[\"Tcp\"]",
         "DESIRED_CONSISTENCIES": "[\"Session\"]",
         "JavaTestVersion": "1.8",
-        "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop\""
+        "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true\""
       },
       "Spark 3.4 Integration Tests targeting Cosmos Emulator - Java 11'": {
         "ProfileFlag": "-Dspark-e2e_3-4",
         "PROTOCOLS": "[\"Tcp\"]",
         "DESIRED_CONSISTENCIES": "[\"Session\"]",
         "JavaTestVersion": "1.11",
-        "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop\""
+        "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true\""
+      },
+      "Spark 3.5 Integration Tests targeting Cosmos Emulator - Java 8'": {
+        "ProfileFlag": "-Dspark-e2e_3-5",
+        "PROTOCOLS": "[\"Tcp\"]",
+        "DESIRED_CONSISTENCIES": "[\"Session\"]",
+        "JavaTestVersion": "1.8",
+        "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true\""
+      },
+      "Spark 3.5 Integration Tests targeting Cosmos Emulator - Java 11'": {
+        "ProfileFlag": "-Dspark-e2e_3-5",
+        "PROTOCOLS": "[\"Tcp\"]",
+        "DESIRED_CONSISTENCIES": "[\"Session\"]",
+        "JavaTestVersion": "1.11",
+        "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true\""
+      },
+      "Kafka Integration Tests targeting Cosmos Emulator - Java 11": {
+        "ProfileFlag": "-Pkafka-emulator",
+        "PROTOCOLS": "[\"Tcp\"]",
+        "DESIRED_CONSISTENCIES": "[\"Session\"]",
+        "JavaTestVersion": "1.11",
+        "AdditionalArgs": "-DargLine=-DACCOUNT_HOST=https://localhost:8081/ -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true"
+      },
+      "Kafka Integration Tests targeting Cosmos Emulator - Java 17": {
+        "ProfileFlag": "-Pkafka-emulator",
+        "PROTOCOLS": "[\"Tcp\"]",
+        "DESIRED_CONSISTENCIES": "[\"Session\"]",
+        "JavaTestVersion": "1.17",
+        "AdditionalArgs": "-DargLine=-DACCOUNT_HOST=https://localhost:8081/ -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true"
       }
     }
   }

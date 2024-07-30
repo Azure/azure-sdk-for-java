@@ -45,22 +45,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in NetworkConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NetworkConnectionsClient.
+ */
 public final class NetworkConnectionsClientImpl implements NetworkConnectionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final NetworkConnectionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DevCenterManagementClientImpl client;
 
     /**
      * Initializes an instance of NetworkConnectionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     NetworkConnectionsClientImpl(DevCenterManagementClientImpl client) {
-        this.service =
-            RestProxy.create(NetworkConnectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(NetworkConnectionsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -71,286 +77,193 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     @Host("{$host}")
     @ServiceInterface(name = "DevCenterManagementC")
     public interface NetworkConnectionsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DevCenter/networkConnections")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkConnectionListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<NetworkConnectionListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/networkConnections")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/networkConnections")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkConnectionListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<NetworkConnectionListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("$top") Integer top,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/networkConnections/{networkConnectionName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<NetworkConnectionInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
+            @PathParam("networkConnectionName") String networkConnectionName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/networkConnections/{networkConnectionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/networkConnections/{networkConnectionName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkConnectionInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkConnectionName") String networkConnectionName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") NetworkConnectionInner body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/networkConnections/{networkConnectionName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/networkConnections/{networkConnectionName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkConnectionName") String networkConnectionName,
-            @BodyParam("application/json") NetworkConnectionInner body,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") NetworkConnectionUpdate body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/networkConnections/{networkConnectionName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/networkConnections/{networkConnectionName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("networkConnectionName") String networkConnectionName,
-            @BodyParam("application/json") NetworkConnectionUpdate body,
-            @HeaderParam("Accept") String accept,
+            @PathParam("networkConnectionName") String networkConnectionName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/networkConnections/{networkConnectionName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/networkConnections/{networkConnectionName}/healthChecks")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("networkConnectionName") String networkConnectionName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<HealthCheckStatusDetailsListResult>> listHealthDetails(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("$top") Integer top,
+            @PathParam("networkConnectionName") String networkConnectionName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/networkConnections/{networkConnectionName}/healthChecks")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/networkConnections/{networkConnectionName}/healthChecks/latest")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<HealthCheckStatusDetailsListResult>> listHealthDetails(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<HealthCheckStatusDetailsInner>> getHealthDetails(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("$top") Integer top,
-            @PathParam("networkConnectionName") String networkConnectionName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("networkConnectionName") String networkConnectionName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/networkConnections/{networkConnectionName}/healthChecks/latest")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/networkConnections/{networkConnectionName}/runHealthChecks")
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<HealthCheckStatusDetailsInner>> getHealthDetails(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> runHealthChecks(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("networkConnectionName") String networkConnectionName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("networkConnectionName") String networkConnectionName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/networkConnections/{networkConnectionName}/runHealthChecks")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> runHealthChecks(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("networkConnectionName") String networkConnectionName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/networkConnections/{networkConnectionName}/outboundNetworkDependenciesEndpoints")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/networkConnections/{networkConnectionName}/outboundNetworkDependenciesEndpoints")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OutboundEnvironmentEndpointCollection>> listOutboundNetworkDependenciesEndpoints(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("$top") Integer top,
-            @PathParam("networkConnectionName") String networkConnectionName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("$top") Integer top,
+            @PathParam("networkConnectionName") String networkConnectionName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NetworkConnectionListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NetworkConnectionListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<HealthCheckStatusDetailsListResult>> listHealthDetailsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OutboundEnvironmentEndpointCollection>> listOutboundNetworkDependenciesEndpointsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists network connections in a subscription.
-     *
+     * 
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the network connection list operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkConnectionInner>> listSinglePageAsync(Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<NetworkConnectionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), top, accept, context))
+            .<PagedResponse<NetworkConnectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists network connections in a subscription.
-     *
+     * 
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the network connection list operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkConnectionInner>> listSinglePageAsync(Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                top,
-                accept,
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), top, accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists network connections in a subscription.
-     *
+     * 
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -359,13 +272,13 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkConnectionInner> listAsync(Integer top) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(top), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(top),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists network connections in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the network connection list operation as paginated response with {@link PagedFlux}.
@@ -373,13 +286,13 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkConnectionInner> listAsync() {
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(top), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(top),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists network connections in a subscription.
-     *
+     * 
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -389,14 +302,13 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkConnectionInner> listAsync(Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(top, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(top, context),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists network connections in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the network connection list operation as paginated response with {@link PagedIterable}.
@@ -409,7 +321,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
 
     /**
      * Lists network connections in a subscription.
-     *
+     * 
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -424,29 +336,25 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
 
     /**
      * Lists network connections in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the network connection list operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkConnectionInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Integer top) {
+    private Mono<PagedResponse<NetworkConnectionInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -454,32 +362,16 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<NetworkConnectionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, top, accept, context))
+            .<PagedResponse<NetworkConnectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists network connections in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -487,22 +379,18 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the network connection list operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkConnectionInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Integer top, Context context) {
+    private Mono<PagedResponse<NetworkConnectionInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -511,28 +399,15 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists network connections in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -542,14 +417,13 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkConnectionInner> listByResourceGroupAsync(String resourceGroupName, Integer top) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, top),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, top),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists network connections in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -559,14 +433,13 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkConnectionInner> listByResourceGroupAsync(String resourceGroupName) {
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, top),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, top),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists network connections in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -576,16 +449,15 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return result of the network connection list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<NetworkConnectionInner> listByResourceGroupAsync(
-        String resourceGroupName, Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, top, context),
+    private PagedFlux<NetworkConnectionInner> listByResourceGroupAsync(String resourceGroupName, Integer top,
+        Context context) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, top, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists network connections in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -600,7 +472,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
 
     /**
      * Lists network connections in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -610,14 +482,14 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return result of the network connection list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NetworkConnectionInner> listByResourceGroup(
-        String resourceGroupName, Integer top, Context context) {
+    public PagedIterable<NetworkConnectionInner> listByResourceGroup(String resourceGroupName, Integer top,
+        Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, top, context));
     }
 
     /**
      * Gets a network connection resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -626,19 +498,15 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return a network connection resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NetworkConnectionInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String networkConnectionName) {
+    private Mono<Response<NetworkConnectionInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String networkConnectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -650,23 +518,14 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            networkConnectionName,
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, networkConnectionName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a network connection resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
@@ -676,19 +535,15 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return a network connection resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NetworkConnectionInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String networkConnectionName, Context context) {
+    private Mono<Response<NetworkConnectionInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String networkConnectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -700,20 +555,13 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                networkConnectionName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, networkConnectionName, accept, context);
     }
 
     /**
      * Gets a network connection resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -722,15 +570,15 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return a network connection resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkConnectionInner> getByResourceGroupAsync(
-        String resourceGroupName, String networkConnectionName) {
+    private Mono<NetworkConnectionInner> getByResourceGroupAsync(String resourceGroupName,
+        String networkConnectionName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, networkConnectionName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a network connection resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
@@ -740,14 +588,14 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return a network connection resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NetworkConnectionInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkConnectionName, Context context) {
+    public Response<NetworkConnectionInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String networkConnectionName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, networkConnectionName, context).block();
     }
 
     /**
      * Gets a network connection resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -762,7 +610,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
 
     /**
      * Creates or updates a Network Connections resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
@@ -772,19 +620,15 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return network related settings along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String networkConnectionName, NetworkConnectionInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String networkConnectionName, NetworkConnectionInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -801,24 +645,14 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            networkConnectionName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, networkConnectionName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a Network Connections resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
@@ -829,19 +663,15 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return network related settings along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String networkConnectionName, NetworkConnectionInner body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String networkConnectionName, NetworkConnectionInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -858,21 +688,13 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                networkConnectionName,
-                body,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, networkConnectionName, body, accept, context);
     }
 
     /**
      * Creates or updates a Network Connections resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
@@ -882,23 +704,18 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return the {@link PollerFlux} for polling of network related settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NetworkConnectionInner>, NetworkConnectionInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String networkConnectionName, NetworkConnectionInner body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, networkConnectionName, body);
-        return this
-            .client
-            .<NetworkConnectionInner, NetworkConnectionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NetworkConnectionInner.class,
-                NetworkConnectionInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<NetworkConnectionInner>, NetworkConnectionInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String networkConnectionName, NetworkConnectionInner body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, networkConnectionName, body);
+        return this.client.<NetworkConnectionInner, NetworkConnectionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), NetworkConnectionInner.class, NetworkConnectionInner.class,
+            this.client.getContext());
     }
 
     /**
      * Creates or updates a Network Connections resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
@@ -912,21 +729,15 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     private PollerFlux<PollResult<NetworkConnectionInner>, NetworkConnectionInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String networkConnectionName, NetworkConnectionInner body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, networkConnectionName, body, context);
-        return this
-            .client
-            .<NetworkConnectionInner, NetworkConnectionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NetworkConnectionInner.class,
-                NetworkConnectionInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, networkConnectionName, body, context);
+        return this.client.<NetworkConnectionInner, NetworkConnectionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), NetworkConnectionInner.class, NetworkConnectionInner.class, context);
     }
 
     /**
      * Creates or updates a Network Connections resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
@@ -936,14 +747,14 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return the {@link SyncPoller} for polling of network related settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NetworkConnectionInner>, NetworkConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName, String networkConnectionName, NetworkConnectionInner body) {
+    public SyncPoller<PollResult<NetworkConnectionInner>, NetworkConnectionInner>
+        beginCreateOrUpdate(String resourceGroupName, String networkConnectionName, NetworkConnectionInner body) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, networkConnectionName, body).getSyncPoller();
     }
 
     /**
      * Creates or updates a Network Connections resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
@@ -961,7 +772,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
 
     /**
      * Creates or updates a Network Connections resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
@@ -971,16 +782,15 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return network related settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkConnectionInner> createOrUpdateAsync(
-        String resourceGroupName, String networkConnectionName, NetworkConnectionInner body) {
-        return beginCreateOrUpdateAsync(resourceGroupName, networkConnectionName, body)
-            .last()
+    private Mono<NetworkConnectionInner> createOrUpdateAsync(String resourceGroupName, String networkConnectionName,
+        NetworkConnectionInner body) {
+        return beginCreateOrUpdateAsync(resourceGroupName, networkConnectionName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a Network Connections resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
@@ -991,16 +801,15 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return network related settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkConnectionInner> createOrUpdateAsync(
-        String resourceGroupName, String networkConnectionName, NetworkConnectionInner body, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, networkConnectionName, body, context)
-            .last()
+    private Mono<NetworkConnectionInner> createOrUpdateAsync(String resourceGroupName, String networkConnectionName,
+        NetworkConnectionInner body, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, networkConnectionName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a Network Connections resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
@@ -1010,14 +819,14 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return network related settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkConnectionInner createOrUpdate(
-        String resourceGroupName, String networkConnectionName, NetworkConnectionInner body) {
+    public NetworkConnectionInner createOrUpdate(String resourceGroupName, String networkConnectionName,
+        NetworkConnectionInner body) {
         return createOrUpdateAsync(resourceGroupName, networkConnectionName, body).block();
     }
 
     /**
      * Creates or updates a Network Connections resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
@@ -1028,14 +837,14 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return network related settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkConnectionInner createOrUpdate(
-        String resourceGroupName, String networkConnectionName, NetworkConnectionInner body, Context context) {
+    public NetworkConnectionInner createOrUpdate(String resourceGroupName, String networkConnectionName,
+        NetworkConnectionInner body, Context context) {
         return createOrUpdateAsync(resourceGroupName, networkConnectionName, body, context).block();
     }
 
     /**
      * Partially updates a Network Connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
@@ -1045,19 +854,15 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return network related settings along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String networkConnectionName, NetworkConnectionUpdate body) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String networkConnectionName, NetworkConnectionUpdate body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1074,24 +879,14 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            networkConnectionName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, networkConnectionName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Partially updates a Network Connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
@@ -1102,19 +897,15 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return network related settings along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String networkConnectionName, NetworkConnectionUpdate body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String networkConnectionName, NetworkConnectionUpdate body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1131,21 +922,13 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                networkConnectionName,
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, networkConnectionName, body, accept, context);
     }
 
     /**
      * Partially updates a Network Connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
@@ -1155,22 +938,17 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return the {@link PollerFlux} for polling of network related settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NetworkConnectionInner>, NetworkConnectionInner> beginUpdateAsync(
-        String resourceGroupName, String networkConnectionName, NetworkConnectionUpdate body) {
+    private PollerFlux<PollResult<NetworkConnectionInner>, NetworkConnectionInner>
+        beginUpdateAsync(String resourceGroupName, String networkConnectionName, NetworkConnectionUpdate body) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, networkConnectionName, body);
-        return this
-            .client
-            .<NetworkConnectionInner, NetworkConnectionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NetworkConnectionInner.class,
-                NetworkConnectionInner.class,
-                this.client.getContext());
+        return this.client.<NetworkConnectionInner, NetworkConnectionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), NetworkConnectionInner.class, NetworkConnectionInner.class,
+            this.client.getContext());
     }
 
     /**
      * Partially updates a Network Connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
@@ -1184,21 +962,15 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     private PollerFlux<PollResult<NetworkConnectionInner>, NetworkConnectionInner> beginUpdateAsync(
         String resourceGroupName, String networkConnectionName, NetworkConnectionUpdate body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, networkConnectionName, body, context);
-        return this
-            .client
-            .<NetworkConnectionInner, NetworkConnectionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NetworkConnectionInner.class,
-                NetworkConnectionInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, networkConnectionName, body, context);
+        return this.client.<NetworkConnectionInner, NetworkConnectionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), NetworkConnectionInner.class, NetworkConnectionInner.class, context);
     }
 
     /**
      * Partially updates a Network Connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
@@ -1208,14 +980,14 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return the {@link SyncPoller} for polling of network related settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NetworkConnectionInner>, NetworkConnectionInner> beginUpdate(
-        String resourceGroupName, String networkConnectionName, NetworkConnectionUpdate body) {
+    public SyncPoller<PollResult<NetworkConnectionInner>, NetworkConnectionInner> beginUpdate(String resourceGroupName,
+        String networkConnectionName, NetworkConnectionUpdate body) {
         return this.beginUpdateAsync(resourceGroupName, networkConnectionName, body).getSyncPoller();
     }
 
     /**
      * Partially updates a Network Connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
@@ -1226,14 +998,14 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return the {@link SyncPoller} for polling of network related settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NetworkConnectionInner>, NetworkConnectionInner> beginUpdate(
-        String resourceGroupName, String networkConnectionName, NetworkConnectionUpdate body, Context context) {
+    public SyncPoller<PollResult<NetworkConnectionInner>, NetworkConnectionInner> beginUpdate(String resourceGroupName,
+        String networkConnectionName, NetworkConnectionUpdate body, Context context) {
         return this.beginUpdateAsync(resourceGroupName, networkConnectionName, body, context).getSyncPoller();
     }
 
     /**
      * Partially updates a Network Connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
@@ -1243,16 +1015,15 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return network related settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkConnectionInner> updateAsync(
-        String resourceGroupName, String networkConnectionName, NetworkConnectionUpdate body) {
-        return beginUpdateAsync(resourceGroupName, networkConnectionName, body)
-            .last()
+    private Mono<NetworkConnectionInner> updateAsync(String resourceGroupName, String networkConnectionName,
+        NetworkConnectionUpdate body) {
+        return beginUpdateAsync(resourceGroupName, networkConnectionName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Partially updates a Network Connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
@@ -1263,16 +1034,15 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return network related settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkConnectionInner> updateAsync(
-        String resourceGroupName, String networkConnectionName, NetworkConnectionUpdate body, Context context) {
-        return beginUpdateAsync(resourceGroupName, networkConnectionName, body, context)
-            .last()
+    private Mono<NetworkConnectionInner> updateAsync(String resourceGroupName, String networkConnectionName,
+        NetworkConnectionUpdate body, Context context) {
+        return beginUpdateAsync(resourceGroupName, networkConnectionName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Partially updates a Network Connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
@@ -1282,14 +1052,14 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return network related settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkConnectionInner update(
-        String resourceGroupName, String networkConnectionName, NetworkConnectionUpdate body) {
+    public NetworkConnectionInner update(String resourceGroupName, String networkConnectionName,
+        NetworkConnectionUpdate body) {
         return updateAsync(resourceGroupName, networkConnectionName, body).block();
     }
 
     /**
      * Partially updates a Network Connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
@@ -1300,14 +1070,14 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return network related settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkConnectionInner update(
-        String resourceGroupName, String networkConnectionName, NetworkConnectionUpdate body, Context context) {
+    public NetworkConnectionInner update(String resourceGroupName, String networkConnectionName,
+        NetworkConnectionUpdate body, Context context) {
         return updateAsync(resourceGroupName, networkConnectionName, body, context).block();
     }
 
     /**
      * Deletes a Network Connections resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1316,19 +1086,15 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String networkConnectionName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String networkConnectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1340,23 +1106,14 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            networkConnectionName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, networkConnectionName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a Network Connections resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
@@ -1366,19 +1123,15 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String networkConnectionName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String networkConnectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1390,20 +1143,13 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                networkConnectionName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, networkConnectionName, accept, context);
     }
 
     /**
      * Deletes a Network Connections resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1412,18 +1158,16 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String networkConnectionName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String networkConnectionName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, networkConnectionName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a Network Connections resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
@@ -1433,19 +1177,18 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String networkConnectionName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkConnectionName,
+        Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, networkConnectionName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, networkConnectionName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a Network Connections resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1460,7 +1203,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
 
     /**
      * Deletes a Network Connections resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
@@ -1470,14 +1213,14 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String networkConnectionName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkConnectionName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, networkConnectionName, context).getSyncPoller();
     }
 
     /**
      * Deletes a Network Connections resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1487,14 +1230,13 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String networkConnectionName) {
-        return beginDeleteAsync(resourceGroupName, networkConnectionName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, networkConnectionName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a Network Connections resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
@@ -1505,14 +1247,13 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String networkConnectionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, networkConnectionName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, networkConnectionName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a Network Connections resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1526,7 +1267,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
 
     /**
      * Deletes a Network Connections resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
@@ -1541,7 +1282,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
 
     /**
      * Lists health check status details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -1549,22 +1290,18 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the network health check list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<HealthCheckStatusDetailsInner>> listHealthDetailsSinglePageAsync(
-        String resourceGroupName, String networkConnectionName, Integer top) {
+    private Mono<PagedResponse<HealthCheckStatusDetailsInner>>
+        listHealthDetailsSinglePageAsync(String resourceGroupName, String networkConnectionName, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1576,33 +1313,16 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listHealthDetails(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            top,
-                            networkConnectionName,
-                            accept,
-                            context))
-            .<PagedResponse<HealthCheckStatusDetailsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listHealthDetails(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, top, networkConnectionName, accept, context))
+            .<PagedResponse<HealthCheckStatusDetailsInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists health check status details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -1611,22 +1331,18 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the network health check list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HealthCheckStatusDetailsInner>> listHealthDetailsSinglePageAsync(
         String resourceGroupName, String networkConnectionName, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1639,29 +1355,15 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listHealthDetails(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                top,
-                networkConnectionName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listHealthDetails(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, top, networkConnectionName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Lists health check status details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -1671,16 +1373,14 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return result of the network health check list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<HealthCheckStatusDetailsInner> listHealthDetailsAsync(
-        String resourceGroupName, String networkConnectionName, Integer top) {
-        return new PagedFlux<>(
-            () -> listHealthDetailsSinglePageAsync(resourceGroupName, networkConnectionName, top),
-            nextLink -> listHealthDetailsNextSinglePageAsync(nextLink));
+    private PagedFlux<HealthCheckStatusDetailsInner> listHealthDetailsAsync(String resourceGroupName,
+        String networkConnectionName, Integer top) {
+        return new PagedFlux<>(() -> listHealthDetailsSinglePageAsync(resourceGroupName, networkConnectionName, top));
     }
 
     /**
      * Lists health check status details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1689,17 +1389,15 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return result of the network health check list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<HealthCheckStatusDetailsInner> listHealthDetailsAsync(
-        String resourceGroupName, String networkConnectionName) {
+    private PagedFlux<HealthCheckStatusDetailsInner> listHealthDetailsAsync(String resourceGroupName,
+        String networkConnectionName) {
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listHealthDetailsSinglePageAsync(resourceGroupName, networkConnectionName, top),
-            nextLink -> listHealthDetailsNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listHealthDetailsSinglePageAsync(resourceGroupName, networkConnectionName, top));
     }
 
     /**
      * Lists health check status details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -1710,16 +1408,15 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return result of the network health check list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<HealthCheckStatusDetailsInner> listHealthDetailsAsync(
-        String resourceGroupName, String networkConnectionName, Integer top, Context context) {
+    private PagedFlux<HealthCheckStatusDetailsInner> listHealthDetailsAsync(String resourceGroupName,
+        String networkConnectionName, Integer top, Context context) {
         return new PagedFlux<>(
-            () -> listHealthDetailsSinglePageAsync(resourceGroupName, networkConnectionName, top, context),
-            nextLink -> listHealthDetailsNextSinglePageAsync(nextLink, context));
+            () -> listHealthDetailsSinglePageAsync(resourceGroupName, networkConnectionName, top, context));
     }
 
     /**
      * Lists health check status details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1728,15 +1425,15 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return result of the network health check list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<HealthCheckStatusDetailsInner> listHealthDetails(
-        String resourceGroupName, String networkConnectionName) {
+    public PagedIterable<HealthCheckStatusDetailsInner> listHealthDetails(String resourceGroupName,
+        String networkConnectionName) {
         final Integer top = null;
         return new PagedIterable<>(listHealthDetailsAsync(resourceGroupName, networkConnectionName, top));
     }
 
     /**
      * Lists health check status details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -1747,14 +1444,14 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return result of the network health check list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<HealthCheckStatusDetailsInner> listHealthDetails(
-        String resourceGroupName, String networkConnectionName, Integer top, Context context) {
+    public PagedIterable<HealthCheckStatusDetailsInner> listHealthDetails(String resourceGroupName,
+        String networkConnectionName, Integer top, Context context) {
         return new PagedIterable<>(listHealthDetailsAsync(resourceGroupName, networkConnectionName, top, context));
     }
 
     /**
      * Gets health check status details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1763,19 +1460,15 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return health check status details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<HealthCheckStatusDetailsInner>> getHealthDetailsWithResponseAsync(
-        String resourceGroupName, String networkConnectionName) {
+    private Mono<Response<HealthCheckStatusDetailsInner>> getHealthDetailsWithResponseAsync(String resourceGroupName,
+        String networkConnectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1787,23 +1480,14 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getHealthDetails(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            networkConnectionName,
-                            accept,
-                            context))
+            .withContext(context -> service.getHealthDetails(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, networkConnectionName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets health check status details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
@@ -1813,19 +1497,15 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return health check status details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<HealthCheckStatusDetailsInner>> getHealthDetailsWithResponseAsync(
-        String resourceGroupName, String networkConnectionName, Context context) {
+    private Mono<Response<HealthCheckStatusDetailsInner>> getHealthDetailsWithResponseAsync(String resourceGroupName,
+        String networkConnectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1837,20 +1517,13 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getHealthDetails(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                networkConnectionName,
-                accept,
-                context);
+        return service.getHealthDetails(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, networkConnectionName, accept, context);
     }
 
     /**
      * Gets health check status details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1859,15 +1532,15 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return health check status details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<HealthCheckStatusDetailsInner> getHealthDetailsAsync(
-        String resourceGroupName, String networkConnectionName) {
+    private Mono<HealthCheckStatusDetailsInner> getHealthDetailsAsync(String resourceGroupName,
+        String networkConnectionName) {
         return getHealthDetailsWithResponseAsync(resourceGroupName, networkConnectionName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets health check status details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
@@ -1877,14 +1550,14 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return health check status details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<HealthCheckStatusDetailsInner> getHealthDetailsWithResponse(
-        String resourceGroupName, String networkConnectionName, Context context) {
+    public Response<HealthCheckStatusDetailsInner> getHealthDetailsWithResponse(String resourceGroupName,
+        String networkConnectionName, Context context) {
         return getHealthDetailsWithResponseAsync(resourceGroupName, networkConnectionName, context).block();
     }
 
     /**
      * Gets health check status details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1900,7 +1573,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
      * health check details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1909,19 +1582,15 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> runHealthChecksWithResponseAsync(
-        String resourceGroupName, String networkConnectionName) {
+    private Mono<Response<Flux<ByteBuffer>>> runHealthChecksWithResponseAsync(String resourceGroupName,
+        String networkConnectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1933,24 +1602,15 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .runHealthChecks(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            networkConnectionName,
-                            accept,
-                            context))
+            .withContext(context -> service.runHealthChecks(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, networkConnectionName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
      * health check details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
@@ -1960,19 +1620,15 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> runHealthChecksWithResponseAsync(
-        String resourceGroupName, String networkConnectionName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> runHealthChecksWithResponseAsync(String resourceGroupName,
+        String networkConnectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1984,21 +1640,14 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .runHealthChecks(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                networkConnectionName,
-                accept,
-                context);
+        return service.runHealthChecks(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, networkConnectionName, accept, context);
     }
 
     /**
      * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
      * health check details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2007,20 +1656,18 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRunHealthChecksAsync(
-        String resourceGroupName, String networkConnectionName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            runHealthChecksWithResponseAsync(resourceGroupName, networkConnectionName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginRunHealthChecksAsync(String resourceGroupName,
+        String networkConnectionName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = runHealthChecksWithResponseAsync(resourceGroupName, networkConnectionName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
      * health check details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
@@ -2030,20 +1677,19 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRunHealthChecksAsync(
-        String resourceGroupName, String networkConnectionName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginRunHealthChecksAsync(String resourceGroupName,
+        String networkConnectionName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            runHealthChecksWithResponseAsync(resourceGroupName, networkConnectionName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = runHealthChecksWithResponseAsync(resourceGroupName, networkConnectionName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
      * health check details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2052,15 +1698,15 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRunHealthChecks(
-        String resourceGroupName, String networkConnectionName) {
+    public SyncPoller<PollResult<Void>, Void> beginRunHealthChecks(String resourceGroupName,
+        String networkConnectionName) {
         return this.beginRunHealthChecksAsync(resourceGroupName, networkConnectionName).getSyncPoller();
     }
 
     /**
      * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
      * health check details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
@@ -2070,15 +1716,15 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRunHealthChecks(
-        String resourceGroupName, String networkConnectionName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginRunHealthChecks(String resourceGroupName,
+        String networkConnectionName, Context context) {
         return this.beginRunHealthChecksAsync(resourceGroupName, networkConnectionName, context).getSyncPoller();
     }
 
     /**
      * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
      * health check details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2088,15 +1734,14 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> runHealthChecksAsync(String resourceGroupName, String networkConnectionName) {
-        return beginRunHealthChecksAsync(resourceGroupName, networkConnectionName)
-            .last()
+        return beginRunHealthChecksAsync(resourceGroupName, networkConnectionName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
      * health check details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
@@ -2107,15 +1752,14 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> runHealthChecksAsync(String resourceGroupName, String networkConnectionName, Context context) {
-        return beginRunHealthChecksAsync(resourceGroupName, networkConnectionName, context)
-            .last()
+        return beginRunHealthChecksAsync(resourceGroupName, networkConnectionName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
      * health check details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2130,7 +1774,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
      * health check details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
@@ -2146,31 +1790,27 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Lists the endpoints that agents may call as part of Dev Box service administration. These FQDNs should be allowed
      * for outbound access in order for the Dev Box service to function.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OutboundEnvironmentEndpointInner>>
-        listOutboundNetworkDependenciesEndpointsSinglePageAsync(
-            String resourceGroupName, String networkConnectionName, Integer top) {
+        listOutboundNetworkDependenciesEndpointsSinglePageAsync(String resourceGroupName, String networkConnectionName,
+            Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2182,34 +1822,18 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listOutboundNetworkDependenciesEndpoints(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            top,
-                            networkConnectionName,
-                            accept,
-                            context))
-            .<PagedResponse<OutboundEnvironmentEndpointInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listOutboundNetworkDependenciesEndpoints(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, top,
+                networkConnectionName, accept, context))
+            .<PagedResponse<OutboundEnvironmentEndpointInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists the endpoints that agents may call as part of Dev Box service administration. These FQDNs should be allowed
      * for outbound access in order for the Dev Box service to function.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -2217,24 +1841,20 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OutboundEnvironmentEndpointInner>>
-        listOutboundNetworkDependenciesEndpointsSinglePageAsync(
-            String resourceGroupName, String networkConnectionName, Integer top, Context context) {
+        listOutboundNetworkDependenciesEndpointsSinglePageAsync(String resourceGroupName, String networkConnectionName,
+            Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2247,30 +1867,16 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listOutboundNetworkDependenciesEndpoints(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                top,
-                networkConnectionName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listOutboundNetworkDependenciesEndpoints(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, top, networkConnectionName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists the endpoints that agents may call as part of Dev Box service administration. These FQDNs should be allowed
      * for outbound access in order for the Dev Box service to function.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -2282,16 +1888,15 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpointsAsync(
         String resourceGroupName, String networkConnectionName, Integer top) {
-        return new PagedFlux<>(
-            () ->
-                listOutboundNetworkDependenciesEndpointsSinglePageAsync(resourceGroupName, networkConnectionName, top),
+        return new PagedFlux<>(() -> listOutboundNetworkDependenciesEndpointsSinglePageAsync(resourceGroupName,
+            networkConnectionName, top),
             nextLink -> listOutboundNetworkDependenciesEndpointsNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the endpoints that agents may call as part of Dev Box service administration. These FQDNs should be allowed
      * for outbound access in order for the Dev Box service to function.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2300,19 +1905,18 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return values returned by the List operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpointsAsync(
-        String resourceGroupName, String networkConnectionName) {
+    private PagedFlux<OutboundEnvironmentEndpointInner>
+        listOutboundNetworkDependenciesEndpointsAsync(String resourceGroupName, String networkConnectionName) {
         final Integer top = null;
-        return new PagedFlux<>(
-            () ->
-                listOutboundNetworkDependenciesEndpointsSinglePageAsync(resourceGroupName, networkConnectionName, top),
+        return new PagedFlux<>(() -> listOutboundNetworkDependenciesEndpointsSinglePageAsync(resourceGroupName,
+            networkConnectionName, top),
             nextLink -> listOutboundNetworkDependenciesEndpointsNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the endpoints that agents may call as part of Dev Box service administration. These FQDNs should be allowed
      * for outbound access in order for the Dev Box service to function.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -2325,17 +1929,15 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpointsAsync(
         String resourceGroupName, String networkConnectionName, Integer top, Context context) {
-        return new PagedFlux<>(
-            () ->
-                listOutboundNetworkDependenciesEndpointsSinglePageAsync(
-                    resourceGroupName, networkConnectionName, top, context),
+        return new PagedFlux<>(() -> listOutboundNetworkDependenciesEndpointsSinglePageAsync(resourceGroupName,
+            networkConnectionName, top, context),
             nextLink -> listOutboundNetworkDependenciesEndpointsNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists the endpoints that agents may call as part of Dev Box service administration. These FQDNs should be allowed
      * for outbound access in order for the Dev Box service to function.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2344,8 +1946,8 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      * @return values returned by the List operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String networkConnectionName) {
+    public PagedIterable<OutboundEnvironmentEndpointInner>
+        listOutboundNetworkDependenciesEndpoints(String resourceGroupName, String networkConnectionName) {
         final Integer top = null;
         return new PagedIterable<>(
             listOutboundNetworkDependenciesEndpointsAsync(resourceGroupName, networkConnectionName, top));
@@ -2354,7 +1956,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     /**
      * Lists the endpoints that agents may call as part of Dev Box service administration. These FQDNs should be allowed
      * for outbound access in order for the Dev Box service to function.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -2373,14 +1975,15 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the network connection list operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkConnectionInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -2388,76 +1991,59 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<NetworkConnectionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<NetworkConnectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the network connection list operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkConnectionInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<NetworkConnectionInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the network connection list operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkConnectionInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -2465,152 +2051,59 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<NetworkConnectionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<NetworkConnectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the network connection list operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkConnectionInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<NetworkConnectionInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the network health check list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<HealthCheckStatusDetailsInner>> listHealthDetailsNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listHealthDetailsNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<HealthCheckStatusDetailsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the network health check list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<HealthCheckStatusDetailsInner>> listHealthDetailsNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listHealthDetailsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OutboundEnvironmentEndpointInner>>
@@ -2619,41 +2112,30 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listOutboundNetworkDependenciesEndpointsNext(
-                            nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<OutboundEnvironmentEndpointInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listOutboundNetworkDependenciesEndpointsNext(nextLink,
+                this.client.getEndpoint(), accept, context))
+            .<PagedResponse<OutboundEnvironmentEndpointInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OutboundEnvironmentEndpointInner>>
@@ -2662,23 +2144,14 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listOutboundNetworkDependenciesEndpointsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

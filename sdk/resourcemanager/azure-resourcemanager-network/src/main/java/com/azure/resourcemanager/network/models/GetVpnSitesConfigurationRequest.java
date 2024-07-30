@@ -79,8 +79,9 @@ public final class GetVpnSitesConfigurationRequest {
      */
     public void validate() {
         if (outputBlobSasUrl() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property outputBlobSasUrl in model GetVpnSitesConfigurationRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property outputBlobSasUrl in model GetVpnSitesConfigurationRequest"));
         }
     }
 

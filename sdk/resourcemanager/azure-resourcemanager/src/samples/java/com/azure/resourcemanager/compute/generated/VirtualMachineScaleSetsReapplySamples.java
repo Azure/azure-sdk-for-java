@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class VirtualMachineScaleSetsReapplySamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Reapply_MaximumSet_Gen.json
      */
     /**
@@ -20,13 +20,17 @@ public final class VirtualMachineScaleSetsReapplySamples {
      */
     public static void
         virtualMachineScaleSetsReapplyMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets().reapply(
-            "VirtualMachineScaleSetReapplyTestRG", "VMSSReapply-Test-ScaleSet", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .reapply("VirtualMachineScaleSetReapplyTestRG", "VMSSReapply-Test-ScaleSet",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Reapply_MinimumSet_Gen.json
      */
     /**
@@ -36,7 +40,11 @@ public final class VirtualMachineScaleSetsReapplySamples {
      */
     public static void
         virtualMachineScaleSetsReapplyMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets().reapply(
-            "VirtualMachineScaleSetReapplyTestRG", "VMSSReapply-Test-ScaleSet", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .reapply("VirtualMachineScaleSetReapplyTestRG", "VMSSReapply-Test-ScaleSet",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -96,20 +96,16 @@ public final class SliceImpl implements Slice, Slice.Definition, Slice.Update {
     }
 
     public Slice create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSlices()
-                .createOrUpdate(resourceGroupName, mobileNetworkName, sliceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSlices()
+            .createOrUpdate(resourceGroupName, mobileNetworkName, sliceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Slice create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSlices()
-                .createOrUpdate(resourceGroupName, mobileNetworkName, sliceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSlices()
+            .createOrUpdate(resourceGroupName, mobileNetworkName, sliceName, this.innerModel(), context);
         return this;
     }
 
@@ -125,50 +121,42 @@ public final class SliceImpl implements Slice, Slice.Definition, Slice.Update {
     }
 
     public Slice apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSlices()
-                .updateTagsWithResponse(resourceGroupName, mobileNetworkName, sliceName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSlices()
+            .updateTagsWithResponse(resourceGroupName, mobileNetworkName, sliceName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Slice apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSlices()
-                .updateTagsWithResponse(resourceGroupName, mobileNetworkName, sliceName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSlices()
+            .updateTagsWithResponse(resourceGroupName, mobileNetworkName, sliceName, updateParameters, context)
+            .getValue();
         return this;
     }
 
     SliceImpl(SliceInner innerObject, com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.mobileNetworkName = Utils.getValueFromIdByName(innerObject.id(), "mobileNetworks");
-        this.sliceName = Utils.getValueFromIdByName(innerObject.id(), "slices");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.mobileNetworkName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "mobileNetworks");
+        this.sliceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "slices");
     }
 
     public Slice refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSlices()
-                .getWithResponse(resourceGroupName, mobileNetworkName, sliceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSlices()
+            .getWithResponse(resourceGroupName, mobileNetworkName, sliceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Slice refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSlices()
-                .getWithResponse(resourceGroupName, mobileNetworkName, sliceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSlices()
+            .getWithResponse(resourceGroupName, mobileNetworkName, sliceName, context)
+            .getValue();
         return this;
     }
 

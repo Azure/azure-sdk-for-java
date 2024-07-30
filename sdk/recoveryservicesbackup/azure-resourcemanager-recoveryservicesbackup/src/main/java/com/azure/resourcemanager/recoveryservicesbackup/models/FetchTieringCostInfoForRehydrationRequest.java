@@ -7,16 +7,28 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Request parameters for fetching cost info of rehydration.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "objectType",
+    defaultImpl = FetchTieringCostInfoForRehydrationRequest.class,
+    visible = true)
 @JsonTypeName("FetchTieringCostInfoForRehydrationRequest")
 @Fluent
 public final class FetchTieringCostInfoForRehydrationRequest extends FetchTieringCostInfoRequest {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "objectType", required = true)
+    private String objectType = "FetchTieringCostInfoForRehydrationRequest";
+
     /*
      * Name of the protected item container
      */
@@ -45,6 +57,17 @@ public final class FetchTieringCostInfoForRehydrationRequest extends FetchTierin
      * Creates an instance of FetchTieringCostInfoForRehydrationRequest class.
      */
     public FetchTieringCostInfoForRehydrationRequest() {
+    }
+
+    /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
     }
 
     /**
@@ -154,20 +177,24 @@ public final class FetchTieringCostInfoForRehydrationRequest extends FetchTierin
     public void validate() {
         super.validate();
         if (containerName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property containerName in model FetchTieringCostInfoForRehydrationRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property containerName in model FetchTieringCostInfoForRehydrationRequest"));
         }
         if (protectedItemName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property protectedItemName in model FetchTieringCostInfoForRehydrationRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property protectedItemName in model FetchTieringCostInfoForRehydrationRequest"));
         }
         if (recoveryPointId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property recoveryPointId in model FetchTieringCostInfoForRehydrationRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property recoveryPointId in model FetchTieringCostInfoForRehydrationRequest"));
         }
         if (rehydrationPriority() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property rehydrationPriority in model FetchTieringCostInfoForRehydrationRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property rehydrationPriority in model FetchTieringCostInfoForRehydrationRequest"));
         }
     }
 

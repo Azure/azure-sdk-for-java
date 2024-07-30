@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The protocol of the destination to where the traffic is redirected. */
+/**
+ * The protocol of the destination to where the traffic is redirected.
+ */
 public final class FrontDoorRedirectProtocol extends ExpandableStringEnum<FrontDoorRedirectProtocol> {
-    /** Static value HttpOnly for FrontDoorRedirectProtocol. */
+    /**
+     * Static value HttpOnly for FrontDoorRedirectProtocol.
+     */
     public static final FrontDoorRedirectProtocol HTTP_ONLY = fromString("HttpOnly");
 
-    /** Static value HttpsOnly for FrontDoorRedirectProtocol. */
+    /**
+     * Static value HttpsOnly for FrontDoorRedirectProtocol.
+     */
     public static final FrontDoorRedirectProtocol HTTPS_ONLY = fromString("HttpsOnly");
 
-    /** Static value MatchRequest for FrontDoorRedirectProtocol. */
+    /**
+     * Static value MatchRequest for FrontDoorRedirectProtocol.
+     */
     public static final FrontDoorRedirectProtocol MATCH_REQUEST = fromString("MatchRequest");
 
     /**
      * Creates a new instance of FrontDoorRedirectProtocol value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class FrontDoorRedirectProtocol extends ExpandableStringEnum<FrontD
 
     /**
      * Creates or finds a FrontDoorRedirectProtocol from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FrontDoorRedirectProtocol.
      */
@@ -41,7 +49,7 @@ public final class FrontDoorRedirectProtocol extends ExpandableStringEnum<FrontD
 
     /**
      * Gets known FrontDoorRedirectProtocol values.
-     *
+     * 
      * @return known FrontDoorRedirectProtocol values.
      */
     public static Collection<FrontDoorRedirectProtocol> values() {

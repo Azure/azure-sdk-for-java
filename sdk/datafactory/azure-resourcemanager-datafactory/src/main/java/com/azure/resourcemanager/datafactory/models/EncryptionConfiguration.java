@@ -105,8 +105,8 @@ public final class EncryptionConfiguration {
     }
 
     /**
-     * Get the identity property: User assigned identity to use to authenticate to customer's key vault. If not
-     * provided Managed Service Identity will be used.
+     * Get the identity property: User assigned identity to use to authenticate to customer's key vault. If not provided
+     * Managed Service Identity will be used.
      * 
      * @return the identity value.
      */
@@ -115,8 +115,8 @@ public final class EncryptionConfiguration {
     }
 
     /**
-     * Set the identity property: User assigned identity to use to authenticate to customer's key vault. If not
-     * provided Managed Service Identity will be used.
+     * Set the identity property: User assigned identity to use to authenticate to customer's key vault. If not provided
+     * Managed Service Identity will be used.
      * 
      * @param identity the identity value to set.
      * @return the EncryptionConfiguration object itself.
@@ -133,12 +133,14 @@ public final class EncryptionConfiguration {
      */
     public void validate() {
         if (keyName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property keyName in model EncryptionConfiguration"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property keyName in model EncryptionConfiguration"));
         }
         if (vaultBaseUrl() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property vaultBaseUrl in model EncryptionConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property vaultBaseUrl in model EncryptionConfiguration"));
         }
         if (identity() != null) {
             identity().validate();

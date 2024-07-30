@@ -7,7 +7,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-identity-broker</artifactId>
-  <version>1.1.0-beta.1</version><!-- {x-version-update;com.azure:azure-identity-broker;current} -->
+  <version>1.2.0-beta.1</version><!-- {x-version-update;com.azure:azure-identity-broker;current} -->
 
   <name>Microsoft Azure Identity Brokered Authentication Library</name>
   <description>This module contains brokered authentication extensions for Microsoft Azure Identity.</description>
@@ -19,8 +19,6 @@
     <javaModulesSurefireArgLine>
       --add-opens java.xml/jdk.xml.internal=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <javadoc.sourcepath>${basedir}/src/main/java:${basedir}/../../core/azure-core/src/main/java</javadoc.sourcepath>
-    <javadoc.excludePackageNames>com.azure.core.*</javadoc.excludePackageNames>
   </properties>
 
   <parent>
@@ -34,12 +32,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.12.0-beta.2</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
+      <version>1.14.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>msal4j</artifactId>
-      <version>1.14.3</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
+      <version>1.16.1</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
@@ -59,12 +57,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:msal4j:[1.14.3]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
+                <include>com.microsoft.azure:msal4j:[1.16.1]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
                 <include>com.microsoft.azure:msal4j-brokers:[1.0.0]</include> <!-- {x-include-update;com.microsoft.azure:msal4j-brokers;external_dependency} -->
               </includes>
             </bannedDependencies>
@@ -84,7 +82,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.3.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
+        <version>3.5.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>compile-samples-source</id>
@@ -103,7 +101,7 @@
       <plugin>
         <groupId>com.azure.tools</groupId>
         <artifactId>codesnippet-maven-plugin</artifactId>
-        <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+        <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
         <configuration>
           <codesnippetRootDirectory>../azure-identity-broker-samples/src/samples/java</codesnippetRootDirectory>
         </configuration>

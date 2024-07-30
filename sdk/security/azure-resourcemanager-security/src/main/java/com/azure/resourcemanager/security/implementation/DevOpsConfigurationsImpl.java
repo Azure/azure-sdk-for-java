@@ -74,8 +74,8 @@ public final class DevOpsConfigurationsImpl implements DevOpsConfigurations {
 
     public DevOpsConfiguration createOrUpdate(String resourceGroupName, String securityConnectorName,
         DevOpsConfigurationInner devOpsConfiguration, Context context) {
-        DevOpsConfigurationInner inner = this.serviceClient().createOrUpdate(resourceGroupName, securityConnectorName,
-            devOpsConfiguration, context);
+        DevOpsConfigurationInner inner = this.serviceClient()
+            .createOrUpdate(resourceGroupName, securityConnectorName, devOpsConfiguration, context);
         if (inner != null) {
             return new DevOpsConfigurationImpl(inner, this.manager());
         } else {

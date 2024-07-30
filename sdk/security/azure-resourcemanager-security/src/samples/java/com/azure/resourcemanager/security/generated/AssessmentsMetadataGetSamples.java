@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class AssessmentsMetadataGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/AssessmentsMetadata/
-     * GetAssessmentsMetadata_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/AssessmentsMetadata/GetAssessmentsMetadata_example.json
      */
     /**
      * Sample code: Get security assessment metadata.
@@ -19,7 +17,7 @@ public final class AssessmentsMetadataGetSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void getSecurityAssessmentMetadata(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.assessmentsMetadatas().getWithResponse("21300918-b2e3-0346-785f-c77ff57d243b",
-            com.azure.core.util.Context.NONE);
+        manager.assessmentsMetadatas()
+            .getWithResponse("21300918-b2e3-0346-785f-c77ff57d243b", com.azure.core.util.Context.NONE);
     }
 }

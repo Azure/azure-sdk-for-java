@@ -5,28 +5,43 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Details of the resource that was assessed.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "source",
-    defaultImpl = ResourceDetails.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "source", defaultImpl = ResourceDetails.class, visible = true)
 @JsonTypeName("ResourceDetails")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Azure", value = AzureResourceDetails.class),
     @JsonSubTypes.Type(name = "OnPremise", value = OnPremiseResourceDetails.class) })
 @Immutable
 public class ResourceDetails {
+    /*
+     * The platform where the assessed resource resides
+     */
+    @JsonTypeId
+    @JsonProperty(value = "source", required = true)
+    private Source source;
+
     /**
      * Creates an instance of ResourceDetails class.
      */
     public ResourceDetails() {
+        this.source = Source.fromString("ResourceDetails");
+    }
+
+    /**
+     * Get the source property: The platform where the assessed resource resides.
+     * 
+     * @return the source value.
+     */
+    public Source source() {
+        return this.source;
     }
 
     /**

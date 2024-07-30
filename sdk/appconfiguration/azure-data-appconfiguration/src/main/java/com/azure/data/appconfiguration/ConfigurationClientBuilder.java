@@ -12,6 +12,7 @@ import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -98,7 +99,7 @@ import static com.azure.data.appconfiguration.implementation.ClientConstants.APP
  *
  * ConfigurationClient configurationClient = new ConfigurationClientBuilder&#40;&#41;
  *     .pipeline&#40;pipeline&#41;
- *     .endpoint&#40;&quot;https:&#47;&#47;myconfig.azure.net&#47;&quot;&#41;
+ *     .endpoint&#40;&quot;https:&#47;&#47;dummy.azure.net&#47;&quot;&#41;
  *     .connectionString&#40;connectionString&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
@@ -126,8 +127,8 @@ public final class ConfigurationClientBuilder implements
         CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
         ADD_HEADERS_POLICY = new AddHeadersPolicy(new HttpHeaders()
             .set("x-ms-return-client-request-id", "true")
-            .set("Content-Type", "application/json")
-            .set("Accept", "application/vnd.microsoft.azconfig.kv+json"));
+            .set(HttpHeaderName.CONTENT_TYPE, "application/json")
+            .set(HttpHeaderName.ACCEPT, "application/vnd.microsoft.azconfig.kv+json"));
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConfigurationClientBuilder.class);

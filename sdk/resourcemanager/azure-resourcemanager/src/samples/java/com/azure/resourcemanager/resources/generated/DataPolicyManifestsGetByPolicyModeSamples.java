@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-/** Samples for DataPolicyManifests GetByPolicyMode. */
+/**
+ * Samples for DataPolicyManifests GetByPolicyMode.
+ */
 public final class DataPolicyManifestsGetByPolicyModeSamples {
     /*
      * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2020-09-01/examples/getDataPolicyManifest.json
      */
     /**
      * Sample code: Retrieve a data policy manifest by policy mode.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void retrieveADataPolicyManifestByPolicyMode(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .genericResources()
+        azure.genericResources()
             .manager()
             .policyClient()
             .getDataPolicyManifests()

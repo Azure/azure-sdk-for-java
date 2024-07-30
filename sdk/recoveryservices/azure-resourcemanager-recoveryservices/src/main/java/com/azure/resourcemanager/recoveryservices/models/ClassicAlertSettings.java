@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservices.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Settings for classic alerts. */
+/**
+ * Settings for classic alerts.
+ */
 @Fluent
 public final class ClassicAlertSettings {
     /*
@@ -16,13 +18,21 @@ public final class ClassicAlertSettings {
     @JsonProperty(value = "alertsForCriticalOperations")
     private AlertsState alertsForCriticalOperations;
 
-    /** Creates an instance of ClassicAlertSettings class. */
+    /*
+     * The emailNotificationsForSiteRecovery property.
+     */
+    @JsonProperty(value = "emailNotificationsForSiteRecovery")
+    private AlertsState emailNotificationsForSiteRecovery;
+
+    /**
+     * Creates an instance of ClassicAlertSettings class.
+     */
     public ClassicAlertSettings() {
     }
 
     /**
      * Get the alertsForCriticalOperations property: The alertsForCriticalOperations property.
-     *
+     * 
      * @return the alertsForCriticalOperations value.
      */
     public AlertsState alertsForCriticalOperations() {
@@ -31,7 +41,7 @@ public final class ClassicAlertSettings {
 
     /**
      * Set the alertsForCriticalOperations property: The alertsForCriticalOperations property.
-     *
+     * 
      * @param alertsForCriticalOperations the alertsForCriticalOperations value to set.
      * @return the ClassicAlertSettings object itself.
      */
@@ -41,8 +51,28 @@ public final class ClassicAlertSettings {
     }
 
     /**
+     * Get the emailNotificationsForSiteRecovery property: The emailNotificationsForSiteRecovery property.
+     * 
+     * @return the emailNotificationsForSiteRecovery value.
+     */
+    public AlertsState emailNotificationsForSiteRecovery() {
+        return this.emailNotificationsForSiteRecovery;
+    }
+
+    /**
+     * Set the emailNotificationsForSiteRecovery property: The emailNotificationsForSiteRecovery property.
+     * 
+     * @param emailNotificationsForSiteRecovery the emailNotificationsForSiteRecovery value to set.
+     * @return the ClassicAlertSettings object itself.
+     */
+    public ClassicAlertSettings withEmailNotificationsForSiteRecovery(AlertsState emailNotificationsForSiteRecovery) {
+        this.emailNotificationsForSiteRecovery = emailNotificationsForSiteRecovery;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

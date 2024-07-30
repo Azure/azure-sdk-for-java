@@ -12,9 +12,7 @@ import java.util.UUID;
  */
 public final class PartnerDestinationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
-     * PartnerDestinations_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/PartnerDestinations_CreateOrUpdate.json
      */
     /**
      * Sample code: PartnerDestinations_CreateOrUpdate.
@@ -22,12 +20,15 @@ public final class PartnerDestinationsCreateOrUpdateSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void partnerDestinationsCreateOrUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.partnerDestinations().define("examplePartnerDestinationName1").withRegion("westus2")
+        manager.partnerDestinations()
+            .define("examplePartnerDestinationName1")
+            .withRegion("westus2")
             .withExistingResourceGroup("examplerg")
             .withPartnerRegistrationImmutableId(UUID.fromString("0bd70ee2-7d95-447e-ab1f-c4f320019404"))
             .withEndpointServiceContext("This is an example")
             .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2022-03-14T19:33:43.430Z"))
-            .withEndpointBaseUrl("https://www.example/endpoint").withMessageForActivation("Sample Activation message")
+            .withEndpointBaseUrl("https://www.example/endpoint")
+            .withMessageForActivation("Sample Activation message")
             .create();
     }
 }

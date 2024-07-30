@@ -6,11 +6,9 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.NotificationsSource;
 import com.azure.resourcemanager.security.models.SecurityContact;
@@ -18,53 +16,41 @@ import com.azure.resourcemanager.security.models.SecurityContactName;
 import com.azure.resourcemanager.security.models.SecurityContactPropertiesNotificationsByRole;
 import com.azure.resourcemanager.security.models.SecurityContactRole;
 import com.azure.resourcemanager.security.models.State;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class SecurityContactsCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"emails\":\"njtqbg\",\"phone\":\"ibt\",\"isEnabled\":false,\"notificationsSources\":[{\"sourceType\":\"NotificationsSource\"},{\"sourceType\":\"NotificationsSource\"},{\"sourceType\":\"NotificationsSource\"}],\"notificationsByRole\":{\"state\":\"Failed\",\"roles\":[\"Owner\",\"Owner\"]}},\"id\":\"dbtqyh\",\"name\":\"xu\",\"type\":\"saujqg\"}";
+            = "{\"properties\":{\"emails\":\"ikm\",\"phone\":\"hqsxjbjkewrig\",\"isEnabled\":false,\"notificationsSources\":[{\"sourceType\":\"NotificationsSource\"},{\"sourceType\":\"NotificationsSource\"},{\"sourceType\":\"NotificationsSource\"}],\"notificationsByRole\":{\"state\":\"Skipped\",\"roles\":[\"Contributor\"]}},\"id\":\"lxcjffzwncv\",\"name\":\"efx\",\"type\":\"n\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        SecurityContact response = manager.securityContacts().define(SecurityContactName.DEFAULT).withEmails("zq")
-            .withPhone("zochwbekmuyn").withIsEnabled(true)
+        SecurityContact response = manager.securityContacts()
+            .define(SecurityContactName.DEFAULT)
+            .withEmails("ndcbs")
+            .withPhone("ludzjkk")
+            .withIsEnabled(false)
             .withNotificationsSources(Arrays.asList(new NotificationsSource(), new NotificationsSource()))
-            .withNotificationsByRole(new SecurityContactPropertiesNotificationsByRole().withState(State.UNSUPPORTED)
-                .withRoles(Arrays.asList(SecurityContactRole.ACCOUNT_ADMIN)))
+            .withNotificationsByRole(new SecurityContactPropertiesNotificationsByRole().withState(State.PASSED)
+                .withRoles(Arrays.asList(SecurityContactRole.ACCOUNT_ADMIN, SecurityContactRole.ACCOUNT_ADMIN,
+                    SecurityContactRole.CONTRIBUTOR)))
             .create();
 
-        Assertions.assertEquals("njtqbg", response.emails());
-        Assertions.assertEquals("ibt", response.phone());
+        Assertions.assertEquals("ikm", response.emails());
+        Assertions.assertEquals("hqsxjbjkewrig", response.phone());
         Assertions.assertEquals(false, response.isEnabled());
-        Assertions.assertEquals(State.FAILED, response.notificationsByRole().state());
-        Assertions.assertEquals(SecurityContactRole.OWNER, response.notificationsByRole().roles().get(0));
+        Assertions.assertEquals(State.SKIPPED, response.notificationsByRole().state());
+        Assertions.assertEquals(SecurityContactRole.CONTRIBUTOR, response.notificationsByRole().roles().get(0));
     }
 }

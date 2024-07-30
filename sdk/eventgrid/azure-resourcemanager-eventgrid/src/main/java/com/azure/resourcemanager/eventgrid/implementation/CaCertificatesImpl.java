@@ -59,28 +59,28 @@ public final class CaCertificatesImpl implements CaCertificates {
     public PagedIterable<CaCertificate> listByNamespace(String resourceGroupName, String namespaceName) {
         PagedIterable<CaCertificateInner> inner
             = this.serviceClient().listByNamespace(resourceGroupName, namespaceName);
-        return Utils.mapPage(inner, inner1 -> new CaCertificateImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CaCertificateImpl(inner1, this.manager()));
     }
 
     public PagedIterable<CaCertificate> listByNamespace(String resourceGroupName, String namespaceName, String filter,
         Integer top, Context context) {
         PagedIterable<CaCertificateInner> inner
             = this.serviceClient().listByNamespace(resourceGroupName, namespaceName, filter, top, context);
-        return Utils.mapPage(inner, inner1 -> new CaCertificateImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CaCertificateImpl(inner1, this.manager()));
     }
 
     public CaCertificate getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
+        String namespaceName = ResourceManagerUtils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
-        String caCertificateName = Utils.getValueFromIdByName(id, "caCertificates");
+        String caCertificateName = ResourceManagerUtils.getValueFromIdByName(id, "caCertificates");
         if (caCertificateName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'caCertificates'.", id)));
@@ -89,17 +89,17 @@ public final class CaCertificatesImpl implements CaCertificates {
     }
 
     public Response<CaCertificate> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
+        String namespaceName = ResourceManagerUtils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
-        String caCertificateName = Utils.getValueFromIdByName(id, "caCertificates");
+        String caCertificateName = ResourceManagerUtils.getValueFromIdByName(id, "caCertificates");
         if (caCertificateName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'caCertificates'.", id)));
@@ -108,17 +108,17 @@ public final class CaCertificatesImpl implements CaCertificates {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
+        String namespaceName = ResourceManagerUtils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
-        String caCertificateName = Utils.getValueFromIdByName(id, "caCertificates");
+        String caCertificateName = ResourceManagerUtils.getValueFromIdByName(id, "caCertificates");
         if (caCertificateName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'caCertificates'.", id)));
@@ -127,17 +127,17 @@ public final class CaCertificatesImpl implements CaCertificates {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
+        String namespaceName = ResourceManagerUtils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
-        String caCertificateName = Utils.getValueFromIdByName(id, "caCertificates");
+        String caCertificateName = ResourceManagerUtils.getValueFromIdByName(id, "caCertificates");
         if (caCertificateName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'caCertificates'.", id)));

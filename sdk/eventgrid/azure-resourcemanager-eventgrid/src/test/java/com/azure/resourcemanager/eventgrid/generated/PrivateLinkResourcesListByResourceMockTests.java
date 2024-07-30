@@ -6,58 +6,41 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.PrivateLinkResource;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PrivateLinkResourcesListByResourceMockTests {
     @Test
     public void testListByResource() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupId\":\"pzwhjunfdgbggc\",\"displayName\":\"zhblivw\",\"requiredMembers\":[\"udymymbhdosmbng\"],\"requiredZoneNames\":[\"gxzduvxdmxe\"]},\"id\":\"tmdm\",\"name\":\"senxoirxyd\",\"type\":\"iploisjkzsoxznnt\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"pkhc\",\"displayName\":\"aqxukuicjufte\",\"requiredMembers\":[\"oanduewfhvpxjhx\"],\"requiredZoneNames\":[\"fjz\",\"bbwzgvzuaixcd\",\"kixsps\",\"igavk\"]},\"id\":\"yxzerejr\",\"name\":\"zjbyetjxryopta\",\"type\":\"twhlbecgih\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        EventGridManager manager = EventGridManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        EventGridManager manager = EventGridManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        PagedIterable<PrivateLinkResource> response = manager.privateLinkResources()
+            .listByResource("zmecjjkmqenhai", "zrpv", "gloiovsl", "ivqsuvwtenb", 1771574336,
+                com.azure.core.util.Context.NONE);
 
-        PagedIterable<PrivateLinkResource> response = manager.privateLinkResources().listByResource("weoj",
-            "epgcmahiwf", "yawkch", "apitskshfyftt", 2061878224, com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("tmdm", response.iterator().next().id());
-        Assertions.assertEquals("senxoirxyd", response.iterator().next().name());
-        Assertions.assertEquals("iploisjkzsoxznnt", response.iterator().next().type());
-        Assertions.assertEquals("pzwhjunfdgbggc", response.iterator().next().groupId());
-        Assertions.assertEquals("zhblivw", response.iterator().next().displayName());
-        Assertions.assertEquals("udymymbhdosmbng", response.iterator().next().requiredMembers().get(0));
-        Assertions.assertEquals("gxzduvxdmxe", response.iterator().next().requiredZoneNames().get(0));
+        Assertions.assertEquals("yxzerejr", response.iterator().next().id());
+        Assertions.assertEquals("zjbyetjxryopta", response.iterator().next().name());
+        Assertions.assertEquals("twhlbecgih", response.iterator().next().type());
+        Assertions.assertEquals("pkhc", response.iterator().next().groupId());
+        Assertions.assertEquals("aqxukuicjufte", response.iterator().next().displayName());
+        Assertions.assertEquals("oanduewfhvpxjhx", response.iterator().next().requiredMembers().get(0));
+        Assertions.assertEquals("fjz", response.iterator().next().requiredZoneNames().get(0));
     }
 }

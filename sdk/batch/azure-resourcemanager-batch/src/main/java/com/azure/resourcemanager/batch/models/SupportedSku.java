@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.resourcemanager.batch.fluent.models.SupportedSkuInner;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
@@ -31,6 +32,13 @@ public interface SupportedSku {
      * @return the capabilities value.
      */
     List<SkuCapability> capabilities();
+
+    /**
+     * Gets the batchSupportEndOfLife property: The time when Azure Batch service will retire this SKU.
+     * 
+     * @return the batchSupportEndOfLife value.
+     */
+    OffsetDateTime batchSupportEndOfLife();
 
     /**
      * Gets the inner com.azure.resourcemanager.batch.fluent.models.SupportedSkuInner object.

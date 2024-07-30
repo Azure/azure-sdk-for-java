@@ -10,7 +10,9 @@ import com.azure.resourcemanager.sphere.fluent.models.ImageInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response of a Image list operation. */
+/**
+ * The response of a Image list operation.
+ */
 @Fluent
 public final class ImageListResult {
     /*
@@ -22,16 +24,18 @@ public final class ImageListResult {
     /*
      * The link to the next page of items
      */
-    @JsonProperty(value = "nextLink")
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ImageListResult class. */
+    /**
+     * Creates an instance of ImageListResult class.
+     */
     public ImageListResult() {
     }
 
     /**
      * Get the value property: The Image items on this page.
-     *
+     * 
      * @return the value value.
      */
     public List<ImageInner> value() {
@@ -40,7 +44,7 @@ public final class ImageListResult {
 
     /**
      * Set the value property: The Image items on this page.
-     *
+     * 
      * @param value the value value to set.
      * @return the ImageListResult object itself.
      */
@@ -51,7 +55,7 @@ public final class ImageListResult {
 
     /**
      * Get the nextLink property: The link to the next page of items.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,26 +63,14 @@ public final class ImageListResult {
     }
 
     /**
-     * Set the nextLink property: The link to the next page of items.
-     *
-     * @param nextLink the nextLink value to set.
-     * @return the ImageListResult object itself.
-     */
-    public ImageListResult withNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model ImageListResult"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model ImageListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

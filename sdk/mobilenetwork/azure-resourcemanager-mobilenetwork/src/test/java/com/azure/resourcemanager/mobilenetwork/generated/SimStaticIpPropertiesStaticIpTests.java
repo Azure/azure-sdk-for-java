@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class SimStaticIpPropertiesStaticIpTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SimStaticIpPropertiesStaticIp model =
-            BinaryData.fromString("{\"ipv4Address\":\"umrtwnawjsl\"}").toObject(SimStaticIpPropertiesStaticIp.class);
-        Assertions.assertEquals("umrtwnawjsl", model.ipv4Address());
+        SimStaticIpPropertiesStaticIp model
+            = BinaryData.fromString("{\"ipv4Address\":\"yo\"}").toObject(SimStaticIpPropertiesStaticIp.class);
+        Assertions.assertEquals("yo", model.ipv4Address());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SimStaticIpPropertiesStaticIp model = new SimStaticIpPropertiesStaticIp().withIpv4Address("umrtwnawjsl");
+        SimStaticIpPropertiesStaticIp model = new SimStaticIpPropertiesStaticIp().withIpv4Address("yo");
         model = BinaryData.fromObject(model).toObject(SimStaticIpPropertiesStaticIp.class);
-        Assertions.assertEquals("umrtwnawjsl", model.ipv4Address());
+        Assertions.assertEquals("yo", model.ipv4Address());
     }
 }

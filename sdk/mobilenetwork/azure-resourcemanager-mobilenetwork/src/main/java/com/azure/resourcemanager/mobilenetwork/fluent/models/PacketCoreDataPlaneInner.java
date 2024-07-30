@@ -14,7 +14,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Packet core data plane resource. Must be created in the same location as its parent packet core control plane. */
+/**
+ * Packet core data plane resource. Must be created in the same location as its parent packet core control plane.
+ */
 @Fluent
 public final class PacketCoreDataPlaneInner extends Resource {
     /*
@@ -29,13 +31,15 @@ public final class PacketCoreDataPlaneInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of PacketCoreDataPlaneInner class. */
+    /**
+     * Creates an instance of PacketCoreDataPlaneInner class.
+     */
     public PacketCoreDataPlaneInner() {
     }
 
     /**
      * Get the innerProperties property: Packet core data plane Properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PacketCoreDataPlanePropertiesFormat innerProperties() {
@@ -44,21 +48,25 @@ public final class PacketCoreDataPlaneInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PacketCoreDataPlaneInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PacketCoreDataPlaneInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -67,7 +75,7 @@ public final class PacketCoreDataPlaneInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the packet core data plane resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -77,7 +85,7 @@ public final class PacketCoreDataPlaneInner extends Resource {
     /**
      * Get the userPlaneAccessInterface property: The user plane interface on the access network. For 5G networks, this
      * is the N3 interface. For 4G networks, this is the S1-U interface.
-     *
+     * 
      * @return the userPlaneAccessInterface value.
      */
     public InterfaceProperties userPlaneAccessInterface() {
@@ -87,7 +95,7 @@ public final class PacketCoreDataPlaneInner extends Resource {
     /**
      * Set the userPlaneAccessInterface property: The user plane interface on the access network. For 5G networks, this
      * is the N3 interface. For 4G networks, this is the S1-U interface.
-     *
+     * 
      * @param userPlaneAccessInterface the userPlaneAccessInterface value to set.
      * @return the PacketCoreDataPlaneInner object itself.
      */
@@ -104,7 +112,7 @@ public final class PacketCoreDataPlaneInner extends Resource {
      * network in a High Availability (HA) system. In an HA deployment the access network router should be configured to
      * forward traffic for this address to the control plane access interface on the active or standby node. In non-HA
      * system this list should be omitted or empty.
-     *
+     * 
      * @return the userPlaneAccessVirtualIpv4Addresses value.
      */
     public List<String> userPlaneAccessVirtualIpv4Addresses() {
@@ -116,12 +124,12 @@ public final class PacketCoreDataPlaneInner extends Resource {
      * network in a High Availability (HA) system. In an HA deployment the access network router should be configured to
      * forward traffic for this address to the control plane access interface on the active or standby node. In non-HA
      * system this list should be omitted or empty.
-     *
+     * 
      * @param userPlaneAccessVirtualIpv4Addresses the userPlaneAccessVirtualIpv4Addresses value to set.
      * @return the PacketCoreDataPlaneInner object itself.
      */
-    public PacketCoreDataPlaneInner withUserPlaneAccessVirtualIpv4Addresses(
-        List<String> userPlaneAccessVirtualIpv4Addresses) {
+    public PacketCoreDataPlaneInner
+        withUserPlaneAccessVirtualIpv4Addresses(List<String> userPlaneAccessVirtualIpv4Addresses) {
         if (this.innerProperties() == null) {
             this.innerProperties = new PacketCoreDataPlanePropertiesFormat();
         }
@@ -131,15 +139,14 @@ public final class PacketCoreDataPlaneInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model PacketCoreDataPlaneInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model PacketCoreDataPlaneInner"));
         } else {
             innerProperties().validate();
         }

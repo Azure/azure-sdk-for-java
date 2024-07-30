@@ -22,8 +22,7 @@ public final class SqlTriggerCreateUpdateProperties {
     private SqlTriggerResource resource;
 
     /*
-     * A key-value pair of options to be applied for the request. This corresponds to the headers sent with the
-     * request.
+     * A key-value pair of options to be applied for the request. This corresponds to the headers sent with the request.
      */
     @JsonProperty(value = "options")
     private CreateUpdateOptions options;
@@ -83,8 +82,9 @@ public final class SqlTriggerCreateUpdateProperties {
      */
     public void validate() {
         if (resource() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property resource in model SqlTriggerCreateUpdateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property resource in model SqlTriggerCreateUpdateProperties"));
         } else {
             resource().validate();
         }

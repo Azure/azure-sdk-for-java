@@ -228,7 +228,8 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
     @Override
     public Mono<Void> addCredits(int credits) {
         if (isDisposed()) {
-            return monoError(logger, new IllegalStateException("Cannot add credits to closed link: " + getLinkName()));
+            return monoError(logger.atWarning(),
+                new IllegalStateException("Cannot add credits to closed link: " + getLinkName()));
         }
 
         return Mono.create(sink -> {

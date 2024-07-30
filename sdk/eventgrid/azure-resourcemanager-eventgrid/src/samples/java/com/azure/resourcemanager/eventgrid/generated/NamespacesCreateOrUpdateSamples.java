@@ -14,9 +14,7 @@ import java.util.Map;
  */
 public final class NamespacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
-     * Namespaces_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/Namespaces_CreateOrUpdate.json
      */
     /**
      * Sample code: Namespaces_CreateOrUpdate.
@@ -24,10 +22,14 @@ public final class NamespacesCreateOrUpdateSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void namespacesCreateOrUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.namespaces().define("exampleNamespaceName1").withRegion("westus").withExistingResourceGroup("examplerg")
+        manager.namespaces()
+            .define("exampleNamespaceName1")
+            .withRegion("westus")
+            .withExistingResourceGroup("examplerg")
             .withTags(mapOf("tag1", "value11", "tag2", "value22"))
             .withTopicSpacesConfiguration(new TopicSpacesConfiguration()
-                .withState(TopicSpacesConfigurationState.ENABLED).withRouteTopicResourceId(
+                .withState(TopicSpacesConfigurationState.ENABLED)
+                .withRouteTopicResourceId(
                     "/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampleTopic1"))
             .create();
     }

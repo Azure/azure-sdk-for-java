@@ -12,8 +12,7 @@ import com.azure.resourcemanager.datafactory.fluent.models.PrivateEndpointConnec
 import com.azure.resourcemanager.datafactory.models.PrivateLinkConnectionApprovalRequestResource;
 
 /**
- * An instance of this class provides access to all the operations defined in
- * PrivateEndpointConnectionOperationsClient.
+ * An instance of this class provides access to all the operations defined in PrivateEndpointConnectionOperationsClient.
  */
 public interface PrivateEndpointConnectionOperationsClient {
     /**
@@ -22,7 +21,7 @@ public interface PrivateEndpointConnectionOperationsClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param privateEndpointConnectionName The private endpoint connection name.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @param ifMatch ETag of the private endpoint connection entity. Should only be specified for update, for which it
      * should match existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
@@ -42,7 +41,7 @@ public interface PrivateEndpointConnectionOperationsClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param privateEndpointConnectionName The private endpoint connection name.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

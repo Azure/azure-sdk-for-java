@@ -112,14 +112,15 @@ public final class PoolsClientImpl implements PoolsClient {
             @BodyParam("application/json") CapacityPoolPatch body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
-            @PathParam("poolName") String poolName, @QueryParam("api-version") String apiVersion, Context context);
+            @PathParam("poolName") String poolName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -989,9 +990,10 @@ public final class PoolsClientImpl implements PoolsClient {
         if (poolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, accountName, poolName, this.client.getApiVersion(), context))
+                resourceGroupName, accountName, poolName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1030,9 +1032,10 @@ public final class PoolsClientImpl implements PoolsClient {
         if (poolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, poolName, this.client.getApiVersion(), context);
+            accountName, poolName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1196,9 +1199,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1224,9 +1225,7 @@ public final class PoolsClientImpl implements PoolsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

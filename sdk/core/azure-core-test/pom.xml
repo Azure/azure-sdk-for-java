@@ -13,7 +13,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-test</artifactId>
   <packaging>jar</packaging>
-  <version>1.25.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
+  <version>1.27.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
 
   <name>Microsoft Azure Java Core Test Library</name>
   <description>This package contains core test types for Azure Java clients.</description>
@@ -50,9 +50,10 @@
     <!-- Enables fail on deprecated API usage. -->
     <compiler.failondeprecatedstatus/>
 
-     <javadoc.excludePackageNames>com.azure.json,com.azure.core.implementation*,com.azure.core.util,com.azure.core.util*,
+    <javadoc.excludePackageNames>com.azure.json,com.azure.core.implementation*,com.azure.core.util,com.azure.core.util*,
       com.azure.core.models,com.azure.core.http,com.azure.core.http.policy,com.azure.core.http.rest,com.azure.core.exception,com.azure.core.cryptography,
-      com.azure.core.credential,com.azure.core.client.traits,com.azure.core.annotation</javadoc.excludePackageNames>
+      com.azure.core.credential,com.azure.core.client.traits,com.azure.core.annotation
+    </javadoc.excludePackageNames>
     <surefireXmx>4g</surefireXmx>
 
     <!-- skipping test coverage requirements for azure-core-test as this is a utility library for testing -->
@@ -63,13 +64,15 @@
     <spotbugs.skip>false</spotbugs.skip>
     <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
     <spotless.skip>false</spotless.skip>
+    <animal.sniffer.skip>false</animal.sniffer.skip>
+    <animal.sniffer.ignores>java.lang.management.ThreadMXBean,java.lang.management.ThreadInfo,java.lang.management.ManagementFactory</animal.sniffer.ignores>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.48.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.51.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <dependency>
@@ -81,13 +84,13 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.34</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.38</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>io.projectreactor.netty</groupId>
       <artifactId>reactor-netty-http</artifactId>
-      <version>1.0.40</version>  <!-- {x-version-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
+      <version>1.0.45</version>  <!-- {x-version-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -132,7 +135,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.2.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>test-jar</id>
@@ -147,14 +150,14 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.projectreactor:reactor-test:[3.4.34]</include> <!-- {x-include-update;io.projectreactor:reactor-test;external_dependency} -->
+                <include>io.projectreactor:reactor-test:[3.4.38]</include> <!-- {x-include-update;io.projectreactor:reactor-test;external_dependency} -->
                 <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
-                <include>io.projectreactor.netty:reactor-netty-http:[1.0.40]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
+                <include>io.projectreactor.netty:reactor-netty-http:[1.0.45]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
                 <!-- special allowance for azure-core-test as it is not a shipping library: -->
                 <include>org.junit.jupiter:junit-jupiter-api:[5.9.3]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
                 <include>org.junit.jupiter:junit-jupiter-params:[5.9.3]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->

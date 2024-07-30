@@ -14,23 +14,25 @@ public final class DiscoveredSecuritySolutionPropertiesTests {
     public void testDeserialize() throws Exception {
         DiscoveredSecuritySolutionProperties model = BinaryData
             .fromString(
-                "{\"securityFamily\":\"SaasWaf\",\"offer\":\"lujkhn\",\"publisher\":\"cmrnkfmkhcq\",\"sku\":\"wmlmh\"}")
+                "{\"securityFamily\":\"SaasWaf\",\"offer\":\"gmmuteyxey\",\"publisher\":\"uqi\",\"sku\":\"ijiitns\"}")
             .toObject(DiscoveredSecuritySolutionProperties.class);
         Assertions.assertEquals(SecurityFamily.SAAS_WAF, model.securityFamily());
-        Assertions.assertEquals("lujkhn", model.offer());
-        Assertions.assertEquals("cmrnkfmkhcq", model.publisher());
-        Assertions.assertEquals("wmlmh", model.sku());
+        Assertions.assertEquals("gmmuteyxey", model.offer());
+        Assertions.assertEquals("uqi", model.publisher());
+        Assertions.assertEquals("ijiitns", model.sku());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DiscoveredSecuritySolutionProperties model
-            = new DiscoveredSecuritySolutionProperties().withSecurityFamily(SecurityFamily.SAAS_WAF).withOffer("lujkhn")
-                .withPublisher("cmrnkfmkhcq").withSku("wmlmh");
+            = new DiscoveredSecuritySolutionProperties().withSecurityFamily(SecurityFamily.SAAS_WAF)
+                .withOffer("gmmuteyxey")
+                .withPublisher("uqi")
+                .withSku("ijiitns");
         model = BinaryData.fromObject(model).toObject(DiscoveredSecuritySolutionProperties.class);
         Assertions.assertEquals(SecurityFamily.SAAS_WAF, model.securityFamily());
-        Assertions.assertEquals("lujkhn", model.offer());
-        Assertions.assertEquals("cmrnkfmkhcq", model.publisher());
-        Assertions.assertEquals("wmlmh", model.sku());
+        Assertions.assertEquals("gmmuteyxey", model.offer());
+        Assertions.assertEquals("uqi", model.publisher());
+        Assertions.assertEquals("ijiitns", model.sku());
     }
 }

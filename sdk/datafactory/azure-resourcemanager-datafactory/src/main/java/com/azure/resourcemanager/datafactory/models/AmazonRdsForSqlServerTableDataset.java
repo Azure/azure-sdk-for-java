@@ -7,6 +7,7 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.datafactory.fluent.models.AmazonRdsForSqlServerTableDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,10 +16,21 @@ import java.util.Map;
 /**
  * The Amazon RDS for SQL Server dataset.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = AmazonRdsForSqlServerTableDataset.class,
+    visible = true)
 @JsonTypeName("AmazonRdsForSqlServerTable")
 @Fluent
 public final class AmazonRdsForSqlServerTableDataset extends Dataset {
+    /*
+     * Type of dataset.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "AmazonRdsForSqlServerTable";
+
     /*
      * The Amazon RDS for SQL Server dataset properties.
      */
@@ -29,6 +41,16 @@ public final class AmazonRdsForSqlServerTableDataset extends Dataset {
      * Creates an instance of AmazonRdsForSqlServerTableDataset class.
      */
     public AmazonRdsForSqlServerTableDataset() {
+    }
+
+    /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

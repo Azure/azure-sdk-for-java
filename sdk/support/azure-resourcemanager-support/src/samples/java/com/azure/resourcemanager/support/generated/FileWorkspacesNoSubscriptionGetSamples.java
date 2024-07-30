@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.support.generated;
 
-/** Samples for FileWorkspacesNoSubscription Get. */
+/**
+ * Samples for FileWorkspacesNoSubscription Get.
+ */
 public final class FileWorkspacesNoSubscriptionGetSamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/GetFileWorkspaceDetails.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/GetFileWorkspaceDetails.json
      */
     /**
      * Sample code: Get details of a file workspace.
-     *
+     * 
      * @param manager Entry point to SupportManager.
      */
     public static void getDetailsOfAFileWorkspace(com.azure.resourcemanager.support.SupportManager manager) {

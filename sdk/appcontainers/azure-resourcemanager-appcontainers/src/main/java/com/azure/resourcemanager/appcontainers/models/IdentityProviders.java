@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -14,64 +17,57 @@ import java.util.Map;
  * Authentication/Authorization.
  */
 @Fluent
-public final class IdentityProviders {
+public final class IdentityProviders implements JsonSerializable<IdentityProviders> {
     /*
      * The configuration settings of the Azure Active directory provider.
      */
-    @JsonProperty(value = "azureActiveDirectory")
     private AzureActiveDirectory azureActiveDirectory;
 
     /*
      * The configuration settings of the Facebook provider.
      */
-    @JsonProperty(value = "facebook")
     private Facebook facebook;
 
     /*
      * The configuration settings of the GitHub provider.
      */
-    @JsonProperty(value = "gitHub")
     private GitHub gitHub;
 
     /*
      * The configuration settings of the Google provider.
      */
-    @JsonProperty(value = "google")
     private Google google;
 
     /*
      * The configuration settings of the Twitter provider.
      */
-    @JsonProperty(value = "twitter")
     private Twitter twitter;
 
     /*
      * The configuration settings of the Apple provider.
      */
-    @JsonProperty(value = "apple")
     private Apple apple;
 
     /*
      * The configuration settings of the Azure Static Web Apps provider.
      */
-    @JsonProperty(value = "azureStaticWebApps")
     private AzureStaticWebApps azureStaticWebApps;
 
     /*
      * The map of the name of the alias of each custom Open ID Connect provider to the
      * configuration settings of the custom Open ID Connect provider.
      */
-    @JsonProperty(value = "customOpenIdConnectProviders")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, CustomOpenIdConnectProvider> customOpenIdConnectProviders;
 
-    /** Creates an instance of IdentityProviders class. */
+    /**
+     * Creates an instance of IdentityProviders class.
+     */
     public IdentityProviders() {
     }
 
     /**
      * Get the azureActiveDirectory property: The configuration settings of the Azure Active directory provider.
-     *
+     * 
      * @return the azureActiveDirectory value.
      */
     public AzureActiveDirectory azureActiveDirectory() {
@@ -80,7 +76,7 @@ public final class IdentityProviders {
 
     /**
      * Set the azureActiveDirectory property: The configuration settings of the Azure Active directory provider.
-     *
+     * 
      * @param azureActiveDirectory the azureActiveDirectory value to set.
      * @return the IdentityProviders object itself.
      */
@@ -91,7 +87,7 @@ public final class IdentityProviders {
 
     /**
      * Get the facebook property: The configuration settings of the Facebook provider.
-     *
+     * 
      * @return the facebook value.
      */
     public Facebook facebook() {
@@ -100,7 +96,7 @@ public final class IdentityProviders {
 
     /**
      * Set the facebook property: The configuration settings of the Facebook provider.
-     *
+     * 
      * @param facebook the facebook value to set.
      * @return the IdentityProviders object itself.
      */
@@ -111,7 +107,7 @@ public final class IdentityProviders {
 
     /**
      * Get the gitHub property: The configuration settings of the GitHub provider.
-     *
+     * 
      * @return the gitHub value.
      */
     public GitHub gitHub() {
@@ -120,7 +116,7 @@ public final class IdentityProviders {
 
     /**
      * Set the gitHub property: The configuration settings of the GitHub provider.
-     *
+     * 
      * @param gitHub the gitHub value to set.
      * @return the IdentityProviders object itself.
      */
@@ -131,7 +127,7 @@ public final class IdentityProviders {
 
     /**
      * Get the google property: The configuration settings of the Google provider.
-     *
+     * 
      * @return the google value.
      */
     public Google google() {
@@ -140,7 +136,7 @@ public final class IdentityProviders {
 
     /**
      * Set the google property: The configuration settings of the Google provider.
-     *
+     * 
      * @param google the google value to set.
      * @return the IdentityProviders object itself.
      */
@@ -151,7 +147,7 @@ public final class IdentityProviders {
 
     /**
      * Get the twitter property: The configuration settings of the Twitter provider.
-     *
+     * 
      * @return the twitter value.
      */
     public Twitter twitter() {
@@ -160,7 +156,7 @@ public final class IdentityProviders {
 
     /**
      * Set the twitter property: The configuration settings of the Twitter provider.
-     *
+     * 
      * @param twitter the twitter value to set.
      * @return the IdentityProviders object itself.
      */
@@ -171,7 +167,7 @@ public final class IdentityProviders {
 
     /**
      * Get the apple property: The configuration settings of the Apple provider.
-     *
+     * 
      * @return the apple value.
      */
     public Apple apple() {
@@ -180,7 +176,7 @@ public final class IdentityProviders {
 
     /**
      * Set the apple property: The configuration settings of the Apple provider.
-     *
+     * 
      * @param apple the apple value to set.
      * @return the IdentityProviders object itself.
      */
@@ -191,7 +187,7 @@ public final class IdentityProviders {
 
     /**
      * Get the azureStaticWebApps property: The configuration settings of the Azure Static Web Apps provider.
-     *
+     * 
      * @return the azureStaticWebApps value.
      */
     public AzureStaticWebApps azureStaticWebApps() {
@@ -200,7 +196,7 @@ public final class IdentityProviders {
 
     /**
      * Set the azureStaticWebApps property: The configuration settings of the Azure Static Web Apps provider.
-     *
+     * 
      * @param azureStaticWebApps the azureStaticWebApps value to set.
      * @return the IdentityProviders object itself.
      */
@@ -211,8 +207,9 @@ public final class IdentityProviders {
 
     /**
      * Get the customOpenIdConnectProviders property: The map of the name of the alias of each custom Open ID Connect
-     * provider to the configuration settings of the custom Open ID Connect provider.
-     *
+     * provider to the
+     * configuration settings of the custom Open ID Connect provider.
+     * 
      * @return the customOpenIdConnectProviders value.
      */
     public Map<String, CustomOpenIdConnectProvider> customOpenIdConnectProviders() {
@@ -221,20 +218,21 @@ public final class IdentityProviders {
 
     /**
      * Set the customOpenIdConnectProviders property: The map of the name of the alias of each custom Open ID Connect
-     * provider to the configuration settings of the custom Open ID Connect provider.
-     *
+     * provider to the
+     * configuration settings of the custom Open ID Connect provider.
+     * 
      * @param customOpenIdConnectProviders the customOpenIdConnectProviders value to set.
      * @return the IdentityProviders object itself.
      */
-    public IdentityProviders withCustomOpenIdConnectProviders(
-        Map<String, CustomOpenIdConnectProvider> customOpenIdConnectProviders) {
+    public IdentityProviders
+        withCustomOpenIdConnectProviders(Map<String, CustomOpenIdConnectProvider> customOpenIdConnectProviders) {
         this.customOpenIdConnectProviders = customOpenIdConnectProviders;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -260,14 +258,71 @@ public final class IdentityProviders {
             azureStaticWebApps().validate();
         }
         if (customOpenIdConnectProviders() != null) {
-            customOpenIdConnectProviders()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            customOpenIdConnectProviders().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("azureActiveDirectory", this.azureActiveDirectory);
+        jsonWriter.writeJsonField("facebook", this.facebook);
+        jsonWriter.writeJsonField("gitHub", this.gitHub);
+        jsonWriter.writeJsonField("google", this.google);
+        jsonWriter.writeJsonField("twitter", this.twitter);
+        jsonWriter.writeJsonField("apple", this.apple);
+        jsonWriter.writeJsonField("azureStaticWebApps", this.azureStaticWebApps);
+        jsonWriter.writeMapField("customOpenIdConnectProviders", this.customOpenIdConnectProviders,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IdentityProviders from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IdentityProviders if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IdentityProviders.
+     */
+    public static IdentityProviders fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IdentityProviders deserializedIdentityProviders = new IdentityProviders();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("azureActiveDirectory".equals(fieldName)) {
+                    deserializedIdentityProviders.azureActiveDirectory = AzureActiveDirectory.fromJson(reader);
+                } else if ("facebook".equals(fieldName)) {
+                    deserializedIdentityProviders.facebook = Facebook.fromJson(reader);
+                } else if ("gitHub".equals(fieldName)) {
+                    deserializedIdentityProviders.gitHub = GitHub.fromJson(reader);
+                } else if ("google".equals(fieldName)) {
+                    deserializedIdentityProviders.google = Google.fromJson(reader);
+                } else if ("twitter".equals(fieldName)) {
+                    deserializedIdentityProviders.twitter = Twitter.fromJson(reader);
+                } else if ("apple".equals(fieldName)) {
+                    deserializedIdentityProviders.apple = Apple.fromJson(reader);
+                } else if ("azureStaticWebApps".equals(fieldName)) {
+                    deserializedIdentityProviders.azureStaticWebApps = AzureStaticWebApps.fromJson(reader);
+                } else if ("customOpenIdConnectProviders".equals(fieldName)) {
+                    Map<String, CustomOpenIdConnectProvider> customOpenIdConnectProviders
+                        = reader.readMap(reader1 -> CustomOpenIdConnectProvider.fromJson(reader1));
+                    deserializedIdentityProviders.customOpenIdConnectProviders = customOpenIdConnectProviders;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIdentityProviders;
+        });
     }
 }

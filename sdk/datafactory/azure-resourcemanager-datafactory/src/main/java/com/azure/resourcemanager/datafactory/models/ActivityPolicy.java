@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -25,8 +25,7 @@ public final class ActivityPolicy {
     private Object timeout;
 
     /*
-     * Maximum ordinary retry attempts. Default is 0. Type: integer (or Expression with resultType integer), minimum:
-     * 0.
+     * Maximum ordinary retry attempts. Default is 0. Type: integer (or Expression with resultType integer), minimum: 0.
      */
     @JsonProperty(value = "retry")
     private Object retry;
@@ -106,8 +105,7 @@ public final class ActivityPolicy {
     }
 
     /**
-     * Get the retryIntervalInSeconds property: Interval between each retry attempt (in seconds). The default is 30
-     * sec.
+     * Get the retryIntervalInSeconds property: Interval between each retry attempt (in seconds). The default is 30 sec.
      * 
      * @return the retryIntervalInSeconds value.
      */
@@ -116,8 +114,7 @@ public final class ActivityPolicy {
     }
 
     /**
-     * Set the retryIntervalInSeconds property: Interval between each retry attempt (in seconds). The default is 30
-     * sec.
+     * Set the retryIntervalInSeconds property: Interval between each retry attempt (in seconds). The default is 30 sec.
      * 
      * @param retryIntervalInSeconds the retryIntervalInSeconds value to set.
      * @return the ActivityPolicy object itself.
@@ -195,7 +192,7 @@ public final class ActivityPolicy {
     @JsonAnySetter
     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }

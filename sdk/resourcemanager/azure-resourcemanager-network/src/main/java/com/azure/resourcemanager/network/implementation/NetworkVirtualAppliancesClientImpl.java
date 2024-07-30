@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -34,6 +35,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.NetworkVirtualAppliancesClient;
 import com.azure.resourcemanager.network.fluent.models.NetworkVirtualApplianceInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkVirtualApplianceInstanceIdsInner;
 import com.azure.resourcemanager.network.models.NetworkVirtualApplianceListResult;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -119,6 +121,17 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}/restart")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> restart(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("networkVirtualApplianceName") String networkVirtualApplianceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") NetworkVirtualApplianceInstanceIdsInner networkVirtualApplianceInstanceIds,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -180,7 +193,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName,
@@ -218,7 +231,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, networkVirtualApplianceName, apiVersion,
@@ -390,7 +403,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -430,7 +443,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, networkVirtualApplianceName,
@@ -527,7 +540,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -571,7 +584,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -667,7 +680,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -711,7 +724,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, networkVirtualApplianceName,
@@ -874,6 +887,315 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
     }
 
     /**
+     * Restarts one or more VMs belonging to the specified Network Virtual Appliance.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param networkVirtualApplianceInstanceIds Specifies a list of virtual machine instance IDs from the Network
+     * Virtual Appliance VM instances.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies a list of virtual machine instance IDs from the Network Virtual Appliance VM instances along
+     * with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName,
+        String networkVirtualApplianceName,
+        NetworkVirtualApplianceInstanceIdsInner networkVirtualApplianceInstanceIds) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkVirtualApplianceName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter networkVirtualApplianceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (networkVirtualApplianceInstanceIds != null) {
+            networkVirtualApplianceInstanceIds.validate();
+        }
+        final String apiVersion = "2024-01-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.restart(this.client.getEndpoint(), resourceGroupName, networkVirtualApplianceName,
+                    apiVersion, this.client.getSubscriptionId(), networkVirtualApplianceInstanceIds, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Restarts one or more VMs belonging to the specified Network Virtual Appliance.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param networkVirtualApplianceInstanceIds Specifies a list of virtual machine instance IDs from the Network
+     * Virtual Appliance VM instances.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies a list of virtual machine instance IDs from the Network Virtual Appliance VM instances along
+     * with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualApplianceInstanceIdsInner networkVirtualApplianceInstanceIds,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkVirtualApplianceName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter networkVirtualApplianceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (networkVirtualApplianceInstanceIds != null) {
+            networkVirtualApplianceInstanceIds.validate();
+        }
+        final String apiVersion = "2024-01-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.restart(this.client.getEndpoint(), resourceGroupName, networkVirtualApplianceName, apiVersion,
+            this.client.getSubscriptionId(), networkVirtualApplianceInstanceIds, accept, context);
+    }
+
+    /**
+     * Restarts one or more VMs belonging to the specified Network Virtual Appliance.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param networkVirtualApplianceInstanceIds Specifies a list of virtual machine instance IDs from the Network
+     * Virtual Appliance VM instances.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of specifies a list of virtual machine instance IDs from the Network
+     * Virtual Appliance VM instances.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<NetworkVirtualApplianceInstanceIdsInner>, NetworkVirtualApplianceInstanceIdsInner>
+        beginRestartAsync(String resourceGroupName, String networkVirtualApplianceName,
+            NetworkVirtualApplianceInstanceIdsInner networkVirtualApplianceInstanceIds) {
+        Mono<Response<Flux<ByteBuffer>>> mono = restartWithResponseAsync(resourceGroupName, networkVirtualApplianceName,
+            networkVirtualApplianceInstanceIds);
+        return this.client
+            .<NetworkVirtualApplianceInstanceIdsInner, NetworkVirtualApplianceInstanceIdsInner>getLroResult(mono,
+                this.client.getHttpPipeline(), NetworkVirtualApplianceInstanceIdsInner.class,
+                NetworkVirtualApplianceInstanceIdsInner.class, this.client.getContext());
+    }
+
+    /**
+     * Restarts one or more VMs belonging to the specified Network Virtual Appliance.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of specifies a list of virtual machine instance IDs from the Network
+     * Virtual Appliance VM instances.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<NetworkVirtualApplianceInstanceIdsInner>, NetworkVirtualApplianceInstanceIdsInner>
+        beginRestartAsync(String resourceGroupName, String networkVirtualApplianceName) {
+        final NetworkVirtualApplianceInstanceIdsInner networkVirtualApplianceInstanceIds = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = restartWithResponseAsync(resourceGroupName, networkVirtualApplianceName,
+            networkVirtualApplianceInstanceIds);
+        return this.client
+            .<NetworkVirtualApplianceInstanceIdsInner, NetworkVirtualApplianceInstanceIdsInner>getLroResult(mono,
+                this.client.getHttpPipeline(), NetworkVirtualApplianceInstanceIdsInner.class,
+                NetworkVirtualApplianceInstanceIdsInner.class, this.client.getContext());
+    }
+
+    /**
+     * Restarts one or more VMs belonging to the specified Network Virtual Appliance.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param networkVirtualApplianceInstanceIds Specifies a list of virtual machine instance IDs from the Network
+     * Virtual Appliance VM instances.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of specifies a list of virtual machine instance IDs from the Network
+     * Virtual Appliance VM instances.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<NetworkVirtualApplianceInstanceIdsInner>, NetworkVirtualApplianceInstanceIdsInner>
+        beginRestartAsync(String resourceGroupName, String networkVirtualApplianceName,
+            NetworkVirtualApplianceInstanceIdsInner networkVirtualApplianceInstanceIds, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = restartWithResponseAsync(resourceGroupName, networkVirtualApplianceName,
+            networkVirtualApplianceInstanceIds, context);
+        return this.client
+            .<NetworkVirtualApplianceInstanceIdsInner, NetworkVirtualApplianceInstanceIdsInner>getLroResult(mono,
+                this.client.getHttpPipeline(), NetworkVirtualApplianceInstanceIdsInner.class,
+                NetworkVirtualApplianceInstanceIdsInner.class, context);
+    }
+
+    /**
+     * Restarts one or more VMs belonging to the specified Network Virtual Appliance.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of specifies a list of virtual machine instance IDs from the Network
+     * Virtual Appliance VM instances.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<NetworkVirtualApplianceInstanceIdsInner>, NetworkVirtualApplianceInstanceIdsInner>
+        beginRestart(String resourceGroupName, String networkVirtualApplianceName) {
+        final NetworkVirtualApplianceInstanceIdsInner networkVirtualApplianceInstanceIds = null;
+        return this
+            .beginRestartAsync(resourceGroupName, networkVirtualApplianceName, networkVirtualApplianceInstanceIds)
+            .getSyncPoller();
+    }
+
+    /**
+     * Restarts one or more VMs belonging to the specified Network Virtual Appliance.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param networkVirtualApplianceInstanceIds Specifies a list of virtual machine instance IDs from the Network
+     * Virtual Appliance VM instances.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of specifies a list of virtual machine instance IDs from the Network
+     * Virtual Appliance VM instances.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<NetworkVirtualApplianceInstanceIdsInner>, NetworkVirtualApplianceInstanceIdsInner>
+        beginRestart(String resourceGroupName, String networkVirtualApplianceName,
+            NetworkVirtualApplianceInstanceIdsInner networkVirtualApplianceInstanceIds, Context context) {
+        return this
+            .beginRestartAsync(resourceGroupName, networkVirtualApplianceName, networkVirtualApplianceInstanceIds,
+                context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Restarts one or more VMs belonging to the specified Network Virtual Appliance.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param networkVirtualApplianceInstanceIds Specifies a list of virtual machine instance IDs from the Network
+     * Virtual Appliance VM instances.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies a list of virtual machine instance IDs from the Network Virtual Appliance VM instances on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<NetworkVirtualApplianceInstanceIdsInner> restartAsync(String resourceGroupName,
+        String networkVirtualApplianceName,
+        NetworkVirtualApplianceInstanceIdsInner networkVirtualApplianceInstanceIds) {
+        return beginRestartAsync(resourceGroupName, networkVirtualApplianceName, networkVirtualApplianceInstanceIds)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Restarts one or more VMs belonging to the specified Network Virtual Appliance.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies a list of virtual machine instance IDs from the Network Virtual Appliance VM instances on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<NetworkVirtualApplianceInstanceIdsInner> restartAsync(String resourceGroupName,
+        String networkVirtualApplianceName) {
+        final NetworkVirtualApplianceInstanceIdsInner networkVirtualApplianceInstanceIds = null;
+        return beginRestartAsync(resourceGroupName, networkVirtualApplianceName, networkVirtualApplianceInstanceIds)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Restarts one or more VMs belonging to the specified Network Virtual Appliance.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param networkVirtualApplianceInstanceIds Specifies a list of virtual machine instance IDs from the Network
+     * Virtual Appliance VM instances.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies a list of virtual machine instance IDs from the Network Virtual Appliance VM instances on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<NetworkVirtualApplianceInstanceIdsInner> restartAsync(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualApplianceInstanceIdsInner networkVirtualApplianceInstanceIds,
+        Context context) {
+        return beginRestartAsync(resourceGroupName, networkVirtualApplianceName, networkVirtualApplianceInstanceIds,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Restarts one or more VMs belonging to the specified Network Virtual Appliance.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies a list of virtual machine instance IDs from the Network Virtual Appliance VM instances.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkVirtualApplianceInstanceIdsInner restart(String resourceGroupName,
+        String networkVirtualApplianceName) {
+        final NetworkVirtualApplianceInstanceIdsInner networkVirtualApplianceInstanceIds = null;
+        return restartAsync(resourceGroupName, networkVirtualApplianceName, networkVirtualApplianceInstanceIds).block();
+    }
+
+    /**
+     * Restarts one or more VMs belonging to the specified Network Virtual Appliance.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param networkVirtualApplianceInstanceIds Specifies a list of virtual machine instance IDs from the Network
+     * Virtual Appliance VM instances.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies a list of virtual machine instance IDs from the Network Virtual Appliance VM instances.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkVirtualApplianceInstanceIdsInner restart(String resourceGroupName, String networkVirtualApplianceName,
+        NetworkVirtualApplianceInstanceIdsInner networkVirtualApplianceInstanceIds, Context context) {
+        return restartAsync(resourceGroupName, networkVirtualApplianceName, networkVirtualApplianceInstanceIds, context)
+            .block();
+    }
+
+    /**
      * Lists all Network Virtual Appliances in a resource group.
      * 
      * @param resourceGroupName The name of the resource group.
@@ -898,7 +1220,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -934,7 +1256,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1025,7 +1347,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1055,7 +1377,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1119,9 +1441,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1149,9 +1469,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1179,9 +1497,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1207,9 +1523,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

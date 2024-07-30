@@ -6,71 +6,54 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.OperationStatusResult;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DevOpsOperationResultsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"id\":\"k\",\"name\":\"vzkfekd\",\"status\":\"sbpjqtllbhjjpd\",\"percentComplete\":39.703125,\"startTime\":\"2021-10-15T06:39:02Z\",\"endTime\":\"2021-10-22T10:04:17Z\",\"operations\":[{\"id\":\"eqrypyurvshhovtu\",\"name\":\"cp\",\"status\":\"hbwcxybtdzycx\",\"percentComplete\":60.918396,\"startTime\":\"2021-01-04T11:58:36Z\",\"endTime\":\"2021-04-21T04:39:59Z\",\"operations\":[{\"id\":\"jbnwc\",\"name\":\"razcbybic\",\"status\":\"hxh\",\"percentComplete\":89.474556,\"startTime\":\"2021-11-11T19:32:48Z\",\"endTime\":\"2020-12-27T01:46:24Z\",\"operations\":[{\"status\":\"z\"},{\"status\":\"mu\"},{\"status\":\"ykwu\"}]},{\"id\":\"otennd\",\"name\":\"thdzitjzffph\",\"status\":\"rwjqvswtwonad\",\"percentComplete\":99.14527,\"startTime\":\"2021-02-25T04:04:59Z\",\"endTime\":\"2021-02-06T14:01:13Z\",\"operations\":[{\"status\":\"xmmrvnuvqkrrsg\"},{\"status\":\"o\"},{\"status\":\"kcbrotpy\"},{\"status\":\"bensjflwpft\"}]}]},{\"id\":\"mvifgcv\",\"name\":\"mal\",\"status\":\"mticxgo\",\"percentComplete\":80.525215,\"startTime\":\"2021-10-04T21:43:22Z\",\"endTime\":\"2021-05-04T09:07:23Z\",\"operations\":[{\"id\":\"mzxaoxlhmvj\",\"name\":\"nlsbnucqxhpaqo\",\"status\":\"bvejo\",\"percentComplete\":35.569054,\"startTime\":\"2021-09-01T17:34:35Z\",\"endTime\":\"2021-10-06T14:52:43Z\",\"operations\":[{\"status\":\"kleldkqdlqqhnt\"},{\"status\":\"rykkxakruuptiicg\"}]},{\"id\":\"gyxccn\",\"name\":\"iemacmztje\",\"status\":\"xsnnbrysgktf\",\"percentComplete\":43.504818,\"startTime\":\"2021-05-15T16:12:11Z\",\"endTime\":\"2021-11-10T16:14:53Z\",\"operations\":[{\"status\":\"tbofzghfuifw\"}]}]},{\"id\":\"noh\",\"name\":\"qx\",\"status\":\"gjxugdcrrfb\",\"percentComplete\":53.07247,\"startTime\":\"2021-01-18T21:46:01Z\",\"endTime\":\"2021-07-24T15:13:09Z\",\"operations\":[{\"id\":\"djlz\",\"name\":\"m\",\"status\":\"dghq\",\"percentComplete\":5.55954,\"startTime\":\"2021-02-08T14:29:32Z\",\"endTime\":\"2021-04-18T01:49:33Z\",\"operations\":[{\"status\":\"vp\"},{\"status\":\"eso\"},{\"status\":\"sbegclmexafjq\"}]},{\"id\":\"zydyvtuqvir\",\"name\":\"nsskydigt\",\"status\":\"jx\",\"percentComplete\":62.25374,\"startTime\":\"2021-05-27T18:13:36Z\",\"endTime\":\"2021-05-02T03:54:47Z\",\"operations\":[{\"status\":\"jchxzjdc\"},{\"status\":\"uzscyfyi\"},{\"status\":\"ecmasjnfgngxaoje\"}]}]},{\"id\":\"xbfckmoal\",\"name\":\"x\",\"status\":\"wxtxuzhvojyf\",\"percentComplete\":48.505444,\"startTime\":\"2021-06-25T05:43:41Z\",\"endTime\":\"2021-09-12T12:37:44Z\",\"operations\":[{\"id\":\"uiygtcyzcjefpub\",\"name\":\"djcgldry\",\"status\":\"lrlkbh\",\"percentComplete\":31.0261,\"startTime\":\"2021-01-15T07:19:20Z\",\"endTime\":\"2020-12-21T19:38:20Z\",\"operations\":[{\"status\":\"bfomfbozp\"},{\"status\":\"yxefp\"},{\"status\":\"qcwd\"},{\"status\":\"njjthpsnxebycym\"}]},{\"id\":\"xubnn\",\"name\":\"sebcxno\",\"status\":\"spdyzssj\",\"percentComplete\":55.343544,\"startTime\":\"2021-09-29T18:07:24Z\",\"endTime\":\"2021-01-31T04:55:12Z\",\"operations\":[{\"status\":\"gspjlf\"},{\"status\":\"h\"},{\"status\":\"ngwqxcrbcrgyoim\"},{\"status\":\"s\"}]},{\"id\":\"cctvkog\",\"name\":\"tvagwnnw\",\"status\":\"nv\",\"percentComplete\":74.96132,\"startTime\":\"2021-05-30T19:34:19Z\",\"endTime\":\"2021-03-17T23:49:41Z\",\"operations\":[{\"status\":\"vdryknkx\"},{\"status\":\"oxh\"}]},{\"id\":\"lqdoqe\",\"name\":\"xfdlhuhdkubgywad\",\"status\":\"klpdyehjrwcflvx\",\"percentComplete\":74.84598,\"startTime\":\"2021-01-10T22:00:14Z\",\"endTime\":\"2021-03-05T22:17:02Z\",\"operations\":[{\"status\":\"uhzmolhveolng\"},{\"status\":\"fm\"},{\"status\":\"wdxqupymlhkl\"},{\"status\":\"njqzmq\"}]}]}]}";
+            = "{\"id\":\"msuxyqbmqoubxlpk\",\"name\":\"nbqoymsdlraduh\",\"status\":\"waxzyrp\",\"percentComplete\":2.0848632,\"startTime\":\"2021-06-23T22:55:39Z\",\"endTime\":\"2021-11-09T11:17:41Z\",\"operations\":[{\"id\":\"skkop\",\"name\":\"sribmbtmorikcz\",\"status\":\"rqtiqxgwsfrlyvzl\",\"percentComplete\":63.39032,\"startTime\":\"2021-02-04T12:08:45Z\",\"endTime\":\"2021-05-02T13:10:58Z\",\"operations\":[{\"id\":\"rucwzc\",\"name\":\"udhgwjqeglymnrr\",\"status\":\"wsqpiyxkmqmge\",\"percentComplete\":93.71477,\"startTime\":\"2021-07-03T06:12:58Z\",\"endTime\":\"2021-05-11T01:08:39Z\",\"operations\":[{\"status\":\"gn\"},{\"status\":\"yxwdpmcewqvvzx\"},{\"status\":\"bamqrbbsnptm\"},{\"status\":\"v\"}]},{\"id\":\"vcjkbyjuw\",\"name\":\"zcb\",\"status\":\"jxm\",\"percentComplete\":33.948612,\"startTime\":\"2021-10-31T18:03:29Z\",\"endTime\":\"2021-11-05T18:35:23Z\",\"operations\":[{\"status\":\"kd\"},{\"status\":\"rfouwkoltjdauujj\"}]},{\"id\":\"hddzeykud\",\"name\":\"rimyeh\",\"status\":\"lm\",\"percentComplete\":22.168743,\"startTime\":\"2021-11-14T14:19:25Z\",\"endTime\":\"2021-07-08T08:16:16Z\",\"operations\":[{\"status\":\"znqqkqxkdglse\"},{\"status\":\"qkrbyyakrjgbnw\"},{\"status\":\"okrl\"},{\"status\":\"becan\"}]}]},{\"id\":\"uhdcftptf\",\"name\":\"apmfwxmcxhwkgihi\",\"status\":\"oyocmgadhmq\",\"percentComplete\":95.40742,\"startTime\":\"2021-05-04T04:08:01Z\",\"endTime\":\"2021-10-28T22:08:44Z\",\"operations\":[{\"id\":\"lszrtngiqc\",\"name\":\"monfcor\",\"status\":\"nhfycigcbmay\",\"percentComplete\":62.908054,\"startTime\":\"2021-09-19T10:35:25Z\",\"endTime\":\"2021-07-27T01:36:07Z\",\"operations\":[{\"status\":\"ajzdj\"}]},{\"id\":\"rwrfrmhoufok\",\"name\":\"gvojcksirsnqu\",\"status\":\"ni\",\"percentComplete\":91.99776,\"startTime\":\"2021-07-25T15:16:35Z\",\"endTime\":\"2021-04-16T21:53:26Z\",\"operations\":[{\"status\":\"zadqmvpehpnsvky\"},{\"status\":\"hrplfqqnw\"},{\"status\":\"jsrgclxnsvbkhh\"}]}]},{\"id\":\"tuecmguk\",\"name\":\"dpuowlcexkr\",\"status\":\"itqzqnbseujcmtci\",\"percentComplete\":85.34057,\"startTime\":\"2021-11-07T15:09:17Z\",\"endTime\":\"2021-01-30T07:38:31Z\",\"operations\":[{\"id\":\"ctshxoeftforylxa\",\"name\":\"wkjzvqpsymt\",\"status\":\"pyjtrxxzwd\",\"percentComplete\":22.0748,\"startTime\":\"2021-08-23T17:09:35Z\",\"endTime\":\"2021-07-07T15:32Z\",\"operations\":[{\"status\":\"kdmtpjk\"},{\"status\":\"dlu\"},{\"status\":\"ytjxhxwtitt\"},{\"status\":\"nvukvupu\"}]},{\"id\":\"gu\",\"name\":\"nvpdvctqdapy\",\"status\":\"sfp\",\"percentComplete\":63.518017,\"startTime\":\"2021-05-28T21:03:27Z\",\"endTime\":\"2021-06-16T04:33:54Z\",\"operations\":[{\"status\":\"rucqehyrnz\"},{\"status\":\"jrgfbmpszwkbcstz\"}]},{\"id\":\"gaesmaxdwxrwqtbv\",\"name\":\"dta\",\"status\":\"xy\",\"percentComplete\":94.0606,\"startTime\":\"2021-07-05T02:32:48Z\",\"endTime\":\"2021-04-03T13:02:13Z\",\"operations\":[{\"status\":\"wlyp\"}]},{\"id\":\"uluqyfvgpqw\",\"name\":\"qmbriskmbui\",\"status\":\"tq\",\"percentComplete\":99.92367,\"startTime\":\"2021-11-24T05:20:36Z\",\"endTime\":\"2021-09-26T19:05:28Z\",\"operations\":[{\"status\":\"guvlieeg\"},{\"status\":\"nqwhfjoxse\"},{\"status\":\"jscgqcr\"},{\"status\":\"aucftotedhjxdl\"}]}]},{\"id\":\"fjj\",\"name\":\"jyqmpmsknaxr\",\"status\":\"ljw\",\"percentComplete\":72.74816,\"startTime\":\"2021-09-09T04:55:44Z\",\"endTime\":\"2021-01-10T19:50:01Z\",\"operations\":[{\"id\":\"qlef\",\"name\":\"pw\",\"status\":\"ajvwfijfd\",\"percentComplete\":87.934074,\"startTime\":\"2021-08-30T21:20:17Z\",\"endTime\":\"2021-07-30T23:50:21Z\",\"operations\":[{\"status\":\"mrihddnbwl\"},{\"status\":\"qnt\"},{\"status\":\"derrxyiwuzpsvc\"}]},{\"id\":\"fstyyysq\",\"name\":\"nlcfzfjdz\",\"status\":\"fthsydphdb\",\"percentComplete\":61.733593,\"startTime\":\"2021-09-01T09:21:29Z\",\"endTime\":\"2021-09-03T10:04:08Z\",\"operations\":[{\"status\":\"bvhvd\"}]}]}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         OperationStatusResult response = manager.devOpsOperationResults()
-            .getWithResponse("ewpmioleaja", "esgyzwph", "jkscecmbaajdfw", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("vkparskplqft", "cxqm", "sudcykgulellf", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("k", response.id());
-        Assertions.assertEquals("vzkfekd", response.name());
-        Assertions.assertEquals("sbpjqtllbhjjpd", response.status());
-        Assertions.assertEquals(39.703125F, response.percentComplete());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-15T06:39:02Z"), response.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-22T10:04:17Z"), response.endTime());
-        Assertions.assertEquals("eqrypyurvshhovtu", response.operations().get(0).id());
-        Assertions.assertEquals("cp", response.operations().get(0).name());
-        Assertions.assertEquals("hbwcxybtdzycx", response.operations().get(0).status());
-        Assertions.assertEquals(60.918396F, response.operations().get(0).percentComplete());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-04T11:58:36Z"), response.operations().get(0).startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-21T04:39:59Z"), response.operations().get(0).endTime());
-        Assertions.assertEquals("jbnwc", response.operations().get(0).operations().get(0).id());
-        Assertions.assertEquals("razcbybic", response.operations().get(0).operations().get(0).name());
-        Assertions.assertEquals("hxh", response.operations().get(0).operations().get(0).status());
-        Assertions.assertEquals(89.474556F, response.operations().get(0).operations().get(0).percentComplete());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-11T19:32:48Z"),
+        Assertions.assertEquals("msuxyqbmqoubxlpk", response.id());
+        Assertions.assertEquals("nbqoymsdlraduh", response.name());
+        Assertions.assertEquals("waxzyrp", response.status());
+        Assertions.assertEquals(2.0848632F, response.percentComplete());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-23T22:55:39Z"), response.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-09T11:17:41Z"), response.endTime());
+        Assertions.assertEquals("skkop", response.operations().get(0).id());
+        Assertions.assertEquals("sribmbtmorikcz", response.operations().get(0).name());
+        Assertions.assertEquals("rqtiqxgwsfrlyvzl", response.operations().get(0).status());
+        Assertions.assertEquals(63.39032F, response.operations().get(0).percentComplete());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-04T12:08:45Z"), response.operations().get(0).startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-02T13:10:58Z"), response.operations().get(0).endTime());
+        Assertions.assertEquals("rucwzc", response.operations().get(0).operations().get(0).id());
+        Assertions.assertEquals("udhgwjqeglymnrr", response.operations().get(0).operations().get(0).name());
+        Assertions.assertEquals("wsqpiyxkmqmge", response.operations().get(0).operations().get(0).status());
+        Assertions.assertEquals(93.71477F, response.operations().get(0).operations().get(0).percentComplete());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-03T06:12:58Z"),
             response.operations().get(0).operations().get(0).startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-27T01:46:24Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-11T01:08:39Z"),
             response.operations().get(0).operations().get(0).endTime());
-        Assertions.assertEquals("z", response.operations().get(0).operations().get(0).operations().get(0).status());
+        Assertions.assertEquals("gn", response.operations().get(0).operations().get(0).operations().get(0).status());
     }
 }

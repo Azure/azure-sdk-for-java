@@ -56,8 +56,8 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     }
 
     /**
-     * The interface defining all the services for RedisEnterpriseManagementClientPrivateLinkResources to be used by
-     * the proxy service to perform REST calls.
+     * The interface defining all the services for RedisEnterpriseManagementClientPrivateLinkResources to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "RedisEnterpriseManag")
@@ -76,7 +76,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * Gets the private link resources that need to be created for a RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -114,7 +114,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * Gets the private link resources that need to be created for a RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -153,7 +153,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * Gets the private link resources that need to be created for a RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -169,7 +169,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * Gets the private link resources that need to be created for a RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -187,7 +187,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * Gets the private link resources that need to be created for a RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -203,7 +203,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * Gets the private link resources that need to be created for a RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -139,14 +139,20 @@ public final class PipelineResourceImpl
     }
 
     public PipelineResource create() {
-        this.innerObject = serviceManager.serviceClient().getPipelines().createOrUpdateWithResponse(resourceGroupName,
-            factoryName, pipelineName, this.innerModel(), createIfMatch, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPipelines()
+            .createOrUpdateWithResponse(resourceGroupName, factoryName, pipelineName, this.innerModel(), createIfMatch,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public PipelineResource create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPipelines().createOrUpdateWithResponse(resourceGroupName,
-            factoryName, pipelineName, this.innerModel(), createIfMatch, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPipelines()
+            .createOrUpdateWithResponse(resourceGroupName, factoryName, pipelineName, this.innerModel(), createIfMatch,
+                context)
+            .getValue();
         return this;
     }
 
@@ -163,14 +169,20 @@ public final class PipelineResourceImpl
     }
 
     public PipelineResource apply() {
-        this.innerObject = serviceManager.serviceClient().getPipelines().createOrUpdateWithResponse(resourceGroupName,
-            factoryName, pipelineName, this.innerModel(), updateIfMatch, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPipelines()
+            .createOrUpdateWithResponse(resourceGroupName, factoryName, pipelineName, this.innerModel(), updateIfMatch,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public PipelineResource apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPipelines().createOrUpdateWithResponse(resourceGroupName,
-            factoryName, pipelineName, this.innerModel(), updateIfMatch, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPipelines()
+            .createOrUpdateWithResponse(resourceGroupName, factoryName, pipelineName, this.innerModel(), updateIfMatch,
+                context)
+            .getValue();
         return this;
     }
 
@@ -185,22 +197,27 @@ public final class PipelineResourceImpl
 
     public PipelineResource refresh() {
         String localIfNoneMatch = null;
-        this.innerObject = serviceManager.serviceClient().getPipelines()
-            .getWithResponse(resourceGroupName, factoryName, pipelineName, localIfNoneMatch, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPipelines()
+            .getWithResponse(resourceGroupName, factoryName, pipelineName, localIfNoneMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PipelineResource refresh(Context context) {
         String localIfNoneMatch = null;
-        this.innerObject = serviceManager.serviceClient().getPipelines()
-            .getWithResponse(resourceGroupName, factoryName, pipelineName, localIfNoneMatch, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPipelines()
+            .getWithResponse(resourceGroupName, factoryName, pipelineName, localIfNoneMatch, context)
+            .getValue();
         return this;
     }
 
     public Response<CreateRunResponse> createRunWithResponse(String referencePipelineRunId, Boolean isRecovery,
         String startActivityName, Boolean startFromFailure, Map<String, Object> parameters, Context context) {
-        return serviceManager.pipelines().createRunWithResponse(resourceGroupName, factoryName, pipelineName,
-            referencePipelineRunId, isRecovery, startActivityName, startFromFailure, parameters, context);
+        return serviceManager.pipelines()
+            .createRunWithResponse(resourceGroupName, factoryName, pipelineName, referencePipelineRunId, isRecovery,
+                startActivityName, startFromFailure, parameters, context);
     }
 
     public CreateRunResponse createRun() {

@@ -6,24 +6,30 @@ package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** App Service error response. */
+/**
+ * App Service error response.
+ */
 @Immutable
 public final class DefaultErrorResponseError extends ManagementError {
     /*
      * More information to debug error.
      */
-    @JsonProperty(value = "innererror", access = JsonProperty.Access.WRITE_ONLY)
     private String innererror;
 
-    /** Creates an instance of DefaultErrorResponseError class. */
+    /**
+     * Creates an instance of DefaultErrorResponseError class.
+     */
     public DefaultErrorResponseError() {
     }
 
     /**
      * Get the innererror property: More information to debug error.
-     *
+     * 
      * @return the innererror value.
      */
     public String getInnererror() {
@@ -32,9 +38,44 @@ public final class DefaultErrorResponseError extends ManagementError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DefaultErrorResponseError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DefaultErrorResponseError if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DefaultErrorResponseError.
+     */
+    public static DefaultErrorResponseError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DefaultErrorResponseError deserializedDefaultErrorResponseError = new DefaultErrorResponseError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("innererror".equals(fieldName)) {
+                    deserializedDefaultErrorResponseError.innererror = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDefaultErrorResponseError;
+        });
     }
 }

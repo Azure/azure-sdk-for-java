@@ -6,71 +6,38 @@ package com.azure.resourcemanager.hybridcompute.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcompute.HybridComputeManager;
 import com.azure.resourcemanager.hybridcompute.models.PrivateEndpointConnection;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PrivateEndpointConnectionsListByPrivateLinkScopeMockTests {
     @Test
     public void testListByPrivateLinkScope() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"nfszpyglqdhmrjz\"},\"privateLinkServiceConnectionState\":{\"status\":\"l\",\"description\":\"xpjb\",\"actionsRequired\":\"psjoqcjenk\"},\"provisioningState\":\"fq\",\"groupIds\":[\"qxfx\",\"elgcmpzqjhhhqx\",\"w\",\"vcacoyv\"]},\"id\":\"bsizus\",\"name\":\"szlbscm\",\"type\":\"lzijiufehgmvflnw\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"pqxpx\"},\"privateLinkServiceConnectionState\":{\"status\":\"fcngjsa\",\"description\":\"sii\",\"actionsRequired\":\"mkzjvkviir\"},\"provisioningState\":\"fgrwsdpgratzvz\",\"groupIds\":[\"byvi\",\"tctbrxkjzwrgxffm\",\"hkwfbkgozxwop\",\"bydpizqaclnapxb\"]},\"id\":\"gn\",\"name\":\"gjkn\",\"type\":\"smfcttuxuuyilfl\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        HybridComputeManager manager = HybridComputeManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<PrivateEndpointConnection> response
+            = manager.privateEndpointConnections().listByPrivateLinkScope("rl", "h", com.azure.core.util.Context.NONE);
 
-        HybridComputeManager manager =
-            HybridComputeManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<PrivateEndpointConnection> response =
-            manager
-                .privateEndpointConnections()
-                .listByPrivateLinkScope("hlisngw", "lqqmpiz", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("pqxpx", response.iterator().next().properties().privateEndpoint().id());
-        Assertions
-            .assertEquals(
-                "fcngjsa", response.iterator().next().properties().privateLinkServiceConnectionState().status());
-        Assertions
-            .assertEquals(
-                "sii", response.iterator().next().properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("nfszpyglqdhmrjz", response.iterator().next().properties().privateEndpoint().id());
+        Assertions.assertEquals("l",
+            response.iterator().next().properties().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("xpjb",
+            response.iterator().next().properties().privateLinkServiceConnectionState().description());
     }
 }

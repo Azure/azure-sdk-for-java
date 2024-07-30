@@ -6,19 +6,27 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity source for SAP ODP source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = SapOdpSource.class, visible = true)
 @JsonTypeName("SapOdpSource")
 @Fluent
 public final class SapOdpSource extends TabularSource {
     /*
-     * The extraction mode. Allowed value include: Full, Delta and Recovery. The default value is Full. Type: string
-     * (or Expression with resultType string).
+     * Copy source type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "SapOdpSource";
+
+    /*
+     * The extraction mode. Allowed value include: Full, Delta and Recovery. The default value is Full. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "extractionMode")
     private Object extractionMode;
@@ -47,6 +55,16 @@ public final class SapOdpSource extends TabularSource {
      * Creates an instance of SapOdpSource class.
      */
     public SapOdpSource() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

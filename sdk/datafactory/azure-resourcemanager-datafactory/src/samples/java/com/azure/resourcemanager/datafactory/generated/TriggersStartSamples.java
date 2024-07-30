@@ -18,7 +18,7 @@ public final class TriggersStartSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void triggersStart(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.triggers().start("exampleResourceGroup", "exampleFactoryName", "exampleTrigger",
-            com.azure.core.util.Context.NONE);
+        manager.triggers()
+            .start("exampleResourceGroup", "exampleFactoryName", "exampleTrigger", com.azure.core.util.Context.NONE);
     }
 }

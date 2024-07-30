@@ -13,6 +13,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class VirtualApplianceNicProperties {
     /*
+     * NIC type - PublicNic, PrivateNic, or AdditionalNic.
+     */
+    @JsonProperty(value = "nicType", access = JsonProperty.Access.WRITE_ONLY)
+    private NicTypeInResponse nicType;
+
+    /*
      * NIC name.
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
@@ -40,6 +46,15 @@ public final class VirtualApplianceNicProperties {
      * Creates an instance of VirtualApplianceNicProperties class.
      */
     public VirtualApplianceNicProperties() {
+    }
+
+    /**
+     * Get the nicType property: NIC type - PublicNic, PrivateNic, or AdditionalNic.
+     * 
+     * @return the nicType value.
+     */
+    public NicTypeInResponse nicType() {
+        return this.nicType;
     }
 
     /**

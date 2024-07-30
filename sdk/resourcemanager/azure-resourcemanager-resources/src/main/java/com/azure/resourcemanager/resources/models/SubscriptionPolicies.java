@@ -7,12 +7,13 @@ package com.azure.resourcemanager.resources.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Subscription policies. */
+/**
+ * Subscription policies.
+ */
 @Immutable
 public final class SubscriptionPolicies {
     /*
-     * The subscription location placement ID. The ID indicates which regions are visible for a subscription. For
-     * example, a subscription with a location placement Id of Public_2014-09-01 has access to Azure public regions.
+     * The subscription location placement ID. The ID indicates which regions are visible for a subscription. For example, a subscription with a location placement Id of Public_2014-09-01 has access to Azure public regions.
      */
     @JsonProperty(value = "locationPlacementId", access = JsonProperty.Access.WRITE_ONLY)
     private String locationPlacementId;
@@ -29,7 +30,9 @@ public final class SubscriptionPolicies {
     @JsonProperty(value = "spendingLimit", access = JsonProperty.Access.WRITE_ONLY)
     private SpendingLimit spendingLimit;
 
-    /** Creates an instance of SubscriptionPolicies class. */
+    /**
+     * Creates an instance of SubscriptionPolicies class.
+     */
     public SubscriptionPolicies() {
     }
 
@@ -37,7 +40,7 @@ public final class SubscriptionPolicies {
      * Get the locationPlacementId property: The subscription location placement ID. The ID indicates which regions are
      * visible for a subscription. For example, a subscription with a location placement Id of Public_2014-09-01 has
      * access to Azure public regions.
-     *
+     * 
      * @return the locationPlacementId value.
      */
     public String locationPlacementId() {
@@ -46,7 +49,7 @@ public final class SubscriptionPolicies {
 
     /**
      * Get the quotaId property: The subscription quota ID.
-     *
+     * 
      * @return the quotaId value.
      */
     public String quotaId() {
@@ -55,7 +58,7 @@ public final class SubscriptionPolicies {
 
     /**
      * Get the spendingLimit property: The subscription spending limit.
-     *
+     * 
      * @return the spendingLimit value.
      */
     public SpendingLimit spendingLimit() {
@@ -64,7 +67,7 @@ public final class SubscriptionPolicies {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

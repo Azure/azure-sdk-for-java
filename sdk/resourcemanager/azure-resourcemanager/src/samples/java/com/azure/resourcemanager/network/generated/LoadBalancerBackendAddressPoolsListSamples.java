@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class LoadBalancerBackendAddressPoolsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * LBBackendAddressPoolListWithBackendAddressesPoolType.json
      */
     /**
@@ -19,12 +19,15 @@ public final class LoadBalancerBackendAddressPoolsListSamples {
      */
     public static void loadBalancerWithBackendAddressPoolContainingBackendAddresses(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getLoadBalancerBackendAddressPools().list("testrg", "lb",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getLoadBalancerBackendAddressPools()
+            .list("testrg", "lb", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * LoadBalancerBackendAddressPoolList.json
      */
     /**
@@ -33,7 +36,10 @@ public final class LoadBalancerBackendAddressPoolsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void loadBalancerBackendAddressPoolList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getLoadBalancerBackendAddressPools().list("testrg", "lb",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getLoadBalancerBackendAddressPools()
+            .list("testrg", "lb", com.azure.core.util.Context.NONE);
     }
 }

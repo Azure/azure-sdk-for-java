@@ -30,6 +30,8 @@ import com.azure.identity.ClientSecretCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.test.StepVerifier;
 
 import java.net.URI;
@@ -50,6 +52,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests methods for {@link TableServiceAsyncClient}.
  */
+@Execution(ExecutionMode.SAME_THREAD)
 public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(100);
     private static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
@@ -66,8 +69,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
 
     @Override
     protected void beforeTest() {
-        final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
-        serviceClient = getClientBuilder(connectionString).buildAsyncClient();
+        serviceClient = getClientBuilder(false).buildAsyncClient();
     }
 
     @Test
@@ -108,9 +110,8 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
                 .additionallyAllowedTenants("*")
                 .build();
         }
-        final TableServiceAsyncClient tableServiceAsyncClient =
-            getClientBuilder(Configuration.getGlobalConfiguration().get("TABLES_ENDPOINT",
-                "https://tablestests.table.core.windows.com"), credential, true).buildAsyncClient();
+
+        final TableServiceAsyncClient tableServiceAsyncClient = getClientBuilder(true).buildAsyncClient();
 
         // Act & Assert
         // This request will use the tenant ID extracted from the previous request.
@@ -242,7 +243,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         int expectedStatusCode = 204;
-        serviceClient.createTable(tableName).block();
+        serviceClient.createTable(tableName).block(DEFAULT_TIMEOUT);
 
         //Act & Assert
         StepVerifier.create(serviceClient.deleteTableWithResponse(tableName))
@@ -342,7 +343,8 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
                 .setProtocol(protocol)
                 .setVersion(TableServiceVersion.V2019_02_02.getVersion());
 
-        final String sas = serviceClient.generateAccountSas(sasSignatureValues);
+        TableServiceAsyncClient serviceClient2 = getClientBuilderWithConnectionString(false).buildAsyncClient();
+        final String sas = serviceClient2.generateAccountSas(sasSignatureValues);
 
         assertTrue(
             sas.startsWith(
@@ -375,7 +377,8 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
                 .setStartTime(startTime)
                 .setSasIpRange(ipRange);
 
-        final String sas = serviceClient.generateAccountSas(sasSignatureValues);
+        TableServiceAsyncClient serviceClient2 = getClientBuilderWithConnectionString(false).buildAsyncClient();
+        final String sas = serviceClient2.generateAccountSas(sasSignatureValues);
 
         assertTrue(
             sas.startsWith(
@@ -406,7 +409,8 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
                 .setProtocol(protocol)
                 .setVersion(TableServiceVersion.V2019_02_02.getVersion());
 
-        final String sas = serviceClient.generateAccountSas(sasSignatureValues);
+        TableServiceAsyncClient serviceClient2 = getClientBuilderWithConnectionString(false).buildAsyncClient();
+        final String sas = serviceClient2.generateAccountSas(sasSignatureValues);
         final String tableName = testResourceNamer.randomName("test", 20);
 
         serviceClient.createTable(tableName).block(DEFAULT_TIMEOUT);

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.resources.fluent.models.SubscriptionInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Subscription list operation response. */
+/**
+ * Subscription list operation response.
+ */
 @Fluent
 public final class SubscriptionListResult {
     /*
@@ -25,13 +27,15 @@ public final class SubscriptionListResult {
     @JsonProperty(value = "nextLink", required = true)
     private String nextLink;
 
-    /** Creates an instance of SubscriptionListResult class. */
+    /**
+     * Creates an instance of SubscriptionListResult class.
+     */
     public SubscriptionListResult() {
     }
 
     /**
      * Get the value property: An array of subscriptions.
-     *
+     * 
      * @return the value value.
      */
     public List<SubscriptionInner> value() {
@@ -40,7 +44,7 @@ public final class SubscriptionListResult {
 
     /**
      * Set the value property: An array of subscriptions.
-     *
+     * 
      * @param value the value value to set.
      * @return the SubscriptionListResult object itself.
      */
@@ -51,7 +55,7 @@ public final class SubscriptionListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +64,7 @@ public final class SubscriptionListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SubscriptionListResult object itself.
      */
@@ -71,7 +75,7 @@ public final class SubscriptionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -79,8 +83,8 @@ public final class SubscriptionListResult {
             value().forEach(e -> e.validate());
         }
         if (nextLink() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property nextLink in model SubscriptionListResult"));
         }
     }

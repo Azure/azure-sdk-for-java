@@ -19,29 +19,37 @@ public final class AzureSqlDWTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureSqlDWTableDataset model = BinaryData.fromString(
-            "{\"type\":\"AzureSqlDWTable\",\"typeProperties\":{\"tableName\":\"dataxjfsg\",\"schema\":\"dataspoebnx\",\"table\":\"datacowscuyfqlam\"},\"description\":\"qhsujkafuzp\",\"structure\":\"dataqpwnikxkcajgr\",\"schema\":\"datact\",\"linkedServiceName\":{\"referenceName\":\"vgoo\",\"parameters\":{\"tm\":\"dataazmzlpcx\",\"ic\":\"dataxxr\"}},\"parameters\":{\"hkvpyeyoa\":{\"type\":\"SecureString\",\"defaultValue\":\"datajd\"}},\"annotations\":[\"datampnqup\",\"datakjr\"],\"folder\":{\"name\":\"ky\"},\"\":{\"hqdcclcvqsr\":\"databdx\"}}")
+            "{\"type\":\"AzureSqlDWTable\",\"typeProperties\":{\"tableName\":\"datatnxodwxm\",\"schema\":\"datajwiygmgsevmdmze\",\"table\":\"datarstgfczljdnc\"},\"description\":\"tjva\",\"structure\":\"datayznm\",\"schema\":\"datacdo\",\"linkedServiceName\":{\"referenceName\":\"cvucgytoxu\",\"parameters\":{\"bgszplusdek\":\"datatnzqsaqm\",\"kyejidbdq\":\"datadzzmssgpgv\"}},\"parameters\":{\"wztlvvwsnmrkky\":{\"type\":\"String\",\"defaultValue\":\"datay\"},\"auxuvavcpfpdofu\":{\"type\":\"Float\",\"defaultValue\":\"dataepwpwfk\"},\"lfngojfsqebuuxj\":{\"type\":\"Bool\",\"defaultValue\":\"datalbtxluevsolzw\"}},\"annotations\":[\"dataxfjwp\",\"datakktpmbmxbmbr\"],\"folder\":{\"name\":\"zx\"},\"\":{\"mhweqjfyxyd\":\"datakhxsdplaumy\",\"vxakglh\":\"datatokvqbvwglgwz\",\"fga\":\"datases\"}}")
             .toObject(AzureSqlDWTableDataset.class);
-        Assertions.assertEquals("qhsujkafuzp", model.description());
-        Assertions.assertEquals("vgoo", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("hkvpyeyoa").type());
-        Assertions.assertEquals("ky", model.folder().name());
+        Assertions.assertEquals("tjva", model.description());
+        Assertions.assertEquals("cvucgytoxu", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("wztlvvwsnmrkky").type());
+        Assertions.assertEquals("zx", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureSqlDWTableDataset model = new AzureSqlDWTableDataset().withDescription("qhsujkafuzp")
-            .withStructure("dataqpwnikxkcajgr").withSchema("datact")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("vgoo")
-                .withParameters(mapOf("tm", "dataazmzlpcx", "ic", "dataxxr")))
-            .withParameters(mapOf("hkvpyeyoa",
-                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datajd")))
-            .withAnnotations(Arrays.asList("datampnqup", "datakjr")).withFolder(new DatasetFolder().withName("ky"))
-            .withTableName("dataxjfsg").withSchemaTypePropertiesSchema("dataspoebnx").withTable("datacowscuyfqlam");
+        AzureSqlDWTableDataset model = new AzureSqlDWTableDataset().withDescription("tjva")
+            .withStructure("datayznm")
+            .withSchema("datacdo")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("cvucgytoxu")
+                .withParameters(mapOf("bgszplusdek", "datatnzqsaqm", "kyejidbdq", "datadzzmssgpgv")))
+            .withParameters(mapOf("wztlvvwsnmrkky",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datay"),
+                "auxuvavcpfpdofu",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataepwpwfk"),
+                "lfngojfsqebuuxj",
+                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datalbtxluevsolzw")))
+            .withAnnotations(Arrays.asList("dataxfjwp", "datakktpmbmxbmbr"))
+            .withFolder(new DatasetFolder().withName("zx"))
+            .withTableName("datatnxodwxm")
+            .withSchemaTypePropertiesSchema("datajwiygmgsevmdmze")
+            .withTable("datarstgfczljdnc");
         model = BinaryData.fromObject(model).toObject(AzureSqlDWTableDataset.class);
-        Assertions.assertEquals("qhsujkafuzp", model.description());
-        Assertions.assertEquals("vgoo", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("hkvpyeyoa").type());
-        Assertions.assertEquals("ky", model.folder().name());
+        Assertions.assertEquals("tjva", model.description());
+        Assertions.assertEquals("cvucgytoxu", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("wztlvvwsnmrkky").type());
+        Assertions.assertEquals("zx", model.folder().name());
     }
 
     // Use "Map.of" if available

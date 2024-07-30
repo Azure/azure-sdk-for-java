@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ServicesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ServicesClient.
+ */
 public final class ServicesClientImpl implements ServicesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ServicesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MobileNetworkManagementClientImpl client;
 
     /**
      * Initializes an instance of ServicesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ServicesClientImpl(MobileNetworkManagementClientImpl client) {
@@ -65,113 +71,84 @@ public final class ServicesClientImpl implements ServicesClient {
     @Host("{$host}")
     @ServiceInterface(name = "MobileNetworkManagem")
     public interface ServicesService {
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/services/{serviceName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/services/{serviceName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("mobileNetworkName") String mobileNetworkName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+            @PathParam("mobileNetworkName") String mobileNetworkName, @PathParam("serviceName") String serviceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/services/{serviceName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ServiceInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("mobileNetworkName") String mobileNetworkName, @PathParam("serviceName") String serviceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/services/{serviceName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("mobileNetworkName") String mobileNetworkName, @PathParam("serviceName") String serviceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") ServiceInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/services/{serviceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/services/{serviceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServiceInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("mobileNetworkName") String mobileNetworkName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<ServiceInner>> updateTags(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("mobileNetworkName") String mobileNetworkName, @PathParam("serviceName") String serviceName,
+            @BodyParam("application/json") TagsObject parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/services/{serviceName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/services")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ServiceListResult>> listByMobileNetwork(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("mobileNetworkName") String mobileNetworkName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") ServiceInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("mobileNetworkName") String mobileNetworkName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/services/{serviceName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServiceInner>> updateTags(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("mobileNetworkName") String mobileNetworkName,
-            @PathParam("serviceName") String serviceName,
-            @BodyParam("application/json") TagsObject parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/services")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServiceListResult>> listByMobileNetwork(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("mobileNetworkName") String mobileNetworkName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServiceListResult>> listByMobileNetworkNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Deletes the specified service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String mobileNetworkName, String serviceName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String mobileNetworkName,
+        String serviceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -185,35 +162,23 @@ public final class ServicesClientImpl implements ServicesClient {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            mobileNetworkName,
-                            serviceName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, mobileNetworkName,
+                serviceName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the specified service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -221,13 +186,11 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String mobileNetworkName, String serviceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String mobileNetworkName,
+        String serviceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -241,55 +204,43 @@ public final class ServicesClientImpl implements ServicesClient {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                mobileNetworkName,
-                serviceName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, mobileNetworkName, serviceName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Deletes the specified service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String mobileNetworkName, String serviceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, mobileNetworkName, serviceName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String mobileNetworkName,
+        String serviceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, mobileNetworkName, serviceName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes the specified service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -297,41 +248,40 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String mobileNetworkName, String serviceName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String mobileNetworkName,
+        String serviceName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, mobileNetworkName, serviceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, mobileNetworkName, serviceName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes the specified service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String mobileNetworkName, String serviceName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mobileNetworkName,
+        String serviceName) {
         return this.beginDeleteAsync(resourceGroupName, mobileNetworkName, serviceName).getSyncPoller();
     }
 
     /**
      * Deletes the specified service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -339,18 +289,18 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String mobileNetworkName, String serviceName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mobileNetworkName,
+        String serviceName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, mobileNetworkName, serviceName, context).getSyncPoller();
     }
 
     /**
      * Deletes the specified service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -358,18 +308,17 @@ public final class ServicesClientImpl implements ServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String mobileNetworkName, String serviceName) {
-        return beginDeleteAsync(resourceGroupName, mobileNetworkName, serviceName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, mobileNetworkName, serviceName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the specified service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -377,20 +326,19 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String mobileNetworkName, String serviceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, mobileNetworkName, serviceName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String mobileNetworkName, String serviceName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, mobileNetworkName, serviceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the specified service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -402,11 +350,11 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * Deletes the specified service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -419,25 +367,23 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * Gets information about the specified service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified service along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about the specified service along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ServiceInner>> getWithResponseAsync(
-        String resourceGroupName, String mobileNetworkName, String serviceName) {
+    private Mono<Response<ServiceInner>> getWithResponseAsync(String resourceGroupName, String mobileNetworkName,
+        String serviceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -451,50 +397,36 @@ public final class ServicesClientImpl implements ServicesClient {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            mobileNetworkName,
-                            serviceName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, mobileNetworkName,
+                serviceName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets information about the specified service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified service along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about the specified service along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ServiceInner>> getWithResponseAsync(
-        String resourceGroupName, String mobileNetworkName, String serviceName, Context context) {
+    private Mono<Response<ServiceInner>> getWithResponseAsync(String resourceGroupName, String mobileNetworkName,
+        String serviceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -508,32 +440,22 @@ public final class ServicesClientImpl implements ServicesClient {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                mobileNetworkName,
-                serviceName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, mobileNetworkName, serviceName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets information about the specified service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -547,11 +469,11 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * Gets information about the specified service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -559,18 +481,18 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return information about the specified service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ServiceInner> getWithResponse(
-        String resourceGroupName, String mobileNetworkName, String serviceName, Context context) {
+    public Response<ServiceInner> getWithResponse(String resourceGroupName, String mobileNetworkName,
+        String serviceName, Context context) {
         return getWithResponseAsync(resourceGroupName, mobileNetworkName, serviceName, context).block();
     }
 
     /**
      * Gets information about the specified service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -583,11 +505,11 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * Creates or updates a service. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @param parameters Parameters supplied to the create or update service operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -595,13 +517,11 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return service resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String mobileNetworkName, String serviceName, ServiceInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String mobileNetworkName, String serviceName, ServiceInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -615,10 +535,8 @@ public final class ServicesClientImpl implements ServicesClient {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -627,29 +545,19 @@ public final class ServicesClientImpl implements ServicesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            mobileNetworkName,
-                            serviceName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
+                mobileNetworkName, serviceName, this.client.getApiVersion(), this.client.getSubscriptionId(),
+                parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a service. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @param parameters Parameters supplied to the create or update service operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -658,17 +566,11 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return service resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String mobileNetworkName,
-        String serviceName,
-        ServiceInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String mobileNetworkName, String serviceName, ServiceInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -682,10 +584,8 @@ public final class ServicesClientImpl implements ServicesClient {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -694,26 +594,17 @@ public final class ServicesClientImpl implements ServicesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                mobileNetworkName,
-                serviceName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, mobileNetworkName, serviceName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Creates or updates a service. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @param parameters Parameters supplied to the create or update service operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -721,23 +612,21 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return the {@link PollerFlux} for polling of service resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ServiceInner>, ServiceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String mobileNetworkName, String serviceName, ServiceInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, mobileNetworkName, serviceName, parameters);
-        return this
-            .client
-            .<ServiceInner, ServiceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ServiceInner.class, ServiceInner.class, this.client.getContext());
+    private PollerFlux<PollResult<ServiceInner>, ServiceInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String mobileNetworkName, String serviceName, ServiceInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, mobileNetworkName, serviceName, parameters);
+        return this.client.<ServiceInner, ServiceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ServiceInner.class, ServiceInner.class, this.client.getContext());
     }
 
     /**
      * Creates or updates a service. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @param parameters Parameters supplied to the create or update service operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -746,28 +635,22 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return the {@link PollerFlux} for polling of service resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ServiceInner>, ServiceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String mobileNetworkName,
-        String serviceName,
-        ServiceInner parameters,
-        Context context) {
+    private PollerFlux<PollResult<ServiceInner>, ServiceInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String mobileNetworkName, String serviceName, ServiceInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, mobileNetworkName, serviceName, parameters, context);
-        return this
-            .client
-            .<ServiceInner, ServiceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ServiceInner.class, ServiceInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, mobileNetworkName, serviceName, parameters, context);
+        return this.client.<ServiceInner, ServiceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ServiceInner.class, ServiceInner.class, context);
     }
 
     /**
      * Creates or updates a service. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @param parameters Parameters supplied to the create or update service operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -775,20 +658,19 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return the {@link SyncPoller} for polling of service resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ServiceInner>, ServiceInner> beginCreateOrUpdate(
-        String resourceGroupName, String mobileNetworkName, String serviceName, ServiceInner parameters) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, serviceName, parameters)
+    public SyncPoller<PollResult<ServiceInner>, ServiceInner> beginCreateOrUpdate(String resourceGroupName,
+        String mobileNetworkName, String serviceName, ServiceInner parameters) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, serviceName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a service. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @param parameters Parameters supplied to the create or update service operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -797,24 +679,19 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return the {@link SyncPoller} for polling of service resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ServiceInner>, ServiceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String mobileNetworkName,
-        String serviceName,
-        ServiceInner parameters,
-        Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, serviceName, parameters, context)
+    public SyncPoller<PollResult<ServiceInner>, ServiceInner> beginCreateOrUpdate(String resourceGroupName,
+        String mobileNetworkName, String serviceName, ServiceInner parameters, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, serviceName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a service. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @param parameters Parameters supplied to the create or update service operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -822,20 +699,19 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return service resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ServiceInner> createOrUpdateAsync(
-        String resourceGroupName, String mobileNetworkName, String serviceName, ServiceInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, serviceName, parameters)
-            .last()
+    private Mono<ServiceInner> createOrUpdateAsync(String resourceGroupName, String mobileNetworkName,
+        String serviceName, ServiceInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, serviceName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a service. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @param parameters Parameters supplied to the create or update service operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -844,24 +720,19 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return service resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ServiceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String mobileNetworkName,
-        String serviceName,
-        ServiceInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, serviceName, parameters, context)
-            .last()
+    private Mono<ServiceInner> createOrUpdateAsync(String resourceGroupName, String mobileNetworkName,
+        String serviceName, ServiceInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, serviceName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a service. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @param parameters Parameters supplied to the create or update service operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -869,18 +740,18 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return service resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServiceInner createOrUpdate(
-        String resourceGroupName, String mobileNetworkName, String serviceName, ServiceInner parameters) {
+    public ServiceInner createOrUpdate(String resourceGroupName, String mobileNetworkName, String serviceName,
+        ServiceInner parameters) {
         return createOrUpdateAsync(resourceGroupName, mobileNetworkName, serviceName, parameters).block();
     }
 
     /**
      * Creates or updates a service. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @param parameters Parameters supplied to the create or update service operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -889,22 +760,18 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return service resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServiceInner createOrUpdate(
-        String resourceGroupName,
-        String mobileNetworkName,
-        String serviceName,
-        ServiceInner parameters,
-        Context context) {
+    public ServiceInner createOrUpdate(String resourceGroupName, String mobileNetworkName, String serviceName,
+        ServiceInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, mobileNetworkName, serviceName, parameters, context).block();
     }
 
     /**
      * Updates service tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @param parameters Parameters supplied to update service tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -912,19 +779,15 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return service resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ServiceInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String mobileNetworkName, String serviceName, TagsObject parameters) {
+    private Mono<Response<ServiceInner>> updateTagsWithResponseAsync(String resourceGroupName, String mobileNetworkName,
+        String serviceName, TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -944,29 +807,19 @@ public final class ServicesClientImpl implements ServicesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateTags(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            mobileNetworkName,
-                            serviceName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), mobileNetworkName, serviceName, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates service tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @param parameters Parameters supplied to update service tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -975,23 +828,15 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return service resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ServiceInner>> updateTagsWithResponseAsync(
-        String resourceGroupName,
-        String mobileNetworkName,
-        String serviceName,
-        TagsObject parameters,
-        Context context) {
+    private Mono<Response<ServiceInner>> updateTagsWithResponseAsync(String resourceGroupName, String mobileNetworkName,
+        String serviceName, TagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1011,26 +856,17 @@ public final class ServicesClientImpl implements ServicesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .updateTags(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                mobileNetworkName,
-                serviceName,
-                parameters,
-                accept,
-                context);
+        return service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), mobileNetworkName, serviceName, parameters, accept, context);
     }
 
     /**
      * Updates service tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @param parameters Parameters supplied to update service tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1038,19 +874,19 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return service resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ServiceInner> updateTagsAsync(
-        String resourceGroupName, String mobileNetworkName, String serviceName, TagsObject parameters) {
+    private Mono<ServiceInner> updateTagsAsync(String resourceGroupName, String mobileNetworkName, String serviceName,
+        TagsObject parameters) {
         return updateTagsWithResponseAsync(resourceGroupName, mobileNetworkName, serviceName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Updates service tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @param parameters Parameters supplied to update service tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1059,23 +895,19 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return service resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ServiceInner> updateTagsWithResponse(
-        String resourceGroupName,
-        String mobileNetworkName,
-        String serviceName,
-        TagsObject parameters,
-        Context context) {
+    public Response<ServiceInner> updateTagsWithResponse(String resourceGroupName, String mobileNetworkName,
+        String serviceName, TagsObject parameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, mobileNetworkName, serviceName, parameters, context)
             .block();
     }
 
     /**
      * Updates service tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @param parameters Parameters supplied to update service tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1083,31 +915,29 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return service resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServiceInner updateTags(
-        String resourceGroupName, String mobileNetworkName, String serviceName, TagsObject parameters) {
+    public ServiceInner updateTags(String resourceGroupName, String mobileNetworkName, String serviceName,
+        TagsObject parameters) {
         return updateTagsWithResponse(resourceGroupName, mobileNetworkName, serviceName, parameters, Context.NONE)
             .getValue();
     }
 
     /**
      * Gets all the services in a mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the services in a mobile network along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return all the services in a mobile network along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServiceInner>> listByMobileNetworkSinglePageAsync(
-        String resourceGroupName, String mobileNetworkName) {
+    private Mono<PagedResponse<ServiceInner>> listByMobileNetworkSinglePageAsync(String resourceGroupName,
+        String mobileNetworkName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1118,56 +948,36 @@ public final class ServicesClientImpl implements ServicesClient {
                 .error(new IllegalArgumentException("Parameter mobileNetworkName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByMobileNetwork(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            mobileNetworkName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<ServiceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByMobileNetwork(this.client.getEndpoint(), resourceGroupName,
+                mobileNetworkName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<ServiceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all the services in a mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the services in a mobile network along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return all the services in a mobile network along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServiceInner>> listByMobileNetworkSinglePageAsync(
-        String resourceGroupName, String mobileNetworkName, Context context) {
+    private Mono<PagedResponse<ServiceInner>> listByMobileNetworkSinglePageAsync(String resourceGroupName,
+        String mobileNetworkName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1178,36 +988,21 @@ public final class ServicesClientImpl implements ServicesClient {
                 .error(new IllegalArgumentException("Parameter mobileNetworkName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByMobileNetwork(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                mobileNetworkName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByMobileNetwork(this.client.getEndpoint(), resourceGroupName, mobileNetworkName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets all the services in a mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1217,14 +1012,13 @@ public final class ServicesClientImpl implements ServicesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ServiceInner> listByMobileNetworkAsync(String resourceGroupName, String mobileNetworkName) {
-        return new PagedFlux<>(
-            () -> listByMobileNetworkSinglePageAsync(resourceGroupName, mobileNetworkName),
+        return new PagedFlux<>(() -> listByMobileNetworkSinglePageAsync(resourceGroupName, mobileNetworkName),
             nextLink -> listByMobileNetworkNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all the services in a mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param context The context to associate with this operation.
@@ -1234,16 +1028,15 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return all the services in a mobile network as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ServiceInner> listByMobileNetworkAsync(
-        String resourceGroupName, String mobileNetworkName, Context context) {
-        return new PagedFlux<>(
-            () -> listByMobileNetworkSinglePageAsync(resourceGroupName, mobileNetworkName, context),
+    private PagedFlux<ServiceInner> listByMobileNetworkAsync(String resourceGroupName, String mobileNetworkName,
+        Context context) {
+        return new PagedFlux<>(() -> listByMobileNetworkSinglePageAsync(resourceGroupName, mobileNetworkName, context),
             nextLink -> listByMobileNetworkNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets all the services in a mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1258,7 +1051,7 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * Gets all the services in a mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param context The context to associate with this operation.
@@ -1268,21 +1061,22 @@ public final class ServicesClientImpl implements ServicesClient {
      * @return all the services in a mobile network as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ServiceInner> listByMobileNetwork(
-        String resourceGroupName, String mobileNetworkName, Context context) {
+    public PagedIterable<ServiceInner> listByMobileNetwork(String resourceGroupName, String mobileNetworkName,
+        Context context) {
         return new PagedIterable<>(listByMobileNetworkAsync(resourceGroupName, mobileNetworkName, context));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for services API service call along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServiceInner>> listByMobileNetworkNextSinglePageAsync(String nextLink) {
@@ -1290,38 +1084,30 @@ public final class ServicesClientImpl implements ServicesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByMobileNetworkNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ServiceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ServiceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for services API service call along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServiceInner>> listByMobileNetworkNextSinglePageAsync(String nextLink, Context context) {
@@ -1329,23 +1115,13 @@ public final class ServicesClientImpl implements ServicesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByMobileNetworkNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByMobileNetworkNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

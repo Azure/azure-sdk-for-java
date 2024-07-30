@@ -7,16 +7,28 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A WebLinkedService that uses basic authentication to communicate with an HTTP endpoint.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "authenticationType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "authenticationType",
+    defaultImpl = WebBasicAuthentication.class,
+    visible = true)
 @JsonTypeName("Basic")
 @Fluent
 public final class WebBasicAuthentication extends WebLinkedServiceTypeProperties {
+    /*
+     * Type of authentication used to connect to the web table source.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "authenticationType", required = true)
+    private WebAuthenticationType authenticationType = WebAuthenticationType.BASIC;
+
     /*
      * User name for Basic authentication. Type: string (or Expression with resultType string).
      */
@@ -33,6 +45,16 @@ public final class WebBasicAuthentication extends WebLinkedServiceTypeProperties
      * Creates an instance of WebBasicAuthentication class.
      */
     public WebBasicAuthentication() {
+    }
+
+    /**
+     * Get the authenticationType property: Type of authentication used to connect to the web table source.
+     * 
+     * @return the authenticationType value.
+     */
+    @Override
+    public WebAuthenticationType authenticationType() {
+        return this.authenticationType;
     }
 
     /**
@@ -95,12 +117,14 @@ public final class WebBasicAuthentication extends WebLinkedServiceTypeProperties
     public void validate() {
         super.validate();
         if (username() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property username in model WebBasicAuthentication"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property username in model WebBasicAuthentication"));
         }
         if (password() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property password in model WebBasicAuthentication"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property password in model WebBasicAuthentication"));
         } else {
             password().validate();
         }

@@ -276,9 +276,9 @@ public final class PrestoLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for
-     * verifying the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR.
-     * The default value is the cacerts.pem file installed with the IR.
+     * Get the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
+     * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
+     * value is the cacerts.pem file installed with the IR.
      * 
      * @return the trustedCertPath value.
      */
@@ -287,9 +287,9 @@ public final class PrestoLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for
-     * verifying the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR.
-     * The default value is the cacerts.pem file installed with the IR.
+     * Set the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
+     * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
+     * value is the cacerts.pem file installed with the IR.
      * 
      * @param trustedCertPath the trustedCertPath value to set.
      * @return the PrestoLinkedServiceTypeProperties object itself.
@@ -388,8 +388,8 @@ public final class PrestoLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -398,8 +398,8 @@ public final class PrestoLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the PrestoLinkedServiceTypeProperties object itself.
@@ -416,20 +416,24 @@ public final class PrestoLinkedServiceTypeProperties {
      */
     public void validate() {
         if (host() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property host in model PrestoLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property host in model PrestoLinkedServiceTypeProperties"));
         }
         if (serverVersion() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property serverVersion in model PrestoLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property serverVersion in model PrestoLinkedServiceTypeProperties"));
         }
         if (catalog() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property catalog in model PrestoLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property catalog in model PrestoLinkedServiceTypeProperties"));
         }
         if (authenticationType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property authenticationType in model PrestoLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property authenticationType in model PrestoLinkedServiceTypeProperties"));
         }
         if (password() != null) {
             password().validate();

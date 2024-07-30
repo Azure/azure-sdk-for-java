@@ -13,7 +13,7 @@ public final class AlertSimulatorRequestPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AlertSimulatorRequestProperties model = BinaryData.fromString(
-            "{\"kind\":\"AlertSimulatorRequestProperties\",\"\":{\"urxf\":\"datafowzkroyr\",\"jtgzj\":\"datazqjim\",\"yzivrm\":\"dataxlfejlzuqloiwya\",\"hwhrktj\":\"datatcdqlh\"}}")
+            "{\"kind\":\"AlertSimulatorRequestProperties\",\"\":{\"xwspcaxikhfjq\":\"dataeevsa\",\"ysemtmesrfsvpin\":\"databglcxkxgzzromvy\"}}")
             .toObject(AlertSimulatorRequestProperties.class);
     }
 

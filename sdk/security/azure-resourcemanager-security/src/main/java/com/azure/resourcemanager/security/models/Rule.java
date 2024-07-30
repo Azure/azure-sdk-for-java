@@ -39,8 +39,7 @@ public final class Rule {
     private List<TransportProtocol> protocols;
 
     /*
-     * The remote IP addresses that should be able to communicate with the Azure resource on the rule's destination
-     * port and protocol
+     * The remote IP addresses that should be able to communicate with the Azure resource on the rule's destination port and protocol
      */
     @JsonProperty(value = "ipAddresses")
     private List<String> ipAddresses;

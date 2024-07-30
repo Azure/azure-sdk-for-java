@@ -17,6 +17,7 @@ import com.azure.resourcemanager.redisenterprise.models.Database;
 import com.azure.resourcemanager.redisenterprise.models.Databases;
 import com.azure.resourcemanager.redisenterprise.models.ExportClusterParameters;
 import com.azure.resourcemanager.redisenterprise.models.FlushParameters;
+import com.azure.resourcemanager.redisenterprise.models.ForceLinkParameters;
 import com.azure.resourcemanager.redisenterprise.models.ForceUnlinkParameters;
 import com.azure.resourcemanager.redisenterprise.models.ImportClusterParameters;
 import com.azure.resourcemanager.redisenterprise.models.RegenerateKeyParameters;
@@ -147,6 +148,17 @@ public final class DatabasesImpl implements Databases {
         this.serviceClient().forceUnlink(resourceGroupName, clusterName, databaseName, parameters, context);
     }
 
+    public void forceLinkToReplicationGroup(String resourceGroupName, String clusterName, String databaseName,
+        ForceLinkParameters parameters) {
+        this.serviceClient().forceLinkToReplicationGroup(resourceGroupName, clusterName, databaseName, parameters);
+    }
+
+    public void forceLinkToReplicationGroup(String resourceGroupName, String clusterName, String databaseName,
+        ForceLinkParameters parameters, Context context) {
+        this.serviceClient()
+            .forceLinkToReplicationGroup(resourceGroupName, clusterName, databaseName, parameters, context);
+    }
+
     public void flush(String resourceGroupName, String clusterName, String databaseName, FlushParameters parameters) {
         this.serviceClient().flush(resourceGroupName, clusterName, databaseName, parameters);
     }
@@ -154,6 +166,15 @@ public final class DatabasesImpl implements Databases {
     public void flush(String resourceGroupName, String clusterName, String databaseName, FlushParameters parameters,
         Context context) {
         this.serviceClient().flush(resourceGroupName, clusterName, databaseName, parameters, context);
+    }
+
+    public void upgradeDBRedisVersion(String resourceGroupName, String clusterName, String databaseName) {
+        this.serviceClient().upgradeDBRedisVersion(resourceGroupName, clusterName, databaseName);
+    }
+
+    public void upgradeDBRedisVersion(String resourceGroupName, String clusterName, String databaseName,
+        Context context) {
+        this.serviceClient().upgradeDBRedisVersion(resourceGroupName, clusterName, databaseName, context);
     }
 
     public Database getById(String id) {

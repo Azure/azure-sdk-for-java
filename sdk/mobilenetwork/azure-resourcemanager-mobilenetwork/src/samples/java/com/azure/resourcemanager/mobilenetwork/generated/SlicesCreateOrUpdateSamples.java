@@ -6,19 +6,20 @@ package com.azure.resourcemanager.mobilenetwork.generated;
 
 import com.azure.resourcemanager.mobilenetwork.models.Snssai;
 
-/** Samples for Slices CreateOrUpdate. */
+/**
+ * Samples for Slices CreateOrUpdate.
+ */
 public final class SlicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SliceCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SliceCreate.json
      */
     /**
      * Sample code: Create network slice.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void createNetworkSlice(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .slices()
+        manager.slices()
             .define("testSlice")
             .withRegion("eastus")
             .withExistingMobileNetwork("rg1", "testMobileNetwork")

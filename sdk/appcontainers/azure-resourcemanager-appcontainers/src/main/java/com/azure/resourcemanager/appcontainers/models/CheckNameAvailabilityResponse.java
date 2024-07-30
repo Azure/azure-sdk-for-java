@@ -6,32 +6,34 @@ package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.resourcemanager.appcontainers.fluent.models.CheckNameAvailabilityResponseInner;
 
-/** An immutable client-side representation of CheckNameAvailabilityResponse. */
+/**
+ * An immutable client-side representation of CheckNameAvailabilityResponse.
+ */
 public interface CheckNameAvailabilityResponse {
     /**
      * Gets the nameAvailable property: Indicates if the resource name is available.
-     *
+     * 
      * @return the nameAvailable value.
      */
     Boolean nameAvailable();
 
     /**
      * Gets the reason property: The reason why the given name is not available.
-     *
+     * 
      * @return the reason value.
      */
     CheckNameAvailabilityReason reason();
 
     /**
      * Gets the message property: Detailed reason why the given name is available.
-     *
+     * 
      * @return the message value.
      */
     String message();
 
     /**
      * Gets the inner com.azure.resourcemanager.appcontainers.fluent.models.CheckNameAvailabilityResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     CheckNameAvailabilityResponseInner innerModel();

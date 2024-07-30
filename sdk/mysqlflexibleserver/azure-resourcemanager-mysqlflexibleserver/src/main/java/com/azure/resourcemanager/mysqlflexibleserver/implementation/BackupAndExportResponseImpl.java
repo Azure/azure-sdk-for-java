@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mysqlflexibleserver.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.BackupAndExportResponseInner;
 import com.azure.resourcemanager.mysqlflexibleserver.models.BackupAndExportResponse;
@@ -15,8 +16,7 @@ public final class BackupAndExportResponseImpl implements BackupAndExportRespons
 
     private final com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager;
 
-    BackupAndExportResponseImpl(
-        BackupAndExportResponseInner innerObject,
+    BackupAndExportResponseImpl(BackupAndExportResponseInner innerObject,
         com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -48,6 +48,10 @@ public final class BackupAndExportResponseImpl implements BackupAndExportRespons
 
     public Double percentComplete() {
         return this.innerModel().percentComplete();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public ManagementError error() {

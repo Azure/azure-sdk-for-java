@@ -6,19 +6,31 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity source for a CosmosDB (MongoDB API) database.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = CosmosDbMongoDbApiSource.class,
+    visible = true)
 @JsonTypeName("CosmosDbMongoDbApiSource")
 @Fluent
 public final class CosmosDbMongoDbApiSource extends CopySource {
     /*
-     * Specifies selection filter using query operators. To return all documents in a collection, omit this parameter
-     * or pass an empty document ({}). Type: string (or Expression with resultType string).
+     * Copy source type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "CosmosDbMongoDbApiSource";
+
+    /*
+     * Specifies selection filter using query operators. To return all documents in a collection, omit this parameter or
+     * pass an empty document ({}). Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "filter")
     private Object filter;
@@ -55,6 +67,16 @@ public final class CosmosDbMongoDbApiSource extends CopySource {
      * Creates an instance of CosmosDbMongoDbApiSource class.
      */
     public CosmosDbMongoDbApiSource() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

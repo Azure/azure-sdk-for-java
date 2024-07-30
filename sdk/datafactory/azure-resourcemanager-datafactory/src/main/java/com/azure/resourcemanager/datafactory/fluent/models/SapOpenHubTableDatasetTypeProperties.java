@@ -115,8 +115,9 @@ public final class SapOpenHubTableDatasetTypeProperties {
      */
     public void validate() {
         if (openHubDestinationName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property openHubDestinationName in model SapOpenHubTableDatasetTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property openHubDestinationName in model SapOpenHubTableDatasetTypeProperties"));
         }
     }
 

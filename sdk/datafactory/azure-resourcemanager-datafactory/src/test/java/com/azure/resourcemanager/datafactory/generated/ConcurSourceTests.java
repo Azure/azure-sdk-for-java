@@ -11,15 +11,19 @@ public final class ConcurSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConcurSource model = BinaryData.fromString(
-            "{\"type\":\"ConcurSource\",\"query\":\"datadhismwjkq\",\"queryTimeout\":\"datayuygybshch\",\"additionalColumns\":\"dataeaitzgewwqwibt\",\"sourceRetryCount\":\"datahcgbzrlf\",\"sourceRetryWait\":\"datawusqupk\",\"maxConcurrentConnections\":\"datappmwozwjinxyrtec\",\"disableMetricsCollection\":\"datazslttk\",\"\":{\"mahuw\":\"datakujceeczhsdpfoa\",\"ewrryt\":\"dataodddq\",\"s\":\"datasocqkdclbzqnao\",\"cbhezau\":\"datamp\"}}")
+            "{\"type\":\"ConcurSource\",\"query\":\"datakrjolbaegha\",\"queryTimeout\":\"datascismr\",\"additionalColumns\":\"dataeklf\",\"sourceRetryCount\":\"datanys\",\"sourceRetryWait\":\"datalxt\",\"maxConcurrentConnections\":\"dataodwqzbiuk\",\"disableMetricsCollection\":\"datafyfvyzaofaiwlnfv\",\"\":{\"jluaywgcjqnfa\":\"datauuqafolseyxpgkml\",\"slwve\":\"datapyglnfw\",\"ekst\":\"datablucpmqwkfgmkp\",\"ajfers\":\"dataqzhdwr\"}}")
             .toObject(ConcurSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConcurSource model = new ConcurSource().withSourceRetryCount("datahcgbzrlf").withSourceRetryWait("datawusqupk")
-            .withMaxConcurrentConnections("datappmwozwjinxyrtec").withDisableMetricsCollection("datazslttk")
-            .withQueryTimeout("datayuygybshch").withAdditionalColumns("dataeaitzgewwqwibt").withQuery("datadhismwjkq");
+        ConcurSource model = new ConcurSource().withSourceRetryCount("datanys")
+            .withSourceRetryWait("datalxt")
+            .withMaxConcurrentConnections("dataodwqzbiuk")
+            .withDisableMetricsCollection("datafyfvyzaofaiwlnfv")
+            .withQueryTimeout("datascismr")
+            .withAdditionalColumns("dataeklf")
+            .withQuery("datakrjolbaegha");
         model = BinaryData.fromObject(model).toObject(ConcurSource.class);
     }
 }

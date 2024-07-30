@@ -5,7 +5,6 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class OrcCompressionCodec extends ExpandableStringEnum<OrcCompressi
      * @param name a name to look for.
      * @return the corresponding OrcCompressionCodec.
      */
-    @JsonCreator
     public static OrcCompressionCodec fromString(String name) {
         return fromString(name, OrcCompressionCodec.class);
     }

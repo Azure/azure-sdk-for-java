@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class ServiceEndpointPolicyDefinitionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * ServiceEndpointPolicyDefinitionCreate.json
      */
     /**
@@ -21,9 +21,13 @@ public final class ServiceEndpointPolicyDefinitionsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createServiceEndpointPolicyDefinition(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getServiceEndpointPolicyDefinitions()
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getServiceEndpointPolicyDefinitions()
             .createOrUpdate("rg1", "testPolicy", "testDefinition", new ServiceEndpointPolicyDefinitionInner()
-                .withDescription("Storage Service EndpointPolicy Definition").withService("Microsoft.Storage")
+                .withDescription("Storage Service EndpointPolicy Definition")
+                .withService("Microsoft.Storage")
                 .withServiceResources(Arrays.asList("/subscriptions/subid1",
                     "/subscriptions/subid1/resourceGroups/storageRg",
                     "/subscriptions/subid1/resourceGroups/storageRg/providers/Microsoft.Storage/storageAccounts/stAccount")),

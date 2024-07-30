@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Patch Resource information, as returned by the resource provider. */
+/**
+ * Patch Resource information, as returned by the resource provider.
+ */
 @Fluent
 public final class PatchVault extends PatchTrackedResource {
     /*
@@ -29,13 +31,15 @@ public final class PatchVault extends PatchTrackedResource {
     @JsonProperty(value = "identity")
     private IdentityData identity;
 
-    /** Creates an instance of PatchVault class. */
+    /**
+     * Creates an instance of PatchVault class.
+     */
     public PatchVault() {
     }
 
     /**
      * Get the properties property: Properties of the vault.
-     *
+     * 
      * @return the properties value.
      */
     public VaultProperties properties() {
@@ -44,7 +48,7 @@ public final class PatchVault extends PatchTrackedResource {
 
     /**
      * Set the properties property: Properties of the vault.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the PatchVault object itself.
      */
@@ -55,7 +59,7 @@ public final class PatchVault extends PatchTrackedResource {
 
     /**
      * Get the sku property: Identifies the unique system identifier for each Azure resource.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -64,7 +68,7 @@ public final class PatchVault extends PatchTrackedResource {
 
     /**
      * Set the sku property: Identifies the unique system identifier for each Azure resource.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the PatchVault object itself.
      */
@@ -75,7 +79,7 @@ public final class PatchVault extends PatchTrackedResource {
 
     /**
      * Get the identity property: Identity for the resource.
-     *
+     * 
      * @return the identity value.
      */
     public IdentityData identity() {
@@ -84,7 +88,7 @@ public final class PatchVault extends PatchTrackedResource {
 
     /**
      * Set the identity property: Identity for the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the PatchVault object itself.
      */
@@ -93,21 +97,27 @@ public final class PatchVault extends PatchTrackedResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PatchVault withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PatchVault withTags(Map<String, String> tags) {
         super.withTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PatchVault withEtag(String etag) {
         super.withEtag(etag);
@@ -116,7 +126,7 @@ public final class PatchVault extends PatchTrackedResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

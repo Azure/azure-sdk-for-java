@@ -9,6 +9,8 @@ import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.monitor.models.EventData;
 import com.azure.resourcemanager.monitor.models.EventDataPropertyName;
@@ -24,6 +26,8 @@ import org.junit.jupiter.api.Test;
 import java.time.OffsetDateTime;
 
 public class MonitorActivityAndMetricsTests extends MonitorManagementTest {
+    private static final ClientLogger LOGGER = new ClientLogger(MonitorActivityAndMetricsTests.class);
+
     private String rgName = "";
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
@@ -49,7 +53,7 @@ public class MonitorActivityAndMetricsTests extends MonitorManagementTest {
             "10.0.0.0/28");
 
         OffsetDateTime now = OffsetDateTime.now();
-        System.out.println("record timestamp: " + now);
+        LOGGER.log(LogLevel.VERBOSE, () -> "record timestamp: " + now);
 
         OffsetDateTime recordDateTime = now.minusDays(40);
 
@@ -143,7 +147,7 @@ public class MonitorActivityAndMetricsTests extends MonitorManagementTest {
         SqlElasticPool pool = ensureElasticPoolWithWhiteSpace(region, rgName);
 
         OffsetDateTime now = OffsetDateTime.now();
-        System.out.println("record timestamp: " + now);
+        LOGGER.log(LogLevel.VERBOSE, () -> "record timestamp: " + now);
 
         OffsetDateTime recordDateTime = now.minusDays(40);
 

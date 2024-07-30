@@ -11,14 +11,14 @@ public final class WarehouseTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WarehouseTableDatasetTypeProperties model
-            = BinaryData.fromString("{\"schema\":\"datavpkbz\",\"table\":\"datanowpajfhxsmu\"}")
+            = BinaryData.fromString("{\"schema\":\"dataavbghoucvkand\",\"table\":\"dataoimazkmqfwbg\"}")
                 .toObject(WarehouseTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WarehouseTableDatasetTypeProperties model
-            = new WarehouseTableDatasetTypeProperties().withSchema("datavpkbz").withTable("datanowpajfhxsmu");
+            = new WarehouseTableDatasetTypeProperties().withSchema("dataavbghoucvkand").withTable("dataoimazkmqfwbg");
         model = BinaryData.fromObject(model).toObject(WarehouseTableDatasetTypeProperties.class);
     }
 }

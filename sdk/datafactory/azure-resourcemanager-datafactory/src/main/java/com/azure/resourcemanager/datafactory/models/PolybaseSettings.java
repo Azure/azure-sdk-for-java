@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -77,8 +77,8 @@ public final class PolybaseSettings {
     }
 
     /**
-     * Get the rejectValue property: Specifies the value or the percentage of rows that can be rejected before the
-     * query fails. Type: number (or Expression with resultType number), minimum: 0.
+     * Get the rejectValue property: Specifies the value or the percentage of rows that can be rejected before the query
+     * fails. Type: number (or Expression with resultType number), minimum: 0.
      * 
      * @return the rejectValue value.
      */
@@ -87,8 +87,8 @@ public final class PolybaseSettings {
     }
 
     /**
-     * Set the rejectValue property: Specifies the value or the percentage of rows that can be rejected before the
-     * query fails. Type: number (or Expression with resultType number), minimum: 0.
+     * Set the rejectValue property: Specifies the value or the percentage of rows that can be rejected before the query
+     * fails. Type: number (or Expression with resultType number), minimum: 0.
      * 
      * @param rejectValue the rejectValue value to set.
      * @return the PolybaseSettings object itself.
@@ -166,7 +166,7 @@ public final class PolybaseSettings {
     @JsonAnySetter
     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }

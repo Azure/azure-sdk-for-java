@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ServiceTagInformationListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * ServiceTagInformationListResultWithNoAddressPrefixes.json
      */
     /**
@@ -18,12 +18,15 @@ public final class ServiceTagInformationListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getListOfServiceTagsWithNoAddressPrefixes(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getServiceTagInformations().list("westeurope", true, null,
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getServiceTagInformations()
+            .list("westeurope", true, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * ServiceTagInformationListResult.json
      */
     /**
@@ -32,12 +35,15 @@ public final class ServiceTagInformationListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getListOfServiceTags(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getServiceTagInformations().list("westeurope", null, null,
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getServiceTagInformations()
+            .list("westeurope", null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * ServiceTagInformationListResultWithTagname.json
      */
     /**
@@ -46,7 +52,10 @@ public final class ServiceTagInformationListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getListOfServiceTagsWithTagName(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getServiceTagInformations().list("westeurope", null, "ApiManagement",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getServiceTagInformations()
+            .list("westeurope", null, "ApiManagement", com.azure.core.util.Context.NONE);
     }
 }

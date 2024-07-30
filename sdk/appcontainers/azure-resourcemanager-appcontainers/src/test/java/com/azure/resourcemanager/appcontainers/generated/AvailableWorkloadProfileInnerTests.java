@@ -13,37 +13,34 @@ import org.junit.jupiter.api.Assertions;
 public final class AvailableWorkloadProfileInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailableWorkloadProfileInner model =
-            BinaryData
-                .fromString(
-                    "{\"location\":\"efovgmk\",\"properties\":{\"category\":\"eyyvxyqjpkcat\",\"applicability\":\"LocationDefault\",\"cores\":1698610201,\"memoryGiB\":1035421848,\"displayName\":\"czsqpjhvm\"},\"id\":\"ajvnysounqe\",\"name\":\"a\",\"type\":\"oaeupfhyhltrpmo\"}")
-                .toObject(AvailableWorkloadProfileInner.class);
-        Assertions.assertEquals("efovgmk", model.location());
-        Assertions.assertEquals("eyyvxyqjpkcat", model.properties().category());
-        Assertions.assertEquals(Applicability.LOCATION_DEFAULT, model.properties().applicability());
-        Assertions.assertEquals(1698610201, model.properties().cores());
-        Assertions.assertEquals(1035421848, model.properties().memoryGiB());
-        Assertions.assertEquals("czsqpjhvm", model.properties().displayName());
+        AvailableWorkloadProfileInner model = BinaryData.fromString(
+            "{\"location\":\"yocf\",\"properties\":{\"category\":\"s\",\"applicability\":\"Custom\",\"cores\":376493890,\"memoryGiB\":666664165,\"gpus\":30564685,\"displayName\":\"uxh\"},\"id\":\"udxorrqn\",\"name\":\"poczvyifqrvkdvjs\",\"type\":\"lrmv\"}")
+            .toObject(AvailableWorkloadProfileInner.class);
+        Assertions.assertEquals("yocf", model.location());
+        Assertions.assertEquals("s", model.properties().category());
+        Assertions.assertEquals(Applicability.CUSTOM, model.properties().applicability());
+        Assertions.assertEquals(376493890, model.properties().cores());
+        Assertions.assertEquals(666664165, model.properties().memoryGiB());
+        Assertions.assertEquals(30564685, model.properties().gpus());
+        Assertions.assertEquals("uxh", model.properties().displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvailableWorkloadProfileInner model =
-            new AvailableWorkloadProfileInner()
-                .withLocation("efovgmk")
-                .withProperties(
-                    new AvailableWorkloadProfileProperties()
-                        .withCategory("eyyvxyqjpkcat")
-                        .withApplicability(Applicability.LOCATION_DEFAULT)
-                        .withCores(1698610201)
-                        .withMemoryGiB(1035421848)
-                        .withDisplayName("czsqpjhvm"));
+        AvailableWorkloadProfileInner model = new AvailableWorkloadProfileInner().withLocation("yocf")
+            .withProperties(new AvailableWorkloadProfileProperties().withCategory("s")
+                .withApplicability(Applicability.CUSTOM)
+                .withCores(376493890)
+                .withMemoryGiB(666664165)
+                .withGpus(30564685)
+                .withDisplayName("uxh"));
         model = BinaryData.fromObject(model).toObject(AvailableWorkloadProfileInner.class);
-        Assertions.assertEquals("efovgmk", model.location());
-        Assertions.assertEquals("eyyvxyqjpkcat", model.properties().category());
-        Assertions.assertEquals(Applicability.LOCATION_DEFAULT, model.properties().applicability());
-        Assertions.assertEquals(1698610201, model.properties().cores());
-        Assertions.assertEquals(1035421848, model.properties().memoryGiB());
-        Assertions.assertEquals("czsqpjhvm", model.properties().displayName());
+        Assertions.assertEquals("yocf", model.location());
+        Assertions.assertEquals("s", model.properties().category());
+        Assertions.assertEquals(Applicability.CUSTOM, model.properties().applicability());
+        Assertions.assertEquals(376493890, model.properties().cores());
+        Assertions.assertEquals(666664165, model.properties().memoryGiB());
+        Assertions.assertEquals(30564685, model.properties().gpus());
+        Assertions.assertEquals("uxh", model.properties().displayName());
     }
 }

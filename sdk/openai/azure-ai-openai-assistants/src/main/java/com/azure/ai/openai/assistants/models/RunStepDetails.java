@@ -5,29 +5,98 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * An abstract representation of the details for a run step.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = RunStepDetails.class)
-@JsonTypeName("RunStepDetails")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "message_creation", value = RunStepMessageCreationDetails.class),
-    @JsonSubTypes.Type(name = "tool_calls", value = RunStepToolCallDetails.class) })
 @Immutable
-public class RunStepDetails {
+public class RunStepDetails implements JsonSerializable<RunStepDetails> {
 
     /**
      * Creates an instance of RunStepDetails class.
      */
     @Generated
     protected RunStepDetails() {
+    }
+
+    static RunStepDetails fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RunStepDetails deserializedRunStepDetails = new RunStepDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                reader.skipChildren();
+            }
+            return deserializedRunStepDetails;
+        });
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private RunStepType type = RunStepType.fromString("RunStepDetails");
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    public RunStepType getType() {
+        return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunStepDetails from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunStepDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RunStepDetails.
+     */
+    @Generated
+    public static RunStepDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                // Prepare for reading
+                readerToUse.nextToken();
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("message_creation".equals(discriminatorValue)) {
+                    return RunStepMessageCreationDetails.fromJson(readerToUse.reset());
+                } else if ("tool_calls".equals(discriminatorValue)) {
+                    return RunStepToolCallDetails.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
     }
 }

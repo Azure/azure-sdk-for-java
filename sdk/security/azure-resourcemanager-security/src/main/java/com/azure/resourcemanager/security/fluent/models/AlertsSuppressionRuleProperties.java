@@ -202,16 +202,19 @@ public final class AlertsSuppressionRuleProperties {
      */
     public void validate() {
         if (alertType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property alertType in model AlertsSuppressionRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property alertType in model AlertsSuppressionRuleProperties"));
         }
         if (reason() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property reason in model AlertsSuppressionRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property reason in model AlertsSuppressionRuleProperties"));
         }
         if (state() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property state in model AlertsSuppressionRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property state in model AlertsSuppressionRuleProperties"));
         }
         if (suppressionAlertsScope() != null) {
             suppressionAlertsScope().validate();

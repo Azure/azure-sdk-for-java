@@ -43,12 +43,12 @@ import reactor.core.publisher.Mono;
 @ServiceClient(builder = ConfluentManagementClientBuilder.class)
 public final class ConfluentManagementClientImpl implements ConfluentManagementClient {
     /**
-     * The ID of the target subscription. The value must be an UUID.
+     * Microsoft Azure subscription id.
      */
     private final String subscriptionId;
 
     /**
-     * Gets The ID of the target subscription. The value must be an UUID.
+     * Gets Microsoft Azure subscription id.
      * 
      * @return the subscriptionId value.
      */
@@ -203,7 +203,7 @@ public final class ConfluentManagementClientImpl implements ConfluentManagementC
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
+     * @param subscriptionId Microsoft Azure subscription id.
      * @param endpoint server parameter.
      */
     ConfluentManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
@@ -213,7 +213,7 @@ public final class ConfluentManagementClientImpl implements ConfluentManagementC
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-08-22";
+        this.apiVersion = "2024-02-13";
         this.marketplaceAgreements = new MarketplaceAgreementsClientImpl(this);
         this.organizationOperations = new OrganizationOperationsClientImpl(this);
         this.organizations = new OrganizationsClientImpl(this);

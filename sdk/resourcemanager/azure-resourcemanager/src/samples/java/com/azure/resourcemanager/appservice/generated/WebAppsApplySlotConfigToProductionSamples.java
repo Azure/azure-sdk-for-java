@@ -11,8 +11,7 @@ import com.azure.resourcemanager.appservice.models.CsmSlotEntity;
  */
 public final class WebAppsApplySlotConfigToProductionSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/ApplySlotConfig.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ApplySlotConfig.json
      */
     /**
      * Sample code: Apply web app slot config.
@@ -20,8 +19,11 @@ public final class WebAppsApplySlotConfigToProductionSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void applyWebAppSlotConfig(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getWebApps().applySlotConfigToProductionWithResponse("testrg123",
-            "sitef6141", new CsmSlotEntity().withTargetSlot("staging").withPreserveVnet(true),
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getWebApps()
+            .applySlotConfigToProductionWithResponse("testrg123", "sitef6141",
+                new CsmSlotEntity().withTargetSlot("staging").withPreserveVnet(true), com.azure.core.util.Context.NONE);
     }
 }

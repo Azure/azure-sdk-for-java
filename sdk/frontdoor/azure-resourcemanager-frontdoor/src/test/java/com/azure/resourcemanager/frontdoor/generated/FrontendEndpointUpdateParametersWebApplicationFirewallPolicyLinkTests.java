@@ -11,21 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink model =
-            BinaryData
-                .fromString("{\"id\":\"ipfpubji\"}")
+        FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink model
+            = BinaryData.fromString("{\"id\":\"kyrk\"}")
                 .toObject(FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink.class);
-        Assertions.assertEquals("ipfpubji", model.id());
+        Assertions.assertEquals("kyrk", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink model =
-            new FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink().withId("ipfpubji");
-        model =
-            BinaryData
-                .fromObject(model)
-                .toObject(FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink.class);
-        Assertions.assertEquals("ipfpubji", model.id());
+        FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink model
+            = new FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink().withId("kyrk");
+        model = BinaryData.fromObject(model)
+            .toObject(FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink.class);
+        Assertions.assertEquals("kyrk", model.id());
     }
 }

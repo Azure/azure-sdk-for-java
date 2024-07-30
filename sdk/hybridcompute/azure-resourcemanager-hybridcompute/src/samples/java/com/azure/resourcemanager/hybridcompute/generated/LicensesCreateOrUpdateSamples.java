@@ -11,30 +11,31 @@ import com.azure.resourcemanager.hybridcompute.models.LicenseState;
 import com.azure.resourcemanager.hybridcompute.models.LicenseTarget;
 import com.azure.resourcemanager.hybridcompute.models.LicenseType;
 
-/** Samples for Licenses CreateOrUpdate. */
+/**
+ * Samples for Licenses CreateOrUpdate.
+ */
 public final class LicensesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-06-20-preview/examples/license/License_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-05-20-preview/examples/license/
+     * License_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update a License.
-     *
+     * 
      * @param manager Entry point to HybridComputeManager.
      */
     public static void createOrUpdateALicense(com.azure.resourcemanager.hybridcompute.HybridComputeManager manager) {
-        manager
-            .licenses()
+        manager.licenses()
             .define("{licenseName}")
             .withRegion("eastus2euap")
             .withExistingResourceGroup("myResourceGroup")
             .withLicenseType(LicenseType.ESU)
-            .withLicenseDetails(
-                new LicenseDetails()
-                    .withState(LicenseState.ACTIVATED)
-                    .withTarget(LicenseTarget.WINDOWS_SERVER_2012)
-                    .withEdition(LicenseEdition.DATACENTER)
-                    .withType(LicenseCoreType.P_CORE)
-                    .withProcessors(6))
+            .withLicenseDetails(new LicenseDetails().withState(LicenseState.ACTIVATED)
+                .withTarget(LicenseTarget.WINDOWS_SERVER_2012)
+                .withEdition(LicenseEdition.DATACENTER)
+                .withType(LicenseCoreType.P_CORE)
+                .withProcessors(6))
             .create();
     }
 }

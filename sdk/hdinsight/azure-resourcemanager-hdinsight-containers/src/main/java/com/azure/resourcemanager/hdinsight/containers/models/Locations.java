@@ -7,11 +7,13 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Locations. */
+/**
+ * Resource collection API of Locations.
+ */
 public interface Locations {
     /**
      * Check the availability of the resource name.
-     *
+     * 
      * @param location The name of the Azure region.
      * @param nameAvailabilityParameters The name and type of the resource.
      * @param context The context to associate with this operation.
@@ -20,12 +22,12 @@ public interface Locations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of check name availability along with {@link Response}.
      */
-    Response<NameAvailabilityResult> checkNameAvailabilityWithResponse(
-        String location, NameAvailabilityParameters nameAvailabilityParameters, Context context);
+    Response<NameAvailabilityResult> checkNameAvailabilityWithResponse(String location,
+        NameAvailabilityParameters nameAvailabilityParameters, Context context);
 
     /**
      * Check the availability of the resource name.
-     *
+     * 
      * @param location The name of the Azure region.
      * @param nameAvailabilityParameters The name and type of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -33,6 +35,6 @@ public interface Locations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of check name availability.
      */
-    NameAvailabilityResult checkNameAvailability(
-        String location, NameAvailabilityParameters nameAvailabilityParameters);
+    NameAvailabilityResult checkNameAvailability(String location,
+        NameAvailabilityParameters nameAvailabilityParameters);
 }

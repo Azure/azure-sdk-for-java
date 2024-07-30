@@ -11,16 +11,20 @@ public final class SalesforceSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SalesforceSource model = BinaryData.fromString(
-            "{\"type\":\"SalesforceSource\",\"query\":\"databnekhjzbfb\",\"readBehavior\":\"dataeqkuozarr\",\"queryTimeout\":\"datapyzryjb\",\"additionalColumns\":\"databcvoyqnrjdrc\",\"sourceRetryCount\":\"datarvzewogh\",\"sourceRetryWait\":\"datazxkjqecj\",\"maxConcurrentConnections\":\"dataromeawthycbigpi\",\"disableMetricsCollection\":\"datapxhzjnparsulmuwl\",\"\":{\"xxqgoavzycxpza\":\"datakhe\",\"mftmxwtwzs\":\"datatalo\"}}")
+            "{\"type\":\"SalesforceSource\",\"query\":\"dataowlammvazvwzi\",\"readBehavior\":\"dataijunmgdpxeivr\",\"queryTimeout\":\"dataxdnk\",\"additionalColumns\":\"datatfgcuzvbrehdtqg\",\"sourceRetryCount\":\"dataahngnrseiid\",\"sourceRetryWait\":\"datawbybmxfhzzgolfe\",\"maxConcurrentConnections\":\"dataibqilbpyj\",\"disableMetricsCollection\":\"datayeml\",\"\":{\"zvv\":\"datavz\",\"bheyxewcsk\":\"datarougalywgqrevb\",\"fvvxi\":\"datavkwbpr\"}}")
             .toObject(SalesforceSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SalesforceSource model = new SalesforceSource().withSourceRetryCount("datarvzewogh")
-            .withSourceRetryWait("datazxkjqecj").withMaxConcurrentConnections("dataromeawthycbigpi")
-            .withDisableMetricsCollection("datapxhzjnparsulmuwl").withQueryTimeout("datapyzryjb")
-            .withAdditionalColumns("databcvoyqnrjdrc").withQuery("databnekhjzbfb").withReadBehavior("dataeqkuozarr");
+        SalesforceSource model = new SalesforceSource().withSourceRetryCount("dataahngnrseiid")
+            .withSourceRetryWait("datawbybmxfhzzgolfe")
+            .withMaxConcurrentConnections("dataibqilbpyj")
+            .withDisableMetricsCollection("datayeml")
+            .withQueryTimeout("dataxdnk")
+            .withAdditionalColumns("datatfgcuzvbrehdtqg")
+            .withQuery("dataowlammvazvwzi")
+            .withReadBehavior("dataijunmgdpxeivr");
         model = BinaryData.fromObject(model).toObject(SalesforceSource.class);
     }
 }

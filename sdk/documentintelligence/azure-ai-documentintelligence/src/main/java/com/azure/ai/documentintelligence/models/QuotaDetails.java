@@ -6,35 +6,37 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Quota used, limit, and next reset date/time.
  */
 @Immutable
-public final class QuotaDetails {
+public final class QuotaDetails implements JsonSerializable<QuotaDetails> {
     /*
      * Amount of the resource quota used.
      */
     @Generated
-    @JsonProperty(value = "used")
-    private int used;
+    private final int used;
 
     /*
      * Resource quota limit.
      */
     @Generated
-    @JsonProperty(value = "quota")
-    private int quota;
+    private final int quota;
 
     /*
      * Date/time when the resource quota usage will be reset.
      */
     @Generated
-    @JsonProperty(value = "quotaResetDateTime")
-    private OffsetDateTime quotaResetDateTime;
+    private final OffsetDateTime quotaResetDateTime;
 
     /**
      * Creates an instance of QuotaDetails class.
@@ -44,9 +46,7 @@ public final class QuotaDetails {
      * @param quotaResetDateTime the quotaResetDateTime value to set.
      */
     @Generated
-    @JsonCreator
-    private QuotaDetails(@JsonProperty(value = "used") int used, @JsonProperty(value = "quota") int quota,
-        @JsonProperty(value = "quotaResetDateTime") OffsetDateTime quotaResetDateTime) {
+    private QuotaDetails(int used, int quota, OffsetDateTime quotaResetDateTime) {
         this.used = used;
         this.quota = quota;
         this.quotaResetDateTime = quotaResetDateTime;
@@ -80,5 +80,55 @@ public final class QuotaDetails {
     @Generated
     public OffsetDateTime getQuotaResetDateTime() {
         return this.quotaResetDateTime;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("used", this.used);
+        jsonWriter.writeIntField("quota", this.quota);
+        jsonWriter.writeStringField("quotaResetDateTime",
+            this.quotaResetDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.quotaResetDateTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QuotaDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QuotaDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the QuotaDetails.
+     */
+    @Generated
+    public static QuotaDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            int used = 0;
+            int quota = 0;
+            OffsetDateTime quotaResetDateTime = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("used".equals(fieldName)) {
+                    used = reader.getInt();
+                } else if ("quota".equals(fieldName)) {
+                    quota = reader.getInt();
+                } else if ("quotaResetDateTime".equals(fieldName)) {
+                    quotaResetDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new QuotaDetails(used, quota, quotaResetDateTime);
+        });
     }
 }

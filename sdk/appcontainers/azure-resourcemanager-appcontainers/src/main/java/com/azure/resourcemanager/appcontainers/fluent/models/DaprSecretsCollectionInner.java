@@ -6,26 +6,33 @@ package com.azure.resourcemanager.appcontainers.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appcontainers.models.DaprSecret;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Dapr component Secrets Collection for ListSecrets Action. */
+/**
+ * Dapr component Secrets Collection for ListSecrets Action.
+ */
 @Fluent
-public final class DaprSecretsCollectionInner {
+public final class DaprSecretsCollectionInner implements JsonSerializable<DaprSecretsCollectionInner> {
     /*
      * Collection of secrets used by a Dapr component
      */
-    @JsonProperty(value = "value", required = true)
     private List<DaprSecret> value;
 
-    /** Creates an instance of DaprSecretsCollectionInner class. */
+    /**
+     * Creates an instance of DaprSecretsCollectionInner class.
+     */
     public DaprSecretsCollectionInner() {
     }
 
     /**
      * Get the value property: Collection of secrets used by a Dapr component.
-     *
+     * 
      * @return the value value.
      */
     public List<DaprSecret> value() {
@@ -34,7 +41,7 @@ public final class DaprSecretsCollectionInner {
 
     /**
      * Set the value property: Collection of secrets used by a Dapr component.
-     *
+     * 
      * @param value the value value to set.
      * @return the DaprSecretsCollectionInner object itself.
      */
@@ -45,19 +52,56 @@ public final class DaprSecretsCollectionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model DaprSecretsCollectionInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model DaprSecretsCollectionInner"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DaprSecretsCollectionInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DaprSecretsCollectionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DaprSecretsCollectionInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DaprSecretsCollectionInner.
+     */
+    public static DaprSecretsCollectionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DaprSecretsCollectionInner deserializedDaprSecretsCollectionInner = new DaprSecretsCollectionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<DaprSecret> value = reader.readArray(reader1 -> DaprSecret.fromJson(reader1));
+                    deserializedDaprSecretsCollectionInner.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDaprSecretsCollectionInner;
+        });
+    }
 }

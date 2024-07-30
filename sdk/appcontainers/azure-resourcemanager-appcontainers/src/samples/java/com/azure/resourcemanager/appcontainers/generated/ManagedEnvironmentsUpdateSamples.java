@@ -8,23 +8,25 @@ import com.azure.resourcemanager.appcontainers.models.ManagedEnvironment;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ManagedEnvironments Update. */
+/**
+ * Samples for ManagedEnvironments Update.
+ */
 public final class ManagedEnvironmentsUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/ManagedEnvironments_Patch.json
+     * x-ms-original-file:
+     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/ManagedEnvironments_Patch.
+     * json
      */
     /**
      * Sample code: Patch Managed Environment.
-     *
+     * 
      * @param manager Entry point to ContainerAppsApiManager.
      */
-    public static void patchManagedEnvironment(
-        com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        ManagedEnvironment resource =
-            manager
-                .managedEnvironments()
-                .getByResourceGroupWithResponse("examplerg", "testcontainerenv", com.azure.core.util.Context.NONE)
-                .getValue();
+    public static void
+        patchManagedEnvironment(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
+        ManagedEnvironment resource = manager.managedEnvironments()
+            .getByResourceGroupWithResponse("examplerg", "testcontainerenv", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 

@@ -5,18 +5,16 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The base definition of the custom setup.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = CustomSetupBase.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = CustomSetupBase.class, visible = true)
 @JsonTypeName("CustomSetupBase")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "CmdkeySetup", value = CmdkeySetup.class),
@@ -25,10 +23,26 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "AzPowerShellSetup", value = AzPowerShellSetup.class) })
 @Immutable
 public class CustomSetupBase {
+    /*
+     * The type of custom setup.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "CustomSetupBase";
+
     /**
      * Creates an instance of CustomSetupBase class.
      */
     public CustomSetupBase() {
+    }
+
+    /**
+     * Get the type property: The type of custom setup.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**

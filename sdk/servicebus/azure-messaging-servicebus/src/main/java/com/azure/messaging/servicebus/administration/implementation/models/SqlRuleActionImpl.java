@@ -26,6 +26,11 @@ public final class SqlRuleActionImpl extends RuleActionImpl {
         = "http://www.w3.org/2001/XMLSchema-instance";
 
     /*
+     * The type property.
+     */
+    private String type = "SqlRuleAction";
+
+    /*
      * The sqlExpression property.
      */
     private String sqlExpression;
@@ -49,6 +54,16 @@ public final class SqlRuleActionImpl extends RuleActionImpl {
      * Creates an instance of SqlRuleAction class.
      */
     public SqlRuleActionImpl() {
+    }
+
+    /**
+     * Get the type property: The type property.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -145,7 +160,7 @@ public final class SqlRuleActionImpl extends RuleActionImpl {
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeNamespace(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT);
         xmlWriter.writeNamespace("xsi", WWW_W3_ORG_TWO_ZERO_ZERO_ONE_XMLSCHEMA_INSTANCE);
-        xmlWriter.writeStringAttribute(WWW_W3_ORG_TWO_ZERO_ZERO_ONE_XMLSCHEMA_INSTANCE, "type", "SqlRuleAction");
+        xmlWriter.writeStringAttribute(WWW_W3_ORG_TWO_ZERO_ZERO_ONE_XMLSCHEMA_INSTANCE, "type", this.type);
         xmlWriter.writeStringElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "SqlExpression", this.sqlExpression);
         xmlWriter.writeStringElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "CompatibilityLevel",
             this.compatibilityLevel);
@@ -167,7 +182,7 @@ public final class SqlRuleActionImpl extends RuleActionImpl {
      * @param xmlReader The XmlReader being read.
      * @return An instance of SqlRuleAction if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized XML object has an invalid polymorphic discriminator value.
      * @throws XMLStreamException If an error occurs while reading the SqlRuleAction.
      */
     public static SqlRuleActionImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
@@ -182,7 +197,7 @@ public final class SqlRuleActionImpl extends RuleActionImpl {
      * cases where the model can deserialize from different root element names.
      * @return An instance of SqlRuleAction if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized XML object has an invalid polymorphic discriminator value.
      * @throws XMLStreamException If an error occurs while reading the SqlRuleAction.
      */
     public static SqlRuleActionImpl fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
@@ -196,6 +211,7 @@ public final class SqlRuleActionImpl extends RuleActionImpl {
                     "'type' was expected to be non-null and equal to 'SqlRuleAction'. The found 'type' was '"
                         + discriminatorValue + "'.");
             }
+            deserializedSqlRuleAction.type = discriminatorValue;
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
                 QName elementName = reader.getElementName();
 

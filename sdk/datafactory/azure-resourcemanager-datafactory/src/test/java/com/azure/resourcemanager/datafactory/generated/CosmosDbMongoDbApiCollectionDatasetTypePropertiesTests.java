@@ -10,14 +10,15 @@ import com.azure.resourcemanager.datafactory.fluent.models.CosmosDbMongoDbApiCol
 public final class CosmosDbMongoDbApiCollectionDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CosmosDbMongoDbApiCollectionDatasetTypeProperties model = BinaryData.fromString("{\"collection\":\"databiba\"}")
-            .toObject(CosmosDbMongoDbApiCollectionDatasetTypeProperties.class);
+        CosmosDbMongoDbApiCollectionDatasetTypeProperties model
+            = BinaryData.fromString("{\"collection\":\"dataapitskshfyftt\"}")
+                .toObject(CosmosDbMongoDbApiCollectionDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CosmosDbMongoDbApiCollectionDatasetTypeProperties model
-            = new CosmosDbMongoDbApiCollectionDatasetTypeProperties().withCollection("databiba");
+            = new CosmosDbMongoDbApiCollectionDatasetTypeProperties().withCollection("dataapitskshfyftt");
         model = BinaryData.fromObject(model).toObject(CosmosDbMongoDbApiCollectionDatasetTypeProperties.class);
     }
 }

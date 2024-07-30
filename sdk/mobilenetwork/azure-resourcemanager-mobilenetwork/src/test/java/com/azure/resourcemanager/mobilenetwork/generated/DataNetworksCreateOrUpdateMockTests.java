@@ -6,76 +6,44 @@ package com.azure.resourcemanager.mobilenetwork.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mobilenetwork.MobileNetworkManager;
 import com.azure.resourcemanager.mobilenetwork.models.DataNetwork;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DataNetworksCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"description\":\"hfhpfp\"},\"location\":\"jzoywjxhp\",\"tags\":{\"tehtuevrhrljyoog\":\"ontacnpq\",\"sd\":\"xh\",\"arenlvhhtklnvnaf\":\"ugwbsreurfqkf\"},\"id\":\"vkyfedevjbosl\",\"name\":\"qxypokkhminq\",\"type\":\"ymc\"}";
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"description\":\"nthjtwkjaosrxuzv\"},\"location\":\"mktcqiosmgbza\",\"tags\":{\"laprlt\":\"qdlyrtl\",\"nnbsoqeqa\":\"katbhjm\",\"febwlnbmhyreeudz\":\"arvlagunbt\",\"pdqmjxlyyzglgouw\":\"av\"},\"id\":\"lmjjyuo\",\"name\":\"qtobaxkjeyt\",\"type\":\"nlb\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MobileNetworkManager manager = MobileNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        DataNetwork response = manager.dataNetworks()
+            .define("szizoyuelyetndnb")
+            .withRegion("gm")
+            .withExistingMobileNetwork("y", "ruuuybnch")
+            .withTags(
+                mapOf("r", "ahzjmucftb", "fusuckzmkwklsno", "lrohkpig", "hjnhgwydyynfsvk", "axmqeqal", "ta", "gbv"))
+            .withDescription("agfl")
+            .create();
 
-        MobileNetworkManager manager =
-            MobileNetworkManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        DataNetwork response =
-            manager
-                .dataNetworks()
-                .define("ycjsx")
-                .withRegion("mwmxqhndvnoamld")
-                .withExistingMobileNetwork("kzruswh", "hczznvf")
-                .withTags(
-                    mapOf(
-                        "flzokxco", "aohdjh", "tsxoatftgz", "pelnjetag", "vefloccsrmozihmi", "npbs", "wtxxpkyjcx", "g"))
-                .withDescription("z")
-                .create();
-
-        Assertions.assertEquals("mktcqiosmgbza", response.location());
-        Assertions.assertEquals("qdlyrtl", response.tags().get("laprlt"));
-        Assertions.assertEquals("nthjtwkjaosrxuzv", response.description());
+        Assertions.assertEquals("jzoywjxhp", response.location());
+        Assertions.assertEquals("ontacnpq", response.tags().get("tehtuevrhrljyoog"));
+        Assertions.assertEquals("hfhpfp", response.description());
     }
 
     // Use "Map.of" if available

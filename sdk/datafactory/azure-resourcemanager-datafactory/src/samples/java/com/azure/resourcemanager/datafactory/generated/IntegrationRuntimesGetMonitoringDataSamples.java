@@ -19,7 +19,8 @@ public final class IntegrationRuntimesGetMonitoringDataSamples {
      */
     public static void
         integrationRuntimesGetMonitoringData(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimes().getMonitoringDataWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleIntegrationRuntime", com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes()
+            .getMonitoringDataWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }

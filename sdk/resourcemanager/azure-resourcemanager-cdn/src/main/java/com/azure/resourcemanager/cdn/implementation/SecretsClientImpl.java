@@ -38,17 +38,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SecretsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SecretsClient.
+ */
 public final class SecretsClientImpl implements SecretsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SecretsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CdnManagementClientImpl client;
 
     /**
      * Initializes an instance of SecretsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SecretsClientImpl(CdnManagementClientImpl client) {
@@ -57,103 +63,76 @@ public final class SecretsClientImpl implements SecretsClient {
     }
 
     /**
-     * The interface defining all the services for CdnManagementClientSecrets to be used by the proxy service to perform
-     * REST calls.
+     * The interface defining all the services for CdnManagementClientSecrets to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "CdnManagementClientS")
     public interface SecretsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/secrets")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/secrets")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SecretListResult>> listByProfile(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SecretListResult>> listByProfile(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/secrets/{secretName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/secrets/{secretName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SecretInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("secretName") String secretName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SecretInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @PathParam("secretName") String secretName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/secrets/{secretName}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/secrets/{secretName}")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("secretName") String secretName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SecretInner secret,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @PathParam("secretName") String secretName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") SecretInner secret,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/secrets/{secretName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/secrets/{secretName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("secretName") String secretName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @PathParam("secretName") String secretName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SecretListResult>> listByProfileNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists existing AzureFrontDoor secrets.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list secrets along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return result of the request to list secrets along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SecretInner>> listByProfileSinglePageAsync(
-        String resourceGroupName, String profileName) {
+    private Mono<PagedResponse<SecretInner>> listByProfileSinglePageAsync(String resourceGroupName,
+        String profileName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -163,57 +142,37 @@ public final class SecretsClientImpl implements SecretsClient {
             return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByProfile(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<SecretInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByProfile(this.client.getEndpoint(), resourceGroupName, profileName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<SecretInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists existing AzureFrontDoor secrets.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list secrets along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return result of the request to list secrets along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SecretInner>> listByProfileSinglePageAsync(
-        String resourceGroupName, String profileName, Context context) {
+    private Mono<PagedResponse<SecretInner>> listByProfileSinglePageAsync(String resourceGroupName, String profileName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -223,39 +182,24 @@ public final class SecretsClientImpl implements SecretsClient {
             return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByProfile(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByProfile(this.client.getEndpoint(), resourceGroupName, profileName, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists existing AzureFrontDoor secrets.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -263,17 +207,16 @@ public final class SecretsClientImpl implements SecretsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecretInner> listByProfileAsync(String resourceGroupName, String profileName) {
-        return new PagedFlux<>(
-            () -> listByProfileSinglePageAsync(resourceGroupName, profileName),
+        return new PagedFlux<>(() -> listByProfileSinglePageAsync(resourceGroupName, profileName),
             nextLink -> listByProfileNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists existing AzureFrontDoor secrets.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -282,17 +225,16 @@ public final class SecretsClientImpl implements SecretsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecretInner> listByProfileAsync(String resourceGroupName, String profileName, Context context) {
-        return new PagedFlux<>(
-            () -> listByProfileSinglePageAsync(resourceGroupName, profileName, context),
+        return new PagedFlux<>(() -> listByProfileSinglePageAsync(resourceGroupName, profileName, context),
             nextLink -> listByProfileNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists existing AzureFrontDoor secrets.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -305,10 +247,10 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Lists existing AzureFrontDoor secrets.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -322,10 +264,10 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Gets an existing Secret within a profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param secretName Name of the Secret under the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -333,13 +275,11 @@ public final class SecretsClientImpl implements SecretsClient {
      * @return an existing Secret within a profile along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SecretInner>> getWithResponseAsync(
-        String resourceGroupName, String profileName, String secretName) {
+    public Mono<Response<SecretInner>> getWithResponseAsync(String resourceGroupName, String profileName,
+        String secretName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -352,34 +292,22 @@ public final class SecretsClientImpl implements SecretsClient {
             return Mono.error(new IllegalArgumentException("Parameter secretName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            secretName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, profileName, secretName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets an existing Secret within a profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param secretName Name of the Secret under the profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -388,13 +316,11 @@ public final class SecretsClientImpl implements SecretsClient {
      * @return an existing Secret within a profile along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SecretInner>> getWithResponseAsync(
-        String resourceGroupName, String profileName, String secretName, Context context) {
+    private Mono<Response<SecretInner>> getWithResponseAsync(String resourceGroupName, String profileName,
+        String secretName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -407,31 +333,21 @@ public final class SecretsClientImpl implements SecretsClient {
             return Mono.error(new IllegalArgumentException("Parameter secretName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                secretName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, profileName, secretName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets an existing Secret within a profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param secretName Name of the Secret under the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -446,10 +362,10 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Gets an existing Secret within a profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param secretName Name of the Secret under the profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -458,17 +374,17 @@ public final class SecretsClientImpl implements SecretsClient {
      * @return an existing Secret within a profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SecretInner> getWithResponse(
-        String resourceGroupName, String profileName, String secretName, Context context) {
+    public Response<SecretInner> getWithResponse(String resourceGroupName, String profileName, String secretName,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, profileName, secretName, context).block();
     }
 
     /**
      * Gets an existing Secret within a profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param secretName Name of the Secret under the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -482,26 +398,24 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Creates a new Secret within the specified profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param secretName Name of the Secret under the profile.
      * @param secret The Secret properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly Secret name mapping to the any Secret or secret related information along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String profileName, String secretName, SecretInner secret) {
+    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String profileName,
+        String secretName, SecretInner secret) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -514,10 +428,8 @@ public final class SecretsClientImpl implements SecretsClient {
             return Mono.error(new IllegalArgumentException("Parameter secretName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (secret == null) {
             return Mono.error(new IllegalArgumentException("Parameter secret is required and cannot be null."));
@@ -526,28 +438,17 @@ public final class SecretsClientImpl implements SecretsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            secretName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            secret,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), resourceGroupName, profileName,
+                secretName, this.client.getSubscriptionId(), this.client.getApiVersion(), secret, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a new Secret within the specified profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param secretName Name of the Secret under the profile.
      * @param secret The Secret properties.
      * @param context The context to associate with this operation.
@@ -555,16 +456,14 @@ public final class SecretsClientImpl implements SecretsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly Secret name mapping to the any Secret or secret related information along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String profileName, String secretName, SecretInner secret, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String profileName,
+        String secretName, SecretInner secret, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -577,10 +476,8 @@ public final class SecretsClientImpl implements SecretsClient {
             return Mono.error(new IllegalArgumentException("Parameter secretName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (secret == null) {
             return Mono.error(new IllegalArgumentException("Parameter secret is required and cannot be null."));
@@ -589,50 +486,39 @@ public final class SecretsClientImpl implements SecretsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                secretName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                secret,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), resourceGroupName, profileName, secretName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), secret, accept, context);
     }
 
     /**
      * Creates a new Secret within the specified profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param secretName Name of the Secret under the profile.
      * @param secret The Secret properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of friendly Secret name mapping to the any Secret or secret related
-     *     information.
+     * information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<SecretInner>, SecretInner> beginCreateAsync(
-        String resourceGroupName, String profileName, String secretName, SecretInner secret) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, profileName, secretName, secret);
-        return this
-            .client
-            .<SecretInner, SecretInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SecretInner.class, SecretInner.class, this.client.getContext());
+    public PollerFlux<PollResult<SecretInner>, SecretInner> beginCreateAsync(String resourceGroupName,
+        String profileName, String secretName, SecretInner secret) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, profileName, secretName, secret);
+        return this.client.<SecretInner, SecretInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SecretInner.class, SecretInner.class, this.client.getContext());
     }
 
     /**
      * Creates a new Secret within the specified profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param secretName Name of the Secret under the profile.
      * @param secret The Secret properties.
      * @param context The context to associate with this operation.
@@ -640,46 +526,44 @@ public final class SecretsClientImpl implements SecretsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of friendly Secret name mapping to the any Secret or secret related
-     *     information.
+     * information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SecretInner>, SecretInner> beginCreateAsync(
-        String resourceGroupName, String profileName, String secretName, SecretInner secret, Context context) {
+    private PollerFlux<PollResult<SecretInner>, SecretInner> beginCreateAsync(String resourceGroupName,
+        String profileName, String secretName, SecretInner secret, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, profileName, secretName, secret, context);
-        return this
-            .client
-            .<SecretInner, SecretInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SecretInner.class, SecretInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, profileName, secretName, secret, context);
+        return this.client.<SecretInner, SecretInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SecretInner.class, SecretInner.class, context);
     }
 
     /**
      * Creates a new Secret within the specified profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param secretName Name of the Secret under the profile.
      * @param secret The Secret properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of friendly Secret name mapping to the any Secret or secret related
-     *     information.
+     * information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SecretInner>, SecretInner> beginCreate(
-        String resourceGroupName, String profileName, String secretName, SecretInner secret) {
+    public SyncPoller<PollResult<SecretInner>, SecretInner> beginCreate(String resourceGroupName, String profileName,
+        String secretName, SecretInner secret) {
         return this.beginCreateAsync(resourceGroupName, profileName, secretName, secret).getSyncPoller();
     }
 
     /**
      * Creates a new Secret within the specified profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param secretName Name of the Secret under the profile.
      * @param secret The Secret properties.
      * @param context The context to associate with this operation.
@@ -687,42 +571,41 @@ public final class SecretsClientImpl implements SecretsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of friendly Secret name mapping to the any Secret or secret related
-     *     information.
+     * information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SecretInner>, SecretInner> beginCreate(
-        String resourceGroupName, String profileName, String secretName, SecretInner secret, Context context) {
+    public SyncPoller<PollResult<SecretInner>, SecretInner> beginCreate(String resourceGroupName, String profileName,
+        String secretName, SecretInner secret, Context context) {
         return this.beginCreateAsync(resourceGroupName, profileName, secretName, secret, context).getSyncPoller();
     }
 
     /**
      * Creates a new Secret within the specified profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param secretName Name of the Secret under the profile.
      * @param secret The Secret properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly Secret name mapping to the any Secret or secret related information on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SecretInner> createAsync(
-        String resourceGroupName, String profileName, String secretName, SecretInner secret) {
-        return beginCreateAsync(resourceGroupName, profileName, secretName, secret)
-            .last()
+    public Mono<SecretInner> createAsync(String resourceGroupName, String profileName, String secretName,
+        SecretInner secret) {
+        return beginCreateAsync(resourceGroupName, profileName, secretName, secret).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a new Secret within the specified profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param secretName Name of the Secret under the profile.
      * @param secret The Secret properties.
      * @param context The context to associate with this operation.
@@ -730,22 +613,21 @@ public final class SecretsClientImpl implements SecretsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly Secret name mapping to the any Secret or secret related information on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SecretInner> createAsync(
-        String resourceGroupName, String profileName, String secretName, SecretInner secret, Context context) {
-        return beginCreateAsync(resourceGroupName, profileName, secretName, secret, context)
-            .last()
+    private Mono<SecretInner> createAsync(String resourceGroupName, String profileName, String secretName,
+        SecretInner secret, Context context) {
+        return beginCreateAsync(resourceGroupName, profileName, secretName, secret, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a new Secret within the specified profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param secretName Name of the Secret under the profile.
      * @param secret The Secret properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -760,10 +642,10 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Creates a new Secret within the specified profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param secretName Name of the Secret under the profile.
      * @param secret The Secret properties.
      * @param context The context to associate with this operation.
@@ -773,17 +655,17 @@ public final class SecretsClientImpl implements SecretsClient {
      * @return friendly Secret name mapping to the any Secret or secret related information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecretInner create(
-        String resourceGroupName, String profileName, String secretName, SecretInner secret, Context context) {
+    public SecretInner create(String resourceGroupName, String profileName, String secretName, SecretInner secret,
+        Context context) {
         return createAsync(resourceGroupName, profileName, secretName, secret, context).block();
     }
 
     /**
      * Deletes an existing Secret within profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param secretName Name of the Secret under the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -791,13 +673,11 @@ public final class SecretsClientImpl implements SecretsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String profileName, String secretName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String profileName,
+        String secretName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -810,34 +690,22 @@ public final class SecretsClientImpl implements SecretsClient {
             return Mono.error(new IllegalArgumentException("Parameter secretName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            secretName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, profileName,
+                secretName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes an existing Secret within profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param secretName Name of the Secret under the profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -846,13 +714,11 @@ public final class SecretsClientImpl implements SecretsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String profileName, String secretName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String profileName,
+        String secretName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -865,31 +731,21 @@ public final class SecretsClientImpl implements SecretsClient {
             return Mono.error(new IllegalArgumentException("Parameter secretName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                secretName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, profileName, secretName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes an existing Secret within profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param secretName Name of the Secret under the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -897,21 +753,19 @@ public final class SecretsClientImpl implements SecretsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String profileName, String secretName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String profileName,
+        String secretName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, profileName, secretName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes an existing Secret within profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param secretName Name of the Secret under the profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -920,22 +774,21 @@ public final class SecretsClientImpl implements SecretsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String profileName, String secretName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String profileName,
+        String secretName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, profileName, secretName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, profileName, secretName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes an existing Secret within profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param secretName Name of the Secret under the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -943,17 +796,17 @@ public final class SecretsClientImpl implements SecretsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String profileName, String secretName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName,
+        String secretName) {
         return this.beginDeleteAsync(resourceGroupName, profileName, secretName).getSyncPoller();
     }
 
     /**
      * Deletes an existing Secret within profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param secretName Name of the Secret under the profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -962,17 +815,17 @@ public final class SecretsClientImpl implements SecretsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String profileName, String secretName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName,
+        String secretName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, profileName, secretName, context).getSyncPoller();
     }
 
     /**
      * Deletes an existing Secret within profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param secretName Name of the Secret under the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -981,17 +834,16 @@ public final class SecretsClientImpl implements SecretsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String profileName, String secretName) {
-        return beginDeleteAsync(resourceGroupName, profileName, secretName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, profileName, secretName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an existing Secret within profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param secretName Name of the Secret under the profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1001,17 +853,16 @@ public final class SecretsClientImpl implements SecretsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String profileName, String secretName, Context context) {
-        return beginDeleteAsync(resourceGroupName, profileName, secretName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, profileName, secretName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an existing Secret within profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param secretName Name of the Secret under the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1024,10 +875,10 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Deletes an existing Secret within profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param secretName Name of the Secret under the profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1041,14 +892,15 @@ public final class SecretsClientImpl implements SecretsClient {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list secrets along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return result of the request to list secrets along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecretInner>> listByProfileNextSinglePageAsync(String nextLink) {
@@ -1056,37 +908,29 @@ public final class SecretsClientImpl implements SecretsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByProfileNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SecretInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<SecretInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list secrets along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return result of the request to list secrets along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecretInner>> listByProfileNextSinglePageAsync(String nextLink, Context context) {
@@ -1094,23 +938,13 @@ public final class SecretsClientImpl implements SecretsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByProfileNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByProfileNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

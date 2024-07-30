@@ -7,27 +7,43 @@ package com.azure.resourcemanager.mysqlflexibleserver.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** The operation status. */
+/**
+ * The operation status.
+ */
 public enum OperationStatus {
-    /** Enum value Pending. */
+    /**
+     * Enum value Pending.
+     */
     PENDING("Pending"),
 
-    /** Enum value InProgress. */
+    /**
+     * Enum value InProgress.
+     */
     IN_PROGRESS("InProgress"),
 
-    /** Enum value Succeeded. */
+    /**
+     * Enum value Succeeded.
+     */
     SUCCEEDED("Succeeded"),
 
-    /** Enum value Failed. */
+    /**
+     * Enum value Failed.
+     */
     FAILED("Failed"),
 
-    /** Enum value CancelInProgress. */
+    /**
+     * Enum value CancelInProgress.
+     */
     CANCEL_IN_PROGRESS("CancelInProgress"),
 
-    /** Enum value Canceled. */
+    /**
+     * Enum value Canceled.
+     */
     CANCELED("Canceled");
 
-    /** The actual serialized value for a OperationStatus instance. */
+    /**
+     * The actual serialized value for a OperationStatus instance.
+     */
     private final String value;
 
     OperationStatus(String value) {
@@ -36,7 +52,7 @@ public enum OperationStatus {
 
     /**
      * Parses a serialized value to a OperationStatus instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed OperationStatus object, or null if unable to parse.
      */
@@ -54,7 +70,9 @@ public enum OperationStatus {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

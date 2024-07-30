@@ -185,8 +185,8 @@ public final class LakeHouseLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -195,8 +195,8 @@ public final class LakeHouseLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the LakeHouseLinkedServiceTypeProperties object itself.
@@ -207,9 +207,9 @@ public final class LakeHouseLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the servicePrincipalCredentialType property: The service principal credential type to use in
-     * Server-To-Server authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate.
-     * Type: string (or Expression with resultType string).
+     * Get the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
+     * Expression with resultType string).
      * 
      * @return the servicePrincipalCredentialType value.
      */
@@ -218,9 +218,9 @@ public final class LakeHouseLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the servicePrincipalCredentialType property: The service principal credential type to use in
-     * Server-To-Server authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate.
-     * Type: string (or Expression with resultType string).
+     * Set the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
+     * Expression with resultType string).
      * 
      * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
      * @return the LakeHouseLinkedServiceTypeProperties object itself.

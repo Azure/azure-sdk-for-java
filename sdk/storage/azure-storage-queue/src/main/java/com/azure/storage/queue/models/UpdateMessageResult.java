@@ -27,6 +27,8 @@ public final class UpdateMessageResult {
     }
 
     /**
+     * Get the unique identifier used to verify that the operation is allowed on the message.
+     *
      * @return the unique identifier used to verify that the operation is allowed on the message
      */
     public String getPopReceipt() {
@@ -34,6 +36,8 @@ public final class UpdateMessageResult {
     }
 
     /**
+     * Get the next time the message will be visible to other operations in the queue.
+     *
      * @return the next time the message will be visible to other operations in the queue
      */
     public OffsetDateTime getTimeNextVisible() {

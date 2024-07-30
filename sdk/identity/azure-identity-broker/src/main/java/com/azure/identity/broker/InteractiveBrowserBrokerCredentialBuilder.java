@@ -62,15 +62,13 @@ public class InteractiveBrowserBrokerCredentialBuilder extends InteractiveBrowse
     }
 
     /**
-     * Enables automatically using the signed-in user's account for brokered authentication instead of
-     * of prompting the user with a login dialog.
+     * Enables automatically using the default broker account for authentication instead
+     * of prompting the user with an account picker.
      *
-     * @param useOperatingSystemAccount Boolean value to determine if the operating system account should be used.
-     * @return An updated instance of this builder with useOperatingSystemAccount set.
+     * @return An updated instance of this builder with useDefaultBrokerAccount set.
      */
-    public InteractiveBrowserCredentialBuilder useOperatingSystemAccount(boolean useOperatingSystemAccount) {
-        CredentialBuilderBaseHelper.getClientOptions(this).
-            setUseOperatingSystemAccount(useOperatingSystemAccount);
+    public InteractiveBrowserCredentialBuilder useDefaultBrokerAccount() {
+        CredentialBuilderBaseHelper.getClientOptions(this).setUseDefaultBrokerAccount(true);
         return this;
     }
 

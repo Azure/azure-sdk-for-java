@@ -26,8 +26,7 @@ public final class SiteSourceControlProperties {
     private String branch;
 
     /*
-     * <code>true</code> to limit to manual integration; <code>false</code> to enable continuous integration (which
-     * configures webhooks into online repos like GitHub).
+     * <code>true</code> to limit to manual integration; <code>false</code> to enable continuous integration (which configures webhooks into online repos like GitHub).
      */
     @JsonProperty(value = "isManualIntegration")
     private Boolean isManualIntegration;
@@ -104,8 +103,8 @@ public final class SiteSourceControlProperties {
 
     /**
      * Get the isManualIntegration property: &lt;code&gt;true&lt;/code&gt; to limit to manual integration;
-     * &lt;code&gt;false&lt;/code&gt; to enable continuous integration (which configures webhooks into online repos
-     * like GitHub).
+     * &lt;code&gt;false&lt;/code&gt; to enable continuous integration (which configures webhooks into online repos like
+     * GitHub).
      * 
      * @return the isManualIntegration value.
      */
@@ -115,8 +114,8 @@ public final class SiteSourceControlProperties {
 
     /**
      * Set the isManualIntegration property: &lt;code&gt;true&lt;/code&gt; to limit to manual integration;
-     * &lt;code&gt;false&lt;/code&gt; to enable continuous integration (which configures webhooks into online repos
-     * like GitHub).
+     * &lt;code&gt;false&lt;/code&gt; to enable continuous integration (which configures webhooks into online repos like
+     * GitHub).
      * 
      * @param isManualIntegration the isManualIntegration value to set.
      * @return the SiteSourceControlProperties object itself.

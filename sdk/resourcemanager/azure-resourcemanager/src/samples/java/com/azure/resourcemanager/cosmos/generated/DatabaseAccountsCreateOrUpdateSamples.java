@@ -33,6 +33,7 @@ import com.azure.resourcemanager.cosmos.models.RestoreMode;
 import com.azure.resourcemanager.cosmos.models.RestoreParameters;
 import com.azure.resourcemanager.cosmos.models.ServerVersion;
 import com.azure.resourcemanager.cosmos.models.VirtualNetworkRule;
+
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -43,27 +44,34 @@ import java.util.Map;
  */
 public final class DatabaseAccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
-     * CosmosDBRestoreDatabaseAccountCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBRestoreDatabaseAccountCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBRestoreDatabaseAccountCreateUpdate.json.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
         cosmosDBRestoreDatabaseAccountCreateUpdateJson(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getDatabaseAccounts().createOrUpdate("rg1", "ddb1",
-            new DatabaseAccountCreateUpdateParameters().withLocation("westus").withTags(mapOf())
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getDatabaseAccounts()
+            .createOrUpdate("rg1", "ddb1", new DatabaseAccountCreateUpdateParameters().withLocation("westus")
+                .withTags(mapOf())
                 .withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB)
                 .withConsistencyPolicy(
                     new ConsistencyPolicy().withDefaultConsistencyLevel(DefaultConsistencyLevel.BOUNDED_STALENESS)
-                        .withMaxStalenessPrefix(200L).withMaxIntervalInSeconds(10))
-                .withLocations(Arrays.asList(new Location().withLocationName("southcentralus").withFailoverPriority(0)
+                        .withMaxStalenessPrefix(200L)
+                        .withMaxIntervalInSeconds(10))
+                .withLocations(Arrays.asList(new Location().withLocationName("southcentralus")
+                    .withFailoverPriority(0)
                     .withIsZoneRedundant(false)))
-                .withKeyVaultKeyUri("fakeTokenPlaceholder").withEnableFreeTier(false)
+                .withKeyVaultKeyUri("fakeTokenPlaceholder")
+                .withEnableFreeTier(false)
                 .withApiProperties(new ApiProperties().withServerVersion(ServerVersion.THREE_TWO))
-                .withEnableAnalyticalStorage(true).withCreateMode(CreateMode.RESTORE)
+                .withEnableAnalyticalStorage(true)
+                .withCreateMode(CreateMode.RESTORE)
                 .withBackupPolicy(new ContinuousModeBackupPolicy().withContinuousModeProperties(
                     new ContinuousModeProperties().withTier(ContinuousTier.CONTINUOUS30DAYS)))
                 .withRestoreParameters(new RestoreParameters().withRestoreSource(
@@ -75,22 +83,24 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
                             .withCollectionNames(Arrays.asList("collection1", "collection2")),
                         new DatabaseRestoreResource().withDatabaseName("db2")
                             .withCollectionNames(Arrays.asList("collection3", "collection4")))))
-                .withMinimalTlsVersion(MinimalTlsVersion.TLS),
-            com.azure.core.util.Context.NONE);
+                .withMinimalTlsVersion(MinimalTlsVersion.TLS), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
-     * CosmosDBDatabaseAccountCreateMax.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDatabaseAccountCreateMax.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountCreateMax.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBDatabaseAccountCreateMax(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getDatabaseAccounts().createOrUpdate("rg1", "ddb1",
-            new DatabaseAccountCreateUpdateParameters().withLocation("westus").withTags(mapOf())
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getDatabaseAccounts()
+            .createOrUpdate("rg1", "ddb1", new DatabaseAccountCreateUpdateParameters().withLocation("westus")
+                .withTags(mapOf())
                 .withKind(DatabaseAccountKind.MONGO_DB)
                 .withIdentity(new ManagedServiceIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
                     .withUserAssignedIdentities(mapOf(
@@ -98,9 +108,11 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
                         new ManagedServiceIdentityUserAssignedIdentities())))
                 .withConsistencyPolicy(
                     new ConsistencyPolicy().withDefaultConsistencyLevel(DefaultConsistencyLevel.BOUNDED_STALENESS)
-                        .withMaxStalenessPrefix(200L).withMaxIntervalInSeconds(10))
+                        .withMaxStalenessPrefix(200L)
+                        .withMaxIntervalInSeconds(10))
                 .withLocations(Arrays.asList(
-                    new Location().withLocationName("southcentralus").withFailoverPriority(0)
+                    new Location().withLocationName("southcentralus")
+                        .withFailoverPriority(0)
                         .withIsZoneRedundant(false),
                     new Location().withLocationName("eastus").withFailoverPriority(1).withIsZoneRedundant(false)))
                 .withIpRules(Arrays.asList(new IpAddressOrRange().withIpAddressOrRange("23.43.230.120"),
@@ -109,40 +121,48 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
                 .withVirtualNetworkRules(Arrays.asList(new VirtualNetworkRule().withId(
                     "/subscriptions/subId/resourceGroups/rg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1")
                     .withIgnoreMissingVNetServiceEndpoint(false)))
-                .withKeyVaultKeyUri("fakeTokenPlaceholder").withDefaultIdentity("FirstPartyIdentity")
-                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED).withEnableFreeTier(false)
+                .withKeyVaultKeyUri("fakeTokenPlaceholder")
+                .withDefaultIdentity("FirstPartyIdentity")
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withEnableFreeTier(false)
                 .withApiProperties(new ApiProperties().withServerVersion(ServerVersion.THREE_TWO))
                 .withEnableAnalyticalStorage(true)
                 .withAnalyticalStorageConfiguration(
                     new AnalyticalStorageConfiguration().withSchemaType(AnalyticalStorageSchemaType.WELL_DEFINED))
                 .withCreateMode(CreateMode.DEFAULT)
-                .withBackupPolicy(new PeriodicModeBackupPolicy().withPeriodicModeProperties(
-                    new PeriodicModeProperties().withBackupIntervalInMinutes(240).withBackupRetentionIntervalInHours(8)
+                .withBackupPolicy(new PeriodicModeBackupPolicy()
+                    .withPeriodicModeProperties(new PeriodicModeProperties().withBackupIntervalInMinutes(240)
+                        .withBackupRetentionIntervalInHours(8)
                         .withBackupStorageRedundancy(BackupStorageRedundancy.GEO)))
                 .withCors(Arrays.asList(new CorsPolicy().withAllowedOrigins("https://test")))
                 .withNetworkAclBypass(NetworkAclBypass.AZURE_SERVICES)
                 .withNetworkAclBypassResourceIds(Arrays.asList(
                     "/subscriptions/subId/resourcegroups/rgName/providers/Microsoft.Synapse/workspaces/workspaceName"))
                 .withCapacity(new Capacity().withTotalThroughputLimit(2000))
-                .withMinimalTlsVersion(MinimalTlsVersion.TLS12).withEnableBurstCapacity(true),
-            com.azure.core.util.Context.NONE);
+                .withMinimalTlsVersion(MinimalTlsVersion.TLS12)
+                .withEnableBurstCapacity(true), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
-     * CosmosDBDatabaseAccountCreateMin.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDatabaseAccountCreateMin.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountCreateMin.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBDatabaseAccountCreateMin(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getDatabaseAccounts().createOrUpdate("rg1", "ddb1",
-            new DatabaseAccountCreateUpdateParameters().withLocation("westus").withLocations(Arrays.asList(
-                new Location().withLocationName("southcentralus").withFailoverPriority(0).withIsZoneRedundant(false)))
-                .withCreateMode(CreateMode.DEFAULT),
-            com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getDatabaseAccounts()
+            .createOrUpdate("rg1", "ddb1",
+                new DatabaseAccountCreateUpdateParameters().withLocation("westus")
+                    .withLocations(Arrays.asList(new Location().withLocationName("southcentralus")
+                        .withFailoverPriority(0)
+                        .withIsZoneRedundant(false)))
+                    .withCreateMode(CreateMode.DEFAULT),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

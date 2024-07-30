@@ -10,8 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Result of the request to list Network operations. It contains a list of operations and a URL link to get the next
- * set of results.
+ * Result of the request to list Network operations. It contains a list of operations and a URL link to get the next set
+ * of results.
  */
 @Fluent
 public final class OperationListResult {

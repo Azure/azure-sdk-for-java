@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -48,8 +48,8 @@ public final class PipelineExternalComputeScaleProperties {
     }
 
     /**
-     * Get the timeToLive property: Time to live (in minutes) setting of integration runtime which will execute
-     * pipeline and external activity.
+     * Get the timeToLive property: Time to live (in minutes) setting of integration runtime which will execute pipeline
+     * and external activity.
      * 
      * @return the timeToLive value.
      */
@@ -58,8 +58,8 @@ public final class PipelineExternalComputeScaleProperties {
     }
 
     /**
-     * Set the timeToLive property: Time to live (in minutes) setting of integration runtime which will execute
-     * pipeline and external activity.
+     * Set the timeToLive property: Time to live (in minutes) setting of integration runtime which will execute pipeline
+     * and external activity.
      * 
      * @param timeToLive the timeToLive value to set.
      * @return the PipelineExternalComputeScaleProperties object itself.
@@ -92,8 +92,8 @@ public final class PipelineExternalComputeScaleProperties {
     }
 
     /**
-     * Get the numberOfExternalNodes property: Number of the the external nodes, which should be greater than 0 and
-     * less than 11.
+     * Get the numberOfExternalNodes property: Number of the the external nodes, which should be greater than 0 and less
+     * than 11.
      * 
      * @return the numberOfExternalNodes value.
      */
@@ -102,8 +102,8 @@ public final class PipelineExternalComputeScaleProperties {
     }
 
     /**
-     * Set the numberOfExternalNodes property: Number of the the external nodes, which should be greater than 0 and
-     * less than 11.
+     * Set the numberOfExternalNodes property: Number of the the external nodes, which should be greater than 0 and less
+     * than 11.
      * 
      * @param numberOfExternalNodes the numberOfExternalNodes value to set.
      * @return the PipelineExternalComputeScaleProperties object itself.
@@ -137,7 +137,7 @@ public final class PipelineExternalComputeScaleProperties {
     @JsonAnySetter
     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }

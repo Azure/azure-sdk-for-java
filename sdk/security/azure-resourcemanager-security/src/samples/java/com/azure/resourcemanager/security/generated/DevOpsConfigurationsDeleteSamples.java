@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class DevOpsConfigurationsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2023-09-01-preview/examples/
-     * SecurityConnectorsDevOps/DeleteDevOpsConfigurations_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/DeleteDevOpsConfigurations_example.json
      */
     /**
      * Sample code: Delete_DevOpsConfigurations.

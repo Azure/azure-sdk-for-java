@@ -10,11 +10,9 @@ import com.azure.resourcemanager.devcenter.models.ListUsagesResult;
 public final class ListUsagesResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ListUsagesResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"currentValue\":5942973397791682441,\"limit\":5082029566266572596,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"gmhrskdsnfdsdoak\",\"value\":\"dlmkkzevdl\"},\"id\":\"wpusdsttwvogv\"},{\"currentValue\":6615521098570079164,\"limit\":7258892197559233112,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"oakufgm\",\"value\":\"rwr\"},\"id\":\"rtwaenuuzko\"}],\"nextLink\":\"minrfdw\"}")
-                .toObject(ListUsagesResult.class);
+        ListUsagesResult model = BinaryData.fromString(
+            "{\"value\":[{\"currentValue\":3315527665591795528,\"limit\":1707025009474935054,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"tiewdj\",\"value\":\"bquwrbehw\"},\"id\":\"o\"},{\"currentValue\":4445959478393833005,\"limit\":2445477372246079945,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"vvhmxtdrj\",\"value\":\"tac\"},\"id\":\"bj\"}],\"nextLink\":\"wzcjznmwcpmgua\"}")
+            .toObject(ListUsagesResult.class);
     }
 
     @org.junit.jupiter.api.Test

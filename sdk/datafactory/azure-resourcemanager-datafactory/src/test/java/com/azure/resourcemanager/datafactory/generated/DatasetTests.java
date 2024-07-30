@@ -29,7 +29,8 @@ public final class DatasetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Dataset model = new Dataset().withDescription("mjsjqb").withStructure("datahyxxrwlycoduhpk")
+        Dataset model = new Dataset().withDescription("mjsjqb")
+            .withStructure("datahyxxrwlycoduhpk")
             .withSchema("datagymare")
             .withLinkedServiceName(new LinkedServiceReference().withReferenceName("n")
                 .withParameters(mapOf("dgssofwqmzqal", "dataqugjhkycube", "cqqudf", "datarmnjijpx", "ayffim",
@@ -37,7 +38,8 @@ public final class DatasetTests {
             .withParameters(mapOf("ewzsyyceuzsoib",
                 new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datanw")))
             .withAnnotations(Arrays.asList("datapfrxtrthzvay", "datadwkqbrq", "databpaxhexiilivpdt", "datairqtdqoa"))
-            .withFolder(new DatasetFolder().withName("uzf")).withAdditionalProperties(mapOf("type", "Dataset"));
+            .withFolder(new DatasetFolder().withName("uzf"))
+            .withAdditionalProperties(mapOf("type", "Dataset"));
         model = BinaryData.fromObject(model).toObject(Dataset.class);
         Assertions.assertEquals("mjsjqb", model.description());
         Assertions.assertEquals("n", model.linkedServiceName().referenceName());

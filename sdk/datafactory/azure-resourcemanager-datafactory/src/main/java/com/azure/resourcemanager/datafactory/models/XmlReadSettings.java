@@ -6,16 +6,24 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Xml read settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = XmlReadSettings.class, visible = true)
 @JsonTypeName("XmlReadSettings")
 @Fluent
 public final class XmlReadSettings extends FormatReadSettings {
+    /*
+     * The read setting type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "XmlReadSettings";
+
     /*
      * Compression settings.
      */
@@ -44,9 +52,9 @@ public final class XmlReadSettings extends FormatReadSettings {
     private Object namespaces;
 
     /*
-     * Namespace uri to prefix mappings to override the prefixes in column names when namespace is enabled, if no
-     * prefix is defined for a namespace uri, the prefix of xml element/attribute name in the xml data file will be
-     * used. Example: "{"http://www.example.com/xml":"prefix"}" Type: object (or Expression with resultType object).
+     * Namespace uri to prefix mappings to override the prefixes in column names when namespace is enabled, if no prefix
+     * is defined for a namespace uri, the prefix of xml element/attribute name in the xml data file will be used.
+     * Example: "{"http://www.example.com/xml":"prefix"}" Type: object (or Expression with resultType object).
      */
     @JsonProperty(value = "namespacePrefixes")
     private Object namespacePrefixes;
@@ -55,6 +63,16 @@ public final class XmlReadSettings extends FormatReadSettings {
      * Creates an instance of XmlReadSettings class.
      */
     public XmlReadSettings() {
+    }
+
+    /**
+     * Get the type property: The read setting type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -122,8 +140,8 @@ public final class XmlReadSettings extends FormatReadSettings {
     }
 
     /**
-     * Get the namespaces property: Indicates whether namespace is enabled when reading the xml files. Type: boolean
-     * (or Expression with resultType boolean).
+     * Get the namespaces property: Indicates whether namespace is enabled when reading the xml files. Type: boolean (or
+     * Expression with resultType boolean).
      * 
      * @return the namespaces value.
      */
@@ -132,8 +150,8 @@ public final class XmlReadSettings extends FormatReadSettings {
     }
 
     /**
-     * Set the namespaces property: Indicates whether namespace is enabled when reading the xml files. Type: boolean
-     * (or Expression with resultType boolean).
+     * Set the namespaces property: Indicates whether namespace is enabled when reading the xml files. Type: boolean (or
+     * Expression with resultType boolean).
      * 
      * @param namespaces the namespaces value to set.
      * @return the XmlReadSettings object itself.
@@ -146,8 +164,8 @@ public final class XmlReadSettings extends FormatReadSettings {
     /**
      * Get the namespacePrefixes property: Namespace uri to prefix mappings to override the prefixes in column names
      * when namespace is enabled, if no prefix is defined for a namespace uri, the prefix of xml element/attribute name
-     * in the xml data file will be used. Example: "{"http://www.example.com/xml":"prefix"}" Type: object (or
-     * Expression with resultType object).
+     * in the xml data file will be used. Example: "{"http://www.example.com/xml":"prefix"}" Type: object (or Expression
+     * with resultType object).
      * 
      * @return the namespacePrefixes value.
      */
@@ -158,8 +176,8 @@ public final class XmlReadSettings extends FormatReadSettings {
     /**
      * Set the namespacePrefixes property: Namespace uri to prefix mappings to override the prefixes in column names
      * when namespace is enabled, if no prefix is defined for a namespace uri, the prefix of xml element/attribute name
-     * in the xml data file will be used. Example: "{"http://www.example.com/xml":"prefix"}" Type: object (or
-     * Expression with resultType object).
+     * in the xml data file will be used. Example: "{"http://www.example.com/xml":"prefix"}" Type: object (or Expression
+     * with resultType object).
      * 
      * @param namespacePrefixes the namespacePrefixes value to set.
      * @return the XmlReadSettings object itself.

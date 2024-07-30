@@ -7,7 +7,9 @@ package com.azure.resourcemanager.support.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Support engineer information. */
+/**
+ * Support engineer information.
+ */
 @Immutable
 public final class SupportEngineer {
     /*
@@ -16,13 +18,15 @@ public final class SupportEngineer {
     @JsonProperty(value = "emailAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String emailAddress;
 
-    /** Creates an instance of SupportEngineer class. */
+    /**
+     * Creates an instance of SupportEngineer class.
+     */
     public SupportEngineer() {
     }
 
     /**
      * Get the emailAddress property: Email address of the Azure Support engineer assigned to the support ticket.
-     *
+     * 
      * @return the emailAddress value.
      */
     public String emailAddress() {
@@ -31,7 +35,7 @@ public final class SupportEngineer {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -160,7 +160,7 @@ public final class DataFlowReference {
     @JsonAnySetter
     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }
@@ -172,12 +172,13 @@ public final class DataFlowReference {
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property type in model DataFlowReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model DataFlowReference"));
         }
         if (referenceName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property referenceName in model DataFlowReference"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property referenceName in model DataFlowReference"));
         }
     }
 

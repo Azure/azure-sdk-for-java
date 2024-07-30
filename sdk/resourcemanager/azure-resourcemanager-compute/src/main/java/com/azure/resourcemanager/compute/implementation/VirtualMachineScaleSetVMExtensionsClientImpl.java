@@ -169,7 +169,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -224,7 +224,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId,
@@ -298,8 +298,10 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
     public SyncPoller<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner>
         beginCreateOrUpdate(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName,
             VirtualMachineScaleSetVMExtensionInner extensionParameters) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName,
-            extensionParameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName,
+                extensionParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -320,8 +322,10 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
     public SyncPoller<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner>
         beginCreateOrUpdate(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName,
             VirtualMachineScaleSetVMExtensionInner extensionParameters, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName,
-            extensionParameters, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName,
+                extensionParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -453,7 +457,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -508,7 +512,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, vmExtensionName,
@@ -605,8 +609,10 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
     public SyncPoller<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner>
         beginUpdate(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName,
             VirtualMachineScaleSetVMExtensionUpdate extensionParameters, Context context) {
-        return this.beginUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName,
-            extensionParameters, context).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -626,7 +632,8 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
     public Mono<VirtualMachineScaleSetVMExtensionInner> updateAsync(String resourceGroupName, String vmScaleSetName,
         String instanceId, String vmExtensionName, VirtualMachineScaleSetVMExtensionUpdate extensionParameters) {
         return beginUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -729,7 +736,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -775,7 +782,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, vmExtensionName,
@@ -975,7 +982,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -1022,7 +1029,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, vmExtensionName,
@@ -1124,7 +1131,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -1167,7 +1174,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, expand,

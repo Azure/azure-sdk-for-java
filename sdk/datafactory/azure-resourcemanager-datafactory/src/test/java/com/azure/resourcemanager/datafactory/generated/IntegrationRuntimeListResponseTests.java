@@ -26,20 +26,24 @@ public final class IntegrationRuntimeListResponseTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeListResponse model = new IntegrationRuntimeListResponse()
-            .withValue(Arrays.asList(
-                new IntegrationRuntimeResourceInner().withId("sncghkjeszz")
-                    .withProperties(new IntegrationRuntime().withDescription("hkaetcktvfc")
-                        .withAdditionalProperties(mapOf("type", "IntegrationRuntime"))),
-                new IntegrationRuntimeResourceInner().withId("ispnqzahmgkbrp")
-                    .withProperties(new IntegrationRuntime().withDescription("ijhtxf")
-                        .withAdditionalProperties(mapOf("type", "IntegrationRuntime"))),
-                new IntegrationRuntimeResourceInner().withId("k")
-                    .withProperties(new IntegrationRuntime().withDescription("dhibnuq")
-                        .withAdditionalProperties(mapOf("type", "IntegrationRuntime"))),
-                new IntegrationRuntimeResourceInner().withId("eyueaxibxujwb").withProperties(new IntegrationRuntime()
-                    .withDescription("henbtkcxywnytn").withAdditionalProperties(mapOf("type", "IntegrationRuntime")))))
-            .withNextLink("walm");
+        IntegrationRuntimeListResponse model
+            = new IntegrationRuntimeListResponse()
+                .withValue(
+                    Arrays
+                        .asList(
+                            new IntegrationRuntimeResourceInner().withId("sncghkjeszz")
+                                .withProperties(new IntegrationRuntime().withDescription("hkaetcktvfc")
+                                    .withAdditionalProperties(mapOf("type", "IntegrationRuntime"))),
+                            new IntegrationRuntimeResourceInner().withId("ispnqzahmgkbrp")
+                                .withProperties(new IntegrationRuntime().withDescription("ijhtxf")
+                                    .withAdditionalProperties(mapOf("type", "IntegrationRuntime"))),
+                            new IntegrationRuntimeResourceInner().withId("k")
+                                .withProperties(new IntegrationRuntime().withDescription("dhibnuq")
+                                    .withAdditionalProperties(mapOf("type", "IntegrationRuntime"))),
+                            new IntegrationRuntimeResourceInner().withId("eyueaxibxujwb")
+                                .withProperties(new IntegrationRuntime().withDescription("henbtkcxywnytn")
+                                    .withAdditionalProperties(mapOf("type", "IntegrationRuntime")))))
+                .withNextLink("walm");
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeListResponse.class);
         Assertions.assertEquals("sncghkjeszz", model.value().get(0).id());
         Assertions.assertEquals("hkaetcktvfc", model.value().get(0).properties().description());

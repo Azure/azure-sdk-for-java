@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Reference to an attached data network resource. */
+/**
+ * Reference to an attached data network resource.
+ */
 @Fluent
 public final class AttachedDataNetworkResourceId {
     /*
@@ -17,13 +19,15 @@ public final class AttachedDataNetworkResourceId {
     @JsonProperty(value = "id", required = true)
     private String id;
 
-    /** Creates an instance of AttachedDataNetworkResourceId class. */
+    /**
+     * Creates an instance of AttachedDataNetworkResourceId class.
+     */
     public AttachedDataNetworkResourceId() {
     }
 
     /**
      * Get the id property: Attached data network resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -32,7 +36,7 @@ public final class AttachedDataNetworkResourceId {
 
     /**
      * Set the id property: Attached data network resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the AttachedDataNetworkResourceId object itself.
      */
@@ -43,15 +47,14 @@ public final class AttachedDataNetworkResourceId {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property id in model AttachedDataNetworkResourceId"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property id in model AttachedDataNetworkResourceId"));
         }
     }
 

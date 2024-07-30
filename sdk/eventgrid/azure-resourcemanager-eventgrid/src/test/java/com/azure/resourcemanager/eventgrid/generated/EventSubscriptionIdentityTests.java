@@ -13,18 +13,19 @@ public final class EventSubscriptionIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EventSubscriptionIdentity model
-            = BinaryData.fromString("{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"wpfhpagmhrskd\"}")
+            = BinaryData.fromString("{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"fdsd\"}")
                 .toObject(EventSubscriptionIdentity.class);
-        Assertions.assertEquals(EventSubscriptionIdentityType.SYSTEM_ASSIGNED, model.type());
-        Assertions.assertEquals("wpfhpagmhrskd", model.userAssignedIdentity());
+        Assertions.assertEquals(EventSubscriptionIdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals("fdsd", model.userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventSubscriptionIdentity model = new EventSubscriptionIdentity()
-            .withType(EventSubscriptionIdentityType.SYSTEM_ASSIGNED).withUserAssignedIdentity("wpfhpagmhrskd");
+        EventSubscriptionIdentity model
+            = new EventSubscriptionIdentity().withType(EventSubscriptionIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentity("fdsd");
         model = BinaryData.fromObject(model).toObject(EventSubscriptionIdentity.class);
-        Assertions.assertEquals(EventSubscriptionIdentityType.SYSTEM_ASSIGNED, model.type());
-        Assertions.assertEquals("wpfhpagmhrskd", model.userAssignedIdentity());
+        Assertions.assertEquals(EventSubscriptionIdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals("fdsd", model.userAssignedIdentity());
     }
 }

@@ -14,26 +14,27 @@ public final class JitNetworkAccessPortRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JitNetworkAccessPortRule model = BinaryData.fromString(
-            "{\"number\":1474020309,\"protocol\":\"TCP\",\"allowedSourceAddressPrefix\":\"iwvjaqupbyyn\",\"allowedSourceAddressPrefixes\":[\"pajbmgeumexmjbx\",\"bccwkqmtxapeqi\",\"crpilgftrq\"],\"maxRequestAccessDuration\":\"ejdaahuqimld\"}")
+            "{\"number\":1105000832,\"protocol\":\"*\",\"allowedSourceAddressPrefix\":\"u\",\"allowedSourceAddressPrefixes\":[\"mdwmf\"],\"maxRequestAccessDuration\":\"hpycvjqdvdwkq\"}")
             .toObject(JitNetworkAccessPortRule.class);
-        Assertions.assertEquals(1474020309, model.number());
-        Assertions.assertEquals(Protocol.TCP, model.protocol());
-        Assertions.assertEquals("iwvjaqupbyyn", model.allowedSourceAddressPrefix());
-        Assertions.assertEquals("pajbmgeumexmjbx", model.allowedSourceAddressPrefixes().get(0));
-        Assertions.assertEquals("ejdaahuqimld", model.maxRequestAccessDuration());
+        Assertions.assertEquals(1105000832, model.number());
+        Assertions.assertEquals(Protocol.ASTERISK, model.protocol());
+        Assertions.assertEquals("u", model.allowedSourceAddressPrefix());
+        Assertions.assertEquals("mdwmf", model.allowedSourceAddressPrefixes().get(0));
+        Assertions.assertEquals("hpycvjqdvdwkq", model.maxRequestAccessDuration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JitNetworkAccessPortRule model = new JitNetworkAccessPortRule().withNumber(1474020309)
-            .withProtocol(Protocol.TCP).withAllowedSourceAddressPrefix("iwvjaqupbyyn")
-            .withAllowedSourceAddressPrefixes(Arrays.asList("pajbmgeumexmjbx", "bccwkqmtxapeqi", "crpilgftrq"))
-            .withMaxRequestAccessDuration("ejdaahuqimld");
+        JitNetworkAccessPortRule model = new JitNetworkAccessPortRule().withNumber(1105000832)
+            .withProtocol(Protocol.ASTERISK)
+            .withAllowedSourceAddressPrefix("u")
+            .withAllowedSourceAddressPrefixes(Arrays.asList("mdwmf"))
+            .withMaxRequestAccessDuration("hpycvjqdvdwkq");
         model = BinaryData.fromObject(model).toObject(JitNetworkAccessPortRule.class);
-        Assertions.assertEquals(1474020309, model.number());
-        Assertions.assertEquals(Protocol.TCP, model.protocol());
-        Assertions.assertEquals("iwvjaqupbyyn", model.allowedSourceAddressPrefix());
-        Assertions.assertEquals("pajbmgeumexmjbx", model.allowedSourceAddressPrefixes().get(0));
-        Assertions.assertEquals("ejdaahuqimld", model.maxRequestAccessDuration());
+        Assertions.assertEquals(1105000832, model.number());
+        Assertions.assertEquals(Protocol.ASTERISK, model.protocol());
+        Assertions.assertEquals("u", model.allowedSourceAddressPrefix());
+        Assertions.assertEquals("mdwmf", model.allowedSourceAddressPrefixes().get(0));
+        Assertions.assertEquals("hpycvjqdvdwkq", model.maxRequestAccessDuration());
     }
 }

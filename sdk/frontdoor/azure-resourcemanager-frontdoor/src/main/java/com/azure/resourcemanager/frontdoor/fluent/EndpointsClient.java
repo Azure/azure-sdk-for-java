@@ -11,33 +11,35 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.frontdoor.models.PurgeParameters;
 
-/** An instance of this class provides access to all the operations defined in EndpointsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in EndpointsClient.
+ */
 public interface EndpointsClient {
     /**
      * Removes a content from Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param contentFilePaths The path to the content to be purged. Path can be a full URL, e.g. '/pictures/city.png'
-     *     which removes a single file, or a directory with a wildcard, e.g. '/pictures/*' which removes all folders and
-     *     files in the directory.
+     * which removes a single file, or a directory with a wildcard, e.g. '/pictures/*' which removes all folders and
+     * files in the directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginPurgeContent(
-        String resourceGroupName, String frontDoorName, PurgeParameters contentFilePaths);
+    SyncPoller<PollResult<Void>, Void> beginPurgeContent(String resourceGroupName, String frontDoorName,
+        PurgeParameters contentFilePaths);
 
     /**
      * Removes a content from Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param contentFilePaths The path to the content to be purged. Path can be a full URL, e.g. '/pictures/city.png'
-     *     which removes a single file, or a directory with a wildcard, e.g. '/pictures/*' which removes all folders and
-     *     files in the directory.
+     * which removes a single file, or a directory with a wildcard, e.g. '/pictures/*' which removes all folders and
+     * files in the directory.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -45,17 +47,17 @@ public interface EndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginPurgeContent(
-        String resourceGroupName, String frontDoorName, PurgeParameters contentFilePaths, Context context);
+    SyncPoller<PollResult<Void>, Void> beginPurgeContent(String resourceGroupName, String frontDoorName,
+        PurgeParameters contentFilePaths, Context context);
 
     /**
      * Removes a content from Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param contentFilePaths The path to the content to be purged. Path can be a full URL, e.g. '/pictures/city.png'
-     *     which removes a single file, or a directory with a wildcard, e.g. '/pictures/*' which removes all folders and
-     *     files in the directory.
+     * which removes a single file, or a directory with a wildcard, e.g. '/pictures/*' which removes all folders and
+     * files in the directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -65,18 +67,18 @@ public interface EndpointsClient {
 
     /**
      * Removes a content from Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param contentFilePaths The path to the content to be purged. Path can be a full URL, e.g. '/pictures/city.png'
-     *     which removes a single file, or a directory with a wildcard, e.g. '/pictures/*' which removes all folders and
-     *     files in the directory.
+     * which removes a single file, or a directory with a wildcard, e.g. '/pictures/*' which removes all folders and
+     * files in the directory.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void purgeContent(
-        String resourceGroupName, String frontDoorName, PurgeParameters contentFilePaths, Context context);
+    void purgeContent(String resourceGroupName, String frontDoorName, PurgeParameters contentFilePaths,
+        Context context);
 }

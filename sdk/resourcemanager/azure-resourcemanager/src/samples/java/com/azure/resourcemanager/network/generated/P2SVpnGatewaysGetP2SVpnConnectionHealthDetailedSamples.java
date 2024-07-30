@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class P2SVpnGatewaysGetP2SVpnConnectionHealthDetailedSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * P2SVpnGatewayGetConnectionHealthDetailed.json
      */
     /**
@@ -21,11 +21,14 @@ public final class P2SVpnGatewaysGetP2SVpnConnectionHealthDetailedSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void p2SVpnGatewayGetConnectionHealthDetailed(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getP2SVpnGateways().getP2SVpnConnectionHealthDetailed(
-            "p2s-vpn-gateway-test", "p2svpngateway",
-            new P2SVpnConnectionHealthRequest().withVpnUserNamesFilter(Arrays.asList("vpnUser1", "vpnUser2"))
-                .withOutputBlobSasUrl(
-                    "https://blobcortextesturl.blob.core.windows.net/folderforconfig/p2sconnectionhealths?sp=rw&se=2018-01-10T03%3A42%3A04Z&sv=2017-04-17&sig=WvXrT5bDmDFfgHs%2Brz%2BjAu123eRCNE9BO0eQYcPDT7pY%3D&sr=b"),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getP2SVpnGateways()
+            .getP2SVpnConnectionHealthDetailed("p2s-vpn-gateway-test", "p2svpngateway",
+                new P2SVpnConnectionHealthRequest().withVpnUserNamesFilter(Arrays.asList("vpnUser1", "vpnUser2"))
+                    .withOutputBlobSasUrl(
+                        "https://blobcortextesturl.blob.core.windows.net/folderforconfig/p2sconnectionhealths?sp=rw&se=2018-01-10T03%3A42%3A04Z&sv=2017-04-17&sig=WvXrT5bDmDFfgHs%2Brz%2BjAu123eRCNE9BO0eQYcPDT7pY%3D&sr=b"),
+                com.azure.core.util.Context.NONE);
     }
 }

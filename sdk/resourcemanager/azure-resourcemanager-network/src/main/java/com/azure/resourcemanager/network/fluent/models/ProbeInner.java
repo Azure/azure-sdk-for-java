@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.resourcemanager.network.models.ProbeNoHealthyBackendsBehavior;
 import com.azure.resourcemanager.network.models.ProbeProtocol;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -23,8 +24,8 @@ public final class ProbeInner extends SubResource {
     private ProbePropertiesFormat innerProperties;
 
     /*
-     * The name of the resource that is unique within the set of probes used by the load balancer. This name can be
-     * used to access the resource.
+     * The name of the resource that is unique within the set of probes used by the load balancer. This name can be used
+     * to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -165,10 +166,9 @@ public final class ProbeInner extends SubResource {
     }
 
     /**
-     * Get the intervalInSeconds property: The interval, in seconds, for how frequently to probe the endpoint for
-     * health status. Typically, the interval is slightly less than half the allocated timeout period (in seconds)
-     * which allows two full probes before taking the instance out of rotation. The default value is 15, the minimum
-     * value is 5.
+     * Get the intervalInSeconds property: The interval, in seconds, for how frequently to probe the endpoint for health
+     * status. Typically, the interval is slightly less than half the allocated timeout period (in seconds) which allows
+     * two full probes before taking the instance out of rotation. The default value is 15, the minimum value is 5.
      * 
      * @return the intervalInSeconds value.
      */
@@ -177,10 +177,9 @@ public final class ProbeInner extends SubResource {
     }
 
     /**
-     * Set the intervalInSeconds property: The interval, in seconds, for how frequently to probe the endpoint for
-     * health status. Typically, the interval is slightly less than half the allocated timeout period (in seconds)
-     * which allows two full probes before taking the instance out of rotation. The default value is 15, the minimum
-     * value is 5.
+     * Set the intervalInSeconds property: The interval, in seconds, for how frequently to probe the endpoint for health
+     * status. Typically, the interval is slightly less than half the allocated timeout period (in seconds) which allows
+     * two full probes before taking the instance out of rotation. The default value is 15, the minimum value is 5.
      * 
      * @param intervalInSeconds the intervalInSeconds value to set.
      * @return the ProbeInner object itself.
@@ -190,6 +189,31 @@ public final class ProbeInner extends SubResource {
             this.innerProperties = new ProbePropertiesFormat();
         }
         this.innerProperties().withIntervalInSeconds(intervalInSeconds);
+        return this;
+    }
+
+    /**
+     * Get the noHealthyBackendsBehavior property: Determines how new connections are handled by the load balancer when
+     * all backend instances are probed down.
+     * 
+     * @return the noHealthyBackendsBehavior value.
+     */
+    public ProbeNoHealthyBackendsBehavior noHealthyBackendsBehavior() {
+        return this.innerProperties() == null ? null : this.innerProperties().noHealthyBackendsBehavior();
+    }
+
+    /**
+     * Set the noHealthyBackendsBehavior property: Determines how new connections are handled by the load balancer when
+     * all backend instances are probed down.
+     * 
+     * @param noHealthyBackendsBehavior the noHealthyBackendsBehavior value to set.
+     * @return the ProbeInner object itself.
+     */
+    public ProbeInner withNoHealthyBackendsBehavior(ProbeNoHealthyBackendsBehavior noHealthyBackendsBehavior) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProbePropertiesFormat();
+        }
+        this.innerProperties().withNoHealthyBackendsBehavior(noHealthyBackendsBehavior);
         return this;
     }
 
@@ -223,8 +247,8 @@ public final class ProbeInner extends SubResource {
     /**
      * Get the probeThreshold property: The number of consecutive successful or failed probes in order to allow or deny
      * traffic from being delivered to this endpoint. After failing the number of consecutive probes equal to this
-     * value, the endpoint will be taken out of rotation and require the same number of successful consecutive probes
-     * to be placed back in rotation.
+     * value, the endpoint will be taken out of rotation and require the same number of successful consecutive probes to
+     * be placed back in rotation.
      * 
      * @return the probeThreshold value.
      */
@@ -235,8 +259,8 @@ public final class ProbeInner extends SubResource {
     /**
      * Set the probeThreshold property: The number of consecutive successful or failed probes in order to allow or deny
      * traffic from being delivered to this endpoint. After failing the number of consecutive probes equal to this
-     * value, the endpoint will be taken out of rotation and require the same number of successful consecutive probes
-     * to be placed back in rotation.
+     * value, the endpoint will be taken out of rotation and require the same number of successful consecutive probes to
+     * be placed back in rotation.
      * 
      * @param probeThreshold the probeThreshold value to set.
      * @return the ProbeInner object itself.

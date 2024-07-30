@@ -11,18 +11,24 @@ public final class AzureFileStorageReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureFileStorageReadSettings model = BinaryData.fromString(
-            "{\"type\":\"AzureFileStorageReadSettings\",\"recursive\":\"datajldwxdqt\",\"wildcardFolderPath\":\"datatgn\",\"wildcardFileName\":\"databjvmdkgvu\",\"prefix\":\"datamlsuuhwuox\",\"fileListPath\":\"datai\",\"enablePartitionDiscovery\":\"datazzjo\",\"partitionRootPath\":\"dataygzjrkslqba\",\"deleteFilesAfterCompletion\":\"databjxxcruleim\",\"modifiedDatetimeStart\":\"dataxoign\",\"modifiedDatetimeEnd\":\"datamjmpgzetuvfp\",\"maxConcurrentConnections\":\"datajpmeptnqsnpa\",\"disableMetricsCollection\":\"datasprrvjwbeeolm\",\"\":{\"fk\":\"dataqol\",\"aphlwmivazfnb\":\"datadwzvhtgfdy\"}}")
+            "{\"type\":\"AzureFileStorageReadSettings\",\"recursive\":\"dataewcrblksddb\",\"wildcardFolderPath\":\"datagvjhoezjikwsuxrs\",\"wildcardFileName\":\"datat\",\"prefix\":\"datauypdcgx\",\"fileListPath\":\"databwvuwbbzcmp\",\"enablePartitionDiscovery\":\"datamsg\",\"partitionRootPath\":\"dataksmrgjfyfmj\",\"deleteFilesAfterCompletion\":\"datactybhsg\",\"modifiedDatetimeStart\":\"dataumkts\",\"modifiedDatetimeEnd\":\"dataeyoncxjevmawxrgw\",\"maxConcurrentConnections\":\"datan\",\"disableMetricsCollection\":\"datahhfhihwwkhi\",\"\":{\"uttyi\":\"dataykxzc\",\"jz\":\"dataps\",\"anzpzmo\":\"datavojwjanzolqq\",\"yowisqfifmit\":\"dataupqlusxkzdnot\"}}")
             .toObject(AzureFileStorageReadSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureFileStorageReadSettings model = new AzureFileStorageReadSettings()
-            .withMaxConcurrentConnections("datajpmeptnqsnpa").withDisableMetricsCollection("datasprrvjwbeeolm")
-            .withRecursive("datajldwxdqt").withWildcardFolderPath("datatgn").withWildcardFileName("databjvmdkgvu")
-            .withPrefix("datamlsuuhwuox").withFileListPath("datai").withEnablePartitionDiscovery("datazzjo")
-            .withPartitionRootPath("dataygzjrkslqba").withDeleteFilesAfterCompletion("databjxxcruleim")
-            .withModifiedDatetimeStart("dataxoign").withModifiedDatetimeEnd("datamjmpgzetuvfp");
+        AzureFileStorageReadSettings model = new AzureFileStorageReadSettings().withMaxConcurrentConnections("datan")
+            .withDisableMetricsCollection("datahhfhihwwkhi")
+            .withRecursive("dataewcrblksddb")
+            .withWildcardFolderPath("datagvjhoezjikwsuxrs")
+            .withWildcardFileName("datat")
+            .withPrefix("datauypdcgx")
+            .withFileListPath("databwvuwbbzcmp")
+            .withEnablePartitionDiscovery("datamsg")
+            .withPartitionRootPath("dataksmrgjfyfmj")
+            .withDeleteFilesAfterCompletion("datactybhsg")
+            .withModifiedDatetimeStart("dataumkts")
+            .withModifiedDatetimeEnd("dataeyoncxjevmawxrgw");
         model = BinaryData.fromObject(model).toObject(AzureFileStorageReadSettings.class);
     }
 }

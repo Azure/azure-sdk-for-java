@@ -21,14 +21,14 @@ public final class FhirR4SampledData extends FhirR4Element {
      */
     @Generated
     @JsonProperty(value = "origin")
-    private FhirR4Quantity origin;
+    private final FhirR4Quantity origin;
 
     /*
      * Number of milliseconds between samples
      */
     @Generated
     @JsonProperty(value = "period")
-    private double period;
+    private final double period;
 
     /*
      * Multiply data by this before adding to origin
@@ -56,7 +56,7 @@ public final class FhirR4SampledData extends FhirR4Element {
      */
     @Generated
     @JsonProperty(value = "dimensions")
-    private int dimensions;
+    private final int dimensions;
 
     /*
      * Decimal values with spaces, or "E" | "U" | "L"

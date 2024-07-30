@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class JitNetworkAccessPoliciesListByRegionSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/JitNetworkAccessPolicies/
-     * GetJitNetworkAccessPoliciesSubscriptionLocation_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/JitNetworkAccessPolicies/GetJitNetworkAccessPoliciesSubscriptionLocation_example.json
      */
     /**
      * Sample code: Get JIT network access policies on a subscription from a security data location.

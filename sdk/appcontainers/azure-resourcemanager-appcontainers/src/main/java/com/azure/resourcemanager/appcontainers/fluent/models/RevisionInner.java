@@ -6,29 +6,56 @@ package com.azure.resourcemanager.appcontainers.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appcontainers.models.RevisionHealthState;
 import com.azure.resourcemanager.appcontainers.models.RevisionProvisioningState;
 import com.azure.resourcemanager.appcontainers.models.RevisionRunningState;
 import com.azure.resourcemanager.appcontainers.models.Template;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Container App Revision. */
+/**
+ * Container App Revision.
+ */
 @Immutable
 public final class RevisionInner extends ProxyResource {
     /*
      * Revision resource specific properties
      */
-    @JsonProperty(value = "properties")
     private RevisionProperties innerProperties;
 
-    /** Creates an instance of RevisionInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of RevisionInner class.
+     */
     public RevisionInner() {
     }
 
     /**
      * Get the innerProperties property: Revision resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RevisionProperties innerProperties() {
@@ -36,8 +63,48 @@ public final class RevisionInner extends ProxyResource {
     }
 
     /**
-     * Get the createdTime property: Timestamp describing when the revision was created by controller.
-     *
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the createdTime property: Timestamp describing when the revision was created
+     * by controller.
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -47,7 +114,7 @@ public final class RevisionInner extends ProxyResource {
     /**
      * Get the lastActiveTime property: Timestamp describing when the revision was last active. Only meaningful when
      * revision is inactive.
-     *
+     * 
      * @return the lastActiveTime value.
      */
     public OffsetDateTime lastActiveTime() {
@@ -56,7 +123,7 @@ public final class RevisionInner extends ProxyResource {
 
     /**
      * Get the fqdn property: Fully qualified domain name of the revision.
-     *
+     * 
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -64,9 +131,10 @@ public final class RevisionInner extends ProxyResource {
     }
 
     /**
-     * Get the template property: Container App Revision Template with all possible settings and the defaults if user
-     * did not provide them. The defaults are populated as they were at the creation time.
-     *
+     * Get the template property: Container App Revision Template with all possible settings and the
+     * defaults if user did not provide them. The defaults are populated
+     * as they were at the creation time.
+     * 
      * @return the template value.
      */
     public Template template() {
@@ -75,7 +143,7 @@ public final class RevisionInner extends ProxyResource {
 
     /**
      * Get the active property: Boolean describing if the Revision is Active.
-     *
+     * 
      * @return the active value.
      */
     public Boolean active() {
@@ -84,7 +152,7 @@ public final class RevisionInner extends ProxyResource {
 
     /**
      * Get the replicas property: Number of pods currently running for this revision.
-     *
+     * 
      * @return the replicas value.
      */
     public Integer replicas() {
@@ -93,7 +161,7 @@ public final class RevisionInner extends ProxyResource {
 
     /**
      * Get the trafficWeight property: Traffic weight assigned to this revision.
-     *
+     * 
      * @return the trafficWeight value.
      */
     public Integer trafficWeight() {
@@ -102,7 +170,7 @@ public final class RevisionInner extends ProxyResource {
 
     /**
      * Get the provisioningError property: Optional Field - Platform Error Message.
-     *
+     * 
      * @return the provisioningError value.
      */
     public String provisioningError() {
@@ -111,7 +179,7 @@ public final class RevisionInner extends ProxyResource {
 
     /**
      * Get the healthState property: Current health State of the revision.
-     *
+     * 
      * @return the healthState value.
      */
     public RevisionHealthState healthState() {
@@ -120,7 +188,7 @@ public final class RevisionInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Current provisioning State of the revision.
-     *
+     * 
      * @return the provisioningState value.
      */
     public RevisionProvisioningState provisioningState() {
@@ -129,7 +197,7 @@ public final class RevisionInner extends ProxyResource {
 
     /**
      * Get the runningState property: Current running state of the revision.
-     *
+     * 
      * @return the runningState value.
      */
     public RevisionRunningState runningState() {
@@ -138,12 +206,57 @@ public final class RevisionInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RevisionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RevisionInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RevisionInner.
+     */
+    public static RevisionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RevisionInner deserializedRevisionInner = new RevisionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRevisionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRevisionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRevisionInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRevisionInner.innerProperties = RevisionProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedRevisionInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRevisionInner;
+        });
     }
 }

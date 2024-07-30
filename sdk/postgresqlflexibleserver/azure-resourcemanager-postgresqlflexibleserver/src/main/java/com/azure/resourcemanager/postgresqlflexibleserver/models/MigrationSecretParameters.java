@@ -108,8 +108,9 @@ public final class MigrationSecretParameters {
      */
     public void validate() {
         if (adminCredentials() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property adminCredentials in model MigrationSecretParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property adminCredentials in model MigrationSecretParameters"));
         } else {
             adminCredentials().validate();
         }

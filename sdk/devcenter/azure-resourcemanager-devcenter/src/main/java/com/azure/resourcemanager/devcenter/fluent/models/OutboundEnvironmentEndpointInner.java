@@ -9,7 +9,9 @@ import com.azure.resourcemanager.devcenter.models.EndpointDependency;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A collection of related endpoints from the same service for which the agent requires outbound access. */
+/**
+ * A collection of related endpoints from the same service for which the agent requires outbound access.
+ */
 @Immutable
 public final class OutboundEnvironmentEndpointInner {
     /*
@@ -24,13 +26,15 @@ public final class OutboundEnvironmentEndpointInner {
     @JsonProperty(value = "endpoints", access = JsonProperty.Access.WRITE_ONLY)
     private List<EndpointDependency> endpoints;
 
-    /** Creates an instance of OutboundEnvironmentEndpointInner class. */
+    /**
+     * Creates an instance of OutboundEnvironmentEndpointInner class.
+     */
     public OutboundEnvironmentEndpointInner() {
     }
 
     /**
      * Get the category property: The type of service that the agent connects to.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -39,7 +43,7 @@ public final class OutboundEnvironmentEndpointInner {
 
     /**
      * Get the endpoints property: The endpoints for this service for which the agent requires outbound access.
-     *
+     * 
      * @return the endpoints value.
      */
     public List<EndpointDependency> endpoints() {
@@ -48,7 +52,7 @@ public final class OutboundEnvironmentEndpointInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

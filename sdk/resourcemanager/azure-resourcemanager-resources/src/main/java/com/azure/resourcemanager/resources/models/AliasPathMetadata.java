@@ -7,7 +7,9 @@ package com.azure.resourcemanager.resources.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AliasPathMetadata model. */
+/**
+ * The AliasPathMetadata model.
+ */
 @Immutable
 public final class AliasPathMetadata {
     /*
@@ -22,13 +24,15 @@ public final class AliasPathMetadata {
     @JsonProperty(value = "attributes", access = JsonProperty.Access.WRITE_ONLY)
     private AliasPathAttributes attributes;
 
-    /** Creates an instance of AliasPathMetadata class. */
+    /**
+     * Creates an instance of AliasPathMetadata class.
+     */
     public AliasPathMetadata() {
     }
 
     /**
      * Get the type property: The type of the token that the alias path is referring to.
-     *
+     * 
      * @return the type value.
      */
     public AliasPathTokenType type() {
@@ -37,7 +41,7 @@ public final class AliasPathMetadata {
 
     /**
      * Get the attributes property: The attributes of the token that the alias path is referring to.
-     *
+     * 
      * @return the attributes value.
      */
     public AliasPathAttributes attributes() {
@@ -46,7 +50,7 @@ public final class AliasPathMetadata {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -121,15 +121,15 @@ public final class RestServiceLinkedServiceTypeProperties {
     private Object tokenEndpoint;
 
     /*
-     * The target service or resource to which the access will be requested. Type: string (or Expression with
-     * resultType string).
+     * The target service or resource to which the access will be requested. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "resource")
     private Object resource;
 
     /*
-     * The scope of the access required. It describes what kind of access will be requested. Type: string (or
-     * Expression with resultType string).
+     * The scope of the access required. It describes what kind of access will be requested. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "scope")
     private Object scope;
@@ -269,8 +269,8 @@ public final class RestServiceLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the servicePrincipalId property: The application's client ID used in AadServicePrincipal authentication
-     * type. Type: string (or Expression with resultType string).
+     * Get the servicePrincipalId property: The application's client ID used in AadServicePrincipal authentication type.
+     * Type: string (or Expression with resultType string).
      * 
      * @return the servicePrincipalId value.
      */
@@ -279,8 +279,8 @@ public final class RestServiceLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the servicePrincipalId property: The application's client ID used in AadServicePrincipal authentication
-     * type. Type: string (or Expression with resultType string).
+     * Set the servicePrincipalId property: The application's client ID used in AadServicePrincipal authentication type.
+     * Type: string (or Expression with resultType string).
      * 
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the RestServiceLinkedServiceTypeProperties object itself.
@@ -333,9 +333,9 @@ public final class RestServiceLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values
-     * are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud
-     * type. Type: string (or Expression with resultType string).
+     * Get the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
+     * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
+     * Type: string (or Expression with resultType string).
      * 
      * @return the azureCloudType value.
      */
@@ -344,9 +344,9 @@ public final class RestServiceLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values
-     * are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud
-     * type. Type: string (or Expression with resultType string).
+     * Set the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
+     * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
+     * Type: string (or Expression with resultType string).
      * 
      * @param azureCloudType the azureCloudType value to set.
      * @return the RestServiceLinkedServiceTypeProperties object itself.
@@ -357,8 +357,8 @@ public final class RestServiceLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the aadResourceId property: The resource you are requesting authorization to use. Type: string (or
-     * Expression with resultType string).
+     * Get the aadResourceId property: The resource you are requesting authorization to use. Type: string (or Expression
+     * with resultType string).
      * 
      * @return the aadResourceId value.
      */
@@ -367,8 +367,8 @@ public final class RestServiceLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the aadResourceId property: The resource you are requesting authorization to use. Type: string (or
-     * Expression with resultType string).
+     * Set the aadResourceId property: The resource you are requesting authorization to use. Type: string (or Expression
+     * with resultType string).
      * 
      * @param aadResourceId the aadResourceId value to set.
      * @return the RestServiceLinkedServiceTypeProperties object itself.
@@ -379,8 +379,8 @@ public final class RestServiceLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -389,8 +389,8 @@ public final class RestServiceLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the RestServiceLinkedServiceTypeProperties object itself.
@@ -485,8 +485,8 @@ public final class RestServiceLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the resource property: The target service or resource to which the access will be requested. Type: string
-     * (or Expression with resultType string).
+     * Get the resource property: The target service or resource to which the access will be requested. Type: string (or
+     * Expression with resultType string).
      * 
      * @return the resource value.
      */
@@ -495,8 +495,8 @@ public final class RestServiceLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the resource property: The target service or resource to which the access will be requested. Type: string
-     * (or Expression with resultType string).
+     * Set the resource property: The target service or resource to which the access will be requested. Type: string (or
+     * Expression with resultType string).
      * 
      * @param resource the resource value to set.
      * @return the RestServiceLinkedServiceTypeProperties object itself.
@@ -535,12 +535,14 @@ public final class RestServiceLinkedServiceTypeProperties {
      */
     public void validate() {
         if (url() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property url in model RestServiceLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property url in model RestServiceLinkedServiceTypeProperties"));
         }
         if (authenticationType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property authenticationType in model RestServiceLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property authenticationType in model RestServiceLinkedServiceTypeProperties"));
         }
         if (password() != null) {
             password().validate();

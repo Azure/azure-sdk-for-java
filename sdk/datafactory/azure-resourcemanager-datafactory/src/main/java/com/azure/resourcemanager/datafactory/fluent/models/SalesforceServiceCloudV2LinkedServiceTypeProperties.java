@@ -14,8 +14,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SalesforceServiceCloudV2LinkedServiceTypeProperties {
     /*
-     * The URL of Salesforce Service Cloud instance. For example, 'https://[domain].my.salesforce.com'. Type: string
-     * (or Expression with resultType string).
+     * The URL of Salesforce Service Cloud instance. For example, 'https://[domain].my.salesforce.com'. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "environmentUrl")
     private Object environmentUrl;
@@ -171,8 +171,8 @@ public final class SalesforceServiceCloudV2LinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -181,8 +181,8 @@ public final class SalesforceServiceCloudV2LinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SalesforceServiceCloudV2LinkedServiceTypeProperties object itself.

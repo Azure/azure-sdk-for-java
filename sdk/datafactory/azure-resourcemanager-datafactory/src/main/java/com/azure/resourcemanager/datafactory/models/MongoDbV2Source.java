@@ -6,19 +6,27 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity source for a MongoDB database.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = MongoDbV2Source.class, visible = true)
 @JsonTypeName("MongoDbV2Source")
 @Fluent
 public final class MongoDbV2Source extends CopySource {
     /*
-     * Specifies selection filter using query operators. To return all documents in a collection, omit this parameter
-     * or pass an empty document ({}). Type: string (or Expression with resultType string).
+     * Copy source type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "MongoDbV2Source";
+
+    /*
+     * Specifies selection filter using query operators. To return all documents in a collection, omit this parameter or
+     * pass an empty document ({}). Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "filter")
     private Object filter;
@@ -55,6 +63,16 @@ public final class MongoDbV2Source extends CopySource {
      * Creates an instance of MongoDbV2Source class.
      */
     public MongoDbV2Source() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

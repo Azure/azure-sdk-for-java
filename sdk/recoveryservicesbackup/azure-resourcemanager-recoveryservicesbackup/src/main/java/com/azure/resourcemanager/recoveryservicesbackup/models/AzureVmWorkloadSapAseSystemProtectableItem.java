@@ -5,20 +5,43 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Azure VM workload-specific protectable item representing SAP ASE System.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectableItemType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "protectableItemType",
+    defaultImpl = AzureVmWorkloadSapAseSystemProtectableItem.class,
+    visible = true)
 @JsonTypeName("SAPAseSystem")
 @Fluent
 public final class AzureVmWorkloadSapAseSystemProtectableItem extends AzureVmWorkloadProtectableItem {
+    /*
+     * Type of the backup item.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "protectableItemType", required = true)
+    private String protectableItemType = "SAPAseSystem";
+
     /**
      * Creates an instance of AzureVmWorkloadSapAseSystemProtectableItem class.
      */
     public AzureVmWorkloadSapAseSystemProtectableItem() {
+    }
+
+    /**
+     * Get the protectableItemType property: Type of the backup item.
+     * 
+     * @return the protectableItemType value.
+     */
+    @Override
+    public String protectableItemType() {
+        return this.protectableItemType;
     }
 
     /**

@@ -288,9 +288,9 @@ public final class SecurityRuleInner extends SubResource {
     }
 
     /**
-     * Get the destinationAddressPrefix property: The destination address prefix. CIDR or destination IP range.
-     * Asterisk '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork',
-     * 'AzureLoadBalancer' and 'Internet' can also be used.
+     * Get the destinationAddressPrefix property: The destination address prefix. CIDR or destination IP range. Asterisk
+     * '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and
+     * 'Internet' can also be used.
      * 
      * @return the destinationAddressPrefix value.
      */
@@ -299,9 +299,9 @@ public final class SecurityRuleInner extends SubResource {
     }
 
     /**
-     * Set the destinationAddressPrefix property: The destination address prefix. CIDR or destination IP range.
-     * Asterisk '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork',
-     * 'AzureLoadBalancer' and 'Internet' can also be used.
+     * Set the destinationAddressPrefix property: The destination address prefix. CIDR or destination IP range. Asterisk
+     * '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and
+     * 'Internet' can also be used.
      * 
      * @param destinationAddressPrefix the destinationAddressPrefix value to set.
      * @return the SecurityRuleInner object itself.

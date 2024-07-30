@@ -29,8 +29,10 @@ public final class DataFlowDebugCommandRequestTests {
     public void testSerialize() throws Exception {
         DataFlowDebugCommandRequest model = new DataFlowDebugCommandRequest().withSessionId("fcbahhp")
             .withCommand(DataFlowDebugCommandType.EXECUTE_EXPRESSION_QUERY)
-            .withCommandPayload(new DataFlowDebugCommandPayload().withStreamName("o").withRowLimits(2134608057)
-                .withColumns(Arrays.asList("filkmkkholv")).withExpression("dviauogp"));
+            .withCommandPayload(new DataFlowDebugCommandPayload().withStreamName("o")
+                .withRowLimits(2134608057)
+                .withColumns(Arrays.asList("filkmkkholv"))
+                .withExpression("dviauogp"));
         model = BinaryData.fromObject(model).toObject(DataFlowDebugCommandRequest.class);
         Assertions.assertEquals("fcbahhp", model.sessionId());
         Assertions.assertEquals(DataFlowDebugCommandType.EXECUTE_EXPRESSION_QUERY, model.command());

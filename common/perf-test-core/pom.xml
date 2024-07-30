@@ -34,6 +34,13 @@
 
   <properties>
     <relative.path.to.eng.folder>../..</relative.path.to.eng.folder>
+    <test.dir>src/test/java</test.dir>
+    <jacoco.skip>true</jacoco.skip>
+    <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
+    <javaModulesSurefireArgLine>
+      --add-exports com.azure.core.test.perf/com.azure.perf.test.core=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
+
   </properties>
 
   <build>
@@ -41,7 +48,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
@@ -49,10 +56,10 @@
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
 
                 <!-- Special allowance for performance libraries as they aren't shipped. -->
-                <include>com.beust:jcommander:[1.78]</include> <!-- {x-include-update;com.beust:jcommander;external_dependency} -->
+                <include>com.beust:jcommander:[1.82]</include> <!-- {x-include-update;com.beust:jcommander;external_dependency} -->
 
-                <include>io.projectreactor:reactor-core:[3.4.34]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
-                <include>io.vertx:vertx-codegen:[4.5.4]</include> <!-- {x-include-update;io.vertx:vertx-codegen;external_dependency} -->
+                <include>io.projectreactor:reactor-core:[3.4.38]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
+                <include>io.vertx:vertx-codegen:[4.5.8]</include> <!-- {x-include-update;io.vertx:vertx-codegen;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -70,33 +77,51 @@
     <dependency>
       <groupId>com.beust</groupId>
       <artifactId>jcommander</artifactId>
-      <version>1.78</version> <!-- {x-version-update;com.beust:jcommander;external_dependency} -->
+      <version>1.82</version> <!-- {x-version-update;com.beust:jcommander;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.14.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.15.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.11.19</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <version>1.12.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-jdk-httpclient</artifactId>
-      <version>1.0.0-beta.11</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;dependency} -->
+      <version>1.0.0-beta.14</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-vertx</artifactId>
-      <version>1.0.0-beta.16</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;dependency} -->
+      <version>1.0.0-beta.19</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;dependency} -->
     </dependency>
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-codegen</artifactId>
-      <version>4.5.4</version> <!-- {x-version-update;io.vertx:vertx-codegen;external_dependency} -->
+      <version>4.5.8</version> <!-- {x-version-update;io.vertx:vertx-codegen;external_dependency} -->
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>

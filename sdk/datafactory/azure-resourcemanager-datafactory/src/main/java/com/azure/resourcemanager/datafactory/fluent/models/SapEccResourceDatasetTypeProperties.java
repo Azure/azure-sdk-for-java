@@ -26,8 +26,7 @@ public final class SapEccResourceDatasetTypeProperties {
     }
 
     /**
-     * Get the path property: The path of the SAP ECC OData entity. Type: string (or Expression with resultType
-     * string).
+     * Get the path property: The path of the SAP ECC OData entity. Type: string (or Expression with resultType string).
      * 
      * @return the path value.
      */
@@ -36,8 +35,7 @@ public final class SapEccResourceDatasetTypeProperties {
     }
 
     /**
-     * Set the path property: The path of the SAP ECC OData entity. Type: string (or Expression with resultType
-     * string).
+     * Set the path property: The path of the SAP ECC OData entity. Type: string (or Expression with resultType string).
      * 
      * @param path the path value to set.
      * @return the SapEccResourceDatasetTypeProperties object itself.
@@ -54,8 +52,9 @@ public final class SapEccResourceDatasetTypeProperties {
      */
     public void validate() {
         if (path() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property path in model SapEccResourceDatasetTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property path in model SapEccResourceDatasetTypeProperties"));
         }
     }
 

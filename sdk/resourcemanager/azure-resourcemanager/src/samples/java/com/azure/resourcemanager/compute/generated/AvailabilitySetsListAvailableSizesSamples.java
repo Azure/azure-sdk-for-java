@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class AvailabilitySetsListAvailableSizesSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * availabilitySetExamples/AvailabilitySet_ListAvailableSizes_MinimumSet_Gen.json
      */
     /**
@@ -20,13 +20,16 @@ public final class AvailabilitySetsListAvailableSizesSamples {
      */
     public static void
         availabilitySetListAvailableSizesMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getAvailabilitySets().listAvailableSizes("rgcompute", "aa",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getAvailabilitySets()
+            .listAvailableSizes("rgcompute", "aa", com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * availabilitySetExamples/AvailabilitySet_ListAvailableSizes_MaximumSet_Gen.json
      */
     /**
@@ -36,7 +39,10 @@ public final class AvailabilitySetsListAvailableSizesSamples {
      */
     public static void
         availabilitySetListAvailableSizesMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getAvailabilitySets().listAvailableSizes("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getAvailabilitySets()
+            .listAvailableSizes("rgcompute", "aaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

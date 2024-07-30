@@ -7,13 +7,16 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.CosmosQueryRequestOptionsBase;
 import com.azure.cosmos.implementation.CosmosQueryRequestOptionsImpl;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 
 import java.time.Duration;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Specifies the options associated with query methods (enumeration operations)
@@ -256,6 +259,15 @@ public class CosmosQueryRequestOptions {
     }
 
     /**
+     * Gets the maximum item size to fetch during non-streaming order by queries.
+     *
+     * @return the max number of items for vector search.
+     */
+    Integer getMaxItemCountForVectorSearch() {
+        return this.actualRequestOptions.getMaxItemCountForVectorSearch();
+    }
+
+    /**
      * Gets the request continuation token.
      *
      * @return the request continuation.
@@ -419,7 +431,7 @@ public class CosmosQueryRequestOptions {
      * @return the diagnostic thresholds used as an override for a specific operation.
      */
     public CosmosDiagnosticsThresholds getDiagnosticsThresholds() {
-        return this.actualRequestOptions.getThresholds();
+        return this.actualRequestOptions.getDiagnosticsThresholds();
     }
 
     /**
@@ -465,6 +477,27 @@ public class CosmosQueryRequestOptions {
         return this;
     }
 
+    /**
+     * Gets the custom item serializer defined for this instance of request options
+     * @return the custom item serializer
+     */
+    public CosmosItemSerializer getCustomItemSerializer() {
+        return this.actualRequestOptions.getCustomItemSerializer();
+    }
+
+    /**
+     * Allows specifying a custom item serializer to be used for this operation. If the serializer
+     * on the request options is null, the serializer on CosmosClientBuilder is used. If both serializers
+     * are null (the default), an internal Jackson ObjectMapper is ued for serialization/deserialization.
+     * @param customItemSerializer the custom item serializer for this operation
+     * @return  the CosmosItemRequestOptions.
+     */
+    public CosmosQueryRequestOptions setCustomItemSerializer(CosmosItemSerializer customItemSerializer) {
+        this.actualRequestOptions.setCustomItemSerializer(customItemSerializer);
+
+        return this;
+    }
+
     CosmosQueryRequestOptionsBase<?> getImpl() {
         return this.actualRequestOptions;
     }
@@ -487,6 +520,26 @@ public class CosmosQueryRequestOptions {
     CosmosQueryRequestOptions setPartitionKeyRangeIdInternal(String partitionKeyRangeId) {
         this.actualRequestOptions.setPartitionKeyRangeIdInternal(partitionKeyRangeId);
         return this;
+    }
+
+    /**
+     * Sets the custom ids.
+     *
+     * @param keywordIdentifiers the custom ids.
+     * @return the current request options.
+     */
+    public CosmosQueryRequestOptions setKeywordIdentifiers(Set<String> keywordIdentifiers) {
+        this.actualRequestOptions.setKeywordIdentifiers(keywordIdentifiers);
+        return this;
+    }
+
+    /**
+     * Gets the custom ids.
+     *
+     * @return the custom ids.
+     */
+    public Set<String> getKeywordIdentifiers() {
+        return this.actualRequestOptions.getKeywordIdentifiers();
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -580,6 +633,31 @@ public class CosmosQueryRequestOptions {
                 @Override
                 public String getRequestContinuation(CosmosQueryRequestOptions options) {
                     return options.getRequestContinuation();
+                }
+
+                @Override
+                public Integer getMaxItemCountForVectorSearch(CosmosQueryRequestOptions options) {
+                    return options.getMaxItemCountForVectorSearch();
+                }
+
+                @Override
+                public void setPartitionKeyDefinition(CosmosQueryRequestOptions options, PartitionKeyDefinition partitionKeyDefinition) {
+                    options.actualRequestOptions.setPartitionKeyDefinition(partitionKeyDefinition);
+                }
+
+                @Override
+                public PartitionKeyDefinition getPartitionKeyDefinition(CosmosQueryRequestOptions options) {
+                    return options.actualRequestOptions.getPartitionKeyDefinition();
+                }
+
+                @Override
+                public void setCollectionRid(CosmosQueryRequestOptions options, String collectionRid) {
+                    options.actualRequestOptions.setCollectionRid(collectionRid);
+                }
+
+                @Override
+                public String getCollectionRid(CosmosQueryRequestOptions options) {
+                    return options.actualRequestOptions.getCollectionRid();
                 }
             });
     }

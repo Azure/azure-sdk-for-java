@@ -22,8 +22,8 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
     private Object connectionProperties;
 
     /*
-     * The Client customer ID of the AdWords account that you want to fetch report data for. Type: string (or
-     * Expression with resultType string).
+     * The Client customer ID of the AdWords account that you want to fetch report data for. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "clientCustomerID")
     private Object clientCustomerId;
@@ -61,8 +61,8 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
     private SecretBase clientSecret;
 
     /*
-     * The service account email ID that is used for ServiceAuthentication and can only be used on self-hosted IR.
-     * Type: string (or Expression with resultType string).
+     * The service account email ID that is used for ServiceAuthentication and can only be used on self-hosted IR. Type:
+     * string (or Expression with resultType string).
      */
     @JsonProperty(value = "email")
     private Object email;
@@ -309,8 +309,8 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
 
     /**
      * Get the keyFilePath property: (Deprecated) The full path to the .p12 key file that is used to authenticate the
-     * service account email address and can only be used on self-hosted IR. Type: string (or Expression with
-     * resultType string).
+     * service account email address and can only be used on self-hosted IR. Type: string (or Expression with resultType
+     * string).
      * 
      * @return the keyFilePath value.
      */
@@ -320,8 +320,8 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
 
     /**
      * Set the keyFilePath property: (Deprecated) The full path to the .p12 key file that is used to authenticate the
-     * service account email address and can only be used on self-hosted IR. Type: string (or Expression with
-     * resultType string).
+     * service account email address and can only be used on self-hosted IR. Type: string (or Expression with resultType
+     * string).
      * 
      * @param keyFilePath the keyFilePath value to set.
      * @return the GoogleAdWordsLinkedServiceTypeProperties object itself.
@@ -474,8 +474,8 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -484,8 +484,8 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the GoogleAdWordsLinkedServiceTypeProperties object itself.

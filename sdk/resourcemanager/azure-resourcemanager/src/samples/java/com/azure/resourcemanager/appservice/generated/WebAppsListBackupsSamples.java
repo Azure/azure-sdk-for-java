@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class WebAppsListBackupsSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/ListWebAppBackups.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListWebAppBackups.json
      */
     /**
      * Sample code: List web app backups.
@@ -18,7 +17,10 @@ public final class WebAppsListBackupsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listWebAppBackups(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getWebApps().listBackups("testrg123", "sitef6141",
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getWebApps()
+            .listBackups("testrg123", "sitef6141", com.azure.core.util.Context.NONE);
     }
 }

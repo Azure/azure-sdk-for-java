@@ -75,15 +75,18 @@ public final class GovernanceAssignmentImpl
     }
 
     public GovernanceAssignment create() {
-        this.innerObject = serviceManager.serviceClient().getGovernanceAssignments()
+        this.innerObject = serviceManager.serviceClient()
+            .getGovernanceAssignments()
             .createOrUpdateWithResponse(scope, assessmentName, assignmentKey, this.innerModel(), Context.NONE)
             .getValue();
         return this;
     }
 
     public GovernanceAssignment create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getGovernanceAssignments()
-            .createOrUpdateWithResponse(scope, assessmentName, assignmentKey, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGovernanceAssignments()
+            .createOrUpdateWithResponse(scope, assessmentName, assignmentKey, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -98,15 +101,18 @@ public final class GovernanceAssignmentImpl
     }
 
     public GovernanceAssignment apply() {
-        this.innerObject = serviceManager.serviceClient().getGovernanceAssignments()
+        this.innerObject = serviceManager.serviceClient()
+            .getGovernanceAssignments()
             .createOrUpdateWithResponse(scope, assessmentName, assignmentKey, this.innerModel(), Context.NONE)
             .getValue();
         return this;
     }
 
     public GovernanceAssignment apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getGovernanceAssignments()
-            .createOrUpdateWithResponse(scope, assessmentName, assignmentKey, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGovernanceAssignments()
+            .createOrUpdateWithResponse(scope, assessmentName, assignmentKey, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -126,14 +132,18 @@ public final class GovernanceAssignmentImpl
     }
 
     public GovernanceAssignment refresh() {
-        this.innerObject = serviceManager.serviceClient().getGovernanceAssignments()
-            .getWithResponse(scope, assessmentName, assignmentKey, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGovernanceAssignments()
+            .getWithResponse(scope, assessmentName, assignmentKey, Context.NONE)
+            .getValue();
         return this;
     }
 
     public GovernanceAssignment refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getGovernanceAssignments()
-            .getWithResponse(scope, assessmentName, assignmentKey, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGovernanceAssignments()
+            .getWithResponse(scope, assessmentName, assignmentKey, context)
+            .getValue();
         return this;
     }
 

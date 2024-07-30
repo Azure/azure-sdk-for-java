@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class SecurityRulesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkSecurityGroupRuleGet.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkSecurityGroupRuleGet.
      * json
      */
     /**
@@ -20,7 +20,10 @@ public final class SecurityRulesGetSamples {
      */
     public static void
         getNetworkSecurityRuleInNetworkSecurityGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getSecurityRules().getWithResponse("rg1", "testnsg", "rule1",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getSecurityRules()
+            .getWithResponse("rg1", "testnsg", "rule1", com.azure.core.util.Context.NONE);
     }
 }

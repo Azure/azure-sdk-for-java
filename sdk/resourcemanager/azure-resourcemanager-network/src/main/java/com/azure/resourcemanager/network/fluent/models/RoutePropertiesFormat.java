@@ -28,8 +28,8 @@ public final class RoutePropertiesFormat {
     private RouteNextHopType nextHopType;
 
     /*
-     * The IP address packets should be forwarded to. Next hop values are only allowed in routes where the next hop
-     * type is VirtualAppliance.
+     * The IP address packets should be forwarded to. Next hop values are only allowed in routes where the next hop type
+     * is VirtualAppliance.
      */
     @JsonProperty(value = "nextHopIpAddress")
     private String nextHopIpAddress;
@@ -152,8 +152,9 @@ public final class RoutePropertiesFormat {
      */
     public void validate() {
         if (nextHopType() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property nextHopType in model RoutePropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property nextHopType in model RoutePropertiesFormat"));
         }
     }
 

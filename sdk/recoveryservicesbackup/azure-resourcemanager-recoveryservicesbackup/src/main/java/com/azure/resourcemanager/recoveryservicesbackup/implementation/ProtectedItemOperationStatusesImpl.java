@@ -28,8 +28,9 @@ public final class ProtectedItemOperationStatusesImpl implements ProtectedItemOp
 
     public Response<OperationStatus> getWithResponse(String vaultName, String resourceGroupName, String fabricName,
         String containerName, String protectedItemName, String operationId, Context context) {
-        Response<OperationStatusInner> inner = this.serviceClient().getWithResponse(vaultName, resourceGroupName,
-            fabricName, containerName, protectedItemName, operationId, context);
+        Response<OperationStatusInner> inner = this.serviceClient()
+            .getWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, operationId,
+                context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new OperationStatusImpl(inner.getValue(), this.manager()));
@@ -40,8 +41,8 @@ public final class ProtectedItemOperationStatusesImpl implements ProtectedItemOp
 
     public OperationStatus get(String vaultName, String resourceGroupName, String fabricName, String containerName,
         String protectedItemName, String operationId) {
-        OperationStatusInner inner = this.serviceClient().get(vaultName, resourceGroupName, fabricName, containerName,
-            protectedItemName, operationId);
+        OperationStatusInner inner = this.serviceClient()
+            .get(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, operationId);
         if (inner != null) {
             return new OperationStatusImpl(inner, this.manager());
         } else {

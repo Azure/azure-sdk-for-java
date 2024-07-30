@@ -9,7 +9,9 @@ import com.azure.resourcemanager.mobilenetwork.fluent.models.PacketCoreDataPlane
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for packet core data planes API service call. */
+/**
+ * Response for packet core data planes API service call.
+ */
 @Fluent
 public final class PacketCoreDataPlaneListResult {
     /*
@@ -24,13 +26,15 @@ public final class PacketCoreDataPlaneListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of PacketCoreDataPlaneListResult class. */
+    /**
+     * Creates an instance of PacketCoreDataPlaneListResult class.
+     */
     public PacketCoreDataPlaneListResult() {
     }
 
     /**
      * Get the value property: A list of packet core data planes in a resource group.
-     *
+     * 
      * @return the value value.
      */
     public List<PacketCoreDataPlaneInner> value() {
@@ -39,7 +43,7 @@ public final class PacketCoreDataPlaneListResult {
 
     /**
      * Set the value property: A list of packet core data planes in a resource group.
-     *
+     * 
      * @param value the value value to set.
      * @return the PacketCoreDataPlaneListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class PacketCoreDataPlaneListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class PacketCoreDataPlaneListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

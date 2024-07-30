@@ -6,73 +6,56 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.ChangeDataCaptureResource;
 import com.azure.resourcemanager.datafactory.models.ConnectionType;
 import com.azure.resourcemanager.datafactory.models.FrequencyType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ChangeDataCapturesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"folder\":{\"name\":\"himegpgmug\"},\"description\":\"ds\",\"sourceConnectionsInfo\":[{\"sourceEntities\":[{},{}],\"connection\":{\"linkedService\":{\"referenceName\":\"owa\"},\"linkedServiceType\":\"gqmzxyitfbfp\",\"type\":\"linkedservicetype\",\"isInlineDataset\":true,\"commonDslConnectorProperties\":[{},{},{},{}]}}],\"targetConnectionsInfo\":[{\"targetEntities\":[{},{}],\"connection\":{\"linkedService\":{\"referenceName\":\"ktauqav\"},\"linkedServiceType\":\"lyntvou\",\"type\":\"linkedservicetype\",\"isInlineDataset\":false,\"commonDslConnectorProperties\":[{},{}]},\"dataMapperMappings\":[{}],\"relationships\":[\"dataiquodafliefhfj\"]}],\"policy\":{\"mode\":\"msqmbdkvsmwbml\",\"recurrence\":{\"frequency\":\"Second\",\"interval\":1820521308}},\"allowVNetOverride\":false,\"status\":\"ltfxpzw\"},\"name\":\"tnkkjzjihndqz\",\"type\":\"dhuqlevty\",\"etag\":\"dehdveflkjqxsad\",\"\":{\"lnekyz\":\"datannoulmeqfyuorq\"},\"id\":\"jyzd\"}";
+            = "{\"properties\":{\"folder\":{\"name\":\"r\"},\"description\":\"nvozjudg\",\"sourceConnectionsInfo\":[{\"sourceEntities\":[{},{}],\"connection\":{\"linkedService\":{\"referenceName\":\"tmmxvuzofu\"},\"linkedServiceType\":\"abrsfuvajuzhid\",\"type\":\"linkedservicetype\",\"isInlineDataset\":true,\"commonDslConnectorProperties\":[{}]}},{\"sourceEntities\":[{}],\"connection\":{\"linkedService\":{\"referenceName\":\"dxhfu\"},\"linkedServiceType\":\"x\",\"type\":\"linkedservicetype\",\"isInlineDataset\":false,\"commonDslConnectorProperties\":[{}]}}],\"targetConnectionsInfo\":[{\"targetEntities\":[{}],\"connection\":{\"linkedService\":{\"referenceName\":\"zihrx\"},\"linkedServiceType\":\"ub\",\"type\":\"linkedservicetype\",\"isInlineDataset\":false,\"commonDslConnectorProperties\":[{},{},{},{}]},\"dataMapperMappings\":[{},{}],\"relationships\":[\"datavzpvi\",\"dataqflmalmxvmrd\",\"datafanjk\"]}],\"policy\":{\"mode\":\"rlcjmslpgmebxw\",\"recurrence\":{\"frequency\":\"Second\",\"interval\":236180404}},\"allowVNetOverride\":true,\"status\":\"gakrpmjo\"},\"name\":\"d\",\"type\":\"ij\",\"etag\":\"ibc\",\"\":{\"ctvohywyvstvpksl\":\"datadtf\",\"fnhcklll\":\"datayhabgocqryliv\",\"fvanefwsodnlwon\":\"datagrkvlqqkpxvemj\"},\"id\":\"gqemjdtcx\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DataFactoryManager manager = DataFactoryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DataFactoryManager manager = DataFactoryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ChangeDataCaptureResource response = manager.changeDataCaptures()
+            .getWithResponse("s", "pr", "kjiiivbvkvo", "nos", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        ChangeDataCaptureResource response = manager.changeDataCaptures().getWithResponse("hlqpnddhzmckd",
-            "wmsmhnzmvruqxk", "lo", "pguckpwewepqdco", com.azure.core.util.Context.NONE).getValue();
-
-        Assertions.assertEquals("jyzd", response.id());
-        Assertions.assertEquals("himegpgmug", response.folder().name());
-        Assertions.assertEquals("ds", response.description());
-        Assertions.assertEquals("owa",
+        Assertions.assertEquals("gqemjdtcx", response.id());
+        Assertions.assertEquals("r", response.folder().name());
+        Assertions.assertEquals("nvozjudg", response.description());
+        Assertions.assertEquals("tmmxvuzofu",
             response.sourceConnectionsInfo().get(0).connection().linkedService().referenceName());
-        Assertions.assertEquals("gqmzxyitfbfp",
+        Assertions.assertEquals("abrsfuvajuzhid",
             response.sourceConnectionsInfo().get(0).connection().linkedServiceType());
         Assertions.assertEquals(ConnectionType.LINKEDSERVICETYPE,
             response.sourceConnectionsInfo().get(0).connection().type());
         Assertions.assertEquals(true, response.sourceConnectionsInfo().get(0).connection().isInlineDataset());
-        Assertions.assertEquals("ktauqav",
+        Assertions.assertEquals("zihrx",
             response.targetConnectionsInfo().get(0).connection().linkedService().referenceName());
-        Assertions.assertEquals("lyntvou", response.targetConnectionsInfo().get(0).connection().linkedServiceType());
+        Assertions.assertEquals("ub", response.targetConnectionsInfo().get(0).connection().linkedServiceType());
         Assertions.assertEquals(ConnectionType.LINKEDSERVICETYPE,
             response.targetConnectionsInfo().get(0).connection().type());
         Assertions.assertEquals(false, response.targetConnectionsInfo().get(0).connection().isInlineDataset());
-        Assertions.assertEquals("msqmbdkvsmwbml", response.policy().mode());
+        Assertions.assertEquals("rlcjmslpgmebxw", response.policy().mode());
         Assertions.assertEquals(FrequencyType.SECOND, response.policy().recurrence().frequency());
-        Assertions.assertEquals(1820521308, response.policy().recurrence().interval());
-        Assertions.assertEquals(false, response.allowVNetOverride());
-        Assertions.assertEquals("ltfxpzw", response.status());
+        Assertions.assertEquals(236180404, response.policy().recurrence().interval());
+        Assertions.assertEquals(true, response.allowVNetOverride());
+        Assertions.assertEquals("gakrpmjo", response.status());
     }
 }

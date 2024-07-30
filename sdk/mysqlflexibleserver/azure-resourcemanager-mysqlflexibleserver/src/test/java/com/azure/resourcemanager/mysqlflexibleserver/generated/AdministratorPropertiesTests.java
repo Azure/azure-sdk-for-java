@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AdministratorPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AdministratorProperties model =
-            BinaryData
-                .fromString(
-                    "{\"administratorType\":\"ActiveDirectory\",\"login\":\"muf\",\"sid\":\"wnoi\",\"tenantId\":\"wlrxyb\",\"identityResourceId\":\"oqijgkdmbpaz\"}")
-                .toObject(AdministratorProperties.class);
+        AdministratorProperties model = BinaryData.fromString(
+            "{\"administratorType\":\"ActiveDirectory\",\"login\":\"muf\",\"sid\":\"wnoi\",\"tenantId\":\"wlrxyb\",\"identityResourceId\":\"oqijgkdmbpaz\"}")
+            .toObject(AdministratorProperties.class);
         Assertions.assertEquals(AdministratorType.ACTIVE_DIRECTORY, model.administratorType());
         Assertions.assertEquals("muf", model.login());
         Assertions.assertEquals("wnoi", model.sid());
@@ -26,9 +24,8 @@ public final class AdministratorPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AdministratorProperties model =
-            new AdministratorProperties()
-                .withAdministratorType(AdministratorType.ACTIVE_DIRECTORY)
+        AdministratorProperties model
+            = new AdministratorProperties().withAdministratorType(AdministratorType.ACTIVE_DIRECTORY)
                 .withLogin("muf")
                 .withSid("wnoi")
                 .withTenantId("wlrxyb")

@@ -67,8 +67,8 @@ public final class OSDisk {
     private DiffDiskSettings diffDiskSettings;
 
     /*
-     * Specifies how the virtual machine should be created. Possible values are: **Attach.** This value is used when
-     * you are using a specialized disk to create the virtual machine. **FromImage.** This value is used when you are
+     * Specifies how the virtual machine disk should be created. Possible values are **Attach:** This value is used when
+     * you are using a specialized disk to create the virtual machine. **FromImage:** This value is used when you are
      * using an image to create the virtual machine. If you are using a platform image, you should also use the
      * imageReference element described above. If you are using a marketplace image, you should also use the plan
      * element previously described.
@@ -77,9 +77,9 @@ public final class OSDisk {
     private DiskCreateOptionTypes createOption;
 
     /*
-     * Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the
-     * disk in a virtual machine image. The property 'diskSizeGB' is the number of bytes x 1024^3 for the disk and the
-     * value cannot be larger than 1023.
+     * Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the disk
+     * in a virtual machine image. The property 'diskSizeGB' is the number of bytes x 1024^3 for the disk and the value
+     * cannot be larger than 1023.
      */
     @JsonProperty(value = "diskSizeGB")
     private Integer diskSizeGB;
@@ -93,8 +93,8 @@ public final class OSDisk {
     /*
      * Specifies whether OS Disk should be deleted or detached upon VM deletion. Possible values are: **Delete.** If
      * this value is used, the OS disk is deleted when VM is deleted. **Detach.** If this value is used, the os disk is
-     * retained after VM is deleted. The default value is set to **Detach**. For an ephemeral OS Disk, the default
-     * value is set to **Delete**. The user cannot change the delete option for an ephemeral OS Disk.
+     * retained after VM is deleted. The default value is set to **Detach**. For an ephemeral OS Disk, the default value
+     * is set to **Delete**. The user cannot change the delete option for an ephemeral OS Disk.
      */
     @JsonProperty(value = "deleteOption")
     private DiskDeleteOptionTypes deleteOption;
@@ -236,8 +236,8 @@ public final class OSDisk {
     }
 
     /**
-     * Get the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on
-     * the disk.
+     * Get the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on the
+     * disk.
      * 
      * @return the writeAcceleratorEnabled value.
      */
@@ -246,8 +246,8 @@ public final class OSDisk {
     }
 
     /**
-     * Set the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on
-     * the disk.
+     * Set the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on the
+     * disk.
      * 
      * @param writeAcceleratorEnabled the writeAcceleratorEnabled value to set.
      * @return the OSDisk object itself.
@@ -280,9 +280,9 @@ public final class OSDisk {
     }
 
     /**
-     * Get the createOption property: Specifies how the virtual machine should be created. Possible values are:
-     * **Attach.** This value is used when you are using a specialized disk to create the virtual machine.
-     * **FromImage.** This value is used when you are using an image to create the virtual machine. If you are using a
+     * Get the createOption property: Specifies how the virtual machine disk should be created. Possible values are
+     * **Attach:** This value is used when you are using a specialized disk to create the virtual machine.
+     * **FromImage:** This value is used when you are using an image to create the virtual machine. If you are using a
      * platform image, you should also use the imageReference element described above. If you are using a marketplace
      * image, you should also use the plan element previously described.
      * 
@@ -293,9 +293,9 @@ public final class OSDisk {
     }
 
     /**
-     * Set the createOption property: Specifies how the virtual machine should be created. Possible values are:
-     * **Attach.** This value is used when you are using a specialized disk to create the virtual machine.
-     * **FromImage.** This value is used when you are using an image to create the virtual machine. If you are using a
+     * Set the createOption property: Specifies how the virtual machine disk should be created. Possible values are
+     * **Attach:** This value is used when you are using a specialized disk to create the virtual machine.
+     * **FromImage:** This value is used when you are using an image to create the virtual machine. If you are using a
      * platform image, you should also use the imageReference element described above. If you are using a marketplace
      * image, you should also use the plan element previously described.
      * 
@@ -352,10 +352,10 @@ public final class OSDisk {
     }
 
     /**
-     * Get the deleteOption property: Specifies whether OS Disk should be deleted or detached upon VM deletion.
-     * Possible values are: **Delete.** If this value is used, the OS disk is deleted when VM is deleted. **Detach.**
-     * If this value is used, the os disk is retained after VM is deleted. The default value is set to **Detach**. For
-     * an ephemeral OS Disk, the default value is set to **Delete**. The user cannot change the delete option for an
+     * Get the deleteOption property: Specifies whether OS Disk should be deleted or detached upon VM deletion. Possible
+     * values are: **Delete.** If this value is used, the OS disk is deleted when VM is deleted. **Detach.** If this
+     * value is used, the os disk is retained after VM is deleted. The default value is set to **Detach**. For an
+     * ephemeral OS Disk, the default value is set to **Delete**. The user cannot change the delete option for an
      * ephemeral OS Disk.
      * 
      * @return the deleteOption value.
@@ -365,10 +365,10 @@ public final class OSDisk {
     }
 
     /**
-     * Set the deleteOption property: Specifies whether OS Disk should be deleted or detached upon VM deletion.
-     * Possible values are: **Delete.** If this value is used, the OS disk is deleted when VM is deleted. **Detach.**
-     * If this value is used, the os disk is retained after VM is deleted. The default value is set to **Detach**. For
-     * an ephemeral OS Disk, the default value is set to **Delete**. The user cannot change the delete option for an
+     * Set the deleteOption property: Specifies whether OS Disk should be deleted or detached upon VM deletion. Possible
+     * values are: **Delete.** If this value is used, the OS disk is deleted when VM is deleted. **Detach.** If this
+     * value is used, the os disk is retained after VM is deleted. The default value is set to **Detach**. For an
+     * ephemeral OS Disk, the default value is set to **Delete**. The user cannot change the delete option for an
      * ephemeral OS Disk.
      * 
      * @param deleteOption the deleteOption value to set.
@@ -398,8 +398,8 @@ public final class OSDisk {
             diffDiskSettings().validate();
         }
         if (createOption() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property createOption in model OSDisk"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property createOption in model OSDisk"));
         }
         if (managedDisk() != null) {
             managedDisk().validate();

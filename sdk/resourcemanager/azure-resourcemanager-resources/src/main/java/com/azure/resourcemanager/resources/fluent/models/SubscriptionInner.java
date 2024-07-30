@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Subscription information. */
+/**
+ * Subscription information.
+ */
 @Fluent
 public final class SubscriptionInner {
     /*
@@ -53,8 +55,7 @@ public final class SubscriptionInner {
     private SubscriptionPolicies subscriptionPolicies;
 
     /*
-     * The authorization source of the request. Valid values are one or more combinations of Legacy, RoleBased,
-     * Bypassed, Direct and Management. For example, 'Legacy, RoleBased'.
+     * The authorization source of the request. Valid values are one or more combinations of Legacy, RoleBased, Bypassed, Direct and Management. For example, 'Legacy, RoleBased'.
      */
     @JsonProperty(value = "authorizationSource")
     private String authorizationSource;
@@ -72,14 +73,16 @@ public final class SubscriptionInner {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of SubscriptionInner class. */
+    /**
+     * Creates an instance of SubscriptionInner class.
+     */
     public SubscriptionInner() {
     }
 
     /**
      * Get the id property: The fully qualified ID for the subscription. For example,
      * /subscriptions/8d65815f-a5b6-402f-9298-045155da7d74.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -88,7 +91,7 @@ public final class SubscriptionInner {
 
     /**
      * Get the subscriptionId property: The subscription ID.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -97,7 +100,7 @@ public final class SubscriptionInner {
 
     /**
      * Get the displayName property: The subscription display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -106,7 +109,7 @@ public final class SubscriptionInner {
 
     /**
      * Get the tenantId property: The subscription tenant ID.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -116,7 +119,7 @@ public final class SubscriptionInner {
     /**
      * Get the state property: The subscription state. Possible values are Enabled, Warned, PastDue, Disabled, and
      * Deleted.
-     *
+     * 
      * @return the state value.
      */
     public SubscriptionState state() {
@@ -125,7 +128,7 @@ public final class SubscriptionInner {
 
     /**
      * Get the subscriptionPolicies property: The subscription policies.
-     *
+     * 
      * @return the subscriptionPolicies value.
      */
     public SubscriptionPolicies subscriptionPolicies() {
@@ -134,7 +137,7 @@ public final class SubscriptionInner {
 
     /**
      * Set the subscriptionPolicies property: The subscription policies.
-     *
+     * 
      * @param subscriptionPolicies the subscriptionPolicies value to set.
      * @return the SubscriptionInner object itself.
      */
@@ -146,7 +149,7 @@ public final class SubscriptionInner {
     /**
      * Get the authorizationSource property: The authorization source of the request. Valid values are one or more
      * combinations of Legacy, RoleBased, Bypassed, Direct and Management. For example, 'Legacy, RoleBased'.
-     *
+     * 
      * @return the authorizationSource value.
      */
     public String authorizationSource() {
@@ -156,7 +159,7 @@ public final class SubscriptionInner {
     /**
      * Set the authorizationSource property: The authorization source of the request. Valid values are one or more
      * combinations of Legacy, RoleBased, Bypassed, Direct and Management. For example, 'Legacy, RoleBased'.
-     *
+     * 
      * @param authorizationSource the authorizationSource value to set.
      * @return the SubscriptionInner object itself.
      */
@@ -167,7 +170,7 @@ public final class SubscriptionInner {
 
     /**
      * Get the managedByTenants property: An array containing the tenants managing the subscription.
-     *
+     * 
      * @return the managedByTenants value.
      */
     public List<ManagedByTenant> managedByTenants() {
@@ -176,7 +179,7 @@ public final class SubscriptionInner {
 
     /**
      * Set the managedByTenants property: An array containing the tenants managing the subscription.
-     *
+     * 
      * @param managedByTenants the managedByTenants value to set.
      * @return the SubscriptionInner object itself.
      */
@@ -187,7 +190,7 @@ public final class SubscriptionInner {
 
     /**
      * Get the tags property: The tags attached to the subscription.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -196,7 +199,7 @@ public final class SubscriptionInner {
 
     /**
      * Set the tags property: The tags attached to the subscription.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the SubscriptionInner object itself.
      */
@@ -207,7 +210,7 @@ public final class SubscriptionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

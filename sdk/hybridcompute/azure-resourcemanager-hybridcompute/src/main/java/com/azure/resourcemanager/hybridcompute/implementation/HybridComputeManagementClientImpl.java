@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.hybridcompute.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -12,8 +13,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -22,20 +23,21 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.hybridcompute.fluent.AgentVersionsClient;
 import com.azure.resourcemanager.hybridcompute.fluent.ExtensionMetadatasClient;
+import com.azure.resourcemanager.hybridcompute.fluent.GatewaysClient;
 import com.azure.resourcemanager.hybridcompute.fluent.HybridComputeManagementClient;
-import com.azure.resourcemanager.hybridcompute.fluent.HybridIdentityMetadatasClient;
-import com.azure.resourcemanager.hybridcompute.fluent.LicenseProfilesClient;
 import com.azure.resourcemanager.hybridcompute.fluent.LicensesClient;
 import com.azure.resourcemanager.hybridcompute.fluent.MachineExtensionsClient;
+import com.azure.resourcemanager.hybridcompute.fluent.MachineRunCommandsClient;
 import com.azure.resourcemanager.hybridcompute.fluent.MachinesClient;
 import com.azure.resourcemanager.hybridcompute.fluent.NetworkProfilesClient;
+import com.azure.resourcemanager.hybridcompute.fluent.NetworkSecurityPerimeterConfigurationsClient;
 import com.azure.resourcemanager.hybridcompute.fluent.OperationsClient;
 import com.azure.resourcemanager.hybridcompute.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.hybridcompute.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.hybridcompute.fluent.PrivateLinkScopesClient;
 import com.azure.resourcemanager.hybridcompute.fluent.ResourceProvidersClient;
+import com.azure.resourcemanager.hybridcompute.fluent.SettingsOperationsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -45,231 +47,271 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the HybridComputeManagementClientImpl type. */
+/**
+ * Initializes a new instance of the HybridComputeManagementClientImpl type.
+ */
 @ServiceClient(builder = HybridComputeManagementClientBuilder.class)
 public final class HybridComputeManagementClientImpl implements HybridComputeManagementClient {
-    /** The ID of the target subscription. */
+    /**
+     * The ID of the target subscription.
+     */
     private final String subscriptionId;
 
     /**
      * Gets The ID of the target subscription.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The LicensesClient object to access its operations. */
+    /**
+     * The LicensesClient object to access its operations.
+     */
     private final LicensesClient licenses;
 
     /**
      * Gets the LicensesClient object to access its operations.
-     *
+     * 
      * @return the LicensesClient object.
      */
     public LicensesClient getLicenses() {
         return this.licenses;
     }
 
-    /** The MachinesClient object to access its operations. */
+    /**
+     * The MachinesClient object to access its operations.
+     */
     private final MachinesClient machines;
 
     /**
      * Gets the MachinesClient object to access its operations.
-     *
+     * 
      * @return the MachinesClient object.
      */
     public MachinesClient getMachines() {
         return this.machines;
     }
 
-    /** The LicenseProfilesClient object to access its operations. */
-    private final LicenseProfilesClient licenseProfiles;
-
     /**
-     * Gets the LicenseProfilesClient object to access its operations.
-     *
-     * @return the LicenseProfilesClient object.
+     * The MachineExtensionsClient object to access its operations.
      */
-    public LicenseProfilesClient getLicenseProfiles() {
-        return this.licenseProfiles;
-    }
-
-    /** The MachineExtensionsClient object to access its operations. */
     private final MachineExtensionsClient machineExtensions;
 
     /**
      * Gets the MachineExtensionsClient object to access its operations.
-     *
+     * 
      * @return the MachineExtensionsClient object.
      */
     public MachineExtensionsClient getMachineExtensions() {
         return this.machineExtensions;
     }
 
-    /** The ResourceProvidersClient object to access its operations. */
+    /**
+     * The ResourceProvidersClient object to access its operations.
+     */
     private final ResourceProvidersClient resourceProviders;
 
     /**
      * Gets the ResourceProvidersClient object to access its operations.
-     *
+     * 
      * @return the ResourceProvidersClient object.
      */
     public ResourceProvidersClient getResourceProviders() {
         return this.resourceProviders;
     }
 
-    /** The ExtensionMetadatasClient object to access its operations. */
+    /**
+     * The ExtensionMetadatasClient object to access its operations.
+     */
     private final ExtensionMetadatasClient extensionMetadatas;
 
     /**
      * Gets the ExtensionMetadatasClient object to access its operations.
-     *
+     * 
      * @return the ExtensionMetadatasClient object.
      */
     public ExtensionMetadatasClient getExtensionMetadatas() {
         return this.extensionMetadatas;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The NetworkProfilesClient object to access its operations. */
+    /**
+     * The NetworkProfilesClient object to access its operations.
+     */
     private final NetworkProfilesClient networkProfiles;
 
     /**
      * Gets the NetworkProfilesClient object to access its operations.
-     *
+     * 
      * @return the NetworkProfilesClient object.
      */
     public NetworkProfilesClient getNetworkProfiles() {
         return this.networkProfiles;
     }
 
-    /** The HybridIdentityMetadatasClient object to access its operations. */
-    private final HybridIdentityMetadatasClient hybridIdentityMetadatas;
+    /**
+     * The MachineRunCommandsClient object to access its operations.
+     */
+    private final MachineRunCommandsClient machineRunCommands;
 
     /**
-     * Gets the HybridIdentityMetadatasClient object to access its operations.
-     *
-     * @return the HybridIdentityMetadatasClient object.
+     * Gets the MachineRunCommandsClient object to access its operations.
+     * 
+     * @return the MachineRunCommandsClient object.
      */
-    public HybridIdentityMetadatasClient getHybridIdentityMetadatas() {
-        return this.hybridIdentityMetadatas;
+    public MachineRunCommandsClient getMachineRunCommands() {
+        return this.machineRunCommands;
     }
-
-    /** The AgentVersionsClient object to access its operations. */
-    private final AgentVersionsClient agentVersions;
 
     /**
-     * Gets the AgentVersionsClient object to access its operations.
-     *
-     * @return the AgentVersionsClient object.
+     * The GatewaysClient object to access its operations.
      */
-    public AgentVersionsClient getAgentVersions() {
-        return this.agentVersions;
+    private final GatewaysClient gateways;
+
+    /**
+     * Gets the GatewaysClient object to access its operations.
+     * 
+     * @return the GatewaysClient object.
+     */
+    public GatewaysClient getGateways() {
+        return this.gateways;
     }
 
-    /** The PrivateLinkScopesClient object to access its operations. */
+    /**
+     * The SettingsOperationsClient object to access its operations.
+     */
+    private final SettingsOperationsClient settingsOperations;
+
+    /**
+     * Gets the SettingsOperationsClient object to access its operations.
+     * 
+     * @return the SettingsOperationsClient object.
+     */
+    public SettingsOperationsClient getSettingsOperations() {
+        return this.settingsOperations;
+    }
+
+    /**
+     * The PrivateLinkScopesClient object to access its operations.
+     */
     private final PrivateLinkScopesClient privateLinkScopes;
 
     /**
      * Gets the PrivateLinkScopesClient object to access its operations.
-     *
+     * 
      * @return the PrivateLinkScopesClient object.
      */
     public PrivateLinkScopesClient getPrivateLinkScopes() {
         return this.privateLinkScopes;
     }
 
-    /** The PrivateLinkResourcesClient object to access its operations. */
+    /**
+     * The PrivateLinkResourcesClient object to access its operations.
+     */
     private final PrivateLinkResourcesClient privateLinkResources;
 
     /**
      * Gets the PrivateLinkResourcesClient object to access its operations.
-     *
+     * 
      * @return the PrivateLinkResourcesClient object.
      */
     public PrivateLinkResourcesClient getPrivateLinkResources() {
         return this.privateLinkResources;
     }
 
-    /** The PrivateEndpointConnectionsClient object to access its operations. */
+    /**
+     * The PrivateEndpointConnectionsClient object to access its operations.
+     */
     private final PrivateEndpointConnectionsClient privateEndpointConnections;
 
     /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.
-     *
+     * 
      * @return the PrivateEndpointConnectionsClient object.
      */
     public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
@@ -277,8 +319,22 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
     }
 
     /**
+     * The NetworkSecurityPerimeterConfigurationsClient object to access its operations.
+     */
+    private final NetworkSecurityPerimeterConfigurationsClient networkSecurityPerimeterConfigurations;
+
+    /**
+     * Gets the NetworkSecurityPerimeterConfigurationsClient object to access its operations.
+     * 
+     * @return the NetworkSecurityPerimeterConfigurationsClient object.
+     */
+    public NetworkSecurityPerimeterConfigurationsClient getNetworkSecurityPerimeterConfigurations() {
+        return this.networkSecurityPerimeterConfigurations;
+    }
+
+    /**
      * Initializes an instance of HybridComputeManagementClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -286,37 +342,33 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
      * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
-    HybridComputeManagementClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    HybridComputeManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-06-20-preview";
+        this.apiVersion = "2024-05-20-preview";
         this.licenses = new LicensesClientImpl(this);
         this.machines = new MachinesClientImpl(this);
-        this.licenseProfiles = new LicenseProfilesClientImpl(this);
         this.machineExtensions = new MachineExtensionsClientImpl(this);
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.extensionMetadatas = new ExtensionMetadatasClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.networkProfiles = new NetworkProfilesClientImpl(this);
-        this.hybridIdentityMetadatas = new HybridIdentityMetadatasClientImpl(this);
-        this.agentVersions = new AgentVersionsClientImpl(this);
+        this.machineRunCommands = new MachineRunCommandsClientImpl(this);
+        this.gateways = new GatewaysClientImpl(this);
+        this.settingsOperations = new SettingsOperationsClientImpl(this);
         this.privateLinkScopes = new PrivateLinkScopesClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
+        this.networkSecurityPerimeterConfigurations = new NetworkSecurityPerimeterConfigurationsClientImpl(this);
     }
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -325,7 +377,7 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -335,7 +387,7 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -345,26 +397,15 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -377,19 +418,16 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -430,7 +468,7 @@ public final class HybridComputeManagementClientImpl implements HybridComputeMan
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

@@ -5,50 +5,56 @@
 package com.azure.communication.chat.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Chat thread. */
+/**
+ * Chat thread.
+ */
 @Fluent
-public final class ChatThreadProperties {
+public final class ChatThreadProperties implements JsonSerializable<ChatThreadProperties> {
     /*
      * Chat thread id.
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * Chat thread topic.
      */
-    @JsonProperty(value = "topic", required = true)
     private String topic;
 
     /*
-     * The timestamp when the chat thread was created. The timestamp is in
-     * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * The timestamp when the chat thread was created. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
-    @JsonProperty(value = "createdOn", required = true)
     private OffsetDateTime createdOn;
 
     /*
-     * Identifies a participant in Azure Communication services. A participant
-     * is, for example, a phone number or an Azure communication user. This
-     * model is polymorphic: Apart from kind and rawId, at most one further
-     * property may be set which must match the kind enum value.
+     * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an
+     * Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may
+     * be set which must match the kind enum value.
      */
-    @JsonProperty(value = "createdByCommunicationIdentifier", required = true)
     private CommunicationIdentifierModel createdByCommunicationIdentifier;
 
     /*
-     * The timestamp when the chat thread was deleted. The timestamp is in
-     * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * The timestamp when the chat thread was deleted. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
-    @JsonProperty(value = "deletedOn")
     private OffsetDateTime deletedOn;
 
     /**
+     * Creates an instance of ChatThreadProperties class.
+     */
+    public ChatThreadProperties() {
+    }
+
+    /**
      * Get the id property: Chat thread id.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -57,7 +63,7 @@ public final class ChatThreadProperties {
 
     /**
      * Set the id property: Chat thread id.
-     *
+     * 
      * @param id the id value to set.
      * @return the ChatThreadProperties object itself.
      */
@@ -68,7 +74,7 @@ public final class ChatThreadProperties {
 
     /**
      * Get the topic property: Chat thread topic.
-     *
+     * 
      * @return the topic value.
      */
     public String getTopic() {
@@ -77,7 +83,7 @@ public final class ChatThreadProperties {
 
     /**
      * Set the topic property: Chat thread topic.
-     *
+     * 
      * @param topic the topic value to set.
      * @return the ChatThreadProperties object itself.
      */
@@ -89,7 +95,7 @@ public final class ChatThreadProperties {
     /**
      * Get the createdOn property: The timestamp when the chat thread was created. The timestamp is in RFC3339 format:
      * `yyyy-MM-ddTHH:mm:ssZ`.
-     *
+     * 
      * @return the createdOn value.
      */
     public OffsetDateTime getCreatedOn() {
@@ -99,7 +105,7 @@ public final class ChatThreadProperties {
     /**
      * Set the createdOn property: The timestamp when the chat thread was created. The timestamp is in RFC3339 format:
      * `yyyy-MM-ddTHH:mm:ssZ`.
-     *
+     * 
      * @param createdOn the createdOn value to set.
      * @return the ChatThreadProperties object itself.
      */
@@ -112,7 +118,7 @@ public final class ChatThreadProperties {
      * Get the createdByCommunicationIdentifier property: Identifies a participant in Azure Communication services. A
      * participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart from
      * kind and rawId, at most one further property may be set which must match the kind enum value.
-     *
+     * 
      * @return the createdByCommunicationIdentifier value.
      */
     public CommunicationIdentifierModel getCreatedByCommunicationIdentifier() {
@@ -123,12 +129,12 @@ public final class ChatThreadProperties {
      * Set the createdByCommunicationIdentifier property: Identifies a participant in Azure Communication services. A
      * participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart from
      * kind and rawId, at most one further property may be set which must match the kind enum value.
-     *
+     * 
      * @param createdByCommunicationIdentifier the createdByCommunicationIdentifier value to set.
      * @return the ChatThreadProperties object itself.
      */
-    public ChatThreadProperties setCreatedByCommunicationIdentifier(
-            CommunicationIdentifierModel createdByCommunicationIdentifier) {
+    public ChatThreadProperties
+        setCreatedByCommunicationIdentifier(CommunicationIdentifierModel createdByCommunicationIdentifier) {
         this.createdByCommunicationIdentifier = createdByCommunicationIdentifier;
         return this;
     }
@@ -136,7 +142,7 @@ public final class ChatThreadProperties {
     /**
      * Get the deletedOn property: The timestamp when the chat thread was deleted. The timestamp is in RFC3339 format:
      * `yyyy-MM-ddTHH:mm:ssZ`.
-     *
+     * 
      * @return the deletedOn value.
      */
     public OffsetDateTime getDeletedOn() {
@@ -146,12 +152,66 @@ public final class ChatThreadProperties {
     /**
      * Set the deletedOn property: The timestamp when the chat thread was deleted. The timestamp is in RFC3339 format:
      * `yyyy-MM-ddTHH:mm:ssZ`.
-     *
+     * 
      * @param deletedOn the deletedOn value to set.
      * @return the ChatThreadProperties object itself.
      */
     public ChatThreadProperties setDeletedOn(OffsetDateTime deletedOn) {
         this.deletedOn = deletedOn;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("topic", this.topic);
+        jsonWriter.writeStringField("createdOn",
+            this.createdOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdOn));
+        jsonWriter.writeJsonField("createdByCommunicationIdentifier", this.createdByCommunicationIdentifier);
+        jsonWriter.writeStringField("deletedOn",
+            this.deletedOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.deletedOn));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChatThreadProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChatThreadProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ChatThreadProperties.
+     */
+    public static ChatThreadProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChatThreadProperties deserializedChatThreadProperties = new ChatThreadProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedChatThreadProperties.id = reader.getString();
+                } else if ("topic".equals(fieldName)) {
+                    deserializedChatThreadProperties.topic = reader.getString();
+                } else if ("createdOn".equals(fieldName)) {
+                    deserializedChatThreadProperties.createdOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("createdByCommunicationIdentifier".equals(fieldName)) {
+                    deserializedChatThreadProperties.createdByCommunicationIdentifier
+                        = CommunicationIdentifierModel.fromJson(reader);
+                } else if ("deletedOn".equals(fieldName)) {
+                    deserializedChatThreadProperties.deletedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedChatThreadProperties;
+        });
     }
 }

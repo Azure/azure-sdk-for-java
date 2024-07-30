@@ -15,6 +15,7 @@ import com.azure.resourcemanager.compute.models.Plan;
 import com.azure.resourcemanager.compute.models.PriorityMixPolicy;
 import com.azure.resourcemanager.compute.models.ResiliencyPolicy;
 import com.azure.resourcemanager.compute.models.ScaleInPolicy;
+import com.azure.resourcemanager.compute.models.ScheduledEventsPolicy;
 import com.azure.resourcemanager.compute.models.Sku;
 import com.azure.resourcemanager.compute.models.SpotRestorePolicy;
 import com.azure.resourcemanager.compute.models.UpgradePolicy;
@@ -70,8 +71,8 @@ public final class VirtualMachineScaleSetInner extends Resource {
     private ExtendedLocation extendedLocation;
 
     /*
-     * Etag is property returned in Create/Update/Get response of the VMSS, so that customer can supply it in the
-     * header to ensure optimistic updates
+     * Etag is property returned in Create/Update/Get response of the VMSS, so that customer can supply it in the header
+     * to ensure optimistic updates
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
@@ -103,10 +104,10 @@ public final class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Get the plan property: Specifies information about the marketplace image used to create the virtual machine.
-     * This element is only used for marketplace images. Before you can use a marketplace image from an API, you must
-     * enable the image for programmatic use. In the Azure portal, find the marketplace image that you want to use and
-     * then click **Want to deploy programmatically, Get Started -&gt;**. Enter any required information and then click
+     * Get the plan property: Specifies information about the marketplace image used to create the virtual machine. This
+     * element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable
+     * the image for programmatic use. In the Azure portal, find the marketplace image that you want to use and then
+     * click **Want to deploy programmatically, Get Started -&gt;**. Enter any required information and then click
      * **Save**.
      * 
      * @return the plan value.
@@ -116,10 +117,10 @@ public final class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Set the plan property: Specifies information about the marketplace image used to create the virtual machine.
-     * This element is only used for marketplace images. Before you can use a marketplace image from an API, you must
-     * enable the image for programmatic use. In the Azure portal, find the marketplace image that you want to use and
-     * then click **Want to deploy programmatically, Get Started -&gt;**. Enter any required information and then click
+     * Set the plan property: Specifies information about the marketplace image used to create the virtual machine. This
+     * element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable
+     * the image for programmatic use. In the Azure portal, find the marketplace image that you want to use and then
+     * click **Want to deploy programmatically, Get Started -&gt;**. Enter any required information and then click
      * **Save**.
      * 
      * @param plan the plan value to set.
@@ -249,6 +250,29 @@ public final class VirtualMachineScaleSetInner extends Resource {
             this.innerProperties = new VirtualMachineScaleSetProperties();
         }
         this.innerProperties().withUpgradePolicy(upgradePolicy);
+        return this;
+    }
+
+    /**
+     * Get the scheduledEventsPolicy property: The ScheduledEventsPolicy.
+     * 
+     * @return the scheduledEventsPolicy value.
+     */
+    public ScheduledEventsPolicy scheduledEventsPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().scheduledEventsPolicy();
+    }
+
+    /**
+     * Set the scheduledEventsPolicy property: The ScheduledEventsPolicy.
+     * 
+     * @param scheduledEventsPolicy the scheduledEventsPolicy value to set.
+     * @return the VirtualMachineScaleSetInner object itself.
+     */
+    public VirtualMachineScaleSetInner withScheduledEventsPolicy(ScheduledEventsPolicy scheduledEventsPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetProperties();
+        }
+        this.innerProperties().withScheduledEventsPolicy(scheduledEventsPolicy);
         return this;
     }
 
@@ -594,8 +618,8 @@ public final class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Get the priorityMixPolicy property: Specifies the desired targets for mixing Spot and Regular priority VMs
-     * within the same VMSS Flex instance.
+     * Get the priorityMixPolicy property: Specifies the desired targets for mixing Spot and Regular priority VMs within
+     * the same VMSS Flex instance.
      * 
      * @return the priorityMixPolicy value.
      */
@@ -604,8 +628,8 @@ public final class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Set the priorityMixPolicy property: Specifies the desired targets for mixing Spot and Regular priority VMs
-     * within the same VMSS Flex instance.
+     * Set the priorityMixPolicy property: Specifies the desired targets for mixing Spot and Regular priority VMs within
+     * the same VMSS Flex instance.
      * 
      * @param priorityMixPolicy the priorityMixPolicy value to set.
      * @return the VirtualMachineScaleSetInner object itself.

@@ -15,8 +15,8 @@ import com.azure.resourcemanager.netapp.models.WeeklySchedule;
  */
 public final class SnapshotPoliciesUpdateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/
-     * SnapshotPolicies_Update.json
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/SnapshotPolicies_Update.json
      */
     /**
      * Sample code: SnapshotPolicies_Update.
@@ -25,13 +25,16 @@ public final class SnapshotPoliciesUpdateSamples {
      */
     public static void snapshotPoliciesUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
         SnapshotPolicy resource = manager.snapshotPolicies()
-            .getWithResponse("myRG", "account1", "snapshotPolicyName", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withHourlySchedule(new HourlySchedule().withSnapshotsToKeep(2).withMinute(50))
+            .getWithResponse("myRG", "account1", "snapshotPolicyName", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withHourlySchedule(new HourlySchedule().withSnapshotsToKeep(2).withMinute(50))
             .withDailySchedule(new DailySchedule().withSnapshotsToKeep(4).withHour(14).withMinute(30))
             .withWeeklySchedule(
                 new WeeklySchedule().withSnapshotsToKeep(3).withDay("Wednesday").withHour(14).withMinute(45))
             .withMonthlySchedule(
                 new MonthlySchedule().withSnapshotsToKeep(5).withDaysOfMonth("10,11,12").withHour(14).withMinute(15))
-            .withEnabled(true).apply();
+            .withEnabled(true)
+            .apply();
     }
 }

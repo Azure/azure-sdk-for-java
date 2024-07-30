@@ -52,8 +52,8 @@ public class ErrorInfo {
      */
     public void validate() {
         if (code() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property code in model ErrorInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property code in model ErrorInfo"));
         }
     }
 

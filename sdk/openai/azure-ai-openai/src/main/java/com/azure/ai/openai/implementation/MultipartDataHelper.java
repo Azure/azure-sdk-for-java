@@ -4,6 +4,7 @@
 package com.azure.ai.openai.implementation;
 
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
+import com.azure.ai.openai.models.AudioTranscriptionTimestampGranularity;
 import com.azure.ai.openai.models.AudioTranslationOptions;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
@@ -195,6 +196,16 @@ public class MultipartDataHelper {
             fields.add(new MultipartField("language",
                 audioTranscriptionOptions.getLanguage()));
         }
+
+
+        List<AudioTranscriptionTimestampGranularity> timestampGranularities =
+                audioTranscriptionOptions.getTimestampGranularities();
+        if (timestampGranularities != null) {
+            for (AudioTranscriptionTimestampGranularity timestampGranularity : timestampGranularities) {
+                fields.add(new MultipartField("timestamp_granularities[]", timestampGranularity.toString()));
+            }
+        }
+
         return fields;
     }
 

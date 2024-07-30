@@ -7,18 +7,28 @@ package com.azure.resourcemanager.mobilenetwork.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** The core network technology generation (5G core, EPC / 4G core or EPC / 4G + 5G core). */
+/**
+ * The core network technology generation (5G core, EPC / 4G core or EPC / 4G + 5G core).
+ */
 public enum CoreNetworkType {
-    /** Enum value 5GC. */
+    /**
+     * Enum value 5GC.
+     */
     FIVE_GC("5GC"),
 
-    /** Enum value EPC. */
+    /**
+     * Enum value EPC.
+     */
     EPC("EPC"),
 
-    /** Enum value EPC + 5GC. */
+    /**
+     * Enum value EPC + 5GC.
+     */
     EPC_5GC("EPC + 5GC");
 
-    /** The actual serialized value for a CoreNetworkType instance. */
+    /**
+     * The actual serialized value for a CoreNetworkType instance.
+     */
     private final String value;
 
     CoreNetworkType(String value) {
@@ -27,7 +37,7 @@ public enum CoreNetworkType {
 
     /**
      * Parses a serialized value to a CoreNetworkType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed CoreNetworkType object, or null if unable to parse.
      */
@@ -45,7 +55,9 @@ public enum CoreNetworkType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

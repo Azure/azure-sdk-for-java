@@ -14,7 +14,7 @@ import com.azure.resourcemanager.network.models.VerificationIpFlowParameters;
 public final class NetworkWatchersVerifyIpFlowSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkWatcherIpFlowVerify.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkWatcherIpFlowVerify.
      * json
      */
     /**
@@ -23,12 +23,20 @@ public final class NetworkWatchersVerifyIpFlowSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void ipFlowVerify(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getNetworkWatchers().verifyIpFlow("rg1", "nw1",
-            new VerificationIpFlowParameters()
-                .withTargetResourceId(
-                    "/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Compute/virtualMachines/vm1")
-                .withDirection(Direction.OUTBOUND).withProtocol(IpFlowProtocol.TCP).withLocalPort("80")
-                .withRemotePort("80").withLocalIpAddress("10.2.0.4").withRemoteIpAddress("121.10.1.1"),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getNetworkWatchers()
+            .verifyIpFlow("rg1", "nw1",
+                new VerificationIpFlowParameters()
+                    .withTargetResourceId(
+                        "/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Compute/virtualMachines/vm1")
+                    .withDirection(Direction.OUTBOUND)
+                    .withProtocol(IpFlowProtocol.TCP)
+                    .withLocalPort("80")
+                    .withRemotePort("80")
+                    .withLocalIpAddress("10.2.0.4")
+                    .withRemoteIpAddress("121.10.1.1"),
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -116,7 +116,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
             @PathParam("snapshotName") String snapshotName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") Object body, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/snapshots/{snapshotName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -125,9 +125,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
             @PathParam("snapshotName") String snapshotName, @QueryParam("api-version") String apiVersion,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/snapshots/{snapshotName}/restoreFiles")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -136,7 +136,8 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
             @PathParam("snapshotName") String snapshotName, @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SnapshotRestoreFiles body, Context context);
+            @BodyParam("application/json") SnapshotRestoreFiles body, @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -739,7 +740,8 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     private Mono<SnapshotInner> createAsync(String resourceGroupName, String accountName, String poolName,
         String volumeName, String snapshotName, SnapshotInner body, Context context) {
         return beginCreateAsync(resourceGroupName, accountName, poolName, volumeName, snapshotName, body, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1037,7 +1039,8 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     private Mono<SnapshotInner> updateAsync(String resourceGroupName, String accountName, String poolName,
         String volumeName, String snapshotName, Object body, Context context) {
         return beginUpdateAsync(resourceGroupName, accountName, poolName, volumeName, snapshotName, body, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1127,10 +1130,11 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
         if (snapshotName == null) {
             return Mono.error(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                    accountName, poolName, volumeName, snapshotName, this.client.getApiVersion(), context))
+                    accountName, poolName, volumeName, snapshotName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1177,9 +1181,10 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
         if (snapshotName == null) {
             return Mono.error(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, poolName, volumeName, snapshotName, this.client.getApiVersion(), context);
+            accountName, poolName, volumeName, snapshotName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1411,10 +1416,11 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
         } else {
             body.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.restoreFiles(this.client.getEndpoint(), this.client.getSubscriptionId(),
                 resourceGroupName, accountName, poolName, volumeName, snapshotName, this.client.getApiVersion(), body,
-                context))
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1467,9 +1473,10 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
         } else {
             body.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.restoreFiles(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, poolName, volumeName, snapshotName, this.client.getApiVersion(), body, context);
+            accountName, poolName, volumeName, snapshotName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -1616,7 +1623,8 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     private Mono<Void> restoreFilesAsync(String resourceGroupName, String accountName, String poolName,
         String volumeName, String snapshotName, SnapshotRestoreFiles body, Context context) {
         return beginRestoreFilesAsync(resourceGroupName, accountName, poolName, volumeName, snapshotName, body, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

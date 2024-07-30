@@ -31,7 +31,7 @@ public final class BatchAccountsListOutboundNetworkDependenciesEndpointsMockTest
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"category\":\"gofel\",\"endpoints\":[{\"domainName\":\"qmqhldvriii\",\"description\":\"nalghfkvtvsexso\",\"endpointDetails\":[{\"port\":750613603}]},{\"domainName\":\"hhahhxvrhmzkwpjg\",\"description\":\"spughftqsxhq\",\"endpointDetails\":[{\"port\":1043594418}]},{\"domainName\":\"ndxdigrjguufzdm\",\"description\":\"qtfihwhbotzinga\",\"endpointDetails\":[{\"port\":313573135}]}]}]}";
+            = "{\"value\":[{\"category\":\"wkqnyhg\",\"endpoints\":[{\"domainName\":\"jivfxzsjabib\",\"description\":\"stawfsdjpvkv\",\"endpointDetails\":[{\"port\":1731157683},{\"port\":2005315516},{\"port\":2094987442}]}]}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -48,8 +48,9 @@ public final class BatchAccountsListOutboundNetworkDependenciesEndpointsMockTest
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<OutboundEnvironmentEndpoint> response = manager.batchAccounts()
-            .listOutboundNetworkDependenciesEndpoints("jylwbtlhflsj", "dhszfjv", com.azure.core.util.Context.NONE);
+        PagedIterable<OutboundEnvironmentEndpoint> response
+            = manager.batchAccounts().listOutboundNetworkDependenciesEndpoints("bdeibqipqk", "hvxndzwmkrefajpj",
+                com.azure.core.util.Context.NONE);
 
     }
 }

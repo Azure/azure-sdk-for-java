@@ -14,22 +14,24 @@ public final class PipelineExternalComputeScalePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PipelineExternalComputeScaleProperties model = BinaryData.fromString(
-            "{\"timeToLive\":1340072376,\"numberOfPipelineNodes\":536369061,\"numberOfExternalNodes\":1689303593,\"\":{\"toiwfsz\":\"dataipdjxyotgvraxh\",\"etsluqfgk\":\"datarlkosjwr\",\"imioixviobuwbnge\":\"datad\",\"gqamhbmggnqxnex\":\"datawhdq\"}}")
+            "{\"timeToLive\":429210484,\"numberOfPipelineNodes\":1775001304,\"numberOfExternalNodes\":1618538006,\"\":{\"ksznf\":\"databxsnx\"}}")
             .toObject(PipelineExternalComputeScaleProperties.class);
-        Assertions.assertEquals(1340072376, model.timeToLive());
-        Assertions.assertEquals(536369061, model.numberOfPipelineNodes());
-        Assertions.assertEquals(1689303593, model.numberOfExternalNodes());
+        Assertions.assertEquals(429210484, model.timeToLive());
+        Assertions.assertEquals(1775001304, model.numberOfPipelineNodes());
+        Assertions.assertEquals(1618538006, model.numberOfExternalNodes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PipelineExternalComputeScaleProperties model = new PipelineExternalComputeScaleProperties()
-            .withTimeToLive(1340072376).withNumberOfPipelineNodes(536369061).withNumberOfExternalNodes(1689303593)
-            .withAdditionalProperties(mapOf());
+        PipelineExternalComputeScaleProperties model
+            = new PipelineExternalComputeScaleProperties().withTimeToLive(429210484)
+                .withNumberOfPipelineNodes(1775001304)
+                .withNumberOfExternalNodes(1618538006)
+                .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(PipelineExternalComputeScaleProperties.class);
-        Assertions.assertEquals(1340072376, model.timeToLive());
-        Assertions.assertEquals(536369061, model.numberOfPipelineNodes());
-        Assertions.assertEquals(1689303593, model.numberOfExternalNodes());
+        Assertions.assertEquals(429210484, model.timeToLive());
+        Assertions.assertEquals(1775001304, model.numberOfPipelineNodes());
+        Assertions.assertEquals(1618538006, model.numberOfExternalNodes());
     }
 
     // Use "Map.of" if available

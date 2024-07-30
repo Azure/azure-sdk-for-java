@@ -1,0 +1,11 @@
+[ {
+  "name" : "com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseError",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+} ]

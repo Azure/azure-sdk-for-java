@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Defines the parameters for RequestMethod match conditions. */
+/**
+ * Defines the parameters for RequestMethod match conditions.
+ */
 @Fluent
 public final class RequestMethodMatchConditionParameters {
     /*
@@ -42,14 +44,15 @@ public final class RequestMethodMatchConditionParameters {
     @JsonProperty(value = "matchValues")
     private List<RequestMethodMatchConditionParametersMatchValuesItem> matchValues;
 
-    /** Creates an instance of RequestMethodMatchConditionParameters class. */
+    /**
+     * Creates an instance of RequestMethodMatchConditionParameters class.
+     */
     public RequestMethodMatchConditionParameters() {
-        typeName = "DeliveryRuleRequestMethodConditionParameters";
     }
 
     /**
      * Get the typeName property: The typeName property.
-     *
+     * 
      * @return the typeName value.
      */
     public String typeName() {
@@ -58,7 +61,7 @@ public final class RequestMethodMatchConditionParameters {
 
     /**
      * Set the typeName property: The typeName property.
-     *
+     * 
      * @param typeName the typeName value to set.
      * @return the RequestMethodMatchConditionParameters object itself.
      */
@@ -69,7 +72,7 @@ public final class RequestMethodMatchConditionParameters {
 
     /**
      * Get the operator property: Describes operator to be matched.
-     *
+     * 
      * @return the operator value.
      */
     public RequestMethodOperator operator() {
@@ -78,7 +81,7 @@ public final class RequestMethodMatchConditionParameters {
 
     /**
      * Set the operator property: Describes operator to be matched.
-     *
+     * 
      * @param operator the operator value to set.
      * @return the RequestMethodMatchConditionParameters object itself.
      */
@@ -89,7 +92,7 @@ public final class RequestMethodMatchConditionParameters {
 
     /**
      * Get the negateCondition property: Describes if this is negate condition or not.
-     *
+     * 
      * @return the negateCondition value.
      */
     public Boolean negateCondition() {
@@ -98,7 +101,7 @@ public final class RequestMethodMatchConditionParameters {
 
     /**
      * Set the negateCondition property: Describes if this is negate condition or not.
-     *
+     * 
      * @param negateCondition the negateCondition value to set.
      * @return the RequestMethodMatchConditionParameters object itself.
      */
@@ -109,7 +112,7 @@ public final class RequestMethodMatchConditionParameters {
 
     /**
      * Get the transforms property: List of transforms.
-     *
+     * 
      * @return the transforms value.
      */
     public List<Transform> transforms() {
@@ -118,7 +121,7 @@ public final class RequestMethodMatchConditionParameters {
 
     /**
      * Set the transforms property: List of transforms.
-     *
+     * 
      * @param transforms the transforms value to set.
      * @return the RequestMethodMatchConditionParameters object itself.
      */
@@ -129,7 +132,7 @@ public final class RequestMethodMatchConditionParameters {
 
     /**
      * Get the matchValues property: The match value for the condition of the delivery rule.
-     *
+     * 
      * @return the matchValues value.
      */
     public List<RequestMethodMatchConditionParametersMatchValuesItem> matchValues() {
@@ -138,27 +141,25 @@ public final class RequestMethodMatchConditionParameters {
 
     /**
      * Set the matchValues property: The match value for the condition of the delivery rule.
-     *
+     * 
      * @param matchValues the matchValues value to set.
      * @return the RequestMethodMatchConditionParameters object itself.
      */
-    public RequestMethodMatchConditionParameters withMatchValues(
-        List<RequestMethodMatchConditionParametersMatchValuesItem> matchValues) {
+    public RequestMethodMatchConditionParameters
+        withMatchValues(List<RequestMethodMatchConditionParametersMatchValuesItem> matchValues) {
         this.matchValues = matchValues;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (operator() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property operator in model RequestMethodMatchConditionParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property operator in model RequestMethodMatchConditionParameters"));
         }
     }
 

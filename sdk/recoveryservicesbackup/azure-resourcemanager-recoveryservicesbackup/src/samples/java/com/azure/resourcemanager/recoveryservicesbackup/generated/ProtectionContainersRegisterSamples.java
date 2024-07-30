@@ -13,9 +13,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementT
  */
 public final class ProtectionContainersRegisterSamples {
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * AzureStorage/ProtectionContainers_Register.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/AzureStorage/ProtectionContainers_Register.json
      */
     /**
      * Sample code: RegisterAzure Storage ProtectionContainers.
@@ -24,8 +22,10 @@ public final class ProtectionContainersRegisterSamples {
      */
     public static void registerAzureStorageProtectionContainers(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.protectionContainers().define("StorageContainer;Storage;SwaggerTestRg;swaggertestsa")
-            .withRegion((String) null).withExistingBackupFabric("swaggertestvault", "SwaggerTestRg", "Azure")
+        manager.protectionContainers()
+            .define("StorageContainer;Storage;SwaggerTestRg;swaggertestsa")
+            .withRegion((String) null)
+            .withExistingBackupFabric("swaggertestvault", "SwaggerTestRg", "Azure")
             .withProperties(new AzureStorageContainer().withFriendlyName("swaggertestsa")
                 .withBackupManagementType(BackupManagementType.AZURE_STORAGE)
                 .withSourceResourceId(

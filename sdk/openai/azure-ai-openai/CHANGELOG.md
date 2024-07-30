@@ -1,14 +1,119 @@
 # Release History
 
-## 1.0.0-beta.8 (Unreleased)
+## 1.0.0-beta.11 (Unreleased)
 
 ### Features Added
+- Added a new overload `getImageGenerationsWithResponse` that takes `RequestOptions` to provide the flexibility to
+  modify the HTTP request.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.10 (2024-07-02)
+
+### Bugs Fixed
+
+- Fixed a bug during the serialization and deserialization of the `content` property in the `ChatRequestUserMessage`. ([#40687](https://github.com/Azure/azure-sdk-for-java/pull/40687))
+
+
+## 1.0.0-beta.9 (2024-06-06)
+
+### Features Added
+
+- Added support for service API versions, `2024-04-01-preview` and `2024-05-01-preview`. 
+- Note that `AOAI` refers to Azure OpenAI and `OAI` refers to OpenAI.
+- Added timestamp granularity to Whisper transcription; this is an array of enumerated string values
+  (word and/or segment) that controls which, if any, timestamp information is emitted to transcription results.
+  - `AudioTranscriptionTimestampGranularity` enum to represent the timestamp granularity options for Whisper transcription.
+  - `AudioTranscriptionWord` class to represent the word timestamp information in the transcription results.
+- Added two new audio formats, `wav` and `pcm`, to the `SpeechGenerationResponseFormat` enum.
+
+*AOAI ONLY*
+
+- Added a new RAI content filter schema type, `ContentFilterDetailedResults`, that features:
+    - The boolean `filtered` property from `ContentFilterResult`.
+    - An array named `details` of the existing `ContentFilterBlocklistIdResult` type, each of which has:
+      - The base boolean `filtered`
+      - A string `id`
+- Added a new property `indirectAttack` in `ContentFilterResultDetailsForPrompt` class to represent the indirect attack results.
+- Added a new property `custom_blocklists` in `ImageGenerationPromptFilterResults` class to represent the prompt filter results.
+
+**On Your Data**
+
+- New string enum type used in options: `OnYourDataContextProperty`: "citations" | "intent" | "allRetrievedDocuments"
+  - This is used in arrays like a bitmasked flag; "give me citations and documents" == `[ "citations", "allRetrievedDocuments" ]`
+  - It's not dissimilar to how transcription uses `timestamp_granularities[]`
+- New model type used in response extensions: `retrievedDocument`
+  - Inherits from existing `citation`
+  - Required properties: `content` (string, inherited), `search_queries` (array of strings), `data_source_index` (int32), `original_search_score` (double)
+  - Optional properties: `title`, `url`, `filepath`, `chunk_id` (all strings inherited from `citation`); `re_rank_score` (double)
+- New options fields for chat extension parameters (request options):
+  - `max_search_queries` (optional int32)
+  - `allow_partial_result` (optional boolean)
+  - `include_contexts` (optional array of the above `OnYourDataContextProperty` enum (effective flag selection))
+  - Affected `*parameters` types:
+    - `AzureSearchChatExtensionParameters`
+    - `AzureMachineLearningIndexChatExtensionParameters`
+    - `AzureCosmosDBChatExtensionParameters`
+    - `ElasticsearchChatExtensionParameters`
+    - `PineconeChatExtensionParameters`
+- Vectorization source types have a new `dimensions` property (optional int32)
+    - Affected: `OnYourDataEndpointVectorizationSource`, `OnYourDataDeploymentNameVectorizationSource`
+- `AzureSearchChatExtensionParameters` now supports `OnYourDataAccessTokenAuthenticationOptions` in its named `authentication` field
+- `OnYourDataEndpointVectorizationSource` now supports `OnYourDataAccessTokenAuthenticationOptions` for its named `authentication` field.
+- Added new class `OnYourDataVectorSearchAuthenticationType`, `OnYourDataVectorSearchAuthenticationOptions`,
+  `OnYourDataVectorSearchApiKeyAuthenticationOptions`, `OnYourDataVectorSearchAccessTokenAuthenticationOptions` for the
+  vector search authentication options.
+- The response extension type `AzureChatExtensionsMessageContext` has a new `all_retrieved_documents` field, which is an optional array of the new `retrievedDocument` type defined earlier.
+
+### Breaking Changes
+
+- Replaced Jackson Databind annotations with `azure-json` functionality for OpenAI service models.
+- [AOAI] Added a new class `ContentFilterDetailedResults` to represent detailed content filter results, which replaces the
+  `customBlocklists` response property type, `List<ContentFilterBlocklistIdResult>` in 
+  `ContentFilterResultDetailsForPrompt` and `ContentFilterResultsForChoice` class.
+- [AOAI] Replaced `OnYourDataAuthenticationOptions` with `OnYourDataVectorSearchAuthenticationOptions` in the `OnYourDataEndpointVectorizationSource` class.
+  Currently, `OnYourDataEndpointVectorizationSource` only supports `OnYourDataApiKeyAuthenticationOptions` and `OnYourDataAccessTokenAuthenticationOptions` as authentication options.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to version `1.49.1`.
+- Upgraded `azure-core-http-netty` to version `1.15.1`.
+
+
+## 1.0.0-beta.8 (2024-04-09)
+
+### Features Added
+
+- Added support for service API version, `2024-03-01-preview`.
+- Added a new property to `EmbeddingOptions`:
+  - `dimensions`, which is only supported in models `text-embedding-3-*` and above.
+- Added a new method to get base64 encoded string in `EmbeddingItem` class:
+  - `getEmbeddingAsString` method returns the embedding as a base64 encoded string.
+- Added a new overload `getChatCompletionsStreamWithResponse` that takes `RequestOptions` to provide the flexibility to
+  modify the HTTP request.
+
+### Breaking Changes
+
+- Replace return type `List<Double>` with `List<Float>` of `getEmbedding` method in `EmbeddingItem` class.
+
+### Bugs Fixed
+
+- A bugs fixed in Azure Core SDK that solves where text/event-stream content type wasn't being handled correctly.
+  Replaced content type exact match equal by 'startwith'. ([#39204](https://github.com/Azure/azure-sdk-for-java/pull/39204))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
+
 
 ## 1.0.0-beta.7 (2024-03-04)
 

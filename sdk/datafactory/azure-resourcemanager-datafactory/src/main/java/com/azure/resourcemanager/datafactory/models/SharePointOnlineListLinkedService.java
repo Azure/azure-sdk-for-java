@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.SharePointOnlineListLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,21 @@ import java.util.Map;
 /**
  * SharePoint Online List linked service.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = SharePointOnlineListLinkedService.class,
+    visible = true)
 @JsonTypeName("SharePointOnlineList")
 @Fluent
 public final class SharePointOnlineListLinkedService extends LinkedService {
+    /*
+     * Type of linked service.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "SharePointOnlineList";
+
     /*
      * SharePoint Online List linked service properties.
      */
@@ -31,6 +43,16 @@ public final class SharePointOnlineListLinkedService extends LinkedService {
      * Creates an instance of SharePointOnlineListLinkedService class.
      */
     public SharePointOnlineListLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -156,8 +178,8 @@ public final class SharePointOnlineListLinkedService extends LinkedService {
     }
 
     /**
-     * Get the servicePrincipalKey property: The client secret of your application registered in Azure Active
-     * Directory. Type: string (or Expression with resultType string).
+     * Get the servicePrincipalKey property: The client secret of your application registered in Azure Active Directory.
+     * Type: string (or Expression with resultType string).
      * 
      * @return the servicePrincipalKey value.
      */
@@ -166,8 +188,8 @@ public final class SharePointOnlineListLinkedService extends LinkedService {
     }
 
     /**
-     * Set the servicePrincipalKey property: The client secret of your application registered in Azure Active
-     * Directory. Type: string (or Expression with resultType string).
+     * Set the servicePrincipalKey property: The client secret of your application registered in Azure Active Directory.
+     * Type: string (or Expression with resultType string).
      * 
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the SharePointOnlineListLinkedService object itself.
@@ -181,8 +203,8 @@ public final class SharePointOnlineListLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -191,8 +213,8 @@ public final class SharePointOnlineListLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SharePointOnlineListLinkedService object itself.
@@ -214,8 +236,9 @@ public final class SharePointOnlineListLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model SharePointOnlineListLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model SharePointOnlineListLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

@@ -52,7 +52,10 @@ public enum ComputeNodeState {
     OFFLINE("offline"),
 
     /** The Spot/Low-priority Compute Node has been preempted. Tasks which were running on the Compute Node when it was preempted will be rescheduled when another Compute Node becomes available. */
-    PREEMPTED("preempted");
+    PREEMPTED("preempted"),
+
+    /** The Compute Node is undergoing an OS upgrade operation. */
+    UPGRADING_OS("upgradingos");
 
     /** The actual serialized value for a ComputeNodeState instance. */
     private String value;

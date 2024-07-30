@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.PacketCaptureFilter;
 import com.azure.resourcemanager.network.models.PacketCaptureMachineScope;
+import com.azure.resourcemanager.network.models.PacketCaptureSettings;
 import com.azure.resourcemanager.network.models.PacketCaptureStorageLocation;
 import com.azure.resourcemanager.network.models.PacketCaptureTargetType;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -40,8 +41,8 @@ public final class PacketCaptureInner {
     }
 
     /**
-     * Get the target property: The ID of the targeted resource, only AzureVM and AzureVMSS as target type are
-     * currently supported.
+     * Get the target property: The ID of the targeted resource, only AzureVM and AzureVMSS as target type are currently
+     * supported.
      * 
      * @return the target value.
      */
@@ -50,8 +51,8 @@ public final class PacketCaptureInner {
     }
 
     /**
-     * Set the target property: The ID of the targeted resource, only AzureVM and AzureVMSS as target type are
-     * currently supported.
+     * Set the target property: The ID of the targeted resource, only AzureVM and AzureVMSS as target type are currently
+     * supported.
      * 
      * @param target the target value to set.
      * @return the PacketCaptureInner object itself.
@@ -65,8 +66,8 @@ public final class PacketCaptureInner {
     }
 
     /**
-     * Get the scope property: A list of AzureVMSS instances which can be included or excluded to run packet capture.
-     * If both included and excluded are empty, then the packet capture will run on all instances of AzureVMSS.
+     * Get the scope property: A list of AzureVMSS instances which can be included or excluded to run packet capture. If
+     * both included and excluded are empty, then the packet capture will run on all instances of AzureVMSS.
      * 
      * @return the scope value.
      */
@@ -75,8 +76,8 @@ public final class PacketCaptureInner {
     }
 
     /**
-     * Set the scope property: A list of AzureVMSS instances which can be included or excluded to run packet capture.
-     * If both included and excluded are empty, then the packet capture will run on all instances of AzureVMSS.
+     * Set the scope property: A list of AzureVMSS instances which can be included or excluded to run packet capture. If
+     * both included and excluded are empty, then the packet capture will run on all instances of AzureVMSS.
      * 
      * @param scope the scope value to set.
      * @return the PacketCaptureInner object itself.
@@ -113,8 +114,7 @@ public final class PacketCaptureInner {
     }
 
     /**
-     * Get the bytesToCapturePerPacket property: Number of bytes captured per packet, the remaining bytes are
-     * truncated.
+     * Get the bytesToCapturePerPacket property: Number of bytes captured per packet, the remaining bytes are truncated.
      * 
      * @return the bytesToCapturePerPacket value.
      */
@@ -123,8 +123,7 @@ public final class PacketCaptureInner {
     }
 
     /**
-     * Set the bytesToCapturePerPacket property: Number of bytes captured per packet, the remaining bytes are
-     * truncated.
+     * Set the bytesToCapturePerPacket property: Number of bytes captured per packet, the remaining bytes are truncated.
      * 
      * @param bytesToCapturePerPacket the bytesToCapturePerPacket value to set.
      * @return the PacketCaptureInner object itself.
@@ -230,14 +229,65 @@ public final class PacketCaptureInner {
     }
 
     /**
+     * Get the continuousCapture property: This continuous capture is a nullable boolean, which can hold 'null', 'true'
+     * or 'false' value. If we do not pass this parameter, it would be consider as 'null', default value is 'null'.
+     * 
+     * @return the continuousCapture value.
+     */
+    public Boolean continuousCapture() {
+        return this.innerProperties() == null ? null : this.innerProperties().continuousCapture();
+    }
+
+    /**
+     * Set the continuousCapture property: This continuous capture is a nullable boolean, which can hold 'null', 'true'
+     * or 'false' value. If we do not pass this parameter, it would be consider as 'null', default value is 'null'.
+     * 
+     * @param continuousCapture the continuousCapture value to set.
+     * @return the PacketCaptureInner object itself.
+     */
+    public PacketCaptureInner withContinuousCapture(Boolean continuousCapture) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PacketCaptureParameters();
+        }
+        this.innerProperties().withContinuousCapture(continuousCapture);
+        return this;
+    }
+
+    /**
+     * Get the captureSettings property: The capture setting holds the 'FileCount', 'FileSizeInBytes',
+     * 'SessionTimeLimitInSeconds' values.
+     * 
+     * @return the captureSettings value.
+     */
+    public PacketCaptureSettings captureSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().captureSettings();
+    }
+
+    /**
+     * Set the captureSettings property: The capture setting holds the 'FileCount', 'FileSizeInBytes',
+     * 'SessionTimeLimitInSeconds' values.
+     * 
+     * @param captureSettings the captureSettings value to set.
+     * @return the PacketCaptureInner object itself.
+     */
+    public PacketCaptureInner withCaptureSettings(PacketCaptureSettings captureSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PacketCaptureParameters();
+        }
+        this.innerProperties().withCaptureSettings(captureSettings);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property innerProperties in model PacketCaptureInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model PacketCaptureInner"));
         } else {
             innerProperties().validate();
         }

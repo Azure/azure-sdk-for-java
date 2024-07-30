@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class IpAllocationsGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/IpAllocationGet.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/IpAllocationGet.json
      */
     /**
      * Sample code: Get IpAllocation.
@@ -18,7 +18,10 @@ public final class IpAllocationsGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getIpAllocation(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getIpAllocations().getByResourceGroupWithResponse("rg1",
-            "test-ipallocation", null, com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getIpAllocations()
+            .getByResourceGroupWithResponse("rg1", "test-ipallocation", null, com.azure.core.util.Context.NONE);
     }
 }

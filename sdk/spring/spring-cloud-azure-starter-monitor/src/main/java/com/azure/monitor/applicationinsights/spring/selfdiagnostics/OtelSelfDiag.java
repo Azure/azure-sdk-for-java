@@ -5,10 +5,6 @@ package com.azure.monitor.applicationinsights.spring.selfdiagnostics;
 
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.instrumentation.spring.autoconfigure.OpenTelemetryAutoConfiguration;
-import io.opentelemetry.sdk.logs.SdkLoggerProvider;
-import io.opentelemetry.sdk.metrics.SdkMeterProvider;
-import io.opentelemetry.sdk.resources.Resource;
-import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -41,10 +37,6 @@ class OtelSelfDiag implements CommandLineRunner {
         if (applicationContext instanceof BeanDefinitionRegistry) {
             BeanDefinitionRegistry beanDefinitionRegistry = (BeanDefinitionRegistry) applicationContext;
             checkBeanComesFromOtelJavaInstrumentationConfig(beanDefinitionRegistry, OpenTelemetry.class);
-            checkBeanComesFromOtelJavaInstrumentationConfig(beanDefinitionRegistry, Resource.class);
-            checkBeanComesFromOtelJavaInstrumentationConfig(beanDefinitionRegistry, SdkTracerProvider.class);
-            checkBeanComesFromOtelJavaInstrumentationConfig(beanDefinitionRegistry, SdkLoggerProvider.class);
-            checkBeanComesFromOtelJavaInstrumentationConfig(beanDefinitionRegistry, SdkMeterProvider.class);
         }
         if (isOpenTelemetryNoop()) {
             selfDiagnosticsLogger.debug("NOOP OpenTelemetry");

@@ -10,12 +10,8 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifierOption;
 import com.puppycrawl.tools.checkstyle.utils.CheckUtil;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  *  No external dependency exposed in public API
@@ -23,9 +19,6 @@ import java.util.Set;
 public class ExternalDependencyExposedCheck extends AbstractCheck {
     private static final String EXTERNAL_DEPENDENCY_ERROR =
         "Class ''%s'', is a class from external dependency. You should not use it as a %s type.";
-    private static final Set<String> VALID_DEPENDENCY_SET = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
-        "java", "com.azure", "reactor", "org.reactivestreams"
-    )));
 
     private final Map<String, String> simpleClassNameToQualifiedNameMap = new HashMap<>();
 
@@ -198,7 +191,12 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
         }
 
         final String qualifiedName = simpleClassNameToQualifiedNameMap.get(typeName);
-        return VALID_DEPENDENCY_SET.stream()
-            .anyMatch(validPackageName -> qualifiedName.startsWith(validPackageName));
+
+        return "com.azure.".regionMatches(0, qualifiedName, 0, 10)
+            || "io.clientcore.".regionMatches(0, qualifiedName, 0, 14)
+            || "java.".regionMatches(0, qualifiedName, 0, 5)
+            || "javax.".regionMatches(0, qualifiedName, 0, 6)
+            || "reactor.".regionMatches(0, qualifiedName, 0, 8)
+            || "org.reactivestreams.".regionMatches(0, qualifiedName, 0, 20);
     }
 }

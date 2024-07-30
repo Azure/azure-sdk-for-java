@@ -10,8 +10,7 @@ package com.azure.resourcemanager.netapp.generated;
 public final class SubvolumesGetMetadataSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/Subvolumes_Metadata.
-     * json
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/Subvolumes_Metadata.json
      */
     /**
      * Sample code: Subvolumes_Metadata.
@@ -19,7 +18,7 @@ public final class SubvolumesGetMetadataSamples {
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void subvolumesMetadata(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.subvolumes().getMetadata("myRG", "account1", "pool1", "volume1", "subvolume1",
-            com.azure.core.util.Context.NONE);
+        manager.subvolumes()
+            .getMetadata("myRG", "account1", "pool1", "volume1", "subvolume1", com.azure.core.util.Context.NONE);
     }
 }

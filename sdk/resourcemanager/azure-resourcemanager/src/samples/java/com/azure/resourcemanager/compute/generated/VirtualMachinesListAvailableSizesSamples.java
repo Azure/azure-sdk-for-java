@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class VirtualMachinesListAvailableSizesSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_ListAvailableVmSizes.json
      */
     /**
@@ -20,7 +20,10 @@ public final class VirtualMachinesListAvailableSizesSamples {
      */
     public static void listsAllAvailableVirtualMachineSizesToWhichTheSpecifiedVirtualMachineCanBeResized(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().listAvailableSizes("myResourceGroup",
-            "myVmName", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .listAvailableSizes("myResourceGroup", "myVmName", com.azure.core.util.Context.NONE);
     }
 }

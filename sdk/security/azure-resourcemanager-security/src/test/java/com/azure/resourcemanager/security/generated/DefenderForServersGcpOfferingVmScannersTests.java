@@ -6,8 +6,8 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.security.models.DefenderForServersGcpOfferingVmScanners;
-import com.azure.resourcemanager.security.models.DefenderForServersGcpOfferingVmScannersConfiguration;
 import com.azure.resourcemanager.security.models.ScanningMode;
+import com.azure.resourcemanager.security.models.VmScannersBaseConfiguration;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -16,23 +16,22 @@ public final class DefenderForServersGcpOfferingVmScannersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderForServersGcpOfferingVmScanners model = BinaryData.fromString(
-            "{\"enabled\":false,\"configuration\":{\"scanningMode\":\"Default\",\"exclusionTags\":{\"aixpqj\":\"ttcucrcm\",\"lna\":\"wifhbksldttohq\",\"gsiqikvllr\":\"h\"}}}")
+            "{\"enabled\":true,\"configuration\":{\"scanningMode\":\"Default\",\"exclusionTags\":{\"uylztpziizevjyk\":\"aqjmkgxqwque\",\"kqtwqlepjjzkcasf\":\"fvezefk\"}}}")
             .toObject(DefenderForServersGcpOfferingVmScanners.class);
-        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals(true, model.enabled());
         Assertions.assertEquals(ScanningMode.DEFAULT, model.configuration().scanningMode());
-        Assertions.assertEquals("ttcucrcm", model.configuration().exclusionTags().get("aixpqj"));
+        Assertions.assertEquals("aqjmkgxqwque", model.configuration().exclusionTags().get("uylztpziizevjyk"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DefenderForServersGcpOfferingVmScanners model
-            = new DefenderForServersGcpOfferingVmScanners().withEnabled(false).withConfiguration(
-                new DefenderForServersGcpOfferingVmScannersConfiguration().withScanningMode(ScanningMode.DEFAULT)
-                    .withExclusionTags(mapOf("aixpqj", "ttcucrcm", "lna", "wifhbksldttohq", "gsiqikvllr", "h")));
+        DefenderForServersGcpOfferingVmScanners model = new DefenderForServersGcpOfferingVmScanners().withEnabled(true)
+            .withConfiguration(new VmScannersBaseConfiguration().withScanningMode(ScanningMode.DEFAULT)
+                .withExclusionTags(mapOf("uylztpziizevjyk", "aqjmkgxqwque", "kqtwqlepjjzkcasf", "fvezefk")));
         model = BinaryData.fromObject(model).toObject(DefenderForServersGcpOfferingVmScanners.class);
-        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals(true, model.enabled());
         Assertions.assertEquals(ScanningMode.DEFAULT, model.configuration().scanningMode());
-        Assertions.assertEquals("ttcucrcm", model.configuration().exclusionTags().get("aixpqj"));
+        Assertions.assertEquals("aqjmkgxqwque", model.configuration().exclusionTags().get("uylztpziizevjyk"));
     }
 
     // Use "Map.of" if available

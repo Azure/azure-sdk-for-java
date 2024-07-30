@@ -10,7 +10,7 @@ package com.azure.resourcemanager.containerservice.generated;
 public final class OperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-01-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
      * Operation_List.json
      */
     /**

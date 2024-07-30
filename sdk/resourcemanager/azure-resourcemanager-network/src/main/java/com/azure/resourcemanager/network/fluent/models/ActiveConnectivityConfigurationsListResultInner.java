@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.models.ActiveConnectivityConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -22,8 +23,8 @@ public final class ActiveConnectivityConfigurationsListResultInner {
     private List<ActiveConnectivityConfiguration> value;
 
     /*
-     * When present, the value can be passed to a subsequent query call (together with the same query and scopes used
-     * in the current request) to retrieve the next page of data.
+     * When present, the value can be passed to a subsequent query call (together with the same query and scopes used in
+     * the current request) to retrieve the next page of data.
      */
     @JsonProperty(value = "skipToken")
     private String skipToken;
@@ -36,7 +37,7 @@ public final class ActiveConnectivityConfigurationsListResultInner {
 
     /**
      * Get the value property: Gets a page of active connectivity configurations.
-     * 
+     *
      * @return the value value.
      */
     public List<ActiveConnectivityConfiguration> value() {
@@ -45,7 +46,7 @@ public final class ActiveConnectivityConfigurationsListResultInner {
 
     /**
      * Set the value property: Gets a page of active connectivity configurations.
-     * 
+     *
      * @param value the value value to set.
      * @return the ActiveConnectivityConfigurationsListResultInner object itself.
      */
@@ -57,7 +58,7 @@ public final class ActiveConnectivityConfigurationsListResultInner {
     /**
      * Get the skipToken property: When present, the value can be passed to a subsequent query call (together with the
      * same query and scopes used in the current request) to retrieve the next page of data.
-     * 
+     *
      * @return the skipToken value.
      */
     public String skipToken() {
@@ -67,7 +68,7 @@ public final class ActiveConnectivityConfigurationsListResultInner {
     /**
      * Set the skipToken property: When present, the value can be passed to a subsequent query call (together with the
      * same query and scopes used in the current request) to retrieve the next page of data.
-     * 
+     *
      * @param skipToken the skipToken value to set.
      * @return the ActiveConnectivityConfigurationsListResultInner object itself.
      */
@@ -78,7 +79,7 @@ public final class ActiveConnectivityConfigurationsListResultInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

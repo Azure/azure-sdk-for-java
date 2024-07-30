@@ -6,86 +6,93 @@ package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Certificate resource specific properties. */
+/**
+ * Certificate resource specific properties.
+ */
 @Fluent
-public final class CertificateProperties {
+public final class CertificateProperties implements JsonSerializable<CertificateProperties> {
     /*
      * Provisioning state of the certificate.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private CertificateProvisioningState provisioningState;
+
+    /*
+     * Properties for a certificate stored in a Key Vault.
+     */
+    private CertificateKeyVaultProperties certificateKeyVaultProperties;
 
     /*
      * Certificate password.
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /*
      * Subject name of the certificate.
      */
-    @JsonProperty(value = "subjectName", access = JsonProperty.Access.WRITE_ONLY)
     private String subjectName;
 
     /*
      * Subject alternative names the certificate applies to.
      */
-    @JsonProperty(value = "subjectAlternativeNames", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> subjectAlternativeNames;
 
     /*
      * PFX or PEM blob
      */
-    @JsonProperty(value = "value")
     private byte[] value;
 
     /*
      * Certificate issuer.
      */
-    @JsonProperty(value = "issuer", access = JsonProperty.Access.WRITE_ONLY)
     private String issuer;
 
     /*
      * Certificate issue Date.
      */
-    @JsonProperty(value = "issueDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime issueDate;
 
     /*
      * Certificate expiration date.
      */
-    @JsonProperty(value = "expirationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime expirationDate;
 
     /*
      * Certificate thumbprint.
      */
-    @JsonProperty(value = "thumbprint", access = JsonProperty.Access.WRITE_ONLY)
     private String thumbprint;
 
     /*
      * Is the certificate valid?.
      */
-    @JsonProperty(value = "valid", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean valid;
 
     /*
      * Public key hash.
      */
-    @JsonProperty(value = "publicKeyHash", access = JsonProperty.Access.WRITE_ONLY)
     private String publicKeyHash;
 
-    /** Creates an instance of CertificateProperties class. */
+    /*
+     * The type of the certificate. Allowed values are `ServerSSLCertificate` and `ImagePullTrustedCA`
+     */
+    private CertificateType certificateType;
+
+    /**
+     * Creates an instance of CertificateProperties class.
+     */
     public CertificateProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning state of the certificate.
-     *
+     * 
      * @return the provisioningState value.
      */
     public CertificateProvisioningState provisioningState() {
@@ -93,8 +100,29 @@ public final class CertificateProperties {
     }
 
     /**
+     * Get the certificateKeyVaultProperties property: Properties for a certificate stored in a Key Vault.
+     * 
+     * @return the certificateKeyVaultProperties value.
+     */
+    public CertificateKeyVaultProperties certificateKeyVaultProperties() {
+        return this.certificateKeyVaultProperties;
+    }
+
+    /**
+     * Set the certificateKeyVaultProperties property: Properties for a certificate stored in a Key Vault.
+     * 
+     * @param certificateKeyVaultProperties the certificateKeyVaultProperties value to set.
+     * @return the CertificateProperties object itself.
+     */
+    public CertificateProperties
+        withCertificateKeyVaultProperties(CertificateKeyVaultProperties certificateKeyVaultProperties) {
+        this.certificateKeyVaultProperties = certificateKeyVaultProperties;
+        return this;
+    }
+
+    /**
      * Get the password property: Certificate password.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -103,7 +131,7 @@ public final class CertificateProperties {
 
     /**
      * Set the password property: Certificate password.
-     *
+     * 
      * @param password the password value to set.
      * @return the CertificateProperties object itself.
      */
@@ -114,7 +142,7 @@ public final class CertificateProperties {
 
     /**
      * Get the subjectName property: Subject name of the certificate.
-     *
+     * 
      * @return the subjectName value.
      */
     public String subjectName() {
@@ -123,7 +151,7 @@ public final class CertificateProperties {
 
     /**
      * Get the subjectAlternativeNames property: Subject alternative names the certificate applies to.
-     *
+     * 
      * @return the subjectAlternativeNames value.
      */
     public List<String> subjectAlternativeNames() {
@@ -132,7 +160,7 @@ public final class CertificateProperties {
 
     /**
      * Get the value property: PFX or PEM blob.
-     *
+     * 
      * @return the value value.
      */
     public byte[] value() {
@@ -141,7 +169,7 @@ public final class CertificateProperties {
 
     /**
      * Set the value property: PFX or PEM blob.
-     *
+     * 
      * @param value the value value to set.
      * @return the CertificateProperties object itself.
      */
@@ -152,7 +180,7 @@ public final class CertificateProperties {
 
     /**
      * Get the issuer property: Certificate issuer.
-     *
+     * 
      * @return the issuer value.
      */
     public String issuer() {
@@ -161,7 +189,7 @@ public final class CertificateProperties {
 
     /**
      * Get the issueDate property: Certificate issue Date.
-     *
+     * 
      * @return the issueDate value.
      */
     public OffsetDateTime issueDate() {
@@ -170,7 +198,7 @@ public final class CertificateProperties {
 
     /**
      * Get the expirationDate property: Certificate expiration date.
-     *
+     * 
      * @return the expirationDate value.
      */
     public OffsetDateTime expirationDate() {
@@ -179,7 +207,7 @@ public final class CertificateProperties {
 
     /**
      * Get the thumbprint property: Certificate thumbprint.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -188,7 +216,7 @@ public final class CertificateProperties {
 
     /**
      * Get the valid property: Is the certificate valid?.
-     *
+     * 
      * @return the valid value.
      */
     public Boolean valid() {
@@ -197,7 +225,7 @@ public final class CertificateProperties {
 
     /**
      * Get the publicKeyHash property: Public key hash.
-     *
+     * 
      * @return the publicKeyHash value.
      */
     public String publicKeyHash() {
@@ -205,10 +233,104 @@ public final class CertificateProperties {
     }
 
     /**
+     * Get the certificateType property: The type of the certificate. Allowed values are `ServerSSLCertificate` and
+     * `ImagePullTrustedCA`.
+     * 
+     * @return the certificateType value.
+     */
+    public CertificateType certificateType() {
+        return this.certificateType;
+    }
+
+    /**
+     * Set the certificateType property: The type of the certificate. Allowed values are `ServerSSLCertificate` and
+     * `ImagePullTrustedCA`.
+     * 
+     * @param certificateType the certificateType value to set.
+     * @return the CertificateProperties object itself.
+     */
+    public CertificateProperties withCertificateType(CertificateType certificateType) {
+        this.certificateType = certificateType;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (certificateKeyVaultProperties() != null) {
+            certificateKeyVaultProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("certificateKeyVaultProperties", this.certificateKeyVaultProperties);
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeBinaryField("value", this.value);
+        jsonWriter.writeStringField("certificateType",
+            this.certificateType == null ? null : this.certificateType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CertificateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CertificateProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CertificateProperties.
+     */
+    public static CertificateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CertificateProperties deserializedCertificateProperties = new CertificateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedCertificateProperties.provisioningState
+                        = CertificateProvisioningState.fromString(reader.getString());
+                } else if ("certificateKeyVaultProperties".equals(fieldName)) {
+                    deserializedCertificateProperties.certificateKeyVaultProperties
+                        = CertificateKeyVaultProperties.fromJson(reader);
+                } else if ("password".equals(fieldName)) {
+                    deserializedCertificateProperties.password = reader.getString();
+                } else if ("subjectName".equals(fieldName)) {
+                    deserializedCertificateProperties.subjectName = reader.getString();
+                } else if ("subjectAlternativeNames".equals(fieldName)) {
+                    List<String> subjectAlternativeNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCertificateProperties.subjectAlternativeNames = subjectAlternativeNames;
+                } else if ("value".equals(fieldName)) {
+                    deserializedCertificateProperties.value = reader.getBinary();
+                } else if ("issuer".equals(fieldName)) {
+                    deserializedCertificateProperties.issuer = reader.getString();
+                } else if ("issueDate".equals(fieldName)) {
+                    deserializedCertificateProperties.issueDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("expirationDate".equals(fieldName)) {
+                    deserializedCertificateProperties.expirationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("thumbprint".equals(fieldName)) {
+                    deserializedCertificateProperties.thumbprint = reader.getString();
+                } else if ("valid".equals(fieldName)) {
+                    deserializedCertificateProperties.valid = reader.getNullable(JsonReader::getBoolean);
+                } else if ("publicKeyHash".equals(fieldName)) {
+                    deserializedCertificateProperties.publicKeyHash = reader.getString();
+                } else if ("certificateType".equals(fieldName)) {
+                    deserializedCertificateProperties.certificateType = CertificateType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCertificateProperties;
+        });
     }
 }

@@ -1579,11 +1579,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 // V2: The final this.sessionManager is guaranteed to be 'ServiceBusSingleSessionManager'.
                 updateDispositionOperation = sessionManager.updateDisposition(lockToken, sessionId, dispositionStatus,
                         propertiesToModify, deadLetterReason, deadLetterErrorDescription, transactionContext)
-                    // Unlike V1, if the lock token cannot be found on the session link (because it is closed), V2 won't
-                    // fall back to 'dispositionViaManagementNode'. Once the session link is closed, the session is lost,
-                    // and disposition cannot be performed on the management node (Same approach in .NET, JS, Go).
-                    .then(Mono.fromRunnable(() -> {
-                        LOGGER.atInfo()
+                    .<Void>then(Mono.fromRunnable(() -> {
+                        LOGGER.atVerbose()
                             .addKeyValue(LOCK_TOKEN_KEY, lockToken)
                             .addKeyValue(ENTITY_PATH_KEY, entityPath)
                             .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
@@ -1592,7 +1589,17 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                         // The session-lock-renew logic in V2 is localized to ServiceBusReactorReceiver instance that
                         // ServiceBusSingleSessionManager composes. The logic does not use 'renewalContainer', hence
                         // unlike V1, no call to renewalContainer.remove(lockToken).
-                    }));
+                    })).onErrorResume(DeliveryNotOnLinkException.class, __ -> {
+                        // If a disposition, e.g., defer, of this session message was done via a previous
+                        // `updateDisposition(..)` call then the delivery would have removed from the session-link map.
+                        // In that case, if the application attempts another disposition by calling
+                        // `updateDisposition(..)` again, e.g., complete, then the session-link map look up will fail.
+                        // However, this disposition can be done on the management node if the broker still has the
+                        // session active.
+                        LOGGER.info("Could not perform disposition on session manger. Performing on management node.");
+                        return dispositionViaManagementNode(message, dispositionStatus, deadLetterReason,
+                            deadLetterErrorDescription, propertiesToModify, transactionContext);
+                    });
             } else {
                 // V1: The final this.sessionManager is guaranteed to be 'ServiceBusSessionManager'.
                 updateDispositionOperation = sessionManager.updateDisposition(lockToken, sessionId, dispositionStatus,
@@ -1925,7 +1932,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
     Flux<ServiceBusReceivedMessage> nonSessionSyncReceiveV2() {
         assert isOnV2 && !isSessionEnabled;
-        return getOrCreateConsumer().receive();
+        final Flux<ServiceBusReceivedMessage> messages = getOrCreateConsumer().receive();
+        return receiverOptions.isAutoLockRenewEnabled() ? messages.doOnNext(this::beginLockRenewal) : messages;
     }
 
     private Flux<ServiceBusReceivedMessage> sessionReactiveReceiveV2() {

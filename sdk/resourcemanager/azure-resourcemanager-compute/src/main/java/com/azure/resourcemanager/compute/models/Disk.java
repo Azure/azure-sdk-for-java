@@ -92,6 +92,13 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
     /** @return the hypervisor generation. */
     HyperVGeneration hyperVGeneration();
 
+    /**
+     * Whether the disk can be accessed from public network.
+     *
+     * @return whether the disk can be accessed from public network.
+     */
+    PublicNetworkAccess publicNetworkAccess();
+
     /** The entirety of the managed disk definition. */
     interface Definition
         extends DefinitionStages.Blank,
@@ -458,6 +465,16 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
             WithCreate withHyperVGeneration(HyperVGeneration hyperVGeneration);
         }
 
+        /** The stage of disk definition allowing to configure network access settings. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Disables public network access for the disk.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate disablePublicNetworkAccess();
+        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
@@ -470,7 +487,8 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
                 WithDiskEncryption,
                 WithHibernationSupport,
                 WithLogicalSectorSize,
-                WithHyperVGeneration {
+                WithHyperVGeneration,
+                WithPublicNetworkAccess {
 
             /**
              * Begins creating the disk resource.
@@ -554,6 +572,22 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
              */
             Update withHyperVGeneration(HyperVGeneration hyperVGeneration);
         }
+
+        /** The stage of disk update allowing to configure network access settings. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Enables public network access for the disk.
+             *
+             * @return the next stage of the update
+             */
+            Update enablePublicNetworkAccess();
+            /**
+             * Disables public network access for the disk.
+             *
+             * @return the next stage of the update
+             */
+            Update disablePublicNetworkAccess();
+        }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
@@ -565,6 +599,7 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
             UpdateStages.WithOSSettings,
             UpdateStages.WithDiskEncryption,
             UpdateStages.WithHibernationSupport,
-            UpdateStages.WithHyperVGeneration {
+            UpdateStages.WithHyperVGeneration,
+            UpdateStages.WithPublicNetworkAccess {
     }
 }

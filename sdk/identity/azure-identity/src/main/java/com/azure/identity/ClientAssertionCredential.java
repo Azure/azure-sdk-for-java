@@ -25,7 +25,7 @@ import java.util.function.Supplier;
  * In this authentication method, the client application creates a JSON Web Token (JWT) that includes information about
  * the service principal (such as its client ID and tenant ID) and signs it using a client secret. The client then
  * sends this token to
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a> as proof of its
+ * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a> as proof of its
  * identity. Microsoft Entra ID verifies the token signature and checks that the service principal has
  * the necessary permissions to access the requested Azure resource. If the token is valid and the service principal is
  * authorized, Microsoft Entra ID issues an access token that the client application can use to access the requested resource.
@@ -123,7 +123,7 @@ public class ClientAssertionCredential implements TokenCredential {
                 LoggingUtil.logTokenSuccess(LOGGER, request);
                 return token;
             }
-        } catch (Exception e) { }
+        } catch (Exception ignored) { }
 
         try {
             AccessToken token = identitySyncClient.authenticateWithConfidentialClient(request);
@@ -131,7 +131,8 @@ public class ClientAssertionCredential implements TokenCredential {
             return token;
         } catch (Exception e) {
             LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, e);
-            throw e;
+            // wrap the exception in a RuntimeException to avoid checked exception problems.
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 }

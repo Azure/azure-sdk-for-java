@@ -5,35 +5,50 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Indicates which kind of Arc machine placement on-premises, such as HCI, SCVMM or VMware etc. */
+/**
+ * Indicates which kind of Arc machine placement on-premises, such as HCI, SCVMM or VMware etc.
+ */
 public final class ArcKindEnum extends ExpandableStringEnum<ArcKindEnum> {
-    /** Static value AVS for ArcKindEnum. */
+    /**
+     * Static value AVS for ArcKindEnum.
+     */
     public static final ArcKindEnum AVS = fromString("AVS");
 
-    /** Static value HCI for ArcKindEnum. */
+    /**
+     * Static value HCI for ArcKindEnum.
+     */
     public static final ArcKindEnum HCI = fromString("HCI");
 
-    /** Static value SCVMM for ArcKindEnum. */
+    /**
+     * Static value SCVMM for ArcKindEnum.
+     */
     public static final ArcKindEnum SCVMM = fromString("SCVMM");
 
-    /** Static value VMware for ArcKindEnum. */
+    /**
+     * Static value VMware for ArcKindEnum.
+     */
     public static final ArcKindEnum VMWARE = fromString("VMware");
 
-    /** Static value EPS for ArcKindEnum. */
+    /**
+     * Static value EPS for ArcKindEnum.
+     */
     public static final ArcKindEnum EPS = fromString("EPS");
 
-    /** Static value GCP for ArcKindEnum. */
+    /**
+     * Static value GCP for ArcKindEnum.
+     */
     public static final ArcKindEnum GCP = fromString("GCP");
 
-    /** Static value AWS for ArcKindEnum. */
+    /**
+     * Static value AWS for ArcKindEnum.
+     */
     public static final ArcKindEnum AWS = fromString("AWS");
 
     /**
      * Creates a new instance of ArcKindEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,18 +57,17 @@ public final class ArcKindEnum extends ExpandableStringEnum<ArcKindEnum> {
 
     /**
      * Creates or finds a ArcKindEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ArcKindEnum.
      */
-    @JsonCreator
     public static ArcKindEnum fromString(String name) {
         return fromString(name, ArcKindEnum.class);
     }
 
     /**
      * Gets known ArcKindEnum values.
-     *
+     * 
      * @return known ArcKindEnum values.
      */
     public static Collection<ArcKindEnum> values() {

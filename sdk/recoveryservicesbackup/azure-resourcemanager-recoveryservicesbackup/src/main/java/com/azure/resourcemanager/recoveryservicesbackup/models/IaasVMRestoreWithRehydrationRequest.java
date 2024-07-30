@@ -6,6 +6,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -13,10 +14,21 @@ import java.util.List;
 /**
  * IaaS VM workload-specific restore with integrated rehydration of recovery point.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "objectType",
+    defaultImpl = IaasVMRestoreWithRehydrationRequest.class,
+    visible = true)
 @JsonTypeName("IaasVMRestoreWithRehydrationRequest")
 @Fluent
 public final class IaasVMRestoreWithRehydrationRequest extends IaasVMRestoreRequest {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "objectType", required = true)
+    private String objectType = "IaasVMRestoreWithRehydrationRequest";
+
     /*
      * RP Rehydration Info
      */
@@ -27,6 +39,17 @@ public final class IaasVMRestoreWithRehydrationRequest extends IaasVMRestoreRequ
      * Creates an instance of IaasVMRestoreWithRehydrationRequest class.
      */
     public IaasVMRestoreWithRehydrationRequest() {
+    }
+
+    /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
     }
 
     /**
@@ -256,6 +279,16 @@ public final class IaasVMRestoreWithRehydrationRequest extends IaasVMRestoreRequ
     public IaasVMRestoreWithRehydrationRequest
         withTargetDiskNetworkAccessSettings(TargetDiskNetworkAccessSettings targetDiskNetworkAccessSettings) {
         super.withTargetDiskNetworkAccessSettings(targetDiskNetworkAccessSettings);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IaasVMRestoreWithRehydrationRequest
+        withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
+        super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
         return this;
     }
 

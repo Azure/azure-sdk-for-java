@@ -54,8 +54,9 @@ public final class MongoDbCollectionDatasetTypeProperties {
      */
     public void validate() {
         if (collectionName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property collectionName in model MongoDbCollectionDatasetTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property collectionName in model MongoDbCollectionDatasetTypeProperties"));
         }
     }
 

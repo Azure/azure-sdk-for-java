@@ -7,24 +7,27 @@ package com.azure.resourcemanager.mobilenetwork.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The static IP configuration for the SIM to use at the defined network scope. */
+/**
+ * The static IP configuration for the SIM to use at the defined network scope.
+ */
 @Fluent
 public final class SimStaticIpPropertiesStaticIp {
     /*
-     * The IPv4 address assigned to the SIM at this network scope. This address must be in the
-     * userEquipmentStaticAddressPoolPrefix defined in the attached data network.
+     * The IPv4 address assigned to the SIM at this network scope. This address must be in the userEquipmentStaticAddressPoolPrefix defined in the attached data network.
      */
     @JsonProperty(value = "ipv4Address")
     private String ipv4Address;
 
-    /** Creates an instance of SimStaticIpPropertiesStaticIp class. */
+    /**
+     * Creates an instance of SimStaticIpPropertiesStaticIp class.
+     */
     public SimStaticIpPropertiesStaticIp() {
     }
 
     /**
      * Get the ipv4Address property: The IPv4 address assigned to the SIM at this network scope. This address must be in
      * the userEquipmentStaticAddressPoolPrefix defined in the attached data network.
-     *
+     * 
      * @return the ipv4Address value.
      */
     public String ipv4Address() {
@@ -34,7 +37,7 @@ public final class SimStaticIpPropertiesStaticIp {
     /**
      * Set the ipv4Address property: The IPv4 address assigned to the SIM at this network scope. This address must be in
      * the userEquipmentStaticAddressPoolPrefix defined in the attached data network.
-     *
+     * 
      * @param ipv4Address the ipv4Address value to set.
      * @return the SimStaticIpPropertiesStaticIp object itself.
      */
@@ -45,7 +48,7 @@ public final class SimStaticIpPropertiesStaticIp {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

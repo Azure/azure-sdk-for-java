@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.Constants;
@@ -45,7 +46,7 @@ public class Address extends Resource {
     }
 
     void setIsPrimary(boolean isPrimary) {
-        BridgeInternal.setProperty(this, Constants.Properties.IS_PRIMARY, isPrimary);
+        this.set(Constants.Properties.IS_PRIMARY, isPrimary, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     public String getProtocolScheme() {
@@ -53,7 +54,8 @@ public class Address extends Resource {
     }
 
     void setProtocol(String protocol) {
-        BridgeInternal.setProperty(this, Constants.Properties.PROTOCOL, protocol);
+
+        this.set(Constants.Properties.PROTOCOL, protocol, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     public String getLogicalUri() {
@@ -61,7 +63,7 @@ public class Address extends Resource {
     }
 
     void setLogicalUri(String logicalUri) {
-        BridgeInternal.setProperty(this, Constants.Properties.LOGICAL_URI, logicalUri);
+        this.set(Constants.Properties.LOGICAL_URI, logicalUri, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     public String getPhyicalUri() {
@@ -69,7 +71,7 @@ public class Address extends Resource {
     }
 
     void setPhysicalUri(String phyicalUri) {
-        BridgeInternal.setProperty(this, Constants.Properties.PHYISCAL_URI, phyicalUri);
+        this.set(Constants.Properties.PHYISCAL_URI, phyicalUri, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     public String getPartitionIndex() {
@@ -77,7 +79,7 @@ public class Address extends Resource {
     }
 
     void setPartitionIndex(String partitionIndex) {
-        BridgeInternal.setProperty(this, Constants.Properties.PARTITION_INDEX, partitionIndex);
+        this.set(Constants.Properties.PARTITION_INDEX, partitionIndex, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     public String getParitionKeyRangeId() {
@@ -85,7 +87,7 @@ public class Address extends Resource {
     }
 
     public void setPartitionKeyRangeId(String partitionKeyRangeId) {
-        BridgeInternal.setProperty(this, Constants.Properties.PARTITION_KEY_RANGE_ID, partitionKeyRangeId);
+        this.set(Constants.Properties.PARTITION_KEY_RANGE_ID, partitionKeyRangeId, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     @Override

@@ -22,10 +22,7 @@ import javax.xml.stream.XMLStreamException;
 @Fluent
 public final class CorsRule implements XmlSerializable<CorsRule> {
     /*
-     * The origin domains that are permitted to make a request against the service via CORS. The origin domain is the
-     * domain from which the request originates. Note that the origin must be an exact case-sensitive match with the
-     * origin that the user age sends to the service. You can also use the wildcard character '*' to allow all origin
-     * domains to make requests via CORS.
+     * The origin domains that are permitted to make a request against the service via CORS. The origin domain is the domain from which the request originates. Note that the origin must be an exact case-sensitive match with the origin that the user age sends to the service. You can also use the wildcard character '*' to allow all origin domains to make requests via CORS.
      */
     private String allowedOrigins;
 
@@ -40,8 +37,7 @@ public final class CorsRule implements XmlSerializable<CorsRule> {
     private String allowedHeaders;
 
     /*
-     * The response headers that may be sent in the response to the CORS request and exposed by the browser to the
-     * request issuer.
+     * The response headers that may be sent in the response to the CORS request and exposed by the browser to the request issuer.
      */
     private String exposedHeaders;
 

@@ -19,50 +19,56 @@ public final class GovernanceRulePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GovernanceRuleProperties model = BinaryData.fromString(
-            "{\"tenantId\":\"lbfpncurd\",\"displayName\":\"iwii\",\"description\":\"tywubxcbihwq\",\"remediationTimeframe\":\"fdntwjchrdgoih\",\"isGracePeriod\":true,\"rulePriority\":585676440,\"isDisabled\":false,\"ruleType\":\"Integrated\",\"sourceResourceType\":\"Assessments\",\"excludedScopes\":[\"jl\"],\"conditionSets\":[\"datadfdlwggyts\",\"datawtovvtgsein\"],\"includeMemberScopes\":true,\"ownerSource\":{\"type\":\"Manually\",\"value\":\"qknp\"},\"governanceEmailNotification\":{\"disableManagerEmailNotification\":true,\"disableOwnerEmailNotification\":false},\"metadata\":{\"createdBy\":\"wqmsniffcdmqn\",\"createdOn\":\"2021-09-07T02:26:24Z\",\"updatedBy\":\"pij\",\"updatedOn\":\"2021-06-28T02:21:18Z\"}}")
+            "{\"tenantId\":\"qlcvydy\",\"displayName\":\"atdooaojkniod\",\"description\":\"oebwnujhemms\",\"remediationTimeframe\":\"dkcrodt\",\"isGracePeriod\":true,\"rulePriority\":321367930,\"isDisabled\":true,\"ruleType\":\"Integrated\",\"sourceResourceType\":\"Assessments\",\"excludedScopes\":[\"kacjvefkdlfo\",\"kggkfpa\"],\"conditionSets\":[\"dataowpulpq\"],\"includeMemberScopes\":true,\"ownerSource\":{\"type\":\"ByTag\",\"value\":\"xkqjnsjervt\"},\"governanceEmailNotification\":{\"disableManagerEmailNotification\":true,\"disableOwnerEmailNotification\":false},\"metadata\":{\"createdBy\":\"uem\",\"createdOn\":\"2021-06-09T02:50:50Z\",\"updatedBy\":\"kfzbeyvpnqicvi\",\"updatedOn\":\"2021-04-02T23:33:39Z\"}}")
             .toObject(GovernanceRuleProperties.class);
-        Assertions.assertEquals("iwii", model.displayName());
-        Assertions.assertEquals("tywubxcbihwq", model.description());
-        Assertions.assertEquals("fdntwjchrdgoih", model.remediationTimeframe());
+        Assertions.assertEquals("atdooaojkniod", model.displayName());
+        Assertions.assertEquals("oebwnujhemms", model.description());
+        Assertions.assertEquals("dkcrodt", model.remediationTimeframe());
         Assertions.assertEquals(true, model.isGracePeriod());
-        Assertions.assertEquals(585676440, model.rulePriority());
-        Assertions.assertEquals(false, model.isDisabled());
+        Assertions.assertEquals(321367930, model.rulePriority());
+        Assertions.assertEquals(true, model.isDisabled());
         Assertions.assertEquals(GovernanceRuleType.INTEGRATED, model.ruleType());
         Assertions.assertEquals(GovernanceRuleSourceResourceType.ASSESSMENTS, model.sourceResourceType());
-        Assertions.assertEquals("jl", model.excludedScopes().get(0));
+        Assertions.assertEquals("kacjvefkdlfo", model.excludedScopes().get(0));
         Assertions.assertEquals(true, model.includeMemberScopes());
-        Assertions.assertEquals(GovernanceRuleOwnerSourceType.MANUALLY, model.ownerSource().type());
-        Assertions.assertEquals("qknp", model.ownerSource().value());
+        Assertions.assertEquals(GovernanceRuleOwnerSourceType.BY_TAG, model.ownerSource().type());
+        Assertions.assertEquals("xkqjnsjervt", model.ownerSource().value());
         Assertions.assertEquals(true, model.governanceEmailNotification().disableManagerEmailNotification());
         Assertions.assertEquals(false, model.governanceEmailNotification().disableOwnerEmailNotification());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GovernanceRuleProperties model = new GovernanceRuleProperties().withDisplayName("iwii")
-            .withDescription("tywubxcbihwq").withRemediationTimeframe("fdntwjchrdgoih").withIsGracePeriod(true)
-            .withRulePriority(585676440).withIsDisabled(false).withRuleType(GovernanceRuleType.INTEGRATED)
+        GovernanceRuleProperties model = new GovernanceRuleProperties().withDisplayName("atdooaojkniod")
+            .withDescription("oebwnujhemms")
+            .withRemediationTimeframe("dkcrodt")
+            .withIsGracePeriod(true)
+            .withRulePriority(321367930)
+            .withIsDisabled(true)
+            .withRuleType(GovernanceRuleType.INTEGRATED)
             .withSourceResourceType(GovernanceRuleSourceResourceType.ASSESSMENTS)
-            .withExcludedScopes(Arrays.asList("jl"))
-            .withConditionSets(Arrays.asList("datadfdlwggyts", "datawtovvtgsein")).withIncludeMemberScopes(true)
+            .withExcludedScopes(Arrays.asList("kacjvefkdlfo", "kggkfpa"))
+            .withConditionSets(Arrays.asList("dataowpulpq"))
+            .withIncludeMemberScopes(true)
             .withOwnerSource(
-                new GovernanceRuleOwnerSource().withType(GovernanceRuleOwnerSourceType.MANUALLY).withValue("qknp"))
-            .withGovernanceEmailNotification(new GovernanceRuleEmailNotification()
-                .withDisableManagerEmailNotification(true).withDisableOwnerEmailNotification(false))
+                new GovernanceRuleOwnerSource().withType(GovernanceRuleOwnerSourceType.BY_TAG).withValue("xkqjnsjervt"))
+            .withGovernanceEmailNotification(
+                new GovernanceRuleEmailNotification().withDisableManagerEmailNotification(true)
+                    .withDisableOwnerEmailNotification(false))
             .withMetadata(new GovernanceRuleMetadata());
         model = BinaryData.fromObject(model).toObject(GovernanceRuleProperties.class);
-        Assertions.assertEquals("iwii", model.displayName());
-        Assertions.assertEquals("tywubxcbihwq", model.description());
-        Assertions.assertEquals("fdntwjchrdgoih", model.remediationTimeframe());
+        Assertions.assertEquals("atdooaojkniod", model.displayName());
+        Assertions.assertEquals("oebwnujhemms", model.description());
+        Assertions.assertEquals("dkcrodt", model.remediationTimeframe());
         Assertions.assertEquals(true, model.isGracePeriod());
-        Assertions.assertEquals(585676440, model.rulePriority());
-        Assertions.assertEquals(false, model.isDisabled());
+        Assertions.assertEquals(321367930, model.rulePriority());
+        Assertions.assertEquals(true, model.isDisabled());
         Assertions.assertEquals(GovernanceRuleType.INTEGRATED, model.ruleType());
         Assertions.assertEquals(GovernanceRuleSourceResourceType.ASSESSMENTS, model.sourceResourceType());
-        Assertions.assertEquals("jl", model.excludedScopes().get(0));
+        Assertions.assertEquals("kacjvefkdlfo", model.excludedScopes().get(0));
         Assertions.assertEquals(true, model.includeMemberScopes());
-        Assertions.assertEquals(GovernanceRuleOwnerSourceType.MANUALLY, model.ownerSource().type());
-        Assertions.assertEquals("qknp", model.ownerSource().value());
+        Assertions.assertEquals(GovernanceRuleOwnerSourceType.BY_TAG, model.ownerSource().type());
+        Assertions.assertEquals("xkqjnsjervt", model.ownerSource().value());
         Assertions.assertEquals(true, model.governanceEmailNotification().disableManagerEmailNotification());
         Assertions.assertEquals(false, model.governanceEmailNotification().disableOwnerEmailNotification());
     }

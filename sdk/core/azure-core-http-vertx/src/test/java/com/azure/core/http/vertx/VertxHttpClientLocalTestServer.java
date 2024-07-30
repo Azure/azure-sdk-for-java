@@ -30,6 +30,7 @@ public final class VertxHttpClientLocalTestServer {
     public static final byte[] SHORT_BODY = "hi there".getBytes(StandardCharsets.UTF_8);
     public static final byte[] LONG_BODY = createLongBody();
     public static final String RETURN_HEADERS_AS_IS_PATH = "/returnHeadersAsIs";
+    public static final String TIMEOUT = "/timeout";
 
     public static final String PROXY_USERNAME = "foo";
     public static final String PROXY_PASSWORD = "bar";
@@ -109,6 +110,16 @@ public final class VertxHttpClientLocalTestServer {
                 resp.setContentLength(0);
             } else if (get && "/connectionClose".equals(path)) {
                 resp.getHttpChannel().getConnection().close();
+            } else if (get && TIMEOUT.equals(path)) {
+                try {
+                    Thread.sleep(5000);
+                    resp.setStatus(200);
+                    resp.getHttpOutput().write(SHORT_BODY);
+                    resp.getHttpOutput().flush();
+                    resp.getHttpOutput().complete(Callback.NOOP);
+                } catch (InterruptedException e) {
+                    throw new ServletException(e);
+                }
             } else {
                 throw new ServletException("Unexpected request " + req.getMethod() + " " + path);
             }

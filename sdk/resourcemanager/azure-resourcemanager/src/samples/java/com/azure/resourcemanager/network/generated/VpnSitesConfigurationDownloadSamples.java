@@ -13,7 +13,7 @@ import java.util.Arrays;
 public final class VpnSitesConfigurationDownloadSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VpnSitesConfigurationDownload
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VpnSitesConfigurationDownload
      * .json
      */
     /**
@@ -22,12 +22,15 @@ public final class VpnSitesConfigurationDownloadSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void vpnSitesConfigurationDownload(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVpnSitesConfigurations().download("rg1", "wan1",
-            new GetVpnSitesConfigurationRequest()
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVpnSitesConfigurations()
+            .download("rg1", "wan1", new GetVpnSitesConfigurationRequest()
                 .withVpnSites(
                     Arrays.asList("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/vpnSites/abc"))
                 .withOutputBlobSasUrl(
                     "https://blobcortextesturl.blob.core.windows.net/folderforconfig/vpnFile?sp=rw&se=2018-01-10T03%3A42%3A04Z&sv=2017-04-17&sig=WvXrT5bDmDFfgHs%2Brz%2BjAu123eRCNE9BO0eQYcPDT7pY%3D&sr=b"),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

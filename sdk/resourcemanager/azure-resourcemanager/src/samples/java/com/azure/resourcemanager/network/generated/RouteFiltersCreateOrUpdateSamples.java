@@ -18,7 +18,7 @@ import java.util.Map;
 public final class RouteFiltersCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/RouteFilterCreate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/RouteFilterCreate.json
      */
     /**
      * Sample code: RouteFilterCreate.
@@ -26,12 +26,18 @@ public final class RouteFiltersCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void routeFilterCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getRouteFilters().createOrUpdate("rg1", "filterName",
-            new RouteFilterInner().withLocation("West US").withTags(mapOf("key1", "fakeTokenPlaceholder"))
-                .withRules(Arrays.asList(new RouteFilterRuleInner().withName("ruleName").withAccess(Access.ALLOW)
-                    .withRouteFilterRuleType(RouteFilterRuleType.COMMUNITY)
-                    .withCommunities(Arrays.asList("12076:5030", "12076:5040")))),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getRouteFilters()
+            .createOrUpdate("rg1", "filterName",
+                new RouteFilterInner().withLocation("West US")
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+                    .withRules(Arrays.asList(new RouteFilterRuleInner().withName("ruleName")
+                        .withAccess(Access.ALLOW)
+                        .withRouteFilterRuleType(RouteFilterRuleType.COMMUNITY)
+                        .withCommunities(Arrays.asList("12076:5030", "12076:5040")))),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

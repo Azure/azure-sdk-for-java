@@ -11,17 +11,21 @@ public final class CosmosDbSqlApiSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CosmosDbSqlApiSource model = BinaryData.fromString(
-            "{\"type\":\"CosmosDbSqlApiSource\",\"query\":\"dataplqnilozf\",\"pageSize\":\"datavsf\",\"preferredRegions\":\"datacarfdmlie\",\"detectDatetime\":\"datawocufcshqfc\",\"additionalColumns\":\"datanxfof\",\"sourceRetryCount\":\"datadroqktegi\",\"sourceRetryWait\":\"datakzctqbvntlzvgjme\",\"maxConcurrentConnections\":\"dataoydyislepd\",\"disableMetricsCollection\":\"dataiklnt\",\"\":{\"ytbjbm\":\"datanump\"}}")
+            "{\"type\":\"CosmosDbSqlApiSource\",\"query\":\"datasjssreojsgko\",\"pageSize\":\"datanpgkxyr\",\"preferredRegions\":\"datap\",\"detectDatetime\":\"datahyekggo\",\"additionalColumns\":\"datalqvuwsqmwqsg\",\"sourceRetryCount\":\"dataz\",\"sourceRetryWait\":\"datastngxvrpkiz\",\"maxConcurrentConnections\":\"datakgdsursumbcirkbk\",\"disableMetricsCollection\":\"datasvo\",\"\":{\"mg\":\"dataxumuuyblolruf\"}}")
             .toObject(CosmosDbSqlApiSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CosmosDbSqlApiSource model = new CosmosDbSqlApiSource().withSourceRetryCount("datadroqktegi")
-            .withSourceRetryWait("datakzctqbvntlzvgjme").withMaxConcurrentConnections("dataoydyislepd")
-            .withDisableMetricsCollection("dataiklnt").withQuery("dataplqnilozf").withPageSize("datavsf")
-            .withPreferredRegions("datacarfdmlie").withDetectDatetime("datawocufcshqfc")
-            .withAdditionalColumns("datanxfof");
+        CosmosDbSqlApiSource model = new CosmosDbSqlApiSource().withSourceRetryCount("dataz")
+            .withSourceRetryWait("datastngxvrpkiz")
+            .withMaxConcurrentConnections("datakgdsursumbcirkbk")
+            .withDisableMetricsCollection("datasvo")
+            .withQuery("datasjssreojsgko")
+            .withPageSize("datanpgkxyr")
+            .withPreferredRegions("datap")
+            .withDetectDatetime("datahyekggo")
+            .withAdditionalColumns("datalqvuwsqmwqsg");
         model = BinaryData.fromObject(model).toObject(CosmosDbSqlApiSource.class);
     }
 }

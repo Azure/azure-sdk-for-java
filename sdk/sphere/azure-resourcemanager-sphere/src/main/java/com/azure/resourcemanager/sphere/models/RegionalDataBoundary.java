@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Regional data boundary values. */
+/**
+ * Regional data boundary values.
+ */
 public final class RegionalDataBoundary extends ExpandableStringEnum<RegionalDataBoundary> {
-    /** Static value None for RegionalDataBoundary. */
+    /**
+     * Static value None for RegionalDataBoundary.
+     */
     public static final RegionalDataBoundary NONE = fromString("None");
 
-    /** Static value EU for RegionalDataBoundary. */
+    /**
+     * Static value EU for RegionalDataBoundary.
+     */
     public static final RegionalDataBoundary EU = fromString("EU");
 
     /**
      * Creates a new instance of RegionalDataBoundary value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class RegionalDataBoundary extends ExpandableStringEnum<RegionalDat
 
     /**
      * Creates or finds a RegionalDataBoundary from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RegionalDataBoundary.
      */
@@ -38,7 +44,7 @@ public final class RegionalDataBoundary extends ExpandableStringEnum<RegionalDat
 
     /**
      * Gets known RegionalDataBoundary values.
-     *
+     * 
      * @return known RegionalDataBoundary values.
      */
     public static Collection<RegionalDataBoundary> values() {

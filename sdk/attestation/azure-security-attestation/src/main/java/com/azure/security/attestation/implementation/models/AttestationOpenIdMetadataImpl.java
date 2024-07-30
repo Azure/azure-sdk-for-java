@@ -3,61 +3,102 @@
 package com.azure.security.attestation.implementation.models;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.security.attestation.models.AttestationOpenIdMetadata;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.nimbusds.jose.util.JSONObjectUtils;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
+import java.util.List;
 
-public class AttestationOpenIdMetadataImpl implements AttestationOpenIdMetadata {
-    @JsonProperty(value = "jwks_uri")
+public class AttestationOpenIdMetadataImpl implements AttestationOpenIdMetadata,
+    JsonSerializable<AttestationOpenIdMetadataImpl> {
+    private static final ClientLogger LOGGER = new ClientLogger(AttestationOpenIdMetadataImpl.class);
+
     private String jwksUri;
-
-    @JsonProperty(value = "issuer")
     private String issuer;
-
-    @JsonProperty(value = "response_types_supported")
     private String[] responseTypesSupported;
-    @JsonProperty(value = "id_token_signing_alg_values_supported")
     private String[] tokenSigningAlgorithmsSupported;
-    @JsonProperty(value = "claims_supported")
     private String[] supportedClaims;
 
-    @Override public String getJsonWebKeySetUrl() {
+    @Override
+    public String getJsonWebKeySetUrl() {
         return jwksUri;
     }
 
-    @Override public String getIssuer() {
+    @Override
+    public String getIssuer() {
         return issuer;
     }
-    @Override public String[] getResponseTypesSupported() {
+
+    @Override
+    public String[] getResponseTypesSupported() {
         return responseTypesSupported.clone();
     }
 
-    @Override public String[] getTokenSigningAlgorithmsSupported() {
+    @Override
+    public String[] getTokenSigningAlgorithmsSupported() {
         return tokenSigningAlgorithmsSupported.clone();
     }
-    @Override public String[] getSupportedClaims() {
+
+    @Override
+    public String[] getSupportedClaims() {
         return supportedClaims.clone();
     }
 
+    @SuppressWarnings("unchecked")
     public static AttestationOpenIdMetadata fromGenerated(Object generated) {
-
-        ClientLogger logger = new ClientLogger(AttestationOpenIdMetadataImpl.class);
-        SerializerAdapter serializerAdapter = new JacksonAdapter();
-        AttestationOpenIdMetadataImpl metadataImpl;
-
-        try {
-            @SuppressWarnings("unchecked")
-            String generatedString = JSONObjectUtils.toJSONString((LinkedHashMap<String, Object>) generated);
-            metadataImpl = serializerAdapter.deserialize(generatedString, AttestationOpenIdMetadataImpl.class, SerializerEncoding.JSON);
+        try (JsonReader jsonReader
+            = JsonProviders.createReader(JSONObjectUtils.toJSONString((LinkedHashMap<String, Object>) generated))) {
+            return AttestationOpenIdMetadataImpl.fromJson(jsonReader);
         } catch (IOException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+            throw LOGGER.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
-        return metadataImpl;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("jwks_uri", jwksUri)
+            .writeStringField("issuer", issuer)
+            .writeArrayField("response_types_supported", responseTypesSupported, JsonWriter::writeString)
+            .writeArrayField("id_token_signing_alg_values_supported", tokenSigningAlgorithmsSupported,
+                JsonWriter::writeString)
+            .writeArrayField("claims_supported", supportedClaims, JsonWriter::writeString)
+            .writeEndObject();
+    }
+
+    public static AttestationOpenIdMetadataImpl fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AttestationOpenIdMetadataImpl deserialized = new AttestationOpenIdMetadataImpl();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("jwks_uri".equals(fieldName)) {
+                    deserialized.jwksUri = reader.getString();
+                } else if ("issuer".equals(fieldName)) {
+                    deserialized.issuer = reader.getString();
+                } else if ("response_types_supported".equals(fieldName)) {
+                    List<String> list = reader.readArray(JsonReader::getString);
+                    deserialized.responseTypesSupported = (list == null) ? null : list.toArray(new String[0]);
+                } else if ("id_token_signing_alg_values_supported".equals(fieldName)) {
+                    List<String> list = reader.readArray(JsonReader::getString);
+                    deserialized.tokenSigningAlgorithmsSupported = (list == null) ? null : list.toArray(new String[0]);
+                } else if ("claims_supported".equals(fieldName)) {
+                    List<String> list = reader.readArray(JsonReader::getString);
+                    deserialized.supportedClaims = (list == null) ? null : list.toArray(new String[0]);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserialized;
+        });
     }
 }

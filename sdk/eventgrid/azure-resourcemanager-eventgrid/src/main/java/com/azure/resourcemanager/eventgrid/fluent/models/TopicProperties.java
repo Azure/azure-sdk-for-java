@@ -22,7 +22,7 @@ import java.util.List;
 @Fluent
 public final class TopicProperties {
     /*
-     * The privateEndpointConnections property.
+     * List of private endpoint connections.
      */
     @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
@@ -40,7 +40,7 @@ public final class TopicProperties {
     private String endpoint;
 
     /*
-     * Event Type Information for the user topic. This information is provided by the publisher and can be used by the
+     * Event Type Information for the user topic. This information is provided by the publisher and can be used by the 
      * subscriber to view different types of events that are published.
      */
     @JsonProperty(value = "eventTypeInfo")
@@ -59,8 +59,7 @@ public final class TopicProperties {
     private InputSchema inputSchema;
 
     /*
-     * This enables publishing using custom event schemas. An InputSchemaMapping can be specified to map various
-     * properties of a source schema to various required properties of the EventGridEvent schema.
+     * This enables publishing using custom event schemas. An InputSchemaMapping can be specified to map various properties of a source schema to various required properties of the EventGridEvent schema.
      */
     @JsonProperty(value = "inputSchemaMapping")
     private InputSchemaMapping inputSchemaMapping;
@@ -72,23 +71,20 @@ public final class TopicProperties {
     private String metricResourceId;
 
     /*
-     * This determines if traffic is allowed over public network. By default it is enabled.
-     * You can further restrict to specific IPs by configuring <seealso
-     * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.TopicProperties.InboundIpRules" />
+     * This determines if traffic is allowed over public network. By default it is enabled. 
+     * You can further restrict to specific IPs by configuring <seealso cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.TopicProperties.InboundIpRules" />
      */
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
-     * This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if
-     * PublicNetworkAccess is enabled.
+     * This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess is enabled.
      */
     @JsonProperty(value = "inboundIpRules")
     private List<InboundIpRule> inboundIpRules;
 
     /*
-     * This boolean is used to enable or disable local auth. Default value is false. When the property is set to true,
-     * only AAD token will be used to authenticate if user is allowed to publish to the topic.
+     * This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to the topic.
      */
     @JsonProperty(value = "disableLocalAuth")
     private Boolean disableLocalAuth;
@@ -106,7 +102,7 @@ public final class TopicProperties {
     }
 
     /**
-     * Get the privateEndpointConnections property: The privateEndpointConnections property.
+     * Get the privateEndpointConnections property: List of private endpoint connections.
      * 
      * @return the privateEndpointConnections value.
      */
@@ -157,8 +153,7 @@ public final class TopicProperties {
     }
 
     /**
-     * Get the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish to this
-     * topic.
+     * Get the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish to this topic.
      * 
      * @return the minimumTlsVersionAllowed value.
      */
@@ -167,8 +162,7 @@ public final class TopicProperties {
     }
 
     /**
-     * Set the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish to this
-     * topic.
+     * Set the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish to this topic.
      * 
      * @param minimumTlsVersionAllowed the minimumTlsVersionAllowed value to set.
      * @return the TopicProperties object itself.
@@ -234,8 +228,8 @@ public final class TopicProperties {
     }
 
     /**
-     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it
-     * is enabled.
+     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
+     * enabled.
      * You can further restrict to specific IPs by configuring &lt;seealso
      * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.TopicProperties.InboundIpRules" /&gt;.
      * 
@@ -246,8 +240,8 @@ public final class TopicProperties {
     }
 
     /**
-     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it
-     * is enabled.
+     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
+     * enabled.
      * You can further restrict to specific IPs by configuring &lt;seealso
      * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.TopicProperties.InboundIpRules" /&gt;.
      * 
@@ -260,8 +254,8 @@ public final class TopicProperties {
     }
 
     /**
-     * Get the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs.
-     * Note: These are considered only if PublicNetworkAccess is enabled.
+     * Get the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs. Note:
+     * These are considered only if PublicNetworkAccess is enabled.
      * 
      * @return the inboundIpRules value.
      */
@@ -270,8 +264,8 @@ public final class TopicProperties {
     }
 
     /**
-     * Set the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs.
-     * Note: These are considered only if PublicNetworkAccess is enabled.
+     * Set the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs. Note:
+     * These are considered only if PublicNetworkAccess is enabled.
      * 
      * @param inboundIpRules the inboundIpRules value to set.
      * @return the TopicProperties object itself.

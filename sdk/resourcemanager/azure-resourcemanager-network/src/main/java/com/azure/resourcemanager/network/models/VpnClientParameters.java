@@ -87,8 +87,8 @@ public final class VpnClientParameters {
 
     /**
      * Get the radiusServerAuthCertificate property: The public certificate data for the radius server authentication
-     * certificate as a Base-64 encoded string. Required only if external radius authentication has been configured
-     * with EAPTLS authentication.
+     * certificate as a Base-64 encoded string. Required only if external radius authentication has been configured with
+     * EAPTLS authentication.
      * 
      * @return the radiusServerAuthCertificate value.
      */
@@ -98,8 +98,8 @@ public final class VpnClientParameters {
 
     /**
      * Set the radiusServerAuthCertificate property: The public certificate data for the radius server authentication
-     * certificate as a Base-64 encoded string. Required only if external radius authentication has been configured
-     * with EAPTLS authentication.
+     * certificate as a Base-64 encoded string. Required only if external radius authentication has been configured with
+     * EAPTLS authentication.
      * 
      * @param radiusServerAuthCertificate the radiusServerAuthCertificate value to set.
      * @return the VpnClientParameters object itself.

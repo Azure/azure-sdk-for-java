@@ -14,7 +14,7 @@ import java.util.Map;
 public final class NetworkInterfacesUpdateTagsSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkInterfaceUpdateTags.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkInterfaceUpdateTags.
      * json
      */
     /**
@@ -23,8 +23,12 @@ public final class NetworkInterfacesUpdateTagsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateNetworkInterfaceTags(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getNetworkInterfaces().updateTagsWithResponse("rg1", "test-nic",
-            new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")), com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getNetworkInterfaces()
+            .updateTagsWithResponse("rg1", "test-nic",
+                new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

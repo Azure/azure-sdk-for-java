@@ -343,7 +343,7 @@ public final class SearchAsyncClient {
      *
      * @return the pipeline.
      */
-    public HttpPipeline getHttpPipeline() {
+    HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
@@ -1315,9 +1315,7 @@ public final class SearchAsyncClient {
             .setSessionId(options.getSessionId())
             .setSelect(nullSafeStringJoin(options.getSelect()))
             .setSkip(options.getSkip())
-            .setTop(options.getTop())
-            .setQueryLanguage(options.getQueryLanguage())
-            .setSpeller(options.getSpeller());
+            .setTop(options.getTop());
 
         SemanticSearchOptions semanticSearchOptions = options.getSemanticSearchOptions();
         if (semanticSearchOptions != null) {
@@ -1328,9 +1326,7 @@ public final class SearchAsyncClient {
                 .setSemanticMaxWaitInMilliseconds(waitInMillis)
                 .setAnswers(createSearchRequestAnswers(semanticSearchOptions.getQueryAnswer()))
                 .setCaptions(createSearchRequestCaptions(semanticSearchOptions.getQueryCaption()))
-                .setSemanticQuery(semanticSearchOptions.getSemanticQuery())
-                .setSemanticFields(nullSafeStringJoin(semanticSearchOptions.getSemanticFields()))
-                .setDebug(semanticSearchOptions.getDebug());
+                .setSemanticQuery(semanticSearchOptions.getSemanticQuery());
         }
 
         VectorSearchOptions vectorSearchOptions = options.getVectorSearchOptions();
@@ -1338,6 +1334,7 @@ public final class SearchAsyncClient {
             request.setVectorFilterMode(vectorSearchOptions.getFilterMode())
                 .setVectorQueries(vectorSearchOptions.getQueries());
         }
+
 
         return request;
     }

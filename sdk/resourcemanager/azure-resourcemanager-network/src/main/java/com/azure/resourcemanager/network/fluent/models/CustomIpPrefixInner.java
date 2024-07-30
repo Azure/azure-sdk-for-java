@@ -179,8 +179,7 @@ public final class CustomIpPrefixInner extends Resource {
     }
 
     /**
-     * Get the cidr property: The prefix range in CIDR notation. Should include the start address and the prefix
-     * length.
+     * Get the cidr property: The prefix range in CIDR notation. Should include the start address and the prefix length.
      * 
      * @return the cidr value.
      */
@@ -189,8 +188,7 @@ public final class CustomIpPrefixInner extends Resource {
     }
 
     /**
-     * Set the cidr property: The prefix range in CIDR notation. Should include the start address and the prefix
-     * length.
+     * Set the cidr property: The prefix range in CIDR notation. Should include the start address and the prefix length.
      * 
      * @param cidr the cidr value to set.
      * @return the CustomIpPrefixInner object itself.

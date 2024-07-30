@@ -241,6 +241,10 @@
         </Or>
       </And>
       <And>
+        <Class name="com.azure.core.util.TracingOptions" />
+        <Method name="getAllowedTracingQueryParamNames" />
+      </And>
+      <And>
         <Class name="com.azure.core.http.policy.HttpRequestLoggingContext" />
         <Method name="getHttpRequest" />
       </And>
@@ -421,6 +425,10 @@
         <Class name="com.azure.core.models.MessageContent" />
         <Method name="setBodyAsBinaryData" />
       </And>
+      <And>
+        <Class name="com.azure.core.util.TracingOptions" />
+        <Method name="setAllowedTracingQueryParamNames" />
+      </And>
     </Or>
   </Match>
 
@@ -440,5 +448,11 @@
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE" />
     <Class name="com.azure.core.implementation.http.rest.SwaggerMethodParser" />
     <Method name="serialize" />
+  </Match>
+
+  <Match>
+    <Bug pattern="EI_EXPOSE_STATIC_REP2" />
+    <Class name="com.azure.core.implementation.util.HttpHeadersAccessHelper" />
+    <Method name="setAccessor" />
   </Match>
 </FindBugsFilter>

@@ -14,15 +14,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CacheActiveDirectorySettingsCredentials {
     /*
-     * Username of the Active Directory domain administrator. This value is stored encrypted and not returned on
-     * response.
+     * Username of the Active Directory domain administrator. This value is stored encrypted and not returned on response.
      */
     @JsonProperty(value = "username", required = true)
     private String username;
 
     /*
-     * Plain text password of the Active Directory domain administrator. This value is stored encrypted and not
-     * returned on response.
+     * Plain text password of the Active Directory domain administrator. This value is stored encrypted and not returned on response.
      */
     @JsonProperty(value = "password")
     private String password;
@@ -56,8 +54,8 @@ public final class CacheActiveDirectorySettingsCredentials {
     }
 
     /**
-     * Get the password property: Plain text password of the Active Directory domain administrator. This value is
-     * stored encrypted and not returned on response.
+     * Get the password property: Plain text password of the Active Directory domain administrator. This value is stored
+     * encrypted and not returned on response.
      * 
      * @return the password value.
      */
@@ -66,8 +64,8 @@ public final class CacheActiveDirectorySettingsCredentials {
     }
 
     /**
-     * Set the password property: Plain text password of the Active Directory domain administrator. This value is
-     * stored encrypted and not returned on response.
+     * Set the password property: Plain text password of the Active Directory domain administrator. This value is stored
+     * encrypted and not returned on response.
      * 
      * @param password the password value to set.
      * @return the CacheActiveDirectorySettingsCredentials object itself.
@@ -84,8 +82,9 @@ public final class CacheActiveDirectorySettingsCredentials {
      */
     public void validate() {
         if (username() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property username in model CacheActiveDirectorySettingsCredentials"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property username in model CacheActiveDirectorySettingsCredentials"));
         }
     }
 

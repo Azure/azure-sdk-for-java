@@ -5,44 +5,48 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The configuration settings of the Facebook provider. */
+/**
+ * The configuration settings of the Facebook provider.
+ */
 @Fluent
-public final class Facebook {
+public final class Facebook implements JsonSerializable<Facebook> {
     /*
      * <code>false</code> if the Facebook provider should not be enabled despite the set registration; otherwise,
      * <code>true</code>.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * The configuration settings of the app registration for the Facebook provider.
      */
-    @JsonProperty(value = "registration")
     private AppRegistration registration;
 
     /*
      * The version of the Facebook api to be used while logging in.
      */
-    @JsonProperty(value = "graphApiVersion")
     private String graphApiVersion;
 
     /*
      * The configuration settings of the login flow.
      */
-    @JsonProperty(value = "login")
     private LoginScopes login;
 
-    /** Creates an instance of Facebook class. */
+    /**
+     * Creates an instance of Facebook class.
+     */
     public Facebook() {
     }
 
     /**
      * Get the enabled property: &lt;code&gt;false&lt;/code&gt; if the Facebook provider should not be enabled despite
      * the set registration; otherwise, &lt;code&gt;true&lt;/code&gt;.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -52,7 +56,7 @@ public final class Facebook {
     /**
      * Set the enabled property: &lt;code&gt;false&lt;/code&gt; if the Facebook provider should not be enabled despite
      * the set registration; otherwise, &lt;code&gt;true&lt;/code&gt;.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the Facebook object itself.
      */
@@ -63,7 +67,7 @@ public final class Facebook {
 
     /**
      * Get the registration property: The configuration settings of the app registration for the Facebook provider.
-     *
+     * 
      * @return the registration value.
      */
     public AppRegistration registration() {
@@ -72,7 +76,7 @@ public final class Facebook {
 
     /**
      * Set the registration property: The configuration settings of the app registration for the Facebook provider.
-     *
+     * 
      * @param registration the registration value to set.
      * @return the Facebook object itself.
      */
@@ -83,7 +87,7 @@ public final class Facebook {
 
     /**
      * Get the graphApiVersion property: The version of the Facebook api to be used while logging in.
-     *
+     * 
      * @return the graphApiVersion value.
      */
     public String graphApiVersion() {
@@ -92,7 +96,7 @@ public final class Facebook {
 
     /**
      * Set the graphApiVersion property: The version of the Facebook api to be used while logging in.
-     *
+     * 
      * @param graphApiVersion the graphApiVersion value to set.
      * @return the Facebook object itself.
      */
@@ -103,7 +107,7 @@ public final class Facebook {
 
     /**
      * Get the login property: The configuration settings of the login flow.
-     *
+     * 
      * @return the login value.
      */
     public LoginScopes login() {
@@ -112,7 +116,7 @@ public final class Facebook {
 
     /**
      * Set the login property: The configuration settings of the login flow.
-     *
+     * 
      * @param login the login value to set.
      * @return the Facebook object itself.
      */
@@ -123,7 +127,7 @@ public final class Facebook {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -133,5 +137,50 @@ public final class Facebook {
         if (login() != null) {
             login().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeJsonField("registration", this.registration);
+        jsonWriter.writeStringField("graphApiVersion", this.graphApiVersion);
+        jsonWriter.writeJsonField("login", this.login);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Facebook from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Facebook if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Facebook.
+     */
+    public static Facebook fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Facebook deserializedFacebook = new Facebook();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedFacebook.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("registration".equals(fieldName)) {
+                    deserializedFacebook.registration = AppRegistration.fromJson(reader);
+                } else if ("graphApiVersion".equals(fieldName)) {
+                    deserializedFacebook.graphApiVersion = reader.getString();
+                } else if ("login".equals(fieldName)) {
+                    deserializedFacebook.login = LoginScopes.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFacebook;
+        });
     }
 }

@@ -7,9 +7,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonWriter;
 import com.azure.monitor.ingestion.models.LogsUploadOptions;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
 import reactor.core.publisher.Flux;
 
 import java.io.ByteArrayOutputStream;
@@ -21,7 +21,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Spliterator;
 import java.util.Spliterators;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -30,7 +29,7 @@ import static com.azure.monitor.ingestion.implementation.Utils.getConcurrency;
 import static com.azure.monitor.ingestion.implementation.Utils.gzipRequest;
 
 /**
- *  Provides iterator and streams for batches over log objects.
+ * Provides iterator and streams for batches over log objects.
  */
 public class Batcher implements Iterator<LogsIngestionRequest> {
     private static final ClientLogger LOGGER = new ClientLogger(Batcher.class);
@@ -138,14 +137,14 @@ public class Batcher implements Iterator<LogsIngestionRequest> {
     }
 
     private LogsIngestionRequest createRequest(boolean last) throws IOException {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        JsonGenerator generator = JsonFactory.builder().build().createGenerator(byteArrayOutputStream);
-        try {
-            generator.writeStartArray();
-            generator.writeRaw(serializedLogs.stream().collect(Collectors.joining(",")));
-            generator.writeEndArray();
-            generator.close();
-
+        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            JsonWriter writer = JsonProviders.createWriter(byteArrayOutputStream)) {
+            writer.writeStartArray();
+            for (String log : serializedLogs) {
+                writer.writeRawValue(log);
+            }
+            writer.writeEndArray();
+            writer.flush();
             byte[] zippedRequestBody = gzipRequest(byteArrayOutputStream.toByteArray());
             return new LogsIngestionRequest(originalLogsRequest, zippedRequestBody);
         } finally {
@@ -161,7 +160,6 @@ public class Batcher implements Iterator<LogsIngestionRequest> {
             return options.getObjectSerializer();
         }
 
-        return  DEFAULT_SERIALIZER;
+        return DEFAULT_SERIALIZER;
     }
-
 }

@@ -7,16 +7,28 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.security.fluent.models.ExternalSecuritySolutionInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Represents an AAD identity protection solution which sends logs to an OMS workspace.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = AadExternalSecuritySolution.class,
+    visible = true)
 @JsonTypeName("AAD")
 @Fluent
 public final class AadExternalSecuritySolution extends ExternalSecuritySolutionInner {
+    /*
+     * The kind of the external solution
+     */
+    @JsonTypeId
+    @JsonProperty(value = "kind", required = true)
+    private ExternalSecuritySolutionKind kind = ExternalSecuritySolutionKind.AAD;
+
     /*
      * The external security solution properties for AAD solutions
      */
@@ -27,6 +39,16 @@ public final class AadExternalSecuritySolution extends ExternalSecuritySolutionI
      * Creates an instance of AadExternalSecuritySolution class.
      */
     public AadExternalSecuritySolution() {
+    }
+
+    /**
+     * Get the kind property: The kind of the external solution.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public ExternalSecuritySolutionKind kind() {
+        return this.kind;
     }
 
     /**

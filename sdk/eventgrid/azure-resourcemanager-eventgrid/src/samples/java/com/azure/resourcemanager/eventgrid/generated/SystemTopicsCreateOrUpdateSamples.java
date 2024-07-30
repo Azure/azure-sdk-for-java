@@ -12,9 +12,7 @@ import java.util.Map;
  */
 public final class SystemTopicsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
-     * SystemTopics_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/SystemTopics_CreateOrUpdate.json
      */
     /**
      * Sample code: SystemTopics_CreateOrUpdate.
@@ -22,11 +20,15 @@ public final class SystemTopicsCreateOrUpdateSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void systemTopicsCreateOrUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.systemTopics().define("exampleSystemTopic1").withRegion("westus2")
-            .withExistingResourceGroup("examplerg").withTags(mapOf("tag1", "value1", "tag2", "value2"))
+        manager.systemTopics()
+            .define("exampleSystemTopic1")
+            .withRegion("westus2")
+            .withExistingResourceGroup("examplerg")
+            .withTags(mapOf("tag1", "value1", "tag2", "value2"))
             .withSource(
                 "/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/azureeventgridrunnerrgcentraluseuap/providers/microsoft.storage/storageaccounts/pubstgrunnerb71cd29e")
-            .withTopicType("microsoft.storage.storageaccounts").create();
+            .withTopicType("microsoft.storage.storageaccounts")
+            .create();
     }
 
     // Use "Map.of" if available

@@ -11,32 +11,28 @@ import org.junit.jupiter.api.Assertions;
 public final class MaintenanceWindowTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MaintenanceWindow model =
-            BinaryData
-                .fromString(
-                    "{\"startDateTime\":\"kanyktzlcuiywg\",\"expirationDateTime\":\"wgndrvynhzgpp\",\"duration\":\"cgyncocpecf\",\"timeZone\":\"mcoo\",\"recurEvery\":\"xlzevgbmqjqabcy\"}")
-                .toObject(MaintenanceWindow.class);
-        Assertions.assertEquals("kanyktzlcuiywg", model.startDateTime());
-        Assertions.assertEquals("wgndrvynhzgpp", model.expirationDateTime());
-        Assertions.assertEquals("cgyncocpecf", model.duration());
-        Assertions.assertEquals("mcoo", model.timeZone());
-        Assertions.assertEquals("xlzevgbmqjqabcy", model.recurEvery());
+        MaintenanceWindow model = BinaryData.fromString(
+            "{\"startDateTime\":\"wlbjnpgacftade\",\"expirationDateTime\":\"nltyfsoppusuesnz\",\"duration\":\"ej\",\"timeZone\":\"vorxzdmohct\",\"recurEvery\":\"vudwx\"}")
+            .toObject(MaintenanceWindow.class);
+        Assertions.assertEquals("wlbjnpgacftade", model.startDateTime());
+        Assertions.assertEquals("nltyfsoppusuesnz", model.expirationDateTime());
+        Assertions.assertEquals("ej", model.duration());
+        Assertions.assertEquals("vorxzdmohct", model.timeZone());
+        Assertions.assertEquals("vudwx", model.recurEvery());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MaintenanceWindow model =
-            new MaintenanceWindow()
-                .withStartDateTime("kanyktzlcuiywg")
-                .withExpirationDateTime("wgndrvynhzgpp")
-                .withDuration("cgyncocpecf")
-                .withTimeZone("mcoo")
-                .withRecurEvery("xlzevgbmqjqabcy");
+        MaintenanceWindow model = new MaintenanceWindow().withStartDateTime("wlbjnpgacftade")
+            .withExpirationDateTime("nltyfsoppusuesnz")
+            .withDuration("ej")
+            .withTimeZone("vorxzdmohct")
+            .withRecurEvery("vudwx");
         model = BinaryData.fromObject(model).toObject(MaintenanceWindow.class);
-        Assertions.assertEquals("kanyktzlcuiywg", model.startDateTime());
-        Assertions.assertEquals("wgndrvynhzgpp", model.expirationDateTime());
-        Assertions.assertEquals("cgyncocpecf", model.duration());
-        Assertions.assertEquals("mcoo", model.timeZone());
-        Assertions.assertEquals("xlzevgbmqjqabcy", model.recurEvery());
+        Assertions.assertEquals("wlbjnpgacftade", model.startDateTime());
+        Assertions.assertEquals("nltyfsoppusuesnz", model.expirationDateTime());
+        Assertions.assertEquals("ej", model.duration());
+        Assertions.assertEquals("vorxzdmohct", model.timeZone());
+        Assertions.assertEquals("vudwx", model.recurEvery());
     }
 }

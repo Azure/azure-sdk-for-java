@@ -1,6 +1,6 @@
 # Release History
 
-## 1.48.0-beta.1 (Unreleased)
+## 1.51.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -8,10 +8,67 @@
 
 ### Bugs Fixed
 
+### Other Changes
+
+## 1.50.0 (2024-07-12)
+
+### Features Added
+- Added support for `getRefreshAt()` functionality to `AccessToken` to get the time at which the token should be refreshed. ([#40982](https://github.com/Azure/azure-sdk-for-java/pull/41038))
+
+### Bugs Fixed
+- Fixed `SyncRestProxy` to return `InputStream` instead of `Mono<InputStream>`. ([#40982](https://github.com/Azure/azure-sdk-for-java/pull/40982))
+
+## 1.49.1 (2024-06-06)
+
+### Bugs Fixed
+
+- Fixed a bug where some policies didn't close the connection appropriately. ([#40052](https://github.com/Azure/azure-sdk-for-java/pull/40052))
+- Fixed an issue where HTTP response headers would be logged twice. ([#40190](https://github.com/Azure/azure-sdk-for-java/pull/40190))
+- Fixed a bug where container types wouldn't resolve to using `JsonSerializable` serialization for values. ([#40112](https://github.com/Azure/azure-sdk-for-java/pull/40112))
+- Fixed a bug where a generic `ObjectMapper` couldn't consume `CloudEvent` correctly. ([#40332](https://github.com/Azure/azure-sdk-for-java/pull/40332))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor Core from `3.4.36` to `3.4.38`.
+
+## 1.49.0 (2024-05-01)
+
+### Features Added
+
+- Added `SharedExecutorService` which acts as a global thread pool for the SDKs to use. ([#38860](https://github.com/Azure/azure-sdk-for-java/pull/38860))
+
+### Bugs Fixed
+
+- Fixed an issue where HTTP responses would not be logged if the response body was never consumed. ([#39964](https://github.com/Azure/azure-sdk-for-java/pull/39964))
+
+### Other Changes
+
+- Added default time to `CloudEvent` to be the current time if not set. ([#39751](https://github.com/Azure/azure-sdk-for-java/pull/39751))
+- Deprecated APIs exposing Jackson types. ([#39563](https://github.com/Azure/azure-sdk-for-java/pull/39563))
+
+## 1.48.0 (2024-04-05)
+
+### Features Added
+
+- Added dependency on `azure-xml` to support `XmlSerializable`, removing the need for Jackson Databind XML to handle
+  XML types generated and used by the SDKs.
+- Added new methods on `com.azure.core.util.tracing.Tracer` - `isRecording` and `addAttribute(String, Object, Context)`.
+- Added `CoreUtils.parseBestOffsetDateTime` which can handle cases when the `dateString` doesn't include a time zone.
+
+### Bugs Fixed
+
 - Fixed a bug where `text/event-stream` content type wasn't being handled correctly.
   Replaced content type exact match `equals` by `startsWith`. ([#39128](https://github.com/Azure/azure-sdk-for-java/issues/39128))
 
 ### Other Changes
+
+- Made `azure-json` `requires transitive` in `module-info.java`.
+
+#### Dependency Updates
+
+- Upgraded Reactor Core from `3.4.34` to `3.4.36`.
 
 ## 1.47.0 (2024-03-01)
 

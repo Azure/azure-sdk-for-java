@@ -98,6 +98,16 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
     isOffsetValid
   }
 
+  def validateCollectionRidOfChangeFeedStates
+  (
+    continuationLeft: String,
+    continuationRight: String,
+  ): Boolean = {
+    val extractedRidLeft = extractCollectionRid(continuationLeft)
+    val extractedRidRight = extractCollectionRid(continuationRight)
+    extractedRidLeft.equalsIgnoreCase(extractedRidRight)
+  }
+
   def createChangeFeedStateJson
   (
     startOffsetContinuationState: String,

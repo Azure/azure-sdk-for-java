@@ -14,55 +14,33 @@ import org.junit.jupiter.api.Assertions;
 public final class ScheduleBasedConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScheduleBasedConfig model =
-            BinaryData
-                .fromString(
-                    "{\"timeZone\":\"vt\",\"defaultCount\":1243858380,\"schedules\":[{\"startTime\":\"mqkrhahvljuahaqu\",\"endTime\":\"c\",\"count\":1312333731,\"days\":[\"Thursday\"]},{\"startTime\":\"ualaexqpvfadmw\",\"endTime\":\"rcrgvx\",\"count\":1281697798,\"days\":[\"Sunday\"]},{\"startTime\":\"mzlfmisgwb\",\"endTime\":\"b\",\"count\":85144126,\"days\":[\"Friday\",\"Monday\",\"Tuesday\",\"Tuesday\"]}]}")
-                .toObject(ScheduleBasedConfig.class);
-        Assertions.assertEquals("vt", model.timeZone());
-        Assertions.assertEquals(1243858380, model.defaultCount());
-        Assertions.assertEquals("mqkrhahvljuahaqu", model.schedules().get(0).startTime());
-        Assertions.assertEquals("c", model.schedules().get(0).endTime());
-        Assertions.assertEquals(1312333731, model.schedules().get(0).count());
-        Assertions.assertEquals(ScheduleDay.THURSDAY, model.schedules().get(0).days().get(0));
+        ScheduleBasedConfig model = BinaryData.fromString(
+            "{\"timeZone\":\"y\",\"defaultCount\":1035885378,\"schedules\":[{\"startTime\":\"bnuqqkpik\",\"endTime\":\"drgvtqagn\",\"count\":1873718862,\"days\":[\"Saturday\",\"Wednesday\",\"Wednesday\"]},{\"startTime\":\"jggmebfsiarbu\",\"endTime\":\"rcvpnazzmhjrunmp\",\"count\":185169787,\"days\":[\"Tuesday\",\"Friday\",\"Tuesday\"]},{\"startTime\":\"rbnlankxmyskp\",\"endTime\":\"henbtkcxywnytn\",\"count\":1863766018,\"days\":[\"Thursday\"]}]}")
+            .toObject(ScheduleBasedConfig.class);
+        Assertions.assertEquals("y", model.timeZone());
+        Assertions.assertEquals(1035885378, model.defaultCount());
+        Assertions.assertEquals("bnuqqkpik", model.schedules().get(0).startTime());
+        Assertions.assertEquals("drgvtqagn", model.schedules().get(0).endTime());
+        Assertions.assertEquals(1873718862, model.schedules().get(0).count());
+        Assertions.assertEquals(ScheduleDay.SATURDAY, model.schedules().get(0).days().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScheduleBasedConfig model =
-            new ScheduleBasedConfig()
-                .withTimeZone("vt")
-                .withDefaultCount(1243858380)
-                .withSchedules(
-                    Arrays
-                        .asList(
-                            new Schedule()
-                                .withStartTime("mqkrhahvljuahaqu")
-                                .withEndTime("c")
-                                .withCount(1312333731)
-                                .withDays(Arrays.asList(ScheduleDay.THURSDAY)),
-                            new Schedule()
-                                .withStartTime("ualaexqpvfadmw")
-                                .withEndTime("rcrgvx")
-                                .withCount(1281697798)
-                                .withDays(Arrays.asList(ScheduleDay.SUNDAY)),
-                            new Schedule()
-                                .withStartTime("mzlfmisgwb")
-                                .withEndTime("b")
-                                .withCount(85144126)
-                                .withDays(
-                                    Arrays
-                                        .asList(
-                                            ScheduleDay.FRIDAY,
-                                            ScheduleDay.MONDAY,
-                                            ScheduleDay.TUESDAY,
-                                            ScheduleDay.TUESDAY))));
+        ScheduleBasedConfig model = new ScheduleBasedConfig().withTimeZone("y").withDefaultCount(1035885378)
+            .withSchedules(Arrays.asList(
+                new Schedule().withStartTime("bnuqqkpik").withEndTime("drgvtqagn").withCount(1873718862)
+                    .withDays(Arrays.asList(ScheduleDay.SATURDAY, ScheduleDay.WEDNESDAY, ScheduleDay.WEDNESDAY)),
+                new Schedule().withStartTime("jggmebfsiarbu").withEndTime("rcvpnazzmhjrunmp").withCount(185169787)
+                    .withDays(Arrays.asList(ScheduleDay.TUESDAY, ScheduleDay.FRIDAY, ScheduleDay.TUESDAY)),
+                new Schedule().withStartTime("rbnlankxmyskp").withEndTime("henbtkcxywnytn").withCount(1863766018)
+                    .withDays(Arrays.asList(ScheduleDay.THURSDAY))));
         model = BinaryData.fromObject(model).toObject(ScheduleBasedConfig.class);
-        Assertions.assertEquals("vt", model.timeZone());
-        Assertions.assertEquals(1243858380, model.defaultCount());
-        Assertions.assertEquals("mqkrhahvljuahaqu", model.schedules().get(0).startTime());
-        Assertions.assertEquals("c", model.schedules().get(0).endTime());
-        Assertions.assertEquals(1312333731, model.schedules().get(0).count());
-        Assertions.assertEquals(ScheduleDay.THURSDAY, model.schedules().get(0).days().get(0));
+        Assertions.assertEquals("y", model.timeZone());
+        Assertions.assertEquals(1035885378, model.defaultCount());
+        Assertions.assertEquals("bnuqqkpik", model.schedules().get(0).startTime());
+        Assertions.assertEquals("drgvtqagn", model.schedules().get(0).endTime());
+        Assertions.assertEquals(1873718862, model.schedules().get(0).count());
+        Assertions.assertEquals(ScheduleDay.SATURDAY, model.schedules().get(0).days().get(0));
     }
 }

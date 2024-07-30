@@ -13,82 +13,52 @@ import com.azure.resourcemanager.mobilenetwork.models.SimStaticIpPropertiesStati
 import com.azure.resourcemanager.mobilenetwork.models.SliceResourceId;
 import java.util.Arrays;
 
-/** Samples for Sims BulkUploadEncrypted. */
+/**
+ * Samples for Sims BulkUploadEncrypted.
+ */
 public final class SimsBulkUploadEncryptedSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimBulkUploadEncrypted.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimBulkUploadEncrypted.json
      */
     /**
      * Sample code: Bulk upload encrypted SIMs to a SIM group.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void bulkUploadEncryptedSIMsToASIMGroup(
-        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .sims()
-            .bulkUploadEncrypted(
-                "rg1",
-                "testSimGroup",
-                new EncryptedSimUploadList()
-                    .withVersion(1)
-                    .withAzureKeyIdentifier(1)
-                    .withVendorKeyFingerprint("fakeTokenPlaceholder")
-                    .withEncryptedTransportKey("fakeTokenPlaceholder")
-                    .withSignedTransportKey("fakeTokenPlaceholder")
-                    .withSims(
-                        Arrays
-                            .asList(
-                                new SimNameAndEncryptedProperties()
-                                    .withName("testSim")
-                                    .withEncryptedCredentials("fakeTokenPlaceholder")
-                                    .withInternationalMobileSubscriberIdentity("00000")
-                                    .withIntegratedCircuitCardIdentifier("8900000000000000000")
-                                    .withDeviceType("Video camera")
-                                    .withSimPolicy(
-                                        new SimPolicyResourceId()
-                                            .withId(
-                                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"))
-                                    .withStaticIpConfiguration(
-                                        Arrays
-                                            .asList(
-                                                new SimStaticIpProperties()
-                                                    .withAttachedDataNetwork(
-                                                        new AttachedDataNetworkResourceId()
-                                                            .withId(
-                                                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"))
-                                                    .withSlice(
-                                                        new SliceResourceId()
-                                                            .withId(
-                                                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"))
-                                                    .withStaticIp(
-                                                        new SimStaticIpPropertiesStaticIp()
-                                                            .withIpv4Address("2.4.0.1")))),
-                                new SimNameAndEncryptedProperties()
-                                    .withName("testSim2")
-                                    .withEncryptedCredentials("fakeTokenPlaceholder")
-                                    .withInternationalMobileSubscriberIdentity("00000")
-                                    .withIntegratedCircuitCardIdentifier("8900000000000000001")
-                                    .withDeviceType("Video camera")
-                                    .withSimPolicy(
-                                        new SimPolicyResourceId()
-                                            .withId(
-                                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"))
-                                    .withStaticIpConfiguration(
-                                        Arrays
-                                            .asList(
-                                                new SimStaticIpProperties()
-                                                    .withAttachedDataNetwork(
-                                                        new AttachedDataNetworkResourceId()
-                                                            .withId(
-                                                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"))
-                                                    .withSlice(
-                                                        new SliceResourceId()
-                                                            .withId(
-                                                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"))
-                                                    .withStaticIp(
-                                                        new SimStaticIpPropertiesStaticIp()
-                                                            .withIpv4Address("2.4.0.2")))))),
+    public static void
+        bulkUploadEncryptedSIMsToASIMGroup(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+        manager.sims()
+            .bulkUploadEncrypted("rg1", "testSimGroup", new EncryptedSimUploadList().withVersion(1)
+                .withAzureKeyIdentifier(1)
+                .withVendorKeyFingerprint("fakeTokenPlaceholder")
+                .withEncryptedTransportKey("fakeTokenPlaceholder")
+                .withSignedTransportKey("fakeTokenPlaceholder")
+                .withSims(Arrays.asList(new SimNameAndEncryptedProperties().withName("testSim")
+                    .withEncryptedCredentials("fakeTokenPlaceholder")
+                    .withInternationalMobileSubscriberIdentity("00000")
+                    .withIntegratedCircuitCardIdentifier("8900000000000000000")
+                    .withDeviceType("Video camera")
+                    .withSimPolicy(new SimPolicyResourceId().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"))
+                    .withStaticIpConfiguration(Arrays.asList(new SimStaticIpProperties()
+                        .withAttachedDataNetwork(new AttachedDataNetworkResourceId().withId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"))
+                        .withSlice(new SliceResourceId().withId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"))
+                        .withStaticIp(new SimStaticIpPropertiesStaticIp().withIpv4Address("2.4.0.1")))),
+                    new SimNameAndEncryptedProperties().withName("testSim2")
+                        .withEncryptedCredentials("fakeTokenPlaceholder")
+                        .withInternationalMobileSubscriberIdentity("00000")
+                        .withIntegratedCircuitCardIdentifier("8900000000000000001")
+                        .withDeviceType("Video camera")
+                        .withSimPolicy(new SimPolicyResourceId().withId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"))
+                        .withStaticIpConfiguration(Arrays.asList(new SimStaticIpProperties()
+                            .withAttachedDataNetwork(new AttachedDataNetworkResourceId().withId(
+                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"))
+                            .withSlice(new SliceResourceId().withId(
+                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"))
+                            .withStaticIp(new SimStaticIpPropertiesStaticIp().withIpv4Address("2.4.0.2")))))),
                 com.azure.core.util.Context.NONE);
     }
 }

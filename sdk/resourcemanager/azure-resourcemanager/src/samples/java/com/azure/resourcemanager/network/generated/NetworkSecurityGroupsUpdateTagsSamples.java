@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class NetworkSecurityGroupsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * NetworkSecurityGroupUpdateTags.json
      */
     /**
@@ -22,8 +22,12 @@ public final class NetworkSecurityGroupsUpdateTagsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateNetworkSecurityGroupTags(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getNetworkSecurityGroups().updateTagsWithResponse("rg1", "testnsg",
-            new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")), com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getNetworkSecurityGroups()
+            .updateTagsWithResponse("rg1", "testnsg",
+                new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

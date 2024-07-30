@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.selfhelp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Solutions Diagnostic.
  */
 @Fluent
-public final class SolutionsDiagnostic {
+public final class SolutionsDiagnostic implements JsonSerializable<SolutionsDiagnostic> {
     /*
      * Solution Id to identify single Solutions Diagnostic
      */
-    @JsonProperty(value = "solutionId")
     private String solutionId;
 
     /*
      * Denotes the status of the diagnostic resource.
      */
-    @JsonProperty(value = "status")
     private Status status;
 
     /*
      * Details of the status
      */
-    @JsonProperty(value = "statusDetails")
     private String statusDetails;
 
     /*
      * Place holder used in HTML Content replace control with the content
      */
-    @JsonProperty(value = "replacementKey")
     private String replacementKey;
+
+    /*
+     * Diagnostics estimated completion time in minutes
+     */
+    private String estimatedCompletionTime;
 
     /*
      * Required parameters of this item
      */
-    @JsonProperty(value = "requiredParameters")
     private List<String> requiredParameters;
 
     /*
      * Diagnostic insights
      */
-    @JsonProperty(value = "insights")
     private List<Insight> insights;
 
     /**
@@ -136,6 +139,26 @@ public final class SolutionsDiagnostic {
     }
 
     /**
+     * Get the estimatedCompletionTime property: Diagnostics estimated completion time in minutes.
+     * 
+     * @return the estimatedCompletionTime value.
+     */
+    public String estimatedCompletionTime() {
+        return this.estimatedCompletionTime;
+    }
+
+    /**
+     * Set the estimatedCompletionTime property: Diagnostics estimated completion time in minutes.
+     * 
+     * @param estimatedCompletionTime the estimatedCompletionTime value to set.
+     * @return the SolutionsDiagnostic object itself.
+     */
+    public SolutionsDiagnostic withEstimatedCompletionTime(String estimatedCompletionTime) {
+        this.estimatedCompletionTime = estimatedCompletionTime;
+        return this;
+    }
+
+    /**
      * Get the requiredParameters property: Required parameters of this item.
      * 
      * @return the requiredParameters value.
@@ -184,5 +207,62 @@ public final class SolutionsDiagnostic {
         if (insights() != null) {
             insights().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("solutionId", this.solutionId);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("statusDetails", this.statusDetails);
+        jsonWriter.writeStringField("replacementKey", this.replacementKey);
+        jsonWriter.writeStringField("estimatedCompletionTime", this.estimatedCompletionTime);
+        jsonWriter.writeArrayField("requiredParameters", this.requiredParameters,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("insights", this.insights, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SolutionsDiagnostic from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SolutionsDiagnostic if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SolutionsDiagnostic.
+     */
+    public static SolutionsDiagnostic fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SolutionsDiagnostic deserializedSolutionsDiagnostic = new SolutionsDiagnostic();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("solutionId".equals(fieldName)) {
+                    deserializedSolutionsDiagnostic.solutionId = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedSolutionsDiagnostic.status = Status.fromString(reader.getString());
+                } else if ("statusDetails".equals(fieldName)) {
+                    deserializedSolutionsDiagnostic.statusDetails = reader.getString();
+                } else if ("replacementKey".equals(fieldName)) {
+                    deserializedSolutionsDiagnostic.replacementKey = reader.getString();
+                } else if ("estimatedCompletionTime".equals(fieldName)) {
+                    deserializedSolutionsDiagnostic.estimatedCompletionTime = reader.getString();
+                } else if ("requiredParameters".equals(fieldName)) {
+                    List<String> requiredParameters = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSolutionsDiagnostic.requiredParameters = requiredParameters;
+                } else if ("insights".equals(fieldName)) {
+                    List<Insight> insights = reader.readArray(reader1 -> Insight.fromJson(reader1));
+                    deserializedSolutionsDiagnostic.insights = insights;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSolutionsDiagnostic;
+        });
     }
 }

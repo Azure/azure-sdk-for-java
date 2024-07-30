@@ -11,8 +11,7 @@ import com.azure.resourcemanager.appservice.models.KubeEnvironmentPatchResource;
  */
 public final class KubeEnvironmentsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/KubeEnvironments_Update.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/KubeEnvironments_Update.json
      */
     /**
      * Sample code: Update kube environments.
@@ -20,7 +19,11 @@ public final class KubeEnvironmentsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateKubeEnvironments(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getKubeEnvironments().updateWithResponse("examplerg", "testkubeenv",
-            new KubeEnvironmentPatchResource().withStaticIp("1.2.3.4"), com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getKubeEnvironments()
+            .updateWithResponse("examplerg", "testkubeenv", new KubeEnvironmentPatchResource().withStaticIp("1.2.3.4"),
+                com.azure.core.util.Context.NONE);
     }
 }

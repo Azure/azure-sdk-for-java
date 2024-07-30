@@ -21,8 +21,9 @@ public final class FetchTieringCostInfoRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FetchTieringCostInfoRequest model = new FetchTieringCostInfoRequest()
-            .withSourceTierType(RecoveryPointTierType.INVALID).withTargetTierType(RecoveryPointTierType.INSTANT_RP);
+        FetchTieringCostInfoRequest model
+            = new FetchTieringCostInfoRequest().withSourceTierType(RecoveryPointTierType.INVALID)
+                .withTargetTierType(RecoveryPointTierType.INSTANT_RP);
         model = BinaryData.fromObject(model).toObject(FetchTieringCostInfoRequest.class);
         Assertions.assertEquals(RecoveryPointTierType.INVALID, model.sourceTierType());
         Assertions.assertEquals(RecoveryPointTierType.INSTANT_RP, model.targetTierType());

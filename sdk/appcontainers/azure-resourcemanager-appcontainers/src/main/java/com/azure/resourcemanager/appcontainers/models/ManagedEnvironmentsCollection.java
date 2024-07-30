@@ -6,32 +6,38 @@ package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appcontainers.fluent.models.ManagedEnvironmentInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Collection of Environments. */
+/**
+ * Collection of Environments.
+ */
 @Fluent
-public final class ManagedEnvironmentsCollection {
+public final class ManagedEnvironmentsCollection implements JsonSerializable<ManagedEnvironmentsCollection> {
     /*
      * Collection of resources.
      */
-    @JsonProperty(value = "value", required = true)
     private List<ManagedEnvironmentInner> value;
 
     /*
      * Link to next page of resources.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ManagedEnvironmentsCollection class. */
+    /**
+     * Creates an instance of ManagedEnvironmentsCollection class.
+     */
     public ManagedEnvironmentsCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<ManagedEnvironmentInner> value() {
@@ -40,7 +46,7 @@ public final class ManagedEnvironmentsCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the ManagedEnvironmentsCollection object itself.
      */
@@ -51,7 +57,7 @@ public final class ManagedEnvironmentsCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,19 +66,60 @@ public final class ManagedEnvironmentsCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model ManagedEnvironmentsCollection"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model ManagedEnvironmentsCollection"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagedEnvironmentsCollection.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedEnvironmentsCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedEnvironmentsCollection if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedEnvironmentsCollection.
+     */
+    public static ManagedEnvironmentsCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedEnvironmentsCollection deserializedManagedEnvironmentsCollection
+                = new ManagedEnvironmentsCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ManagedEnvironmentInner> value
+                        = reader.readArray(reader1 -> ManagedEnvironmentInner.fromJson(reader1));
+                    deserializedManagedEnvironmentsCollection.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedManagedEnvironmentsCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedEnvironmentsCollection;
+        });
+    }
 }

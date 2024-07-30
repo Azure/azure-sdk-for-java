@@ -5,17 +5,20 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Virtual Network Profile.
  */
 @Fluent
-public final class VirtualNetworkProfile {
+public final class VirtualNetworkProfile implements JsonSerializable<VirtualNetworkProfile> {
     /*
      * Subnet ID used for computes in workspace
      */
-    @JsonProperty(value = "computeSubnetId")
     private String computeSubnetId;
 
     /**
@@ -42,5 +45,41 @@ public final class VirtualNetworkProfile {
     public VirtualNetworkProfile setComputeSubnetId(String computeSubnetId) {
         this.computeSubnetId = computeSubnetId;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("computeSubnetId", this.computeSubnetId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkProfile if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualNetworkProfile.
+     */
+    public static VirtualNetworkProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkProfile deserializedVirtualNetworkProfile = new VirtualNetworkProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("computeSubnetId".equals(fieldName)) {
+                    deserializedVirtualNetworkProfile.computeSubnetId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkProfile;
+        });
     }
 }

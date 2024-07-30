@@ -7,7 +7,9 @@ package com.azure.resourcemanager.devcenter.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Stop on disconnect configuration settings for Dev Boxes created in this pool. */
+/**
+ * Stop on disconnect configuration settings for Dev Boxes created in this pool.
+ */
 @Fluent
 public final class StopOnDisconnectConfiguration {
     /*
@@ -22,14 +24,16 @@ public final class StopOnDisconnectConfiguration {
     @JsonProperty(value = "gracePeriodMinutes")
     private Integer gracePeriodMinutes;
 
-    /** Creates an instance of StopOnDisconnectConfiguration class. */
+    /**
+     * Creates an instance of StopOnDisconnectConfiguration class.
+     */
     public StopOnDisconnectConfiguration() {
     }
 
     /**
      * Get the status property: Whether the feature to stop the Dev Box on disconnect once the grace period has lapsed
      * is enabled.
-     *
+     * 
      * @return the status value.
      */
     public StopOnDisconnectEnableStatus status() {
@@ -39,7 +43,7 @@ public final class StopOnDisconnectConfiguration {
     /**
      * Set the status property: Whether the feature to stop the Dev Box on disconnect once the grace period has lapsed
      * is enabled.
-     *
+     * 
      * @param status the status value to set.
      * @return the StopOnDisconnectConfiguration object itself.
      */
@@ -51,7 +55,7 @@ public final class StopOnDisconnectConfiguration {
     /**
      * Get the gracePeriodMinutes property: The specified time in minutes to wait before stopping a Dev Box once
      * disconnect is detected.
-     *
+     * 
      * @return the gracePeriodMinutes value.
      */
     public Integer gracePeriodMinutes() {
@@ -61,7 +65,7 @@ public final class StopOnDisconnectConfiguration {
     /**
      * Set the gracePeriodMinutes property: The specified time in minutes to wait before stopping a Dev Box once
      * disconnect is detected.
-     *
+     * 
      * @param gracePeriodMinutes the gracePeriodMinutes value to set.
      * @return the StopOnDisconnectConfiguration object itself.
      */
@@ -72,7 +76,7 @@ public final class StopOnDisconnectConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

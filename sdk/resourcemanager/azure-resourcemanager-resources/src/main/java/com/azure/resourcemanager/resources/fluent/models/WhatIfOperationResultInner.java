@@ -30,19 +30,21 @@ public final class WhatIfOperationResultInner {
 
     /*
      * Error Response
-     *
+     * 
      * Error when What-If operation fails.
      */
     @JsonProperty(value = "error")
     private ManagementError error;
 
-    /** Creates an instance of WhatIfOperationResultInner class. */
+    /**
+     * Creates an instance of WhatIfOperationResultInner class.
+     */
     public WhatIfOperationResultInner() {
     }
 
     /**
      * Get the status property: Status of the What-If operation.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -51,7 +53,7 @@ public final class WhatIfOperationResultInner {
 
     /**
      * Set the status property: Status of the What-If operation.
-     *
+     * 
      * @param status the status value to set.
      * @return the WhatIfOperationResultInner object itself.
      */
@@ -62,7 +64,7 @@ public final class WhatIfOperationResultInner {
 
     /**
      * Get the innerProperties property: What-If operation properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WhatIfOperationProperties innerProperties() {
@@ -71,9 +73,9 @@ public final class WhatIfOperationResultInner {
 
     /**
      * Get the error property: Error Response
-     *
-     * <p>Error when What-If operation fails.
-     *
+     * 
+     * Error when What-If operation fails.
+     * 
      * @return the error value.
      */
     public ManagementError error() {
@@ -82,9 +84,9 @@ public final class WhatIfOperationResultInner {
 
     /**
      * Set the error property: Error Response
-     *
-     * <p>Error when What-If operation fails.
-     *
+     * 
+     * Error when What-If operation fails.
+     * 
      * @param error the error value to set.
      * @return the WhatIfOperationResultInner object itself.
      */
@@ -95,7 +97,7 @@ public final class WhatIfOperationResultInner {
 
     /**
      * Get the changes property: List of resource changes predicted by What-If operation.
-     *
+     * 
      * @return the changes value.
      */
     public List<WhatIfChange> changes() {
@@ -104,7 +106,7 @@ public final class WhatIfOperationResultInner {
 
     /**
      * Set the changes property: List of resource changes predicted by What-If operation.
-     *
+     * 
      * @param changes the changes value to set.
      * @return the WhatIfOperationResultInner object itself.
      */
@@ -118,7 +120,7 @@ public final class WhatIfOperationResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

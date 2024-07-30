@@ -17,8 +17,8 @@ import java.util.Map;
 @Fluent
 public final class DatabricksNotebookActivityTypeProperties {
     /*
-     * The absolute path of the notebook to be run in the Databricks Workspace. This path must begin with a slash.
-     * Type: string (or Expression with resultType string).
+     * The absolute path of the notebook to be run in the Databricks Workspace. This path must begin with a slash. Type:
+     * string (or Expression with resultType string).
      */
     @JsonProperty(value = "notebookPath", required = true)
     private Object notebookPath;
@@ -44,8 +44,8 @@ public final class DatabricksNotebookActivityTypeProperties {
     }
 
     /**
-     * Get the notebookPath property: The absolute path of the notebook to be run in the Databricks Workspace. This
-     * path must begin with a slash. Type: string (or Expression with resultType string).
+     * Get the notebookPath property: The absolute path of the notebook to be run in the Databricks Workspace. This path
+     * must begin with a slash. Type: string (or Expression with resultType string).
      * 
      * @return the notebookPath value.
      */
@@ -54,8 +54,8 @@ public final class DatabricksNotebookActivityTypeProperties {
     }
 
     /**
-     * Set the notebookPath property: The absolute path of the notebook to be run in the Databricks Workspace. This
-     * path must begin with a slash. Type: string (or Expression with resultType string).
+     * Set the notebookPath property: The absolute path of the notebook to be run in the Databricks Workspace. This path
+     * must begin with a slash. Type: string (or Expression with resultType string).
      * 
      * @param notebookPath the notebookPath value to set.
      * @return the DatabricksNotebookActivityTypeProperties object itself.
@@ -114,8 +114,9 @@ public final class DatabricksNotebookActivityTypeProperties {
      */
     public void validate() {
         if (notebookPath() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property notebookPath in model DatabricksNotebookActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property notebookPath in model DatabricksNotebookActivityTypeProperties"));
         }
     }
 

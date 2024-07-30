@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storage.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Multichannel setting. Applies to Premium FileStorage only. */
+/**
+ * Multichannel setting. Applies to Premium FileStorage only.
+ */
 @Fluent
 public final class Multichannel {
     /*
@@ -16,13 +18,15 @@ public final class Multichannel {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
-    /** Creates an instance of Multichannel class. */
+    /**
+     * Creates an instance of Multichannel class.
+     */
     public Multichannel() {
     }
 
     /**
      * Get the enabled property: Indicates whether multichannel is enabled.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -31,7 +35,7 @@ public final class Multichannel {
 
     /**
      * Set the enabled property: Indicates whether multichannel is enabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the Multichannel object itself.
      */
@@ -42,7 +46,7 @@ public final class Multichannel {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

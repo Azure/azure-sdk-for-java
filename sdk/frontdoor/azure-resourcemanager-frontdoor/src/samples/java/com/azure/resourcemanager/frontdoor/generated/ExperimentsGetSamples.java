@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.frontdoor.generated;
 
-/** Samples for Experiments Get. */
+/**
+ * Samples for Experiments Get.
+ */
 public final class ExperimentsGetSamples {
     /*
      * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/NetworkExperimentGetExperiment.json
      */
     /**
      * Sample code: Gets an Experiment by ExperimentName.
-     *
+     * 
      * @param manager Entry point to FrontDoorManager.
      */
     public static void getsAnExperimentByExperimentName(com.azure.resourcemanager.frontdoor.FrontDoorManager manager) {
-        manager
-            .experiments()
+        manager.experiments()
             .getWithResponse("MyResourceGroup", "MyProfile", "MyExperiment", com.azure.core.util.Context.NONE);
     }
 }

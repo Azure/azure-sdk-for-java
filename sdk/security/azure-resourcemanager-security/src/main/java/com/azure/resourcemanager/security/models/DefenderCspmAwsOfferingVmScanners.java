@@ -5,25 +5,12 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The Microsoft Defender for Server VM scanning configuration.
+ * The Microsoft Defender for CSPM offering VM scanning configuration.
  */
 @Fluent
-public final class DefenderCspmAwsOfferingVmScanners {
-    /*
-     * Is Microsoft Defender for Server VM scanning enabled
-     */
-    @JsonProperty(value = "enabled")
-    private Boolean enabled;
-
-    /*
-     * configuration for Microsoft Defender for Server VM scanning
-     */
-    @JsonProperty(value = "configuration")
-    private DefenderCspmAwsOfferingVmScannersConfiguration configuration;
-
+public final class DefenderCspmAwsOfferingVmScanners extends VmScannersAws {
     /**
      * Creates an instance of DefenderCspmAwsOfferingVmScanners class.
      */
@@ -31,43 +18,29 @@ public final class DefenderCspmAwsOfferingVmScanners {
     }
 
     /**
-     * Get the enabled property: Is Microsoft Defender for Server VM scanning enabled.
-     * 
-     * @return the enabled value.
+     * {@inheritDoc}
      */
-    public Boolean enabled() {
-        return this.enabled;
-    }
-
-    /**
-     * Set the enabled property: Is Microsoft Defender for Server VM scanning enabled.
-     * 
-     * @param enabled the enabled value to set.
-     * @return the DefenderCspmAwsOfferingVmScanners object itself.
-     */
-    public DefenderCspmAwsOfferingVmScanners withEnabled(Boolean enabled) {
-        this.enabled = enabled;
+    @Override
+    public DefenderCspmAwsOfferingVmScanners withCloudRoleArn(String cloudRoleArn) {
+        super.withCloudRoleArn(cloudRoleArn);
         return this;
     }
 
     /**
-     * Get the configuration property: configuration for Microsoft Defender for Server VM scanning.
-     * 
-     * @return the configuration value.
+     * {@inheritDoc}
      */
-    public DefenderCspmAwsOfferingVmScannersConfiguration configuration() {
-        return this.configuration;
+    @Override
+    public DefenderCspmAwsOfferingVmScanners withEnabled(Boolean enabled) {
+        super.withEnabled(enabled);
+        return this;
     }
 
     /**
-     * Set the configuration property: configuration for Microsoft Defender for Server VM scanning.
-     * 
-     * @param configuration the configuration value to set.
-     * @return the DefenderCspmAwsOfferingVmScanners object itself.
+     * {@inheritDoc}
      */
-    public DefenderCspmAwsOfferingVmScanners
-        withConfiguration(DefenderCspmAwsOfferingVmScannersConfiguration configuration) {
-        this.configuration = configuration;
+    @Override
+    public DefenderCspmAwsOfferingVmScanners withConfiguration(VmScannersBaseConfiguration configuration) {
+        super.withConfiguration(configuration);
         return this;
     }
 
@@ -76,9 +49,8 @@ public final class DefenderCspmAwsOfferingVmScanners {
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
-        if (configuration() != null) {
-            configuration().validate();
-        }
+        super.validate();
     }
 }

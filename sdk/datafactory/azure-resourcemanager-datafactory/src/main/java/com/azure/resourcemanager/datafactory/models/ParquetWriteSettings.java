@@ -6,16 +6,24 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Parquet write settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = ParquetWriteSettings.class, visible = true)
 @JsonTypeName("ParquetWriteSettings")
 @Fluent
 public final class ParquetWriteSettings extends FormatWriteSettings {
+    /*
+     * The write setting type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "ParquetWriteSettings";
+
     /*
      * Limit the written file's row count to be smaller than or equal to the specified count. Type: integer (or
      * Expression with resultType integer).
@@ -34,6 +42,16 @@ public final class ParquetWriteSettings extends FormatWriteSettings {
      * Creates an instance of ParquetWriteSettings class.
      */
     public ParquetWriteSettings() {
+    }
+
+    /**
+     * Get the type property: The write setting type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

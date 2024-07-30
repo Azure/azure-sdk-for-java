@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cdn.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Caching settings for a caching-type route. To disable caching, do not provide a cacheConfiguration object. */
+/**
+ * Caching settings for a caching-type route. To disable caching, do not provide a cacheConfiguration object.
+ */
 @Fluent
 public final class AfdRouteCacheConfiguration {
     /*
@@ -29,7 +31,9 @@ public final class AfdRouteCacheConfiguration {
     @JsonProperty(value = "compressionSettings")
     private CompressionSettings compressionSettings;
 
-    /** Creates an instance of AfdRouteCacheConfiguration class. */
+    /**
+     * Creates an instance of AfdRouteCacheConfiguration class.
+     */
     public AfdRouteCacheConfiguration() {
     }
 
@@ -37,7 +41,7 @@ public final class AfdRouteCacheConfiguration {
      * Get the queryStringCachingBehavior property: Defines how Frontdoor caches requests that include query strings.
      * You can ignore any query strings when caching, ignore specific query strings, cache every request with a unique
      * URL, or cache specific query strings.
-     *
+     * 
      * @return the queryStringCachingBehavior value.
      */
     public AfdQueryStringCachingBehavior queryStringCachingBehavior() {
@@ -48,19 +52,19 @@ public final class AfdRouteCacheConfiguration {
      * Set the queryStringCachingBehavior property: Defines how Frontdoor caches requests that include query strings.
      * You can ignore any query strings when caching, ignore specific query strings, cache every request with a unique
      * URL, or cache specific query strings.
-     *
+     * 
      * @param queryStringCachingBehavior the queryStringCachingBehavior value to set.
      * @return the AfdRouteCacheConfiguration object itself.
      */
-    public AfdRouteCacheConfiguration withQueryStringCachingBehavior(
-        AfdQueryStringCachingBehavior queryStringCachingBehavior) {
+    public AfdRouteCacheConfiguration
+        withQueryStringCachingBehavior(AfdQueryStringCachingBehavior queryStringCachingBehavior) {
         this.queryStringCachingBehavior = queryStringCachingBehavior;
         return this;
     }
 
     /**
      * Get the queryParameters property: query parameters to include or exclude (comma separated).
-     *
+     * 
      * @return the queryParameters value.
      */
     public String queryParameters() {
@@ -69,7 +73,7 @@ public final class AfdRouteCacheConfiguration {
 
     /**
      * Set the queryParameters property: query parameters to include or exclude (comma separated).
-     *
+     * 
      * @param queryParameters the queryParameters value to set.
      * @return the AfdRouteCacheConfiguration object itself.
      */
@@ -80,7 +84,7 @@ public final class AfdRouteCacheConfiguration {
 
     /**
      * Get the compressionSettings property: compression settings.
-     *
+     * 
      * @return the compressionSettings value.
      */
     public CompressionSettings compressionSettings() {
@@ -89,7 +93,7 @@ public final class AfdRouteCacheConfiguration {
 
     /**
      * Set the compressionSettings property: compression settings.
-     *
+     * 
      * @param compressionSettings the compressionSettings value to set.
      * @return the AfdRouteCacheConfiguration object itself.
      */
@@ -100,7 +104,7 @@ public final class AfdRouteCacheConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -16,65 +16,34 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterServiceConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterServiceConfig model =
-            BinaryData
-                .fromString(
-                    "{\"component\":\"nkxmyskpbhenbtk\",\"files\":[{\"fileName\":\"ywn\",\"content\":\"nrs\",\"encoding\":\"Base64\",\"path\":\"idybyxczf\",\"values\":{\"fkts\":\"aaxdbabphlwrq\",\"nyyazttbtwwrqpue\":\"hsucoc\",\"xibxujwbhqwalm\":\"ckzywbiexzfeyue\"}},{\"fileName\":\"zyoxaepdkzjan\",\"content\":\"xrhdwbavxbniwdjs\",\"encoding\":\"Base64\",\"path\":\"dbpgnxytxhp\",\"values\":{\"hxw\":\"zpfzabglc\",\"bbovplwzbhvgyugu\":\"ctyqik\"}},{\"fileName\":\"svmkfssxquk\",\"content\":\"plgmgsxnk\",\"encoding\":\"Base64\",\"path\":\"es\",\"values\":{\"xpkd\":\"lopwiyig\",\"iuebbaumny\":\"zb\",\"txp\":\"upedeojnabckhs\"}},{\"fileName\":\"ie\",\"content\":\"fhvpesaps\",\"encoding\":\"Base64\",\"path\":\"mhjjdhtldwkyzx\",\"values\":{\"ws\":\"kn\",\"vnm\":\"wsvlxotogtwrupqs\"}}]}")
-                .toObject(ClusterServiceConfig.class);
-        Assertions.assertEquals("nkxmyskpbhenbtk", model.component());
-        Assertions.assertEquals("ywn", model.files().get(0).fileName());
-        Assertions.assertEquals("nrs", model.files().get(0).content());
+        ClusterServiceConfig model = BinaryData.fromString(
+            "{\"component\":\"rsa\",\"files\":[{\"fileName\":\"wkuofoskghsauu\",\"content\":\"jmvxie\",\"encoding\":\"Base64\",\"path\":\"idyjrrfbyaosvexc\",\"values\":{\"vleggzfbuhfmvfax\":\"pclhocohslk\"}},{\"fileName\":\"ffeii\",\"content\":\"lvmezyvshxmzsbbz\",\"encoding\":\"Base64\",\"path\":\"grxwbu\",\"values\":{\"enkouknvudw\":\"xxjnspydptk\"}}]}")
+            .toObject(ClusterServiceConfig.class);
+        Assertions.assertEquals("rsa", model.component());
+        Assertions.assertEquals("wkuofoskghsauu", model.files().get(0).fileName());
+        Assertions.assertEquals("jmvxie", model.files().get(0).content());
         Assertions.assertEquals(ContentEncoding.BASE64, model.files().get(0).encoding());
-        Assertions.assertEquals("idybyxczf", model.files().get(0).path());
-        Assertions.assertEquals("aaxdbabphlwrq", model.files().get(0).values().get("fkts"));
+        Assertions.assertEquals("idyjrrfbyaosvexc", model.files().get(0).path());
+        Assertions.assertEquals("pclhocohslk", model.files().get(0).values().get("vleggzfbuhfmvfax"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterServiceConfig model =
-            new ClusterServiceConfig()
-                .withComponent("nkxmyskpbhenbtk")
-                .withFiles(
-                    Arrays
-                        .asList(
-                            new ClusterConfigFile()
-                                .withFileName("ywn")
-                                .withContent("nrs")
-                                .withEncoding(ContentEncoding.BASE64)
-                                .withPath("idybyxczf")
-                                .withValues(
-                                    mapOf(
-                                        "fkts",
-                                        "aaxdbabphlwrq",
-                                        "nyyazttbtwwrqpue",
-                                        "hsucoc",
-                                        "xibxujwbhqwalm",
-                                        "ckzywbiexzfeyue")),
-                            new ClusterConfigFile()
-                                .withFileName("zyoxaepdkzjan")
-                                .withContent("xrhdwbavxbniwdjs")
-                                .withEncoding(ContentEncoding.BASE64)
-                                .withPath("dbpgnxytxhp")
-                                .withValues(mapOf("hxw", "zpfzabglc", "bbovplwzbhvgyugu", "ctyqik")),
-                            new ClusterConfigFile()
-                                .withFileName("svmkfssxquk")
-                                .withContent("plgmgsxnk")
-                                .withEncoding(ContentEncoding.BASE64)
-                                .withPath("es")
-                                .withValues(mapOf("xpkd", "lopwiyig", "iuebbaumny", "zb", "txp", "upedeojnabckhs")),
-                            new ClusterConfigFile()
-                                .withFileName("ie")
-                                .withContent("fhvpesaps")
-                                .withEncoding(ContentEncoding.BASE64)
-                                .withPath("mhjjdhtldwkyzx")
-                                .withValues(mapOf("ws", "kn", "vnm", "wsvlxotogtwrupqs"))));
+        ClusterServiceConfig model = new ClusterServiceConfig().withComponent("rsa")
+            .withFiles(Arrays.asList(
+                new ClusterConfigFile().withFileName("wkuofoskghsauu").withContent("jmvxie")
+                    .withEncoding(ContentEncoding.BASE64).withPath("idyjrrfbyaosvexc")
+                    .withValues(mapOf("vleggzfbuhfmvfax", "pclhocohslk")),
+                new ClusterConfigFile().withFileName("ffeii").withContent("lvmezyvshxmzsbbz")
+                    .withEncoding(ContentEncoding.BASE64).withPath("grxwbu")
+                    .withValues(mapOf("enkouknvudw", "xxjnspydptk"))));
         model = BinaryData.fromObject(model).toObject(ClusterServiceConfig.class);
-        Assertions.assertEquals("nkxmyskpbhenbtk", model.component());
-        Assertions.assertEquals("ywn", model.files().get(0).fileName());
-        Assertions.assertEquals("nrs", model.files().get(0).content());
+        Assertions.assertEquals("rsa", model.component());
+        Assertions.assertEquals("wkuofoskghsauu", model.files().get(0).fileName());
+        Assertions.assertEquals("jmvxie", model.files().get(0).content());
         Assertions.assertEquals(ContentEncoding.BASE64, model.files().get(0).encoding());
-        Assertions.assertEquals("idybyxczf", model.files().get(0).path());
-        Assertions.assertEquals("aaxdbabphlwrq", model.files().get(0).values().get("fkts"));
+        Assertions.assertEquals("idyjrrfbyaosvexc", model.files().get(0).path());
+        Assertions.assertEquals("pclhocohslk", model.files().get(0).values().get("vleggzfbuhfmvfax"));
     }
 
     // Use "Map.of" if available

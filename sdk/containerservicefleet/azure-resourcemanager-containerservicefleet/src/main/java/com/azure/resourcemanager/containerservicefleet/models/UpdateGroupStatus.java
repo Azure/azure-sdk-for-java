@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The status of a UpdateGroup. */
+/**
+ * The status of a UpdateGroup.
+ */
 @Immutable
 public final class UpdateGroupStatus {
     /*
@@ -29,13 +31,15 @@ public final class UpdateGroupStatus {
     @JsonProperty(value = "members", access = JsonProperty.Access.WRITE_ONLY)
     private List<MemberUpdateStatus> members;
 
-    /** Creates an instance of UpdateGroupStatus class. */
+    /**
+     * Creates an instance of UpdateGroupStatus class.
+     */
     public UpdateGroupStatus() {
     }
 
     /**
      * Get the status property: The status of the UpdateGroup.
-     *
+     * 
      * @return the status value.
      */
     public UpdateStatus status() {
@@ -44,7 +48,7 @@ public final class UpdateGroupStatus {
 
     /**
      * Get the name property: The name of the UpdateGroup.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -53,7 +57,7 @@ public final class UpdateGroupStatus {
 
     /**
      * Get the members property: The list of member this UpdateGroup updates.
-     *
+     * 
      * @return the members value.
      */
     public List<MemberUpdateStatus> members() {
@@ -62,7 +66,7 @@ public final class UpdateGroupStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

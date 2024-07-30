@@ -10,15 +10,14 @@ import com.azure.resourcemanager.datafactory.fluent.models.MongoDbCollectionData
 public final class MongoDbCollectionDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MongoDbCollectionDatasetTypeProperties model
-            = BinaryData.fromString("{\"collectionName\":\"dataivoveomkhfeqcoop\"}")
-                .toObject(MongoDbCollectionDatasetTypeProperties.class);
+        MongoDbCollectionDatasetTypeProperties model = BinaryData.fromString("{\"collectionName\":\"datacjjkmqenh\"}")
+            .toObject(MongoDbCollectionDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MongoDbCollectionDatasetTypeProperties model
-            = new MongoDbCollectionDatasetTypeProperties().withCollectionName("dataivoveomkhfeqcoop");
+            = new MongoDbCollectionDatasetTypeProperties().withCollectionName("datacjjkmqenh");
         model = BinaryData.fromObject(model).toObject(MongoDbCollectionDatasetTypeProperties.class);
     }
 }

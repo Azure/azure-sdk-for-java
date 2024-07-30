@@ -105,12 +105,14 @@ public final class BlobTriggerTypeProperties {
      */
     public void validate() {
         if (folderPath() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property folderPath in model BlobTriggerTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property folderPath in model BlobTriggerTypeProperties"));
         }
         if (linkedService() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property linkedService in model BlobTriggerTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property linkedService in model BlobTriggerTypeProperties"));
         } else {
             linkedService().validate();
         }

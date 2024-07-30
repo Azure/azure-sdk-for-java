@@ -12,26 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class InputLinuxParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InputLinuxParameters model =
-            BinaryData
-                .fromString(
-                    "{\"packageNameMasksToExclude\":[\"pwlbjnpg\",\"cftadeh\",\"nltyfsoppusuesnz\"],\"packageNameMasksToInclude\":[\"jbavorxzdm\"],\"classificationsToInclude\":[\"tbqvudw\",\"dndnvow\",\"ujjugwdkcglh\"]}")
-                .toObject(InputLinuxParameters.class);
-        Assertions.assertEquals("pwlbjnpg", model.packageNameMasksToExclude().get(0));
-        Assertions.assertEquals("jbavorxzdm", model.packageNameMasksToInclude().get(0));
-        Assertions.assertEquals("tbqvudw", model.classificationsToInclude().get(0));
+        InputLinuxParameters model = BinaryData.fromString(
+            "{\"packageNameMasksToExclude\":[\"xorrqnb\",\"oczvy\",\"fqrvkdvjsllrmvvd\",\"watkpnpulexxb\"],\"packageNameMasksToInclude\":[\"truwiqzb\",\"j\",\"sovmyokacspkwl\",\"zdobpxjmflbvvnch\"],\"classificationsToInclude\":[\"ciwwzjuqkhr\"]}")
+            .toObject(InputLinuxParameters.class);
+        Assertions.assertEquals("xorrqnb", model.packageNameMasksToExclude().get(0));
+        Assertions.assertEquals("truwiqzb", model.packageNameMasksToInclude().get(0));
+        Assertions.assertEquals("ciwwzjuqkhr", model.classificationsToInclude().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InputLinuxParameters model =
-            new InputLinuxParameters()
-                .withPackageNameMasksToExclude(Arrays.asList("pwlbjnpg", "cftadeh", "nltyfsoppusuesnz"))
-                .withPackageNameMasksToInclude(Arrays.asList("jbavorxzdm"))
-                .withClassificationsToInclude(Arrays.asList("tbqvudw", "dndnvow", "ujjugwdkcglh"));
+        InputLinuxParameters model = new InputLinuxParameters()
+            .withPackageNameMasksToExclude(Arrays.asList("xorrqnb", "oczvy", "fqrvkdvjsllrmvvd", "watkpnpulexxb"))
+            .withPackageNameMasksToInclude(Arrays.asList("truwiqzb", "j", "sovmyokacspkwl", "zdobpxjmflbvvnch"))
+            .withClassificationsToInclude(Arrays.asList("ciwwzjuqkhr"));
         model = BinaryData.fromObject(model).toObject(InputLinuxParameters.class);
-        Assertions.assertEquals("pwlbjnpg", model.packageNameMasksToExclude().get(0));
-        Assertions.assertEquals("jbavorxzdm", model.packageNameMasksToInclude().get(0));
-        Assertions.assertEquals("tbqvudw", model.classificationsToInclude().get(0));
+        Assertions.assertEquals("xorrqnb", model.packageNameMasksToExclude().get(0));
+        Assertions.assertEquals("truwiqzb", model.packageNameMasksToInclude().get(0));
+        Assertions.assertEquals("ciwwzjuqkhr", model.classificationsToInclude().get(0));
     }
 }

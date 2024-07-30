@@ -48,8 +48,10 @@ public final class PipelineTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         Pipeline model = new Pipeline().withDescription("ybycnunvj")
-            .withActivities(Arrays.asList(new Activity().withName("kfawnopqgikyz").withDescription("txdyuxzejntpsew")
-                .withState(ActivityState.ACTIVE).withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SKIPPED)
+            .withActivities(Arrays.asList(new Activity().withName("kfawnopqgikyz")
+                .withDescription("txdyuxzejntpsew")
+                .withState(ActivityState.ACTIVE)
+                .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SKIPPED)
                 .withDependsOn(Arrays.asList(new ActivityDependency().withActivity("kr")
                     .withDependencyConditions(Arrays.asList(DependencyCondition.SKIPPED, DependencyCondition.FAILED,
                         DependencyCondition.SUCCEEDED))
@@ -64,8 +66,10 @@ public final class PipelineTests {
                 "ydfce", new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataizjx")))
             .withVariables(mapOf("mrtwna",
                 new VariableSpecification().withType(VariableType.STRING).withDefaultValue("datavygdyft")))
-            .withConcurrency(951831262).withAnnotations(Arrays.asList("dataiw", "dataojgcyzt", "datafmznba"))
-            .withRunDimensions(mapOf("huwrykqgaifm", "datahchqnrnrpx")).withFolder(new PipelineFolder().withName("lb"))
+            .withConcurrency(951831262)
+            .withAnnotations(Arrays.asList("dataiw", "dataojgcyzt", "datafmznba"))
+            .withRunDimensions(mapOf("huwrykqgaifm", "datahchqnrnrpx"))
+            .withFolder(new PipelineFolder().withName("lb"))
             .withPolicy(new PipelinePolicy()
                 .withElapsedTimeMetric(new PipelineElapsedTimeMetricPolicy().withDuration("datahbejdznxcvdsrhnj")));
         model = BinaryData.fromObject(model).toObject(Pipeline.class);

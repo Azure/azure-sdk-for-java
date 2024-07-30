@@ -6,19 +6,27 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity source for an HTTP file.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = HttpSource.class, visible = true)
 @JsonTypeName("HttpSource")
 @Fluent
 public final class HttpSource extends CopySource {
     /*
-     * Specifies the timeout for a HTTP client to get HTTP response from HTTP server. The default value is equivalent
-     * to System.Net.HttpWebRequest.Timeout. Type: string (or Expression with resultType string), pattern:
+     * Copy source type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "HttpSource";
+
+    /*
+     * Specifies the timeout for a HTTP client to get HTTP response from HTTP server. The default value is equivalent to
+     * System.Net.HttpWebRequest.Timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "httpRequestTimeout")
@@ -28,6 +36,16 @@ public final class HttpSource extends CopySource {
      * Creates an instance of HttpSource class.
      */
     public HttpSource() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

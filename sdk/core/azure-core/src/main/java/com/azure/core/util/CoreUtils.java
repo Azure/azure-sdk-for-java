@@ -41,6 +41,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -51,6 +53,9 @@ public final class CoreUtils {
     private static final ClientLogger LOGGER = new ClientLogger(CoreUtils.class);
 
     private static final char[] LOWERCASE_HEX_CHARACTERS = "0123456789abcdef".toCharArray();
+
+    // Used to check if the ISO8601 date time doesn't have a colon in the offset.
+    private static final Pattern ISO8601_COLONLESS_OFFSET = Pattern.compile("([+-][0-9]{2})([0-9]{2})(?=\\[|$)");
 
     private CoreUtils() {
         // Exists only to defeat instantiation.
@@ -610,7 +615,6 @@ public final class CoreUtils {
      * @throws NullPointerException If {@code shutdownTimeout} is null.
      * @throws IllegalArgumentException If {@code shutdownTimeout} is zero or negative.
      */
-    @SuppressWarnings({ "deprecation", "removal" })
     public static ExecutorService addShutdownHookSafely(ExecutorService executorService, Duration shutdownTimeout) {
         if (executorService == null) {
             return null;
@@ -620,8 +624,14 @@ public final class CoreUtils {
             throw new IllegalArgumentException("'shutdownTimeout' must be a non-zero positive duration.");
         }
 
+        CoreUtils.addShutdownHookSafely(createExecutorServiceShutdownThread(executorService, shutdownTimeout));
+
+        return executorService;
+    }
+
+    static Thread createExecutorServiceShutdownThread(ExecutorService executorService, Duration shutdownTimeout) {
         long timeoutNanos = shutdownTimeout.toNanos();
-        Thread shutdownThread = new Thread(() -> {
+        return new Thread(() -> {
             try {
                 executorService.shutdown();
                 if (!executorService.awaitTermination(timeoutNanos / 2, TimeUnit.NANOSECONDS)) {
@@ -633,10 +643,6 @@ public final class CoreUtils {
                 executorService.shutdown();
             }
         });
-
-        CoreUtils.addShutdownHookSafely(shutdownThread);
-
-        return executorService;
     }
 
     /**
@@ -654,22 +660,8 @@ public final class CoreUtils {
      * {@link Runtime#addShutdownHook(Thread) shutdown hook}.
      * @return The {@link Thread} that was passed in.
      */
-    @SuppressWarnings({ "deprecation", "removal" })
     public static Thread addShutdownHookSafely(Thread shutdownThread) {
-        if (shutdownThread == null) {
-            return null;
-        }
-
-        if (ShutdownHookAccessHelperHolder.shutdownHookAccessHelper) {
-            java.security.AccessController.doPrivileged((java.security.PrivilegedAction<Void>) () -> {
-                Runtime.getRuntime().addShutdownHook(shutdownThread);
-                return null;
-            });
-        } else {
-            Runtime.getRuntime().addShutdownHook(shutdownThread);
-        }
-
-        return shutdownThread;
+        return ImplUtils.addShutdownHookSafely(shutdownThread);
     }
 
     /**
@@ -791,6 +783,12 @@ public final class CoreUtils {
             return null;
         }
 
+        Matcher matcher = ISO8601_COLONLESS_OFFSET.matcher(dateString);
+        if (matcher.find()) {
+            dateString = dateString.substring(0, matcher.start()) + matcher.group(1) + ":" + matcher.group(2)
+                + dateString.substring(matcher.start() + 5);
+        }
+
         TemporalAccessor temporal
             = DateTimeFormatter.ISO_DATE_TIME.parseBest(dateString, OffsetDateTime::from, LocalDateTime::from);
 
@@ -799,28 +797,5 @@ public final class CoreUtils {
         } else {
             return OffsetDateTime.from(temporal);
         }
-    }
-
-    /*
-     * This looks a bit strange but is needed as CoreUtils is used within Configuration code and if this was done in
-     * the static constructor for CoreUtils it would cause a circular dependency, potentially causing a deadlock.
-     * Since this is in a static holder class, it will only be loaded when CoreUtils accesses it, which won't happen
-     * until CoreUtils is loaded.
-     */
-    private static final class ShutdownHookAccessHelperHolder {
-        private static boolean shutdownHookAccessHelper;
-
-        static {
-            shutdownHookAccessHelper = Boolean
-                .parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_ENABLE_SHUTDOWN_HOOK_WITH_PRIVILEGE"));
-        }
-    }
-
-    static boolean isShutdownHookAccessHelper() {
-        return ShutdownHookAccessHelperHolder.shutdownHookAccessHelper;
-    }
-
-    static void setShutdownHookAccessHelper(boolean shutdownHookAccessHelper) {
-        ShutdownHookAccessHelperHolder.shutdownHookAccessHelper = shutdownHookAccessHelper;
     }
 }

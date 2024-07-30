@@ -20,8 +20,7 @@ public final class CacheUpgradeStatus {
     private String currentFirmwareVersion;
 
     /*
-     * True if there is a firmware update ready to install on this cache. The firmware will automatically be installed
-     * after firmwareUpdateDeadline if not triggered earlier via the upgrade operation.
+     * True if there is a firmware update ready to install on this cache. The firmware will automatically be installed after firmwareUpdateDeadline if not triggered earlier via the upgrade operation.
      */
     @JsonProperty(value = "firmwareUpdateStatus", access = JsonProperty.Access.WRITE_ONLY)
     private FirmwareStatusType firmwareUpdateStatus;

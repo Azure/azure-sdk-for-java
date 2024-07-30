@@ -32,7 +32,7 @@ public final class BatchAccountsListDetectorsMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"value\":\"vtldgmfpgvmpip\"},\"etag\":\"ltha\",\"id\":\"fxssm\",\"name\":\"u\",\"type\":\"wbdsr\"}]}";
+            = "{\"value\":[{\"properties\":{\"value\":\"iby\"},\"etag\":\"dl\",\"id\":\"h\",\"name\":\"hfwpracstwit\",\"type\":\"khevxccedc\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -50,8 +50,8 @@ public final class BatchAccountsListDetectorsMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DetectorResponse> response
-            = manager.batchAccounts().listDetectors("bizikayuhq", "bjbsybb", com.azure.core.util.Context.NONE);
+            = manager.batchAccounts().listDetectors("r", "qvujzraehtwdwrf", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vtldgmfpgvmpip", response.iterator().next().value());
+        Assertions.assertEquals("iby", response.iterator().next().value());
     }
 }

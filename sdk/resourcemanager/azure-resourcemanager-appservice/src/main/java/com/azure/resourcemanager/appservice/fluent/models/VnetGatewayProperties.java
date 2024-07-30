@@ -78,8 +78,9 @@ public final class VnetGatewayProperties {
      */
     public void validate() {
         if (vpnPackageUri() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property vpnPackageUri in model VnetGatewayProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property vpnPackageUri in model VnetGatewayProperties"));
         }
     }
 

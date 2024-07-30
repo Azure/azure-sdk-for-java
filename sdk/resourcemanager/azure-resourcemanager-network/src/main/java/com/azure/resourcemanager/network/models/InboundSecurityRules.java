@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Properties of the Inbound Security Rules resource.
@@ -13,13 +14,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class InboundSecurityRules {
     /*
+     * Name of the rule.
+     */
+    @JsonProperty(value = "name")
+    private String name;
+
+    /*
      * Protocol. This should be either TCP or UDP.
      */
     @JsonProperty(value = "protocol")
     private InboundSecurityRulesProtocol protocol;
 
     /*
-     * The CIDR or source IP range. Only /30, /31 and /32 Ip ranges are allowed.
+     * The CIDR or source IP range.
      */
     @JsonProperty(value = "sourceAddressPrefix")
     private String sourceAddressPrefix;
@@ -30,10 +37,42 @@ public final class InboundSecurityRules {
     @JsonProperty(value = "destinationPortRange")
     private Integer destinationPortRange;
 
+    /*
+     * NVA port ranges to be opened up. One can provide a range of ports. Allowed port value between 0 and 65535.
+     */
+    @JsonProperty(value = "destinationPortRanges")
+    private List<String> destinationPortRanges;
+
+    /*
+     * Public IP name in case of Permanent Rule type & Interface Name in case of Auto Expire Rule type
+     */
+    @JsonProperty(value = "appliesOn")
+    private List<String> appliesOn;
+
     /**
      * Creates an instance of InboundSecurityRules class.
      */
     public InboundSecurityRules() {
+    }
+
+    /**
+     * Get the name property: Name of the rule.
+     * 
+     * @return the name value.
+     */
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Set the name property: Name of the rule.
+     * 
+     * @param name the name value to set.
+     * @return the InboundSecurityRules object itself.
+     */
+    public InboundSecurityRules withName(String name) {
+        this.name = name;
+        return this;
     }
 
     /**
@@ -57,7 +96,7 @@ public final class InboundSecurityRules {
     }
 
     /**
-     * Get the sourceAddressPrefix property: The CIDR or source IP range. Only /30, /31 and /32 Ip ranges are allowed.
+     * Get the sourceAddressPrefix property: The CIDR or source IP range.
      * 
      * @return the sourceAddressPrefix value.
      */
@@ -66,7 +105,7 @@ public final class InboundSecurityRules {
     }
 
     /**
-     * Set the sourceAddressPrefix property: The CIDR or source IP range. Only /30, /31 and /32 Ip ranges are allowed.
+     * Set the sourceAddressPrefix property: The CIDR or source IP range.
      * 
      * @param sourceAddressPrefix the sourceAddressPrefix value to set.
      * @return the InboundSecurityRules object itself.
@@ -93,6 +132,50 @@ public final class InboundSecurityRules {
      */
     public InboundSecurityRules withDestinationPortRange(Integer destinationPortRange) {
         this.destinationPortRange = destinationPortRange;
+        return this;
+    }
+
+    /**
+     * Get the destinationPortRanges property: NVA port ranges to be opened up. One can provide a range of ports.
+     * Allowed port value between 0 and 65535.
+     * 
+     * @return the destinationPortRanges value.
+     */
+    public List<String> destinationPortRanges() {
+        return this.destinationPortRanges;
+    }
+
+    /**
+     * Set the destinationPortRanges property: NVA port ranges to be opened up. One can provide a range of ports.
+     * Allowed port value between 0 and 65535.
+     * 
+     * @param destinationPortRanges the destinationPortRanges value to set.
+     * @return the InboundSecurityRules object itself.
+     */
+    public InboundSecurityRules withDestinationPortRanges(List<String> destinationPortRanges) {
+        this.destinationPortRanges = destinationPortRanges;
+        return this;
+    }
+
+    /**
+     * Get the appliesOn property: Public IP name in case of Permanent Rule type &amp; Interface Name in case of Auto
+     * Expire Rule type.
+     * 
+     * @return the appliesOn value.
+     */
+    public List<String> appliesOn() {
+        return this.appliesOn;
+    }
+
+    /**
+     * Set the appliesOn property: Public IP name in case of Permanent Rule type &amp; Interface Name in case of Auto
+     * Expire Rule type.
+     * 
+     * @param appliesOn the appliesOn value to set.
+     * @return the InboundSecurityRules object itself.
+     */
+    public InboundSecurityRules withAppliesOn(List<String> appliesOn) {
+        this.appliesOn = appliesOn;
         return this;
     }
 

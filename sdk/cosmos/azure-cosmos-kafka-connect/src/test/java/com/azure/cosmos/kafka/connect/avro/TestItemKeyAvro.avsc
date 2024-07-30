@@ -1,0 +1,11 @@
+{
+  "namespace": "com.azure.cosmos.kafka.connect",
+  "type": "record",
+  "name": "TestItemKeyAvro",
+  "fields": [
+    {
+      "name": "key",
+      "type": "string"
+    }
+  ]
+}

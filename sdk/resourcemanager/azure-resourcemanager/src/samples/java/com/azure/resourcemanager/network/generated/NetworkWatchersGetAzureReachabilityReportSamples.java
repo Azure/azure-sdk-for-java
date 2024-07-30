@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class NetworkWatchersGetAzureReachabilityReportSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * NetworkWatcherAzureReachabilityReportGet.json
      */
     /**
@@ -23,14 +23,18 @@ public final class NetworkWatchersGetAzureReachabilityReportSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAzureReachabilityReport(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getNetworkWatchers().getAzureReachabilityReport("rg1", "nw1",
-            new AzureReachabilityReportParameters()
-                .withProviderLocation(
-                    new AzureReachabilityReportLocation().withCountry("United States").withState("washington"))
-                .withProviders(Arrays.asList("Frontier Communications of America, Inc. - ASN 5650"))
-                .withAzureLocations(Arrays.asList("West US"))
-                .withStartTime(OffsetDateTime.parse("2017-09-07T00:00:00Z"))
-                .withEndTime(OffsetDateTime.parse("2017-09-10T00:00:00Z")),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getNetworkWatchers()
+            .getAzureReachabilityReport("rg1", "nw1",
+                new AzureReachabilityReportParameters()
+                    .withProviderLocation(
+                        new AzureReachabilityReportLocation().withCountry("United States").withState("washington"))
+                    .withProviders(Arrays.asList("Frontier Communications of America, Inc. - ASN 5650"))
+                    .withAzureLocations(Arrays.asList("West US"))
+                    .withStartTime(OffsetDateTime.parse("2017-09-07T00:00:00Z"))
+                    .withEndTime(OffsetDateTime.parse("2017-09-10T00:00:00Z")),
+                com.azure.core.util.Context.NONE);
     }
 }

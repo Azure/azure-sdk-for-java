@@ -312,7 +312,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
         if (vmScaleSetVMReimageInput != null) {
             vmScaleSetVMReimageInput.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.reimage(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -357,7 +357,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
         if (vmScaleSetVMReimageInput != null) {
             vmScaleSetVMReimageInput.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.reimage(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, apiVersion,
@@ -522,7 +522,8 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     private Mono<Void> reimageAsync(String resourceGroupName, String vmScaleSetName, String instanceId,
         VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput, Context context) {
         return beginReimageAsync(resourceGroupName, vmScaleSetName, instanceId, vmScaleSetVMReimageInput, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -592,7 +593,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.reimageAll(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -634,7 +635,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.reimageAll(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, apiVersion,
@@ -825,7 +826,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.approveRollingUpgrade(this.client.getEndpoint(), resourceGroupName,
@@ -866,7 +867,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.approveRollingUpgrade(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId,
@@ -1052,7 +1053,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.deallocate(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -1094,7 +1095,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.deallocate(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, apiVersion,
@@ -1296,7 +1297,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1350,7 +1351,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, apiVersion,
@@ -1631,7 +1632,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -1674,7 +1675,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, forceDeletion,
@@ -1916,7 +1917,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -1960,7 +1961,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, expand, apiVersion,
@@ -2056,7 +2057,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getInstanceView(this.client.getEndpoint(), resourceGroupName,
@@ -2098,7 +2099,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getInstanceView(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId,
@@ -2192,7 +2193,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2238,7 +2239,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2390,7 +2391,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.powerOff(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -2434,7 +2435,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.powerOff(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, skipShutdown,
@@ -2683,7 +2684,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.restart(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -2724,7 +2725,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.restart(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, apiVersion,
@@ -2906,7 +2907,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.start(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -2947,7 +2948,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.start(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, apiVersion,
@@ -3128,7 +3129,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.redeploy(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -3169,7 +3170,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.redeploy(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, apiVersion,
@@ -3356,7 +3357,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.retrieveBootDiagnosticsData(this.client.getEndpoint(), resourceGroupName,
@@ -3403,7 +3404,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.retrieveBootDiagnosticsData(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -3503,7 +3504,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.performMaintenance(this.client.getEndpoint(), resourceGroupName,
@@ -3544,7 +3545,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.performMaintenance(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId,
@@ -3729,7 +3730,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.simulateEviction(this.client.getEndpoint(), resourceGroupName,
@@ -3770,7 +3771,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.simulateEviction(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId,
@@ -3867,7 +3868,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.attachDetachDataDisks(this.client.getEndpoint(), resourceGroupName,
@@ -3916,7 +3917,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.attachDetachDataDisks(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId,
@@ -4049,7 +4050,8 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     private Mono<StorageProfile> attachDetachDataDisksAsync(String resourceGroupName, String vmScaleSetName,
         String instanceId, AttachDetachDataDisksRequest parameters, Context context) {
         return beginAttachDetachDataDisksAsync(resourceGroupName, vmScaleSetName, instanceId, parameters, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -4129,7 +4131,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(context -> service.runCommand(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -4176,7 +4178,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service.runCommand(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, apiVersion,
@@ -4347,9 +4349,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4375,9 +4375,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.

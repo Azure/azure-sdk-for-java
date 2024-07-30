@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class NamePropertyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NameProperty model = BinaryData.fromString("{\"value\":\"asxifto\",\"localizedValue\":\"yzhftwesgogczh\"}")
+        NameProperty model = BinaryData.fromString("{\"value\":\"ond\",\"localizedValue\":\"luudfdlwggytsb\"}")
             .toObject(NameProperty.class);
-        Assertions.assertEquals("asxifto", model.value());
-        Assertions.assertEquals("yzhftwesgogczh", model.localizedValue());
+        Assertions.assertEquals("ond", model.value());
+        Assertions.assertEquals("luudfdlwggytsb", model.localizedValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NameProperty model = new NameProperty().withValue("asxifto").withLocalizedValue("yzhftwesgogczh");
+        NameProperty model = new NameProperty().withValue("ond").withLocalizedValue("luudfdlwggytsb");
         model = BinaryData.fromObject(model).toObject(NameProperty.class);
-        Assertions.assertEquals("asxifto", model.value());
-        Assertions.assertEquals("yzhftwesgogczh", model.localizedValue());
+        Assertions.assertEquals("ond", model.value());
+        Assertions.assertEquals("luudfdlwggytsb", model.localizedValue());
     }
 }

@@ -6,11 +6,9 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.ActionableRemediationState;
 import com.azure.resourcemanager.security.models.AnnotateDefaultBranchState;
@@ -19,59 +17,43 @@ import com.azure.resourcemanager.security.models.DevOpsProvisioningState;
 import com.azure.resourcemanager.security.models.InheritFromParentState;
 import com.azure.resourcemanager.security.models.OnboardingState;
 import com.azure.resourcemanager.security.models.RuleCategory;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AzureDevOpsProjectsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"provisioningStatusMessage\":\"emdfkh\",\"provisioningStatusUpdateTimeUtc\":\"2021-02-04T20:38:31Z\",\"provisioningState\":\"PendingDeletion\",\"parentOrgName\":\"xzmhyte\",\"projectId\":\"kjgeecwtfma\",\"onboardingState\":\"Onboarded\",\"actionableRemediation\":{\"state\":\"Disabled\",\"categoryConfigurations\":[{\"minimumSeverityLevel\":\"fxfmhlvy\",\"category\":\"Containers\"},{\"minimumSeverityLevel\":\"bq\",\"category\":\"IaC\"},{\"minimumSeverityLevel\":\"kiekhjgqqrugwes\",\"category\":\"Dependencies\"}],\"branchConfiguration\":{\"branchNames\":[\"spt\",\"uwozfvz\",\"supcvqgxcvw\",\"oq\"],\"annotateDefaultBranch\":\"Disabled\"},\"inheritFromParentState\":\"Enabled\"}},\"id\":\"mlmpnvqxuyi\",\"name\":\"rzn\",\"type\":\"dqseypdlmajpuy\"}";
+            = "{\"properties\":{\"provisioningStatusMessage\":\"ke\",\"provisioningStatusUpdateTimeUtc\":\"2021-08-30T13:41:02Z\",\"provisioningState\":\"Succeeded\",\"parentOrgName\":\"uecokyduqzusc\",\"projectId\":\"bqveht\",\"onboardingState\":\"OnboardedByOtherConnector\",\"actionableRemediation\":{\"state\":\"None\",\"categoryConfigurations\":[{\"minimumSeverityLevel\":\"gowr\",\"category\":\"Secrets\"},{\"minimumSeverityLevel\":\"ddwzdlbbcztamky\",\"category\":\"IaC\"},{\"minimumSeverityLevel\":\"th\",\"category\":\"Dependencies\"},{\"minimumSeverityLevel\":\"cffxhvnodqqzjbf\",\"category\":\"Containers\"}],\"branchConfiguration\":{\"branchNames\":[\"fqd\",\"wvsxfrwvlypzt\",\"skpncdocloe\"],\"annotateDefaultBranch\":\"Disabled\"},\"inheritFromParentState\":\"Disabled\"}},\"id\":\"bod\",\"name\":\"wazbur\",\"type\":\"k\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AzureDevOpsProject response = manager.azureDevOpsProjects()
-            .getWithResponse("bfpxxavlozukg", "nu", "wyxjsfmaxcebnbeo", "kemqqerwqx", com.azure.core.util.Context.NONE)
+            .getWithResponse("xdbktuqnbcjknrq", "znwwtkuytwii", "inlic", "moyoioxdwff",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(DevOpsProvisioningState.PENDING_DELETION, response.properties().provisioningState());
-        Assertions.assertEquals("xzmhyte", response.properties().parentOrgName());
-        Assertions.assertEquals(OnboardingState.ONBOARDED, response.properties().onboardingState());
-        Assertions.assertEquals(ActionableRemediationState.DISABLED,
-            response.properties().actionableRemediation().state());
-        Assertions.assertEquals("fxfmhlvy",
+        Assertions.assertEquals(DevOpsProvisioningState.SUCCEEDED, response.properties().provisioningState());
+        Assertions.assertEquals("uecokyduqzusc", response.properties().parentOrgName());
+        Assertions.assertEquals(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR, response.properties().onboardingState());
+        Assertions.assertEquals(ActionableRemediationState.NONE, response.properties().actionableRemediation().state());
+        Assertions.assertEquals("gowr",
             response.properties().actionableRemediation().categoryConfigurations().get(0).minimumSeverityLevel());
-        Assertions.assertEquals(RuleCategory.CONTAINERS,
+        Assertions.assertEquals(RuleCategory.SECRETS,
             response.properties().actionableRemediation().categoryConfigurations().get(0).category());
-        Assertions.assertEquals("spt",
+        Assertions.assertEquals("fqd",
             response.properties().actionableRemediation().branchConfiguration().branchNames().get(0));
         Assertions.assertEquals(AnnotateDefaultBranchState.DISABLED,
             response.properties().actionableRemediation().branchConfiguration().annotateDefaultBranch());
-        Assertions.assertEquals(InheritFromParentState.ENABLED,
+        Assertions.assertEquals(InheritFromParentState.DISABLED,
             response.properties().actionableRemediation().inheritFromParentState());
     }
 }

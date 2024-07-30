@@ -8,6 +8,7 @@ import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.ai.openai.models.ImageGenerationData;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.Configuration;
 
 import java.util.concurrent.TimeUnit;
 
@@ -22,8 +23,8 @@ public class GetImagesAsyncSample {
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) throws InterruptedException {
-        String azureOpenaiKey = "{azure-open-ai-key}";
-        String endpoint = "{azure-open-ai-endpoint}";
+        String azureOpenaiKey = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY");
+        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT");
         String deploymentOrModelName = "{image-generation-deployment-or-model-name}";
 
         OpenAIAsyncClient client = new OpenAIClientBuilder()

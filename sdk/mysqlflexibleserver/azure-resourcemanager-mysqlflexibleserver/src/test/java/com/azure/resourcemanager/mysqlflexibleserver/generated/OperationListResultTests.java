@@ -16,87 +16,59 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"izcdrqjsd\",\"display\":{\"provider\":\"nfyhx\",\"resource\":\"oejzi\",\"operation\":\"ifsjttgzfbishcb\",\"description\":\"ajdeyeamdphaga\"},\"origin\":\"buxwgip\",\"properties\":{\"nkixzbinj\":\"datanowkgshw\",\"tmryw\":\"datapu\"}},{\"name\":\"zoqftiyqzrnkcqvy\",\"display\":{\"provider\":\"hzls\",\"resource\":\"ohoqqnwvlryav\",\"operation\":\"heun\",\"description\":\"qhgyxzkonocukok\"},\"origin\":\"axuconuq\",\"properties\":{\"rmjmwvvjektc\":\"datakbeype\",\"frzpwvlqdqgb\":\"datasenhwlrs\"}},{\"name\":\"ylihkaetckt\",\"display\":{\"provider\":\"ivfsnk\",\"resource\":\"uctqhjfbe\",\"operation\":\"jcxerfuwu\",\"description\":\"txfvjrbirph\"},\"origin\":\"pcyvahfnljkyqx\",\"properties\":{\"jljyoxgv\":\"dataujqgidok\",\"szzhbijhtxfvgxbf\":\"dataltbgsncghkj\",\"ec\":\"datamxnehmp\",\"gr\":\"datagodebfqkkrbmpu\"}},{\"name\":\"flz\",\"display\":{\"provider\":\"xzpuzycisp\",\"resource\":\"zahmgkbrpyydhibn\",\"operation\":\"qkpikadrgvtqagnb\",\"description\":\"nhijggmebfsi\"},\"origin\":\"butr\",\"properties\":{\"zmhjrunmp\":\"datana\",\"nkxmyskpbhenbtk\":\"datattdbhrbnl\"}}],\"nextLink\":\"ywn\"}")
-                .toObject(OperationListResult.class);
-        Assertions.assertEquals("izcdrqjsd", model.value().get(0).name());
-        Assertions.assertEquals("nfyhx", model.value().get(0).display().provider());
-        Assertions.assertEquals("oejzi", model.value().get(0).display().resource());
-        Assertions.assertEquals("ifsjttgzfbishcb", model.value().get(0).display().operation());
-        Assertions.assertEquals("ajdeyeamdphaga", model.value().get(0).display().description());
-        Assertions.assertEquals("buxwgip", model.value().get(0).origin());
-        Assertions.assertEquals("ywn", model.nextLink());
+        OperationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"tlpdn\",\"display\":{\"provider\":\"vgbmhr\",\"resource\":\"kw\",\"operation\":\"ijejvegrhbpn\",\"description\":\"xexccbdreaxhcexd\"},\"origin\":\"vqahqkghtpwi\",\"properties\":{\"z\":\"datayjsvfyc\",\"rvmtgjq\":\"datafvoow\",\"nsxkmcwaekrrjr\":\"datapyostronzmyhgfi\"}},{\"name\":\"fxtsgum\",\"display\":{\"provider\":\"lik\",\"resource\":\"wslolbqp\",\"operation\":\"zlmvfelfktgp\",\"description\":\"rpw\"},\"origin\":\"eznoig\",\"properties\":{\"zejjoqk\":\"datajwmwkpnbs\",\"aa\":\"datagfhsxttaugzxn\",\"jlwuenvrkp\":\"datapxdtnkdmkq\",\"ibreb\":\"dataou\"}},{\"name\":\"aysjkixqtnqttez\",\"display\":{\"provider\":\"ffiakp\",\"resource\":\"qqmtedltmmji\",\"operation\":\"eozphv\",\"description\":\"uyqncygupkvipmd\"},\"origin\":\"wx\",\"properties\":{\"xhojuj\":\"dataevzhfsto\",\"hixbjxyfwnyl\":\"dataypelmcu\"}}],\"nextLink\":\"ool\"}")
+            .toObject(OperationListResult.class);
+        Assertions.assertEquals("tlpdn", model.value().get(0).name());
+        Assertions.assertEquals("vgbmhr", model.value().get(0).display().provider());
+        Assertions.assertEquals("kw", model.value().get(0).display().resource());
+        Assertions.assertEquals("ijejvegrhbpn", model.value().get(0).display().operation());
+        Assertions.assertEquals("xexccbdreaxhcexd", model.value().get(0).display().description());
+        Assertions.assertEquals("vqahqkghtpwi", model.value().get(0).origin());
+        Assertions.assertEquals("ool", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationListResult model =
-            new OperationListResult()
+        OperationListResult model
+            = new OperationListResult()
                 .withValue(
-                    Arrays
-                        .asList(
-                            new OperationInner()
-                                .withName("izcdrqjsd")
-                                .withDisplay(
-                                    new OperationDisplay()
-                                        .withProvider("nfyhx")
-                                        .withResource("oejzi")
-                                        .withOperation("ifsjttgzfbishcb")
-                                        .withDescription("ajdeyeamdphaga"))
-                                .withOrigin("buxwgip")
-                                .withProperties(mapOf("nkixzbinj", "datanowkgshw", "tmryw", "datapu")),
-                            new OperationInner()
-                                .withName("zoqftiyqzrnkcqvy")
-                                .withDisplay(
-                                    new OperationDisplay()
-                                        .withProvider("hzls")
-                                        .withResource("ohoqqnwvlryav")
-                                        .withOperation("heun")
-                                        .withDescription("qhgyxzkonocukok"))
-                                .withOrigin("axuconuq")
-                                .withProperties(mapOf("rmjmwvvjektc", "datakbeype", "frzpwvlqdqgb", "datasenhwlrs")),
-                            new OperationInner()
-                                .withName("ylihkaetckt")
-                                .withDisplay(
-                                    new OperationDisplay()
-                                        .withProvider("ivfsnk")
-                                        .withResource("uctqhjfbe")
-                                        .withOperation("jcxerfuwu")
-                                        .withDescription("txfvjrbirph"))
-                                .withOrigin("pcyvahfnljkyqx")
-                                .withProperties(
-                                    mapOf(
-                                        "jljyoxgv",
-                                        "dataujqgidok",
-                                        "szzhbijhtxfvgxbf",
-                                        "dataltbgsncghkj",
-                                        "ec",
-                                        "datamxnehmp",
-                                        "gr",
-                                        "datagodebfqkkrbmpu")),
-                            new OperationInner()
-                                .withName("flz")
-                                .withDisplay(
-                                    new OperationDisplay()
-                                        .withProvider("xzpuzycisp")
-                                        .withResource("zahmgkbrpyydhibn")
-                                        .withOperation("qkpikadrgvtqagnb")
-                                        .withDescription("nhijggmebfsi"))
-                                .withOrigin("butr")
-                                .withProperties(mapOf("zmhjrunmp", "datana", "nkxmyskpbhenbtk", "datattdbhrbnl"))))
-                .withNextLink("ywn");
+                    Arrays.asList(
+                        new OperationInner().withName("tlpdn")
+                            .withDisplay(new OperationDisplay().withProvider("vgbmhr")
+                                .withResource("kw")
+                                .withOperation("ijejvegrhbpn")
+                                .withDescription("xexccbdreaxhcexd"))
+                            .withOrigin("vqahqkghtpwi")
+                            .withProperties(mapOf("z", "datayjsvfyc", "rvmtgjq", "datafvoow", "nsxkmcwaekrrjr",
+                                "datapyostronzmyhgfi")),
+                        new OperationInner().withName("fxtsgum")
+                            .withDisplay(new OperationDisplay().withProvider("lik")
+                                .withResource("wslolbqp")
+                                .withOperation("zlmvfelfktgp")
+                                .withDescription("rpw"))
+                            .withOrigin("eznoig")
+                            .withProperties(mapOf("zejjoqk", "datajwmwkpnbs", "aa", "datagfhsxttaugzxn", "jlwuenvrkp",
+                                "datapxdtnkdmkq", "ibreb", "dataou")),
+                        new OperationInner().withName("aysjkixqtnqttez")
+                            .withDisplay(new OperationDisplay().withProvider("ffiakp")
+                                .withResource("qqmtedltmmji")
+                                .withOperation("eozphv")
+                                .withDescription("uyqncygupkvipmd"))
+                            .withOrigin("wx")
+                            .withProperties(mapOf("xhojuj", "dataevzhfsto", "hixbjxyfwnyl", "dataypelmcu"))))
+                .withNextLink("ool");
         model = BinaryData.fromObject(model).toObject(OperationListResult.class);
-        Assertions.assertEquals("izcdrqjsd", model.value().get(0).name());
-        Assertions.assertEquals("nfyhx", model.value().get(0).display().provider());
-        Assertions.assertEquals("oejzi", model.value().get(0).display().resource());
-        Assertions.assertEquals("ifsjttgzfbishcb", model.value().get(0).display().operation());
-        Assertions.assertEquals("ajdeyeamdphaga", model.value().get(0).display().description());
-        Assertions.assertEquals("buxwgip", model.value().get(0).origin());
-        Assertions.assertEquals("ywn", model.nextLink());
+        Assertions.assertEquals("tlpdn", model.value().get(0).name());
+        Assertions.assertEquals("vgbmhr", model.value().get(0).display().provider());
+        Assertions.assertEquals("kw", model.value().get(0).display().resource());
+        Assertions.assertEquals("ijejvegrhbpn", model.value().get(0).display().operation());
+        Assertions.assertEquals("xexccbdreaxhcexd", model.value().get(0).display().description());
+        Assertions.assertEquals("vqahqkghtpwi", model.value().get(0).origin());
+        Assertions.assertEquals("ool", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

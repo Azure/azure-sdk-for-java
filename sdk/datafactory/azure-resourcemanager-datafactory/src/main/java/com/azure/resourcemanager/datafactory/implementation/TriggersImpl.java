@@ -16,8 +16,8 @@ import com.azure.resourcemanager.datafactory.fluent.models.TriggerSubscriptionOp
 import com.azure.resourcemanager.datafactory.models.TriggerFilterParameters;
 import com.azure.resourcemanager.datafactory.models.TriggerQueryResponse;
 import com.azure.resourcemanager.datafactory.models.TriggerResource;
-import com.azure.resourcemanager.datafactory.models.TriggerSubscriptionOperationStatus;
 import com.azure.resourcemanager.datafactory.models.Triggers;
+import com.azure.resourcemanager.datafactory.models.TriggerSubscriptionOperationStatus;
 
 public final class TriggersImpl implements Triggers {
     private static final ClientLogger LOGGER = new ClientLogger(TriggersImpl.class);
@@ -45,8 +45,8 @@ public final class TriggersImpl implements Triggers {
 
     public Response<TriggerQueryResponse> queryByFactoryWithResponse(String resourceGroupName, String factoryName,
         TriggerFilterParameters filterParameters, Context context) {
-        Response<TriggerQueryResponseInner> inner = this.serviceClient().queryByFactoryWithResponse(resourceGroupName,
-            factoryName, filterParameters, context);
+        Response<TriggerQueryResponseInner> inner = this.serviceClient()
+            .queryByFactoryWithResponse(resourceGroupName, factoryName, filterParameters, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new TriggerQueryResponseImpl(inner.getValue(), this.manager()));

@@ -20,23 +20,22 @@ public final class MaintenanceConfigurationsForResourceGroupsImpl
 
     private final com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager;
 
-    public MaintenanceConfigurationsForResourceGroupsImpl(
-        MaintenanceConfigurationsForResourceGroupsClient innerClient,
+    public MaintenanceConfigurationsForResourceGroupsImpl(MaintenanceConfigurationsForResourceGroupsClient innerClient,
         com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<MaintenanceConfiguration> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<MaintenanceConfigurationInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new MaintenanceConfigurationImpl(inner1, this.manager()));
+        PagedIterable<MaintenanceConfigurationInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MaintenanceConfigurationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<MaintenanceConfiguration> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<MaintenanceConfigurationInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new MaintenanceConfigurationImpl(inner1, this.manager()));
+        PagedIterable<MaintenanceConfigurationInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MaintenanceConfigurationImpl(inner1, this.manager()));
     }
 
     private MaintenanceConfigurationsForResourceGroupsClient serviceClient() {

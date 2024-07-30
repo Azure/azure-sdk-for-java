@@ -13,21 +13,22 @@ public final class DefenderCspmGcpOfferingMdcContainersAgentlessDiscoveryK8STest
     public void testDeserialize() throws Exception {
         DefenderCspmGcpOfferingMdcContainersAgentlessDiscoveryK8S model = BinaryData
             .fromString(
-                "{\"enabled\":true,\"workloadIdentityProviderId\":\"x\",\"serviceAccountEmailAddress\":\"uzdmhv\"}")
+                "{\"enabled\":false,\"workloadIdentityProviderId\":\"v\",\"serviceAccountEmailAddress\":\"bdfmm\"}")
             .toObject(DefenderCspmGcpOfferingMdcContainersAgentlessDiscoveryK8S.class);
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("x", model.workloadIdentityProviderId());
-        Assertions.assertEquals("uzdmhv", model.serviceAccountEmailAddress());
+        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals("v", model.workloadIdentityProviderId());
+        Assertions.assertEquals("bdfmm", model.serviceAccountEmailAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderCspmGcpOfferingMdcContainersAgentlessDiscoveryK8S model
-            = new DefenderCspmGcpOfferingMdcContainersAgentlessDiscoveryK8S().withEnabled(true)
-                .withWorkloadIdentityProviderId("x").withServiceAccountEmailAddress("uzdmhv");
+            = new DefenderCspmGcpOfferingMdcContainersAgentlessDiscoveryK8S().withEnabled(false)
+                .withWorkloadIdentityProviderId("v")
+                .withServiceAccountEmailAddress("bdfmm");
         model = BinaryData.fromObject(model).toObject(DefenderCspmGcpOfferingMdcContainersAgentlessDiscoveryK8S.class);
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("x", model.workloadIdentityProviderId());
-        Assertions.assertEquals("uzdmhv", model.serviceAccountEmailAddress());
+        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals("v", model.workloadIdentityProviderId());
+        Assertions.assertEquals("bdfmm", model.serviceAccountEmailAddress());
     }
 }

@@ -8,16 +8,24 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.LicensedComponentSetupTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The custom setup of installing 3rd party components.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = ComponentSetup.class, visible = true)
 @JsonTypeName("ComponentSetup")
 @Fluent
 public final class ComponentSetup extends CustomSetupBase {
+    /*
+     * The type of custom setup.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "ComponentSetup";
+
     /*
      * Install 3rd party component type properties.
      */
@@ -28,6 +36,16 @@ public final class ComponentSetup extends CustomSetupBase {
      * Creates an instance of ComponentSetup class.
      */
     public ComponentSetup() {
+    }
+
+    /**
+     * Get the type property: The type of custom setup.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -94,8 +112,9 @@ public final class ComponentSetup extends CustomSetupBase {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property innerTypeProperties in model ComponentSetup"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model ComponentSetup"));
         } else {
             innerTypeProperties().validate();
         }

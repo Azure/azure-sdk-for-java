@@ -3,9 +3,12 @@
 
 package com.azure.ai.translation.text;
 
-import java.util.Map;
-import com.azure.ai.translation.text.models.GetLanguagesResult;
+import com.azure.ai.translation.text.models.GetSupportedLanguagesResult;
+import com.azure.ai.translation.text.models.LanguageScope;
 import com.azure.ai.translation.text.models.TranslationLanguage;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * You can limit the scope of the response of the languages API by providing the optional parameter scope.
@@ -24,8 +27,9 @@ public class GetLanguagesScope {
             .endpoint("https://api.cognitive.microsofttranslator.com")
             .buildClient();
 
-        String scope = "translation";
-        GetLanguagesResult languages = client.getLanguages(null, scope, null, null);
+        ArrayList<LanguageScope> scopes = new ArrayList<>();
+        scopes.add(LanguageScope.TRANSLATION);
+        GetSupportedLanguagesResult languages = client.getSupportedLanguages(scopes, null, null);
 
         System.out.println("Number of supported languages for translate operation: " + languages.getTranslation().size() + ".");
         System.out.println("Number of supported languages for transliterate operation: " + (languages.getTransliteration() == null ? 0 : languages.getTransliteration().size()) + ".");

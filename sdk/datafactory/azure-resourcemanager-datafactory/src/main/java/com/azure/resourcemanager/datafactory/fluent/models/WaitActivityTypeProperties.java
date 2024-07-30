@@ -52,8 +52,9 @@ public final class WaitActivityTypeProperties {
      */
     public void validate() {
         if (waitTimeInSeconds() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property waitTimeInSeconds in model WaitActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property waitTimeInSeconds in model WaitActivityTypeProperties"));
         }
     }
 

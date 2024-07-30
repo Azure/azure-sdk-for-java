@@ -64,6 +64,9 @@ parameters:
     default: $(TestVersionSupport)
   - name: OSName
     type: string
+  - name: UseFederatedAuth
+    type: boolean
+    default: false
 
 jobs:
   - job:
@@ -94,7 +97,6 @@ jobs:
       container: $[ variables['Container'] ]
 
     templateContext:
-      outputParentDirectory: '$(System.DefaultWorkingDirectory)'
       outputs:
         # Troubleshooting artifacts are creating in the staging directory under the folder 'troubleshooting'.
         # This will contain things such as heap dumps hprofs if testing hit OutOfMemory errors, log files captured
@@ -125,6 +127,8 @@ jobs:
               SubscriptionConfiguration: ${{ parameters.CloudConfig.SubscriptionConfiguration }}
               SubscriptionConfigurations: ${{ parameters.CloudConfig.SubscriptionConfigurations }}
               EnvVars: ${{ parameters.EnvVars }}
+              ${{ if eq('true', parameters.UseFederatedAuth) }}:
+                SubscriptionConfigurationFilePaths: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePaths }}
 
           - ${{ if parameters.TestResourceDirectories }}:
               - ${{ each directory in parameters.TestResourceDirectories }}:

@@ -20,8 +20,6 @@ parameters:
   - name: EnableIntegrationStage
     type: boolean
     default: true
-  - name: UseEsrpRelease
-    type: boolean
     # A different environment will be passed in for service directories that have
     # live tests enabled for release and ReleaseDependsOnLiveTests is false
   - name: Environment
@@ -219,29 +217,16 @@ stages:
                     displayName: 'Download Artifacts'
                     artifact: ${{parameters.ArtifactName}}-signed
                   - template: tools/gpg/gpg.yml@azure-sdk-build-tools
-                  - ${{ if eq(parameters.UseEsrpRelease, 'true') }}:
-                    - template: /eng/pipelines/templates/steps/java-publishing.yml
-                      parameters:
-                        ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-                        OutputDirectory: $(Pipeline.Workspace)/EsrpPackages
-                        Target: EsrpRelease
-                        BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
-                        JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
-                    - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
-                      parameters:
-                        ArtifactName: ${{parameters.ArtifactName}}-esrp-$(System.JobAttempt)
-                        ArtifactPath: $(Pipeline.Workspace)/EsrpPackages
-                  - ${{ else }}:
-                    - template: /eng/pipelines/templates/steps/java-publishing.yml
-                      parameters:
-                        ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-                        Target: MavenCentral
-                        BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
-                        JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
-                    - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
-                      parameters:
-                        ArtifactName: ${{parameters.ArtifactName}}-mavencentral-$(System.JobAttempt)
-                        ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                  - template: /eng/pipelines/templates/steps/java-publishing.yml
+                    parameters:
+                      ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                      OutputDirectory: $(Pipeline.Workspace)/EsrpPackages
+                      Target: EsrpRelease
+                      JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+                  - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+                    parameters:
+                      ArtifactName: ${{parameters.ArtifactName}}-esrp-$(System.JobAttempt)
+                      ArtifactPath: $(Pipeline.Workspace)/EsrpPackages
                   # After publishing to Maven, publish to the azure-sdk-for-java feed. The reason for
                   # this is that the azure-sdk-for-java feed will have the package available immediately
                   # whereas Maven can take several hours for the package to become available.
@@ -250,12 +235,19 @@ stages:
                       ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
                       RepositoryUrl: https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1
                       Target: JavaDevFeed
-                      BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
                       JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
                   - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
                     parameters:
                       ArtifactName: ${{parameters.ArtifactName}}-javadevfeed-$(System.JobAttempt)
                       ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                  - template: /eng/common/pipelines/templates/steps/create-apireview.yml
+                    parameters:
+                      ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                      Artifacts: ${{parameters.Artifacts}}
+                      ConfigFileDir: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/PackageInfo
+                      MarkPackageAsShipped: true
+                      ArtifactName: ${{parameters.ArtifactName}}-signed
+                      SourceRootPath: $(Pipeline.Workspace)/azure-sdk-for-java
 
         - deployment: UpdatePackageVersion
           displayName: "Update Package Version"
@@ -319,10 +311,6 @@ stages:
             image: azsdk-pool-mms-ubuntu-2004-1espt
             os: linux
 
-          variables:
-            - name: DocValidationImageId
-              value: azuresdkimages.azurecr.io/javarefautocr:latest
-
           strategy:
             runOnce:
               deploy:
@@ -338,6 +326,11 @@ stages:
                   - download: current
                     displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
                     artifact: ${{parameters.ArtifactName}}
+
+                  - template: /eng/pipelines/templates/steps/mvn-linux-repository-settings.yml
+
+                  - template: /eng/pipelines/templates/steps/install-rex-validation-tool.yml
+
                   - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
                     parameters:
                       PackageInfoLocations:
@@ -351,18 +344,6 @@ stages:
                       SparseCheckoutPaths:
                         - docs-ref-services/
                         - metadata/
-                      DocValidationImageId: "$(DocValidationImageId)"
-
-                  - ${{ each artifact in parameters.Artifacts }}:
-                    - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
-                      - template: /eng/pipelines/templates/steps/fetch-package-list.yml
-                        parameters:
-                          JavaDocJarLocation: "$(Pipeline.Workspace)/${{parameters.ArtifactName}}/${{artifact.groupId}}/${{artifact.name}}"
-                          ArtifactName: ${{artifact.name}}
-                          TargetBranch: $(TargetBranchName)
-                          DocRepoLocation: $(DocRepoLocation)
-                          TargetDocRepoName: ${{parameters.TargetDocRepoName}}
-                          TargetDocRepoOwner: "Azure"
 
         - deployment: PublishDocs
           displayName: Publish Docs to GitHubIO Blob Storage
@@ -390,7 +371,6 @@ stages:
                       - template: /eng/common/pipelines/templates/steps/publish-blobs.yml
                         parameters:
                           FolderForUpload: '$(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}'
-                          BlobSASKey: '$(azure-sdk-docs-prod-sas)'
                           BlobName: '$(azure-sdk-docs-prod-blob-name)'
                           TargetLanguage: 'java'
                           ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
@@ -434,6 +414,8 @@ stages:
                 Commitish: $(Build.SourceVersion)
                 WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
 
+        - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
+
         - download: current
           displayName: 'Download Artifact: ${{parameters.ArtifactName}}-signed'
           artifact: ${{parameters.ArtifactName}}-signed
@@ -470,35 +452,25 @@ stages:
           name: azsdk-pool-mms-ubuntu-2004-general
           image: azsdk-pool-mms-ubuntu-2004-1espt
           os: linux
-        variables:
-          - name: DocValidationImageId
-            value: azuresdkimages.azurecr.io/javarefautocr:latest
         steps:
           - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
             parameters:
               Paths:
-                - sdk/**/*.md
+                - sdk
+                - common/perf-test-core
                 - .github/CODEOWNERS
+                - '!sdk/**/test-recordings'
+                - '!sdk/**/session-records'
           - download: current
             displayName: 'Download Artifacts'
             artifact: ${{parameters.ArtifactName}}
           - pwsh: |
               Get-ChildItem -Recurse $(Pipeline.Workspace)/${{parameters.ArtifactName}}/
             displayName: Show visible artifacts
-          # Docs daily updates is supposed to download packages from public feed repository, so we have to specify additional repositories in a POM or the profile.
-          # Here is maven documentation: https://maven.apache.org/guides/mini/guide-multiple-repositories.html
-          - powershell: |
-              # Linux mvn `setting.xml` is sitting under path `~/.m2/setting.xml`
-              Get-Command mvn
-              if (!(Test-Path '~/.m2/')) {
-                mkdir ~/.m2/
-              }
-              if (Test-Path '~/.m2/setting.xml') {
-                Write-Host "'setting.xml' exists. Overwriting the file to support multiple repositories."
-              }
-              Copy-Item "./eng/repo-docs/docms/daily.update.setting.xml" -Destination "~/.m2/settings.xml"
-            displayName: 'Configure mvn'
-            workingDirectory: $(Build.SourcesDirectory)
+
+          - template: /eng/pipelines/templates/steps/mvn-linux-repository-settings.yml
+
+          - template: /eng/pipelines/templates/steps/install-rex-validation-tool.yml
 
           - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
             parameters:
@@ -514,17 +486,5 @@ stages:
               SparseCheckoutPaths:
                 - docs-ref-services/
                 - metadata/
-              DocValidationImageId: "$(DocValidationImageId)"
-
-          - ${{ each artifact in parameters.Artifacts }}:
-            - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
-              - template: /eng/pipelines/templates/steps/fetch-package-list.yml
-                parameters:
-                  JavaDocJarLocation: "$(Pipeline.Workspace)/${{parameters.ArtifactName}}/${{artifact.groupId}}/${{artifact.name}}"
-                  ArtifactName: ${{artifact.name}}
-                  TargetBranch: $(TargetBranchName)
-                  DocRepoLocation: $(DocRepoLocation)
-                  TargetDocRepoName: ${{parameters.TargetDocRepoName}}
-                  TargetDocRepoOwner: "azure-sdk"
 
           - template: /eng/common/pipelines/templates/steps/docsms-ensure-validation.yml

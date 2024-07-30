@@ -6,19 +6,21 @@ package com.azure.resourcemanager.storage.generated;
 
 import com.azure.resourcemanager.storage.models.ManagementPolicyName;
 
-/** Samples for ManagementPolicies Delete. */
+/**
+ * Samples for ManagementPolicies Delete.
+ */
 public final class ManagementPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountDeleteManagementPolicy.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * StorageAccountDeleteManagementPolicy.json
      */
     /**
      * Sample code: StorageAccountDeleteManagementPolicies.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void storageAccountDeleteManagementPolicies(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getManagementPolicies()

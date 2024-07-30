@@ -5,31 +5,23 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * An abstract representation a a tool invocation needed by the model to continue a run.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = RequiredToolCall.class)
-@JsonTypeName("RequiredToolCall")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "function", value = RequiredFunctionToolCall.class) })
 @Immutable
-public class RequiredToolCall {
+public class RequiredToolCall implements JsonSerializable<RequiredToolCall> {
 
     /*
      * The ID of the tool call. This ID must be referenced when submitting tool outputs.
      */
     @Generated
-    @JsonProperty(value = "id")
-    private String id;
+    private final String id;
 
     /**
      * Creates an instance of RequiredToolCall class.
@@ -37,8 +29,7 @@ public class RequiredToolCall {
      * @param id the id value to set.
      */
     @Generated
-    @JsonCreator
-    protected RequiredToolCall(@JsonProperty(value = "id") String id) {
+    protected RequiredToolCall(String id) {
         this.id = id;
     }
 
@@ -50,5 +41,85 @@ public class RequiredToolCall {
     @Generated
     public String getId() {
         return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RequiredToolCall from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RequiredToolCall if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RequiredToolCall.
+     */
+    @Generated
+    public static RequiredToolCall fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                // Prepare for reading
+                readerToUse.nextToken();
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("function".equals(discriminatorValue)) {
+                    return RequiredFunctionToolCall.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static RequiredToolCall fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String id = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new RequiredToolCall(id);
+        });
+    }
+
+    /*
+     * The object type for the required tool call.
+     */
+    @Generated
+    private String type = "RequiredToolCall";
+
+    /**
+     * Get the type property: The object type for the required tool call.
+     *
+     * @return the type value.
+     */
+    @Generated
+    public String getType() {
+        return this.type;
     }
 }

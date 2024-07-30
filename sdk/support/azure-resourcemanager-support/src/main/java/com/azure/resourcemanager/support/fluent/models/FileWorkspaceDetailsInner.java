@@ -10,7 +10,9 @@ import com.azure.core.management.SystemData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Object that represents FileWorkspaceDetails resource. */
+/**
+ * Object that represents FileWorkspaceDetails resource.
+ */
 @Immutable
 public final class FileWorkspaceDetailsInner extends ProxyResource {
     /*
@@ -25,13 +27,15 @@ public final class FileWorkspaceDetailsInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of FileWorkspaceDetailsInner class. */
+    /**
+     * Creates an instance of FileWorkspaceDetailsInner class.
+     */
     public FileWorkspaceDetailsInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FileWorkspaceDetailsProperties innerProperties() {
@@ -40,7 +44,7 @@ public final class FileWorkspaceDetailsInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -49,7 +53,7 @@ public final class FileWorkspaceDetailsInner extends ProxyResource {
 
     /**
      * Get the createdOn property: Time in UTC (ISO 8601 format) when file workspace was created.
-     *
+     * 
      * @return the createdOn value.
      */
     public OffsetDateTime createdOn() {
@@ -58,7 +62,7 @@ public final class FileWorkspaceDetailsInner extends ProxyResource {
 
     /**
      * Get the expirationTime property: Time in UTC (ISO 8601 format) when file workspace is going to expire.
-     *
+     * 
      * @return the expirationTime value.
      */
     public OffsetDateTime expirationTime() {
@@ -67,7 +71,7 @@ public final class FileWorkspaceDetailsInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

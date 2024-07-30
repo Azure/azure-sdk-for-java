@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
@@ -74,6 +75,16 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") InboundSecurityRuleInner parameters, @HeaderParam("Accept") String accept,
             Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}/inboundSecurityRules/{ruleCollectionName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<InboundSecurityRuleInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("networkVirtualApplianceName") String networkVirtualApplianceName,
+            @PathParam("ruleCollectionName") String ruleCollectionName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -117,7 +128,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -169,7 +180,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, networkVirtualApplianceName,
@@ -265,8 +276,10 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
     public SyncPoller<PollResult<InboundSecurityRuleInner>, InboundSecurityRuleInner> beginCreateOrUpdate(
         String resourceGroupName, String networkVirtualApplianceName, String ruleCollectionName,
         InboundSecurityRuleInner parameters, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, networkVirtualApplianceName, ruleCollectionName,
-            parameters, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, networkVirtualApplianceName, ruleCollectionName, parameters,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -286,7 +299,8 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
     public Mono<InboundSecurityRuleInner> createOrUpdateAsync(String resourceGroupName,
         String networkVirtualApplianceName, String ruleCollectionName, InboundSecurityRuleInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, networkVirtualApplianceName, ruleCollectionName, parameters)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -350,5 +364,145 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
         String ruleCollectionName, InboundSecurityRuleInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, networkVirtualApplianceName, ruleCollectionName, parameters,
             context).block();
+    }
+
+    /**
+     * Retrieves the available specified Network Virtual Appliance Inbound Security Rules Collection.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
+     * @param ruleCollectionName The name of security rule collection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return nVA Inbound Security Rule resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<InboundSecurityRuleInner>> getWithResponseAsync(String resourceGroupName,
+        String networkVirtualApplianceName, String ruleCollectionName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkVirtualApplianceName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter networkVirtualApplianceName is required and cannot be null."));
+        }
+        if (ruleCollectionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter ruleCollectionName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2024-01-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.get(this.client.getEndpoint(), resourceGroupName, networkVirtualApplianceName,
+                    ruleCollectionName, apiVersion, this.client.getSubscriptionId(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Retrieves the available specified Network Virtual Appliance Inbound Security Rules Collection.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
+     * @param ruleCollectionName The name of security rule collection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return nVA Inbound Security Rule resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<InboundSecurityRuleInner>> getWithResponseAsync(String resourceGroupName,
+        String networkVirtualApplianceName, String ruleCollectionName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkVirtualApplianceName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter networkVirtualApplianceName is required and cannot be null."));
+        }
+        if (ruleCollectionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter ruleCollectionName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2024-01-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, networkVirtualApplianceName,
+            ruleCollectionName, apiVersion, this.client.getSubscriptionId(), accept, context);
+    }
+
+    /**
+     * Retrieves the available specified Network Virtual Appliance Inbound Security Rules Collection.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
+     * @param ruleCollectionName The name of security rule collection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return nVA Inbound Security Rule resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<InboundSecurityRuleInner> getAsync(String resourceGroupName, String networkVirtualApplianceName,
+        String ruleCollectionName) {
+        return getWithResponseAsync(resourceGroupName, networkVirtualApplianceName, ruleCollectionName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Retrieves the available specified Network Virtual Appliance Inbound Security Rules Collection.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
+     * @param ruleCollectionName The name of security rule collection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return nVA Inbound Security Rule resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<InboundSecurityRuleInner> getWithResponse(String resourceGroupName,
+        String networkVirtualApplianceName, String ruleCollectionName, Context context) {
+        return getWithResponseAsync(resourceGroupName, networkVirtualApplianceName, ruleCollectionName, context)
+            .block();
+    }
+
+    /**
+     * Retrieves the available specified Network Virtual Appliance Inbound Security Rules Collection.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
+     * @param ruleCollectionName The name of security rule collection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return nVA Inbound Security Rule resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public InboundSecurityRuleInner get(String resourceGroupName, String networkVirtualApplianceName,
+        String ruleCollectionName) {
+        return getWithResponse(resourceGroupName, networkVirtualApplianceName, ruleCollectionName, Context.NONE)
+            .getValue();
     }
 }

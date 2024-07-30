@@ -10,8 +10,7 @@ package com.azure.resourcemanager.netapp.generated;
 public final class BackupPoliciesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/BackupPolicies_Get.
-     * json
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/BackupPolicies_Get.json
      */
     /**
      * Sample code: Backups_Get.
@@ -19,7 +18,7 @@ public final class BackupPoliciesGetSamples {
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void backupsGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.backupPolicies().getWithResponse("myRG", "account1", "backupPolicyName",
-            com.azure.core.util.Context.NONE);
+        manager.backupPolicies()
+            .getWithResponse("myRG", "account1", "backupPolicyName", com.azure.core.util.Context.NONE);
     }
 }

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class IpGroupsListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/IpGroupsListByResourceGroup.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/IpGroupsListByResourceGroup.
      * json
      */
     /**
@@ -19,7 +19,10 @@ public final class IpGroupsListByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listByResourceGroupIpGroups(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getIpGroups().listByResourceGroup("myResourceGroup",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getIpGroups()
+            .listByResourceGroup("myResourceGroup", com.azure.core.util.Context.NONE);
     }
 }

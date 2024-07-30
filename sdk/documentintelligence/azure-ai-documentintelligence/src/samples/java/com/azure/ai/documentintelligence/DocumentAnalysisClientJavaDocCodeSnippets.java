@@ -93,7 +93,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
             Arrays.asList(DocumentAnalysisFeature.LANGUAGES),
             null,
             ContentFormat.TEXT,
-            new AnalyzeDocumentRequest().setUrlSource(documentUrl)).getFinalResult().getAnalyzeResult()
+            new AnalyzeDocumentRequest().setUrlSource(documentUrl)).getFinalResult()
             .getDocuments().stream()
             .map(Document::getFields)
             .forEach(documentFieldMap -> documentFieldMap.forEach((key, documentField) -> {
@@ -117,7 +117,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
         String classifierId = "{custom_trained_classifier_id}";
 
         documentIntelligenceClient.beginClassifyDocument(classifierId, new ClassifyDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())))
-            .getFinalResult().getAnalyzeResult()
+            .getFinalResult()
             .getDocuments()
             .forEach(analyzedDocument -> System.out.printf("Doc Type: %s%n", analyzedDocument.getDocType()));
         // END: com.azure.ai.documentintelligence.DocumentAnalysisClient.beginClassifyDocument#string-BinaryData-Context
@@ -139,7 +139,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
         // analyze using custom-built model
         String modelId = customBuildModel.getModelId();
         String documentUrl = "documentUrl";
-        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeDocumentPoller =
+        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeDocumentPoller =
             documentIntelligenceClient.beginAnalyzeDocument(modelId,
                 null,
                 null,
@@ -149,7 +149,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
                 null,
                 new AnalyzeDocumentRequest().setUrlSource(documentUrl));
 
-        AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult().getAnalyzeResult();
+        AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
 
         for (int i = 0; i < analyzeResult.getDocuments().size(); i++) {
             final Document analyzedDocument = analyzeResult.getDocuments().get(i);

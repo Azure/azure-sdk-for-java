@@ -14,17 +14,20 @@ public final class FaultInjectionServerErrorResult implements IFaultInjectionRes
     private final Duration delay;
 
     private final Boolean suppressServiceRequests;
+    private final double injectionRate;
 
     FaultInjectionServerErrorResult(
         FaultInjectionServerErrorType serverErrorTypes,
         Integer times,
         Duration delay,
-        Boolean suppressServiceRequests) {
+        Boolean suppressServiceRequests,
+        double injectionRate) {
 
         this.serverErrorType = serverErrorTypes;
         this.times = times;
         this.delay = delay;
         this.suppressServiceRequests = suppressServiceRequests;
+        this.injectionRate = injectionRate;
     }
 
     /***
@@ -65,12 +68,22 @@ public final class FaultInjectionServerErrorResult implements IFaultInjectionRes
         return this.suppressServiceRequests;
     }
 
+    /***
+     * Get A double between (0,1] representing the percent of times that the rule will be applied.
+     * Default value is 1.0 or 100%
+     * @return the apply percentage.
+     */
+    public double getInjectionRate() {
+        return this.injectionRate;
+    }
+
     @Override
     public String toString() {
         return String.format(
-            "FaultInjectionServerErrorResult{ serverErrorType=%s, times=%s, delay=%s }",
+            "FaultInjectionServerErrorResult{ serverErrorType=%s, times=%s, delay=%s, injectionRate=%.2f%% }",
             this.serverErrorType,
             this.times,
-            this.delay);
+            this.delay,
+            this.injectionRate * 100);
     }
 }

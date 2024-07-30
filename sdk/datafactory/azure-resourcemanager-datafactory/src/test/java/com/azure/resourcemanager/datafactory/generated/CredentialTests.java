@@ -15,18 +15,18 @@ public final class CredentialTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Credential model = BinaryData.fromString(
-            "{\"type\":\"Credential\",\"description\":\"pwpgddei\",\"annotations\":[\"datazovgkkumuikj\",\"datajcazt\"],\"\":{\"wxwcomli\":\"datansq\",\"yfdvlvhbwrnfxtgd\":\"dataytwvczcswkacve\",\"kcoeqswank\":\"datapqthehnmnaoya\"}}")
+            "{\"type\":\"Credential\",\"description\":\"hvthlaiwdcxsm\",\"annotations\":[\"datahzdtxetlgydlh\",\"datavlnnpx\",\"datab\",\"datafiqgeaar\"],\"\":{\"ulidwc\":\"dataekglklb\",\"nfhjirwgdnqzbr\":\"datavmzegj\",\"igsxcdgljplk\":\"datakspzhzmtksjcit\"}}")
             .toObject(Credential.class);
-        Assertions.assertEquals("pwpgddei", model.description());
+        Assertions.assertEquals("hvthlaiwdcxsm", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Credential model = new Credential().withDescription("pwpgddei")
-            .withAnnotations(Arrays.asList("datazovgkkumuikj", "datajcazt"))
+        Credential model = new Credential().withDescription("hvthlaiwdcxsm")
+            .withAnnotations(Arrays.asList("datahzdtxetlgydlh", "datavlnnpx", "datab", "datafiqgeaar"))
             .withAdditionalProperties(mapOf("type", "Credential"));
         model = BinaryData.fromObject(model).toObject(Credential.class);
-        Assertions.assertEquals("pwpgddei", model.description());
+        Assertions.assertEquals("hvthlaiwdcxsm", model.description());
     }
 
     // Use "Map.of" if available

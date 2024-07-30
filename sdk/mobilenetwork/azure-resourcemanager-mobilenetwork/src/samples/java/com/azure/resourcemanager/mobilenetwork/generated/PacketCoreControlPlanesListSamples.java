@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-/** Samples for PacketCoreControlPlanes List. */
+/**
+ * Samples for PacketCoreControlPlanes List.
+ */
 public final class PacketCoreControlPlanesListSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreControlPlaneListBySubscription.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreControlPlaneListBySubscription.json
      */
     /**
      * Sample code: List packet core control planes in a subscription.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void listPacketCoreControlPlanesInASubscription(

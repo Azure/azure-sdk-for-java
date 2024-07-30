@@ -7,16 +7,28 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Azure Key Vault secret reference.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = AzureKeyVaultSecretReference.class,
+    visible = true)
 @JsonTypeName("AzureKeyVaultSecret")
 @Fluent
 public final class AzureKeyVaultSecretReference extends SecretBase {
+    /*
+     * Type of the secret.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "AzureKeyVaultSecret";
+
     /*
      * The Azure Key Vault linked service reference.
      */
@@ -30,8 +42,8 @@ public final class AzureKeyVaultSecretReference extends SecretBase {
     private Object secretName;
 
     /*
-     * The version of the secret in Azure Key Vault. The default value is the latest version of the secret. Type:
-     * string (or Expression with resultType string).
+     * The version of the secret in Azure Key Vault. The default value is the latest version of the secret. Type: string
+     * (or Expression with resultType string).
      */
     @JsonProperty(value = "secretVersion")
     private Object secretVersion;
@@ -40,6 +52,16 @@ public final class AzureKeyVaultSecretReference extends SecretBase {
      * Creates an instance of AzureKeyVaultSecretReference class.
      */
     public AzureKeyVaultSecretReference() {
+    }
+
+    /**
+     * Get the type property: Type of the secret.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -115,14 +137,16 @@ public final class AzureKeyVaultSecretReference extends SecretBase {
     public void validate() {
         super.validate();
         if (store() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property store in model AzureKeyVaultSecretReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property store in model AzureKeyVaultSecretReference"));
         } else {
             store().validate();
         }
         if (secretName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property secretName in model AzureKeyVaultSecretReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property secretName in model AzureKeyVaultSecretReference"));
         }
     }
 

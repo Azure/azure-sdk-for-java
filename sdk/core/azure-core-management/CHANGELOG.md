@@ -1,16 +1,59 @@
 # Release History
 
-## 1.13.0-beta.1 (Unreleased)
+## 1.16.0-beta.1 (Unreleased)
 
 ### Features Added
-
-- Added support for `azure-json` by having serializable models implement `JsonSerializable`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.15.1 (2024-07-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.1` to `1.50.0`.
+
+## 1.15.0 (2024-06-06)
+
+### Features Added
+
+- Added new Azure region `Region.ISRAEL_CENTRAL`.
+- `SubResource` now implements `JsonSerializable`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.0` to `1.49.1`.
+
+## 1.14.0 (2024-05-01)
+
+### Features Added
+
+- Added `managedHsmDnsSuffix` getter and `storageEndpointSuffix` to `AzureEnvironment`. ([#39647](https://github.com/Azure/azure-sdk-for-java/pull/39647))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to `1.49.0`.
+
+## 1.13.0 (2024-04-05)
+
+### Features Added
+
+- Added support for `azure-json` by having serializable models implement `JsonSerializable`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to `1.48.0`.
 
 ## 1.12.0 (2024-03-01)
 

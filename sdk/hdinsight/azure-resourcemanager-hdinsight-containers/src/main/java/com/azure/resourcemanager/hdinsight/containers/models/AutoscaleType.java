@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** User to specify which type of Autoscale to be implemented - Scheduled Based or Load Based. */
+/**
+ * User to specify which type of Autoscale to be implemented - Scheduled Based or Load Based.
+ */
 public final class AutoscaleType extends ExpandableStringEnum<AutoscaleType> {
-    /** Static value ScheduleBased for AutoscaleType. */
+    /**
+     * Static value ScheduleBased for AutoscaleType.
+     */
     public static final AutoscaleType SCHEDULE_BASED = fromString("ScheduleBased");
 
-    /** Static value LoadBased for AutoscaleType. */
+    /**
+     * Static value LoadBased for AutoscaleType.
+     */
     public static final AutoscaleType LOAD_BASED = fromString("LoadBased");
 
     /**
      * Creates a new instance of AutoscaleType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class AutoscaleType extends ExpandableStringEnum<AutoscaleType> {
 
     /**
      * Creates or finds a AutoscaleType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AutoscaleType.
      */
@@ -38,7 +44,7 @@ public final class AutoscaleType extends ExpandableStringEnum<AutoscaleType> {
 
     /**
      * Gets known AutoscaleType values.
-     *
+     * 
      * @return known AutoscaleType values.
      */
     public static Collection<AutoscaleType> values() {

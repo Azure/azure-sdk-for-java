@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class SecurityConnectorApplicationOperationGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2022-07-01-preview/examples/Applications/
-     * GetSecurityConnectorApplication_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-07-01-preview/examples/Applications/GetSecurityConnectorApplication_example.json
      */
     /**
      * Sample code: Get security applications by specific applicationId.
@@ -20,7 +18,8 @@ public final class SecurityConnectorApplicationOperationGetSamples {
      */
     public static void
         getSecurityApplicationsBySpecificApplicationId(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.securityConnectorApplicationOperations().getWithResponse("gcpResourceGroup", "gcpconnector",
-            "ad9a8e26-29d9-4829-bb30-e597a58cdbb8", com.azure.core.util.Context.NONE);
+        manager.securityConnectorApplicationOperations()
+            .getWithResponse("gcpResourceGroup", "gcpconnector", "ad9a8e26-29d9-4829-bb30-e597a58cdbb8",
+                com.azure.core.util.Context.NONE);
     }
 }

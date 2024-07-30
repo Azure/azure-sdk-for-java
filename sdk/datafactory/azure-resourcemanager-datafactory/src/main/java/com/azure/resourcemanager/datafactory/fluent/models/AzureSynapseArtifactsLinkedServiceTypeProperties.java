@@ -30,8 +30,7 @@ public final class AzureSynapseArtifactsLinkedServiceTypeProperties {
     /*
      * The resource ID of the Synapse workspace. The format should be:
      * /subscriptions/{subscriptionID}/resourceGroups/{resourceGroup}/providers/Microsoft.Synapse/workspaces/{
-     * workspaceName}.
-     * Type: string (or Expression with resultType string).
+     * workspaceName}. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "workspaceResourceId")
     private Object workspaceResourceId;
@@ -117,8 +116,9 @@ public final class AzureSynapseArtifactsLinkedServiceTypeProperties {
      */
     public void validate() {
         if (endpoint() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property endpoint in model AzureSynapseArtifactsLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property endpoint in model AzureSynapseArtifactsLinkedServiceTypeProperties"));
         }
     }
 

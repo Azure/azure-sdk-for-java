@@ -7,7 +7,9 @@ package com.azure.resourcemanager.mobilenetwork.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Configuration enabling NAS reroute. */
+/**
+ * Configuration enabling NAS reroute.
+ */
 @Fluent
 public final class NasRerouteConfiguration {
     /*
@@ -16,14 +18,16 @@ public final class NasRerouteConfiguration {
     @JsonProperty(value = "macroMmeGroupId", required = true)
     private int macroMmeGroupId;
 
-    /** Creates an instance of NasRerouteConfiguration class. */
+    /**
+     * Creates an instance of NasRerouteConfiguration class.
+     */
     public NasRerouteConfiguration() {
     }
 
     /**
      * Get the macroMmeGroupId property: The macro network's MME group ID. This is where unknown UEs are sent to via NAS
      * reroute.
-     *
+     * 
      * @return the macroMmeGroupId value.
      */
     public int macroMmeGroupId() {
@@ -33,7 +37,7 @@ public final class NasRerouteConfiguration {
     /**
      * Set the macroMmeGroupId property: The macro network's MME group ID. This is where unknown UEs are sent to via NAS
      * reroute.
-     *
+     * 
      * @param macroMmeGroupId the macroMmeGroupId value to set.
      * @return the NasRerouteConfiguration object itself.
      */
@@ -44,7 +48,7 @@ public final class NasRerouteConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

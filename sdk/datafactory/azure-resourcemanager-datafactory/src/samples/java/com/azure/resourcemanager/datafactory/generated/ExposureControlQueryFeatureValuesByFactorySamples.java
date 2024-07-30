@@ -23,11 +23,12 @@ public final class ExposureControlQueryFeatureValuesByFactorySamples {
      */
     public static void
         exposureControlQueryFeatureValuesByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.exposureControls().queryFeatureValuesByFactoryWithResponse("exampleResourceGroup", "exampleFactoryName",
-            new ExposureControlBatchRequest().withExposureControlRequests(Arrays.asList(
-                new ExposureControlRequest().withFeatureName("ADFIntegrationRuntimeSharingRbac")
-                    .withFeatureType("Feature"),
-                new ExposureControlRequest().withFeatureName("ADFSampleFeature").withFeatureType("Feature"))),
-            com.azure.core.util.Context.NONE);
+        manager.exposureControls()
+            .queryFeatureValuesByFactoryWithResponse("exampleResourceGroup", "exampleFactoryName",
+                new ExposureControlBatchRequest().withExposureControlRequests(Arrays.asList(
+                    new ExposureControlRequest().withFeatureName("ADFIntegrationRuntimeSharingRbac")
+                        .withFeatureType("Feature"),
+                    new ExposureControlRequest().withFeatureName("ADFSampleFeature").withFeatureType("Feature"))),
+                com.azure.core.util.Context.NONE);
     }
 }

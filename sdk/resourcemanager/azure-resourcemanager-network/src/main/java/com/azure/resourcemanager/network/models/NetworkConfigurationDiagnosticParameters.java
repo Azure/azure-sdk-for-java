@@ -108,12 +108,14 @@ public final class NetworkConfigurationDiagnosticParameters {
      */
     public void validate() {
         if (targetResourceId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property targetResourceId in model NetworkConfigurationDiagnosticParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetResourceId in model NetworkConfigurationDiagnosticParameters"));
         }
         if (profiles() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property profiles in model NetworkConfigurationDiagnosticParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property profiles in model NetworkConfigurationDiagnosticParameters"));
         } else {
             profiles().forEach(e -> e.validate());
         }

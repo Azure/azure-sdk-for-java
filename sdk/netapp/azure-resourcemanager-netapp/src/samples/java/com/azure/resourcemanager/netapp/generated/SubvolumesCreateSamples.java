@@ -10,7 +10,7 @@ package com.azure.resourcemanager.netapp.generated;
 public final class SubvolumesCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/Subvolumes_Create.json
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/Subvolumes_Create.json
      */
     /**
      * Sample code: Subvolumes_Create.
@@ -18,7 +18,10 @@ public final class SubvolumesCreateSamples {
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void subvolumesCreate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.subvolumes().define("subvolume1").withExistingVolume("myRG", "account1", "pool1", "volume1")
-            .withPath("/subvolumePath").create();
+        manager.subvolumes()
+            .define("subvolume1")
+            .withExistingVolume("myRG", "account1", "pool1", "volume1")
+            .withPath("/subvolumePath")
+            .create();
     }
 }

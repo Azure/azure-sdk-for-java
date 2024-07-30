@@ -16,8 +16,8 @@ import com.azure.resourcemanager.eventgrid.fluent.models.TopicSharedAccessKeysIn
 import com.azure.resourcemanager.eventgrid.models.EventType;
 import com.azure.resourcemanager.eventgrid.models.Topic;
 import com.azure.resourcemanager.eventgrid.models.TopicRegenerateKeyRequest;
-import com.azure.resourcemanager.eventgrid.models.TopicSharedAccessKeys;
 import com.azure.resourcemanager.eventgrid.models.Topics;
+import com.azure.resourcemanager.eventgrid.models.TopicSharedAccessKeys;
 
 public final class TopicsImpl implements Topics {
     private static final ClientLogger LOGGER = new ClientLogger(TopicsImpl.class);
@@ -61,24 +61,24 @@ public final class TopicsImpl implements Topics {
 
     public PagedIterable<Topic> list() {
         PagedIterable<TopicInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new TopicImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TopicImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Topic> list(String filter, Integer top, Context context) {
         PagedIterable<TopicInner> inner = this.serviceClient().list(filter, top, context);
-        return Utils.mapPage(inner, inner1 -> new TopicImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TopicImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Topic> listByResourceGroup(String resourceGroupName) {
         PagedIterable<TopicInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new TopicImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TopicImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Topic> listByResourceGroup(String resourceGroupName, String filter, Integer top,
         Context context) {
         PagedIterable<TopicInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, filter, top, context);
-        return Utils.mapPage(inner, inner1 -> new TopicImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TopicImpl(inner1, this.manager()));
     }
 
     public Response<TopicSharedAccessKeys> listSharedAccessKeysWithResponse(String resourceGroupName, String topicName,
@@ -128,23 +128,23 @@ public final class TopicsImpl implements Topics {
         String resourceTypeName, String resourceName) {
         PagedIterable<EventTypeInner> inner
             = this.serviceClient().listEventTypes(resourceGroupName, providerNamespace, resourceTypeName, resourceName);
-        return Utils.mapPage(inner, inner1 -> new EventTypeImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventTypeImpl(inner1, this.manager()));
     }
 
     public PagedIterable<EventType> listEventTypes(String resourceGroupName, String providerNamespace,
         String resourceTypeName, String resourceName, Context context) {
-        PagedIterable<EventTypeInner> inner = this.serviceClient().listEventTypes(resourceGroupName, providerNamespace,
-            resourceTypeName, resourceName, context);
-        return Utils.mapPage(inner, inner1 -> new EventTypeImpl(inner1, this.manager()));
+        PagedIterable<EventTypeInner> inner = this.serviceClient()
+            .listEventTypes(resourceGroupName, providerNamespace, resourceTypeName, resourceName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventTypeImpl(inner1, this.manager()));
     }
 
     public Topic getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String topicName = Utils.getValueFromIdByName(id, "topics");
+        String topicName = ResourceManagerUtils.getValueFromIdByName(id, "topics");
         if (topicName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'topics'.", id)));
@@ -153,12 +153,12 @@ public final class TopicsImpl implements Topics {
     }
 
     public Response<Topic> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String topicName = Utils.getValueFromIdByName(id, "topics");
+        String topicName = ResourceManagerUtils.getValueFromIdByName(id, "topics");
         if (topicName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'topics'.", id)));
@@ -167,12 +167,12 @@ public final class TopicsImpl implements Topics {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String topicName = Utils.getValueFromIdByName(id, "topics");
+        String topicName = ResourceManagerUtils.getValueFromIdByName(id, "topics");
         if (topicName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'topics'.", id)));
@@ -181,12 +181,12 @@ public final class TopicsImpl implements Topics {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String topicName = Utils.getValueFromIdByName(id, "topics");
+        String topicName = ResourceManagerUtils.getValueFromIdByName(id, "topics");
         if (topicName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'topics'.", id)));

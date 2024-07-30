@@ -6,16 +6,24 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity Azure CosmosDB (SQL API) Collection source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = CosmosDbSqlApiSource.class, visible = true)
 @JsonTypeName("CosmosDbSqlApiSource")
 @Fluent
 public final class CosmosDbSqlApiSource extends CopySource {
+    /*
+     * Copy source type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "CosmosDbSqlApiSource";
+
     /*
      * SQL API query. Type: string (or Expression with resultType string).
      */
@@ -51,6 +59,16 @@ public final class CosmosDbSqlApiSource extends CopySource {
      * Creates an instance of CosmosDbSqlApiSource class.
      */
     public CosmosDbSqlApiSource() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -94,8 +112,8 @@ public final class CosmosDbSqlApiSource extends CopySource {
     }
 
     /**
-     * Get the preferredRegions property: Preferred regions. Type: array of strings (or Expression with resultType
-     * array of strings).
+     * Get the preferredRegions property: Preferred regions. Type: array of strings (or Expression with resultType array
+     * of strings).
      * 
      * @return the preferredRegions value.
      */
@@ -104,8 +122,8 @@ public final class CosmosDbSqlApiSource extends CopySource {
     }
 
     /**
-     * Set the preferredRegions property: Preferred regions. Type: array of strings (or Expression with resultType
-     * array of strings).
+     * Set the preferredRegions property: Preferred regions. Type: array of strings (or Expression with resultType array
+     * of strings).
      * 
      * @param preferredRegions the preferredRegions value to set.
      * @return the CosmosDbSqlApiSource object itself.
@@ -116,8 +134,8 @@ public final class CosmosDbSqlApiSource extends CopySource {
     }
 
     /**
-     * Get the detectDatetime property: Whether detect primitive values as datetime values. Type: boolean (or
-     * Expression with resultType boolean).
+     * Get the detectDatetime property: Whether detect primitive values as datetime values. Type: boolean (or Expression
+     * with resultType boolean).
      * 
      * @return the detectDatetime value.
      */
@@ -126,8 +144,8 @@ public final class CosmosDbSqlApiSource extends CopySource {
     }
 
     /**
-     * Set the detectDatetime property: Whether detect primitive values as datetime values. Type: boolean (or
-     * Expression with resultType boolean).
+     * Set the detectDatetime property: Whether detect primitive values as datetime values. Type: boolean (or Expression
+     * with resultType boolean).
      * 
      * @param detectDatetime the detectDatetime value to set.
      * @return the CosmosDbSqlApiSource object itself.

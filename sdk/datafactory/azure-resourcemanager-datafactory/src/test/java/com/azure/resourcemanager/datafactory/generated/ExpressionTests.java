@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class ExpressionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Expression model = BinaryData.fromString("{\"value\":\"tny\"}").toObject(Expression.class);
-        Assertions.assertEquals("tny", model.value());
+        Expression model = BinaryData.fromString("{\"value\":\"ytxtdgu\"}").toObject(Expression.class);
+        Assertions.assertEquals("ytxtdgu", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Expression model = new Expression().withValue("tny");
+        Expression model = new Expression().withValue("ytxtdgu");
         model = BinaryData.fromObject(model).toObject(Expression.class);
-        Assertions.assertEquals("tny", model.value());
+        Assertions.assertEquals("ytxtdgu", model.value());
     }
 }

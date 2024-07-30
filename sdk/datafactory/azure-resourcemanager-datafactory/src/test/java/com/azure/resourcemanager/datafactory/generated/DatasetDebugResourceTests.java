@@ -32,7 +32,8 @@ public final class DatasetDebugResourceTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DatasetDebugResource model = new DatasetDebugResource().withName("brxkjzwr")
-            .withProperties(new Dataset().withDescription("qmjxlyyzglgouwtl").withStructure("datajyuojqtobaxkjeyt")
+            .withProperties(new Dataset().withDescription("qmjxlyyzglgouwtl")
+                .withStructure("datajyuojqtobaxkjeyt")
                 .withSchema("datalbfjkwr")
                 .withLinkedServiceName(
                     new LinkedServiceReference().withReferenceName("snkq").withParameters(mapOf("qunjqh", "datay")))

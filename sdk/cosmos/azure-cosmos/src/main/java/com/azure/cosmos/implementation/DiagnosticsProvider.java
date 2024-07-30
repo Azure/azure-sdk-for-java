@@ -16,14 +16,18 @@ import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.azure.cosmos.implementation.guava25.base.Splitter;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosResponse;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ShowQueryMode;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -40,6 +44,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.time.Duration;
+import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -53,8 +58,11 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static com.azure.cosmos.implementation.RequestTimeline.EventName.CREATED;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
@@ -96,6 +104,8 @@ public final class DiagnosticsProvider {
     private final CosmosClientTelemetryConfig telemetryConfig;
     private final boolean shouldSystemExitOnError;
 
+    final Supplier<Double> samplingRateSnapshotSupplier;
+
 
     public DiagnosticsProvider(
         CosmosClientTelemetryConfig clientTelemetryConfig,
@@ -109,6 +119,11 @@ public final class DiagnosticsProvider {
         checkNotNull(connectionMode, "Argument 'connectionMode' must not be null.");
 
         this.telemetryConfig = clientTelemetryConfig;
+
+        this.samplingRateSnapshotSupplier =  () -> isEnabled()
+            ? clientTelemetryConfigAccessor.getSamplingRate(this.telemetryConfig)
+            : 0;
+
         this.diagnosticHandlers = new ArrayList<>(
             clientTelemetryConfigAccessor.getDiagnosticHandlers(clientTelemetryConfig));
         Tracer tracerCandidate = clientTelemetryConfigAccessor.getOrCreateTracer(clientTelemetryConfig);
@@ -215,7 +230,8 @@ public final class DiagnosticsProvider {
     public Context startSpan(
         String spanName,
         CosmosDiagnosticsContext cosmosCtx,
-        Context context) {
+        Context context,
+        boolean isSampledOut) {
 
         checkNotNull(spanName, "Argument 'spanName' must not be null.");
         checkNotNull(cosmosCtx, "Argument 'cosmosCtx' must not be null.");
@@ -225,7 +241,7 @@ public final class DiagnosticsProvider {
             .requireNonNull(context, "'context' cannot be null.")
             .addData(COSMOS_DIAGNOSTICS_CONTEXT_KEY, cosmosCtx);
 
-        if (this.cosmosTracer == null) {
+        if (this.cosmosTracer == null || isSampledOut) {
             return local;
         }
 
@@ -245,11 +261,12 @@ public final class DiagnosticsProvider {
         int statusCode,
         Integer actualItemCount,
         Double requestCharge,
-        CosmosDiagnostics diagnostics
+        CosmosDiagnostics diagnostics,
+        boolean isSampledOut
     ) {
         // called in PagedFlux - needs to be exception less - otherwise will result in hanging Flux.
         try {
-            this.endSpanCore(signal, cosmosCtx, statusCode, actualItemCount, requestCharge, diagnostics);
+            this.endSpanCore(signal, cosmosCtx, statusCode, actualItemCount, requestCharge, diagnostics, isSampledOut);
         } catch (Throwable error) {
             this.handleErrors(error, 9901);
         }
@@ -261,7 +278,8 @@ public final class DiagnosticsProvider {
         int statusCode,
         Integer actualItemCount,
         Double requestCharge,
-        CosmosDiagnostics diagnostics
+        CosmosDiagnostics diagnostics,
+        boolean isSampledOut
     ) {
         Objects.requireNonNull(signal, "'signal' cannot be null.");
 
@@ -281,7 +299,8 @@ public final class DiagnosticsProvider {
                     diagnostics,
                     null,
                     context,
-                    ctxAccessor.isEmptyCompletion(cosmosCtx));
+                    ctxAccessor.isEmptyCompletion(cosmosCtx),
+                    isSampledOut);
                 break;
             case ON_NEXT:
                 end(
@@ -293,7 +312,8 @@ public final class DiagnosticsProvider {
                     diagnostics,
                     null,
                     context,
-                    false);
+                    false,
+                    isSampledOut);
                 break;
             case ON_ERROR:
                 Throwable throwable = null;
@@ -328,7 +348,8 @@ public final class DiagnosticsProvider {
                     effectiveDiagnostics,
                     throwable,
                     context,
-                    false);
+                    false,
+                    isSampledOut);
                 break;
             default:
                 // ON_SUBSCRIBE isn't the right state to end span
@@ -336,7 +357,7 @@ public final class DiagnosticsProvider {
         }
     }
 
-    public void endSpan(CosmosDiagnosticsContext cosmosCtx, Context context, Throwable throwable) {
+    public void endSpan(CosmosDiagnosticsContext cosmosCtx, Context context, Throwable throwable, boolean isSampledOut) {
         // called in PagedFlux - needs to be exception less - otherwise will result in hanging Flux.
         try {
             int statusCode = DiagnosticsProvider.ERROR_CODE;
@@ -362,13 +383,14 @@ public final class DiagnosticsProvider {
                 effectiveDiagnostics,
                 throwable,
                 context,
-                false);
+                false,
+                isSampledOut);
         } catch (Throwable error) {
             this.handleErrors(error, 9905);
         }
     }
 
-    public void endSpan(CosmosDiagnosticsContext cosmosCtx, Context context, boolean isForcedEmptyCompletion) {
+    public void endSpan(CosmosDiagnosticsContext cosmosCtx, Context context, boolean isForcedEmptyCompletion, boolean isSampledOut) {
         // called in PagedFlux - needs to be exception less - otherwise will result in hanging Flux.
         try {
             end(
@@ -380,7 +402,8 @@ public final class DiagnosticsProvider {
                 null,
                 null,
                 context,
-                isForcedEmptyCompletion);
+                isForcedEmptyCompletion,
+                isSampledOut);
         } catch (Throwable error) {
             this.handleErrors(error, 9904);
         }
@@ -532,7 +555,8 @@ public final class DiagnosticsProvider {
 
                 return diagnostics;
             },
-            requestOptions);
+            requestOptions,
+            null);
     }
 
     public <T extends CosmosBatchResponse> Mono<T> traceEnabledBatchResponsePublisher(
@@ -545,7 +569,8 @@ public final class DiagnosticsProvider {
         ConsistencyLevel consistencyLevel,
         OperationType operationType,
         ResourceType resourceType,
-        RequestOptions requestOptions) {
+        RequestOptions requestOptions,
+        Integer maxBatchSize) {
 
         checkNotNull(client, "Argument 'client' must not be null.");
 
@@ -563,9 +588,9 @@ public final class DiagnosticsProvider {
             operationType,
             resourceType,
             null,
-            null,
+            maxBatchSize,
             CosmosBatchResponse::getStatusCode,
-            (r) -> null,
+            CosmosBatchResponse::size,
             CosmosBatchResponse::getRequestCharge,
             (r, samplingRate) -> {
                 CosmosDiagnostics diagnostics = r.getDiagnostics();
@@ -575,7 +600,8 @@ public final class DiagnosticsProvider {
 
                 return diagnostics;
             },
-            requestOptions);
+            requestOptions,
+            null);
     }
 
     public <T> Mono<CosmosItemResponse<T>> traceEnabledCosmosItemResponsePublisher(
@@ -620,7 +646,133 @@ public final class DiagnosticsProvider {
 
                 return diagnostics;
             },
-            requestOptions);
+            requestOptions,
+            null);
+    }
+
+    private <T> Mono<FeedResponse<T>>  wrapReadManyFeedResponseWithTracingIfEnabled(
+        CosmosAsyncClient client,
+        List<CosmosItemIdentity> itemIdentityList,
+        FeedOperationState state,
+        Mono<FeedResponse<T>> publisher,
+        RequestOptions requestOptions,
+        Context context) {
+
+        final double samplingRateSnapshot = this.samplingRateSnapshotSupplier.get();
+        final boolean isSampledOut = this.shouldSampleOutOperation(samplingRateSnapshot);
+        final CosmosDiagnosticsContext ctx = state.getDiagnosticsContextSnapshot();
+        ctxAccessor.setSamplingRateSnapshot(ctx, samplingRateSnapshot, isSampledOut);
+
+        if (ctx == null || isSampledOut) {
+            return publisher.map(r -> {
+                CosmosDiagnostics diagnostics = r.getCosmosDiagnostics();
+                if (diagnostics != null) {
+                    diagnosticsAccessor.setSamplingRateSnapshot(diagnostics, samplingRateSnapshot);
+                }
+                return r;
+            });
+        }
+
+        return publisherWithDiagnostics(
+            publisher,
+            context,
+            state.getSpanName(),
+            ctx.getContainerName(),
+            ctx.getDatabaseName(),
+            ctx.getAccountName(),
+            client,
+            ctx.getEffectiveConsistencyLevel(),
+            ctxAccessor.getOperationType(ctx),
+            ctxAccessor.getResourceType(ctx),
+            null,
+            itemIdentityList.size(),
+            (r) -> HttpConstants.StatusCodes.OK, // FeedResponse would only ever be created in success case
+            (r) -> r.getResults().size(),
+            (r) -> r.getRequestCharge(),
+            (r, samplingRate) -> {
+                CosmosDiagnostics diagnostics = r.getCosmosDiagnostics();
+                if (diagnostics != null) {
+                    diagnosticsAccessor.setSamplingRateSnapshot(diagnostics, samplingRate);
+                }
+
+                return diagnostics;
+            },
+            requestOptions,
+            ctx
+        );
+    }
+
+    private static boolean isTracerEnabled(DiagnosticsProvider tracerProvider) {
+        return tracerProvider != null;
+    }
+
+    public static <T> void  recordFeedResponse(
+        Consumer<FeedResponse<T>> feedResponseConsumer,
+        FeedOperationState state,
+        Supplier<Double> samplingRateSnapshotSupplier,
+        DiagnosticsProvider tracerProvider,
+        FeedResponse<T> response,
+        AtomicLong feedResponseConsumerLatencyInNanos) {
+
+        CosmosDiagnostics diagnostics = response != null ? response.getCosmosDiagnostics() : null;
+
+        Integer actualItemCount = response != null && response.getResults() != null ?
+            response.getResults().size() : null;
+
+        if (diagnostics != null &&
+            diagnosticsAccessor
+                .isDiagnosticsCapturedInPagedFlux(diagnostics)
+                .compareAndSet(false, true)) {
+
+            Double samplingRateSnapshot = samplingRateSnapshotSupplier.get();
+            if (samplingRateSnapshot != null && samplingRateSnapshot < 1) {
+                diagnosticsAccessor
+                    .setSamplingRateSnapshot(diagnostics, samplingRateSnapshot);
+            }
+
+            if (isTracerEnabled(tracerProvider)) {
+                tracerProvider.recordPage(
+                    state.getDiagnosticsContextSnapshot(),
+                    diagnostics,
+                    actualItemCount,
+                    response.getRequestCharge());
+            }
+
+            //  If the user has passed feedResponseConsumer, then call it with each feedResponse
+            if (feedResponseConsumer != null) {
+                // NOTE this call is happening in a span counted against client telemetry / metric latency
+                // So, the latency of the user's callback is accumulated here to correct the latency
+                // reported to client telemetry and client metrics
+                Instant feedResponseConsumerStart = Instant.now();
+                feedResponseConsumer.accept(response);
+                feedResponseConsumerLatencyInNanos.addAndGet(
+                    Duration.between(Instant.now(), feedResponseConsumerStart).toNanos());
+            }
+        }
+    }
+
+    public <T> Mono<FeedResponse<T>> traceEnabledReadManyResponsePublisher(
+        List<CosmosItemIdentity> identities,
+        FeedOperationState state,
+        Mono<FeedResponse<T>> resultPublisher,
+        CosmosAsyncClient client,
+        RequestOptions requestOptions,
+        Context context) {
+
+        checkNotNull(resultPublisher, "Argument 'resultPublisher' must not be null.");
+        checkNotNull(state, "Argument 'state' must not be null.");
+        checkNotNull(requestOptions, "Argument 'requestOptions' must not be null.");
+        checkNotNull(client, "Argument 'client' must not be null.");
+
+        String accountName = clientAccessor.getAccountTagValue(client);
+
+        return wrapReadManyFeedResponseWithTracingIfEnabled(
+            client,
+            identities,
+            state,
+            resultPublisher,
+            requestOptions,
+            context);
     }
 
     /**
@@ -638,8 +790,9 @@ public final class DiagnosticsProvider {
 
     public boolean shouldSampleOutOperation(CosmosPagedFluxOptions options) {
         final double samplingRateSnapshot = clientTelemetryConfigAccessor.getSamplingRate(this.telemetryConfig);
-        options.setSamplingRateSnapshot(samplingRateSnapshot);
-        return shouldSampleOutOperation(samplingRateSnapshot);
+        boolean result = shouldSampleOutOperation(samplingRateSnapshot);
+        options.setSamplingRateSnapshot(samplingRateSnapshot, result);
+        return result;
     }
 
     private boolean shouldSampleOutOperation(double samplingRate) {
@@ -664,18 +817,10 @@ public final class DiagnosticsProvider {
       Function<T, Double> requestChargeFunc,
       BiFunction<T, Double, CosmosDiagnostics> diagnosticsFunc
     ) {
-
-        if (!isEnabled()) {
-            return resultPublisher;
-        }
-
-        final double samplingRateSnapshot = clientTelemetryConfigAccessor.getSamplingRate(this.telemetryConfig);
+        final double samplingRateSnapshot =  isEnabled() ? clientTelemetryConfigAccessor.getSamplingRate(this.telemetryConfig) : 0;
+        final boolean isSampledOut = this.shouldSampleOutOperation(samplingRateSnapshot);
         if (cosmosCtx != null) {
-            ctxAccessor.setSamplingRateSnapshot(cosmosCtx, samplingRateSnapshot);
-        }
-
-        if (shouldSampleOutOperation(samplingRateSnapshot)) {
-            return resultPublisher;
+            ctxAccessor.setSamplingRateSnapshot(cosmosCtx, samplingRateSnapshot, isSampledOut);
         }
 
         Optional<Object> callDepth = context.getData(COSMOS_CALL_DEPTH);
@@ -700,7 +845,8 @@ public final class DiagnosticsProvider {
                             statusCodeFunc.apply(response),
                             actualItemCountFunc.apply(response),
                             requestChargeFunc.apply(response),
-                            diagnosticsFunc.apply(response, samplingRateSnapshot));
+                            diagnosticsFunc.apply(response, samplingRateSnapshot),
+                            isSampledOut);
                         break;
                     case ON_ERROR:
                         // not adding diagnostics on trace event for exception as this information is already there as
@@ -711,12 +857,13 @@ public final class DiagnosticsProvider {
                             ERROR_CODE,
                             null,
                             null,
-                            null);
+                            null,
+                            isSampledOut);
                         break;
                     default:
                         break;
                 }})
-            .contextWrite(setContextInReactor(this.startSpan(spanName, cosmosCtx, context)));
+            .contextWrite(setContextInReactor(this.startSpan(spanName, cosmosCtx, context, isSampledOut)));
     }
 
     private <T> Mono<T> publisherWithDiagnostics(Mono<T> resultPublisher,
@@ -735,28 +882,33 @@ public final class DiagnosticsProvider {
                                                  Function<T, Integer> actualItemCountFunc,
                                                  Function<T, Double> requestChargeFunc,
                                                  BiFunction<T, Double, CosmosDiagnostics> diagnosticFunc,
-                                                 RequestOptions requestOptions) {
+                                                 RequestOptions requestOptions,
+                                                 CosmosDiagnosticsContext cosmosCtxFromUpstream) {
 
         CosmosDiagnosticsThresholds thresholds = requestOptions != null
             ? clientAccessor.getEffectiveDiagnosticsThresholds(client, requestOptions.getDiagnosticsThresholds())
             : clientAccessor.getEffectiveDiagnosticsThresholds(client, null);
 
-        CosmosDiagnosticsContext cosmosCtx = ctxAccessor.create(
-            spanName,
-            accountName,
-            BridgeInternal.getServiceEndpoint(client),
-            databaseId,
-            containerId,
-            resourceType,
-            operationType,
-            null,
-            clientAccessor.getEffectiveConsistencyLevel(client, operationType, consistencyLevel),
-            maxItemCount,
-            thresholds,
-            trackingId,
-            clientAccessor.getConnectionMode(client),
-            clientAccessor.getUserAgent(client),
-            null);
+        CosmosDiagnosticsContext cosmosCtx = cosmosCtxFromUpstream != null
+            ? cosmosCtxFromUpstream
+            : ctxAccessor.create(
+                spanName,
+                accountName,
+                BridgeInternal.getServiceEndpoint(client),
+                databaseId,
+                containerId,
+                resourceType,
+                operationType,
+                null,
+                clientAccessor.getEffectiveConsistencyLevel(client, operationType, consistencyLevel),
+                maxItemCount,
+                thresholds,
+                trackingId,
+                clientAccessor.getConnectionMode(client),
+                clientAccessor.getUserAgent(client),
+                null,
+                null,
+                requestOptions);
 
         if (requestOptions != null) {
             requestOptions.setDiagnosticsContextSupplier(() -> cosmosCtx);
@@ -782,11 +934,12 @@ public final class DiagnosticsProvider {
         CosmosDiagnostics diagnostics,
         Throwable throwable,
         Context context,
-        boolean isForcedEmptyCompletion) {
+        boolean isForcedEmptyCompletion,
+        boolean isSampledOut) {
 
         checkNotNull(cosmosCtx, "Argument 'cosmosCtx' must not be null.");
 
-        // endOperation can be called form two places in Reactor - making sure we process completion only once
+        // endOperation can be called from two places in Reactor - making sure we process completion only once
         if (ctxAccessor.endOperation(
             cosmosCtx,
             statusCode,
@@ -796,12 +949,14 @@ public final class DiagnosticsProvider {
             diagnostics,
             throwable)) {
 
-            if (!isForcedEmptyCompletion) {
-                this.handleDiagnostics(context, cosmosCtx);
-            }
+            if (!isSampledOut) {
+                if (!isForcedEmptyCompletion) {
+                    this.handleDiagnostics(context, cosmosCtx);
+                }
 
-            if (this.cosmosTracer != null) {
-                this.cosmosTracer.endSpan(cosmosCtx, context, isForcedEmptyCompletion);
+                if (this.cosmosTracer != null) {
+                    this.cosmosTracer.endSpan(cosmosCtx, context, isForcedEmptyCompletion);
+                }
             }
         }
     }
@@ -1157,6 +1312,14 @@ public final class DiagnosticsProvider {
             return clientTelemetryConfigAccessor.isTransportLevelTracingEnabled(this.config);
         }
 
+        private boolean showQueryStatement() {
+            if(ShowQueryMode.ALL.equals(clientTelemetryConfigAccessor.showQueryMode(this.config))
+                   || ShowQueryMode.PARAMETERIZED_ONLY.equals(clientTelemetryConfigAccessor.showQueryMode(this.config))) {
+                   return true;
+            }
+            return false;
+        }
+
         @Override
         public Context startSpan(String spanName, CosmosDiagnosticsContext cosmosCtx, Context context) {
 
@@ -1194,6 +1357,10 @@ public final class DiagnosticsProvider {
                 if (!cosmosCtx.getOperationId().isEmpty() &&
                     !cosmosCtx.getOperationId().equals(ctxAccessor.getSpanName(cosmosCtx))) {
                     spanOptions.setAttribute("db.cosmosdb.operation_id", cosmosCtx.getOperationId());
+                }
+
+                if (showQueryStatement() && null != cosmosCtx.getQueryStatement() ) {
+                    spanOptions.setAttribute("db.statement", cosmosCtx.getQueryStatement());
                 }
 
                 String containerName = cosmosCtx.getContainerName();

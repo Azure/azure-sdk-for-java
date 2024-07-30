@@ -14,43 +14,22 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkProfileInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkProfileInner model =
-            BinaryData
-                .fromString(
-                    "{\"networkInterfaces\":[{\"ipAddresses\":[{\"address\":\"uofqwe\",\"ipAddressVersion\":\"hmenevfyexfwhybc\",\"subnet\":{\"addressPrefix\":\"yvdcsitynnaa\"}}]},{\"ipAddresses\":[{\"address\":\"tehfiqscjeypvh\",\"ipAddressVersion\":\"rkgqhcjrefo\",\"subnet\":{\"addressPrefix\":\"kqsleyyvxy\"}},{\"address\":\"pkc\",\"ipAddressVersion\":\"tpngjcrcczsqpjh\",\"subnet\":{\"addressPrefix\":\"ajvnysounqe\"}}]}]}")
-                .toObject(NetworkProfileInner.class);
-        Assertions.assertEquals("uofqwe", model.networkInterfaces().get(0).ipAddresses().get(0).address());
-        Assertions
-            .assertEquals("hmenevfyexfwhybc", model.networkInterfaces().get(0).ipAddresses().get(0).ipAddressVersion());
+        NetworkProfileInner model = BinaryData.fromString(
+            "{\"networkInterfaces\":[{\"ipAddresses\":[{\"address\":\"kouknvudwtiu\",\"ipAddressVersion\":\"ldngkpoci\",\"subnet\":{\"addressPrefix\":\"yxoegukgjnp\"}},{\"address\":\"cgygev\",\"ipAddressVersion\":\"ntypmrbpizcdrqj\",\"subnet\":{\"addressPrefix\":\"ydnfyhxdeoejz\"}},{\"address\":\"w\",\"ipAddressVersion\":\"sjttgzfbish\",\"subnet\":{\"addressPrefix\":\"hajdeyeamdpha\"}}]}]}")
+            .toObject(NetworkProfileInner.class);
+        Assertions.assertEquals("kouknvudwtiu", model.networkInterfaces().get(0).ipAddresses().get(0).address());
+        Assertions.assertEquals("ldngkpoci", model.networkInterfaces().get(0).ipAddresses().get(0).ipAddressVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkProfileInner model =
-            new NetworkProfileInner()
-                .withNetworkInterfaces(
-                    Arrays
-                        .asList(
-                            new NetworkInterface()
-                                .withIpAddresses(
-                                    Arrays
-                                        .asList(
-                                            new IpAddress()
-                                                .withAddress("uofqwe")
-                                                .withIpAddressVersion("hmenevfyexfwhybc"))),
-                            new NetworkInterface()
-                                .withIpAddresses(
-                                    Arrays
-                                        .asList(
-                                            new IpAddress()
-                                                .withAddress("tehfiqscjeypvh")
-                                                .withIpAddressVersion("rkgqhcjrefo"),
-                                            new IpAddress()
-                                                .withAddress("pkc")
-                                                .withIpAddressVersion("tpngjcrcczsqpjh")))));
+        NetworkProfileInner model
+            = new NetworkProfileInner().withNetworkInterfaces(Arrays.asList(new NetworkInterface().withIpAddresses(
+                Arrays.asList(new IpAddress().withAddress("kouknvudwtiu").withIpAddressVersion("ldngkpoci"),
+                    new IpAddress().withAddress("cgygev").withIpAddressVersion("ntypmrbpizcdrqj"),
+                    new IpAddress().withAddress("w").withIpAddressVersion("sjttgzfbish")))));
         model = BinaryData.fromObject(model).toObject(NetworkProfileInner.class);
-        Assertions.assertEquals("uofqwe", model.networkInterfaces().get(0).ipAddresses().get(0).address());
-        Assertions
-            .assertEquals("hmenevfyexfwhybc", model.networkInterfaces().get(0).ipAddresses().get(0).ipAddressVersion());
+        Assertions.assertEquals("kouknvudwtiu", model.networkInterfaces().get(0).ipAddresses().get(0).address());
+        Assertions.assertEquals("ldngkpoci", model.networkInterfaces().get(0).ipAddresses().get(0).ipAddressVersion());
     }
 }

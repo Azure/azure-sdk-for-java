@@ -5,64 +5,65 @@
 package com.azure.resourcemanager.appcontainers.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appcontainers.models.JobConfiguration;
 import com.azure.resourcemanager.appcontainers.models.JobProvisioningState;
 import com.azure.resourcemanager.appcontainers.models.JobTemplate;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Container Apps Job resource specific properties. */
+/**
+ * Container Apps Job resource specific properties.
+ */
 @Fluent
-public final class JobProperties {
+public final class JobProperties implements JsonSerializable<JobProperties> {
     /*
      * Provisioning state of the Container Apps Job.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private JobProvisioningState provisioningState;
 
     /*
      * Resource ID of environment.
      */
-    @JsonProperty(value = "environmentId")
     private String environmentId;
 
     /*
      * Workload profile name to pin for container apps job execution.
      */
-    @JsonProperty(value = "workloadProfileName")
     private String workloadProfileName;
 
     /*
      * Container Apps Job configuration properties.
      */
-    @JsonProperty(value = "configuration")
     private JobConfiguration configuration;
 
     /*
      * Container Apps job definition.
      */
-    @JsonProperty(value = "template")
     private JobTemplate template;
 
     /*
      * Outbound IP Addresses of a container apps job.
      */
-    @JsonProperty(value = "outboundIpAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> outboundIpAddresses;
 
     /*
      * The endpoint of the eventstream of the container apps job.
      */
-    @JsonProperty(value = "eventStreamEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String eventStreamEndpoint;
 
-    /** Creates an instance of JobProperties class. */
+    /**
+     * Creates an instance of JobProperties class.
+     */
     public JobProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning state of the Container Apps Job.
-     *
+     * 
      * @return the provisioningState value.
      */
     public JobProvisioningState provisioningState() {
@@ -71,7 +72,7 @@ public final class JobProperties {
 
     /**
      * Get the environmentId property: Resource ID of environment.
-     *
+     * 
      * @return the environmentId value.
      */
     public String environmentId() {
@@ -80,7 +81,7 @@ public final class JobProperties {
 
     /**
      * Set the environmentId property: Resource ID of environment.
-     *
+     * 
      * @param environmentId the environmentId value to set.
      * @return the JobProperties object itself.
      */
@@ -91,7 +92,7 @@ public final class JobProperties {
 
     /**
      * Get the workloadProfileName property: Workload profile name to pin for container apps job execution.
-     *
+     * 
      * @return the workloadProfileName value.
      */
     public String workloadProfileName() {
@@ -100,7 +101,7 @@ public final class JobProperties {
 
     /**
      * Set the workloadProfileName property: Workload profile name to pin for container apps job execution.
-     *
+     * 
      * @param workloadProfileName the workloadProfileName value to set.
      * @return the JobProperties object itself.
      */
@@ -111,7 +112,7 @@ public final class JobProperties {
 
     /**
      * Get the configuration property: Container Apps Job configuration properties.
-     *
+     * 
      * @return the configuration value.
      */
     public JobConfiguration configuration() {
@@ -120,7 +121,7 @@ public final class JobProperties {
 
     /**
      * Set the configuration property: Container Apps Job configuration properties.
-     *
+     * 
      * @param configuration the configuration value to set.
      * @return the JobProperties object itself.
      */
@@ -131,7 +132,7 @@ public final class JobProperties {
 
     /**
      * Get the template property: Container Apps job definition.
-     *
+     * 
      * @return the template value.
      */
     public JobTemplate template() {
@@ -140,7 +141,7 @@ public final class JobProperties {
 
     /**
      * Set the template property: Container Apps job definition.
-     *
+     * 
      * @param template the template value to set.
      * @return the JobProperties object itself.
      */
@@ -151,7 +152,7 @@ public final class JobProperties {
 
     /**
      * Get the outboundIpAddresses property: Outbound IP Addresses of a container apps job.
-     *
+     * 
      * @return the outboundIpAddresses value.
      */
     public List<String> outboundIpAddresses() {
@@ -160,7 +161,7 @@ public final class JobProperties {
 
     /**
      * Get the eventStreamEndpoint property: The endpoint of the eventstream of the container apps job.
-     *
+     * 
      * @return the eventStreamEndpoint value.
      */
     public String eventStreamEndpoint() {
@@ -169,7 +170,7 @@ public final class JobProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -179,5 +180,57 @@ public final class JobProperties {
         if (template() != null) {
             template().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("environmentId", this.environmentId);
+        jsonWriter.writeStringField("workloadProfileName", this.workloadProfileName);
+        jsonWriter.writeJsonField("configuration", this.configuration);
+        jsonWriter.writeJsonField("template", this.template);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobProperties.
+     */
+    public static JobProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobProperties deserializedJobProperties = new JobProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedJobProperties.provisioningState = JobProvisioningState.fromString(reader.getString());
+                } else if ("environmentId".equals(fieldName)) {
+                    deserializedJobProperties.environmentId = reader.getString();
+                } else if ("workloadProfileName".equals(fieldName)) {
+                    deserializedJobProperties.workloadProfileName = reader.getString();
+                } else if ("configuration".equals(fieldName)) {
+                    deserializedJobProperties.configuration = JobConfiguration.fromJson(reader);
+                } else if ("template".equals(fieldName)) {
+                    deserializedJobProperties.template = JobTemplate.fromJson(reader);
+                } else if ("outboundIpAddresses".equals(fieldName)) {
+                    List<String> outboundIpAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedJobProperties.outboundIpAddresses = outboundIpAddresses;
+                } else if ("eventStreamEndpoint".equals(fieldName)) {
+                    deserializedJobProperties.eventStreamEndpoint = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobProperties;
+        });
     }
 }

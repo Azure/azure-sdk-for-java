@@ -5,38 +5,42 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * Base definition of WebLinkedServiceTypeProperties, this typeProperties is polymorphic based on authenticationType,
- * so not flattened in SDK models.
+ * Base definition of WebLinkedServiceTypeProperties, this typeProperties is polymorphic based on authenticationType, so
+ * not flattened in SDK models.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "authenticationType",
-    defaultImpl = WebLinkedServiceTypeProperties.class)
-@JsonTypeName("WebLinkedServiceTypeProperties")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Anonymous", value = WebAnonymousAuthentication.class),
-    @JsonSubTypes.Type(name = "Basic", value = WebBasicAuthentication.class),
-    @JsonSubTypes.Type(name = "ClientCertificate", value = WebClientCertificateAuthentication.class) })
 @Fluent
-public class WebLinkedServiceTypeProperties {
+public class WebLinkedServiceTypeProperties implements JsonSerializable<WebLinkedServiceTypeProperties> {
     /*
-     * The URL of the web service endpoint, e.g. http://www.microsoft.com . Type: string (or Expression with resultType
-     * string).
+     * Type of authentication used to connect to the web table source.
      */
-    @JsonProperty(value = "url", required = true)
+    private WebAuthenticationType authenticationType;
+
+    /*
+     * The URL of the web service endpoint, e.g. http://www.microsoft.com . Type: string (or Expression with resultType string).
+     */
     private Object url;
 
     /**
      * Creates an instance of WebLinkedServiceTypeProperties class.
      */
     public WebLinkedServiceTypeProperties() {
+        this.authenticationType = WebAuthenticationType.fromString("WebLinkedServiceTypeProperties");
+    }
+
+    /**
+     * Get the authenticationType property: Type of authentication used to connect to the web table source.
+     * 
+     * @return the authenticationType value.
+     */
+    public WebAuthenticationType getAuthenticationType() {
+        return this.authenticationType;
     }
 
     /**
@@ -59,5 +63,77 @@ public class WebLinkedServiceTypeProperties {
     public WebLinkedServiceTypeProperties setUrl(Object url) {
         this.url = url;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("url", this.url);
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WebLinkedServiceTypeProperties.
+     */
+    public static WebLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("authenticationType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Anonymous".equals(discriminatorValue)) {
+                    return WebAnonymousAuthentication.fromJson(readerToUse.reset());
+                } else if ("Basic".equals(discriminatorValue)) {
+                    return WebBasicAuthentication.fromJson(readerToUse.reset());
+                } else if ("ClientCertificate".equals(discriminatorValue)) {
+                    return WebClientCertificateAuthentication.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static WebLinkedServiceTypeProperties fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebLinkedServiceTypeProperties deserializedWebLinkedServiceTypeProperties
+                = new WebLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("url".equals(fieldName)) {
+                    deserializedWebLinkedServiceTypeProperties.url = reader.readUntyped();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedWebLinkedServiceTypeProperties.authenticationType
+                        = WebAuthenticationType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebLinkedServiceTypeProperties;
+        });
     }
 }

@@ -15,55 +15,122 @@ public final class ServiceNowV2SourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceNowV2Source model = BinaryData.fromString(
-            "{\"type\":\"ServiceNowV2Source\",\"expression\":{\"type\":\"Constant\",\"value\":\"avbteaegyojy\",\"operator\":\"epcdhqjczh\",\"operands\":[{\"type\":\"Constant\",\"value\":\"jbhwoszrhfwcihk\",\"operator\":\"jbitmuriizyrgzxp\",\"operands\":[{\"type\":\"Unary\",\"value\":\"sod\",\"operator\":\"jn\",\"operands\":[{},{},{},{}]},{\"type\":\"Constant\",\"value\":\"hr\",\"operator\":\"i\",\"operands\":[{},{}]},{\"type\":\"Constant\",\"value\":\"huwcqnaspjdahi\",\"operator\":\"kliyfgkzwkyqa\",\"operands\":[{}]}]},{\"type\":\"Unary\",\"value\":\"oyykhidia\",\"operator\":\"ktwijoxkkynppqt\",\"operands\":[{\"type\":\"Unary\",\"value\":\"jat\",\"operator\":\"kqq\",\"operands\":[{},{},{}]}]}]},\"queryTimeout\":\"dataoinqzv\",\"additionalColumns\":\"datafpu\",\"sourceRetryCount\":\"datayhs\",\"sourceRetryWait\":\"dataa\",\"maxConcurrentConnections\":\"dataofqntt\",\"disableMetricsCollection\":\"datajcgupxnuvsh\",\"\":{\"ogvafbd\":\"databpmvppgui\",\"deqntbl\":\"dataokplolcalyvcxvcp\",\"afqr\":\"datadqsqbyubsw\"}}")
+            "{\"type\":\"ServiceNowV2Source\",\"expression\":{\"type\":\"Binary\",\"value\":\"cuxgimfftvylfke\",\"operators\":[\"fq\",\"sbqdjawul\",\"yjmjvzpldhbapfrr\",\"wrmdmrhsybvn\"],\"operands\":[{\"type\":\"NAry\",\"value\":\"katjyxhvjjvsv\",\"operators\":[\"lysfro\",\"nf\",\"oamg\"],\"operands\":[{\"type\":\"NAry\",\"value\":\"gdsnrkn\",\"operators\":[\"gjukqnxy\",\"oyclrlepashmfbzk\"],\"operands\":[{},{}]},{\"type\":\"Unary\",\"value\":\"vofnsuwsurod\",\"operators\":[\"ngbbxahsqors\",\"ndslrndiu\",\"o\",\"ekdmnvaibhxujgy\"],\"operands\":[{},{},{}]},{\"type\":\"Field\",\"value\":\"zn\",\"operators\":[\"e\"],\"operands\":[{},{},{},{}]},{\"type\":\"Constant\",\"value\":\"hpxzjk\",\"operators\":[\"zpcecisnhtdsk\",\"nigohafud\",\"eowepueq\",\"rcnfhcqgjvlnvfz\"],\"operands\":[{},{},{}]}]},{\"type\":\"Field\",\"value\":\"ugetwgjlxdddvfn\",\"operators\":[\"va\",\"spjdxaytzkdqim\",\"m\",\"ijcullk\"],\"operands\":[{\"type\":\"Field\",\"value\":\"red\",\"operators\":[\"y\"],\"operands\":[{}]},{\"type\":\"Unary\",\"value\":\"y\",\"operators\":[\"vjsqazecdomjrr\",\"lwrvi\",\"aqxstykus\"],\"operands\":[{},{},{}]},{\"type\":\"Field\",\"value\":\"xiqej\",\"operators\":[\"rcnoexwar\",\"azfsrvz\",\"ycevhazwew\"],\"operands\":[{},{}]}]},{\"type\":\"Binary\",\"value\":\"dycspidc\",\"operators\":[\"fg\",\"ynuxvyalk\",\"uozwowwmulqgaeqn\"],\"operands\":[{\"type\":\"NAry\",\"value\":\"jezcwf\",\"operators\":[\"krzu\",\"epdvxmkzgrrg\"],\"operands\":[{},{}]},{\"type\":\"NAry\",\"value\":\"ebwdvuvq\",\"operators\":[\"l\",\"doamqkdwagnyah\",\"rxtpuyuradfiwjou\"],\"operands\":[{},{},{}]},{\"type\":\"NAry\",\"value\":\"niv\",\"operators\":[\"fw\",\"zko\",\"djwjmrbphtllkpk\",\"qzbvyrvfxcbatmv\"],\"operands\":[{}]}]},{\"type\":\"Constant\",\"value\":\"iosy\",\"operators\":[\"frbujltgxhgyllas\",\"whbmo\",\"mhknsknnnpyo\",\"yinyqsdsuewfgri\"],\"operands\":[{\"type\":\"Constant\",\"value\":\"rtmvtfeyopg\",\"operators\":[\"ebmcizmgg\",\"sxvgwrq\"],\"operands\":[{},{},{},{}]},{\"type\":\"Field\",\"value\":\"a\",\"operators\":[\"lerkyimcfmdh\",\"tl\"],\"operands\":[{},{},{},{}]},{\"type\":\"NAry\",\"value\":\"cluvjpp\",\"operators\":[\"ldthshcj\",\"oobltoargcntgqy\",\"wmzz\",\"gbgvf\"],\"operands\":[{},{},{}]},{\"type\":\"Unary\",\"value\":\"rtuqwvybx\",\"operators\":[\"hf\"],\"operands\":[{},{},{}]}]}]},\"queryTimeout\":\"datamdaeshjjqc\",\"additionalColumns\":\"datarnfavqefiwwhbkxz\",\"sourceRetryCount\":\"datayovlhm\",\"sourceRetryWait\":\"dataobiagwuefmyiw\",\"maxConcurrentConnections\":\"datatau\",\"disableMetricsCollection\":\"datasyfj\",\"\":{\"a\":\"dataeibcezdtf\",\"zcsff\":\"datalwllgjerql\",\"teyh\":\"dataguny\",\"kvkmfkmchc\":\"dataspk\"}}")
             .toObject(ServiceNowV2Source.class);
-        Assertions.assertEquals(ExpressionV2Type.CONSTANT, model.expression().type());
-        Assertions.assertEquals("avbteaegyojy", model.expression().value());
-        Assertions.assertEquals("epcdhqjczh", model.expression().operator());
-        Assertions.assertEquals(ExpressionV2Type.CONSTANT, model.expression().operands().get(0).type());
-        Assertions.assertEquals("jbhwoszrhfwcihk", model.expression().operands().get(0).value());
-        Assertions.assertEquals("jbitmuriizyrgzxp", model.expression().operands().get(0).operator());
-        Assertions.assertEquals(ExpressionV2Type.UNARY, model.expression().operands().get(0).operands().get(0).type());
-        Assertions.assertEquals("sod", model.expression().operands().get(0).operands().get(0).value());
-        Assertions.assertEquals("jn", model.expression().operands().get(0).operands().get(0).operator());
+        Assertions.assertEquals(ExpressionV2Type.BINARY, model.expression().type());
+        Assertions.assertEquals("cuxgimfftvylfke", model.expression().value());
+        Assertions.assertEquals("fq", model.expression().operators().get(0));
+        Assertions.assertEquals(ExpressionV2Type.NARY, model.expression().operands().get(0).type());
+        Assertions.assertEquals("katjyxhvjjvsv", model.expression().operands().get(0).value());
+        Assertions.assertEquals("lysfro", model.expression().operands().get(0).operators().get(0));
+        Assertions.assertEquals(ExpressionV2Type.NARY, model.expression().operands().get(0).operands().get(0).type());
+        Assertions.assertEquals("gdsnrkn", model.expression().operands().get(0).operands().get(0).value());
+        Assertions.assertEquals("gjukqnxy", model.expression().operands().get(0).operands().get(0).operators().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceNowV2Source model
-            = new ServiceNowV2Source().withSourceRetryCount("datayhs").withSourceRetryWait("dataa")
-                .withMaxConcurrentConnections(
-                    "dataofqntt")
-                .withDisableMetricsCollection(
-                    "datajcgupxnuvsh")
-                .withQueryTimeout("dataoinqzv").withAdditionalColumns("datafpu")
-                .withExpression(new ExpressionV2().withType(ExpressionV2Type.CONSTANT).withValue("avbteaegyojy")
-                    .withOperator("epcdhqjczh")
-                    .withOperands(Arrays.asList(
-                        new ExpressionV2().withType(ExpressionV2Type.CONSTANT).withValue("jbhwoszrhfwcihk")
-                            .withOperator("jbitmuriizyrgzxp")
-                            .withOperands(Arrays.asList(
-                                new ExpressionV2().withType(ExpressionV2Type.UNARY).withValue("sod").withOperator("jn")
-                                    .withOperands(Arrays.asList(new ExpressionV2(), new ExpressionV2(),
-                                        new ExpressionV2(), new ExpressionV2())),
-                                new ExpressionV2().withType(ExpressionV2Type.CONSTANT).withValue("hr").withOperator("i")
-                                    .withOperands(Arrays.asList(new ExpressionV2(), new ExpressionV2())),
-                                new ExpressionV2().withType(ExpressionV2Type.CONSTANT).withValue("huwcqnaspjdahi")
-                                    .withOperator("kliyfgkzwkyqa").withOperands(Arrays.asList(new ExpressionV2())))),
-                        new ExpressionV2().withType(ExpressionV2Type.UNARY).withValue("oyykhidia")
-                            .withOperator("ktwijoxkkynppqt")
-                            .withOperands(Arrays.asList(new ExpressionV2().withType(ExpressionV2Type.UNARY)
-                                .withValue("jat").withOperator("kqq").withOperands(
+        ServiceNowV2Source model = new ServiceNowV2Source().withSourceRetryCount("datayovlhm")
+            .withSourceRetryWait("dataobiagwuefmyiw")
+            .withMaxConcurrentConnections("datatau")
+            .withDisableMetricsCollection("datasyfj")
+            .withQueryTimeout("datamdaeshjjqc")
+            .withAdditionalColumns("datarnfavqefiwwhbkxz")
+            .withExpression(new ExpressionV2().withType(ExpressionV2Type.BINARY)
+                .withValue("cuxgimfftvylfke")
+                .withOperators(Arrays.asList("fq", "sbqdjawul", "yjmjvzpldhbapfrr", "wrmdmrhsybvn"))
+                .withOperands(Arrays.asList(
+                    new ExpressionV2().withType(ExpressionV2Type.NARY)
+                        .withValue("katjyxhvjjvsv")
+                        .withOperators(Arrays.asList("lysfro", "nf", "oamg"))
+                        .withOperands(Arrays.asList(new ExpressionV2()
+                            .withType(ExpressionV2Type.NARY)
+                            .withValue("gdsnrkn")
+                            .withOperators(Arrays.asList("gjukqnxy", "oyclrlepashmfbzk"))
+                            .withOperands(Arrays.asList(new ExpressionV2(), new ExpressionV2())),
+                            new ExpressionV2().withType(ExpressionV2Type.UNARY)
+                                .withValue("vofnsuwsurod")
+                                .withOperators(Arrays.asList("ngbbxahsqors", "ndslrndiu", "o", "ekdmnvaibhxujgy"))
+                                .withOperands(
+                                    Arrays.asList(new ExpressionV2(), new ExpressionV2(), new ExpressionV2())),
+                            new ExpressionV2().withType(ExpressionV2Type.FIELD)
+                                .withValue("zn")
+                                .withOperators(Arrays.asList("e"))
+                                .withOperands(Arrays.asList(new ExpressionV2(), new ExpressionV2(), new ExpressionV2(),
+                                    new ExpressionV2())),
+                            new ExpressionV2().withType(ExpressionV2Type.CONSTANT)
+                                .withValue("hpxzjk")
+                                .withOperators(
+                                    Arrays.asList("zpcecisnhtdsk", "nigohafud", "eowepueq", "rcnfhcqgjvlnvfz"))
+                                .withOperands(
+                                    Arrays.asList(new ExpressionV2(), new ExpressionV2(), new ExpressionV2())))),
+                    new ExpressionV2().withType(ExpressionV2Type.FIELD)
+                        .withValue("ugetwgjlxdddvfn")
+                        .withOperators(Arrays.asList("va", "spjdxaytzkdqim", "m", "ijcullk"))
+                        .withOperands(Arrays.asList(
+                            new ExpressionV2().withType(ExpressionV2Type.FIELD)
+                                .withValue("red")
+                                .withOperators(Arrays.asList("y"))
+                                .withOperands(Arrays.asList(new ExpressionV2())),
+                            new ExpressionV2().withType(ExpressionV2Type.UNARY)
+                                .withValue("y")
+                                .withOperators(Arrays.asList("vjsqazecdomjrr", "lwrvi", "aqxstykus"))
+                                .withOperands(
+                                    Arrays.asList(new ExpressionV2(), new ExpressionV2(), new ExpressionV2())),
+                            new ExpressionV2().withType(ExpressionV2Type.FIELD)
+                                .withValue("xiqej")
+                                .withOperators(Arrays.asList("rcnoexwar", "azfsrvz", "ycevhazwew"))
+                                .withOperands(Arrays.asList(new ExpressionV2(), new ExpressionV2())))),
+                    new ExpressionV2().withType(ExpressionV2Type.BINARY)
+                        .withValue("dycspidc")
+                        .withOperators(Arrays.asList("fg", "ynuxvyalk", "uozwowwmulqgaeqn"))
+                        .withOperands(Arrays.asList(
+                            new ExpressionV2().withType(ExpressionV2Type.NARY)
+                                .withValue("jezcwf")
+                                .withOperators(Arrays.asList("krzu", "epdvxmkzgrrg"))
+                                .withOperands(Arrays.asList(new ExpressionV2(), new ExpressionV2())),
+                            new ExpressionV2().withType(ExpressionV2Type.NARY)
+                                .withValue("ebwdvuvq")
+                                .withOperators(Arrays.asList("l", "doamqkdwagnyah", "rxtpuyuradfiwjou"))
+                                .withOperands(
+                                    Arrays.asList(new ExpressionV2(), new ExpressionV2(), new ExpressionV2())),
+                            new ExpressionV2().withType(ExpressionV2Type.NARY)
+                                .withValue("niv")
+                                .withOperators(Arrays.asList("fw", "zko", "djwjmrbphtllkpk", "qzbvyrvfxcbatmv"))
+                                .withOperands(Arrays.asList(new ExpressionV2())))),
+                    new ExpressionV2().withType(ExpressionV2Type.CONSTANT)
+                        .withValue("iosy")
+                        .withOperators(Arrays.asList("frbujltgxhgyllas", "whbmo", "mhknsknnnpyo", "yinyqsdsuewfgri"))
+                        .withOperands(Arrays.asList(
+                            new ExpressionV2().withType(ExpressionV2Type.CONSTANT)
+                                .withValue("rtmvtfeyopg")
+                                .withOperators(Arrays.asList("ebmcizmgg", "sxvgwrq"))
+                                .withOperands(Arrays.asList(new ExpressionV2(), new ExpressionV2(), new ExpressionV2(),
+                                    new ExpressionV2())),
+                            new ExpressionV2().withType(ExpressionV2Type.FIELD)
+                                .withValue("a")
+                                .withOperators(Arrays.asList("lerkyimcfmdh", "tl"))
+                                .withOperands(Arrays.asList(new ExpressionV2(), new ExpressionV2(), new ExpressionV2(),
+                                    new ExpressionV2())),
+                            new ExpressionV2().withType(ExpressionV2Type.NARY)
+                                .withValue("cluvjpp")
+                                .withOperators(Arrays.asList("ldthshcj", "oobltoargcntgqy", "wmzz", "gbgvf"))
+                                .withOperands(
+                                    Arrays.asList(new ExpressionV2(), new ExpressionV2(), new ExpressionV2())),
+                            new ExpressionV2().withType(ExpressionV2Type.UNARY)
+                                .withValue("rtuqwvybx")
+                                .withOperators(Arrays.asList("hf"))
+                                .withOperands(
                                     Arrays.asList(new ExpressionV2(), new ExpressionV2(), new ExpressionV2())))))));
         model = BinaryData.fromObject(model).toObject(ServiceNowV2Source.class);
-        Assertions.assertEquals(ExpressionV2Type.CONSTANT, model.expression().type());
-        Assertions.assertEquals("avbteaegyojy", model.expression().value());
-        Assertions.assertEquals("epcdhqjczh", model.expression().operator());
-        Assertions.assertEquals(ExpressionV2Type.CONSTANT, model.expression().operands().get(0).type());
-        Assertions.assertEquals("jbhwoszrhfwcihk", model.expression().operands().get(0).value());
-        Assertions.assertEquals("jbitmuriizyrgzxp", model.expression().operands().get(0).operator());
-        Assertions.assertEquals(ExpressionV2Type.UNARY, model.expression().operands().get(0).operands().get(0).type());
-        Assertions.assertEquals("sod", model.expression().operands().get(0).operands().get(0).value());
-        Assertions.assertEquals("jn", model.expression().operands().get(0).operands().get(0).operator());
+        Assertions.assertEquals(ExpressionV2Type.BINARY, model.expression().type());
+        Assertions.assertEquals("cuxgimfftvylfke", model.expression().value());
+        Assertions.assertEquals("fq", model.expression().operators().get(0));
+        Assertions.assertEquals(ExpressionV2Type.NARY, model.expression().operands().get(0).type());
+        Assertions.assertEquals("katjyxhvjjvsv", model.expression().operands().get(0).value());
+        Assertions.assertEquals("lysfro", model.expression().operands().get(0).operators().get(0));
+        Assertions.assertEquals(ExpressionV2Type.NARY, model.expression().operands().get(0).operands().get(0).type());
+        Assertions.assertEquals("gdsnrkn", model.expression().operands().get(0).operands().get(0).value());
+        Assertions.assertEquals("gjukqnxy", model.expression().operands().get(0).operands().get(0).operators().get(0));
     }
 }

@@ -5,20 +5,43 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The GitLab scope connector's environment data.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "environmentType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "environmentType",
+    defaultImpl = GitlabScopeEnvironmentData.class,
+    visible = true)
 @JsonTypeName("GitlabScope")
 @Immutable
 public final class GitlabScopeEnvironmentData extends EnvironmentData {
+    /*
+     * The type of the environment data.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "environmentType", required = true)
+    private EnvironmentType environmentType = EnvironmentType.GITLAB_SCOPE;
+
     /**
      * Creates an instance of GitlabScopeEnvironmentData class.
      */
     public GitlabScopeEnvironmentData() {
+    }
+
+    /**
+     * Get the environmentType property: The type of the environment data.
+     * 
+     * @return the environmentType value.
+     */
+    @Override
+    public EnvironmentType environmentType() {
+        return this.environmentType;
     }
 
     /**

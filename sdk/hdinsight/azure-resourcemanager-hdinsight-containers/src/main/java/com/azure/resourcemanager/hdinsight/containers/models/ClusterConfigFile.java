@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Cluster configuration files. */
+/**
+ * Cluster configuration files.
+ */
 @Fluent
 public final class ClusterConfigFile {
     /*
@@ -46,13 +48,15 @@ public final class ClusterConfigFile {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> values;
 
-    /** Creates an instance of ClusterConfigFile class. */
+    /**
+     * Creates an instance of ClusterConfigFile class.
+     */
     public ClusterConfigFile() {
     }
 
     /**
      * Get the fileName property: Configuration file name.
-     *
+     * 
      * @return the fileName value.
      */
     public String fileName() {
@@ -61,7 +65,7 @@ public final class ClusterConfigFile {
 
     /**
      * Set the fileName property: Configuration file name.
-     *
+     * 
      * @param fileName the fileName value to set.
      * @return the ClusterConfigFile object itself.
      */
@@ -72,7 +76,7 @@ public final class ClusterConfigFile {
 
     /**
      * Get the content property: Free form content of the entire configuration file.
-     *
+     * 
      * @return the content value.
      */
     public String content() {
@@ -81,7 +85,7 @@ public final class ClusterConfigFile {
 
     /**
      * Set the content property: Free form content of the entire configuration file.
-     *
+     * 
      * @param content the content value to set.
      * @return the ClusterConfigFile object itself.
      */
@@ -93,7 +97,7 @@ public final class ClusterConfigFile {
     /**
      * Get the encoding property: This property indicates if the content is encoded and is case-insensitive. Please set
      * the value to base64 if the content is base64 encoded. Set it to none or skip it if the content is plain text.
-     *
+     * 
      * @return the encoding value.
      */
     public ContentEncoding encoding() {
@@ -103,7 +107,7 @@ public final class ClusterConfigFile {
     /**
      * Set the encoding property: This property indicates if the content is encoded and is case-insensitive. Please set
      * the value to base64 if the content is base64 encoded. Set it to none or skip it if the content is plain text.
-     *
+     * 
      * @param encoding the encoding value to set.
      * @return the ClusterConfigFile object itself.
      */
@@ -114,7 +118,7 @@ public final class ClusterConfigFile {
 
     /**
      * Get the path property: Path of the config file if content is specified.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -123,7 +127,7 @@ public final class ClusterConfigFile {
 
     /**
      * Set the path property: Path of the config file if content is specified.
-     *
+     * 
      * @param path the path value to set.
      * @return the ClusterConfigFile object itself.
      */
@@ -133,9 +137,9 @@ public final class ClusterConfigFile {
     }
 
     /**
-     * Get the values property: List of key value pairs where key represents a valid service configuration name and
-     * value represents the value of the config.
-     *
+     * Get the values property: List of key value pairs
+     * where key represents a valid service configuration name and value represents the value of the config.
+     * 
      * @return the values value.
      */
     public Map<String, String> values() {
@@ -143,9 +147,9 @@ public final class ClusterConfigFile {
     }
 
     /**
-     * Set the values property: List of key value pairs where key represents a valid service configuration name and
-     * value represents the value of the config.
-     *
+     * Set the values property: List of key value pairs
+     * where key represents a valid service configuration name and value represents the value of the config.
+     * 
      * @param values the values value to set.
      * @return the ClusterConfigFile object itself.
      */
@@ -156,14 +160,13 @@ public final class ClusterConfigFile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (fileName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property fileName in model ClusterConfigFile"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property fileName in model ClusterConfigFile"));
         }
     }
 

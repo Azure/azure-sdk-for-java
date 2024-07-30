@@ -50,10 +50,18 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
     private List<InboundNatRuleInner> loadBalancerInboundNatRules;
 
     /*
-     * Private IP address of the IP configuration.
+     * Private IP address of the IP configuration. It can be a single IP address or a CIDR block in the format
+     * <address>/<prefix-length>.
      */
     @JsonProperty(value = "privateIPAddress")
     private String privateIpAddress;
+
+    /*
+     * The private IP address prefix length. If specified and the allocation method is dynamic, the service will
+     * allocate a CIDR block instead of a single IP address.
+     */
+    @JsonProperty(value = "privateIPAddressPrefixLength")
+    private Integer privateIpAddressPrefixLength;
 
     /*
      * The private IP address allocation method.
@@ -217,7 +225,8 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
     }
 
     /**
-     * Get the privateIpAddress property: Private IP address of the IP configuration.
+     * Get the privateIpAddress property: Private IP address of the IP configuration. It can be a single IP address or a
+     * CIDR block in the format &lt;address&gt;/&lt;prefix-length&gt;.
      * 
      * @return the privateIpAddress value.
      */
@@ -226,13 +235,37 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
     }
 
     /**
-     * Set the privateIpAddress property: Private IP address of the IP configuration.
+     * Set the privateIpAddress property: Private IP address of the IP configuration. It can be a single IP address or a
+     * CIDR block in the format &lt;address&gt;/&lt;prefix-length&gt;.
      * 
      * @param privateIpAddress the privateIpAddress value to set.
      * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
      */
     public NetworkInterfaceIpConfigurationPropertiesFormatInner withPrivateIpAddress(String privateIpAddress) {
         this.privateIpAddress = privateIpAddress;
+        return this;
+    }
+
+    /**
+     * Get the privateIpAddressPrefixLength property: The private IP address prefix length. If specified and the
+     * allocation method is dynamic, the service will allocate a CIDR block instead of a single IP address.
+     * 
+     * @return the privateIpAddressPrefixLength value.
+     */
+    public Integer privateIpAddressPrefixLength() {
+        return this.privateIpAddressPrefixLength;
+    }
+
+    /**
+     * Set the privateIpAddressPrefixLength property: The private IP address prefix length. If specified and the
+     * allocation method is dynamic, the service will allocate a CIDR block instead of a single IP address.
+     * 
+     * @param privateIpAddressPrefixLength the privateIpAddressPrefixLength value to set.
+     * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
+     */
+    public NetworkInterfaceIpConfigurationPropertiesFormatInner
+        withPrivateIpAddressPrefixLength(Integer privateIpAddressPrefixLength) {
+        this.privateIpAddressPrefixLength = privateIpAddressPrefixLength;
         return this;
     }
 
@@ -258,8 +291,7 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
     }
 
     /**
-     * Get the privateIpAddressVersion property: Whether the specific IP configuration is IPv4 or IPv6. Default is
-     * IPv4.
+     * Get the privateIpAddressVersion property: Whether the specific IP configuration is IPv4 or IPv6. Default is IPv4.
      * 
      * @return the privateIpAddressVersion value.
      */
@@ -268,8 +300,7 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
     }
 
     /**
-     * Set the privateIpAddressVersion property: Whether the specific IP configuration is IPv4 or IPv6. Default is
-     * IPv4.
+     * Set the privateIpAddressVersion property: Whether the specific IP configuration is IPv4 or IPv6. Default is IPv4.
      * 
      * @param privateIpAddressVersion the privateIpAddressVersion value to set.
      * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.

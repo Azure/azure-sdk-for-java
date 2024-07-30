@@ -26,6 +26,33 @@ public final class DataDisksToAttach {
     @JsonProperty(value = "lun")
     private Integer lun;
 
+    /*
+     * Specifies the caching requirements. Possible values are: **None,** **ReadOnly,** **ReadWrite.** The defaulting
+     * behavior is: **None for Standard storage. ReadOnly for Premium storage.**
+     */
+    @JsonProperty(value = "caching")
+    private CachingTypes caching;
+
+    /*
+     * Specifies whether data disk should be deleted or detached upon VM deletion. Possible values are: **Delete.** If
+     * this value is used, the data disk is deleted when VM is deleted. **Detach.** If this value is used, the data disk
+     * is retained after VM is deleted. The default value is set to **Detach**.
+     */
+    @JsonProperty(value = "deleteOption")
+    private DiskDeleteOptionTypes deleteOption;
+
+    /*
+     * Specifies the customer managed disk encryption set resource id for the managed disk.
+     */
+    @JsonProperty(value = "diskEncryptionSet")
+    private DiskEncryptionSetParameters diskEncryptionSet;
+
+    /*
+     * Specifies whether writeAccelerator should be enabled or disabled on the disk.
+     */
+    @JsonProperty(value = "writeAcceleratorEnabled")
+    private Boolean writeAcceleratorEnabled;
+
     /**
      * Creates an instance of DataDisksToAttach class.
      */
@@ -77,14 +104,107 @@ public final class DataDisksToAttach {
     }
 
     /**
+     * Get the caching property: Specifies the caching requirements. Possible values are: **None,** **ReadOnly,**
+     * **ReadWrite.** The defaulting behavior is: **None for Standard storage. ReadOnly for Premium storage.**.
+     * 
+     * @return the caching value.
+     */
+    public CachingTypes caching() {
+        return this.caching;
+    }
+
+    /**
+     * Set the caching property: Specifies the caching requirements. Possible values are: **None,** **ReadOnly,**
+     * **ReadWrite.** The defaulting behavior is: **None for Standard storage. ReadOnly for Premium storage.**.
+     * 
+     * @param caching the caching value to set.
+     * @return the DataDisksToAttach object itself.
+     */
+    public DataDisksToAttach withCaching(CachingTypes caching) {
+        this.caching = caching;
+        return this;
+    }
+
+    /**
+     * Get the deleteOption property: Specifies whether data disk should be deleted or detached upon VM deletion.
+     * Possible values are: **Delete.** If this value is used, the data disk is deleted when VM is deleted. **Detach.**
+     * If this value is used, the data disk is retained after VM is deleted. The default value is set to **Detach**.
+     * 
+     * @return the deleteOption value.
+     */
+    public DiskDeleteOptionTypes deleteOption() {
+        return this.deleteOption;
+    }
+
+    /**
+     * Set the deleteOption property: Specifies whether data disk should be deleted or detached upon VM deletion.
+     * Possible values are: **Delete.** If this value is used, the data disk is deleted when VM is deleted. **Detach.**
+     * If this value is used, the data disk is retained after VM is deleted. The default value is set to **Detach**.
+     * 
+     * @param deleteOption the deleteOption value to set.
+     * @return the DataDisksToAttach object itself.
+     */
+    public DataDisksToAttach withDeleteOption(DiskDeleteOptionTypes deleteOption) {
+        this.deleteOption = deleteOption;
+        return this;
+    }
+
+    /**
+     * Get the diskEncryptionSet property: Specifies the customer managed disk encryption set resource id for the
+     * managed disk.
+     * 
+     * @return the diskEncryptionSet value.
+     */
+    public DiskEncryptionSetParameters diskEncryptionSet() {
+        return this.diskEncryptionSet;
+    }
+
+    /**
+     * Set the diskEncryptionSet property: Specifies the customer managed disk encryption set resource id for the
+     * managed disk.
+     * 
+     * @param diskEncryptionSet the diskEncryptionSet value to set.
+     * @return the DataDisksToAttach object itself.
+     */
+    public DataDisksToAttach withDiskEncryptionSet(DiskEncryptionSetParameters diskEncryptionSet) {
+        this.diskEncryptionSet = diskEncryptionSet;
+        return this;
+    }
+
+    /**
+     * Get the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on the
+     * disk.
+     * 
+     * @return the writeAcceleratorEnabled value.
+     */
+    public Boolean writeAcceleratorEnabled() {
+        return this.writeAcceleratorEnabled;
+    }
+
+    /**
+     * Set the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on the
+     * disk.
+     * 
+     * @param writeAcceleratorEnabled the writeAcceleratorEnabled value to set.
+     * @return the DataDisksToAttach object itself.
+     */
+    public DataDisksToAttach withWriteAcceleratorEnabled(Boolean writeAcceleratorEnabled) {
+        this.writeAcceleratorEnabled = writeAcceleratorEnabled;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (diskId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property diskId in model DataDisksToAttach"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property diskId in model DataDisksToAttach"));
+        }
+        if (diskEncryptionSet() != null) {
+            diskEncryptionSet().validate();
         }
     }
 

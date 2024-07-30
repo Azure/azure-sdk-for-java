@@ -13,9 +13,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationResour
  */
 public final class MigrationsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/
-     * Migrations_Cancel.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/Migrations_Cancel.json
      */
     /**
      * Sample code: Cancel migration.
@@ -23,15 +21,15 @@ public final class MigrationsUpdateSamples {
      * @param manager Entry point to PostgreSqlManager.
      */
     public static void cancelMigration(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        MigrationResource resource = manager.migrations().getWithResponse("ffffffff-ffff-ffff-ffff-ffffffffffff",
-            "testrg", "testtarget", "testmigration", com.azure.core.util.Context.NONE).getValue();
+        MigrationResource resource = manager.migrations()
+            .getWithResponse("ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget", "testmigration",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withCancel(CancelEnum.TRUE).apply();
     }
 
     /*
-     * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/
-     * Migrations_Update.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/Migrations_Update.json
      */
     /**
      * Sample code: Migrations_Update.
@@ -39,8 +37,10 @@ public final class MigrationsUpdateSamples {
      * @param manager Entry point to PostgreSqlManager.
      */
     public static void migrationsUpdate(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        MigrationResource resource = manager.migrations().getWithResponse("ffffffff-ffff-ffff-ffff-ffffffffffff",
-            "testrg", "testtarget", "testmigration", com.azure.core.util.Context.NONE).getValue();
+        MigrationResource resource = manager.migrations()
+            .getWithResponse("ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget", "testmigration",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withSetupLogicalReplicationOnSourceDbIfNeeded(LogicalReplicationOnSourceDbEnum.TRUE).apply();
     }
 }

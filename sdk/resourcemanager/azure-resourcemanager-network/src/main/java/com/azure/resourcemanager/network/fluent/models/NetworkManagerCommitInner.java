@@ -121,12 +121,14 @@ public final class NetworkManagerCommitInner {
      */
     public void validate() {
         if (targetLocations() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property targetLocations in model NetworkManagerCommitInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetLocations in model NetworkManagerCommitInner"));
         }
         if (commitType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property commitType in model NetworkManagerCommitInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property commitType in model NetworkManagerCommitInner"));
         }
     }
 

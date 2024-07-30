@@ -5,7 +5,9 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -14,17 +16,34 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "endpointType",
-    defaultImpl = PartnerUpdateDestinationInfo.class)
+    defaultImpl = PartnerUpdateDestinationInfo.class,
+    visible = true)
 @JsonTypeName("PartnerUpdateDestinationInfo")
 @JsonSubTypes({ @JsonSubTypes.Type(name = "WebHook", value = WebhookUpdatePartnerDestinationInfo.class) })
 @Immutable
 public class PartnerUpdateDestinationInfo {
+    /*
+     * Type of the endpoint for the partner destination
+     */
+    @JsonTypeId
+    @JsonProperty(value = "endpointType", required = true)
+    private PartnerEndpointType endpointType;
+
     /**
      * Creates an instance of PartnerUpdateDestinationInfo class.
      */
     public PartnerUpdateDestinationInfo() {
+        this.endpointType = PartnerEndpointType.fromString("PartnerUpdateDestinationInfo");
+    }
+
+    /**
+     * Get the endpointType property: Type of the endpoint for the partner destination.
+     * 
+     * @return the endpointType value.
+     */
+    public PartnerEndpointType endpointType() {
+        return this.endpointType;
     }
 
     /**

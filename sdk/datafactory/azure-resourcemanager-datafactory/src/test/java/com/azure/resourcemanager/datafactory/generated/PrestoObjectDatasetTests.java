@@ -19,30 +19,34 @@ public final class PrestoObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrestoObjectDataset model = BinaryData.fromString(
-            "{\"type\":\"PrestoObject\",\"typeProperties\":{\"tableName\":\"dataz\",\"table\":\"datayujxysv\",\"schema\":\"dataf\"},\"description\":\"clvildlf\",\"structure\":\"dataleirmtxfqpfildcg\",\"schema\":\"dataou\",\"linkedServiceName\":{\"referenceName\":\"fbpgcryvidbzdy\",\"parameters\":{\"jftecgprzsqmp\":\"datajatgngwn\",\"akzbyqha\":\"dataq\"}},\"parameters\":{\"lusyruxrz\":{\"type\":\"Array\",\"defaultValue\":\"datayxuuc\"},\"tpiforomppz\":{\"type\":\"Float\",\"defaultValue\":\"datahrvmgsbpgmncr\"}},\"annotations\":[\"dataqmeu\"],\"folder\":{\"name\":\"fcmpuaiugoceqtl\"},\"\":{\"ncfunlakgixhqjqh\":\"datajymwiccu\"}}")
+            "{\"type\":\"PrestoObject\",\"typeProperties\":{\"tableName\":\"datadhnpjnezjighdu\",\"table\":\"datatpmrzwvwetqf\",\"schema\":\"dataxvfhuqhn\"},\"description\":\"qx\",\"structure\":\"datasot\",\"schema\":\"datalmr\",\"linkedServiceName\":{\"referenceName\":\"tujydeatwxpxbxed\",\"parameters\":{\"ugfnlvvkswurxdq\":\"databoceksramqch\",\"qcnbnwivlqcwyzh\":\"datavhauimnntfkqp\",\"eirta\":\"datadqkzstzpzecdl\"}},\"parameters\":{\"au\":{\"type\":\"SecureString\",\"defaultValue\":\"dataimt\"}},\"annotations\":[\"dataudzpsjqrmlujmt\"],\"folder\":{\"name\":\"ofwuzeb\"},\"\":{\"yenfspetxeu\":\"datampjbh\",\"devzpfr\":\"datawkhdlckdoxocj\",\"vrlhfxmrhjn\":\"dataortwwyjm\"}}")
             .toObject(PrestoObjectDataset.class);
-        Assertions.assertEquals("clvildlf", model.description());
-        Assertions.assertEquals("fbpgcryvidbzdy", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("lusyruxrz").type());
-        Assertions.assertEquals("fcmpuaiugoceqtl", model.folder().name());
+        Assertions.assertEquals("qx", model.description());
+        Assertions.assertEquals("tujydeatwxpxbxed", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("au").type());
+        Assertions.assertEquals("ofwuzeb", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrestoObjectDataset model = new PrestoObjectDataset().withDescription("clvildlf")
-            .withStructure("dataleirmtxfqpfildcg").withSchema("dataou")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("fbpgcryvidbzdy")
-                .withParameters(mapOf("jftecgprzsqmp", "datajatgngwn", "akzbyqha", "dataq")))
-            .withParameters(mapOf("lusyruxrz",
-                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datayxuuc"), "tpiforomppz",
-                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datahrvmgsbpgmncr")))
-            .withAnnotations(Arrays.asList("dataqmeu")).withFolder(new DatasetFolder().withName("fcmpuaiugoceqtl"))
-            .withTableName("dataz").withTable("datayujxysv").withSchemaTypePropertiesSchema("dataf");
+        PrestoObjectDataset model = new PrestoObjectDataset().withDescription("qx")
+            .withStructure("datasot")
+            .withSchema("datalmr")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("tujydeatwxpxbxed")
+                .withParameters(mapOf("ugfnlvvkswurxdq", "databoceksramqch", "qcnbnwivlqcwyzh", "datavhauimnntfkqp",
+                    "eirta", "datadqkzstzpzecdl")))
+            .withParameters(mapOf("au",
+                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("dataimt")))
+            .withAnnotations(Arrays.asList("dataudzpsjqrmlujmt"))
+            .withFolder(new DatasetFolder().withName("ofwuzeb"))
+            .withTableName("datadhnpjnezjighdu")
+            .withTable("datatpmrzwvwetqf")
+            .withSchemaTypePropertiesSchema("dataxvfhuqhn");
         model = BinaryData.fromObject(model).toObject(PrestoObjectDataset.class);
-        Assertions.assertEquals("clvildlf", model.description());
-        Assertions.assertEquals("fbpgcryvidbzdy", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("lusyruxrz").type());
-        Assertions.assertEquals("fcmpuaiugoceqtl", model.folder().name());
+        Assertions.assertEquals("qx", model.description());
+        Assertions.assertEquals("tujydeatwxpxbxed", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("au").type());
+        Assertions.assertEquals("ofwuzeb", model.folder().name());
     }
 
     // Use "Map.of" if available

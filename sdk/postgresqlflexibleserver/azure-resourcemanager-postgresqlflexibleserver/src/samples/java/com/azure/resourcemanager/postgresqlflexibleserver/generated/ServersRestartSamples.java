@@ -12,9 +12,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.RestartParamete
  */
 public final class ServersRestartSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/
-     * ServerRestart.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/ServerRestart.json
      */
     /**
      * Sample code: ServerRestart.
@@ -26,9 +24,7 @@ public final class ServersRestartSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/
-     * ServerRestartWithFailover.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/ServerRestartWithFailover.json
      */
     /**
      * Sample code: ServerRestartWithFailover.
@@ -37,8 +33,9 @@ public final class ServersRestartSamples {
      */
     public static void
         serverRestartWithFailover(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        manager.servers().restart("testrg", "testserver",
-            new RestartParameter().withRestartWithFailover(true).withFailoverMode(FailoverMode.FORCED_FAILOVER),
-            com.azure.core.util.Context.NONE);
+        manager.servers()
+            .restart("testrg", "testserver",
+                new RestartParameter().withRestartWithFailover(true).withFailoverMode(FailoverMode.FORCED_FAILOVER),
+                com.azure.core.util.Context.NONE);
     }
 }

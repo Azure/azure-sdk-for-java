@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
  * <p>Azure Developer CLI is a command-line interface tool that allows developers to create, manage, and deploy
  * resources in Azure. It's built on top of the Azure CLI and provides additional functionality specific
  * to Azure developers. It allows users to authenticate as a user and/or a service principal against
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>.
+ * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a>.
  * The AzureDeveloperCliCredential authenticates in a development environment and acquires a token on behalf of
  * the logged-in user or service principal in Azure Developer CLI. It acts as the Azure Developer CLI logged in user or
  * service principal and executes an Azure CLI command underneath to authenticate the application against

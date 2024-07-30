@@ -104,8 +104,9 @@ public final class RadiusServer {
      */
     public void validate() {
         if (radiusServerAddress() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property radiusServerAddress in model RadiusServer"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property radiusServerAddress in model RadiusServer"));
         }
     }
 

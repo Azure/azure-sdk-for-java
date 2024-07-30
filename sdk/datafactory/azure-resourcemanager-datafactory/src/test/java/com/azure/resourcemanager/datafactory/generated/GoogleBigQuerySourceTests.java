@@ -11,16 +11,19 @@ public final class GoogleBigQuerySourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GoogleBigQuerySource model = BinaryData.fromString(
-            "{\"type\":\"GoogleBigQuerySource\",\"query\":\"dataanirlydsdmacydqa\",\"queryTimeout\":\"datayvwxubgulyz\",\"additionalColumns\":\"dataasxpprohuabdu\",\"sourceRetryCount\":\"datavsoxnpuapt\",\"sourceRetryWait\":\"datawekiqlscmtcljopi\",\"maxConcurrentConnections\":\"datawxvcfchokkcjjnq\",\"disableMetricsCollection\":\"datajoayaj\",\"\":{\"fbzbxeqzvokfrhfa\":\"datacxjmap\",\"uaxdulv\":\"dataxcgjuc\",\"mksgeqpai\":\"dataefsrxqscdbbwej\",\"eotvnet\":\"datalfscosf\"}}")
+            "{\"type\":\"GoogleBigQuerySource\",\"query\":\"datawaejxzkqcmddc\",\"queryTimeout\":\"datanxyr\",\"additionalColumns\":\"dataegabsfjrjzdqscgo\",\"sourceRetryCount\":\"datagd\",\"sourceRetryWait\":\"dataepgfrb\",\"maxConcurrentConnections\":\"dataoeh\",\"disableMetricsCollection\":\"datawwsgqziwo\",\"\":{\"okckxfk\":\"datawjssyazmmbuxq\",\"qf\":\"datatqkbyruheawuc\",\"jguwts\":\"datarbtbogxlyvebv\"}}")
             .toObject(GoogleBigQuerySource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GoogleBigQuerySource model = new GoogleBigQuerySource().withSourceRetryCount("datavsoxnpuapt")
-            .withSourceRetryWait("datawekiqlscmtcljopi").withMaxConcurrentConnections("datawxvcfchokkcjjnq")
-            .withDisableMetricsCollection("datajoayaj").withQueryTimeout("datayvwxubgulyz")
-            .withAdditionalColumns("dataasxpprohuabdu").withQuery("dataanirlydsdmacydqa");
+        GoogleBigQuerySource model = new GoogleBigQuerySource().withSourceRetryCount("datagd")
+            .withSourceRetryWait("dataepgfrb")
+            .withMaxConcurrentConnections("dataoeh")
+            .withDisableMetricsCollection("datawwsgqziwo")
+            .withQueryTimeout("datanxyr")
+            .withAdditionalColumns("dataegabsfjrjzdqscgo")
+            .withQuery("datawaejxzkqcmddc");
         model = BinaryData.fromObject(model).toObject(GoogleBigQuerySource.class);
     }
 }

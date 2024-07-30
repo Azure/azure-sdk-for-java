@@ -19,9 +19,9 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 
 /**
- * <p><a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">Azure
+ * <p><a href="https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/">Azure
  * Managed Identity</a> is a feature in
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>
+ * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a>
  * that provides a way for applications running on Azure to authenticate themselves with Azure resources without
  * needing to manage or store any secrets like passwords or keys.
  * The ManagedIdentityCredential authenticates the configured managed identity (system or user assigned) of an
@@ -62,7 +62,7 @@ import java.time.Duration;
  * <p><strong>Sample: Construct a User Assigned ManagedIdentityCredential</strong></p>
  *
  * <p>User-Assigned Managed Identity (UAMI) in Azure is a feature that allows you to create an identity in
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>
+ * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a>
  * that is associated with one or more Azure resources. This identity can then be
  * used to authenticate and authorize access to various Azure services and resources. The following code sample
  * demonstrates the creation of a ManagedIdentityCredential to target a user assigned managed identity, using the
@@ -90,6 +90,8 @@ public final class ManagedIdentityCredential implements TokenCredential {
     static final String PROPERTY_IMDS_ENDPOINT = "IMDS_ENDPOINT";
     static final String PROPERTY_IDENTITY_SERVER_THUMBPRINT = "IDENTITY_SERVER_THUMBPRINT";
     static final String AZURE_FEDERATED_TOKEN_FILE = "AZURE_FEDERATED_TOKEN_FILE";
+
+    static final String USE_AZURE_IDENTITY_CLIENT_LIBRARY_LEGACY_MI = "USE_AZURE_IDENTITY_CLIENT_LIBRARY_LEGACY_MI";
 
 
     /**
@@ -120,37 +122,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
          * Pod Identity V2 (AksExchangeToken): AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_FEDERATED_TOKEN_FILE
          * IMDS/Pod Identity V1: No variables set.
          */
-
-        if (configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)) {
-            managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, clientBuilder
-                .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.APP_SERVICE,
-                    identityClientOptions, configuration))
-                .build());
-        } else if (configuration.contains(Configuration.PROPERTY_IDENTITY_ENDPOINT)) {
-            if (configuration.contains(Configuration.PROPERTY_IDENTITY_HEADER)) {
-                if (configuration.get(PROPERTY_IDENTITY_SERVER_THUMBPRINT) != null) {
-                    managedIdentityServiceCredential = new ServiceFabricMsiCredential(clientId, clientBuilder
-                        .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.SERVICE_FABRIC,
-                            identityClientOptions, configuration))
-                        .build());
-                } else {
-                    managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, clientBuilder
-                        .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.APP_SERVICE,
-                            identityClientOptions, configuration))
-                        .build());
-                }
-            } else if (configuration.get(PROPERTY_IMDS_ENDPOINT) != null) {
-                managedIdentityServiceCredential = new ArcIdentityCredential(clientId, clientBuilder
-                    .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.ARC,
-                        identityClientOptions, configuration))
-                    .build());
-            } else {
-                managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, clientBuilder
-                    .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.VM,
-                        identityClientOptions, configuration))
-                    .build());
-            }
-        } else if (configuration.contains(Configuration.PROPERTY_AZURE_TENANT_ID)
+        if (configuration.contains(Configuration.PROPERTY_AZURE_TENANT_ID)
                 && configuration.get(AZURE_FEDERATED_TOKEN_FILE) != null) {
             String clientIdentifier = clientId == null
                 ? configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID) : clientId;
@@ -162,11 +134,45 @@ public final class ManagedIdentityCredential implements TokenCredential {
                 .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.AKS,
                     identityClientOptions, configuration))
                 .build());
+        } else if (configuration.contains(USE_AZURE_IDENTITY_CLIENT_LIBRARY_LEGACY_MI)) {
+            if (configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)) {
+                managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, clientBuilder
+                    .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.APP_SERVICE,
+                        identityClientOptions, configuration))
+                    .build());
+            } else if (configuration.contains(Configuration.PROPERTY_IDENTITY_ENDPOINT)) {
+                if (configuration.contains(Configuration.PROPERTY_IDENTITY_HEADER)) {
+                    if (configuration.get(PROPERTY_IDENTITY_SERVER_THUMBPRINT) != null) {
+                        managedIdentityServiceCredential = new ServiceFabricMsiCredential(clientId, clientBuilder
+                            .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.SERVICE_FABRIC,
+                                identityClientOptions, configuration))
+                            .build());
+                    } else {
+                        managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, clientBuilder
+                            .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.APP_SERVICE,
+                                identityClientOptions, configuration))
+                            .build());
+                    }
+                } else if (configuration.get(PROPERTY_IMDS_ENDPOINT) != null) {
+                    managedIdentityServiceCredential = new ArcIdentityCredential(clientId, clientBuilder
+                        .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.ARC,
+                            identityClientOptions, configuration))
+                        .build());
+                } else {
+                    managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, clientBuilder
+                        .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.VM,
+                            identityClientOptions, configuration))
+                        .build());
+                }
+            } else {
+                managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, clientBuilder
+                    .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.VM,
+                        identityClientOptions, configuration))
+                    .build());
+            }
         } else {
-            managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, clientBuilder
-                .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.VM,
-                    identityClientOptions, configuration))
-                .build());
+            identityClientOptions.setManagedIdentityType(getManagedIdentityEnv(configuration));
+            managedIdentityServiceCredential = new ManagedIdentityMsalCredential(clientId, clientBuilder.build());
         }
         LoggingUtil.logAvailableEnvironmentVariables(LOGGER, configuration);
     }
@@ -225,6 +231,29 @@ public final class ManagedIdentityCredential implements TokenCredential {
                     managedIdentityServiceCredential.getEnvironment()))
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
             .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClientOptions, request, error));
+    }
+
+    ManagedIdentityType getManagedIdentityEnv(Configuration configuration) {
+        if (configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)) {
+            return ManagedIdentityType.APP_SERVICE;
+        } else if (configuration.contains(Configuration.PROPERTY_IDENTITY_ENDPOINT)) {
+            if (configuration.contains(Configuration.PROPERTY_IDENTITY_HEADER)) {
+                if (configuration.get(PROPERTY_IDENTITY_SERVER_THUMBPRINT) != null) {
+                    return ManagedIdentityType.SERVICE_FABRIC;
+                } else {
+                    return ManagedIdentityType.APP_SERVICE;
+                }
+            } else if (configuration.get(PROPERTY_IMDS_ENDPOINT) != null) {
+                return ManagedIdentityType.ARC;
+            } else {
+                return ManagedIdentityType.VM;
+            }
+        } else if (configuration.contains(Configuration.PROPERTY_AZURE_TENANT_ID)
+            && configuration.get(AZURE_FEDERATED_TOKEN_FILE) != null) {
+            return ManagedIdentityType.AKS;
+        } else {
+            return ManagedIdentityType.VM;
+        }
     }
 }
 

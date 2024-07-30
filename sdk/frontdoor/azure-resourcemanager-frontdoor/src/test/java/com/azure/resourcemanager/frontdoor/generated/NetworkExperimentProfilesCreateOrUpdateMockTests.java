@@ -6,88 +6,49 @@ package com.azure.resourcemanager.frontdoor.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.frontdoor.FrontDoorManager;
 import com.azure.resourcemanager.frontdoor.models.Profile;
 import com.azure.resourcemanager.frontdoor.models.State;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class NetworkExperimentProfilesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"resourceState\":\"Disabled\",\"enabledState\":\"Enabled\"},\"etag\":\"ygvoavyunssxlgh\",\"location\":\"ee\",\"tags\":{\"gbuxantuygdh\":\"gvvpasek\",\"pirpiwrqof\":\"aq\",\"k\":\"lopmjnlexwhcbjpi\",\"intqpbrlcyr\":\"phuuuerctato\"},\"id\":\"uczkgofxyfsruc\",\"name\":\"crrpcjttbstvje\",\"type\":\"qnrmvvfko\"}";
 
-        String responseStr =
-            "{\"properties\":{\"resourceState\":\"Enabled\",\"enabledState\":\"Disabled\"},\"etag\":\"dp\",\"location\":\"s\",\"tags\":{\"mi\":\"btgkbugrjqctoj\",\"eypefojyqd\":\"of\",\"hlhzdsqtzbsrgno\":\"cuplcplcwkhih\",\"teyowclu\":\"cjhfgmvecactxmw\"},\"id\":\"ovekqvgqouwi\",\"name\":\"zmpjwyiv\",\"type\":\"ikf\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        FrontDoorManager manager = FrontDoorManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Profile response = manager.networkExperimentProfiles()
+            .define("jxcx")
+            .withRegion("mzwcjjncqt")
+            .withExistingResourceGroup("rzdcgdzbenribcaw")
+            .withTags(mapOf("gat", "izvg", "grebwggahttzlsw", "uuvbx", "oqza", "ajqfutlx", "zfrgqhaohcm", "unwqr"))
+            .withEtag("jwfljhznamtua")
+            .withEnabledState(State.DISABLED)
+            .create();
 
-        FrontDoorManager manager =
-            FrontDoorManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Profile response =
-            manager
-                .networkExperimentProfiles()
-                .define("hrv")
-                .withRegion("ydvfvfcjnae")
-                .withExistingResourceGroup("bunzozudh")
-                .withTags(
-                    mapOf(
-                        "fukiscvwmzhw",
-                        "rvhmgor",
-                        "nzeyqxtjj",
-                        "lefaxvxilcbtgn",
-                        "vodggxdbee",
-                        "zqlqhyc",
-                        "wiuagydwqf",
-                        "mieknlraria"))
-                .withEtag("xcdyuibhmfdnb")
-                .withEnabledState(State.DISABLED)
-                .create();
-
-        Assertions.assertEquals("s", response.location());
-        Assertions.assertEquals("btgkbugrjqctoj", response.tags().get("mi"));
-        Assertions.assertEquals("dp", response.etag());
-        Assertions.assertEquals(State.DISABLED, response.enabledState());
+        Assertions.assertEquals("ee", response.location());
+        Assertions.assertEquals("gvvpasek", response.tags().get("gbuxantuygdh"));
+        Assertions.assertEquals("ygvoavyunssxlgh", response.etag());
+        Assertions.assertEquals(State.ENABLED, response.enabledState());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

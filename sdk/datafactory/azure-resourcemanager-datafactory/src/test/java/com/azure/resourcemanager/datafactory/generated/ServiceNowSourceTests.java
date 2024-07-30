@@ -11,16 +11,19 @@ public final class ServiceNowSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceNowSource model = BinaryData.fromString(
-            "{\"type\":\"ServiceNowSource\",\"query\":\"datadtq\",\"queryTimeout\":\"datajbxol\",\"additionalColumns\":\"datahquqihgibog\",\"sourceRetryCount\":\"datajupenoupcolxc\",\"sourceRetryWait\":\"dataszwadesisd\",\"maxConcurrentConnections\":\"datauhqts\",\"disableMetricsCollection\":\"datab\",\"\":{\"bymrgelgoduexx\":\"dataeeucvv\",\"fr\":\"datad\",\"wqzvqtnozwphka\":\"dataenvkqtvtq\",\"bzbbjxkami\":\"dataracvcbrtltpo\"}}")
+            "{\"type\":\"ServiceNowSource\",\"query\":\"datajdga\",\"queryTimeout\":\"dataktnsowszbeflhx\",\"additionalColumns\":\"datargokyngarwzutzjx\",\"sourceRetryCount\":\"datassmnatnpo\",\"sourceRetryWait\":\"dataeylqysgm\",\"maxConcurrentConnections\":\"dataxngekcwe\",\"disableMetricsCollection\":\"dataqtkdginmhlgpefqq\",\"\":{\"cqgqrsopq\":\"datayowrwvbqv\",\"pvyktfuhfaabi\":\"dataiqfaxtljpyzcgugs\",\"qlkh\":\"datavslocdkpvv\",\"fmibwzuhy\":\"dataxnzjzashhiz\"}}")
             .toObject(ServiceNowSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceNowSource model
-            = new ServiceNowSource().withSourceRetryCount("datajupenoupcolxc").withSourceRetryWait("dataszwadesisd")
-                .withMaxConcurrentConnections("datauhqts").withDisableMetricsCollection("datab")
-                .withQueryTimeout("datajbxol").withAdditionalColumns("datahquqihgibog").withQuery("datadtq");
+        ServiceNowSource model = new ServiceNowSource().withSourceRetryCount("datassmnatnpo")
+            .withSourceRetryWait("dataeylqysgm")
+            .withMaxConcurrentConnections("dataxngekcwe")
+            .withDisableMetricsCollection("dataqtkdginmhlgpefqq")
+            .withQueryTimeout("dataktnsowszbeflhx")
+            .withAdditionalColumns("datargokyngarwzutzjx")
+            .withQuery("datajdga");
         model = BinaryData.fromObject(model).toObject(ServiceNowSource.class);
     }
 }

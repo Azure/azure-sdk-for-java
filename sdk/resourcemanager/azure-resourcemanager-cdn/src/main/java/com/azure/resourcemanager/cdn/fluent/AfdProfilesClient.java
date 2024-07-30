@@ -26,33 +26,34 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AfdProfilesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AfdProfilesClient.
+ */
 public interface AfdProfilesClient {
     /**
      * Check the availability of an afdx endpoint name, and return the globally unique endpoint host name.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param checkEndpointNameAvailabilityInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return output of check name availability API along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<CheckEndpointNameAvailabilityOutputInner>> checkEndpointNameAvailabilityWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
+        String resourceGroupName, String profileName,
         CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput);
 
     /**
      * Check the availability of an afdx endpoint name, and return the globally unique endpoint host name.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param checkEndpointNameAvailabilityInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -60,17 +61,15 @@ public interface AfdProfilesClient {
      * @return output of check name availability API on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CheckEndpointNameAvailabilityOutputInner> checkEndpointNameAvailabilityAsync(
-        String resourceGroupName,
-        String profileName,
-        CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput);
+    Mono<CheckEndpointNameAvailabilityOutputInner> checkEndpointNameAvailabilityAsync(String resourceGroupName,
+        String profileName, CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput);
 
     /**
      * Check the availability of an afdx endpoint name, and return the globally unique endpoint host name.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param checkEndpointNameAvailabilityInput Input to check.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -80,17 +79,15 @@ public interface AfdProfilesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CheckEndpointNameAvailabilityOutputInner> checkEndpointNameAvailabilityWithResponse(
-        String resourceGroupName,
-        String profileName,
-        CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput,
-        Context context);
+        String resourceGroupName, String profileName,
+        CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput, Context context);
 
     /**
      * Check the availability of an afdx endpoint name, and return the globally unique endpoint host name.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param checkEndpointNameAvailabilityInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -98,17 +95,15 @@ public interface AfdProfilesClient {
      * @return output of check name availability API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckEndpointNameAvailabilityOutputInner checkEndpointNameAvailability(
-        String resourceGroupName,
-        String profileName,
+    CheckEndpointNameAvailabilityOutputInner checkEndpointNameAvailability(String resourceGroupName, String profileName,
         CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput);
 
     /**
      * Checks the quota and actual usage of endpoints under the given Azure Front Door profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -119,10 +114,10 @@ public interface AfdProfilesClient {
 
     /**
      * Checks the quota and actual usage of endpoints under the given Azure Front Door profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -133,10 +128,10 @@ public interface AfdProfilesClient {
 
     /**
      * Checks the quota and actual usage of endpoints under the given Azure Front Door profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -148,16 +143,16 @@ public interface AfdProfilesClient {
 
     /**
      * Validates the custom domain mapping to ensure it maps to the correct Azure Front Door endpoint in DNS.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param checkHostnameAvailabilityInput Custom domain to be validated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return output of check name availability API along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<CheckNameAvailabilityOutputInner>> checkHostnameAvailabilityWithResponseAsync(
@@ -165,10 +160,10 @@ public interface AfdProfilesClient {
 
     /**
      * Validates the custom domain mapping to ensure it maps to the correct Azure Front Door endpoint in DNS.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param checkHostnameAvailabilityInput Custom domain to be validated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -176,15 +171,15 @@ public interface AfdProfilesClient {
      * @return output of check name availability API on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CheckNameAvailabilityOutputInner> checkHostnameAvailabilityAsync(
-        String resourceGroupName, String profileName, CheckHostnameAvailabilityInput checkHostnameAvailabilityInput);
+    Mono<CheckNameAvailabilityOutputInner> checkHostnameAvailabilityAsync(String resourceGroupName, String profileName,
+        CheckHostnameAvailabilityInput checkHostnameAvailabilityInput);
 
     /**
      * Validates the custom domain mapping to ensure it maps to the correct Azure Front Door endpoint in DNS.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param checkHostnameAvailabilityInput Custom domain to be validated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -193,18 +188,15 @@ public interface AfdProfilesClient {
      * @return output of check name availability API along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameAvailabilityOutputInner> checkHostnameAvailabilityWithResponse(
-        String resourceGroupName,
-        String profileName,
-        CheckHostnameAvailabilityInput checkHostnameAvailabilityInput,
-        Context context);
+    Response<CheckNameAvailabilityOutputInner> checkHostnameAvailabilityWithResponse(String resourceGroupName,
+        String profileName, CheckHostnameAvailabilityInput checkHostnameAvailabilityInput, Context context);
 
     /**
      * Validates the custom domain mapping to ensure it maps to the correct Azure Front Door endpoint in DNS.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param checkHostnameAvailabilityInput Custom domain to be validated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -212,15 +204,15 @@ public interface AfdProfilesClient {
      * @return output of check name availability API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameAvailabilityOutputInner checkHostnameAvailability(
-        String resourceGroupName, String profileName, CheckHostnameAvailabilityInput checkHostnameAvailabilityInput);
+    CheckNameAvailabilityOutputInner checkHostnameAvailability(String resourceGroupName, String profileName,
+        CheckHostnameAvailabilityInput checkHostnameAvailabilityInput);
 
     /**
      * Validate a Secret in the profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param validateSecretInput The Secret source.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -228,15 +220,15 @@ public interface AfdProfilesClient {
      * @return output of the validated secret along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ValidateSecretOutputInner>> validateSecretWithResponseAsync(
-        String resourceGroupName, String profileName, ValidateSecretInput validateSecretInput);
+    Mono<Response<ValidateSecretOutputInner>> validateSecretWithResponseAsync(String resourceGroupName,
+        String profileName, ValidateSecretInput validateSecretInput);
 
     /**
      * Validate a Secret in the profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param validateSecretInput The Secret source.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -244,15 +236,15 @@ public interface AfdProfilesClient {
      * @return output of the validated secret on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ValidateSecretOutputInner> validateSecretAsync(
-        String resourceGroupName, String profileName, ValidateSecretInput validateSecretInput);
+    Mono<ValidateSecretOutputInner> validateSecretAsync(String resourceGroupName, String profileName,
+        ValidateSecretInput validateSecretInput);
 
     /**
      * Validate a Secret in the profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param validateSecretInput The Secret source.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -261,15 +253,15 @@ public interface AfdProfilesClient {
      * @return output of the validated secret along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ValidateSecretOutputInner> validateSecretWithResponse(
-        String resourceGroupName, String profileName, ValidateSecretInput validateSecretInput, Context context);
+    Response<ValidateSecretOutputInner> validateSecretWithResponse(String resourceGroupName, String profileName,
+        ValidateSecretInput validateSecretInput, Context context);
 
     /**
      * Validate a Secret in the profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param validateSecretInput The Secret source.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -277,104 +269,101 @@ public interface AfdProfilesClient {
      * @return output of the validated secret.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ValidateSecretOutputInner validateSecret(
-        String resourceGroupName, String profileName, ValidateSecretInput validateSecretInput);
+    ValidateSecretOutputInner validateSecret(String resourceGroupName, String profileName,
+        ValidateSecretInput validateSecretInput);
 
     /**
      * Upgrade a profile from Standard_AzureFrontDoor to Premium_AzureFrontDoor.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param profileUpgradeParameters Profile upgrade input parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a profile is a logical grouping of endpoints that share the same settings along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> upgradeWithResponseAsync(
-        String resourceGroupName, String profileName, ProfileUpgradeParameters profileUpgradeParameters);
+    Mono<Response<Flux<ByteBuffer>>> upgradeWithResponseAsync(String resourceGroupName, String profileName,
+        ProfileUpgradeParameters profileUpgradeParameters);
 
     /**
      * Upgrade a profile from Standard_AzureFrontDoor to Premium_AzureFrontDoor.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param profileUpgradeParameters Profile upgrade input parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of a profile is a logical grouping of endpoints that share the same
-     *     settings.
+     * settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ProfileInner>, ProfileInner> beginUpgradeAsync(
-        String resourceGroupName, String profileName, ProfileUpgradeParameters profileUpgradeParameters);
+    PollerFlux<PollResult<ProfileInner>, ProfileInner> beginUpgradeAsync(String resourceGroupName, String profileName,
+        ProfileUpgradeParameters profileUpgradeParameters);
 
     /**
      * Upgrade a profile from Standard_AzureFrontDoor to Premium_AzureFrontDoor.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param profileUpgradeParameters Profile upgrade input parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of a profile is a logical grouping of endpoints that share the same
-     *     settings.
+     * settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ProfileInner>, ProfileInner> beginUpgrade(
-        String resourceGroupName, String profileName, ProfileUpgradeParameters profileUpgradeParameters);
+    SyncPoller<PollResult<ProfileInner>, ProfileInner> beginUpgrade(String resourceGroupName, String profileName,
+        ProfileUpgradeParameters profileUpgradeParameters);
 
     /**
      * Upgrade a profile from Standard_AzureFrontDoor to Premium_AzureFrontDoor.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param profileUpgradeParameters Profile upgrade input parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of a profile is a logical grouping of endpoints that share the same
-     *     settings.
+     * settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ProfileInner>, ProfileInner> beginUpgrade(
-        String resourceGroupName,
-        String profileName,
-        ProfileUpgradeParameters profileUpgradeParameters,
-        Context context);
+    SyncPoller<PollResult<ProfileInner>, ProfileInner> beginUpgrade(String resourceGroupName, String profileName,
+        ProfileUpgradeParameters profileUpgradeParameters, Context context);
 
     /**
      * Upgrade a profile from Standard_AzureFrontDoor to Premium_AzureFrontDoor.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param profileUpgradeParameters Profile upgrade input parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a profile is a logical grouping of endpoints that share the same settings on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ProfileInner> upgradeAsync(
-        String resourceGroupName, String profileName, ProfileUpgradeParameters profileUpgradeParameters);
+    Mono<ProfileInner> upgradeAsync(String resourceGroupName, String profileName,
+        ProfileUpgradeParameters profileUpgradeParameters);
 
     /**
      * Upgrade a profile from Standard_AzureFrontDoor to Premium_AzureFrontDoor.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param profileUpgradeParameters Profile upgrade input parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -382,15 +371,15 @@ public interface AfdProfilesClient {
      * @return a profile is a logical grouping of endpoints that share the same settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProfileInner upgrade(
-        String resourceGroupName, String profileName, ProfileUpgradeParameters profileUpgradeParameters);
+    ProfileInner upgrade(String resourceGroupName, String profileName,
+        ProfileUpgradeParameters profileUpgradeParameters);
 
     /**
      * Upgrade a profile from Standard_AzureFrontDoor to Premium_AzureFrontDoor.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium which is unique within the
-     *     resource group.
+     * resource group.
      * @param profileUpgradeParameters Profile upgrade input parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -399,9 +388,6 @@ public interface AfdProfilesClient {
      * @return a profile is a logical grouping of endpoints that share the same settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProfileInner upgrade(
-        String resourceGroupName,
-        String profileName,
-        ProfileUpgradeParameters profileUpgradeParameters,
-        Context context);
+    ProfileInner upgrade(String resourceGroupName, String profileName,
+        ProfileUpgradeParameters profileUpgradeParameters, Context context);
 }

@@ -5,48 +5,52 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Azure Synapse nested object which contains a flow with data movements and transformations.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = DataFlow.class)
-@JsonTypeName("DataFlow")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "MappingDataFlow", value = MappingDataFlow.class),
-    @JsonSubTypes.Type(name = "Flowlet", value = Flowlet.class) })
 @Fluent
-public class DataFlow {
+public class DataFlow implements JsonSerializable<DataFlow> {
+    /*
+     * Type of data flow.
+     */
+    private String type;
+
     /*
      * The description of the data flow.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * List of tags that can be used for describing the data flow.
      */
-    @JsonProperty(value = "annotations")
     private List<Object> annotations;
 
     /*
      * The folder that this data flow is in. If not specified, Data flow will appear at the root level.
      */
-    @JsonProperty(value = "folder")
     private DataFlowFolder folder;
 
     /**
      * Creates an instance of DataFlow class.
      */
     public DataFlow() {
+        this.type = "DataFlow";
+    }
+
+    /**
+     * Get the type property: Type of data flow.
+     * 
+     * @return the type value.
+     */
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -109,5 +113,78 @@ public class DataFlow {
     public DataFlow setFolder(DataFlowFolder folder) {
         this.folder = folder;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("annotations", this.annotations, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("folder", this.folder);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataFlow from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataFlow if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the DataFlow.
+     */
+    public static DataFlow fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("MappingDataFlow".equals(discriminatorValue)) {
+                    return MappingDataFlow.fromJson(readerToUse.reset());
+                } else if ("Flowlet".equals(discriminatorValue)) {
+                    return Flowlet.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static DataFlow fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataFlow deserializedDataFlow = new DataFlow();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedDataFlow.type = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedDataFlow.description = reader.getString();
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedDataFlow.annotations = annotations;
+                } else if ("folder".equals(fieldName)) {
+                    deserializedDataFlow.folder = DataFlowFolder.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataFlow;
+        });
     }
 }

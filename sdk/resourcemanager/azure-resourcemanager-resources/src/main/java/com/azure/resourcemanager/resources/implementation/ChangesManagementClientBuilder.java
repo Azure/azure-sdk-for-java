@@ -14,8 +14,10 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the ChangesManagementClientImpl type. */
-@ServiceClientBuilder(serviceClients = {ChangesManagementClientImpl.class})
+/**
+ * A builder for creating a new instance of the ChangesManagementClientImpl type.
+ */
+@ServiceClientBuilder(serviceClients = { ChangesManagementClientImpl.class })
 public final class ChangesManagementClientBuilder {
     /*
      * The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
@@ -24,7 +26,7 @@ public final class ChangesManagementClientBuilder {
 
     /**
      * Sets The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the ChangesManagementClientBuilder.
      */
@@ -40,7 +42,7 @@ public final class ChangesManagementClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the ChangesManagementClientBuilder.
      */
@@ -56,7 +58,7 @@ public final class ChangesManagementClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the ChangesManagementClientBuilder.
      */
@@ -72,7 +74,7 @@ public final class ChangesManagementClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the ChangesManagementClientBuilder.
      */
@@ -88,7 +90,7 @@ public final class ChangesManagementClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the ChangesManagementClientBuilder.
      */
@@ -104,7 +106,7 @@ public final class ChangesManagementClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the ChangesManagementClientBuilder.
      */
@@ -115,30 +117,22 @@ public final class ChangesManagementClientBuilder {
 
     /**
      * Builds an instance of ChangesManagementClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of ChangesManagementClientImpl.
      */
     public ChangesManagementClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline =
-            (pipeline != null)
-                ? pipeline
-                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        Duration localDefaultPollInterval =
-            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter =
-            (serializerAdapter != null)
-                ? serializerAdapter
-                : SerializerFactory.createDefaultManagementSerializerAdapter();
-        ChangesManagementClientImpl client =
-            new ChangesManagementClientImpl(
-                localPipeline,
-                localSerializerAdapter,
-                localDefaultPollInterval,
-                localEnvironment,
-                this.subscriptionId,
-                localEndpoint);
+        HttpPipeline localPipeline = (pipeline != null)
+            ? pipeline
+            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval
+            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
+            ? serializerAdapter
+            : SerializerFactory.createDefaultManagementSerializerAdapter();
+        ChangesManagementClientImpl client = new ChangesManagementClientImpl(localPipeline, localSerializerAdapter,
+            localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }

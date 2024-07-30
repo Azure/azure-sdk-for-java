@@ -32,6 +32,13 @@ public interface ExternalSecuritySolution {
     String type();
 
     /**
+     * Gets the kind property: The kind of the external solution.
+     * 
+     * @return the kind value.
+     */
+    ExternalSecuritySolutionKind kind();
+
+    /**
      * Gets the location property: Location where the resource is stored.
      * 
      * @return the location value.

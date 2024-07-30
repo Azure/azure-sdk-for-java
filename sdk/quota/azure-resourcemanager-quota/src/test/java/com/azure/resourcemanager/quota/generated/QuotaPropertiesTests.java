@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.quota.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.quota.models.LimitJsonObject;
+import com.azure.resourcemanager.quota.models.LimitObject;
 import com.azure.resourcemanager.quota.models.QuotaProperties;
 import com.azure.resourcemanager.quota.models.ResourceName;
 import org.junit.jupiter.api.Assertions;
@@ -14,19 +14,20 @@ public final class QuotaPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaProperties model = BinaryData.fromString(
-            "{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"xinpmqnjaq\",\"name\":{\"value\":\"jsprozvcpute\",\"localizedValue\":\"vwmf\"},\"resourceType\":\"t\",\"quotaPeriod\":\"mdvpjhulsu\",\"isQuotaApplicable\":true,\"properties\":\"datajozkrwfndiod\"}")
+            "{\"limit\":{\"limitObjectType\":\"LimitValue\"},\"unit\":\"hkaetcktvfc\",\"name\":{\"value\":\"snkymuctq\",\"localizedValue\":\"fbebrjcxer\"},\"resourceType\":\"wutttxfvjrbi\",\"quotaPeriod\":\"hxepcyvahfnlj\",\"isQuotaApplicable\":false,\"properties\":\"dataj\"}")
             .toObject(QuotaProperties.class);
-        Assertions.assertEquals("jsprozvcpute", model.name().value());
-        Assertions.assertEquals("t", model.resourceType());
+        Assertions.assertEquals("snkymuctq", model.name().value());
+        Assertions.assertEquals("wutttxfvjrbi", model.resourceType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaProperties model = new QuotaProperties().withLimit(new LimitJsonObject())
-            .withName(new ResourceName().withValue("jsprozvcpute")).withResourceType("t")
-            .withProperties("datajozkrwfndiod");
+        QuotaProperties model = new QuotaProperties().withLimit(new LimitObject())
+            .withName(new ResourceName().withValue("snkymuctq"))
+            .withResourceType("wutttxfvjrbi")
+            .withProperties("dataj");
         model = BinaryData.fromObject(model).toObject(QuotaProperties.class);
-        Assertions.assertEquals("jsprozvcpute", model.name().value());
-        Assertions.assertEquals("t", model.resourceType());
+        Assertions.assertEquals("snkymuctq", model.name().value());
+        Assertions.assertEquals("wutttxfvjrbi", model.resourceType());
     }
 }

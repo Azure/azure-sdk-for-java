@@ -23,7 +23,8 @@ public final class CheckNameAvailabilityResponseTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CheckNameAvailabilityResponse model = new CheckNameAvailabilityResponse().withNameAvailable(true)
-            .withReason(CheckNameAvailabilityReason.ALREADY_EXISTS).withMessage("gf");
+            .withReason(CheckNameAvailabilityReason.ALREADY_EXISTS)
+            .withMessage("gf");
         model = BinaryData.fromObject(model).toObject(CheckNameAvailabilityResponse.class);
         Assertions.assertEquals(true, model.nameAvailable());
         Assertions.assertEquals(CheckNameAvailabilityReason.ALREADY_EXISTS, model.reason());

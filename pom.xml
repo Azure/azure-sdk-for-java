@@ -40,9 +40,11 @@
     <module>sdk/botservice</module>
     <module>sdk/changeanalysis</module>
     <module>sdk/chaos</module>
+    <module>sdk/clientcore</module>
     <module>sdk/cognitiveservices</module>
     <module>sdk/commerce</module>
     <module>sdk/communication</module>
+    <module>sdk/computefleet</module>
     <module>sdk/confidentialledger</module>
     <module>sdk/confluent</module>
     <module>sdk/connectedvmware</module>
@@ -72,7 +74,9 @@
     <module>sdk/devcenter</module>
     <module>sdk/devhub</module>
     <module>sdk/deviceprovisioningservices</module>
+    <module>sdk/deviceregistry</module>
     <module>sdk/deviceupdate</module>
+    <module>sdk/devopsinfrastructure</module>
     <module>sdk/devspaces</module>
     <module>sdk/devtestlabs</module>
     <module>sdk/digitaltwins</module>
@@ -81,12 +85,14 @@
     <module>sdk/dynatrace</module>
     <module>sdk/easm</module>
     <module>sdk/edgeorder</module>
+    <module>sdk/edgezones</module>
     <module>sdk/education</module>
     <module>sdk/elastic</module>
     <module>sdk/elasticsan</module>
     <module>sdk/eventgrid</module>
     <module>sdk/eventhubs</module>
     <module>sdk/extendedlocation</module>
+    <module>sdk/face</module>
     <module>sdk/fluidrelay</module>
     <module>sdk/formrecognizer</module>
     <module>sdk/frontdoor</module>
@@ -96,6 +102,7 @@
     <module>sdk/hdinsight</module>
     <module>sdk/healthbot</module>
     <module>sdk/healthcareapis</module>
+    <module>sdk/healthdataaiservices</module>
     <module>sdk/healthinsights</module>
     <module>sdk/hybridcompute</module>
     <module>sdk/hybridconnectivity</module>
@@ -104,6 +111,7 @@
     <module>sdk/hybridnetwork</module>
     <module>sdk/identity</module>
     <module>sdk/imagebuilder</module>
+    <module>sdk/informaticadatamanagement</module>
     <module>sdk/iotcentral</module>
     <module>sdk/iotfirmwaredefense</module>
     <module>sdk/iothub</module>
@@ -131,6 +139,7 @@
     <module>sdk/mixedreality</module>
     <module>sdk/mobilenetwork</module>
     <module>sdk/modelsrepository</module>
+    <module>sdk/mongocluster</module>
     <module>sdk/monitor</module>
     <module>sdk/mysql</module>
     <module>sdk/mysqlflexibleserver</module>
@@ -144,6 +153,7 @@
     <module>sdk/oep</module>
     <module>sdk/openai</module>
     <module>sdk/operationsmanagement</module>
+    <module>sdk/oracledatabase</module>
     <module>sdk/orbital</module>
     <module>sdk/paloaltonetworks</module>
     <module>sdk/parents</module>
@@ -190,6 +200,7 @@
     <module>sdk/spring-experimental</module>
     <module>sdk/springappdiscovery</module>
     <module>sdk/sqlvirtualmachine</module>
+    <module>sdk/standbypool</module>
     <module>sdk/storage</module>
     <module>sdk/storageactions</module>
     <module>sdk/storagecache</module>

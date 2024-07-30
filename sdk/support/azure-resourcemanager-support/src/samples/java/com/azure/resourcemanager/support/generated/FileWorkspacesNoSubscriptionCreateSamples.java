@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.support.generated;
 
-/** Samples for FileWorkspacesNoSubscription Create. */
+/**
+ * Samples for FileWorkspacesNoSubscription Create.
+ */
 public final class FileWorkspacesNoSubscriptionCreateSamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateFileWorkspace.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/CreateFileWorkspace.json
      */
     /**
      * Sample code: Create a file workspace.
-     *
+     * 
      * @param manager Entry point to SupportManager.
      */
     public static void createAFileWorkspace(com.azure.resourcemanager.support.SupportManager manager) {

@@ -14,24 +14,25 @@ public final class TumblingWindowTriggerDependencyReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TumblingWindowTriggerDependencyReference model = BinaryData.fromString(
-            "{\"type\":\"TumblingWindowTriggerDependencyReference\",\"offset\":\"rmmjyvmxtj\",\"size\":\"obwskyjlteiulvrp\",\"referenceTrigger\":{\"type\":\"TriggerReference\",\"referenceName\":\"ivvlmz\"}}")
+            "{\"type\":\"TumblingWindowTriggerDependencyReference\",\"offset\":\"lndywgh\",\"size\":\"tfv\",\"referenceTrigger\":{\"type\":\"TriggerReference\",\"referenceName\":\"jnrom\"}}")
             .toObject(TumblingWindowTriggerDependencyReference.class);
         Assertions.assertEquals(TriggerReferenceType.TRIGGER_REFERENCE, model.referenceTrigger().type());
-        Assertions.assertEquals("ivvlmz", model.referenceTrigger().referenceName());
-        Assertions.assertEquals("rmmjyvmxtj", model.offset());
-        Assertions.assertEquals("obwskyjlteiulvrp", model.size());
+        Assertions.assertEquals("jnrom", model.referenceTrigger().referenceName());
+        Assertions.assertEquals("lndywgh", model.offset());
+        Assertions.assertEquals("tfv", model.size());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TumblingWindowTriggerDependencyReference model = new TumblingWindowTriggerDependencyReference()
             .withReferenceTrigger(
-                new TriggerReference().withType(TriggerReferenceType.TRIGGER_REFERENCE).withReferenceName("ivvlmz"))
-            .withOffset("rmmjyvmxtj").withSize("obwskyjlteiulvrp");
+                new TriggerReference().withType(TriggerReferenceType.TRIGGER_REFERENCE).withReferenceName("jnrom"))
+            .withOffset("lndywgh")
+            .withSize("tfv");
         model = BinaryData.fromObject(model).toObject(TumblingWindowTriggerDependencyReference.class);
         Assertions.assertEquals(TriggerReferenceType.TRIGGER_REFERENCE, model.referenceTrigger().type());
-        Assertions.assertEquals("ivvlmz", model.referenceTrigger().referenceName());
-        Assertions.assertEquals("rmmjyvmxtj", model.offset());
-        Assertions.assertEquals("obwskyjlteiulvrp", model.size());
+        Assertions.assertEquals("jnrom", model.referenceTrigger().referenceName());
+        Assertions.assertEquals("lndywgh", model.offset());
+        Assertions.assertEquals("tfv", model.size());
     }
 }

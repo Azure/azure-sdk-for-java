@@ -11,8 +11,9 @@ import com.azure.resourcemanager.netapp.models.Backup;
  */
 public final class BackupsUpdateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/
-     * BackupsUnderBackupVault_Update.json
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/BackupsUnderBackupVault_Update.
+     * json
      */
     /**
      * Sample code: BackupsUnderBackupVault_Update.

@@ -19,7 +19,7 @@ import java.util.Arrays;
 public final class VpnConnectionsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VpnConnectionPut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VpnConnectionPut.json
      */
     /**
      * Sample code: VpnConnectionPut.
@@ -27,7 +27,10 @@ public final class VpnConnectionsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void vpnConnectionPut(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVpnConnections()
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVpnConnections()
             .createOrUpdate("rg1", "gateway1", "vpnConnection1", new VpnConnectionInner()
                 .withRemoteVpnSite(new SubResource()
                     .withId("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/vpnSites/vpnSite1"))
@@ -37,7 +40,8 @@ public final class VpnConnectionsCreateOrUpdateSamples {
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/vpnSites/vpnSite1/vpnSiteLinks/siteLink1"))
                     .withVpnLinkConnectionMode(VpnLinkConnectionMode.DEFAULT)
                     .withVpnConnectionProtocolType(VirtualNetworkGatewayConnectionProtocol.IKEV2)
-                    .withConnectionBandwidth(200).withSharedKey("fakeTokenPlaceholder")
+                    .withConnectionBandwidth(200)
+                    .withSharedKey("fakeTokenPlaceholder")
                     .withUsePolicyBasedTrafficSelectors(false)))
                 .withRoutingConfiguration(new RoutingConfiguration().withAssociatedRouteTable(new SubResource().withId(
                     "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/hub1/hubRouteTables/hubRouteTable1"))

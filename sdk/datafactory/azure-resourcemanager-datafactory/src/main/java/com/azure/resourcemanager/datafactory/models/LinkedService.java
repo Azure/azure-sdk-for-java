@@ -11,9 +11,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,11 +22,7 @@ import java.util.Map;
  * The nested object which contains the information and credential which can be used to connect with related store or
  * compute resource.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = LinkedService.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = LinkedService.class, visible = true)
 @JsonTypeName("LinkedService")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AzureStorage", value = AzureStorageLinkedService.class),
@@ -152,6 +149,13 @@ import java.util.Map;
 @Fluent
 public class LinkedService {
     /*
+     * Type of linked service.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "LinkedService";
+
+    /*
      * The integration runtime reference.
      */
     @JsonProperty(value = "connectVia")
@@ -187,6 +191,15 @@ public class LinkedService {
      * Creates an instance of LinkedService class.
      */
     public LinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -295,7 +308,7 @@ public class LinkedService {
     @JsonAnySetter
     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }

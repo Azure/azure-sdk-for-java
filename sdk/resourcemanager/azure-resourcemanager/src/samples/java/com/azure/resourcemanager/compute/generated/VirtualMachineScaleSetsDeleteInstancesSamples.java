@@ -13,7 +13,7 @@ import java.util.Arrays;
 public final class VirtualMachineScaleSetsDeleteInstancesSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_DeleteInstances_MaximumSet_Gen.json
      */
     /**
@@ -23,15 +23,17 @@ public final class VirtualMachineScaleSetsDeleteInstancesSamples {
      */
     public static void
         virtualMachineScaleSetDeleteInstancesMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets().deleteInstances("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaa", new VirtualMachineScaleSetVMInstanceRequiredIDs()
-                .withInstanceIds(Arrays.asList("aaaaaaaaaaaaaaaaaaaaaaaaa")),
-            true, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .deleteInstances("rgcompute", "aaaaaaaaaaaaaaaaaaaa", new VirtualMachineScaleSetVMInstanceRequiredIDs()
+                .withInstanceIds(Arrays.asList("aaaaaaaaaaaaaaaaaaaaaaaaa")), true, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_DeleteInstances_MinimumSet_Gen.json
      */
     /**
@@ -41,9 +43,11 @@ public final class VirtualMachineScaleSetsDeleteInstancesSamples {
      */
     public static void
         virtualMachineScaleSetDeleteInstancesMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets().deleteInstances("rgcompute",
-            "aaaaaaaaaaaaaaa", new VirtualMachineScaleSetVMInstanceRequiredIDs()
-                .withInstanceIds(Arrays.asList("aaaaaaaaaaaaaaaaaaaaaaaaa")),
-            null, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .deleteInstances("rgcompute", "aaaaaaaaaaaaaaa", new VirtualMachineScaleSetVMInstanceRequiredIDs()
+                .withInstanceIds(Arrays.asList("aaaaaaaaaaaaaaaaaaaaaaaaa")), null, com.azure.core.util.Context.NONE);
     }
 }

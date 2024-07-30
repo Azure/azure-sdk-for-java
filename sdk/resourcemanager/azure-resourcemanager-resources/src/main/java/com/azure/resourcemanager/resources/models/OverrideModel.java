@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The policy property value override. */
+/**
+ * The policy property value override.
+ */
 @Fluent
 public final class OverrideModel {
     /*
@@ -29,13 +31,15 @@ public final class OverrideModel {
     @JsonProperty(value = "selectors")
     private List<Selector> selectors;
 
-    /** Creates an instance of OverrideModel class. */
+    /**
+     * Creates an instance of OverrideModel class.
+     */
     public OverrideModel() {
     }
 
     /**
      * Get the kind property: The override kind.
-     *
+     * 
      * @return the kind value.
      */
     public OverrideKind kind() {
@@ -44,7 +48,7 @@ public final class OverrideModel {
 
     /**
      * Set the kind property: The override kind.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the OverrideModel object itself.
      */
@@ -55,7 +59,7 @@ public final class OverrideModel {
 
     /**
      * Get the value property: The value to override the policy property.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -64,7 +68,7 @@ public final class OverrideModel {
 
     /**
      * Set the value property: The value to override the policy property.
-     *
+     * 
      * @param value the value value to set.
      * @return the OverrideModel object itself.
      */
@@ -75,7 +79,7 @@ public final class OverrideModel {
 
     /**
      * Get the selectors property: The list of the selector expressions.
-     *
+     * 
      * @return the selectors value.
      */
     public List<Selector> selectors() {
@@ -84,7 +88,7 @@ public final class OverrideModel {
 
     /**
      * Set the selectors property: The list of the selector expressions.
-     *
+     * 
      * @param selectors the selectors value to set.
      * @return the OverrideModel object itself.
      */
@@ -95,7 +99,7 @@ public final class OverrideModel {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.compute.models.ExpandTypesForGetVMScaleSets;
 public final class VirtualMachineScaleSetsGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get_AutoPlacedOnDedicatedHostGroup.json
      */
     /**
@@ -22,13 +22,17 @@ public final class VirtualMachineScaleSetsGetByResourceGroupSamples {
      */
     public static void getAVirtualMachineScaleSetPlacedOnADedicatedHostGroupThroughAutomaticPlacement(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets().getByResourceGroupWithResponse(
-            "myResourceGroup", "myVirtualMachineScaleSet", null, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .getByResourceGroupWithResponse("myResourceGroup", "myVirtualMachineScaleSet", null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get.json
      */
     /**
@@ -37,13 +41,17 @@ public final class VirtualMachineScaleSetsGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAVirtualMachineScaleSet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets().getByResourceGroupWithResponse(
-            "myResourceGroup", "myVirtualMachineScaleSet", null, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .getByResourceGroupWithResponse("myResourceGroup", "myVirtualMachineScaleSet", null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get_WithUserData.json
      */
     /**
@@ -52,14 +60,17 @@ public final class VirtualMachineScaleSetsGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAVirtualMachineScaleSetWithUserData(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets().getByResourceGroupWithResponse(
-            "myResourceGroup", "myVirtualMachineScaleSet", ExpandTypesForGetVMScaleSets.USER_DATA,
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .getByResourceGroupWithResponse("myResourceGroup", "myVirtualMachineScaleSet",
+                ExpandTypesForGetVMScaleSets.USER_DATA, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get_WithDiskControllerType.json
      */
     /**
@@ -68,8 +79,11 @@ public final class VirtualMachineScaleSetsGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getVMScaleSetVMWithDiskControllerType(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets().getByResourceGroupWithResponse(
-            "myResourceGroup", "myVirtualMachineScaleSet", ExpandTypesForGetVMScaleSets.USER_DATA,
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .getByResourceGroupWithResponse("myResourceGroup", "myVirtualMachineScaleSet",
+                ExpandTypesForGetVMScaleSets.USER_DATA, com.azure.core.util.Context.NONE);
     }
 }

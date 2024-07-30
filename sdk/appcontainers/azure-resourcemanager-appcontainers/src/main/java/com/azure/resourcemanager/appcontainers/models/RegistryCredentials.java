@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Container App Private Registry. */
+/**
+ * Container App Private Registry.
+ */
 @Fluent
-public final class RegistryCredentials {
+public final class RegistryCredentials implements JsonSerializable<RegistryCredentials> {
     /*
      * Container Registry Server
      */
-    @JsonProperty(value = "server")
     private String server;
 
     /*
      * Container Registry Username
      */
-    @JsonProperty(value = "username")
     private String username;
 
     /*
      * The name of the Secret that contains the registry login password
      */
-    @JsonProperty(value = "passwordSecretRef")
     private String passwordSecretRef;
 
     /*
      * A Managed Identity to use to authenticate with Azure Container Registry. For user-assigned identities, use the
      * full user-assigned identity Resource ID. For system-assigned identities, use 'system'
      */
-    @JsonProperty(value = "identity")
     private String identity;
 
-    /** Creates an instance of RegistryCredentials class. */
+    /**
+     * Creates an instance of RegistryCredentials class.
+     */
     public RegistryCredentials() {
     }
 
     /**
      * Get the server property: Container Registry Server.
-     *
+     * 
      * @return the server value.
      */
     public String server() {
@@ -50,7 +54,7 @@ public final class RegistryCredentials {
 
     /**
      * Set the server property: Container Registry Server.
-     *
+     * 
      * @param server the server value to set.
      * @return the RegistryCredentials object itself.
      */
@@ -61,7 +65,7 @@ public final class RegistryCredentials {
 
     /**
      * Get the username property: Container Registry Username.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -70,7 +74,7 @@ public final class RegistryCredentials {
 
     /**
      * Set the username property: Container Registry Username.
-     *
+     * 
      * @param username the username value to set.
      * @return the RegistryCredentials object itself.
      */
@@ -81,7 +85,7 @@ public final class RegistryCredentials {
 
     /**
      * Get the passwordSecretRef property: The name of the Secret that contains the registry login password.
-     *
+     * 
      * @return the passwordSecretRef value.
      */
     public String passwordSecretRef() {
@@ -90,7 +94,7 @@ public final class RegistryCredentials {
 
     /**
      * Set the passwordSecretRef property: The name of the Secret that contains the registry login password.
-     *
+     * 
      * @param passwordSecretRef the passwordSecretRef value to set.
      * @return the RegistryCredentials object itself.
      */
@@ -103,7 +107,7 @@ public final class RegistryCredentials {
      * Get the identity property: A Managed Identity to use to authenticate with Azure Container Registry. For
      * user-assigned identities, use the full user-assigned identity Resource ID. For system-assigned identities, use
      * 'system'.
-     *
+     * 
      * @return the identity value.
      */
     public String identity() {
@@ -114,7 +118,7 @@ public final class RegistryCredentials {
      * Set the identity property: A Managed Identity to use to authenticate with Azure Container Registry. For
      * user-assigned identities, use the full user-assigned identity Resource ID. For system-assigned identities, use
      * 'system'.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the RegistryCredentials object itself.
      */
@@ -125,9 +129,54 @@ public final class RegistryCredentials {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("server", this.server);
+        jsonWriter.writeStringField("username", this.username);
+        jsonWriter.writeStringField("passwordSecretRef", this.passwordSecretRef);
+        jsonWriter.writeStringField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RegistryCredentials from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RegistryCredentials if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RegistryCredentials.
+     */
+    public static RegistryCredentials fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RegistryCredentials deserializedRegistryCredentials = new RegistryCredentials();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("server".equals(fieldName)) {
+                    deserializedRegistryCredentials.server = reader.getString();
+                } else if ("username".equals(fieldName)) {
+                    deserializedRegistryCredentials.username = reader.getString();
+                } else if ("passwordSecretRef".equals(fieldName)) {
+                    deserializedRegistryCredentials.passwordSecretRef = reader.getString();
+                } else if ("identity".equals(fieldName)) {
+                    deserializedRegistryCredentials.identity = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRegistryCredentials;
+        });
     }
 }

@@ -54,6 +54,16 @@ public final class VirtualMachineScaleSetReimageParameters extends VirtualMachin
      * {@inheritDoc}
      */
     @Override
+    public VirtualMachineScaleSetReimageParameters
+        withForceUpdateOSDiskForEphemeral(Boolean forceUpdateOSDiskForEphemeral) {
+        super.withForceUpdateOSDiskForEphemeral(forceUpdateOSDiskForEphemeral);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public VirtualMachineScaleSetReimageParameters withTempDisk(Boolean tempDisk) {
         super.withTempDisk(tempDisk);
         return this;

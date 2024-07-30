@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class SecurityAdminConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * NetworkManagerSecurityAdminConfigurationPut.json
      */
     /**
@@ -23,10 +23,13 @@ public final class SecurityAdminConfigurationsCreateOrUpdateSamples {
      */
     public static void
         createNetworkManagerSecurityAdminConfiguration(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getSecurityAdminConfigurations().createOrUpdateWithResponse("rg1",
-            "testNetworkManager", "myTestSecurityConfig",
-            new SecurityAdminConfigurationInner().withDescription("A sample policy")
-                .withApplyOnNetworkIntentPolicyBasedServices(Arrays.asList(NetworkIntentPolicyBasedService.NONE)),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getSecurityAdminConfigurations()
+            .createOrUpdateWithResponse("rg1", "testNetworkManager", "myTestSecurityConfig",
+                new SecurityAdminConfigurationInner().withDescription("A sample policy")
+                    .withApplyOnNetworkIntentPolicyBasedServices(Arrays.asList(NetworkIntentPolicyBasedService.NONE)),
+                com.azure.core.util.Context.NONE);
     }
 }

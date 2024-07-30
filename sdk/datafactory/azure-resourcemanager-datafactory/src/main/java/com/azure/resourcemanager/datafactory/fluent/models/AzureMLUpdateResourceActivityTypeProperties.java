@@ -116,18 +116,21 @@ public final class AzureMLUpdateResourceActivityTypeProperties {
      */
     public void validate() {
         if (trainedModelName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property trainedModelName in model AzureMLUpdateResourceActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property trainedModelName in model AzureMLUpdateResourceActivityTypeProperties"));
         }
         if (trainedModelLinkedServiceName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property trainedModelLinkedServiceName in model AzureMLUpdateResourceActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property trainedModelLinkedServiceName in model AzureMLUpdateResourceActivityTypeProperties"));
         } else {
             trainedModelLinkedServiceName().validate();
         }
         if (trainedModelFilePath() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property trainedModelFilePath in model AzureMLUpdateResourceActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property trainedModelFilePath in model AzureMLUpdateResourceActivityTypeProperties"));
         }
     }
 

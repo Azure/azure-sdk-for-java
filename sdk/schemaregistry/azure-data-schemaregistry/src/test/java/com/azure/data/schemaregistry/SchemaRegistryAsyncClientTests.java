@@ -70,6 +70,11 @@ public class SchemaRegistryAsyncClientTests extends TestProxyTestBase {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
+        if (!interceptorManager.isLiveMode()) {
+            // Remove `name` sanitizers from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK3493");
+        }
+
         testBase = new SchemaRegistryAsyncClientTestsBase(schemaGroup, SchemaFormat.AVRO);
     }
 

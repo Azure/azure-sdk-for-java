@@ -59,24 +59,24 @@ public final class DataFlowDebugPackageTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataFlowDebugPackage model
-            = new DataFlowDebugPackage().withSessionId("ryxynqnzrd")
-                .withDataFlow(
-                    new DataFlowDebugResource().withName("vzidsxwaab")
-                        .withProperties(new DataFlow().withDescription("vwxzn")
-                            .withAnnotations(Arrays.asList("dataoeiy", "datab", "databp", "datahv")).withFolder(
-                                new DataFlowFolder().withName("kvntjlrigjkskyri"))))
-                .withDataFlows(Arrays.asList(
-                    new DataFlowDebugResource().withName("fmvigorqjbttzh")
-                        .withProperties(new DataFlow().withDescription("rygznmmaxriz")
-                            .withAnnotations(Arrays.asList("databgopxlhslnel", "dataieixynllxe"))
-                            .withFolder(new DataFlowFolder().withName("rojphslhcawjutif"))),
-                    new DataFlowDebugResource().withName("cazuaw")
-                        .withProperties(new DataFlow().withDescription("glka")
-                            .withAnnotations(Arrays.asList("datan", "datajuj", "dataickpz", "datacpopmxel"))
-                            .withFolder(new DataFlowFolder().withName("ltyjedexxmlfmk")))))
-                .withDatasets(Arrays.asList(new DatasetDebugResource().withName("c").withProperties(new Dataset()
-                    .withDescription("puamwabzxr").withStructure("datacush").withSchema("datahaivm")
+        DataFlowDebugPackage model = new DataFlowDebugPackage().withSessionId("ryxynqnzrd")
+            .withDataFlow(new DataFlowDebugResource().withName("vzidsxwaab")
+                .withProperties(new DataFlow().withDescription("vwxzn")
+                    .withAnnotations(Arrays.asList("dataoeiy", "datab", "databp", "datahv"))
+                    .withFolder(new DataFlowFolder().withName("kvntjlrigjkskyri"))))
+            .withDataFlows(Arrays.asList(
+                new DataFlowDebugResource().withName("fmvigorqjbttzh")
+                    .withProperties(new DataFlow().withDescription("rygznmmaxriz")
+                        .withAnnotations(Arrays.asList("databgopxlhslnel", "dataieixynllxe"))
+                        .withFolder(new DataFlowFolder().withName("rojphslhcawjutif"))),
+                new DataFlowDebugResource().withName("cazuaw")
+                    .withProperties(new DataFlow().withDescription("glka")
+                        .withAnnotations(Arrays.asList("datan", "datajuj", "dataickpz", "datacpopmxel"))
+                        .withFolder(new DataFlowFolder().withName("ltyjedexxmlfmk")))))
+            .withDatasets(Arrays.asList(new DatasetDebugResource().withName("c")
+                .withProperties(new Dataset().withDescription("puamwabzxr")
+                    .withStructure("datacush")
+                    .withSchema("datahaivm")
                     .withLinkedServiceName(new LinkedServiceReference().withReferenceName("yasflvgsgzwy")
                         .withParameters(mapOf("knsmjblmljhlnymz", "dataoi")))
                     .withParameters(mapOf("gtayxonsupeujlz",
@@ -91,37 +91,35 @@ public final class DataFlowDebugPackageTests {
                     .withAnnotations(Arrays.asList("datambnkb", "datavqvxk"))
                     .withFolder(new DatasetFolder().withName("qihebw"))
                     .withAdditionalProperties(mapOf("type", "Dataset")))))
-                .withLinkedServices(
-                    Arrays
-                        .asList(
-                            new LinkedServiceDebugResource().withName("onsts").withProperties(new LinkedService()
-                                .withConnectVia(new IntegrationRuntimeReference().withReferenceName("nktwfansnvpdibmi")
-                                    .withParameters(mapOf("yls", "datatbzbkiwbuqnyophz")))
-                                .withDescription("rpfbcunezz")
-                                .withParameters(
-                                    mapOf("psihcla",
-                                        new ParameterSpecification()
-                                            .withType(ParameterType.BOOL).withDefaultValue("datafwyfwlwxjwet"),
-                                        "rsqqwztcm",
-                                        new ParameterSpecification()
-                                            .withType(ParameterType.SECURE_STRING).withDefaultValue("dataaylp"),
-                                        "jexfdeqvhp",
-                                        new ParameterSpecification().withType(ParameterType.ARRAY)
-                                            .withDefaultValue("datachcxwaxfewzj")))
-                                .withAnnotations(
-                                    Arrays.asList("datakkshkbffm", "datamxzjrgywwpgjx", "datanptfujgi", "datagaao"))
-                                .withAdditionalProperties(mapOf("type", "LinkedService")))))
-                .withStaging(new DataFlowStagingInfo().withLinkedService(new LinkedServiceReference()
-                    .withReferenceName("xgvelfclduccbird").withParameters(mapOf("stmninwjizcilng", "datawcobie")))
-                    .withFolderPath("datashejjtbxqm"))
-                .withDebugSettings(new DataFlowDebugPackageDebugSettings()
-                    .withSourceSettings(Arrays.asList(
-                        new DataFlowSourceSetting().withSourceName("xqzv").withRowLimit(411885173)
-                            .withAdditionalProperties(mapOf()),
-                        new DataFlowSourceSetting().withSourceName("aohdjh").withRowLimit(1043529198)
-                            .withAdditionalProperties(mapOf())))
-                    .withParameters(mapOf("ipgawtxx", "datafloccsrmozih")).withDatasetParameters("datay"))
-                .withAdditionalProperties(mapOf());
+            .withLinkedServices(Arrays.asList(new LinkedServiceDebugResource().withName("onsts")
+                .withProperties(new LinkedService()
+                    .withConnectVia(new IntegrationRuntimeReference().withReferenceName("nktwfansnvpdibmi")
+                        .withParameters(mapOf("yls", "datatbzbkiwbuqnyophz")))
+                    .withDescription("rpfbcunezz")
+                    .withParameters(mapOf("psihcla",
+                        new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datafwyfwlwxjwet"),
+                        "rsqqwztcm",
+                        new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("dataaylp"),
+                        "jexfdeqvhp",
+                        new ParameterSpecification().withType(ParameterType.ARRAY)
+                            .withDefaultValue("datachcxwaxfewzj")))
+                    .withAnnotations(Arrays.asList("datakkshkbffm", "datamxzjrgywwpgjx", "datanptfujgi", "datagaao"))
+                    .withAdditionalProperties(mapOf("type", "LinkedService")))))
+            .withStaging(new DataFlowStagingInfo()
+                .withLinkedService(new LinkedServiceReference().withReferenceName("xgvelfclduccbird")
+                    .withParameters(mapOf("stmninwjizcilng", "datawcobie")))
+                .withFolderPath("datashejjtbxqm"))
+            .withDebugSettings(new DataFlowDebugPackageDebugSettings()
+                .withSourceSettings(Arrays.asList(
+                    new DataFlowSourceSetting().withSourceName("xqzv")
+                        .withRowLimit(411885173)
+                        .withAdditionalProperties(mapOf()),
+                    new DataFlowSourceSetting().withSourceName("aohdjh")
+                        .withRowLimit(1043529198)
+                        .withAdditionalProperties(mapOf())))
+                .withParameters(mapOf("ipgawtxx", "datafloccsrmozih"))
+                .withDatasetParameters("datay"))
+            .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(DataFlowDebugPackage.class);
         Assertions.assertEquals("ryxynqnzrd", model.sessionId());
         Assertions.assertEquals("vzidsxwaab", model.dataFlow().name());

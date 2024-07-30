@@ -8,16 +8,25 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.security.fluent.models.ServerVulnerabilityAssessmentsAzureSettingProperties;
 import com.azure.resourcemanager.security.fluent.models.ServerVulnerabilityAssessmentsSettingInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A vulnerability assessments setting on Azure servers in the defined scope.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = AzureServersSetting.class, visible = true)
 @JsonTypeName("AzureServersSetting")
 @Fluent
 public final class AzureServersSetting extends ServerVulnerabilityAssessmentsSettingInner {
+    /*
+     * The kind of the server vulnerability assessments setting.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "kind", required = true)
+    private ServerVulnerabilityAssessmentsSettingKind kind
+        = ServerVulnerabilityAssessmentsSettingKind.AZURE_SERVERS_SETTING;
+
     /*
      * The vulnerability assessments setting properties on Azure servers in the defined scope.
      */
@@ -28,6 +37,16 @@ public final class AzureServersSetting extends ServerVulnerabilityAssessmentsSet
      * Creates an instance of AzureServersSetting class.
      */
     public AzureServersSetting() {
+    }
+
+    /**
+     * Get the kind property: The kind of the server vulnerability assessments setting.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public ServerVulnerabilityAssessmentsSettingKind kind() {
+        return this.kind;
     }
 
     /**

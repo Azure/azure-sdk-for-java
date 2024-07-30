@@ -7,7 +7,9 @@ package com.azure.resourcemanager.resources.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An individual change on the target resource. */
+/**
+ * An individual change on the target resource.
+ */
 @Immutable
 public final class ChangeBase {
     /*
@@ -34,13 +36,15 @@ public final class ChangeBase {
     @JsonProperty(value = "newValue", access = JsonProperty.Access.WRITE_ONLY)
     private String newValue;
 
-    /** Creates an instance of ChangeBase class. */
+    /**
+     * Creates an instance of ChangeBase class.
+     */
     public ChangeBase() {
     }
 
     /**
      * Get the propertyChangeType property: The type of change that occurred.
-     *
+     * 
      * @return the propertyChangeType value.
      */
     public ResourcePropertyChangeType propertyChangeType() {
@@ -49,7 +53,7 @@ public final class ChangeBase {
 
     /**
      * Get the changeCategory property: The entity that made the change.
-     *
+     * 
      * @return the changeCategory value.
      */
     public ChangeCategory changeCategory() {
@@ -58,7 +62,7 @@ public final class ChangeBase {
 
     /**
      * Get the previousValue property: The target resource property value before the change.
-     *
+     * 
      * @return the previousValue value.
      */
     public String previousValue() {
@@ -67,7 +71,7 @@ public final class ChangeBase {
 
     /**
      * Get the newValue property: The target resource property value after the change.
-     *
+     * 
      * @return the newValue value.
      */
     public String newValue() {
@@ -76,7 +80,7 @@ public final class ChangeBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

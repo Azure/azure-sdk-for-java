@@ -12,6 +12,7 @@ import com.azure.resourcemanager.compute.models.OrchestrationMode;
 import com.azure.resourcemanager.compute.models.PriorityMixPolicy;
 import com.azure.resourcemanager.compute.models.ResiliencyPolicy;
 import com.azure.resourcemanager.compute.models.ScaleInPolicy;
+import com.azure.resourcemanager.compute.models.ScheduledEventsPolicy;
 import com.azure.resourcemanager.compute.models.SpotRestorePolicy;
 import com.azure.resourcemanager.compute.models.UpgradePolicy;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProfile;
@@ -28,6 +29,12 @@ public final class VirtualMachineScaleSetProperties {
      */
     @JsonProperty(value = "upgradePolicy")
     private UpgradePolicy upgradePolicy;
+
+    /*
+     * The ScheduledEventsPolicy.
+     */
+    @JsonProperty(value = "scheduledEventsPolicy")
+    private ScheduledEventsPolicy scheduledEventsPolicy;
 
     /*
      * Policy for automatic repairs.
@@ -76,8 +83,8 @@ public final class VirtualMachineScaleSetProperties {
 
     /*
      * Whether to force strictly even Virtual Machine distribution cross x-zones in case there is zone outage.
-     * zoneBalance property can only be set if the zones property of the scale set contains more than one zone. If
-     * there are no zones or only one zone specified, then zoneBalance property should not be set.
+     * zoneBalance property can only be set if the zones property of the scale set contains more than one zone. If there
+     * are no zones or only one zone specified, then zoneBalance property should not be set.
      */
     @JsonProperty(value = "zoneBalance")
     private Boolean zoneBalance;
@@ -175,6 +182,26 @@ public final class VirtualMachineScaleSetProperties {
      */
     public VirtualMachineScaleSetProperties withUpgradePolicy(UpgradePolicy upgradePolicy) {
         this.upgradePolicy = upgradePolicy;
+        return this;
+    }
+
+    /**
+     * Get the scheduledEventsPolicy property: The ScheduledEventsPolicy.
+     * 
+     * @return the scheduledEventsPolicy value.
+     */
+    public ScheduledEventsPolicy scheduledEventsPolicy() {
+        return this.scheduledEventsPolicy;
+    }
+
+    /**
+     * Set the scheduledEventsPolicy property: The ScheduledEventsPolicy.
+     * 
+     * @param scheduledEventsPolicy the scheduledEventsPolicy value to set.
+     * @return the VirtualMachineScaleSetProperties object itself.
+     */
+    public VirtualMachineScaleSetProperties withScheduledEventsPolicy(ScheduledEventsPolicy scheduledEventsPolicy) {
+        this.scheduledEventsPolicy = scheduledEventsPolicy;
         return this;
     }
 
@@ -481,8 +508,8 @@ public final class VirtualMachineScaleSetProperties {
     }
 
     /**
-     * Get the priorityMixPolicy property: Specifies the desired targets for mixing Spot and Regular priority VMs
-     * within the same VMSS Flex instance.
+     * Get the priorityMixPolicy property: Specifies the desired targets for mixing Spot and Regular priority VMs within
+     * the same VMSS Flex instance.
      * 
      * @return the priorityMixPolicy value.
      */
@@ -491,8 +518,8 @@ public final class VirtualMachineScaleSetProperties {
     }
 
     /**
-     * Set the priorityMixPolicy property: Specifies the desired targets for mixing Spot and Regular priority VMs
-     * within the same VMSS Flex instance.
+     * Set the priorityMixPolicy property: Specifies the desired targets for mixing Spot and Regular priority VMs within
+     * the same VMSS Flex instance.
      * 
      * @param priorityMixPolicy the priorityMixPolicy value to set.
      * @return the VirtualMachineScaleSetProperties object itself.
@@ -560,6 +587,9 @@ public final class VirtualMachineScaleSetProperties {
     public void validate() {
         if (upgradePolicy() != null) {
             upgradePolicy().validate();
+        }
+        if (scheduledEventsPolicy() != null) {
+            scheduledEventsPolicy().validate();
         }
         if (automaticRepairsPolicy() != null) {
             automaticRepairsPolicy().validate();

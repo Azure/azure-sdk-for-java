@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.devcenter.fluent.models.AttachedNetworkConnectionInner;
 
-/** An instance of this class provides access to all the operations defined in AttachedNetworksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AttachedNetworksClient.
+ */
 public interface AttachedNetworksClient {
     /**
      * Lists the attached NetworkConnections for a Project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +32,7 @@ public interface AttachedNetworksClient {
 
     /**
      * Lists the attached NetworkConnections for a Project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -41,12 +43,12 @@ public interface AttachedNetworksClient {
      * @return results of the Attached Networks list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AttachedNetworkConnectionInner> listByProject(
-        String resourceGroupName, String projectName, Integer top, Context context);
+    PagedIterable<AttachedNetworkConnectionInner> listByProject(String resourceGroupName, String projectName,
+        Integer top, Context context);
 
     /**
      * Gets an attached NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -57,12 +59,12 @@ public interface AttachedNetworksClient {
      * @return an attached NetworkConnection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AttachedNetworkConnectionInner> getByProjectWithResponse(
-        String resourceGroupName, String projectName, String attachedNetworkConnectionName, Context context);
+    Response<AttachedNetworkConnectionInner> getByProjectWithResponse(String resourceGroupName, String projectName,
+        String attachedNetworkConnectionName, Context context);
 
     /**
      * Gets an attached NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -72,12 +74,12 @@ public interface AttachedNetworksClient {
      * @return an attached NetworkConnection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AttachedNetworkConnectionInner getByProject(
-        String resourceGroupName, String projectName, String attachedNetworkConnectionName);
+    AttachedNetworkConnectionInner getByProject(String resourceGroupName, String projectName,
+        String attachedNetworkConnectionName);
 
     /**
      * Lists the attached NetworkConnections for a DevCenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -90,7 +92,7 @@ public interface AttachedNetworksClient {
 
     /**
      * Lists the attached NetworkConnections for a DevCenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -101,12 +103,12 @@ public interface AttachedNetworksClient {
      * @return results of the Attached Networks list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AttachedNetworkConnectionInner> listByDevCenter(
-        String resourceGroupName, String devCenterName, Integer top, Context context);
+    PagedIterable<AttachedNetworkConnectionInner> listByDevCenter(String resourceGroupName, String devCenterName,
+        Integer top, Context context);
 
     /**
      * Gets an attached NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -117,12 +119,12 @@ public interface AttachedNetworksClient {
      * @return an attached NetworkConnection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AttachedNetworkConnectionInner> getByDevCenterWithResponse(
-        String resourceGroupName, String devCenterName, String attachedNetworkConnectionName, Context context);
+    Response<AttachedNetworkConnectionInner> getByDevCenterWithResponse(String resourceGroupName, String devCenterName,
+        String attachedNetworkConnectionName, Context context);
 
     /**
      * Gets an attached NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -132,12 +134,12 @@ public interface AttachedNetworksClient {
      * @return an attached NetworkConnection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AttachedNetworkConnectionInner getByDevCenter(
-        String resourceGroupName, String devCenterName, String attachedNetworkConnectionName);
+    AttachedNetworkConnectionInner getByDevCenter(String resourceGroupName, String devCenterName,
+        String attachedNetworkConnectionName);
 
     /**
      * Creates or updates an attached NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -149,14 +151,12 @@ public interface AttachedNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AttachedNetworkConnectionInner>, AttachedNetworkConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String devCenterName,
-        String attachedNetworkConnectionName,
+        String resourceGroupName, String devCenterName, String attachedNetworkConnectionName,
         AttachedNetworkConnectionInner body);
 
     /**
      * Creates or updates an attached NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -169,15 +169,12 @@ public interface AttachedNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AttachedNetworkConnectionInner>, AttachedNetworkConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String devCenterName,
-        String attachedNetworkConnectionName,
-        AttachedNetworkConnectionInner body,
-        Context context);
+        String resourceGroupName, String devCenterName, String attachedNetworkConnectionName,
+        AttachedNetworkConnectionInner body, Context context);
 
     /**
      * Creates or updates an attached NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -188,15 +185,12 @@ public interface AttachedNetworksClient {
      * @return represents an attached NetworkConnection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AttachedNetworkConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String devCenterName,
-        String attachedNetworkConnectionName,
-        AttachedNetworkConnectionInner body);
+    AttachedNetworkConnectionInner createOrUpdate(String resourceGroupName, String devCenterName,
+        String attachedNetworkConnectionName, AttachedNetworkConnectionInner body);
 
     /**
      * Creates or updates an attached NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -208,16 +202,12 @@ public interface AttachedNetworksClient {
      * @return represents an attached NetworkConnection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AttachedNetworkConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String devCenterName,
-        String attachedNetworkConnectionName,
-        AttachedNetworkConnectionInner body,
-        Context context);
+    AttachedNetworkConnectionInner createOrUpdate(String resourceGroupName, String devCenterName,
+        String attachedNetworkConnectionName, AttachedNetworkConnectionInner body, Context context);
 
     /**
      * Un-attach a NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -227,12 +217,12 @@ public interface AttachedNetworksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String devCenterName, String attachedNetworkConnectionName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String devCenterName,
+        String attachedNetworkConnectionName);
 
     /**
      * Un-attach a NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -243,12 +233,12 @@ public interface AttachedNetworksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String devCenterName, String attachedNetworkConnectionName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String devCenterName,
+        String attachedNetworkConnectionName, Context context);
 
     /**
      * Un-attach a NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -261,7 +251,7 @@ public interface AttachedNetworksClient {
 
     /**
      * Un-attach a NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.

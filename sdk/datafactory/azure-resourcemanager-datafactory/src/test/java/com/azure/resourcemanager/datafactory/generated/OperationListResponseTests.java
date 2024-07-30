@@ -33,24 +33,33 @@ public final class OperationListResponseTests {
     public void testSerialize() throws Exception {
         OperationListResponse model = new OperationListResponse()
             .withValue(Arrays.asList(
-                new OperationInner().withName("quvgjxpybczme").withOrigin("tzopbsphrupidgsy")
-                    .withDisplay(new OperationDisplay().withDescription("jhphoyc").withProvider("xaobhdxbmtqioqjz")
-                        .withResource("tbmufpo").withOperation("oizh"))
+                new OperationInner().withName("quvgjxpybczme")
+                    .withOrigin("tzopbsphrupidgsy")
+                    .withDisplay(new OperationDisplay().withDescription("jhphoyc")
+                        .withProvider("xaobhdxbmtqioqjz")
+                        .withResource("tbmufpo")
+                        .withOperation("oizh"))
                     .withServiceSpecification(new OperationServiceSpecification()
                         .withLogSpecifications(Arrays.asList(new OperationLogSpecification(),
                             new OperationLogSpecification(), new OperationLogSpecification()))
                         .withMetricSpecifications(Arrays.asList(new OperationMetricSpecification(),
                             new OperationMetricSpecification(), new OperationMetricSpecification()))),
-                new OperationInner().withName("oqijgkdmbpaz").withOrigin("bc")
-                    .withDisplay(new OperationDisplay().withDescription("dznrbtcqq").withProvider("qglhq")
-                        .withResource("ufo").withOperation("jywif"))
+                new OperationInner().withName("oqijgkdmbpaz")
+                    .withOrigin("bc")
+                    .withDisplay(new OperationDisplay().withDescription("dznrbtcqq")
+                        .withProvider("qglhq")
+                        .withResource("ufo")
+                        .withOperation("jywif"))
                     .withServiceSpecification(new OperationServiceSpecification()
                         .withLogSpecifications(
                             Arrays.asList(new OperationLogSpecification(), new OperationLogSpecification()))
                         .withMetricSpecifications(Arrays.asList(new OperationMetricSpecification()))),
-                new OperationInner().withName("f").withOrigin("lzl")
-                    .withDisplay(new OperationDisplay().withDescription("rifkwm").withProvider("ktsizntocipaou")
-                        .withResource("psqucmpoyf").withOperation("fogknygjofjdde"))
+                new OperationInner().withName("f")
+                    .withOrigin("lzl")
+                    .withDisplay(new OperationDisplay().withDescription("rifkwm")
+                        .withProvider("ktsizntocipaou")
+                        .withResource("psqucmpoyf")
+                        .withOperation("fogknygjofjdde"))
                     .withServiceSpecification(new OperationServiceSpecification()
                         .withLogSpecifications(
                             Arrays.asList(new OperationLogSpecification(), new OperationLogSpecification(),

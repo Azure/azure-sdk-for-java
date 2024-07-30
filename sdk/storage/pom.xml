@@ -20,7 +20,10 @@
       <module>azure-storage-internal-avro</module>
       <module>azure-storage-queue</module>
         <module>azure-storage-perf</module>
-        <module>microsoft-azure-storage-blob</module>
         <module>microsoft-azure-storage-perf</module>
-      </modules>
+    <module>azure-storage-blob-stress</module>
+    <module>azure-storage-stress</module>
+    <module>azure-storage-file-datalake-stress</module>
+    <module>azure-storage-file-share-stress</module>
+  </modules>
 </project>

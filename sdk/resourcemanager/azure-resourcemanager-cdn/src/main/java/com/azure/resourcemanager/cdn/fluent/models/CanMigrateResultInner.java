@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cdn.models.MigrationErrorType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Result for canMigrate operation. */
+/**
+ * Result for canMigrate operation.
+ */
 @Fluent
 public final class CanMigrateResultInner {
     /*
@@ -31,13 +33,15 @@ public final class CanMigrateResultInner {
     @JsonProperty(value = "properties")
     private CanMigrateProperties innerProperties;
 
-    /** Creates an instance of CanMigrateResultInner class. */
+    /**
+     * Creates an instance of CanMigrateResultInner class.
+     */
     public CanMigrateResultInner() {
     }
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -46,7 +50,7 @@ public final class CanMigrateResultInner {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -55,7 +59,7 @@ public final class CanMigrateResultInner {
 
     /**
      * Get the innerProperties property: The properties property.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CanMigrateProperties innerProperties() {
@@ -64,7 +68,7 @@ public final class CanMigrateResultInner {
 
     /**
      * Get the canMigrate property: Flag that says if the profile can be migrated.
-     *
+     * 
      * @return the canMigrate value.
      */
     public Boolean canMigrate() {
@@ -73,7 +77,7 @@ public final class CanMigrateResultInner {
 
     /**
      * Get the defaultSku property: Recommended sku for the migration.
-     *
+     * 
      * @return the defaultSku value.
      */
     public CanMigrateDefaultSku defaultSku() {
@@ -82,7 +86,7 @@ public final class CanMigrateResultInner {
 
     /**
      * Get the errors property: The errors property.
-     *
+     * 
      * @return the errors value.
      */
     public List<MigrationErrorType> errors() {
@@ -91,7 +95,7 @@ public final class CanMigrateResultInner {
 
     /**
      * Set the errors property: The errors property.
-     *
+     * 
      * @param errors the errors value to set.
      * @return the CanMigrateResultInner object itself.
      */
@@ -105,7 +109,7 @@ public final class CanMigrateResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

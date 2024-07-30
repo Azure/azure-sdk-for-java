@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class LegacyMicrosoftAccount {
     /*
-     * <code>false</code> if the legacy Microsoft Account provider should not be enabled despite the set registration;
-     * otherwise, <code>true</code>.
+     * <code>false</code> if the legacy Microsoft Account provider should not be enabled despite the set registration; otherwise, <code>true</code>.
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;
@@ -108,8 +107,8 @@ public final class LegacyMicrosoftAccount {
     }
 
     /**
-     * Get the validation property: The configuration settings of the legacy Microsoft Account provider token
-     * validation flow.
+     * Get the validation property: The configuration settings of the legacy Microsoft Account provider token validation
+     * flow.
      * 
      * @return the validation value.
      */
@@ -118,8 +117,8 @@ public final class LegacyMicrosoftAccount {
     }
 
     /**
-     * Set the validation property: The configuration settings of the legacy Microsoft Account provider token
-     * validation flow.
+     * Set the validation property: The configuration settings of the legacy Microsoft Account provider token validation
+     * flow.
      * 
      * @param validation the validation value to set.
      * @return the LegacyMicrosoftAccount object itself.

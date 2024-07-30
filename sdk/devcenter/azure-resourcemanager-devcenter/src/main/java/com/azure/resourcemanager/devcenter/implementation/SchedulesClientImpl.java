@@ -40,22 +40,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SchedulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SchedulesClient.
+ */
 public final class SchedulesClientImpl implements SchedulesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SchedulesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DevCenterManagementClientImpl client;
 
     /**
      * Initializes an instance of SchedulesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SchedulesClientImpl(DevCenterManagementClientImpl client) {
-        this.service =
-            RestProxy.create(SchedulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(SchedulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,106 +72,70 @@ public final class SchedulesClientImpl implements SchedulesClient {
     @Host("{$host}")
     @ServiceInterface(name = "DevCenterManagementC")
     public interface SchedulesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/pools/{poolName}/schedules")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/pools/{poolName}/schedules")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ScheduleListResult>> listByPool(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("projectName") String projectName,
-            @PathParam("poolName") String poolName,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ScheduleListResult>> listByPool(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("projectName") String projectName,
+            @PathParam("poolName") String poolName, @QueryParam("$top") Integer top,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/pools/{poolName}/schedules/{scheduleName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/pools/{poolName}/schedules/{scheduleName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ScheduleInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("projectName") String projectName,
-            @PathParam("poolName") String poolName,
-            @PathParam("scheduleName") String scheduleName,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ScheduleInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("projectName") String projectName,
+            @PathParam("poolName") String poolName, @PathParam("scheduleName") String scheduleName,
+            @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/pools/{poolName}/schedules/{scheduleName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/pools/{poolName}/schedules/{scheduleName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("projectName") String projectName,
-            @PathParam("poolName") String poolName,
-            @PathParam("scheduleName") String scheduleName,
-            @QueryParam("$top") Integer top,
-            @BodyParam("application/json") ScheduleInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("projectName") String projectName,
+            @PathParam("poolName") String poolName, @PathParam("scheduleName") String scheduleName,
+            @QueryParam("$top") Integer top, @BodyParam("application/json") ScheduleInner body,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/pools/{poolName}/schedules/{scheduleName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/pools/{poolName}/schedules/{scheduleName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("projectName") String projectName,
-            @PathParam("poolName") String poolName,
-            @PathParam("scheduleName") String scheduleName,
-            @QueryParam("$top") Integer top,
-            @BodyParam("application/json") ScheduleUpdate body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("projectName") String projectName,
+            @PathParam("poolName") String poolName, @PathParam("scheduleName") String scheduleName,
+            @QueryParam("$top") Integer top, @BodyParam("application/json") ScheduleUpdate body,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/pools/{poolName}/schedules/{scheduleName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/pools/{poolName}/schedules/{scheduleName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("projectName") String projectName,
-            @PathParam("poolName") String poolName,
-            @PathParam("scheduleName") String scheduleName,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("projectName") String projectName,
+            @PathParam("poolName") String poolName, @PathParam("scheduleName") String scheduleName,
+            @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ScheduleListResult>> listByPoolNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists schedules for a pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -173,23 +143,19 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the schedule list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return result of the schedule list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ScheduleInner>> listByPoolSinglePageAsync(
-        String resourceGroupName, String projectName, String poolName, Integer top) {
+    private Mono<PagedResponse<ScheduleInner>> listByPoolSinglePageAsync(String resourceGroupName, String projectName,
+        String poolName, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -203,34 +169,16 @@ public final class SchedulesClientImpl implements SchedulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByPool(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            projectName,
-                            poolName,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<ScheduleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByPool(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, projectName, poolName, top, accept, context))
+            .<PagedResponse<ScheduleInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists schedules for a pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -239,23 +187,19 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the schedule list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return result of the schedule list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ScheduleInner>> listByPoolSinglePageAsync(
-        String resourceGroupName, String projectName, String poolName, Integer top, Context context) {
+    private Mono<PagedResponse<ScheduleInner>> listByPoolSinglePageAsync(String resourceGroupName, String projectName,
+        String poolName, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -270,30 +214,15 @@ public final class SchedulesClientImpl implements SchedulesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByPool(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                projectName,
-                poolName,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByPool(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, projectName, poolName, top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists schedules for a pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -304,16 +233,15 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return result of the schedule list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ScheduleInner> listByPoolAsync(
-        String resourceGroupName, String projectName, String poolName, Integer top) {
-        return new PagedFlux<>(
-            () -> listByPoolSinglePageAsync(resourceGroupName, projectName, poolName, top),
+    private PagedFlux<ScheduleInner> listByPoolAsync(String resourceGroupName, String projectName, String poolName,
+        Integer top) {
+        return new PagedFlux<>(() -> listByPoolSinglePageAsync(resourceGroupName, projectName, poolName, top),
             nextLink -> listByPoolNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists schedules for a pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -325,14 +253,13 @@ public final class SchedulesClientImpl implements SchedulesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ScheduleInner> listByPoolAsync(String resourceGroupName, String projectName, String poolName) {
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listByPoolSinglePageAsync(resourceGroupName, projectName, poolName, top),
+        return new PagedFlux<>(() -> listByPoolSinglePageAsync(resourceGroupName, projectName, poolName, top),
             nextLink -> listByPoolNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists schedules for a pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -344,16 +271,15 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return result of the schedule list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ScheduleInner> listByPoolAsync(
-        String resourceGroupName, String projectName, String poolName, Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listByPoolSinglePageAsync(resourceGroupName, projectName, poolName, top, context),
+    private PagedFlux<ScheduleInner> listByPoolAsync(String resourceGroupName, String projectName, String poolName,
+        Integer top, Context context) {
+        return new PagedFlux<>(() -> listByPoolSinglePageAsync(resourceGroupName, projectName, poolName, top, context),
             nextLink -> listByPoolNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists schedules for a pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -370,7 +296,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Lists schedules for a pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -382,14 +308,14 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return result of the schedule list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ScheduleInner> listByPool(
-        String resourceGroupName, String projectName, String poolName, Integer top, Context context) {
+    public PagedIterable<ScheduleInner> listByPool(String resourceGroupName, String projectName, String poolName,
+        Integer top, Context context) {
         return new PagedIterable<>(listByPoolAsync(resourceGroupName, projectName, poolName, top, context));
     }
 
     /**
      * Gets a schedule resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -401,19 +327,15 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return a schedule resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ScheduleInner>> getWithResponseAsync(
-        String resourceGroupName, String projectName, String poolName, String scheduleName, Integer top) {
+    private Mono<Response<ScheduleInner>> getWithResponseAsync(String resourceGroupName, String projectName,
+        String poolName, String scheduleName, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -430,26 +352,15 @@ public final class SchedulesClientImpl implements SchedulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            projectName,
-                            poolName,
-                            scheduleName,
-                            top,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, projectName, poolName, scheduleName, top, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a schedule resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -462,24 +373,15 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return a schedule resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ScheduleInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        Integer top,
-        Context context) {
+    private Mono<Response<ScheduleInner>> getWithResponseAsync(String resourceGroupName, String projectName,
+        String poolName, String scheduleName, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -496,23 +398,13 @@ public final class SchedulesClientImpl implements SchedulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                projectName,
-                poolName,
-                scheduleName,
-                top,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, projectName, poolName, scheduleName, top, accept, context);
     }
 
     /**
      * Gets a schedule resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -523,8 +415,8 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return a schedule resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ScheduleInner> getAsync(
-        String resourceGroupName, String projectName, String poolName, String scheduleName) {
+    private Mono<ScheduleInner> getAsync(String resourceGroupName, String projectName, String poolName,
+        String scheduleName) {
         final Integer top = null;
         return getWithResponseAsync(resourceGroupName, projectName, poolName, scheduleName, top)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -532,7 +424,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Gets a schedule resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -545,19 +437,14 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return a schedule resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ScheduleInner> getWithResponse(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        Integer top,
-        Context context) {
+    public Response<ScheduleInner> getWithResponse(String resourceGroupName, String projectName, String poolName,
+        String scheduleName, Integer top, Context context) {
         return getWithResponseAsync(resourceGroupName, projectName, poolName, scheduleName, top, context).block();
     }
 
     /**
      * Gets a schedule resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -575,7 +462,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Creates or updates a Schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -585,28 +472,19 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Schedule to execute a task along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return represents a Schedule to execute a task along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        ScheduleInner body,
-        Integer top) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String projectName, String poolName, String scheduleName, ScheduleInner body, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -628,27 +506,15 @@ public final class SchedulesClientImpl implements SchedulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            projectName,
-                            poolName,
-                            scheduleName,
-                            top,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, projectName, poolName, scheduleName, top, body,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a Schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -659,29 +525,19 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Schedule to execute a task along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return represents a Schedule to execute a task along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        ScheduleInner body,
-        Integer top,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String projectName, String poolName, String scheduleName, ScheduleInner body, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -703,24 +559,14 @@ public final class SchedulesClientImpl implements SchedulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                projectName,
-                poolName,
-                scheduleName,
-                top,
-                body,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, projectName, poolName, scheduleName, top, body, accept,
+            context);
     }
 
     /**
      * Creates or updates a Schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -733,28 +579,17 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return the {@link PollerFlux} for polling of represents a Schedule to execute a task.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ScheduleInner>, ScheduleInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        ScheduleInner body,
-        Integer top) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, projectName, poolName, scheduleName, body, top);
-        return this
-            .client
-            .<ScheduleInner, ScheduleInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ScheduleInner.class,
-                ScheduleInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<ScheduleInner>, ScheduleInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String projectName, String poolName, String scheduleName, ScheduleInner body, Integer top) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, projectName, poolName, scheduleName, body, top);
+        return this.client.<ScheduleInner, ScheduleInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ScheduleInner.class, ScheduleInner.class, this.client.getContext());
     }
 
     /**
      * Creates or updates a Schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -766,24 +601,18 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return the {@link PollerFlux} for polling of represents a Schedule to execute a task.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ScheduleInner>, ScheduleInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String projectName, String poolName, String scheduleName, ScheduleInner body) {
+    private PollerFlux<PollResult<ScheduleInner>, ScheduleInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String projectName, String poolName, String scheduleName, ScheduleInner body) {
         final Integer top = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, projectName, poolName, scheduleName, body, top);
-        return this
-            .client
-            .<ScheduleInner, ScheduleInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ScheduleInner.class,
-                ScheduleInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, projectName, poolName, scheduleName, body, top);
+        return this.client.<ScheduleInner, ScheduleInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ScheduleInner.class, ScheduleInner.class, this.client.getContext());
     }
 
     /**
      * Creates or updates a Schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -797,26 +626,18 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return the {@link PollerFlux} for polling of represents a Schedule to execute a task.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ScheduleInner>, ScheduleInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        ScheduleInner body,
-        Integer top,
-        Context context) {
+    private PollerFlux<PollResult<ScheduleInner>, ScheduleInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String projectName, String poolName, String scheduleName, ScheduleInner body, Integer top, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, projectName, poolName, scheduleName, body, top, context);
-        return this
-            .client
-            .<ScheduleInner, ScheduleInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ScheduleInner.class, ScheduleInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, projectName,
+            poolName, scheduleName, body, top, context);
+        return this.client.<ScheduleInner, ScheduleInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ScheduleInner.class, ScheduleInner.class, context);
     }
 
     /**
      * Creates or updates a Schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -828,17 +649,16 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return the {@link SyncPoller} for polling of represents a Schedule to execute a task.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ScheduleInner>, ScheduleInner> beginCreateOrUpdate(
-        String resourceGroupName, String projectName, String poolName, String scheduleName, ScheduleInner body) {
+    public SyncPoller<PollResult<ScheduleInner>, ScheduleInner> beginCreateOrUpdate(String resourceGroupName,
+        String projectName, String poolName, String scheduleName, ScheduleInner body) {
         final Integer top = null;
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a Schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -852,22 +672,15 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return the {@link SyncPoller} for polling of represents a Schedule to execute a task.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ScheduleInner>, ScheduleInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        ScheduleInner body,
-        Integer top,
-        Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top, context)
+    public SyncPoller<PollResult<ScheduleInner>, ScheduleInner> beginCreateOrUpdate(String resourceGroupName,
+        String projectName, String poolName, String scheduleName, ScheduleInner body, Integer top, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top, context)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a Schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -880,21 +693,15 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return represents a Schedule to execute a task on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ScheduleInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        ScheduleInner body,
-        Integer top) {
-        return beginCreateOrUpdateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top)
-            .last()
+    private Mono<ScheduleInner> createOrUpdateAsync(String resourceGroupName, String projectName, String poolName,
+        String scheduleName, ScheduleInner body, Integer top) {
+        return beginCreateOrUpdateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a Schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -906,17 +713,16 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return represents a Schedule to execute a task on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ScheduleInner> createOrUpdateAsync(
-        String resourceGroupName, String projectName, String poolName, String scheduleName, ScheduleInner body) {
+    private Mono<ScheduleInner> createOrUpdateAsync(String resourceGroupName, String projectName, String poolName,
+        String scheduleName, ScheduleInner body) {
         final Integer top = null;
-        return beginCreateOrUpdateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top)
-            .last()
+        return beginCreateOrUpdateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a Schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -930,14 +736,8 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return represents a Schedule to execute a task on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ScheduleInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        ScheduleInner body,
-        Integer top,
-        Context context) {
+    private Mono<ScheduleInner> createOrUpdateAsync(String resourceGroupName, String projectName, String poolName,
+        String scheduleName, ScheduleInner body, Integer top, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -945,7 +745,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Creates or updates a Schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -957,15 +757,15 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return represents a Schedule to execute a task.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ScheduleInner createOrUpdate(
-        String resourceGroupName, String projectName, String poolName, String scheduleName, ScheduleInner body) {
+    public ScheduleInner createOrUpdate(String resourceGroupName, String projectName, String poolName,
+        String scheduleName, ScheduleInner body) {
         final Integer top = null;
         return createOrUpdateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top).block();
     }
 
     /**
      * Creates or updates a Schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -979,20 +779,14 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return represents a Schedule to execute a task.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ScheduleInner createOrUpdate(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        ScheduleInner body,
-        Integer top,
-        Context context) {
+    public ScheduleInner createOrUpdate(String resourceGroupName, String projectName, String poolName,
+        String scheduleName, ScheduleInner body, Integer top, Context context) {
         return createOrUpdateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top, context).block();
     }
 
     /**
      * Partially updates a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1002,28 +796,19 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Schedule to execute a task along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return represents a Schedule to execute a task along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        ScheduleUpdate body,
-        Integer top) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String projectName,
+        String poolName, String scheduleName, ScheduleUpdate body, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1045,27 +830,15 @@ public final class SchedulesClientImpl implements SchedulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            projectName,
-                            poolName,
-                            scheduleName,
-                            top,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, projectName, poolName, scheduleName, top, body,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Partially updates a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1076,29 +849,19 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Schedule to execute a task along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return represents a Schedule to execute a task along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        ScheduleUpdate body,
-        Integer top,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String projectName,
+        String poolName, String scheduleName, ScheduleUpdate body, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1120,24 +883,13 @@ public final class SchedulesClientImpl implements SchedulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                projectName,
-                poolName,
-                scheduleName,
-                top,
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, projectName, poolName, scheduleName, top, body, accept, context);
     }
 
     /**
      * Partially updates a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1150,28 +902,17 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return the {@link PollerFlux} for polling of represents a Schedule to execute a task.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ScheduleInner>, ScheduleInner> beginUpdateAsync(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        ScheduleUpdate body,
-        Integer top) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, projectName, poolName, scheduleName, body, top);
-        return this
-            .client
-            .<ScheduleInner, ScheduleInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ScheduleInner.class,
-                ScheduleInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<ScheduleInner>, ScheduleInner> beginUpdateAsync(String resourceGroupName,
+        String projectName, String poolName, String scheduleName, ScheduleUpdate body, Integer top) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, projectName, poolName, scheduleName, body, top);
+        return this.client.<ScheduleInner, ScheduleInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ScheduleInner.class, ScheduleInner.class, this.client.getContext());
     }
 
     /**
      * Partially updates a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1183,24 +924,18 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return the {@link PollerFlux} for polling of represents a Schedule to execute a task.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ScheduleInner>, ScheduleInner> beginUpdateAsync(
-        String resourceGroupName, String projectName, String poolName, String scheduleName, ScheduleUpdate body) {
+    private PollerFlux<PollResult<ScheduleInner>, ScheduleInner> beginUpdateAsync(String resourceGroupName,
+        String projectName, String poolName, String scheduleName, ScheduleUpdate body) {
         final Integer top = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, projectName, poolName, scheduleName, body, top);
-        return this
-            .client
-            .<ScheduleInner, ScheduleInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ScheduleInner.class,
-                ScheduleInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, projectName, poolName, scheduleName, body, top);
+        return this.client.<ScheduleInner, ScheduleInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ScheduleInner.class, ScheduleInner.class, this.client.getContext());
     }
 
     /**
      * Partially updates a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1214,26 +949,18 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return the {@link PollerFlux} for polling of represents a Schedule to execute a task.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ScheduleInner>, ScheduleInner> beginUpdateAsync(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        ScheduleUpdate body,
-        Integer top,
-        Context context) {
+    private PollerFlux<PollResult<ScheduleInner>, ScheduleInner> beginUpdateAsync(String resourceGroupName,
+        String projectName, String poolName, String scheduleName, ScheduleUpdate body, Integer top, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, projectName, poolName, scheduleName, body, top, context);
-        return this
-            .client
-            .<ScheduleInner, ScheduleInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ScheduleInner.class, ScheduleInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, projectName, poolName, scheduleName, body, top, context);
+        return this.client.<ScheduleInner, ScheduleInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ScheduleInner.class, ScheduleInner.class, context);
     }
 
     /**
      * Partially updates a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1245,15 +972,15 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return the {@link SyncPoller} for polling of represents a Schedule to execute a task.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ScheduleInner>, ScheduleInner> beginUpdate(
-        String resourceGroupName, String projectName, String poolName, String scheduleName, ScheduleUpdate body) {
+    public SyncPoller<PollResult<ScheduleInner>, ScheduleInner> beginUpdate(String resourceGroupName,
+        String projectName, String poolName, String scheduleName, ScheduleUpdate body) {
         final Integer top = null;
         return this.beginUpdateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top).getSyncPoller();
     }
 
     /**
      * Partially updates a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1267,22 +994,15 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return the {@link SyncPoller} for polling of represents a Schedule to execute a task.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ScheduleInner>, ScheduleInner> beginUpdate(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        ScheduleUpdate body,
-        Integer top,
-        Context context) {
-        return this
-            .beginUpdateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top, context)
+    public SyncPoller<PollResult<ScheduleInner>, ScheduleInner> beginUpdate(String resourceGroupName,
+        String projectName, String poolName, String scheduleName, ScheduleUpdate body, Integer top, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top, context)
             .getSyncPoller();
     }
 
     /**
      * Partially updates a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1295,21 +1015,15 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return represents a Schedule to execute a task on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ScheduleInner> updateAsync(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        ScheduleUpdate body,
-        Integer top) {
-        return beginUpdateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top)
-            .last()
+    private Mono<ScheduleInner> updateAsync(String resourceGroupName, String projectName, String poolName,
+        String scheduleName, ScheduleUpdate body, Integer top) {
+        return beginUpdateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Partially updates a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1321,17 +1035,16 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return represents a Schedule to execute a task on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ScheduleInner> updateAsync(
-        String resourceGroupName, String projectName, String poolName, String scheduleName, ScheduleUpdate body) {
+    private Mono<ScheduleInner> updateAsync(String resourceGroupName, String projectName, String poolName,
+        String scheduleName, ScheduleUpdate body) {
         final Integer top = null;
-        return beginUpdateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top)
-            .last()
+        return beginUpdateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Partially updates a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1345,22 +1058,15 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return represents a Schedule to execute a task on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ScheduleInner> updateAsync(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        ScheduleUpdate body,
-        Integer top,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top, context)
-            .last()
+    private Mono<ScheduleInner> updateAsync(String resourceGroupName, String projectName, String poolName,
+        String scheduleName, ScheduleUpdate body, Integer top, Context context) {
+        return beginUpdateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Partially updates a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1372,15 +1078,15 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return represents a Schedule to execute a task.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ScheduleInner update(
-        String resourceGroupName, String projectName, String poolName, String scheduleName, ScheduleUpdate body) {
+    public ScheduleInner update(String resourceGroupName, String projectName, String poolName, String scheduleName,
+        ScheduleUpdate body) {
         final Integer top = null;
         return updateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top).block();
     }
 
     /**
      * Partially updates a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1394,20 +1100,14 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return represents a Schedule to execute a task.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ScheduleInner update(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        ScheduleUpdate body,
-        Integer top,
-        Context context) {
+    public ScheduleInner update(String resourceGroupName, String projectName, String poolName, String scheduleName,
+        ScheduleUpdate body, Integer top, Context context) {
         return updateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top, context).block();
     }
 
     /**
      * Deletes a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1419,19 +1119,15 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String projectName, String poolName, String scheduleName, Integer top) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String projectName,
+        String poolName, String scheduleName, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1448,26 +1144,15 @@ public final class SchedulesClientImpl implements SchedulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            projectName,
-                            poolName,
-                            scheduleName,
-                            top,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, projectName, poolName, scheduleName, top, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1480,24 +1165,15 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        Integer top,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String projectName,
+        String poolName, String scheduleName, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1514,23 +1190,13 @@ public final class SchedulesClientImpl implements SchedulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                projectName,
-                poolName,
-                scheduleName,
-                top,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, projectName, poolName, scheduleName, top, accept, context);
     }
 
     /**
      * Deletes a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1542,19 +1208,17 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String projectName, String poolName, String scheduleName, Integer top) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, projectName, poolName, scheduleName, top);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String projectName,
+        String poolName, String scheduleName, Integer top) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, projectName, poolName, scheduleName, top);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1565,20 +1229,18 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String projectName, String poolName, String scheduleName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String projectName,
+        String poolName, String scheduleName) {
         final Integer top = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, projectName, poolName, scheduleName, top);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, projectName, poolName, scheduleName, top);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1591,24 +1253,18 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        Integer top,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String projectName,
+        String poolName, String scheduleName, Integer top, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, projectName, poolName, scheduleName, top, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, projectName, poolName, scheduleName, top, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1619,15 +1275,15 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String projectName, String poolName, String scheduleName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String projectName, String poolName,
+        String scheduleName) {
         final Integer top = null;
         return this.beginDeleteAsync(resourceGroupName, projectName, poolName, scheduleName, top).getSyncPoller();
     }
 
     /**
      * Deletes a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1640,21 +1296,15 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        Integer top,
-        Context context) {
-        return this
-            .beginDeleteAsync(resourceGroupName, projectName, poolName, scheduleName, top, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String projectName, String poolName,
+        String scheduleName, Integer top, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, projectName, poolName, scheduleName, top, context)
             .getSyncPoller();
     }
 
     /**
      * Deletes a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1666,16 +1316,15 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String projectName, String poolName, String scheduleName, Integer top) {
-        return beginDeleteAsync(resourceGroupName, projectName, poolName, scheduleName, top)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String projectName, String poolName, String scheduleName,
+        Integer top) {
+        return beginDeleteAsync(resourceGroupName, projectName, poolName, scheduleName, top).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1688,14 +1337,13 @@ public final class SchedulesClientImpl implements SchedulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String projectName, String poolName, String scheduleName) {
         final Integer top = null;
-        return beginDeleteAsync(resourceGroupName, projectName, poolName, scheduleName, top)
-            .last()
+        return beginDeleteAsync(resourceGroupName, projectName, poolName, scheduleName, top).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1708,21 +1356,15 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        Integer top,
-        Context context) {
-        return beginDeleteAsync(resourceGroupName, projectName, poolName, scheduleName, top, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String projectName, String poolName, String scheduleName,
+        Integer top, Context context) {
+        return beginDeleteAsync(resourceGroupName, projectName, poolName, scheduleName, top, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1739,7 +1381,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Deletes a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1751,26 +1393,22 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        Integer top,
+    public void delete(String resourceGroupName, String projectName, String poolName, String scheduleName, Integer top,
         Context context) {
         deleteAsync(resourceGroupName, projectName, poolName, scheduleName, top, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the schedule list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return result of the schedule list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScheduleInner>> listByPoolNextSinglePageAsync(String nextLink) {
@@ -1778,37 +1416,29 @@ public final class SchedulesClientImpl implements SchedulesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByPoolNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ScheduleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ScheduleInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the schedule list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return result of the schedule list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScheduleInner>> listByPoolNextSinglePageAsync(String nextLink, Context context) {
@@ -1816,23 +1446,13 @@ public final class SchedulesClientImpl implements SchedulesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByPoolNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByPoolNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

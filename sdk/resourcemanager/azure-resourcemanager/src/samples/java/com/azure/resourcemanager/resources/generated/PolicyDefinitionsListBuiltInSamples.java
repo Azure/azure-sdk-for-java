@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-/** Samples for PolicyDefinitions ListBuiltIn. */
+/**
+ * Samples for PolicyDefinitions ListBuiltIn.
+ */
 public final class PolicyDefinitionsListBuiltInSamples {
     /*
      * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listBuiltInPolicyDefinitions.json
      */
     /**
      * Sample code: List built-in policy definitions.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listBuiltInPolicyDefinitions(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .genericResources()
+        azure.genericResources()
             .manager()
             .policyClient()
             .getPolicyDefinitions()

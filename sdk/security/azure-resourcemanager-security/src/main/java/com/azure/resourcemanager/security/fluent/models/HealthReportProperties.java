@@ -57,8 +57,7 @@ public final class HealthReportProperties {
     private List<String> affectedDefendersSubPlans;
 
     /*
-     * Additional data for the given health report, this field can include more details on the resource and the health
-     * scenario.
+     * Additional data for the given health report, this field can include more details on the resource and the health scenario.
      */
     @JsonProperty(value = "reportAdditionalData", access = JsonProperty.Access.WRITE_ONLY)
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)

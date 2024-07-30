@@ -31,8 +31,7 @@ public final class SecurityRulePropertiesFormat {
     private SecurityRuleProtocol protocol;
 
     /*
-     * The source port or range. Integer or range between 0 and 65535. Asterisk '*' can also be used to match all
-     * ports.
+     * The source port or range. Integer or range between 0 and 65535. Asterisk '*' can also be used to match all ports.
      */
     @JsonProperty(value = "sourcePortRange")
     private String sourcePortRange;
@@ -102,8 +101,8 @@ public final class SecurityRulePropertiesFormat {
     private SecurityRuleAccess access;
 
     /*
-     * The priority of the rule. The value can be between 100 and 4096. The priority number must be unique for each
-     * rule in the collection. The lower the priority number, the higher the priority of the rule.
+     * The priority of the rule. The value can be between 100 and 4096. The priority number must be unique for each rule
+     * in the collection. The lower the priority number, the higher the priority of the rule.
      */
     @JsonProperty(value = "priority", required = true)
     private int priority;
@@ -276,9 +275,9 @@ public final class SecurityRulePropertiesFormat {
     }
 
     /**
-     * Get the destinationAddressPrefix property: The destination address prefix. CIDR or destination IP range.
-     * Asterisk '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork',
-     * 'AzureLoadBalancer' and 'Internet' can also be used.
+     * Get the destinationAddressPrefix property: The destination address prefix. CIDR or destination IP range. Asterisk
+     * '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and
+     * 'Internet' can also be used.
      * 
      * @return the destinationAddressPrefix value.
      */
@@ -287,9 +286,9 @@ public final class SecurityRulePropertiesFormat {
     }
 
     /**
-     * Set the destinationAddressPrefix property: The destination address prefix. CIDR or destination IP range.
-     * Asterisk '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork',
-     * 'AzureLoadBalancer' and 'Internet' can also be used.
+     * Set the destinationAddressPrefix property: The destination address prefix. CIDR or destination IP range. Asterisk
+     * '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and
+     * 'Internet' can also be used.
      * 
      * @param destinationAddressPrefix the destinationAddressPrefix value to set.
      * @return the SecurityRulePropertiesFormat object itself.
@@ -462,8 +461,9 @@ public final class SecurityRulePropertiesFormat {
      */
     public void validate() {
         if (protocol() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property protocol in model SecurityRulePropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property protocol in model SecurityRulePropertiesFormat"));
         }
         if (sourceApplicationSecurityGroups() != null) {
             sourceApplicationSecurityGroups().forEach(e -> e.validate());
@@ -472,12 +472,14 @@ public final class SecurityRulePropertiesFormat {
             destinationApplicationSecurityGroups().forEach(e -> e.validate());
         }
         if (access() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property access in model SecurityRulePropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property access in model SecurityRulePropertiesFormat"));
         }
         if (direction() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property direction in model SecurityRulePropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property direction in model SecurityRulePropertiesFormat"));
         }
     }
 

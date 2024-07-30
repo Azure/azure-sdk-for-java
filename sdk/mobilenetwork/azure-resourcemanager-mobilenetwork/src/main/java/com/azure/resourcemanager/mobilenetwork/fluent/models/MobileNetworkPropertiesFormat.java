@@ -8,9 +8,13 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.models.PlmnId;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
+import com.azure.resourcemanager.mobilenetwork.models.PublicLandMobileNetwork;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
-/** Mobile network properties. */
+/**
+ * Mobile network properties.
+ */
 @Fluent
 public final class MobileNetworkPropertiesFormat {
     /*
@@ -20,12 +24,16 @@ public final class MobileNetworkPropertiesFormat {
     private ProvisioningState provisioningState;
 
     /*
-     * The unique public land mobile network identifier for the network. This is made up of the mobile country code and
-     * mobile network code, as defined in https://www.itu.int/rec/T-REC-E.212. The values 001-01 and 001-001 can be
-     * used for testing and the values 999-99 and 999-999 can be used on internal private networks.
+     * The unique public land mobile network identifier for the network. If both 'publicLandMobileNetworks' and 'publicLandMobileNetworkIdentifier' are specified, then the 'publicLandMobileNetworks' will take precedence.
      */
     @JsonProperty(value = "publicLandMobileNetworkIdentifier", required = true)
     private PlmnId publicLandMobileNetworkIdentifier;
+
+    /*
+     * A list of public land mobile networks including their identifiers. If both 'publicLandMobileNetworks' and 'publicLandMobileNetworkIdentifier' are specified, then the 'publicLandMobileNetworks' will take precedence.
+     */
+    @JsonProperty(value = "publicLandMobileNetworks")
+    private List<PublicLandMobileNetwork> publicLandMobileNetworks;
 
     /*
      * The mobile network resource identifier
@@ -33,13 +41,15 @@ public final class MobileNetworkPropertiesFormat {
     @JsonProperty(value = "serviceKey", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceKey;
 
-    /** Creates an instance of MobileNetworkPropertiesFormat class. */
+    /**
+     * Creates an instance of MobileNetworkPropertiesFormat class.
+     */
     public MobileNetworkPropertiesFormat() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the mobile network resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -48,10 +58,9 @@ public final class MobileNetworkPropertiesFormat {
 
     /**
      * Get the publicLandMobileNetworkIdentifier property: The unique public land mobile network identifier for the
-     * network. This is made up of the mobile country code and mobile network code, as defined in
-     * https://www.itu.int/rec/T-REC-E.212. The values 001-01 and 001-001 can be used for testing and the values 999-99
-     * and 999-999 can be used on internal private networks.
-     *
+     * network. If both 'publicLandMobileNetworks' and 'publicLandMobileNetworkIdentifier' are specified, then the
+     * 'publicLandMobileNetworks' will take precedence.
+     * 
      * @return the publicLandMobileNetworkIdentifier value.
      */
     public PlmnId publicLandMobileNetworkIdentifier() {
@@ -60,22 +69,46 @@ public final class MobileNetworkPropertiesFormat {
 
     /**
      * Set the publicLandMobileNetworkIdentifier property: The unique public land mobile network identifier for the
-     * network. This is made up of the mobile country code and mobile network code, as defined in
-     * https://www.itu.int/rec/T-REC-E.212. The values 001-01 and 001-001 can be used for testing and the values 999-99
-     * and 999-999 can be used on internal private networks.
-     *
+     * network. If both 'publicLandMobileNetworks' and 'publicLandMobileNetworkIdentifier' are specified, then the
+     * 'publicLandMobileNetworks' will take precedence.
+     * 
      * @param publicLandMobileNetworkIdentifier the publicLandMobileNetworkIdentifier value to set.
      * @return the MobileNetworkPropertiesFormat object itself.
      */
-    public MobileNetworkPropertiesFormat withPublicLandMobileNetworkIdentifier(
-        PlmnId publicLandMobileNetworkIdentifier) {
+    public MobileNetworkPropertiesFormat
+        withPublicLandMobileNetworkIdentifier(PlmnId publicLandMobileNetworkIdentifier) {
         this.publicLandMobileNetworkIdentifier = publicLandMobileNetworkIdentifier;
         return this;
     }
 
     /**
+     * Get the publicLandMobileNetworks property: A list of public land mobile networks including their identifiers. If
+     * both 'publicLandMobileNetworks' and 'publicLandMobileNetworkIdentifier' are specified, then the
+     * 'publicLandMobileNetworks' will take precedence.
+     * 
+     * @return the publicLandMobileNetworks value.
+     */
+    public List<PublicLandMobileNetwork> publicLandMobileNetworks() {
+        return this.publicLandMobileNetworks;
+    }
+
+    /**
+     * Set the publicLandMobileNetworks property: A list of public land mobile networks including their identifiers. If
+     * both 'publicLandMobileNetworks' and 'publicLandMobileNetworkIdentifier' are specified, then the
+     * 'publicLandMobileNetworks' will take precedence.
+     * 
+     * @param publicLandMobileNetworks the publicLandMobileNetworks value to set.
+     * @return the MobileNetworkPropertiesFormat object itself.
+     */
+    public MobileNetworkPropertiesFormat
+        withPublicLandMobileNetworks(List<PublicLandMobileNetwork> publicLandMobileNetworks) {
+        this.publicLandMobileNetworks = publicLandMobileNetworks;
+        return this;
+    }
+
+    /**
      * Get the serviceKey property: The mobile network resource identifier.
-     *
+     * 
      * @return the serviceKey value.
      */
     public String serviceKey() {
@@ -84,18 +117,19 @@ public final class MobileNetworkPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (publicLandMobileNetworkIdentifier() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property publicLandMobileNetworkIdentifier in model"
-                            + " MobileNetworkPropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property publicLandMobileNetworkIdentifier in model MobileNetworkPropertiesFormat"));
         } else {
             publicLandMobileNetworkIdentifier().validate();
+        }
+        if (publicLandMobileNetworks() != null) {
+            publicLandMobileNetworks().forEach(e -> e.validate());
         }
     }
 

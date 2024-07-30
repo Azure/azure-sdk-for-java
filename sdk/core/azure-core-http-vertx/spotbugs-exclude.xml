@@ -16,4 +16,12 @@
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" />
     <Class name="com.azure.core.http.vertx.implementation.VertxRequestWriteSubscriber" />
   </Match>
+
+  <Match>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE" />
+    <And>
+      <Class name="com.azure.core.http.vertx.VertxAsyncHttpClient" />
+      <Method name="sendSync" />
+    </And>
+  </Match>
 </FindBugsFilter>

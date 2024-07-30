@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The comparison rule. */
+/**
+ * The comparison rule.
+ */
 @Fluent
 public final class ComparisonRule {
     /*
@@ -23,13 +25,15 @@ public final class ComparisonRule {
     @JsonProperty(value = "threshold", required = true)
     private float threshold;
 
-    /** Creates an instance of ComparisonRule class. */
+    /**
+     * Creates an instance of ComparisonRule class.
+     */
     public ComparisonRule() {
     }
 
     /**
      * Get the operator property: The comparison operator.
-     *
+     * 
      * @return the operator value.
      */
     public ComparisonOperator operator() {
@@ -38,7 +42,7 @@ public final class ComparisonRule {
 
     /**
      * Set the operator property: The comparison operator.
-     *
+     * 
      * @param operator the operator value to set.
      * @return the ComparisonRule object itself.
      */
@@ -49,7 +53,7 @@ public final class ComparisonRule {
 
     /**
      * Get the threshold property: Threshold setting.
-     *
+     * 
      * @return the threshold value.
      */
     public float threshold() {
@@ -58,7 +62,7 @@ public final class ComparisonRule {
 
     /**
      * Set the threshold property: Threshold setting.
-     *
+     * 
      * @param threshold the threshold value to set.
      * @return the ComparisonRule object itself.
      */
@@ -69,14 +73,13 @@ public final class ComparisonRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (operator() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property operator in model ComparisonRule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property operator in model ComparisonRule"));
         }
     }
 

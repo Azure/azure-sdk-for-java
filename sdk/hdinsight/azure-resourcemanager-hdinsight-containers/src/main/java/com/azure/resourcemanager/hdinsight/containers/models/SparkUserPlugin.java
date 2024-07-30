@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Spark user plugin. */
+/**
+ * Spark user plugin.
+ */
 @Fluent
 public final class SparkUserPlugin {
     /*
@@ -17,13 +19,15 @@ public final class SparkUserPlugin {
     @JsonProperty(value = "path", required = true)
     private String path;
 
-    /** Creates an instance of SparkUserPlugin class. */
+    /**
+     * Creates an instance of SparkUserPlugin class.
+     */
     public SparkUserPlugin() {
     }
 
     /**
      * Get the path property: Fully qualified path to the folder containing the plugins.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -32,7 +36,7 @@ public final class SparkUserPlugin {
 
     /**
      * Set the path property: Fully qualified path to the folder containing the plugins.
-     *
+     * 
      * @param path the path value to set.
      * @return the SparkUserPlugin object itself.
      */
@@ -43,14 +47,13 @@ public final class SparkUserPlugin {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (path() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property path in model SparkUserPlugin"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property path in model SparkUserPlugin"));
         }
     }
 

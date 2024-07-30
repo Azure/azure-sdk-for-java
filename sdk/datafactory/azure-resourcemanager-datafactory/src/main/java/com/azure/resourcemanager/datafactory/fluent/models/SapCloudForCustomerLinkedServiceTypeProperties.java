@@ -111,9 +111,9 @@ public final class SapCloudForCustomerLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Either encryptedCredential or username/password must
-     * be provided. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Either encryptedCredential or username/password must be
+     * provided. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -122,9 +122,9 @@ public final class SapCloudForCustomerLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Either encryptedCredential or username/password must
-     * be provided. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Either encryptedCredential or username/password must be
+     * provided. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SapCloudForCustomerLinkedServiceTypeProperties object itself.
@@ -141,8 +141,9 @@ public final class SapCloudForCustomerLinkedServiceTypeProperties {
      */
     public void validate() {
         if (url() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property url in model SapCloudForCustomerLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property url in model SapCloudForCustomerLinkedServiceTypeProperties"));
         }
         if (password() != null) {
             password().validate();

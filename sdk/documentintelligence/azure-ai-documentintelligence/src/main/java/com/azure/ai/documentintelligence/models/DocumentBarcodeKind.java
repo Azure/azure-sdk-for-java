@@ -6,7 +6,6 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -132,7 +131,6 @@ public final class DocumentBarcodeKind extends ExpandableStringEnum<DocumentBarc
      * @return the corresponding DocumentBarcodeKind.
      */
     @Generated
-    @JsonCreator
     public static DocumentBarcodeKind fromString(String name) {
         return fromString(name, DocumentBarcodeKind.class);
     }

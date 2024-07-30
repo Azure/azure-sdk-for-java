@@ -7,17 +7,14 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Properties of a rule.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "ruleType",
-    defaultImpl = FirewallPolicyRule.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "ruleType", defaultImpl = FirewallPolicyRule.class, visible = true)
 @JsonTypeName("FirewallPolicyRule")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ApplicationRule", value = ApplicationRule.class),
@@ -25,6 +22,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "NetworkRule", value = NetworkRule.class) })
 @Fluent
 public class FirewallPolicyRule {
+    /*
+     * Rule Type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "ruleType", required = true)
+    private FirewallPolicyRuleType ruleType = FirewallPolicyRuleType.fromString("FirewallPolicyRule");
+
     /*
      * Name of the rule.
      */
@@ -41,6 +45,15 @@ public class FirewallPolicyRule {
      * Creates an instance of FirewallPolicyRule class.
      */
     public FirewallPolicyRule() {
+    }
+
+    /**
+     * Get the ruleType property: Rule Type.
+     * 
+     * @return the ruleType value.
+     */
+    public FirewallPolicyRuleType ruleType() {
+        return this.ruleType;
     }
 
     /**

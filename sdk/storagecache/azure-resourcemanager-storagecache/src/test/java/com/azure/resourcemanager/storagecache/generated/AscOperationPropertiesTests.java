@@ -13,15 +13,14 @@ public final class AscOperationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AscOperationProperties model = BinaryData
-            .fromString(
-                "{\"output\":{\"fcivfsnkym\":\"dataqylihkaetckt\",\"jf\":\"datactq\",\"fuwutttxf\":\"dataebrjcxe\"}}")
+            .fromString("{\"output\":{\"xsaga\":\"datalrwdmhdlxyj\",\"kcvqvpke\":\"datacnihgwqapnedgfbc\"}}")
             .toObject(AscOperationProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AscOperationProperties model = new AscOperationProperties()
-            .withOutput(mapOf("fcivfsnkym", "dataqylihkaetckt", "jf", "datactq", "fuwutttxf", "dataebrjcxe"));
+            .withOutput(mapOf("xsaga", "datalrwdmhdlxyj", "kcvqvpke", "datacnihgwqapnedgfbc"));
         model = BinaryData.fromObject(model).toObject(AscOperationProperties.class);
     }
 

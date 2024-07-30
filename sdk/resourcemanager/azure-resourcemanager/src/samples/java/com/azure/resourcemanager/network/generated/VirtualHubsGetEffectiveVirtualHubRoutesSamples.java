@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.models.EffectiveRoutesParameters;
  */
 public final class VirtualHubsGetEffectiveVirtualHubRoutesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * EffectiveRoutesListForRouteTable.json
      */
     /**
@@ -20,15 +20,17 @@ public final class VirtualHubsGetEffectiveVirtualHubRoutesSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void effectiveRoutesForARouteTableResource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualHubs().getEffectiveVirtualHubRoutes("rg1", "virtualHub1",
-            new EffectiveRoutesParameters().withResourceId(
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualHubs()
+            .getEffectiveVirtualHubRoutes("rg1", "virtualHub1", new EffectiveRoutesParameters().withResourceId(
                 "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/hubRouteTables/hubRouteTable1")
-                .withVirtualWanResourceType("RouteTable"),
-            com.azure.core.util.Context.NONE);
+                .withVirtualWanResourceType("RouteTable"), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * EffectiveRoutesListForConnection.json
      */
     /**
@@ -37,15 +39,17 @@ public final class VirtualHubsGetEffectiveVirtualHubRoutesSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void effectiveRoutesForAConnectionResource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualHubs().getEffectiveVirtualHubRoutes("rg1", "virtualHub1",
-            new EffectiveRoutesParameters().withResourceId(
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualHubs()
+            .getEffectiveVirtualHubRoutes("rg1", "virtualHub1", new EffectiveRoutesParameters().withResourceId(
                 "/subscriptions/subid/resourceGroups/resourceGroupName/providers/Microsoft.Network/expressRouteGateways/expressRouteGatewayName/expressRouteConnections/connectionName")
-                .withVirtualWanResourceType("ExpressRouteConnection"),
-            com.azure.core.util.Context.NONE);
+                .withVirtualWanResourceType("ExpressRouteConnection"), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * EffectiveRoutesListForVirtualHub.json
      */
     /**
@@ -54,7 +58,10 @@ public final class VirtualHubsGetEffectiveVirtualHubRoutesSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void effectiveRoutesForTheVirtualHub(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualHubs().getEffectiveVirtualHubRoutes("rg1", "virtualHub1",
-            null, com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualHubs()
+            .getEffectiveVirtualHubRoutes("rg1", "virtualHub1", null, com.azure.core.util.Context.NONE);
     }
 }

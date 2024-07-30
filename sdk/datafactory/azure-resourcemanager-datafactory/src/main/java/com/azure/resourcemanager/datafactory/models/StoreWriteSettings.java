@@ -10,20 +10,17 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Connector write settings.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = StoreWriteSettings.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = StoreWriteSettings.class, visible = true)
 @JsonTypeName("StoreWriteSettings")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "SftpWriteSettings", value = SftpWriteSettings.class),
@@ -35,6 +32,13 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "LakeHouseWriteSettings", value = LakeHouseWriteSettings.class) })
 @Fluent
 public class StoreWriteSettings {
+    /*
+     * The write setting type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "StoreWriteSettings";
+
     /*
      * The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType
      * integer).
@@ -56,8 +60,8 @@ public class StoreWriteSettings {
     private Object copyBehavior;
 
     /*
-     * Specify the custom metadata to be added to sink data. Type: array of objects (or Expression with resultType
-     * array of objects).
+     * Specify the custom metadata to be added to sink data. Type: array of objects (or Expression with resultType array
+     * of objects).
      */
     @JsonProperty(value = "metadata")
     private List<MetadataItem> metadata;
@@ -72,6 +76,15 @@ public class StoreWriteSettings {
      * Creates an instance of StoreWriteSettings class.
      */
     public StoreWriteSettings() {
+    }
+
+    /**
+     * Get the type property: The write setting type.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -184,7 +197,7 @@ public class StoreWriteSettings {
     @JsonAnySetter
     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }

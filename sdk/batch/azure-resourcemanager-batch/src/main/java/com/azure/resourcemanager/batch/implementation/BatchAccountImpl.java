@@ -221,8 +221,8 @@ public final class BatchAccountImpl implements BatchAccount, BatchAccount.Defini
     BatchAccountImpl(BatchAccountInner innerObject, com.azure.resourcemanager.batch.BatchManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "batchAccounts");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "batchAccounts");
     }
 
     public BatchAccount refresh() {

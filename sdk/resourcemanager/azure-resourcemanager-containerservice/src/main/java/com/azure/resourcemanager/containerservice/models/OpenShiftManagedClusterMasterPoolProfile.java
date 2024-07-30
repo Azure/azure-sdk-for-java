@@ -158,8 +158,9 @@ public final class OpenShiftManagedClusterMasterPoolProfile {
      */
     public void validate() {
         if (vmSize() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property vmSize in model OpenShiftManagedClusterMasterPoolProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property vmSize in model OpenShiftManagedClusterMasterPoolProfile"));
         }
     }
 

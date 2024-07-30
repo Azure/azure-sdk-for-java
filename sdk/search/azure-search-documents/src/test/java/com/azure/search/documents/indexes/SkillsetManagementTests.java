@@ -76,7 +76,10 @@ public class SkillsetManagementTests extends SearchTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-
+        // Disable `("$..source")` sanitizer
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.removeSanitizers("AZSDK3423");
+        }
         client = getSearchIndexerClientBuilder(true).httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)).buildClient();
         asyncClient = getSearchIndexerClientBuilder(false).httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)).buildAsyncClient();
     }

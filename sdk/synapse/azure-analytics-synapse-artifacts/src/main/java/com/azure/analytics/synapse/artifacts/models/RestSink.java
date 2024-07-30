@@ -5,56 +5,62 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * A copy activity Rest service Sink.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("RestSink")
 @Fluent
 public final class RestSink extends CopySink {
     /*
-     * The HTTP method used to call the RESTful API. The default is POST. Type: string (or Expression with resultType
-     * string).
+     * Copy sink type.
      */
-    @JsonProperty(value = "requestMethod")
+    private String type = "RestSink";
+
+    /*
+     * The HTTP method used to call the RESTful API. The default is POST. Type: string (or Expression with resultType string).
+     */
     private Object requestMethod;
 
     /*
-     * The additional HTTP headers in the request to the RESTful API. Type: string (or Expression with resultType
-     * string).
+     * The additional HTTP headers in the request to the RESTful API. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "additionalHeaders")
     private Object additionalHeaders;
 
     /*
-     * The timeout (TimeSpan) to get an HTTP response. It is the timeout to get a response, not the timeout to read
-     * response data. Default value: 00:01:40. Type: string (or Expression with resultType string), pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * The timeout (TimeSpan) to get an HTTP response. It is the timeout to get a response, not the timeout to read response data. Default value: 00:01:40. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
-    @JsonProperty(value = "httpRequestTimeout")
     private Object httpRequestTimeout;
 
     /*
-     * The time to await before sending next request, in milliseconds
+     * The time to await before sending next request, in milliseconds 
      */
-    @JsonProperty(value = "requestInterval")
     private Object requestInterval;
 
     /*
-     * Http Compression Type to Send data in compressed format with Optimal Compression Level, Default is None. And The
-     * Only Supported option is Gzip.
+     * Http Compression Type to Send data in compressed format with Optimal Compression Level, Default is None. And The Only Supported option is Gzip. 
      */
-    @JsonProperty(value = "httpCompressionType")
     private Object httpCompressionType;
 
     /**
      * Creates an instance of RestSink class.
      */
     public RestSink() {
+    }
+
+    /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -210,5 +216,82 @@ public final class RestSink extends CopySink {
     public RestSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
+        jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
+        jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
+        jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("requestMethod", this.requestMethod);
+        jsonWriter.writeUntypedField("additionalHeaders", this.additionalHeaders);
+        jsonWriter.writeUntypedField("httpRequestTimeout", this.httpRequestTimeout);
+        jsonWriter.writeUntypedField("requestInterval", this.requestInterval);
+        jsonWriter.writeUntypedField("httpCompressionType", this.httpCompressionType);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestSink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestSink if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the RestSink.
+     */
+    public static RestSink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestSink deserializedRestSink = new RestSink();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("writeBatchSize".equals(fieldName)) {
+                    deserializedRestSink.setWriteBatchSize(reader.readUntyped());
+                } else if ("writeBatchTimeout".equals(fieldName)) {
+                    deserializedRestSink.setWriteBatchTimeout(reader.readUntyped());
+                } else if ("sinkRetryCount".equals(fieldName)) {
+                    deserializedRestSink.setSinkRetryCount(reader.readUntyped());
+                } else if ("sinkRetryWait".equals(fieldName)) {
+                    deserializedRestSink.setSinkRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedRestSink.setMaxConcurrentConnections(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedRestSink.type = reader.getString();
+                } else if ("requestMethod".equals(fieldName)) {
+                    deserializedRestSink.requestMethod = reader.readUntyped();
+                } else if ("additionalHeaders".equals(fieldName)) {
+                    deserializedRestSink.additionalHeaders = reader.readUntyped();
+                } else if ("httpRequestTimeout".equals(fieldName)) {
+                    deserializedRestSink.httpRequestTimeout = reader.readUntyped();
+                } else if ("requestInterval".equals(fieldName)) {
+                    deserializedRestSink.requestInterval = reader.readUntyped();
+                } else if ("httpCompressionType".equals(fieldName)) {
+                    deserializedRestSink.httpCompressionType = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedRestSink.setAdditionalProperties(additionalProperties);
+
+            return deserializedRestSink;
+        });
     }
 }

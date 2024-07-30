@@ -7,12 +7,15 @@ package com.azure.resourcemanager.mysqlflexibleserver.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.HighAvailabilityValidationEstimationInner;
 
-/** Resource collection API of Servers. */
+/**
+ * Resource collection API of Servers.
+ */
 public interface Servers {
     /**
      * Deletes a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -23,7 +26,7 @@ public interface Servers {
 
     /**
      * Deletes a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -35,7 +38,7 @@ public interface Servers {
 
     /**
      * Gets information about a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -48,7 +51,7 @@ public interface Servers {
 
     /**
      * Gets information about a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -60,7 +63,7 @@ public interface Servers {
 
     /**
      * List all the servers in a given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -71,7 +74,7 @@ public interface Servers {
 
     /**
      * List all the servers in a given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -83,7 +86,7 @@ public interface Servers {
 
     /**
      * List all the servers in a given subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of servers as paginated response with {@link PagedIterable}.
@@ -92,7 +95,7 @@ public interface Servers {
 
     /**
      * List all the servers in a given subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -103,7 +106,7 @@ public interface Servers {
 
     /**
      * Manual failover a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -114,7 +117,7 @@ public interface Servers {
 
     /**
      * Manual failover a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -125,8 +128,38 @@ public interface Servers {
     void failover(String resourceGroupName, String serverName, Context context);
 
     /**
+     * Validate a deployment of high availability.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param parameters The required parameters for validation of high availability deployment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return high availability validation properties of a server along with {@link Response}.
+     */
+    Response<HighAvailabilityValidationEstimation> validateEstimateHighAvailabilityWithResponse(
+        String resourceGroupName, String serverName, HighAvailabilityValidationEstimationInner parameters,
+        Context context);
+
+    /**
+     * Validate a deployment of high availability.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param parameters The required parameters for validation of high availability deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return high availability validation properties of a server.
+     */
+    HighAvailabilityValidationEstimation validateEstimateHighAvailability(String resourceGroupName, String serverName,
+        HighAvailabilityValidationEstimationInner parameters);
+
+    /**
      * Restarts a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for restarting a server.
@@ -138,7 +171,7 @@ public interface Servers {
 
     /**
      * Restarts a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for restarting a server.
@@ -151,7 +184,7 @@ public interface Servers {
 
     /**
      * Starts a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -162,7 +195,7 @@ public interface Servers {
 
     /**
      * Starts a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -174,7 +207,7 @@ public interface Servers {
 
     /**
      * Stops a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -185,7 +218,7 @@ public interface Servers {
 
     /**
      * Stops a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -197,7 +230,7 @@ public interface Servers {
 
     /**
      * Resets GTID on a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for resetting GTID on a server.
@@ -209,7 +242,7 @@ public interface Servers {
 
     /**
      * Resets GTID on a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for resetting GTID on a server.
@@ -222,7 +255,7 @@ public interface Servers {
 
     /**
      * Gets information about a server.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -233,7 +266,7 @@ public interface Servers {
 
     /**
      * Gets information about a server.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -245,7 +278,7 @@ public interface Servers {
 
     /**
      * Deletes a server.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -255,7 +288,7 @@ public interface Servers {
 
     /**
      * Deletes a server.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -266,7 +299,7 @@ public interface Servers {
 
     /**
      * Begins definition for a new Server resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Server definition.
      */

@@ -123,12 +123,14 @@ public final class BastionHostIpConfigurationPropertiesFormat {
      */
     public void validate() {
         if (subnet() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property subnet in model BastionHostIpConfigurationPropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property subnet in model BastionHostIpConfigurationPropertiesFormat"));
         }
         if (publicIpAddress() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property publicIpAddress in model BastionHostIpConfigurationPropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property publicIpAddress in model BastionHostIpConfigurationPropertiesFormat"));
         }
     }
 

@@ -12,18 +12,25 @@ import org.junit.jupiter.api.Assertions;
 public final class AutomatedCheckResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutomatedCheckResult model = BinaryData.fromString("{\"result\":\"jhwuaanozjos\",\"type\":\"Warning\"}")
+        AutomatedCheckResult model = BinaryData
+            .fromString("{\"version\":\"zbn\",\"status\":\"lylpstdb\",\"result\":\"xsrz\",\"type\":\"Information\"}")
             .toObject(AutomatedCheckResult.class);
-        Assertions.assertEquals("jhwuaanozjos", model.result());
-        Assertions.assertEquals(AutomatedCheckResultType.WARNING, model.type());
+        Assertions.assertEquals("zbn", model.version());
+        Assertions.assertEquals("lylpstdb", model.status());
+        Assertions.assertEquals("xsrz", model.result());
+        Assertions.assertEquals(AutomatedCheckResultType.INFORMATION, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutomatedCheckResult model
-            = new AutomatedCheckResult().withResult("jhwuaanozjos").withType(AutomatedCheckResultType.WARNING);
+        AutomatedCheckResult model = new AutomatedCheckResult().withVersion("zbn")
+            .withStatus("lylpstdb")
+            .withResult("xsrz")
+            .withType(AutomatedCheckResultType.INFORMATION);
         model = BinaryData.fromObject(model).toObject(AutomatedCheckResult.class);
-        Assertions.assertEquals("jhwuaanozjos", model.result());
-        Assertions.assertEquals(AutomatedCheckResultType.WARNING, model.type());
+        Assertions.assertEquals("zbn", model.version());
+        Assertions.assertEquals("lylpstdb", model.status());
+        Assertions.assertEquals("xsrz", model.result());
+        Assertions.assertEquals(AutomatedCheckResultType.INFORMATION, model.type());
     }
 }

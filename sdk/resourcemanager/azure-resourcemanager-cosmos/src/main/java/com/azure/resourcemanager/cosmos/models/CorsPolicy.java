@@ -32,8 +32,7 @@ public final class CorsPolicy {
     private String allowedHeaders;
 
     /*
-     * The response headers that may be sent in the response to the CORS request and exposed by the browser to the
-     * request issuer.
+     * The response headers that may be sent in the response to the CORS request and exposed by the browser to the request issuer.
      */
     @JsonProperty(value = "exposedHeaders")
     private String exposedHeaders;
@@ -165,8 +164,8 @@ public final class CorsPolicy {
      */
     public void validate() {
         if (allowedOrigins() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property allowedOrigins in model CorsPolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property allowedOrigins in model CorsPolicy"));
         }
     }
 

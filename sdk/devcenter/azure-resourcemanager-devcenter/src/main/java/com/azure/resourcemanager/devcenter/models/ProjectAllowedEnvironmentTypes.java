@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ProjectAllowedEnvironmentTypes. */
+/**
+ * Resource collection API of ProjectAllowedEnvironmentTypes.
+ */
 public interface ProjectAllowedEnvironmentTypes {
     /**
      * Lists allowed environment types for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface ProjectAllowedEnvironmentTypes {
 
     /**
      * Lists allowed environment types for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -34,12 +36,12 @@ public interface ProjectAllowedEnvironmentTypes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the allowed environment type list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<AllowedEnvironmentType> list(
-        String resourceGroupName, String projectName, Integer top, Context context);
+    PagedIterable<AllowedEnvironmentType> list(String resourceGroupName, String projectName, Integer top,
+        Context context);
 
     /**
      * Gets an allowed environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
@@ -49,12 +51,12 @@ public interface ProjectAllowedEnvironmentTypes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an allowed environment type along with {@link Response}.
      */
-    Response<AllowedEnvironmentType> getWithResponse(
-        String resourceGroupName, String projectName, String environmentTypeName, Context context);
+    Response<AllowedEnvironmentType> getWithResponse(String resourceGroupName, String projectName,
+        String environmentTypeName, Context context);
 
     /**
      * Gets an allowed environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.

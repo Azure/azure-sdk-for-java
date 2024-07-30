@@ -6,6 +6,7 @@ package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Authentication configuration information.
@@ -29,6 +30,12 @@ public final class FhirServiceAuthenticationConfiguration {
      */
     @JsonProperty(value = "smartProxyEnabled")
     private Boolean smartProxyEnabled;
+
+    /*
+     * The array of identity provider configurations for SMART on FHIR authentication.
+     */
+    @JsonProperty(value = "smartIdentityProviders")
+    private List<SmartIdentityProviderConfiguration> smartIdentityProviders;
 
     /**
      * Creates an instance of FhirServiceAuthenticationConfiguration class.
@@ -97,10 +104,36 @@ public final class FhirServiceAuthenticationConfiguration {
     }
 
     /**
+     * Get the smartIdentityProviders property: The array of identity provider configurations for SMART on FHIR
+     * authentication.
+     * 
+     * @return the smartIdentityProviders value.
+     */
+    public List<SmartIdentityProviderConfiguration> smartIdentityProviders() {
+        return this.smartIdentityProviders;
+    }
+
+    /**
+     * Set the smartIdentityProviders property: The array of identity provider configurations for SMART on FHIR
+     * authentication.
+     * 
+     * @param smartIdentityProviders the smartIdentityProviders value to set.
+     * @return the FhirServiceAuthenticationConfiguration object itself.
+     */
+    public FhirServiceAuthenticationConfiguration
+        withSmartIdentityProviders(List<SmartIdentityProviderConfiguration> smartIdentityProviders) {
+        this.smartIdentityProviders = smartIdentityProviders;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (smartIdentityProviders() != null) {
+            smartIdentityProviders().forEach(e -> e.validate());
+        }
     }
 }

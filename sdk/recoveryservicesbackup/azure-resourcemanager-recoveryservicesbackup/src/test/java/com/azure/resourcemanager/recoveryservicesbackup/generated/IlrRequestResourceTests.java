@@ -25,7 +25,8 @@ public final class IlrRequestResourceTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IlrRequestResource model = new IlrRequestResource().withLocation("vglsbjjca")
-            .withTags(mapOf("xqtvcofu", "bvtvudutncormr", "vkg", "f")).withProperties(new IlrRequest())
+            .withTags(mapOf("xqtvcofu", "bvtvudutncormr", "vkg", "f"))
+            .withProperties(new IlrRequest())
             .withEtag("sdbnwdcfhucqdpf");
         model = BinaryData.fromObject(model).toObject(IlrRequestResource.class);
         Assertions.assertEquals("vglsbjjca", model.location());

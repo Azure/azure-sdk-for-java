@@ -65,6 +65,23 @@ final class MessagePumpTerminatedException extends RuntimeException {
     }
 
     /**
+     * Gets the error context describing the reason for the termination of the pump.
+     *
+     * @return the error context.
+     */
+    ServiceBusErrorContext getErrorContext() {
+        final Throwable cause = super.getCause();
+        if (cause == null) {
+            return null;
+        } else if (cause instanceof ServiceBusException) {
+            return new ServiceBusErrorContext(cause, fullyQualifiedNamespace, entityPath);
+        } else {
+            return new ServiceBusErrorContext(new ServiceBusException(cause, ServiceBusErrorSource.RECEIVE),
+                fullyQualifiedNamespace, entityPath);
+        }
+    }
+
+    /**
      * Logs the given {@code message} along with pump identifier, fully qualified Service Bus namespace and entity path.
      *
      * @param logger The logger.

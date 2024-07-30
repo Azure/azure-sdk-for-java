@@ -159,8 +159,9 @@ public final class ExpressRouteGatewayProperties {
             expressRouteConnections().forEach(e -> e.validate());
         }
         if (virtualHub() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property virtualHub in model ExpressRouteGatewayProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property virtualHub in model ExpressRouteGatewayProperties"));
         } else {
             virtualHub().validate();
         }

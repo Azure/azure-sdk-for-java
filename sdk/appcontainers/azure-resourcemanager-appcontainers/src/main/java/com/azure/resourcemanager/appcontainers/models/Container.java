@@ -5,25 +5,31 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Container App container definition. */
+/**
+ * Container App container definition.
+ */
 @Fluent
 public final class Container extends BaseContainer {
     /*
      * List of probes for the container.
      */
-    @JsonProperty(value = "probes")
     private List<ContainerAppProbe> probes;
 
-    /** Creates an instance of Container class. */
+    /**
+     * Creates an instance of Container class.
+     */
     public Container() {
     }
 
     /**
      * Get the probes property: List of probes for the container.
-     *
+     * 
      * @return the probes value.
      */
     public List<ContainerAppProbe> probes() {
@@ -32,7 +38,7 @@ public final class Container extends BaseContainer {
 
     /**
      * Set the probes property: List of probes for the container.
-     *
+     * 
      * @param probes the probes value to set.
      * @return the Container object itself.
      */
@@ -41,49 +47,72 @@ public final class Container extends BaseContainer {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Container withImage(String image) {
         super.withImage(image);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Container withImageType(ImageType imageType) {
+        super.withImageType(imageType);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Container withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Container withCommand(List<String> command) {
         super.withCommand(command);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Container withArgs(List<String> args) {
         super.withArgs(args);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Container withEnv(List<EnvironmentVar> env) {
         super.withEnv(env);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Container withResources(ContainerResources resources) {
         super.withResources(resources);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Container withVolumeMounts(List<VolumeMount> volumeMounts) {
         super.withVolumeMounts(volumeMounts);
@@ -92,7 +121,7 @@ public final class Container extends BaseContainer {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -101,5 +130,70 @@ public final class Container extends BaseContainer {
         if (probes() != null) {
             probes().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("image", image());
+        jsonWriter.writeStringField("imageType", imageType() == null ? null : imageType().toString());
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeArrayField("command", command(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("args", args(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("env", env(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("resources", resources());
+        jsonWriter.writeArrayField("volumeMounts", volumeMounts(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("probes", this.probes, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Container from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Container if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Container.
+     */
+    public static Container fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Container deserializedContainer = new Container();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("image".equals(fieldName)) {
+                    deserializedContainer.withImage(reader.getString());
+                } else if ("imageType".equals(fieldName)) {
+                    deserializedContainer.withImageType(ImageType.fromString(reader.getString()));
+                } else if ("name".equals(fieldName)) {
+                    deserializedContainer.withName(reader.getString());
+                } else if ("command".equals(fieldName)) {
+                    List<String> command = reader.readArray(reader1 -> reader1.getString());
+                    deserializedContainer.withCommand(command);
+                } else if ("args".equals(fieldName)) {
+                    List<String> args = reader.readArray(reader1 -> reader1.getString());
+                    deserializedContainer.withArgs(args);
+                } else if ("env".equals(fieldName)) {
+                    List<EnvironmentVar> env = reader.readArray(reader1 -> EnvironmentVar.fromJson(reader1));
+                    deserializedContainer.withEnv(env);
+                } else if ("resources".equals(fieldName)) {
+                    deserializedContainer.withResources(ContainerResources.fromJson(reader));
+                } else if ("volumeMounts".equals(fieldName)) {
+                    List<VolumeMount> volumeMounts = reader.readArray(reader1 -> VolumeMount.fromJson(reader1));
+                    deserializedContainer.withVolumeMounts(volumeMounts);
+                } else if ("probes".equals(fieldName)) {
+                    List<ContainerAppProbe> probes = reader.readArray(reader1 -> ContainerAppProbe.fromJson(reader1));
+                    deserializedContainer.probes = probes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainer;
+        });
     }
 }

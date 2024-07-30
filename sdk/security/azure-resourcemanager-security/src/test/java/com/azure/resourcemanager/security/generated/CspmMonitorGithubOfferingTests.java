@@ -11,7 +11,7 @@ public final class CspmMonitorGithubOfferingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CspmMonitorGithubOffering model
-            = BinaryData.fromString("{\"offeringType\":\"CspmMonitorGithub\",\"description\":\"jzobdwbcpras\"}")
+            = BinaryData.fromString("{\"offeringType\":\"CspmMonitorGithub\",\"description\":\"rwnhkgqggoxsst\"}")
                 .toObject(CspmMonitorGithubOffering.class);
     }
 

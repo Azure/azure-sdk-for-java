@@ -20,7 +20,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Defines web application firewall policy for Azure CDN. */
+/**
+ * Defines web application firewall policy for Azure CDN.
+ */
 @Fluent
 public final class CdnWebApplicationFirewallPolicyInner extends Resource {
     /*
@@ -47,13 +49,15 @@ public final class CdnWebApplicationFirewallPolicyInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of CdnWebApplicationFirewallPolicyInner class. */
+    /**
+     * Creates an instance of CdnWebApplicationFirewallPolicyInner class.
+     */
     public CdnWebApplicationFirewallPolicyInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the web application firewall policy.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CdnWebApplicationFirewallPolicyProperties innerProperties() {
@@ -62,7 +66,7 @@ public final class CdnWebApplicationFirewallPolicyInner extends Resource {
 
     /**
      * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -71,7 +75,7 @@ public final class CdnWebApplicationFirewallPolicyInner extends Resource {
 
     /**
      * Set the etag property: Gets a unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the CdnWebApplicationFirewallPolicyInner object itself.
      */
@@ -83,7 +87,7 @@ public final class CdnWebApplicationFirewallPolicyInner extends Resource {
     /**
      * Get the sku property: The pricing tier (defines a CDN provider, feature list and rate) of the
      * CdnWebApplicationFirewallPolicy.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -93,7 +97,7 @@ public final class CdnWebApplicationFirewallPolicyInner extends Resource {
     /**
      * Set the sku property: The pricing tier (defines a CDN provider, feature list and rate) of the
      * CdnWebApplicationFirewallPolicy.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the CdnWebApplicationFirewallPolicyInner object itself.
      */
@@ -104,21 +108,25 @@ public final class CdnWebApplicationFirewallPolicyInner extends Resource {
 
     /**
      * Get the systemData property: Read only system data.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CdnWebApplicationFirewallPolicyInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CdnWebApplicationFirewallPolicyInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -127,7 +135,7 @@ public final class CdnWebApplicationFirewallPolicyInner extends Resource {
 
     /**
      * Get the policySettings property: Describes policySettings for policy.
-     *
+     * 
      * @return the policySettings value.
      */
     public PolicySettings policySettings() {
@@ -136,7 +144,7 @@ public final class CdnWebApplicationFirewallPolicyInner extends Resource {
 
     /**
      * Set the policySettings property: Describes policySettings for policy.
-     *
+     * 
      * @param policySettings the policySettings value to set.
      * @return the CdnWebApplicationFirewallPolicyInner object itself.
      */
@@ -150,7 +158,7 @@ public final class CdnWebApplicationFirewallPolicyInner extends Resource {
 
     /**
      * Get the rateLimitRules property: Describes rate limit rules inside the policy.
-     *
+     * 
      * @return the rateLimitRules value.
      */
     public RateLimitRuleList rateLimitRules() {
@@ -159,7 +167,7 @@ public final class CdnWebApplicationFirewallPolicyInner extends Resource {
 
     /**
      * Set the rateLimitRules property: Describes rate limit rules inside the policy.
-     *
+     * 
      * @param rateLimitRules the rateLimitRules value to set.
      * @return the CdnWebApplicationFirewallPolicyInner object itself.
      */
@@ -173,7 +181,7 @@ public final class CdnWebApplicationFirewallPolicyInner extends Resource {
 
     /**
      * Get the customRules property: Describes custom rules inside the policy.
-     *
+     * 
      * @return the customRules value.
      */
     public CustomRuleList customRules() {
@@ -182,7 +190,7 @@ public final class CdnWebApplicationFirewallPolicyInner extends Resource {
 
     /**
      * Set the customRules property: Describes custom rules inside the policy.
-     *
+     * 
      * @param customRules the customRules value to set.
      * @return the CdnWebApplicationFirewallPolicyInner object itself.
      */
@@ -196,7 +204,7 @@ public final class CdnWebApplicationFirewallPolicyInner extends Resource {
 
     /**
      * Get the managedRules property: Describes managed rules inside the policy.
-     *
+     * 
      * @return the managedRules value.
      */
     public ManagedRuleSetList managedRules() {
@@ -205,7 +213,7 @@ public final class CdnWebApplicationFirewallPolicyInner extends Resource {
 
     /**
      * Set the managedRules property: Describes managed rules inside the policy.
-     *
+     * 
      * @param managedRules the managedRules value to set.
      * @return the CdnWebApplicationFirewallPolicyInner object itself.
      */
@@ -220,7 +228,7 @@ public final class CdnWebApplicationFirewallPolicyInner extends Resource {
     /**
      * Get the endpointLinks property: Describes Azure CDN endpoints associated with this Web Application Firewall
      * policy.
-     *
+     * 
      * @return the endpointLinks value.
      */
     public List<EndpointResource> endpointLinks() {
@@ -230,7 +238,7 @@ public final class CdnWebApplicationFirewallPolicyInner extends Resource {
     /**
      * Get the extendedProperties property: Key-Value pair representing additional properties for Web Application
      * Firewall policy.
-     *
+     * 
      * @return the extendedProperties value.
      */
     public Map<String, String> extendedProperties() {
@@ -240,7 +248,7 @@ public final class CdnWebApplicationFirewallPolicyInner extends Resource {
     /**
      * Set the extendedProperties property: Key-Value pair representing additional properties for Web Application
      * Firewall policy.
-     *
+     * 
      * @param extendedProperties the extendedProperties value to set.
      * @return the CdnWebApplicationFirewallPolicyInner object itself.
      */
@@ -254,7 +262,7 @@ public final class CdnWebApplicationFirewallPolicyInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state of the WebApplicationFirewallPolicy.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -263,7 +271,7 @@ public final class CdnWebApplicationFirewallPolicyInner extends Resource {
 
     /**
      * Get the resourceState property: Resource status of the policy.
-     *
+     * 
      * @return the resourceState value.
      */
     public PolicyResourceState resourceState() {
@@ -272,7 +280,7 @@ public final class CdnWebApplicationFirewallPolicyInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -280,10 +288,8 @@ public final class CdnWebApplicationFirewallPolicyInner extends Resource {
             innerProperties().validate();
         }
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sku in model CdnWebApplicationFirewallPolicyInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property sku in model CdnWebApplicationFirewallPolicyInner"));
         } else {
             sku().validate();
         }

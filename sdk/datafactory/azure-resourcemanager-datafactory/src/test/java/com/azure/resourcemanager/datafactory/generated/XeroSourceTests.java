@@ -11,15 +11,19 @@ public final class XeroSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         XeroSource model = BinaryData.fromString(
-            "{\"type\":\"XeroSource\",\"query\":\"databetzydtgpvnczf\",\"queryTimeout\":\"dataybjku\",\"additionalColumns\":\"dataajkyrhucbfkaqlp\",\"sourceRetryCount\":\"dataptero\",\"sourceRetryWait\":\"dataqaktao\",\"maxConcurrentConnections\":\"datagefobcqvzmyw\",\"disableMetricsCollection\":\"datayns\",\"\":{\"kklzabauvncln\":\"dataosqvojgol\",\"ikireetvjfizafd\":\"dataaoidjhoykgtyvrn\",\"csipfwlye\":\"datajhnuvndgrolgxa\",\"rzfppopwxxdgzhn\":\"dataajdpjmqteirrjjm\"}}")
+            "{\"type\":\"XeroSource\",\"query\":\"datahnklesvzdvak\",\"queryTimeout\":\"datajiantcy\",\"additionalColumns\":\"datatrdukdmsktuvjh\",\"sourceRetryCount\":\"datatvyt\",\"sourceRetryWait\":\"datafbsgrzw\",\"maxConcurrentConnections\":\"datadudxqebtrpsplwt\",\"disableMetricsCollection\":\"datacseybvtgcoznnjqx\",\"\":{\"otlymybmgmrkxk\":\"datanku\",\"vfh\":\"datatuynugptfjpi\",\"pzhuhuj\":\"datatqqshb\"}}")
             .toObject(XeroSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        XeroSource model = new XeroSource().withSourceRetryCount("dataptero").withSourceRetryWait("dataqaktao")
-            .withMaxConcurrentConnections("datagefobcqvzmyw").withDisableMetricsCollection("datayns")
-            .withQueryTimeout("dataybjku").withAdditionalColumns("dataajkyrhucbfkaqlp").withQuery("databetzydtgpvnczf");
+        XeroSource model = new XeroSource().withSourceRetryCount("datatvyt")
+            .withSourceRetryWait("datafbsgrzw")
+            .withMaxConcurrentConnections("datadudxqebtrpsplwt")
+            .withDisableMetricsCollection("datacseybvtgcoznnjqx")
+            .withQueryTimeout("datajiantcy")
+            .withAdditionalColumns("datatrdukdmsktuvjh")
+            .withQuery("datahnklesvzdvak");
         model = BinaryData.fromObject(model).toObject(XeroSource.class);
     }
 }

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CancelEnum;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.LogicalReplicationOnSourceDbEnum;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrateRolesEnum;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationSecretParameters;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.OverwriteDbsInTargetEnum;
@@ -28,15 +29,13 @@ public final class MigrationResourcePropertiesForPatch {
     private String sourceDbServerResourceId;
 
     /*
-     * Source server fully qualified domain name or ip. It is a optional value, if customer provide it, dms will always
-     * use it for connection
+     * Source server fully qualified domain name or ip. It is a optional value, if customer provide it, dms will always use it for connection
      */
     @JsonProperty(value = "sourceDbServerFullyQualifiedDomainName")
     private String sourceDbServerFullyQualifiedDomainName;
 
     /*
-     * Target server fully qualified domain name or ip. It is a optional value, if customer provide it, dms will always
-     * use it for connection
+     * Target server fully qualified domain name or ip. It is a optional value, if customer provide it, dms will always use it for connection
      */
     @JsonProperty(value = "targetDbServerFullyQualifiedDomainName")
     private String targetDbServerFullyQualifiedDomainName;
@@ -60,8 +59,7 @@ public final class MigrationResourcePropertiesForPatch {
     private LogicalReplicationOnSourceDbEnum setupLogicalReplicationOnSourceDbIfNeeded;
 
     /*
-     * Indicates whether the databases on the target server can be overwritten, if already present. If set to False,
-     * the migration workflow will wait for a confirmation, if it detects that the database already exists.
+     * Indicates whether the databases on the target server can be overwritten, if already present. If set to False, the migration workflow will wait for a confirmation, if it detects that the database already exists.
      */
     @JsonProperty(value = "overwriteDbsInTarget")
     private OverwriteDbsInTargetEnum overwriteDbsInTarget;
@@ -71,6 +69,12 @@ public final class MigrationResourcePropertiesForPatch {
      */
     @JsonProperty(value = "migrationWindowStartTimeInUtc")
     private OffsetDateTime migrationWindowStartTimeInUtc;
+
+    /*
+     * To migrate roles and permissions we need to send this flag as True
+     */
+    @JsonProperty(value = "migrateRoles")
+    private MigrateRolesEnum migrateRoles;
 
     /*
      * Indicates whether the data migration should start right away
@@ -85,8 +89,7 @@ public final class MigrationResourcePropertiesForPatch {
     private TriggerCutoverEnum triggerCutover;
 
     /*
-     * When you want to trigger cutover for specific databases send triggerCutover flag as True and database names in
-     * this array
+     * When you want to trigger cutover for specific databases send triggerCutover flag as True and database names in this array
      */
     @JsonProperty(value = "dbsToTriggerCutoverOn")
     private List<String> dbsToTriggerCutoverOn;
@@ -136,8 +139,8 @@ public final class MigrationResourcePropertiesForPatch {
     }
 
     /**
-     * Get the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name or ip. It is
-     * a optional value, if customer provide it, dms will always use it for connection.
+     * Get the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name or ip. It is a
+     * optional value, if customer provide it, dms will always use it for connection.
      * 
      * @return the sourceDbServerFullyQualifiedDomainName value.
      */
@@ -146,8 +149,8 @@ public final class MigrationResourcePropertiesForPatch {
     }
 
     /**
-     * Set the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name or ip. It is
-     * a optional value, if customer provide it, dms will always use it for connection.
+     * Set the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name or ip. It is a
+     * optional value, if customer provide it, dms will always use it for connection.
      * 
      * @param sourceDbServerFullyQualifiedDomainName the sourceDbServerFullyQualifiedDomainName value to set.
      * @return the MigrationResourcePropertiesForPatch object itself.
@@ -159,8 +162,8 @@ public final class MigrationResourcePropertiesForPatch {
     }
 
     /**
-     * Get the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name or ip. It is
-     * a optional value, if customer provide it, dms will always use it for connection.
+     * Get the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name or ip. It is a
+     * optional value, if customer provide it, dms will always use it for connection.
      * 
      * @return the targetDbServerFullyQualifiedDomainName value.
      */
@@ -169,8 +172,8 @@ public final class MigrationResourcePropertiesForPatch {
     }
 
     /**
-     * Set the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name or ip. It is
-     * a optional value, if customer provide it, dms will always use it for connection.
+     * Set the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name or ip. It is a
+     * optional value, if customer provide it, dms will always use it for connection.
      * 
      * @param targetDbServerFullyQualifiedDomainName the targetDbServerFullyQualifiedDomainName value to set.
      * @return the MigrationResourcePropertiesForPatch object itself.
@@ -286,6 +289,26 @@ public final class MigrationResourcePropertiesForPatch {
     public MigrationResourcePropertiesForPatch
         withMigrationWindowStartTimeInUtc(OffsetDateTime migrationWindowStartTimeInUtc) {
         this.migrationWindowStartTimeInUtc = migrationWindowStartTimeInUtc;
+        return this;
+    }
+
+    /**
+     * Get the migrateRoles property: To migrate roles and permissions we need to send this flag as True.
+     * 
+     * @return the migrateRoles value.
+     */
+    public MigrateRolesEnum migrateRoles() {
+        return this.migrateRoles;
+    }
+
+    /**
+     * Set the migrateRoles property: To migrate roles and permissions we need to send this flag as True.
+     * 
+     * @param migrateRoles the migrateRoles value to set.
+     * @return the MigrationResourcePropertiesForPatch object itself.
+     */
+    public MigrationResourcePropertiesForPatch withMigrateRoles(MigrateRolesEnum migrateRoles) {
+        this.migrateRoles = migrateRoles;
         return this;
     }
 

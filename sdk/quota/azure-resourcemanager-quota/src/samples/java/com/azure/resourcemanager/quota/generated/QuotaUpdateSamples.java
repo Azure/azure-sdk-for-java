@@ -14,8 +14,7 @@ import com.azure.resourcemanager.quota.models.ResourceName;
  */
 public final class QuotaUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/quota/resource-manager/Microsoft.Quota/stable/2023-02-01/examples/patchComputeQuotaRequest.json
+     * x-ms-original-file: specification/quota/resource-manager/Microsoft.Quota/preview/2023-06-01-preview/examples/patchComputeQuotaRequest.json
      */
     /**
      * Sample code: Quotas_Request_PatchForCompute.
@@ -28,14 +27,14 @@ public final class QuotaUpdateSamples {
                 "subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Compute/locations/eastus",
                 com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withProperties(new QuotaProperties().withLimit(new LimitObject().withValue(10))
-            .withName(new ResourceName().withValue("standardFSv2Family"))).apply();
+        resource.update()
+            .withProperties(new QuotaProperties().withLimit(new LimitObject().withValue(10))
+                .withName(new ResourceName().withValue("standardFSv2Family")))
+            .apply();
     }
 
     /*
-     * x-ms-original-file:
-     * specification/quota/resource-manager/Microsoft.Quota/stable/2023-02-01/examples/patchNetworkOneSkuQuotaRequest.
-     * json
+     * x-ms-original-file: specification/quota/resource-manager/Microsoft.Quota/preview/2023-06-01-preview/examples/patchNetworkOneSkuQuotaRequest.json
      */
     /**
      * Sample code: Quotas_Request_PatchForNetwork.

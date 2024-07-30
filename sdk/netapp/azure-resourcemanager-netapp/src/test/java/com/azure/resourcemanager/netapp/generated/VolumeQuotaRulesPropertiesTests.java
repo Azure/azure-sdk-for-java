@@ -13,20 +13,21 @@ public final class VolumeQuotaRulesPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeQuotaRulesProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Creating\",\"quotaSizeInKiBs\":4156012930167419412,\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"shfssnrbgyef\"}")
+            "{\"provisioningState\":\"Creating\",\"quotaSizeInKiBs\":8172148400531908792,\"quotaType\":\"IndividualGroupQuota\",\"quotaTarget\":\"dw\"}")
             .toObject(VolumeQuotaRulesProperties.class);
-        Assertions.assertEquals(4156012930167419412L, model.quotaSizeInKiBs());
-        Assertions.assertEquals(Type.DEFAULT_USER_QUOTA, model.quotaType());
-        Assertions.assertEquals("shfssnrbgyef", model.quotaTarget());
+        Assertions.assertEquals(8172148400531908792L, model.quotaSizeInKiBs());
+        Assertions.assertEquals(Type.INDIVIDUAL_GROUP_QUOTA, model.quotaType());
+        Assertions.assertEquals("dw", model.quotaTarget());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeQuotaRulesProperties model = new VolumeQuotaRulesProperties().withQuotaSizeInKiBs(4156012930167419412L)
-            .withQuotaType(Type.DEFAULT_USER_QUOTA).withQuotaTarget("shfssnrbgyef");
+        VolumeQuotaRulesProperties model = new VolumeQuotaRulesProperties().withQuotaSizeInKiBs(8172148400531908792L)
+            .withQuotaType(Type.INDIVIDUAL_GROUP_QUOTA)
+            .withQuotaTarget("dw");
         model = BinaryData.fromObject(model).toObject(VolumeQuotaRulesProperties.class);
-        Assertions.assertEquals(4156012930167419412L, model.quotaSizeInKiBs());
-        Assertions.assertEquals(Type.DEFAULT_USER_QUOTA, model.quotaType());
-        Assertions.assertEquals("shfssnrbgyef", model.quotaTarget());
+        Assertions.assertEquals(8172148400531908792L, model.quotaSizeInKiBs());
+        Assertions.assertEquals(Type.INDIVIDUAL_GROUP_QUOTA, model.quotaType());
+        Assertions.assertEquals("dw", model.quotaTarget());
     }
 }

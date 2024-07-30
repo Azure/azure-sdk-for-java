@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Input of CheckHostNameAvailability API. */
+/**
+ * Input of CheckHostNameAvailability API.
+ */
 @Fluent
 public final class CheckHostnameAvailabilityInput {
     /*
@@ -17,13 +19,15 @@ public final class CheckHostnameAvailabilityInput {
     @JsonProperty(value = "hostName", required = true)
     private String hostname;
 
-    /** Creates an instance of CheckHostnameAvailabilityInput class. */
+    /**
+     * Creates an instance of CheckHostnameAvailabilityInput class.
+     */
     public CheckHostnameAvailabilityInput() {
     }
 
     /**
      * Get the hostname property: The host name to validate.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -32,7 +36,7 @@ public final class CheckHostnameAvailabilityInput {
 
     /**
      * Set the hostname property: The host name to validate.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the CheckHostnameAvailabilityInput object itself.
      */
@@ -43,15 +47,13 @@ public final class CheckHostnameAvailabilityInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (hostname() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property hostname in model CheckHostnameAvailabilityInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property hostname in model CheckHostnameAvailabilityInput"));
         }
     }
 

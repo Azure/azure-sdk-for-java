@@ -109,10 +109,14 @@ private class BulkWriter(container: CosmosAsyncContainer,
 
   private val cosmosBulkExecutionOptions = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
     .getCosmosBulkExecutionOptionsAccessor
-    .setMaxConcurrentCosmosPartitions(
-      new CosmosBulkExecutionOptions(BulkWriter.bulkProcessingThresholds),
-      maxConcurrentPartitions
-    )
+    .setSchedulerOverride(
+      ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+        .getCosmosBulkExecutionOptionsAccessor
+        .setMaxConcurrentCosmosPartitions(
+          new CosmosBulkExecutionOptions(BulkWriter.bulkProcessingThresholds),
+          maxConcurrentPartitions
+        ),
+      bulkWriterRequestsBoundedElastic)
 
   private class ForwardingMetricTracker(val verboseLoggingEnabled: AtomicBoolean) extends BulkExecutorDiagnosticsTracker {
     override def trackDiagnostics(ctx: CosmosDiagnosticsContext): Unit = {
@@ -156,15 +160,12 @@ private class BulkWriter(container: CosmosAsyncContainer,
 
   writeConfig.maxMicroBatchSize match {
     case Some(customMaxMicroBatchSize) =>
-      ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
-        .getCosmosBulkExecutionOptionsAccessor
-        .setMaxMicroBatchSize(
-          cosmosBulkExecutionOptions,
-          Math.max(
-            1,
-            Math.min(customMaxMicroBatchSize, BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST)
-          )
-        )
+     cosmosBulkExecutionOptions.setMaxMicroBatchSize(
+       Math.max(
+        1,
+        Math.min(customMaxMicroBatchSize, BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST)
+       )
+     )
     case None =>
   }
 
@@ -460,7 +461,7 @@ private class BulkWriter(container: CosmosAsyncContainer,
                 })
               val requestOperationContext = ReadManyOperation.operationContext
               if (shouldRetry(e.getStatusCode, e.getSubStatusCode, requestOperationContext)) {
-                  log.logWarning(s"for itemId=[${requestOperationContext.itemId}], partitionKeyValue=[${requestOperationContext.partitionKeyValue}], " +
+                  log.logInfo(s"for itemId=[${requestOperationContext.itemId}], partitionKeyValue=[${requestOperationContext.partitionKeyValue}], " +
                       s"encountered status code '${e.getStatusCode}:${e.getSubStatusCode}' in read many, will retry! " +
                       s"attemptNumber=${requestOperationContext.attemptNumber}, exceptionMessage=${e.getMessage},  " +
                       s"Context: {${operationContext.toString}} $getThreadInfo")
@@ -955,6 +956,11 @@ private class BulkWriter(container: CosmosAsyncContainer,
     throwIfCapturedExceptionExists()
   }
 
+  def getFlushAndCloseIntervalInSeconds(): Int = {
+    val key = "COSMOS.FLUSH_CLOSE_INTERVAL_SEC"
+      sys.props.get(key).getOrElse(sys.env.get(key).getOrElse("60")).toInt
+  }
+
   // the caller has to ensure that after invoking this method scheduleWrite doesn't get invoked
   // scalastyle:off method.length
   // scalastyle:off cyclomatic.complexity
@@ -983,7 +989,7 @@ private class BulkWriter(container: CosmosAsyncContainer,
                   s"$pendingRetriesSnapshot,  Context: ${operationContext.toString} $getThreadInfo")
               val activeOperationsSnapshot = activeBulkWriteOperations.clone()
               val activeReadManyOperationsSnapshot = activeReadManyOperations.clone()
-              val awaitCompleted = pendingTasksCompleted.await(1, TimeUnit.MINUTES)
+              val awaitCompleted = pendingTasksCompleted.await(getFlushAndCloseIntervalInSeconds, TimeUnit.SECONDS)
               if (!awaitCompleted) {
                 throwIfProgressStaled(
                   "FlushAndClose",
@@ -992,14 +998,25 @@ private class BulkWriter(container: CosmosAsyncContainer,
                   numberOfIntervalsWithIdenticalActiveOperationSnapshots
                 )
 
-                if (numberOfIntervalsWithIdenticalActiveOperationSnapshots.get == 1L &&
-                    // pending retries only tracks the time to enqueue
-                    // the retry - so this should never take longer than 1 minute
-                    pendingRetriesSnapshot == 0L &&
-                    Scannable.from(bulkInputEmitter).scan(Scannable.Attr.BUFFERED) >0) {
+                if (numberOfIntervalsWithIdenticalActiveOperationSnapshots.get > 0L) {
+
+
+                  val buffered = Scannable.from(bulkInputEmitter).scan(Scannable.Attr.BUFFERED)
 
                   if (verboseLoggingAfterReEnqueueingRetriesEnabled.compareAndSet(false, true)) {
                     log.logWarning(s"Starting to re-enqueue retries. Enabling verbose logs. "
+                      + s"Number of intervals with identical pending operations: "
+                      + s"$numberOfIntervalsWithIdenticalActiveOperationSnapshots Active Bulk Operations: "
+                      + s"$activeOperationsSnapshot, Active Read-Many Operations: $activeReadManyOperationsSnapshot,  "
+                      + s"PendingRetries: $pendingRetriesSnapshot, Buffered tasks: $buffered "
+                      + s"Attempt: ${numberOfIntervalsWithIdenticalActiveOperationSnapshots.get} - "
+                      + s"Context: ${operationContext.toString} $getThreadInfo")
+                  } else if ((numberOfIntervalsWithIdenticalActiveOperationSnapshots.get % 3) == 0) {
+                    log.logWarning(s"Reattempting to re-enqueue retries. Enabling verbose logs. "
+                      + s"Number of intervals with identical pending operations: "
+                      + s"$numberOfIntervalsWithIdenticalActiveOperationSnapshots Active Bulk Operations: "
+                      + s"$activeOperationsSnapshot, Active Read-Many Operations: $activeReadManyOperationsSnapshot,  "
+                      + s"PendingRetries: $pendingRetriesSnapshot, Buffered tasks: $buffered "
                       + s"Attempt: ${numberOfIntervalsWithIdenticalActiveOperationSnapshots.get} - "
                       + s"Context: ${operationContext.toString} $getThreadInfo")
                   }
@@ -1309,17 +1326,19 @@ private object BulkWriter {
 
   private val bulkProcessingThresholds = new CosmosBulkExecutionThresholdsState()
 
+  val maxPendingOperationsPerJVM = DefaultMaxPendingOperationPerCore * SparkUtils.getNumberOfHostCPUCores
+
   // Custom bounded elastic scheduler to consume input flux
   val bulkWriterRequestsBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
     Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
-    Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + DefaultMaxPendingOperationPerCore,
+    Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + 2 * maxPendingOperationsPerJVM,
     BULK_WRITER_REQUESTS_BOUNDED_ELASTIC_THREAD_NAME,
     TTL_FOR_SCHEDULER_WORKER_IN_SECONDS, true)
 
   // Custom bounded elastic scheduler to switch off IO thread to process response.
   val bulkWriterResponsesBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
     Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
-    Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + DefaultMaxPendingOperationPerCore,
+    Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + maxPendingOperationsPerJVM,
     BULK_WRITER_RESPONSES_BOUNDED_ELASTIC_THREAD_NAME,
     TTL_FOR_SCHEDULER_WORKER_IN_SECONDS, true)
 
@@ -1327,7 +1346,7 @@ private object BulkWriter {
   // Custom bounded elastic scheduler to switch off IO thread to process response.
   val readManyBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
       2 * Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
-      Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + DefaultMaxPendingOperationPerCore,
+      Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + maxPendingOperationsPerJVM,
       READ_MANY_BOUNDED_ELASTIC_THREAD_NAME,
       TTL_FOR_SCHEDULER_WORKER_IN_SECONDS, true)
 

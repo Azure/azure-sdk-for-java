@@ -7,7 +7,9 @@ package com.azure.resourcemanager.mobilenetwork.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The packet core to delete under a site. */
+/**
+ * The packet core to delete under a site.
+ */
 @Fluent
 public final class SiteDeletePacketCore {
     /*
@@ -16,13 +18,15 @@ public final class SiteDeletePacketCore {
     @JsonProperty(value = "packetCore")
     private PacketCoreControlPlaneResourceId packetCore;
 
-    /** Creates an instance of SiteDeletePacketCore class. */
+    /**
+     * Creates an instance of SiteDeletePacketCore class.
+     */
     public SiteDeletePacketCore() {
     }
 
     /**
      * Get the packetCore property: Reference to an packet core control plane resource.
-     *
+     * 
      * @return the packetCore value.
      */
     public PacketCoreControlPlaneResourceId packetCore() {
@@ -31,7 +35,7 @@ public final class SiteDeletePacketCore {
 
     /**
      * Set the packetCore property: Reference to an packet core control plane resource.
-     *
+     * 
      * @param packetCore the packetCore value to set.
      * @return the SiteDeletePacketCore object itself.
      */
@@ -42,7 +46,7 @@ public final class SiteDeletePacketCore {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

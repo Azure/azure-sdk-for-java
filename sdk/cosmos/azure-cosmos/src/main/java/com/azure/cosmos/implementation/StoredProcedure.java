@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
@@ -56,7 +56,7 @@ public class StoredProcedure extends Resource {
      * @param body the body of the stored procedure.
      */
     public void setBody(String body) {
-        BridgeInternal.setProperty(this, Constants.Properties.BODY, body);
+        this.set(Constants.Properties.BODY, body, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 }
 

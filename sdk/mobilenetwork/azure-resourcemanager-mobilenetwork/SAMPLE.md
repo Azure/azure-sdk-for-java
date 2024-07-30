@@ -24,6 +24,10 @@
 - [Get](#diagnosticspackages_get)
 - [ListByPacketCoreControlPlane](#diagnosticspackages_listbypacketcorecontrolplane)
 
+## ExtendedUeInformation
+
+- [Get](#extendedueinformation_get)
+
 ## MobileNetworks
 
 - [CreateOrUpdate](#mobilenetworks_createorupdate)
@@ -31,6 +35,7 @@
 - [GetByResourceGroup](#mobilenetworks_getbyresourcegroup)
 - [List](#mobilenetworks_list)
 - [ListByResourceGroup](#mobilenetworks_listbyresourcegroup)
+- [ListSimGroups](#mobilenetworks_listsimgroups)
 - [UpdateTags](#mobilenetworks_updatetags)
 
 ## Operations
@@ -72,6 +77,11 @@
 - [ListByPacketCoreControlPlane](#packetcoredataplanes_listbypacketcorecontrolplane)
 - [UpdateTags](#packetcoredataplanes_updatetags)
 
+## RoutingInfo
+
+- [Get](#routinginfo_get)
+- [List](#routinginfo_list)
+
 ## Services
 
 - [CreateOrUpdate](#services_createorupdate)
@@ -102,10 +112,12 @@
 - [BulkDelete](#sims_bulkdelete)
 - [BulkUpload](#sims_bulkupload)
 - [BulkUploadEncrypted](#sims_bulkuploadencrypted)
+- [Clone](#sims_clone)
 - [CreateOrUpdate](#sims_createorupdate)
 - [Delete](#sims_delete)
 - [Get](#sims_get)
 - [ListByGroup](#sims_listbygroup)
+- [Move](#sims_move)
 
 ## Sites
 
@@ -123,6 +135,10 @@
 - [Get](#slices_get)
 - [ListByMobileNetwork](#slices_listbymobilenetwork)
 - [UpdateTags](#slices_updatetags)
+
+## UeInformation
+
+- [List](#ueinformation_list)
 ### AttachedDataNetworks_CreateOrUpdate
 
 ```java
@@ -134,31 +150,30 @@ import com.azure.resourcemanager.mobilenetwork.models.PortRange;
 import com.azure.resourcemanager.mobilenetwork.models.PortReuseHoldTimes;
 import java.util.Arrays;
 
-/** Samples for AttachedDataNetworks CreateOrUpdate. */
+/**
+ * Samples for AttachedDataNetworks CreateOrUpdate.
+ */
 public final class AttachedDataNetworksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/AttachedDataNetworkCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/AttachedDataNetworkCreate.json
      */
     /**
      * Sample code: Create attached data network.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void createAttachedDataNetwork(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .attachedDataNetworks()
+        manager.attachedDataNetworks()
             .define("TestAttachedDataNetwork")
             .withRegion("eastus")
             .withExistingPacketCoreDataPlane("rg1", "TestPacketCoreCP", "TestPacketCoreDP")
             .withUserPlaneDataInterface(new InterfaceProperties().withName("N6"))
             .withDnsAddresses(Arrays.asList("1.1.1.1"))
-            .withNaptConfiguration(
-                new NaptConfiguration()
-                    .withEnabled(NaptEnabled.ENABLED)
-                    .withPortRange(new PortRange().withMinPort(1024).withMaxPort(49999))
-                    .withPortReuseHoldTime(new PortReuseHoldTimes().withTcp(120).withUdp(60))
-                    .withPinholeLimits(65536)
-                    .withPinholeTimeouts(new PinholeTimeouts().withTcp(180).withUdp(30).withIcmp(30)))
+            .withNaptConfiguration(new NaptConfiguration().withEnabled(NaptEnabled.ENABLED)
+                .withPortRange(new PortRange().withMinPort(1024).withMaxPort(49999))
+                .withPortReuseHoldTime(new PortReuseHoldTimes().withTcp(120).withUdp(60))
+                .withPinholeLimits(65536)
+                .withPinholeTimeouts(new PinholeTimeouts().withTcp(180).withUdp(30).withIcmp(30)))
             .withUserEquipmentAddressPoolPrefix(Arrays.asList("2.2.0.0/16"))
             .withUserEquipmentStaticAddressPoolPrefix(Arrays.asList("2.4.0.0/16"))
             .create();
@@ -169,25 +184,22 @@ public final class AttachedDataNetworksCreateOrUpdateSamples {
 ### AttachedDataNetworks_Delete
 
 ```java
-/** Samples for AttachedDataNetworks Delete. */
+/**
+ * Samples for AttachedDataNetworks Delete.
+ */
 public final class AttachedDataNetworksDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/AttachedDataNetworkDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/AttachedDataNetworkDelete.json
      */
     /**
      * Sample code: Delete attached data network resource.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void deleteAttachedDataNetworkResource(
-        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .attachedDataNetworks()
-            .delete(
-                "rg1",
-                "TestPacketCoreCP",
-                "TestPacketCoreDP",
-                "TestAttachedDataNetwork",
+    public static void
+        deleteAttachedDataNetworkResource(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+        manager.attachedDataNetworks()
+            .delete("rg1", "TestPacketCoreCP", "TestPacketCoreDP", "TestAttachedDataNetwork",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -196,24 +208,21 @@ public final class AttachedDataNetworksDeleteSamples {
 ### AttachedDataNetworks_Get
 
 ```java
-/** Samples for AttachedDataNetworks Get. */
+/**
+ * Samples for AttachedDataNetworks Get.
+ */
 public final class AttachedDataNetworksGetSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/AttachedDataNetworkGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/AttachedDataNetworkGet.json
      */
     /**
      * Sample code: Get attached data network.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void getAttachedDataNetwork(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .attachedDataNetworks()
-            .getWithResponse(
-                "rg1",
-                "TestPacketCoreCP",
-                "TestPacketCoreDP",
-                "TestAttachedDataNetwork",
+        manager.attachedDataNetworks()
+            .getWithResponse("rg1", "TestPacketCoreCP", "TestPacketCoreDP", "TestAttachedDataNetwork",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -222,20 +231,21 @@ public final class AttachedDataNetworksGetSamples {
 ### AttachedDataNetworks_ListByPacketCoreDataPlane
 
 ```java
-/** Samples for AttachedDataNetworks ListByPacketCoreDataPlane. */
+/**
+ * Samples for AttachedDataNetworks ListByPacketCoreDataPlane.
+ */
 public final class AttachedDataNetworksListByPacketCoreDataPlaneSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/AttachedDataNetworkListByPacketCoreDataPlane.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/AttachedDataNetworkListByPacketCoreDataPlane.json
      */
     /**
      * Sample code: List attached data networks in a data plane.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void listAttachedDataNetworksInADataPlane(
-        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .attachedDataNetworks()
+    public static void
+        listAttachedDataNetworksInADataPlane(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+        manager.attachedDataNetworks()
             .listByPacketCoreDataPlane("rg1", "TestPacketCoreCP", "TestPacketCoreDP", com.azure.core.util.Context.NONE);
     }
 }
@@ -248,28 +258,24 @@ import com.azure.resourcemanager.mobilenetwork.models.AttachedDataNetwork;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for AttachedDataNetworks UpdateTags. */
+/**
+ * Samples for AttachedDataNetworks UpdateTags.
+ */
 public final class AttachedDataNetworksUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/AttachedDataNetworkUpdateTags.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/AttachedDataNetworkUpdateTags.json
      */
     /**
      * Sample code: Update attached data network tags.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void updateAttachedDataNetworkTags(
-        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        AttachedDataNetwork resource =
-            manager
-                .attachedDataNetworks()
-                .getWithResponse(
-                    "rg1",
-                    "TestPacketCoreCP",
-                    "TestPacketCoreDP",
-                    "TestAttachedDataNetwork",
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+    public static void
+        updateAttachedDataNetworkTags(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+        AttachedDataNetwork resource = manager.attachedDataNetworks()
+            .getWithResponse("rg1", "TestPacketCoreCP", "TestPacketCoreDP", "TestAttachedDataNetwork",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
@@ -290,19 +296,20 @@ public final class AttachedDataNetworksUpdateTagsSamples {
 ### DataNetworks_CreateOrUpdate
 
 ```java
-/** Samples for DataNetworks CreateOrUpdate. */
+/**
+ * Samples for DataNetworks CreateOrUpdate.
+ */
 public final class DataNetworksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/DataNetworkCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/DataNetworkCreate.json
      */
     /**
      * Sample code: Create data network.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void createDataNetwork(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .dataNetworks()
+        manager.dataNetworks()
             .define("testDataNetwork")
             .withRegion("eastus")
             .withExistingMobileNetwork("rg1", "testMobileNetwork")
@@ -315,14 +322,16 @@ public final class DataNetworksCreateOrUpdateSamples {
 ### DataNetworks_Delete
 
 ```java
-/** Samples for DataNetworks Delete. */
+/**
+ * Samples for DataNetworks Delete.
+ */
 public final class DataNetworksDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/DataNetworkDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/DataNetworkDelete.json
      */
     /**
      * Sample code: Delete data network.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void deleteDataNetwork(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
@@ -334,19 +343,20 @@ public final class DataNetworksDeleteSamples {
 ### DataNetworks_Get
 
 ```java
-/** Samples for DataNetworks Get. */
+/**
+ * Samples for DataNetworks Get.
+ */
 public final class DataNetworksGetSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/DataNetworkGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/DataNetworkGet.json
      */
     /**
      * Sample code: Get data network.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void getDataNetwork(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .dataNetworks()
+        manager.dataNetworks()
             .getWithResponse("rg1", "testMobileNetwork", "testDataNetwork", com.azure.core.util.Context.NONE);
     }
 }
@@ -355,18 +365,20 @@ public final class DataNetworksGetSamples {
 ### DataNetworks_ListByMobileNetwork
 
 ```java
-/** Samples for DataNetworks ListByMobileNetwork. */
+/**
+ * Samples for DataNetworks ListByMobileNetwork.
+ */
 public final class DataNetworksListByMobileNetworkSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/DataNetworkListByMobileNetwork.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/DataNetworkListByMobileNetwork.json
      */
     /**
      * Sample code: List data networks in a mobile network.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void listDataNetworksInAMobileNetwork(
-        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+    public static void
+        listDataNetworksInAMobileNetwork(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
         manager.dataNetworks().listByMobileNetwork("rg1", "testMobileNetwork", com.azure.core.util.Context.NONE);
     }
 }
@@ -379,22 +391,22 @@ import com.azure.resourcemanager.mobilenetwork.models.DataNetwork;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for DataNetworks UpdateTags. */
+/**
+ * Samples for DataNetworks UpdateTags.
+ */
 public final class DataNetworksUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/DataNetworkUpdateTags.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/DataNetworkUpdateTags.json
      */
     /**
      * Sample code: Update data network tags.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void updateDataNetworkTags(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        DataNetwork resource =
-            manager
-                .dataNetworks()
-                .getWithResponse("rg1", "testMobileNetwork", "testDataNetwork", com.azure.core.util.Context.NONE)
-                .getValue();
+        DataNetwork resource = manager.dataNetworks()
+            .getWithResponse("rg1", "testMobileNetwork", "testDataNetwork", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
@@ -415,19 +427,20 @@ public final class DataNetworksUpdateTagsSamples {
 ### DiagnosticsPackages_CreateOrUpdate
 
 ```java
-/** Samples for DiagnosticsPackages CreateOrUpdate. */
+/**
+ * Samples for DiagnosticsPackages CreateOrUpdate.
+ */
 public final class DiagnosticsPackagesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/DiagnosticsPackageCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/DiagnosticsPackageCreate.json
      */
     /**
      * Sample code: Create diagnostics package.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void createDiagnosticsPackage(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .diagnosticsPackages()
+        manager.diagnosticsPackages()
             .createOrUpdate("rg1", "TestPacketCoreCP", "dp1", com.azure.core.util.Context.NONE);
     }
 }
@@ -436,14 +449,16 @@ public final class DiagnosticsPackagesCreateOrUpdateSamples {
 ### DiagnosticsPackages_Delete
 
 ```java
-/** Samples for DiagnosticsPackages Delete. */
+/**
+ * Samples for DiagnosticsPackages Delete.
+ */
 public final class DiagnosticsPackagesDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/DiagnosticsPackageDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/DiagnosticsPackageDelete.json
      */
     /**
      * Sample code: Delete diagnostics package.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void deleteDiagnosticsPackage(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
@@ -455,19 +470,20 @@ public final class DiagnosticsPackagesDeleteSamples {
 ### DiagnosticsPackages_Get
 
 ```java
-/** Samples for DiagnosticsPackages Get. */
+/**
+ * Samples for DiagnosticsPackages Get.
+ */
 public final class DiagnosticsPackagesGetSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/DiagnosticsPackageGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/DiagnosticsPackageGet.json
      */
     /**
      * Sample code: Get diagnostics package.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void getDiagnosticsPackage(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .diagnosticsPackages()
+        manager.diagnosticsPackages()
             .getWithResponse("rg1", "TestPacketCoreCP", "dp1", com.azure.core.util.Context.NONE);
     }
 }
@@ -476,21 +492,57 @@ public final class DiagnosticsPackagesGetSamples {
 ### DiagnosticsPackages_ListByPacketCoreControlPlane
 
 ```java
-/** Samples for DiagnosticsPackages ListByPacketCoreControlPlane. */
+/**
+ * Samples for DiagnosticsPackages ListByPacketCoreControlPlane.
+ */
 public final class DiagnosticsPackagesListByPacketCoreControlPlaneSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/DiagnosticsPackageListByPacketCoreControlPlane.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/DiagnosticsPackageListByPacketCoreControlPlane.json
      */
     /**
      * Sample code: List diagnostics packages under a packet core control plane.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void listDiagnosticsPackagesUnderAPacketCoreControlPlane(
         com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .diagnosticsPackages()
+        manager.diagnosticsPackages()
             .listByPacketCoreControlPlane("rg1", "TestPacketCoreCP", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ExtendedUeInformation_Get
+
+```java
+/**
+ * Samples for ExtendedUeInformation Get.
+ */
+public final class ExtendedUeInformationGetSamples {
+    /*
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/ExtendedUeInfo4GGet.json
+     */
+    /**
+     * Sample code: Get UE Information 4G.
+     * 
+     * @param manager Entry point to MobileNetworkManager.
+     */
+    public static void getUEInformation4G(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+        manager.extendedUeInformations()
+            .getWithResponse("rg1", "TestPacketCoreCP", "84449105622", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/ExtendedUeInfo5GGet.json
+     */
+    /**
+     * Sample code: Get UE Information 5G.
+     * 
+     * @param manager Entry point to MobileNetworkManager.
+     */
+    public static void getUEInformation5G(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+        manager.extendedUeInformations()
+            .getWithResponse("rg1", "TestPacketCoreCP", "84449105622", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -498,25 +550,41 @@ public final class DiagnosticsPackagesListByPacketCoreControlPlaneSamples {
 ### MobileNetworks_CreateOrUpdate
 
 ```java
+import com.azure.resourcemanager.mobilenetwork.models.HomeNetworkPublicKey;
 import com.azure.resourcemanager.mobilenetwork.models.PlmnId;
+import com.azure.resourcemanager.mobilenetwork.models.PublicLandMobileNetwork;
+import com.azure.resourcemanager.mobilenetwork.models.PublicLandMobileNetworkHomeNetworkPublicKeys;
+import java.util.Arrays;
 
-/** Samples for MobileNetworks CreateOrUpdate. */
+/**
+ * Samples for MobileNetworks CreateOrUpdate.
+ */
 public final class MobileNetworksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/MobileNetworkCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/MobileNetworkCreate.json
      */
     /**
      * Sample code: Create mobile network.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void createMobileNetwork(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .mobileNetworks()
+        manager.mobileNetworks()
             .define("testMobileNetwork")
             .withRegion("eastus")
             .withExistingResourceGroup("rg1")
             .withPublicLandMobileNetworkIdentifier(new PlmnId().withMcc("001").withMnc("01"))
+            .withPublicLandMobileNetworks(Arrays.asList(new PublicLandMobileNetwork().withMcc("001")
+                .withMnc("01")
+                .withHomeNetworkPublicKeys(new PublicLandMobileNetworkHomeNetworkPublicKeys()
+                    .withProfileA(Arrays.asList(
+                        new HomeNetworkPublicKey().withId(1)
+                            .withUrl("https://contosovault.vault.azure.net/secrets/exampleHnpk"),
+                        new HomeNetworkPublicKey().withId(2)
+                            .withUrl(
+                                "https://contosovault.vault.azure.net/secrets/exampleHnpk2/5e4876e9140e4e16bfe6e2cf92e0cbd2")))
+                    .withProfileB(Arrays.asList(new HomeNetworkPublicKey().withId(1)
+                        .withUrl("https://contosovault.vault.azure.net/secrets/exampleHnpkProfileB"))))))
             .create();
     }
 }
@@ -525,14 +593,16 @@ public final class MobileNetworksCreateOrUpdateSamples {
 ### MobileNetworks_Delete
 
 ```java
-/** Samples for MobileNetworks Delete. */
+/**
+ * Samples for MobileNetworks Delete.
+ */
 public final class MobileNetworksDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/MobileNetworkDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/MobileNetworkDelete.json
      */
     /**
      * Sample code: Delete mobile network.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void deleteMobileNetwork(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
@@ -544,19 +614,20 @@ public final class MobileNetworksDeleteSamples {
 ### MobileNetworks_GetByResourceGroup
 
 ```java
-/** Samples for MobileNetworks GetByResourceGroup. */
+/**
+ * Samples for MobileNetworks GetByResourceGroup.
+ */
 public final class MobileNetworksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/MobileNetworkGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/MobileNetworkGet.json
      */
     /**
      * Sample code: Get mobile network.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void getMobileNetwork(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .mobileNetworks()
+        manager.mobileNetworks()
             .getByResourceGroupWithResponse("rg1", "testMobileNetwork", com.azure.core.util.Context.NONE);
     }
 }
@@ -565,18 +636,20 @@ public final class MobileNetworksGetByResourceGroupSamples {
 ### MobileNetworks_List
 
 ```java
-/** Samples for MobileNetworks List. */
+/**
+ * Samples for MobileNetworks List.
+ */
 public final class MobileNetworksListSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/MobileNetworkListBySubscription.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/MobileNetworkListBySubscription.json
      */
     /**
      * Sample code: List mobile networks in a subscription.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void listMobileNetworksInASubscription(
-        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+    public static void
+        listMobileNetworksInASubscription(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
         manager.mobileNetworks().list(com.azure.core.util.Context.NONE);
     }
 }
@@ -585,19 +658,43 @@ public final class MobileNetworksListSamples {
 ### MobileNetworks_ListByResourceGroup
 
 ```java
-/** Samples for MobileNetworks ListByResourceGroup. */
+/**
+ * Samples for MobileNetworks ListByResourceGroup.
+ */
 public final class MobileNetworksListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/MobileNetworkListByResourceGroup.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/MobileNetworkListByResourceGroup.json
      */
     /**
      * Sample code: List mobile networks in resource group.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void listMobileNetworksInResourceGroup(
-        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+    public static void
+        listMobileNetworksInResourceGroup(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
         manager.mobileNetworks().listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### MobileNetworks_ListSimGroups
+
+```java
+/**
+ * Samples for MobileNetworks ListSimGroups.
+ */
+public final class MobileNetworksListSimGroupsSamples {
+    /*
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimGroupListByMobileNetwork.json
+     */
+    /**
+     * Sample code: List SIM groups in a mobile network.
+     * 
+     * @param manager Entry point to MobileNetworkManager.
+     */
+    public static void
+        listSIMGroupsInAMobileNetwork(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+        manager.mobileNetworks().listSimGroups("rg1", "testMobileNetwork", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -609,22 +706,22 @@ import com.azure.resourcemanager.mobilenetwork.models.MobileNetwork;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for MobileNetworks UpdateTags. */
+/**
+ * Samples for MobileNetworks UpdateTags.
+ */
 public final class MobileNetworksUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/MobileNetworkUpdateTags.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/MobileNetworkUpdateTags.json
      */
     /**
      * Sample code: Update mobile network tags.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void updateMobileNetworkTags(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        MobileNetwork resource =
-            manager
-                .mobileNetworks()
-                .getByResourceGroupWithResponse("rg1", "testMobileNetwork", com.azure.core.util.Context.NONE)
-                .getValue();
+        MobileNetwork resource = manager.mobileNetworks()
+            .getByResourceGroupWithResponse("rg1", "testMobileNetwork", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
@@ -645,14 +742,16 @@ public final class MobileNetworksUpdateTagsSamples {
 ### Operations_List
 
 ```java
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/OperationList.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/OperationList.json
      */
     /**
      * Sample code: Get Registration Operations.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void getRegistrationOperations(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
@@ -666,27 +765,26 @@ public final class OperationsListSamples {
 ```java
 import java.util.Arrays;
 
-/** Samples for PacketCaptures CreateOrUpdate. */
+/**
+ * Samples for PacketCaptures CreateOrUpdate.
+ */
 public final class PacketCapturesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCaptureCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCaptureCreate.json
      */
     /**
      * Sample code: Create packet capture.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void createPacketCapture(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .packetCaptures()
+        manager.packetCaptures()
             .define("pc1")
             .withExistingPacketCoreControlPlane("rg1", "TestPacketCoreCP")
-            .withNetworkInterfaces(
-                Arrays
-                    .asList(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP",
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP",
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestADN"))
+            .withNetworkInterfaces(Arrays.asList(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP",
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP",
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestADN"))
             .withBytesToCapturePerPacket(10000L)
             .withTotalBytesPerSession(100000L)
             .withTimeLimitInSeconds(100)
@@ -698,14 +796,16 @@ public final class PacketCapturesCreateOrUpdateSamples {
 ### PacketCaptures_Delete
 
 ```java
-/** Samples for PacketCaptures Delete. */
+/**
+ * Samples for PacketCaptures Delete.
+ */
 public final class PacketCapturesDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCaptureDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCaptureDelete.json
      */
     /**
      * Sample code: Delete packet capture.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void deletePacketCapture(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
@@ -717,14 +817,16 @@ public final class PacketCapturesDeleteSamples {
 ### PacketCaptures_Get
 
 ```java
-/** Samples for PacketCaptures Get. */
+/**
+ * Samples for PacketCaptures Get.
+ */
 public final class PacketCapturesGetSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCaptureGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCaptureGet.json
      */
     /**
      * Sample code: Get packet capture session.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void getPacketCaptureSession(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
@@ -736,20 +838,21 @@ public final class PacketCapturesGetSamples {
 ### PacketCaptures_ListByPacketCoreControlPlane
 
 ```java
-/** Samples for PacketCaptures ListByPacketCoreControlPlane. */
+/**
+ * Samples for PacketCaptures ListByPacketCoreControlPlane.
+ */
 public final class PacketCapturesListByPacketCoreControlPlaneSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCaptureListByPacketCoreControlPlane.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCaptureListByPacketCoreControlPlane.json
      */
     /**
      * Sample code: List packet capture sessions under a packet core control plane.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void listPacketCaptureSessionsUnderAPacketCoreControlPlane(
         com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .packetCaptures()
+        manager.packetCaptures()
             .listByPacketCoreControlPlane("rg1", "TestPacketCoreCP", com.azure.core.util.Context.NONE);
     }
 }
@@ -758,14 +861,16 @@ public final class PacketCapturesListByPacketCoreControlPlaneSamples {
 ### PacketCaptures_Stop
 
 ```java
-/** Samples for PacketCaptures Stop. */
+/**
+ * Samples for PacketCaptures Stop.
+ */
 public final class PacketCapturesStopSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCaptureStop.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCaptureStop.json
      */
     /**
      * Sample code: Stop packet capture session.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void stopPacketCaptureSession(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
@@ -777,19 +882,21 @@ public final class PacketCapturesStopSamples {
 ### PacketCoreControlPlaneVersions_Get
 
 ```java
-/** Samples for PacketCoreControlPlaneVersions Get. */
+/**
+ * Samples for PacketCoreControlPlaneVersions Get.
+ */
 public final class PacketCoreControlPlaneVersionsGetSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreControlPlaneVersionGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreControlPlaneVersionGet.json
      */
     /**
      * Sample code: Get packet core control plane version.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void getPacketCoreControlPlaneVersion(
-        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.packetCoreControlPlaneVersions().getWithResponse("PMN-4-11-1", com.azure.core.util.Context.NONE);
+    public static void
+        getPacketCoreControlPlaneVersion(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+        manager.packetCoreControlPlaneVersions().getWithResponse("2404.0-1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -797,21 +904,22 @@ public final class PacketCoreControlPlaneVersionsGetSamples {
 ### PacketCoreControlPlaneVersions_GetBySubscription
 
 ```java
-/** Samples for PacketCoreControlPlaneVersions GetBySubscription. */
+/**
+ * Samples for PacketCoreControlPlaneVersions GetBySubscription.
+ */
 public final class PacketCoreControlPlaneVersionsGetBySubscriptionSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreControlPlaneVersionGetBySubscription.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreControlPlaneVersionGetBySubscription.json
      */
     /**
      * Sample code: Get packet core control plane version by subscription.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void getPacketCoreControlPlaneVersionBySubscription(
         com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .packetCoreControlPlaneVersions()
-            .getBySubscriptionWithResponse("PMN-4-11-1", com.azure.core.util.Context.NONE);
+        manager.packetCoreControlPlaneVersions()
+            .getBySubscriptionWithResponse("2404.0-1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -819,14 +927,16 @@ public final class PacketCoreControlPlaneVersionsGetBySubscriptionSamples {
 ### PacketCoreControlPlaneVersions_List
 
 ```java
-/** Samples for PacketCoreControlPlaneVersions List. */
+/**
+ * Samples for PacketCoreControlPlaneVersions List.
+ */
 public final class PacketCoreControlPlaneVersionsListSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreControlPlaneVersionList.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreControlPlaneVersionList.json
      */
     /**
      * Sample code: Get supported packet core control plane versions.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void getSupportedPacketCoreControlPlaneVersions(
@@ -839,14 +949,16 @@ public final class PacketCoreControlPlaneVersionsListSamples {
 ### PacketCoreControlPlaneVersions_ListBySubscription
 
 ```java
-/** Samples for PacketCoreControlPlaneVersions ListBySubscription. */
+/**
+ * Samples for PacketCoreControlPlaneVersions ListBySubscription.
+ */
 public final class PacketCoreControlPlaneVersionsListBySubscriptionSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreControlPlaneVersionListBySubscription.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreControlPlaneVersionListBySubscription.json
      */
     /**
      * Sample code: Get supported packet core control plane versions by subscription.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void getSupportedPacketCoreControlPlaneVersionsBySubscription(
@@ -861,26 +973,24 @@ public final class PacketCoreControlPlaneVersionsListBySubscriptionSamples {
 ```java
 import com.azure.resourcemanager.mobilenetwork.models.PacketCoreControlPlaneCollectDiagnosticsPackage;
 
-/** Samples for PacketCoreControlPlanes CollectDiagnosticsPackage. */
+/**
+ * Samples for PacketCoreControlPlanes CollectDiagnosticsPackage.
+ */
 public final class PacketCoreControlPlanesCollectDiagnosticsPackageSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreControlPlaneCollectDiagnosticsPackage.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreControlPlaneCollectDiagnosticsPackage.json
      */
     /**
      * Sample code: Collect diagnostics package from packet core control plane.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void collectDiagnosticsPackageFromPacketCoreControlPlane(
         com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .packetCoreControlPlanes()
-            .collectDiagnosticsPackage(
-                "rg1",
-                "TestPacketCoreCP",
-                new PacketCoreControlPlaneCollectDiagnosticsPackage()
-                    .withStorageAccountBlobUrl(
-                        "https://contosoaccount.blob.core.windows.net/container/diagnosticsPackage.zip"),
+        manager.packetCoreControlPlanes()
+            .collectDiagnosticsPackage("rg1", "TestPacketCoreCP",
+                new PacketCoreControlPlaneCollectDiagnosticsPackage().withStorageAccountBlobUrl(
+                    "https://contosoaccount.blob.core.windows.net/container/diagnosticsPackage.zip"),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -901,6 +1011,7 @@ import com.azure.resourcemanager.mobilenetwork.models.HttpsServerCertificate;
 import com.azure.resourcemanager.mobilenetwork.models.Installation;
 import com.azure.resourcemanager.mobilenetwork.models.InterfaceProperties;
 import com.azure.resourcemanager.mobilenetwork.models.LocalDiagnosticsAccessConfiguration;
+import com.azure.resourcemanager.mobilenetwork.models.NasEncryptionType;
 import com.azure.resourcemanager.mobilenetwork.models.NasRerouteConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.PlatformConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.PlatformType;
@@ -908,63 +1019,50 @@ import com.azure.resourcemanager.mobilenetwork.models.SignalingConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.SiteResourceId;
 import java.util.Arrays;
 
-/** Samples for PacketCoreControlPlanes CreateOrUpdate. */
+/**
+ * Samples for PacketCoreControlPlanes CreateOrUpdate.
+ */
 public final class PacketCoreControlPlanesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreControlPlaneCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreControlPlaneCreate.json
      */
     /**
      * Sample code: Create packet core control plane.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void createPacketCoreControlPlane(
-        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .packetCoreControlPlanes()
+    public static void
+        createPacketCoreControlPlane(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+        manager.packetCoreControlPlanes()
             .define("TestPacketCoreCP")
             .withRegion("eastus")
             .withExistingResourceGroup("rg1")
-            .withSites(
-                Arrays
-                    .asList(
-                        new SiteResourceId()
-                            .withId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite")))
-            .withPlatform(
-                new PlatformConfiguration()
-                    .withType(PlatformType.AKS_HCI)
-                    .withAzureStackEdgeDevice(
-                        new AzureStackEdgeDeviceResourceId()
-                            .withId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice"))
-                    .withConnectedCluster(
-                        new ConnectedClusterResourceId()
-                            .withId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Kubernetes/connectedClusters/TestConnectedCluster"))
-                    .withCustomLocation(
-                        new CustomLocationResourceId()
-                            .withId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ExtendedLocation/customLocations/TestCustomLocation")))
+            .withSites(Arrays.asList(new SiteResourceId().withId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/sites/testSite")))
+            .withPlatform(new PlatformConfiguration().withType(PlatformType.AKS_HCI)
+                .withAzureStackEdgeDevice(new AzureStackEdgeDeviceResourceId().withId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/TestAzureStackEdgeDevice"))
+                .withConnectedCluster(new ConnectedClusterResourceId().withId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Kubernetes/connectedClusters/TestConnectedCluster"))
+                .withCustomLocation(new CustomLocationResourceId().withId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ExtendedLocation/customLocations/TestCustomLocation")))
             .withControlPlaneAccessInterface(new InterfaceProperties().withName("N2"))
             .withSku(BillingSku.G0)
             .withLocalDiagnosticsAccess(
-                new LocalDiagnosticsAccessConfiguration()
-                    .withAuthenticationType(AuthenticationType.AAD)
-                    .withHttpsServerCertificate(
-                        new HttpsServerCertificate()
-                            .withCertificateUrl("https://contosovault.vault.azure.net/certificates/ingress")))
+                new LocalDiagnosticsAccessConfiguration().withAuthenticationType(AuthenticationType.AAD)
+                    .withHttpsServerCertificate(new HttpsServerCertificate()
+                        .withCertificateUrl("https://contosovault.vault.azure.net/certificates/ingress")))
             .withInstallation(new Installation().withDesiredState(DesiredInstallationState.INSTALLED))
             .withCoreNetworkTechnology(CoreNetworkType.FIVE_GC)
             .withVersion("0.2.0")
             .withUeMtu(1600)
-            .withEventHub(
-                new EventHubConfiguration()
-                    .withId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.EventHub/namespaces/contosoNamespace/eventHubs/contosoHub")
-                    .withReportingInterval(60))
+            .withEventHub(new EventHubConfiguration().withId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.EventHub/namespaces/contosoNamespace/eventHubs/contosoHub")
+                .withReportingInterval(60))
             .withSignaling(
-                new SignalingConfiguration().withNasReroute(new NasRerouteConfiguration().withMacroMmeGroupId(1024)))
+                new SignalingConfiguration().withNasReroute(new NasRerouteConfiguration().withMacroMmeGroupId(1024))
+                    .withNasEncryption(Arrays.asList(NasEncryptionType.NEA2_EEA2, NasEncryptionType.NEA1_EEA1,
+                        NasEncryptionType.NEA0_EEA0)))
             .create();
     }
 }
@@ -973,18 +1071,20 @@ public final class PacketCoreControlPlanesCreateOrUpdateSamples {
 ### PacketCoreControlPlanes_Delete
 
 ```java
-/** Samples for PacketCoreControlPlanes Delete. */
+/**
+ * Samples for PacketCoreControlPlanes Delete.
+ */
 public final class PacketCoreControlPlanesDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreControlPlaneDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreControlPlaneDelete.json
      */
     /**
      * Sample code: Delete packet core control plane.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void deletePacketCoreControlPlane(
-        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+    public static void
+        deletePacketCoreControlPlane(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
         manager.packetCoreControlPlanes().delete("rg1", "TestPacketCoreCP", com.azure.core.util.Context.NONE);
     }
 }
@@ -993,19 +1093,20 @@ public final class PacketCoreControlPlanesDeleteSamples {
 ### PacketCoreControlPlanes_GetByResourceGroup
 
 ```java
-/** Samples for PacketCoreControlPlanes GetByResourceGroup. */
+/**
+ * Samples for PacketCoreControlPlanes GetByResourceGroup.
+ */
 public final class PacketCoreControlPlanesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreControlPlaneGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreControlPlaneGet.json
      */
     /**
      * Sample code: Get packet core control plane.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void getPacketCoreControlPlane(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .packetCoreControlPlanes()
+        manager.packetCoreControlPlanes()
             .getByResourceGroupWithResponse("rg1", "TestPacketCoreCP", com.azure.core.util.Context.NONE);
     }
 }
@@ -1014,14 +1115,16 @@ public final class PacketCoreControlPlanesGetByResourceGroupSamples {
 ### PacketCoreControlPlanes_List
 
 ```java
-/** Samples for PacketCoreControlPlanes List. */
+/**
+ * Samples for PacketCoreControlPlanes List.
+ */
 public final class PacketCoreControlPlanesListSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreControlPlaneListBySubscription.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreControlPlaneListBySubscription.json
      */
     /**
      * Sample code: List packet core control planes in a subscription.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void listPacketCoreControlPlanesInASubscription(
@@ -1034,14 +1137,16 @@ public final class PacketCoreControlPlanesListSamples {
 ### PacketCoreControlPlanes_ListByResourceGroup
 
 ```java
-/** Samples for PacketCoreControlPlanes ListByResourceGroup. */
+/**
+ * Samples for PacketCoreControlPlanes ListByResourceGroup.
+ */
 public final class PacketCoreControlPlanesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreControlPlaneListByResourceGroup.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreControlPlaneListByResourceGroup.json
      */
     /**
      * Sample code: List packet core control planes in resource group.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void listPacketCoreControlPlanesInResourceGroup(
@@ -1054,18 +1159,20 @@ public final class PacketCoreControlPlanesListByResourceGroupSamples {
 ### PacketCoreControlPlanes_Reinstall
 
 ```java
-/** Samples for PacketCoreControlPlanes Reinstall. */
+/**
+ * Samples for PacketCoreControlPlanes Reinstall.
+ */
 public final class PacketCoreControlPlanesReinstallSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreControlPlaneReinstall.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreControlPlaneReinstall.json
      */
     /**
      * Sample code: Reinstall packet core control plane.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void reinstallPacketCoreControlPlane(
-        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+    public static void
+        reinstallPacketCoreControlPlane(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
         manager.packetCoreControlPlanes().reinstall("rg1", "TestPacketCoreCP", com.azure.core.util.Context.NONE);
     }
 }
@@ -1074,18 +1181,20 @@ public final class PacketCoreControlPlanesReinstallSamples {
 ### PacketCoreControlPlanes_Rollback
 
 ```java
-/** Samples for PacketCoreControlPlanes Rollback. */
+/**
+ * Samples for PacketCoreControlPlanes Rollback.
+ */
 public final class PacketCoreControlPlanesRollbackSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreControlPlaneRollback.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreControlPlaneRollback.json
      */
     /**
      * Sample code: Rollback packet core control plane.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void rollbackPacketCoreControlPlane(
-        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+    public static void
+        rollbackPacketCoreControlPlane(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
         manager.packetCoreControlPlanes().rollback("rg1", "TestPacketCoreCP", com.azure.core.util.Context.NONE);
     }
 }
@@ -1101,33 +1210,29 @@ import com.azure.resourcemanager.mobilenetwork.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for PacketCoreControlPlanes UpdateTags. */
+/**
+ * Samples for PacketCoreControlPlanes UpdateTags.
+ */
 public final class PacketCoreControlPlanesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreControlPlanePatch.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreControlPlanePatch.json
      */
     /**
      * Sample code: Patch packet core control plane.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void patchPacketCoreControlPlane(
-        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        PacketCoreControlPlane resource =
-            manager
-                .packetCoreControlPlanes()
-                .getByResourceGroupWithResponse("rg1", "TestPacketCoreCP", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+    public static void
+        patchPacketCoreControlPlane(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+        PacketCoreControlPlane resource = manager.packetCoreControlPlanes()
+            .getByResourceGroupWithResponse("rg1", "TestPacketCoreCP", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("tag1", "value1", "tag2", "value2"))
-            .withIdentity(
-                new ManagedServiceIdentity()
-                    .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf(
-                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUserAssignedManagedIdentity",
-                            new UserAssignedIdentity())))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUserAssignedManagedIdentity",
+                    new UserAssignedIdentity())))
             .apply();
     }
 
@@ -1150,19 +1255,20 @@ public final class PacketCoreControlPlanesUpdateTagsSamples {
 ```java
 import com.azure.resourcemanager.mobilenetwork.models.InterfaceProperties;
 
-/** Samples for PacketCoreDataPlanes CreateOrUpdate. */
+/**
+ * Samples for PacketCoreDataPlanes CreateOrUpdate.
+ */
 public final class PacketCoreDataPlanesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreDataPlaneCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreDataPlaneCreate.json
      */
     /**
      * Sample code: Create packet core data plane.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void createPacketCoreDataPlane(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .packetCoreDataPlanes()
+        manager.packetCoreDataPlanes()
             .define("testPacketCoreDP")
             .withRegion("eastus")
             .withExistingPacketCoreControlPlane("rg1", "testPacketCoreCP")
@@ -1175,19 +1281,20 @@ public final class PacketCoreDataPlanesCreateOrUpdateSamples {
 ### PacketCoreDataPlanes_Delete
 
 ```java
-/** Samples for PacketCoreDataPlanes Delete. */
+/**
+ * Samples for PacketCoreDataPlanes Delete.
+ */
 public final class PacketCoreDataPlanesDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreDataPlaneDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreDataPlaneDelete.json
      */
     /**
      * Sample code: Delete packet core data plane.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void deletePacketCoreDataPlane(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .packetCoreDataPlanes()
+        manager.packetCoreDataPlanes()
             .delete("rg1", "testPacketCoreCP", "testPacketCoreDP", com.azure.core.util.Context.NONE);
     }
 }
@@ -1196,19 +1303,20 @@ public final class PacketCoreDataPlanesDeleteSamples {
 ### PacketCoreDataPlanes_Get
 
 ```java
-/** Samples for PacketCoreDataPlanes Get. */
+/**
+ * Samples for PacketCoreDataPlanes Get.
+ */
 public final class PacketCoreDataPlanesGetSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreDataPlaneGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreDataPlaneGet.json
      */
     /**
      * Sample code: Get packet core data plane.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void getPacketCoreDataPlane(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .packetCoreDataPlanes()
+        manager.packetCoreDataPlanes()
             .getWithResponse("rg1", "testPacketCoreCP", "testPacketCoreDP", com.azure.core.util.Context.NONE);
     }
 }
@@ -1217,20 +1325,21 @@ public final class PacketCoreDataPlanesGetSamples {
 ### PacketCoreDataPlanes_ListByPacketCoreControlPlane
 
 ```java
-/** Samples for PacketCoreDataPlanes ListByPacketCoreControlPlane. */
+/**
+ * Samples for PacketCoreDataPlanes ListByPacketCoreControlPlane.
+ */
 public final class PacketCoreDataPlanesListByPacketCoreControlPlaneSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreDataPlaneListByPacketCoreControlPlane.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreDataPlaneListByPacketCoreControlPlane.json
      */
     /**
      * Sample code: List packet core data planes in a control plane.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void listPacketCoreDataPlanesInAControlPlane(
-        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .packetCoreDataPlanes()
+    public static void
+        listPacketCoreDataPlanesInAControlPlane(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+        manager.packetCoreDataPlanes()
             .listByPacketCoreControlPlane("rg1", "testPacketCoreCP", com.azure.core.util.Context.NONE);
     }
 }
@@ -1243,23 +1352,23 @@ import com.azure.resourcemanager.mobilenetwork.models.PacketCoreDataPlane;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for PacketCoreDataPlanes UpdateTags. */
+/**
+ * Samples for PacketCoreDataPlanes UpdateTags.
+ */
 public final class PacketCoreDataPlanesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreDataPlaneUpdateTags.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreDataPlaneUpdateTags.json
      */
     /**
      * Sample code: Update packet core data plane tags.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void updatePacketCoreDataPlaneTags(
-        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        PacketCoreDataPlane resource =
-            manager
-                .packetCoreDataPlanes()
-                .getWithResponse("rg1", "testPacketCoreCP", "testPacketCoreDP", com.azure.core.util.Context.NONE)
-                .getValue();
+    public static void
+        updatePacketCoreDataPlaneTags(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+        PacketCoreDataPlane resource = manager.packetCoreDataPlanes()
+            .getWithResponse("rg1", "testPacketCoreCP", "testPacketCoreDP", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
@@ -1273,6 +1382,50 @@ public final class PacketCoreDataPlanesUpdateTagsSamples {
             map.put(key, value);
         }
         return map;
+    }
+}
+```
+
+### RoutingInfo_Get
+
+```java
+/**
+ * Samples for RoutingInfo Get.
+ */
+public final class RoutingInfoGetSamples {
+    /*
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/RoutingInfoPacketCoreControlPlane.json
+     */
+    /**
+     * Sample code: Get routing information for the packet core.
+     * 
+     * @param manager Entry point to MobileNetworkManager.
+     */
+    public static void
+        getRoutingInformationForThePacketCore(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+        manager.routingInfoes().getWithResponse("rg1", "TestPacketCoreCP", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### RoutingInfo_List
+
+```java
+/**
+ * Samples for RoutingInfo List.
+ */
+public final class RoutingInfoListSamples {
+    /*
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/RoutingInfoListPacketCoreControlPlane.json
+     */
+    /**
+     * Sample code: List routing information for the packet core.
+     * 
+     * @param manager Entry point to MobileNetworkManager.
+     */
+    public static void
+        listRoutingInformationForThePacketCore(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+        manager.routingInfoes().list("rg1", "TestPacketCoreCP", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1291,53 +1444,43 @@ import com.azure.resourcemanager.mobilenetwork.models.ServiceDataFlowTemplate;
 import com.azure.resourcemanager.mobilenetwork.models.TrafficControlPermission;
 import java.util.Arrays;
 
-/** Samples for Services CreateOrUpdate. */
+/**
+ * Samples for Services CreateOrUpdate.
+ */
 public final class ServicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/ServiceCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/ServiceCreate.json
      */
     /**
      * Sample code: Create service.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void createService(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .services()
+        manager.services()
             .define("TestService")
             .withRegion("eastus")
             .withExistingMobileNetwork("rg1", "testMobileNetwork")
             .withServicePrecedence(255)
-            .withPccRules(
-                Arrays
-                    .asList(
-                        new PccRuleConfiguration()
-                            .withRuleName("default-rule")
-                            .withRulePrecedence(255)
-                            .withRuleQosPolicy(
-                                new PccRuleQosPolicy()
-                                    .withFiveQi(9)
-                                    .withAllocationAndRetentionPriorityLevel(9)
-                                    .withPreemptionCapability(PreemptionCapability.NOT_PREEMPT)
-                                    .withPreemptionVulnerability(PreemptionVulnerability.PREEMPTABLE)
-                                    .withMaximumBitRate(new Ambr().withUplink("500 Mbps").withDownlink("1 Gbps")))
-                            .withTrafficControl(TrafficControlPermission.ENABLED)
-                            .withServiceDataFlowTemplates(
-                                Arrays
-                                    .asList(
-                                        new ServiceDataFlowTemplate()
-                                            .withTemplateName("IP-to-server")
-                                            .withDirection(SdfDirection.UPLINK)
-                                            .withProtocol(Arrays.asList("ip"))
-                                            .withRemoteIpList(Arrays.asList("10.3.4.0/24"))
-                                            .withPorts(Arrays.asList())))))
-            .withServiceQosPolicy(
-                new QosPolicy()
-                    .withFiveQi(9)
+            .withPccRules(Arrays.asList(new PccRuleConfiguration().withRuleName("default-rule")
+                .withRulePrecedence(255)
+                .withRuleQosPolicy(new PccRuleQosPolicy().withFiveQi(9)
                     .withAllocationAndRetentionPriorityLevel(9)
                     .withPreemptionCapability(PreemptionCapability.NOT_PREEMPT)
                     .withPreemptionVulnerability(PreemptionVulnerability.PREEMPTABLE)
                     .withMaximumBitRate(new Ambr().withUplink("500 Mbps").withDownlink("1 Gbps")))
+                .withTrafficControl(TrafficControlPermission.ENABLED)
+                .withServiceDataFlowTemplates(
+                    Arrays.asList(new ServiceDataFlowTemplate().withTemplateName("IP-to-server")
+                        .withDirection(SdfDirection.UPLINK)
+                        .withProtocol(Arrays.asList("ip"))
+                        .withRemoteIpList(Arrays.asList("10.3.4.0/24"))
+                        .withPorts(Arrays.asList())))))
+            .withServiceQosPolicy(new QosPolicy().withFiveQi(9)
+                .withAllocationAndRetentionPriorityLevel(9)
+                .withPreemptionCapability(PreemptionCapability.NOT_PREEMPT)
+                .withPreemptionVulnerability(PreemptionVulnerability.PREEMPTABLE)
+                .withMaximumBitRate(new Ambr().withUplink("500 Mbps").withDownlink("1 Gbps")))
             .create();
     }
 }
@@ -1346,14 +1489,16 @@ public final class ServicesCreateOrUpdateSamples {
 ### Services_Delete
 
 ```java
-/** Samples for Services Delete. */
+/**
+ * Samples for Services Delete.
+ */
 public final class ServicesDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/ServiceDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/ServiceDelete.json
      */
     /**
      * Sample code: Delete service.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void deleteService(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
@@ -1365,14 +1510,16 @@ public final class ServicesDeleteSamples {
 ### Services_Get
 
 ```java
-/** Samples for Services Get. */
+/**
+ * Samples for Services Get.
+ */
 public final class ServicesGetSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/ServiceGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/ServiceGet.json
      */
     /**
      * Sample code: Get service.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void getService(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
@@ -1384,20 +1531,21 @@ public final class ServicesGetSamples {
 ### Services_ListByMobileNetwork
 
 ```java
-/** Samples for Services ListByMobileNetwork. */
+/**
+ * Samples for Services ListByMobileNetwork.
+ */
 public final class ServicesListByMobileNetworkSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/ServiceListByMobileNetwork.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/ServiceListByMobileNetwork.json
      */
     /**
      * Sample code: List services in a mobile network.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void listServicesInAMobileNetwork(
-        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .services()
+    public static void
+        listServicesInAMobileNetwork(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+        manager.services()
             .listByMobileNetwork("testResourceGroupName", "testMobileNetwork", com.azure.core.util.Context.NONE);
     }
 }
@@ -1410,22 +1558,22 @@ import com.azure.resourcemanager.mobilenetwork.models.Service;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Services UpdateTags. */
+/**
+ * Samples for Services UpdateTags.
+ */
 public final class ServicesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/ServiceUpdateTags.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/ServiceUpdateTags.json
      */
     /**
      * Sample code: Update service tags.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void updateServiceTags(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        Service resource =
-            manager
-                .services()
-                .getWithResponse("rg1", "testMobileNetwork", "TestService", com.azure.core.util.Context.NONE)
-                .getValue();
+        Service resource = manager.services()
+            .getWithResponse("rg1", "testMobileNetwork", "TestService", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
@@ -1454,34 +1602,30 @@ import com.azure.resourcemanager.mobilenetwork.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for SimGroups CreateOrUpdate. */
+/**
+ * Samples for SimGroups CreateOrUpdate.
+ */
 public final class SimGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimGroupCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimGroupCreate.json
      */
     /**
      * Sample code: Create SIM group.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void createSIMGroup(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .simGroups()
+        manager.simGroups()
             .define("testSimGroup")
             .withRegion("eastus")
             .withExistingResourceGroup("rg1")
-            .withIdentity(
-                new ManagedServiceIdentity()
-                    .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf(
-                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUserAssignedManagedIdentity",
-                            new UserAssignedIdentity())))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUserAssignedManagedIdentity",
+                    new UserAssignedIdentity())))
             .withEncryptionKey(new KeyVaultKey().withKeyUrl("fakeTokenPlaceholder"))
-            .withMobileNetwork(
-                new MobileNetworkResourceId()
-                    .withId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork"))
+            .withMobileNetwork(new MobileNetworkResourceId().withId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork"))
             .create();
     }
 
@@ -1502,14 +1646,16 @@ public final class SimGroupsCreateOrUpdateSamples {
 ### SimGroups_Delete
 
 ```java
-/** Samples for SimGroups Delete. */
+/**
+ * Samples for SimGroups Delete.
+ */
 public final class SimGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimGroupDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimGroupDelete.json
      */
     /**
      * Sample code: Delete SIM group.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void deleteSIMGroup(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
@@ -1521,21 +1667,22 @@ public final class SimGroupsDeleteSamples {
 ### SimGroups_GetByResourceGroup
 
 ```java
-/** Samples for SimGroups GetByResourceGroup. */
+/**
+ * Samples for SimGroups GetByResourceGroup.
+ */
 public final class SimGroupsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimGroupGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimGroupGet.json
      */
     /**
      * Sample code: Get SIM group.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void getSIMGroup(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .simGroups()
-            .getByResourceGroupWithResponse(
-                "testResourceGroupName", "testSimGroupName", com.azure.core.util.Context.NONE);
+        manager.simGroups()
+            .getByResourceGroupWithResponse("testResourceGroupName", "testSimGroupName",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1543,18 +1690,20 @@ public final class SimGroupsGetByResourceGroupSamples {
 ### SimGroups_List
 
 ```java
-/** Samples for SimGroups List. */
+/**
+ * Samples for SimGroups List.
+ */
 public final class SimGroupsListSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimGroupListBySubscription.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimGroupListBySubscription.json
      */
     /**
      * Sample code: List SIM groups in a subscription.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void listSIMGroupsInASubscription(
-        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+    public static void
+        listSIMGroupsInASubscription(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
         manager.simGroups().list(com.azure.core.util.Context.NONE);
     }
 }
@@ -1563,18 +1712,20 @@ public final class SimGroupsListSamples {
 ### SimGroups_ListByResourceGroup
 
 ```java
-/** Samples for SimGroups ListByResourceGroup. */
+/**
+ * Samples for SimGroups ListByResourceGroup.
+ */
 public final class SimGroupsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimGroupListByResourceGroup.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimGroupListByResourceGroup.json
      */
     /**
      * Sample code: List SIM groups in a resource group.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void listSIMGroupsInAResourceGroup(
-        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+    public static void
+        listSIMGroupsInAResourceGroup(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
         manager.simGroups().listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
     }
 }
@@ -1590,32 +1741,28 @@ import com.azure.resourcemanager.mobilenetwork.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for SimGroups UpdateTags. */
+/**
+ * Samples for SimGroups UpdateTags.
+ */
 public final class SimGroupsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimGroupPatch.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimGroupPatch.json
      */
     /**
      * Sample code: Patch SIM group.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void patchSIMGroup(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        SimGroup resource =
-            manager
-                .simGroups()
-                .getByResourceGroupWithResponse("rg1", "testSimGroup", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        SimGroup resource = manager.simGroups()
+            .getByResourceGroupWithResponse("rg1", "testSimGroup", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("tag1", "value1", "tag2", "value2"))
-            .withIdentity(
-                new ManagedServiceIdentity()
-                    .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf(
-                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUserAssignedManagedIdentity",
-                            new UserAssignedIdentity())))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUserAssignedManagedIdentity",
+                    new UserAssignedIdentity())))
             .apply();
     }
 
@@ -1647,61 +1794,43 @@ import com.azure.resourcemanager.mobilenetwork.models.SliceConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.SliceResourceId;
 import java.util.Arrays;
 
-/** Samples for SimPolicies CreateOrUpdate. */
+/**
+ * Samples for SimPolicies CreateOrUpdate.
+ */
 public final class SimPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimPolicyCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimPolicyCreate.json
      */
     /**
      * Sample code: Create SIM policy.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void createSIMPolicy(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .simPolicies()
+        manager.simPolicies()
             .define("testPolicy")
             .withRegion("eastus")
             .withExistingMobileNetwork("rg1", "testMobileNetwork")
             .withUeAmbr(new Ambr().withUplink("500 Mbps").withDownlink("1 Gbps"))
-            .withDefaultSlice(
-                new SliceResourceId()
-                    .withId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"))
-            .withSliceConfigurations(
-                Arrays
-                    .asList(
-                        new SliceConfiguration()
-                            .withSlice(
-                                new SliceResourceId()
-                                    .withId(
-                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"))
-                            .withDefaultDataNetwork(
-                                new DataNetworkResourceId()
-                                    .withId(
-                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"))
-                            .withDataNetworkConfigurations(
-                                Arrays
-                                    .asList(
-                                        new DataNetworkConfiguration()
-                                            .withDataNetwork(
-                                                new DataNetworkResourceId()
-                                                    .withId(
-                                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"))
-                                            .withSessionAmbr(new Ambr().withUplink("500 Mbps").withDownlink("1 Gbps"))
-                                            .withFiveQi(9)
-                                            .withAllocationAndRetentionPriorityLevel(9)
-                                            .withPreemptionCapability(PreemptionCapability.NOT_PREEMPT)
-                                            .withPreemptionVulnerability(PreemptionVulnerability.PREEMPTABLE)
-                                            .withDefaultSessionType(PduSessionType.IPV4)
-                                            .withAdditionalAllowedSessionTypes(Arrays.asList())
-                                            .withAllowedServices(
-                                                Arrays
-                                                    .asList(
-                                                        new ServiceResourceId()
-                                                            .withId(
-                                                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/services/testService")))
-                                            .withMaximumNumberOfBufferedPackets(200)))))
+            .withDefaultSlice(new SliceResourceId().withId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"))
+            .withSliceConfigurations(Arrays.asList(new SliceConfiguration().withSlice(new SliceResourceId().withId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"))
+                .withDefaultDataNetwork(new DataNetworkResourceId().withId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"))
+                .withDataNetworkConfigurations(Arrays.asList(new DataNetworkConfiguration()
+                    .withDataNetwork(new DataNetworkResourceId().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"))
+                    .withSessionAmbr(new Ambr().withUplink("500 Mbps").withDownlink("1 Gbps"))
+                    .withFiveQi(9)
+                    .withAllocationAndRetentionPriorityLevel(9)
+                    .withPreemptionCapability(PreemptionCapability.NOT_PREEMPT)
+                    .withPreemptionVulnerability(PreemptionVulnerability.PREEMPTABLE)
+                    .withDefaultSessionType(PduSessionType.IPV4)
+                    .withAdditionalAllowedSessionTypes(Arrays.asList())
+                    .withAllowedServices(Arrays.asList(new ServiceResourceId().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/services/testService")))
+                    .withMaximumNumberOfBufferedPackets(200)))))
             .withRegistrationTimer(3240)
             .create();
     }
@@ -1711,14 +1840,16 @@ public final class SimPoliciesCreateOrUpdateSamples {
 ### SimPolicies_Delete
 
 ```java
-/** Samples for SimPolicies Delete. */
+/**
+ * Samples for SimPolicies Delete.
+ */
 public final class SimPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimPolicyDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimPolicyDelete.json
      */
     /**
      * Sample code: Delete SIM policy.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void deleteSIMPolicy(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
@@ -1730,19 +1861,20 @@ public final class SimPoliciesDeleteSamples {
 ### SimPolicies_Get
 
 ```java
-/** Samples for SimPolicies Get. */
+/**
+ * Samples for SimPolicies Get.
+ */
 public final class SimPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimPolicyGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimPolicyGet.json
      */
     /**
      * Sample code: Get SIM policy.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void getSIMPolicy(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .simPolicies()
+        manager.simPolicies()
             .getWithResponse("rg1", "testMobileNetwork", "testPolicy", com.azure.core.util.Context.NONE);
     }
 }
@@ -1751,20 +1883,21 @@ public final class SimPoliciesGetSamples {
 ### SimPolicies_ListByMobileNetwork
 
 ```java
-/** Samples for SimPolicies ListByMobileNetwork. */
+/**
+ * Samples for SimPolicies ListByMobileNetwork.
+ */
 public final class SimPoliciesListByMobileNetworkSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimPolicyListByMobileNetwork.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimPolicyListByMobileNetwork.json
      */
     /**
      * Sample code: List SIM policies in a mobile network.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void listSIMPoliciesInAMobileNetwork(
-        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .simPolicies()
+    public static void
+        listSIMPoliciesInAMobileNetwork(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+        manager.simPolicies()
             .listByMobileNetwork("testResourceGroupName", "testMobileNetwork", com.azure.core.util.Context.NONE);
     }
 }
@@ -1777,22 +1910,22 @@ import com.azure.resourcemanager.mobilenetwork.models.SimPolicy;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for SimPolicies UpdateTags. */
+/**
+ * Samples for SimPolicies UpdateTags.
+ */
 public final class SimPoliciesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimPolicyUpdateTags.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimPolicyUpdateTags.json
      */
     /**
      * Sample code: Update SIM policy tags.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void updateSIMPolicyTags(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        SimPolicy resource =
-            manager
-                .simPolicies()
-                .getWithResponse("rg1", "testMobileNetwork", "testPolicy", com.azure.core.util.Context.NONE)
-                .getValue();
+        SimPolicy resource = manager.simPolicies()
+            .getWithResponse("rg1", "testMobileNetwork", "testPolicy", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
@@ -1816,25 +1949,23 @@ public final class SimPoliciesUpdateTagsSamples {
 import com.azure.resourcemanager.mobilenetwork.models.SimDeleteList;
 import java.util.Arrays;
 
-/** Samples for Sims BulkDelete. */
+/**
+ * Samples for Sims BulkDelete.
+ */
 public final class SimsBulkDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimBulkDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimBulkDelete.json
      */
     /**
      * Sample code: Bulk delete SIMs from a SIM group.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void bulkDeleteSIMsFromASIMGroup(
-        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .sims()
-            .bulkDelete(
-                "testResourceGroupName",
-                "testSimGroup",
-                new SimDeleteList().withSims(Arrays.asList("testSim", "testSim2")),
-                com.azure.core.util.Context.NONE);
+    public static void
+        bulkDeleteSIMsFromASIMGroup(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+        manager.sims()
+            .bulkDelete("testResourceGroupName", "testSimGroup",
+                new SimDeleteList().withSims(Arrays.asList("testSim", "testSim2")), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1851,78 +1982,49 @@ import com.azure.resourcemanager.mobilenetwork.models.SimUploadList;
 import com.azure.resourcemanager.mobilenetwork.models.SliceResourceId;
 import java.util.Arrays;
 
-/** Samples for Sims BulkUpload. */
+/**
+ * Samples for Sims BulkUpload.
+ */
 public final class SimsBulkUploadSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimBulkUpload.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimBulkUpload.json
      */
     /**
      * Sample code: Bulk upload SIMs in a SIM group.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void bulkUploadSIMsInASIMGroup(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .sims()
-            .bulkUpload(
-                "rg1",
-                "testSimGroup",
-                new SimUploadList()
-                    .withSims(
-                        Arrays
-                            .asList(
-                                new SimNameAndProperties()
-                                    .withName("testSim")
-                                    .withAuthenticationKey("fakeTokenPlaceholder")
-                                    .withOperatorKeyCode("fakeTokenPlaceholder")
-                                    .withInternationalMobileSubscriberIdentity("00000")
-                                    .withIntegratedCircuitCardIdentifier("8900000000000000000")
-                                    .withDeviceType("Video camera")
-                                    .withSimPolicy(
-                                        new SimPolicyResourceId()
-                                            .withId(
-                                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"))
-                                    .withStaticIpConfiguration(
-                                        Arrays
-                                            .asList(
-                                                new SimStaticIpProperties()
-                                                    .withAttachedDataNetwork(
-                                                        new AttachedDataNetworkResourceId()
-                                                            .withId(
-                                                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"))
-                                                    .withSlice(
-                                                        new SliceResourceId()
-                                                            .withId(
-                                                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"))
-                                                    .withStaticIp(
-                                                        new SimStaticIpPropertiesStaticIp()
-                                                            .withIpv4Address("2.4.0.1")))),
-                                new SimNameAndProperties()
-                                    .withName("testSim2")
-                                    .withAuthenticationKey("fakeTokenPlaceholder")
-                                    .withOperatorKeyCode("fakeTokenPlaceholder")
-                                    .withInternationalMobileSubscriberIdentity("00000")
-                                    .withIntegratedCircuitCardIdentifier("8900000000000000001")
-                                    .withDeviceType("Video camera")
-                                    .withSimPolicy(
-                                        new SimPolicyResourceId()
-                                            .withId(
-                                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"))
-                                    .withStaticIpConfiguration(
-                                        Arrays
-                                            .asList(
-                                                new SimStaticIpProperties()
-                                                    .withAttachedDataNetwork(
-                                                        new AttachedDataNetworkResourceId()
-                                                            .withId(
-                                                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"))
-                                                    .withSlice(
-                                                        new SliceResourceId()
-                                                            .withId(
-                                                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"))
-                                                    .withStaticIp(
-                                                        new SimStaticIpPropertiesStaticIp()
-                                                            .withIpv4Address("2.4.0.2")))))),
+        manager.sims()
+            .bulkUpload("rg1", "testSimGroup", new SimUploadList().withSims(Arrays.asList(new SimNameAndProperties()
+                .withName("testSim")
+                .withAuthenticationKey("fakeTokenPlaceholder")
+                .withOperatorKeyCode("fakeTokenPlaceholder")
+                .withInternationalMobileSubscriberIdentity("00000")
+                .withIntegratedCircuitCardIdentifier("8900000000000000000")
+                .withDeviceType("Video camera")
+                .withSimPolicy(new SimPolicyResourceId().withId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"))
+                .withStaticIpConfiguration(Arrays.asList(new SimStaticIpProperties()
+                    .withAttachedDataNetwork(new AttachedDataNetworkResourceId().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"))
+                    .withSlice(new SliceResourceId().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"))
+                    .withStaticIp(new SimStaticIpPropertiesStaticIp().withIpv4Address("2.4.0.1")))),
+                new SimNameAndProperties().withName("testSim2")
+                    .withAuthenticationKey("fakeTokenPlaceholder")
+                    .withOperatorKeyCode("fakeTokenPlaceholder")
+                    .withInternationalMobileSubscriberIdentity("00000")
+                    .withIntegratedCircuitCardIdentifier("8900000000000000001")
+                    .withDeviceType("Video camera")
+                    .withSimPolicy(new SimPolicyResourceId().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"))
+                    .withStaticIpConfiguration(Arrays.asList(new SimStaticIpProperties()
+                        .withAttachedDataNetwork(new AttachedDataNetworkResourceId().withId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"))
+                        .withSlice(new SliceResourceId().withId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"))
+                        .withStaticIp(new SimStaticIpPropertiesStaticIp().withIpv4Address("2.4.0.2")))))),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -1940,82 +2042,83 @@ import com.azure.resourcemanager.mobilenetwork.models.SimStaticIpPropertiesStati
 import com.azure.resourcemanager.mobilenetwork.models.SliceResourceId;
 import java.util.Arrays;
 
-/** Samples for Sims BulkUploadEncrypted. */
+/**
+ * Samples for Sims BulkUploadEncrypted.
+ */
 public final class SimsBulkUploadEncryptedSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimBulkUploadEncrypted.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimBulkUploadEncrypted.json
      */
     /**
      * Sample code: Bulk upload encrypted SIMs to a SIM group.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void bulkUploadEncryptedSIMsToASIMGroup(
-        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .sims()
-            .bulkUploadEncrypted(
-                "rg1",
-                "testSimGroup",
-                new EncryptedSimUploadList()
-                    .withVersion(1)
-                    .withAzureKeyIdentifier(1)
-                    .withVendorKeyFingerprint("fakeTokenPlaceholder")
-                    .withEncryptedTransportKey("fakeTokenPlaceholder")
-                    .withSignedTransportKey("fakeTokenPlaceholder")
-                    .withSims(
-                        Arrays
-                            .asList(
-                                new SimNameAndEncryptedProperties()
-                                    .withName("testSim")
-                                    .withEncryptedCredentials("fakeTokenPlaceholder")
-                                    .withInternationalMobileSubscriberIdentity("00000")
-                                    .withIntegratedCircuitCardIdentifier("8900000000000000000")
-                                    .withDeviceType("Video camera")
-                                    .withSimPolicy(
-                                        new SimPolicyResourceId()
-                                            .withId(
-                                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"))
-                                    .withStaticIpConfiguration(
-                                        Arrays
-                                            .asList(
-                                                new SimStaticIpProperties()
-                                                    .withAttachedDataNetwork(
-                                                        new AttachedDataNetworkResourceId()
-                                                            .withId(
-                                                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"))
-                                                    .withSlice(
-                                                        new SliceResourceId()
-                                                            .withId(
-                                                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"))
-                                                    .withStaticIp(
-                                                        new SimStaticIpPropertiesStaticIp()
-                                                            .withIpv4Address("2.4.0.1")))),
-                                new SimNameAndEncryptedProperties()
-                                    .withName("testSim2")
-                                    .withEncryptedCredentials("fakeTokenPlaceholder")
-                                    .withInternationalMobileSubscriberIdentity("00000")
-                                    .withIntegratedCircuitCardIdentifier("8900000000000000001")
-                                    .withDeviceType("Video camera")
-                                    .withSimPolicy(
-                                        new SimPolicyResourceId()
-                                            .withId(
-                                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"))
-                                    .withStaticIpConfiguration(
-                                        Arrays
-                                            .asList(
-                                                new SimStaticIpProperties()
-                                                    .withAttachedDataNetwork(
-                                                        new AttachedDataNetworkResourceId()
-                                                            .withId(
-                                                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"))
-                                                    .withSlice(
-                                                        new SliceResourceId()
-                                                            .withId(
-                                                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"))
-                                                    .withStaticIp(
-                                                        new SimStaticIpPropertiesStaticIp()
-                                                            .withIpv4Address("2.4.0.2")))))),
+    public static void
+        bulkUploadEncryptedSIMsToASIMGroup(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+        manager.sims()
+            .bulkUploadEncrypted("rg1", "testSimGroup", new EncryptedSimUploadList().withVersion(1)
+                .withAzureKeyIdentifier(1)
+                .withVendorKeyFingerprint("fakeTokenPlaceholder")
+                .withEncryptedTransportKey("fakeTokenPlaceholder")
+                .withSignedTransportKey("fakeTokenPlaceholder")
+                .withSims(Arrays.asList(new SimNameAndEncryptedProperties().withName("testSim")
+                    .withEncryptedCredentials("fakeTokenPlaceholder")
+                    .withInternationalMobileSubscriberIdentity("00000")
+                    .withIntegratedCircuitCardIdentifier("8900000000000000000")
+                    .withDeviceType("Video camera")
+                    .withSimPolicy(new SimPolicyResourceId().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"))
+                    .withStaticIpConfiguration(Arrays.asList(new SimStaticIpProperties()
+                        .withAttachedDataNetwork(new AttachedDataNetworkResourceId().withId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"))
+                        .withSlice(new SliceResourceId().withId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"))
+                        .withStaticIp(new SimStaticIpPropertiesStaticIp().withIpv4Address("2.4.0.1")))),
+                    new SimNameAndEncryptedProperties().withName("testSim2")
+                        .withEncryptedCredentials("fakeTokenPlaceholder")
+                        .withInternationalMobileSubscriberIdentity("00000")
+                        .withIntegratedCircuitCardIdentifier("8900000000000000001")
+                        .withDeviceType("Video camera")
+                        .withSimPolicy(new SimPolicyResourceId().withId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"))
+                        .withStaticIpConfiguration(Arrays.asList(new SimStaticIpProperties()
+                            .withAttachedDataNetwork(new AttachedDataNetworkResourceId().withId(
+                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"))
+                            .withSlice(new SliceResourceId().withId(
+                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"))
+                            .withStaticIp(new SimStaticIpPropertiesStaticIp().withIpv4Address("2.4.0.2")))))),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Sims_Clone
+
+```java
+import com.azure.resourcemanager.mobilenetwork.models.SimClone;
+import com.azure.resourcemanager.mobilenetwork.models.SimGroupResourceId;
+import java.util.Arrays;
+
+/**
+ * Samples for Sims Clone.
+ */
+public final class SimsCloneSamples {
+    /*
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimClone.json
+     */
+    /**
+     * Sample code: Clone list of SIMs to target SIM group.
+     * 
+     * @param manager Entry point to MobileNetworkManager.
+     */
+    public static void
+        cloneListOfSIMsToTargetSIMGroup(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+        manager.sims()
+            .clone("testResourceGroupName", "testSimGroup",
+                new SimClone().withTargetSimGroupId(new SimGroupResourceId().withId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2/providers/Microsoft.MobileNetwork/simGroups/testSimGroup1"))
+                    .withSims(Arrays.asList("testSim", "testSim2")),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -2031,19 +2134,20 @@ import com.azure.resourcemanager.mobilenetwork.models.SimStaticIpPropertiesStati
 import com.azure.resourcemanager.mobilenetwork.models.SliceResourceId;
 import java.util.Arrays;
 
-/** Samples for Sims CreateOrUpdate. */
+/**
+ * Samples for Sims CreateOrUpdate.
+ */
 public final class SimsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimCreate.json
      */
     /**
      * Sample code: Create SIM.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void createSIM(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .sims()
+        manager.sims()
             .define("testSim")
             .withExistingSimGroup("rg1", "testSimGroup")
             .withInternationalMobileSubscriberIdentity("00000")
@@ -2051,23 +2155,14 @@ public final class SimsCreateOrUpdateSamples {
             .withOperatorKeyCode("00000000000000000000000000000000")
             .withIntegratedCircuitCardIdentifier("8900000000000000000")
             .withDeviceType("Video camera")
-            .withSimPolicy(
-                new SimPolicyResourceId()
-                    .withId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"))
-            .withStaticIpConfiguration(
-                Arrays
-                    .asList(
-                        new SimStaticIpProperties()
-                            .withAttachedDataNetwork(
-                                new AttachedDataNetworkResourceId()
-                                    .withId(
-                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"))
-                            .withSlice(
-                                new SliceResourceId()
-                                    .withId(
-                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"))
-                            .withStaticIp(new SimStaticIpPropertiesStaticIp().withIpv4Address("2.4.0.1"))))
+            .withSimPolicy(new SimPolicyResourceId().withId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"))
+            .withStaticIpConfiguration(Arrays.asList(new SimStaticIpProperties()
+                .withAttachedDataNetwork(new AttachedDataNetworkResourceId().withId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"))
+                .withSlice(new SliceResourceId().withId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"))
+                .withStaticIp(new SimStaticIpPropertiesStaticIp().withIpv4Address("2.4.0.1"))))
             .create();
     }
 }
@@ -2076,14 +2171,16 @@ public final class SimsCreateOrUpdateSamples {
 ### Sims_Delete
 
 ```java
-/** Samples for Sims Delete. */
+/**
+ * Samples for Sims Delete.
+ */
 public final class SimsDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimDelete.json
      */
     /**
      * Sample code: Delete SIM.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void deleteSIM(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
@@ -2095,19 +2192,20 @@ public final class SimsDeleteSamples {
 ### Sims_Get
 
 ```java
-/** Samples for Sims Get. */
+/**
+ * Samples for Sims Get.
+ */
 public final class SimsGetSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimGet.json
      */
     /**
      * Sample code: Get SIM.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void getSIM(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .sims()
+        manager.sims()
             .getWithResponse("testResourceGroupName", "testSimGroup", "testSimName", com.azure.core.util.Context.NONE);
     }
 }
@@ -2116,14 +2214,16 @@ public final class SimsGetSamples {
 ### Sims_ListByGroup
 
 ```java
-/** Samples for Sims ListByGroup. */
+/**
+ * Samples for Sims ListByGroup.
+ */
 public final class SimsListByGroupSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimListBySimGroup.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimListBySimGroup.json
      */
     /**
      * Sample code: List SIMs in a SIM group.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void listSIMsInASIMGroup(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
@@ -2132,22 +2232,54 @@ public final class SimsListByGroupSamples {
 }
 ```
 
+### Sims_Move
+
+```java
+import com.azure.resourcemanager.mobilenetwork.models.SimGroupResourceId;
+import com.azure.resourcemanager.mobilenetwork.models.SimMove;
+import java.util.Arrays;
+
+/**
+ * Samples for Sims Move.
+ */
+public final class SimsMoveSamples {
+    /*
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimMove.json
+     */
+    /**
+     * Sample code: Move list of SIMs to target SIM group.
+     * 
+     * @param manager Entry point to MobileNetworkManager.
+     */
+    public static void
+        moveListOfSIMsToTargetSIMGroup(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+        manager.sims()
+            .move("testResourceGroupName", "testSimGroup",
+                new SimMove().withTargetSimGroupId(new SimGroupResourceId().withId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2/providers/Microsoft.MobileNetwork/simGroups/testSimGroup1"))
+                    .withSims(Arrays.asList("testSim", "testSim2")),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Sites_CreateOrUpdate
 
 ```java
-/** Samples for Sites CreateOrUpdate. */
+/**
+ * Samples for Sites CreateOrUpdate.
+ */
 public final class SitesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SiteCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SiteCreate.json
      */
     /**
      * Sample code: Create mobile network site.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void createMobileNetworkSite(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .sites()
+        manager.sites()
             .define("testSite")
             .withRegion("testLocation")
             .withExistingMobileNetwork("rg1", "testMobileNetwork")
@@ -2159,14 +2291,16 @@ public final class SitesCreateOrUpdateSamples {
 ### Sites_Delete
 
 ```java
-/** Samples for Sites Delete. */
+/**
+ * Samples for Sites Delete.
+ */
 public final class SitesDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SiteDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SiteDelete.json
      */
     /**
      * Sample code: Delete mobile network site.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void deleteMobileNetworkSite(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
@@ -2181,29 +2315,24 @@ public final class SitesDeleteSamples {
 import com.azure.resourcemanager.mobilenetwork.models.PacketCoreControlPlaneResourceId;
 import com.azure.resourcemanager.mobilenetwork.models.SiteDeletePacketCore;
 
-/** Samples for Sites DeletePacketCore. */
+/**
+ * Samples for Sites DeletePacketCore.
+ */
 public final class SitesDeletePacketCoreSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SiteDeletePacketCore.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SiteDeletePacketCore.json
      */
     /**
      * Sample code: Delete packet core in mobile network site.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void deletePacketCoreInMobileNetworkSite(
-        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .sites()
-            .deletePacketCore(
-                "rg1",
-                "testMobileNetwork",
-                "testSite",
-                new SiteDeletePacketCore()
-                    .withPacketCore(
-                        new PacketCoreControlPlaneResourceId()
-                            .withId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP")),
+    public static void
+        deletePacketCoreInMobileNetworkSite(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+        manager.sites()
+            .deletePacketCore("rg1", "testMobileNetwork", "testSite",
+                new SiteDeletePacketCore().withPacketCore(new PacketCoreControlPlaneResourceId().withId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP")),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -2212,14 +2341,16 @@ public final class SitesDeletePacketCoreSamples {
 ### Sites_Get
 
 ```java
-/** Samples for Sites Get. */
+/**
+ * Samples for Sites Get.
+ */
 public final class SitesGetSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SiteGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SiteGet.json
      */
     /**
      * Sample code: Get mobile network site.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void getMobileNetworkSite(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
@@ -2231,18 +2362,20 @@ public final class SitesGetSamples {
 ### Sites_ListByMobileNetwork
 
 ```java
-/** Samples for Sites ListByMobileNetwork. */
+/**
+ * Samples for Sites ListByMobileNetwork.
+ */
 public final class SitesListByMobileNetworkSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SiteListByMobileNetwork.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SiteListByMobileNetwork.json
      */
     /**
      * Sample code: List mobile network sites in a mobile network.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void listMobileNetworkSitesInAMobileNetwork(
-        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+    public static void
+        listMobileNetworkSitesInAMobileNetwork(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
         manager.sites().listByMobileNetwork("rg1", "testMobileNetwork", com.azure.core.util.Context.NONE);
     }
 }
@@ -2255,23 +2388,23 @@ import com.azure.resourcemanager.mobilenetwork.models.Site;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Sites UpdateTags. */
+/**
+ * Samples for Sites UpdateTags.
+ */
 public final class SitesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SiteUpdateTags.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SiteUpdateTags.json
      */
     /**
      * Sample code: Update mobile network site tags.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void updateMobileNetworkSiteTags(
-        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        Site resource =
-            manager
-                .sites()
-                .getWithResponse("rg1", "testMobileNetwork", "testSite", com.azure.core.util.Context.NONE)
-                .getValue();
+    public static void
+        updateMobileNetworkSiteTags(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+        Site resource = manager.sites()
+            .getWithResponse("rg1", "testMobileNetwork", "testSite", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
@@ -2294,19 +2427,20 @@ public final class SitesUpdateTagsSamples {
 ```java
 import com.azure.resourcemanager.mobilenetwork.models.Snssai;
 
-/** Samples for Slices CreateOrUpdate. */
+/**
+ * Samples for Slices CreateOrUpdate.
+ */
 public final class SlicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SliceCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SliceCreate.json
      */
     /**
      * Sample code: Create network slice.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void createNetworkSlice(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .slices()
+        manager.slices()
             .define("testSlice")
             .withRegion("eastus")
             .withExistingMobileNetwork("rg1", "testMobileNetwork")
@@ -2320,14 +2454,16 @@ public final class SlicesCreateOrUpdateSamples {
 ### Slices_Delete
 
 ```java
-/** Samples for Slices Delete. */
+/**
+ * Samples for Slices Delete.
+ */
 public final class SlicesDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SliceDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SliceDelete.json
      */
     /**
      * Sample code: Delete network slice.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void deleteNetworkSlice(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
@@ -2339,14 +2475,16 @@ public final class SlicesDeleteSamples {
 ### Slices_Get
 
 ```java
-/** Samples for Slices Get. */
+/**
+ * Samples for Slices Get.
+ */
 public final class SlicesGetSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SliceGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SliceGet.json
      */
     /**
      * Sample code: Get network slice.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void getNetworkSlice(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
@@ -2358,18 +2496,20 @@ public final class SlicesGetSamples {
 ### Slices_ListByMobileNetwork
 
 ```java
-/** Samples for Slices ListByMobileNetwork. */
+/**
+ * Samples for Slices ListByMobileNetwork.
+ */
 public final class SlicesListByMobileNetworkSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SliceListByMobileNetwork.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SliceListByMobileNetwork.json
      */
     /**
      * Sample code: List network slices in a mobile network.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void listNetworkSlicesInAMobileNetwork(
-        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+    public static void
+        listNetworkSlicesInAMobileNetwork(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
         manager.slices().listByMobileNetwork("rg1", "testMobileNetwork", com.azure.core.util.Context.NONE);
     }
 }
@@ -2382,22 +2522,22 @@ import com.azure.resourcemanager.mobilenetwork.models.Slice;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Slices UpdateTags. */
+/**
+ * Samples for Slices UpdateTags.
+ */
 public final class SlicesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SliceUpdateTags.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SliceUpdateTags.json
      */
     /**
      * Sample code: Update network slice tags.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void updateNetworkSliceTags(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        Slice resource =
-            manager
-                .slices()
-                .getWithResponse("rg1", "testMobileNetwork", "testSlice", com.azure.core.util.Context.NONE)
-                .getValue();
+        Slice resource = manager.slices()
+            .getWithResponse("rg1", "testMobileNetwork", "testSlice", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
@@ -2411,6 +2551,27 @@ public final class SlicesUpdateTagsSamples {
             map.put(key, value);
         }
         return map;
+    }
+}
+```
+
+### UeInformation_List
+
+```java
+/**
+ * Samples for UeInformation List.
+ */
+public final class UeInformationListSamples {
+    /*
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/UeInfoList.json
+     */
+    /**
+     * Sample code: Get UE Information.
+     * 
+     * @param manager Entry point to MobileNetworkManager.
+     */
+    public static void getUEInformation(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+        manager.ueInformations().list("rg1", "TestPacketCoreCP", com.azure.core.util.Context.NONE);
     }
 }
 ```

@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Update policy values. */
+/**
+ * Update policy values.
+ */
 public final class UpdatePolicy extends ExpandableStringEnum<UpdatePolicy> {
-    /** Static value UpdateAll for UpdatePolicy. */
+    /**
+     * Static value UpdateAll for UpdatePolicy.
+     */
     public static final UpdatePolicy UPDATE_ALL = fromString("UpdateAll");
 
-    /** Static value No3rdPartyAppUpdates for UpdatePolicy. */
+    /**
+     * Static value No3rdPartyAppUpdates for UpdatePolicy.
+     */
     public static final UpdatePolicy NO3RD_PARTY_APP_UPDATES = fromString("No3rdPartyAppUpdates");
 
     /**
      * Creates a new instance of UpdatePolicy value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class UpdatePolicy extends ExpandableStringEnum<UpdatePolicy> {
 
     /**
      * Creates or finds a UpdatePolicy from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding UpdatePolicy.
      */
@@ -38,7 +44,7 @@ public final class UpdatePolicy extends ExpandableStringEnum<UpdatePolicy> {
 
     /**
      * Gets known UpdatePolicy values.
-     *
+     * 
      * @return known UpdatePolicy values.
      */
     public static Collection<UpdatePolicy> values() {

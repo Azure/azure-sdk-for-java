@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Describes the a managed rule set definition. */
+/**
+ * Describes the a managed rule set definition.
+ */
 @Fluent
 public final class ManagedRuleSetDefinitionInner extends Resource {
     /*
@@ -20,27 +22,33 @@ public final class ManagedRuleSetDefinitionInner extends Resource {
     @JsonProperty(value = "properties")
     private ManagedRuleSetDefinitionProperties innerProperties;
 
-    /** Creates an instance of ManagedRuleSetDefinitionInner class. */
+    /**
+     * Creates an instance of ManagedRuleSetDefinitionInner class.
+     */
     public ManagedRuleSetDefinitionInner() {
     }
 
     /**
      * Get the innerProperties property: Properties for a managed rule set definition.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ManagedRuleSetDefinitionProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ManagedRuleSetDefinitionInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ManagedRuleSetDefinitionInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -49,7 +57,7 @@ public final class ManagedRuleSetDefinitionInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state of the managed rule set.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -58,7 +66,7 @@ public final class ManagedRuleSetDefinitionInner extends Resource {
 
     /**
      * Get the ruleSetId property: Id of the managed rule set.
-     *
+     * 
      * @return the ruleSetId value.
      */
     public String ruleSetId() {
@@ -67,7 +75,7 @@ public final class ManagedRuleSetDefinitionInner extends Resource {
 
     /**
      * Get the ruleSetType property: Type of the managed rule set.
-     *
+     * 
      * @return the ruleSetType value.
      */
     public String ruleSetType() {
@@ -76,7 +84,7 @@ public final class ManagedRuleSetDefinitionInner extends Resource {
 
     /**
      * Get the ruleSetVersion property: Version of the managed rule set type.
-     *
+     * 
      * @return the ruleSetVersion value.
      */
     public String ruleSetVersion() {
@@ -85,7 +93,7 @@ public final class ManagedRuleSetDefinitionInner extends Resource {
 
     /**
      * Get the ruleGroups property: Rule groups of the managed rule set.
-     *
+     * 
      * @return the ruleGroups value.
      */
     public List<ManagedRuleGroupDefinition> ruleGroups() {
@@ -94,7 +102,7 @@ public final class ManagedRuleSetDefinitionInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

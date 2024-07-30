@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.fluent.models.NetworkGroupInner;
 public final class NetworkGroupsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkManagerGroupPut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkManagerGroupPut.json
      */
     /**
      * Sample code: NetworkGroupsPut.
@@ -20,8 +20,11 @@ public final class NetworkGroupsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void networkGroupsPut(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getNetworkGroups().createOrUpdateWithResponse("rg1",
-            "testNetworkManager", "testNetworkGroup", new NetworkGroupInner().withDescription("A sample group"), null,
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getNetworkGroups()
+            .createOrUpdateWithResponse("rg1", "testNetworkManager", "testNetworkGroup",
+                new NetworkGroupInner().withDescription("A sample group"), null, com.azure.core.util.Context.NONE);
     }
 }

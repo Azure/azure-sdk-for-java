@@ -104,8 +104,8 @@ public final class ManagedRuleOverride {
      */
     public void validate() {
         if (ruleId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property ruleId in model ManagedRuleOverride"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ruleId in model ManagedRuleOverride"));
         }
     }
 

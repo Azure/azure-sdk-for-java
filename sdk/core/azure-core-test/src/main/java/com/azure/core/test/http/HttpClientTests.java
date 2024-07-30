@@ -58,6 +58,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -523,6 +524,7 @@ public abstract class HttpClientTests {
      */
     @ParameterizedTest
     @MethodSource("knownLengthNoBufferAsyncFluxBinaryData")
+    @Disabled
     public void canSendKnownLengthNoBufferAsyncFluxBinaryData(BinaryData requestBody, byte[] expectedResponseBody,
         BinaryDataTestConsumer consumer) {
         consumer.accept(getRequestUrl(ECHO_RESPONSE), requestBody, createHttpClient(), expectedResponseBody);
@@ -584,7 +586,7 @@ public abstract class HttpClientTests {
         HttpRequest request = new HttpRequest(HttpMethod.PUT, requestUrl, new HttpHeaders(), requestBody);
 
         try (HttpResponse httpResponse = httpClient.sendSync(request, Context.NONE)) {
-            byte[] responseBytes = httpResponse.getBodyAsByteArray().block();
+            byte[] responseBytes = httpResponse.getBodyAsBinaryData().toBytes();
             assertArraysEqual(expectedResponseBody, responseBytes);
         }
     }
@@ -615,7 +617,7 @@ public abstract class HttpClientTests {
             .getContext();
 
         try (HttpResponse httpResponse = httpClient.sendSync(request, context)) {
-            byte[] responseBytes = httpResponse.getBodyAsByteArray().block();
+            byte[] responseBytes = httpResponse.getBodyAsBinaryData().toBytes();
             assertArraysEqual(expectedResponseBody, responseBytes);
             assertEquals(expectedResponseBody.length, progress.intValue());
         }

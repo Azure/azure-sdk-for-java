@@ -6,16 +6,24 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity for Microsoft Fabric LakeHouse Table sink.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = LakeHouseTableSink.class, visible = true)
 @JsonTypeName("LakeHouseTableSink")
 @Fluent
 public final class LakeHouseTableSink extends CopySink {
+    /*
+     * Copy sink type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "LakeHouseTableSink";
+
     /*
      * The type of table action for LakeHouse Table sink. Possible values include: "None", "Append", "Overwrite".
      */
@@ -23,15 +31,15 @@ public final class LakeHouseTableSink extends CopySink {
     private Object tableActionOption;
 
     /*
-     * Create partitions in folder structure based on one or multiple columns. Each distinct column value (pair) will
-     * be a new partition. Possible values include: "None", "PartitionByKey".
+     * Create partitions in folder structure based on one or multiple columns. Each distinct column value (pair) will be
+     * a new partition. Possible values include: "None", "PartitionByKey".
      */
     @JsonProperty(value = "partitionOption")
     private Object partitionOption;
 
     /*
-     * Specify the partition column names from sink columns. Type: array of objects (or Expression with resultType
-     * array of objects).
+     * Specify the partition column names from sink columns. Type: array of objects (or Expression with resultType array
+     * of objects).
      */
     @JsonProperty(value = "partitionNameList")
     private Object partitionNameList;
@@ -40,6 +48,16 @@ public final class LakeHouseTableSink extends CopySink {
      * Creates an instance of LakeHouseTableSink class.
      */
     public LakeHouseTableSink() {
+    }
+
+    /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

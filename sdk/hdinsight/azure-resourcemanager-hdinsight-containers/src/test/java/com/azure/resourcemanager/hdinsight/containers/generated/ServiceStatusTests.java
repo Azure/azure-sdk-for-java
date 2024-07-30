@@ -11,21 +11,20 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceStatus model =
-            BinaryData
-                .fromString("{\"kind\":\"pofncck\",\"ready\":\"yfzqwhxxbu\",\"message\":\"a\"}")
+        ServiceStatus model
+            = BinaryData.fromString("{\"kind\":\"z\",\"ready\":\"wmsweypqwd\",\"message\":\"gicccnxqhuex\"}")
                 .toObject(ServiceStatus.class);
-        Assertions.assertEquals("pofncck", model.kind());
-        Assertions.assertEquals("yfzqwhxxbu", model.ready());
-        Assertions.assertEquals("a", model.message());
+        Assertions.assertEquals("z", model.kind());
+        Assertions.assertEquals("wmsweypqwd", model.ready());
+        Assertions.assertEquals("gicccnxqhuex", model.message());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceStatus model = new ServiceStatus().withKind("pofncck").withReady("yfzqwhxxbu").withMessage("a");
+        ServiceStatus model = new ServiceStatus().withKind("z").withReady("wmsweypqwd").withMessage("gicccnxqhuex");
         model = BinaryData.fromObject(model).toObject(ServiceStatus.class);
-        Assertions.assertEquals("pofncck", model.kind());
-        Assertions.assertEquals("yfzqwhxxbu", model.ready());
-        Assertions.assertEquals("a", model.message());
+        Assertions.assertEquals("z", model.kind());
+        Assertions.assertEquals("wmsweypqwd", model.ready());
+        Assertions.assertEquals("gicccnxqhuex", model.message());
     }
 }

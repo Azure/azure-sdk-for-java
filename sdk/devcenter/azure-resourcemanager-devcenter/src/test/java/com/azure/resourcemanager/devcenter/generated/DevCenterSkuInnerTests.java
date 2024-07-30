@@ -12,32 +12,28 @@ import org.junit.jupiter.api.Assertions;
 public final class DevCenterSkuInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DevCenterSkuInner model =
-            BinaryData
-                .fromString(
-                    "{\"resourceType\":\"elmcuvhixbjxyfw\",\"locations\":[\"r\",\"ool\",\"ttpkiwkkbnujrywv\"],\"capabilities\":[{\"name\":\"fpncurdo\",\"value\":\"iithtywu\"},{\"name\":\"cbihwqk\",\"value\":\"dntwjchrdgo\"},{\"name\":\"xum\",\"value\":\"ton\"}],\"name\":\"zj\",\"tier\":\"Basic\",\"size\":\"fdlwg\",\"family\":\"tsbwtovvtgse\",\"capacity\":800109726}")
-                .toObject(DevCenterSkuInner.class);
-        Assertions.assertEquals("zj", model.name());
+        DevCenterSkuInner model = BinaryData.fromString(
+            "{\"resourceType\":\"fbkjubdyhgkfmi\",\"locations\":[\"owzfttsttkt\"],\"capabilities\":[{\"name\":\"qactxtgzukxitmmq\",\"value\":\"qqqxhrnxrx\"}],\"name\":\"pjui\",\"tier\":\"Basic\",\"size\":\"k\",\"family\":\"zfvazi\",\"capacity\":225909755}")
+            .toObject(DevCenterSkuInner.class);
+        Assertions.assertEquals("pjui", model.name());
         Assertions.assertEquals(SkuTier.BASIC, model.tier());
-        Assertions.assertEquals("fdlwg", model.size());
-        Assertions.assertEquals("tsbwtovvtgse", model.family());
-        Assertions.assertEquals(800109726, model.capacity());
+        Assertions.assertEquals("k", model.size());
+        Assertions.assertEquals("zfvazi", model.family());
+        Assertions.assertEquals(225909755, model.capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DevCenterSkuInner model =
-            new DevCenterSkuInner()
-                .withName("zj")
-                .withTier(SkuTier.BASIC)
-                .withSize("fdlwg")
-                .withFamily("tsbwtovvtgse")
-                .withCapacity(800109726);
+        DevCenterSkuInner model = new DevCenterSkuInner().withName("pjui")
+            .withTier(SkuTier.BASIC)
+            .withSize("k")
+            .withFamily("zfvazi")
+            .withCapacity(225909755);
         model = BinaryData.fromObject(model).toObject(DevCenterSkuInner.class);
-        Assertions.assertEquals("zj", model.name());
+        Assertions.assertEquals("pjui", model.name());
         Assertions.assertEquals(SkuTier.BASIC, model.tier());
-        Assertions.assertEquals("fdlwg", model.size());
-        Assertions.assertEquals("tsbwtovvtgse", model.family());
-        Assertions.assertEquals(800109726, model.capacity());
+        Assertions.assertEquals("k", model.size());
+        Assertions.assertEquals("zfvazi", model.family());
+        Assertions.assertEquals(225909755, model.capacity());
     }
 }

@@ -9,8 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class DatabaseAccountsListMetricDefinitionsSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
-     * CosmosDBDatabaseAccountGetMetricDefinitions.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDatabaseAccountGetMetricDefinitions.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountGetMetricDefinitions.
@@ -19,7 +18,10 @@ public final class DatabaseAccountsListMetricDefinitionsSamples {
      */
     public static void
         cosmosDBDatabaseAccountGetMetricDefinitions(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getDatabaseAccounts().listMetricDefinitions("rg1", "ddb1",
-            com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getDatabaseAccounts()
+            .listMetricDefinitions("rg1", "ddb1", com.azure.core.util.Context.NONE);
     }
 }

@@ -8,9 +8,10 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Range of port numbers to use as translated ports on each translated address. If not specified and NAPT is enabled,
- * this range defaults to 1,024 - 49,999. (Ports under 1,024 should not be used because these are special purpose ports
- * reserved by IANA. Ports 50,000 and above are reserved for non-NAPT use.).
+ * Range of port numbers to use as translated ports on each translated address.
+ * If not specified and NAPT is enabled, this range defaults to 1,024 - 49,999.
+ * (Ports under 1,024 should not be used because these are special purpose ports reserved by IANA. Ports 50,000 and
+ * above are reserved for non-NAPT use.).
  */
 @Fluent
 public final class PortRange {
@@ -26,13 +27,15 @@ public final class PortRange {
     @JsonProperty(value = "maxPort")
     private Integer maxPort;
 
-    /** Creates an instance of PortRange class. */
+    /**
+     * Creates an instance of PortRange class.
+     */
     public PortRange() {
     }
 
     /**
      * Get the minPort property: The minimum port number.
-     *
+     * 
      * @return the minPort value.
      */
     public Integer minPort() {
@@ -41,7 +44,7 @@ public final class PortRange {
 
     /**
      * Set the minPort property: The minimum port number.
-     *
+     * 
      * @param minPort the minPort value to set.
      * @return the PortRange object itself.
      */
@@ -52,7 +55,7 @@ public final class PortRange {
 
     /**
      * Get the maxPort property: The maximum port number.
-     *
+     * 
      * @return the maxPort value.
      */
     public Integer maxPort() {
@@ -61,7 +64,7 @@ public final class PortRange {
 
     /**
      * Set the maxPort property: The maximum port number.
-     *
+     * 
      * @param maxPort the maxPort value to set.
      * @return the PortRange object itself.
      */
@@ -72,7 +75,7 @@ public final class PortRange {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

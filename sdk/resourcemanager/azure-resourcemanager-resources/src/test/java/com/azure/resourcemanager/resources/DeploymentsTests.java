@@ -10,6 +10,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.resourcemanager.test.utils.TestUtilities;
@@ -38,6 +40,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class DeploymentsTests extends ResourceManagementTest {
+    private static final ClientLogger LOGGER = new ClientLogger(DeploymentsTests.class);
+
     private ResourceGroups resourceGroups;
     private ResourceGroup resourceGroup;
 
@@ -446,7 +450,7 @@ public class DeploymentsTests extends ResourceManagementTest {
 
         try {
             String correlationRequestId = generateRandomUuid();
-            System.out.println("x-ms-correlation-request-id: " + correlationRequestId);
+            LOGGER.log(LogLevel.VERBOSE, () -> "x-ms-correlation-request-id: " + correlationRequestId);
             Context context = new Context(
                 AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY,
                 new HttpHeaders().set("x-ms-correlation-request-id", correlationRequestId));

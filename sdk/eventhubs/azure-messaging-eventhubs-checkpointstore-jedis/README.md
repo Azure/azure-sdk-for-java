@@ -12,6 +12,7 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 ### Prerequisites
 
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
+  - Here are details about [Java 8 client compatibility with Azure Certificate Authority](https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis).
 - [Maven][maven]
 - Microsoft Azure subscription
     - You can create a free account at: [https://azure.microsoft.com](https://azure.microsoft.com)
@@ -59,7 +60,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs-checkpointstore-jedis</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

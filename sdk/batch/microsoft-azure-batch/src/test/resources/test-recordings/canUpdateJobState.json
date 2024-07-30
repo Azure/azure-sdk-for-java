@@ -1,327 +1,327 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/jobs?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 23 May 2023 03:28:54 GMT",
+      "date" : "Thu, 28 Mar 2024 09:41:23 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "dataserviceid" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/job-1",
+      "dataserviceid" : "https://sanjbatch.eastus.batch.azure.com/jobs/job-1",
       "retry-after" : "0",
-      "request-id" : "3787305e-ed3b-4138-9f1e-0878091ae686",
+      "request-id" : "de310fe5-f8d8-4fba-8ecd-b1bd7ef72138",
       "StatusCode" : "201",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Tue, 23 May 2023 03:28:54 GMT",
+      "last-modified" : "Thu, 28 Mar 2024 09:41:24 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "29d62584-b604-4d73-8369-1aea7e332a46",
-      "etag" : "0x8DB5B3DD64A96FE",
-      "location" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/job-1",
+      "client-request-id" : "0dc76100-6da0-4d6f-aeb0-0a7cfb7dba70",
+      "etag" : "0x8DC4F0B3BB056EC",
+      "location" : "https://sanjbatch.eastus.batch.azure.com/jobs/job-1",
       "dataserviceversion" : "3.0",
       "Body" : ""
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 23 May 2023 03:28:54 GMT",
+      "date" : "Thu, 28 Mar 2024 09:41:23 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "6671e745-c7c7-4d10-8904-9cfe40ce718f",
+      "request-id" : "71a69eb0-bb6c-4bca-bc75-1fe3bd80e063",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Tue, 23 May 2023 03:28:54 GMT",
+      "last-modified" : "Thu, 28 Mar 2024 09:41:24 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "41f7ac2e-dce7-4fb8-8ed1-1e8455f228bb",
+      "client-request-id" : "bcc5b19c-2df4-4b64-8902-ba29eca1c6e0",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DB5B3DD64A96FE",
+      "etag" : "0x8DC4F0B3BB056EC",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#jobs/@Element\",\"id\":\"BatchUser-Job-CanUpdateState\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState\",\"eTag\":\"0x8DB5B3DD64A96FE\",\"lastModified\":\"2023-05-23T03:28:54.9402366Z\",\"creationTime\":\"2023-05-23T03:28:54.926235Z\",\"state\":\"active\",\"stateTransitionTime\":\"2023-05-23T03:28:54.9402366Z\",\"priority\":0,\"maxParallelTasks\":-1,\"usesTaskDependencies\":false,\"allowTaskPreemption\":false,\"constraints\":{\r\n    \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":0\r\n  },\"poolInfo\":{\r\n    \"poolId\":\"BatchUser-testpool\"\r\n  },\"executionInfo\":{\r\n    \"startTime\":\"2023-05-23T03:28:54.9402366Z\",\"poolId\":\"BatchUser-testpool\"\r\n  },\"onAllTasksComplete\":\"noaction\",\"onTaskFailure\":\"noaction\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#jobs/@Element\",\"id\":\"BatchUser-Job-CanUpdateState\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState\",\"eTag\":\"0x8DC4F0B3BB056EC\",\"lastModified\":\"2024-03-28T09:41:24.44147Z\",\"creationTime\":\"2024-03-28T09:41:24.428471Z\",\"state\":\"active\",\"stateTransitionTime\":\"2024-03-28T09:41:24.44147Z\",\"priority\":0,\"maxParallelTasks\":-1,\"usesTaskDependencies\":false,\"allowTaskPreemption\":false,\"constraints\":{\r\n    \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":0\r\n  },\"poolInfo\":{\r\n    \"poolId\":\"BatchUser-testpool\"\r\n  },\"executionInfo\":{\r\n    \"startTime\":\"2024-03-28T09:41:24.44147Z\",\"poolId\":\"BatchUser-testpool\"\r\n  },\"onAllTasksComplete\":\"noaction\",\"onTaskFailure\":\"noaction\"\r\n}"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 23 May 2023 03:28:54 GMT",
+      "date" : "Thu, 28 Mar 2024 09:41:24 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "dataserviceid" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState",
+      "dataserviceid" : "https://sanjbatch.eastus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState",
       "retry-after" : "0",
-      "request-id" : "86acbf49-2213-4236-8191-049b1773826e",
+      "request-id" : "39ab7af5-edc9-4d7c-8fb3-2dd3f76b17bf",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Tue, 23 May 2023 03:28:55 GMT",
+      "last-modified" : "Thu, 28 Mar 2024 09:41:24 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "1bda828f-4829-4a4a-87df-33c83233752e",
-      "etag" : "0x8DB5B3DD68A99E4",
+      "client-request-id" : "32cf52e6-f32a-4c0b-8b9a-6d99aa3d771c",
+      "etag" : "0x8DC4F0B3BF464F0",
       "dataserviceversion" : "3.0",
       "Body" : ""
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 23 May 2023 03:28:54 GMT",
+      "date" : "Thu, 28 Mar 2024 09:41:24 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "edb0332e-1afd-48cf-9a5e-e2edc9cb2f09",
+      "request-id" : "06651b59-182a-40d3-97ab-3938f6511daa",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Tue, 23 May 2023 03:28:55 GMT",
+      "last-modified" : "Thu, 28 Mar 2024 09:41:24 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "25207c37-803e-47bc-9922-6950b2b3fb52",
+      "client-request-id" : "9d230a4f-d457-4fa0-86fd-d3a9a7b662bd",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DB5B3DD68A99E4",
+      "etag" : "0x8DC4F0B3BF464F0",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#jobs/@Element\",\"id\":\"BatchUser-Job-CanUpdateState\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState\",\"eTag\":\"0x8DB5B3DD68A99E4\",\"lastModified\":\"2023-05-23T03:28:55.3597412Z\",\"creationTime\":\"2023-05-23T03:28:54.926235Z\",\"state\":\"active\",\"stateTransitionTime\":\"2023-05-23T03:28:54.9402366Z\",\"priority\":500,\"maxParallelTasks\":-1,\"usesTaskDependencies\":false,\"allowTaskPreemption\":false,\"constraints\":{\r\n    \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":3\r\n  },\"poolInfo\":{\r\n    \"poolId\":\"BatchUser-testpool\"\r\n  },\"executionInfo\":{\r\n    \"startTime\":\"2023-05-23T03:28:54.9402366Z\",\"poolId\":\"BatchUser-testpool\"\r\n  },\"onAllTasksComplete\":\"noaction\",\"onTaskFailure\":\"noaction\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#jobs/@Element\",\"id\":\"BatchUser-Job-CanUpdateState\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState\",\"eTag\":\"0x8DC4F0B3BF464F0\",\"lastModified\":\"2024-03-28T09:41:24.8874736Z\",\"creationTime\":\"2024-03-28T09:41:24.428471Z\",\"state\":\"active\",\"stateTransitionTime\":\"2024-03-28T09:41:24.44147Z\",\"priority\":500,\"maxParallelTasks\":-1,\"usesTaskDependencies\":false,\"allowTaskPreemption\":false,\"constraints\":{\r\n    \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":3\r\n  },\"poolInfo\":{\r\n    \"poolId\":\"BatchUser-testpool\"\r\n  },\"executionInfo\":{\r\n    \"startTime\":\"2024-03-28T09:41:24.44147Z\",\"poolId\":\"BatchUser-testpool\"\r\n  },\"onAllTasksComplete\":\"noaction\",\"onTaskFailure\":\"noaction\"\r\n}"
     }
   }, {
     "Method" : "POST",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState/disable?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState/disable?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 23 May 2023 03:28:55 GMT",
+      "date" : "Thu, 28 Mar 2024 09:41:24 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "dataserviceid" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState/disable",
+      "dataserviceid" : "https://sanjbatch.eastus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState/disable",
       "retry-after" : "0",
-      "request-id" : "f57ef56d-74ca-48dd-9569-1063366c823c",
+      "request-id" : "be772de1-e0bf-4258-9214-44669e39d480",
       "StatusCode" : "202",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Tue, 23 May 2023 03:28:55 GMT",
+      "last-modified" : "Thu, 28 Mar 2024 09:41:25 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "188adc28-cc4a-43e9-9ea6-551c5a447d03",
-      "etag" : "0x8DB5B3DD6C9D3FF",
+      "client-request-id" : "87d0ce14-a0ef-42ed-96e0-dc66018db7a2",
+      "etag" : "0x8DC4F0B3C25FC57",
       "dataserviceversion" : "3.0",
       "Body" : ""
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 23 May 2023 03:28:55 GMT",
+      "date" : "Thu, 28 Mar 2024 09:41:24 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "dc51df38-7acd-4814-9c9f-11c600433b89",
+      "request-id" : "80f9c0c5-0703-4c7d-9177-cfda17ed2957",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Tue, 23 May 2023 03:28:55 GMT",
+      "last-modified" : "Thu, 28 Mar 2024 09:41:25 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "5f3b2b6b-618c-4ecc-b53b-d0a8f431aeac",
+      "client-request-id" : "6b02d25e-e90e-4ba5-b2e5-ff0a390842ce",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DB5B3DD6C9D3FF",
+      "etag" : "0x8DC4F0B3C25FC57",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#jobs/@Element\",\"id\":\"BatchUser-Job-CanUpdateState\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState\",\"eTag\":\"0x8DB5B3DD6C9D3FF\",\"lastModified\":\"2023-05-23T03:28:55.7741055Z\",\"creationTime\":\"2023-05-23T03:28:54.926235Z\",\"state\":\"disabling\",\"stateTransitionTime\":\"2023-05-23T03:28:55.7741055Z\",\"previousState\":\"active\",\"previousStateTransitionTime\":\"2023-05-23T03:28:54.9402366Z\",\"priority\":500,\"maxParallelTasks\":-1,\"usesTaskDependencies\":false,\"allowTaskPreemption\":false,\"constraints\":{\r\n    \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":3\r\n  },\"poolInfo\":{\r\n    \"poolId\":\"BatchUser-testpool\"\r\n  },\"executionInfo\":{\r\n    \"startTime\":\"2023-05-23T03:28:54.9402366Z\",\"poolId\":\"BatchUser-testpool\"\r\n  },\"onAllTasksComplete\":\"noaction\",\"onTaskFailure\":\"noaction\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#jobs/@Element\",\"id\":\"BatchUser-Job-CanUpdateState\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState\",\"eTag\":\"0x8DC4F0B3C25FC57\",\"lastModified\":\"2024-03-28T09:41:25.2124759Z\",\"creationTime\":\"2024-03-28T09:41:24.428471Z\",\"state\":\"disabling\",\"stateTransitionTime\":\"2024-03-28T09:41:25.2124759Z\",\"previousState\":\"active\",\"previousStateTransitionTime\":\"2024-03-28T09:41:24.44147Z\",\"priority\":500,\"maxParallelTasks\":-1,\"usesTaskDependencies\":false,\"allowTaskPreemption\":false,\"constraints\":{\r\n    \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":3\r\n  },\"poolInfo\":{\r\n    \"poolId\":\"BatchUser-testpool\"\r\n  },\"executionInfo\":{\r\n    \"startTime\":\"2024-03-28T09:41:24.44147Z\",\"poolId\":\"BatchUser-testpool\"\r\n  },\"onAllTasksComplete\":\"noaction\",\"onTaskFailure\":\"noaction\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 23 May 2023 03:29:00 GMT",
+      "date" : "Thu, 28 Mar 2024 09:41:29 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "bb9d9e15-7150-4ea0-817e-b24953e2a5ab",
+      "request-id" : "46069f96-ed55-472b-a3ae-813fe20feaad",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Tue, 23 May 2023 03:28:55 GMT",
+      "last-modified" : "Thu, 28 Mar 2024 09:41:25 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "f36f3e6f-3213-4483-a802-7049ed2953ef",
+      "client-request-id" : "34d59e42-9461-41ec-8a12-61875cd156e0",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DB5B3DD6C9D3FF",
+      "etag" : "0x8DC4F0B3C25FC57",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#jobs/@Element\",\"id\":\"BatchUser-Job-CanUpdateState\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState\",\"eTag\":\"0x8DB5B3DD6C9D3FF\",\"lastModified\":\"2023-05-23T03:28:55.7741055Z\",\"creationTime\":\"2023-05-23T03:28:54.926235Z\",\"state\":\"disabled\",\"stateTransitionTime\":\"2023-05-23T03:28:57.4330845Z\",\"previousState\":\"active\",\"previousStateTransitionTime\":\"2023-05-23T03:28:54.9402366Z\",\"priority\":500,\"maxParallelTasks\":-1,\"usesTaskDependencies\":false,\"allowTaskPreemption\":false,\"constraints\":{\r\n    \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":3\r\n  },\"poolInfo\":{\r\n    \"poolId\":\"BatchUser-testpool\"\r\n  },\"executionInfo\":{\r\n    \"startTime\":\"2023-05-23T03:28:54.9402366Z\",\"poolId\":\"BatchUser-testpool\"\r\n  },\"onAllTasksComplete\":\"noaction\",\"onTaskFailure\":\"noaction\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#jobs/@Element\",\"id\":\"BatchUser-Job-CanUpdateState\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState\",\"eTag\":\"0x8DC4F0B3C25FC57\",\"lastModified\":\"2024-03-28T09:41:25.2124759Z\",\"creationTime\":\"2024-03-28T09:41:24.428471Z\",\"state\":\"disabled\",\"stateTransitionTime\":\"2024-03-28T09:41:26.0443494Z\",\"previousState\":\"active\",\"previousStateTransitionTime\":\"2024-03-28T09:41:24.44147Z\",\"priority\":500,\"maxParallelTasks\":-1,\"usesTaskDependencies\":false,\"allowTaskPreemption\":false,\"constraints\":{\r\n    \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":3\r\n  },\"poolInfo\":{\r\n    \"poolId\":\"BatchUser-testpool\"\r\n  },\"executionInfo\":{\r\n    \"startTime\":\"2024-03-28T09:41:24.44147Z\",\"poolId\":\"BatchUser-testpool\"\r\n  },\"onAllTasksComplete\":\"noaction\",\"onTaskFailure\":\"noaction\"\r\n}"
     }
   }, {
     "Method" : "PATCH",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 23 May 2023 03:29:00 GMT",
+      "date" : "Thu, 28 Mar 2024 09:41:29 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "dataserviceid" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState",
+      "dataserviceid" : "https://sanjbatch.eastus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState",
       "retry-after" : "0",
-      "request-id" : "2b5846ca-b7b3-4019-ada6-3552a3910af7",
+      "request-id" : "42d4cb6f-f8ac-4f5a-a214-a0bb33029fa5",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Tue, 23 May 2023 03:29:01 GMT",
+      "last-modified" : "Thu, 28 Mar 2024 09:41:30 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "70582d8e-0145-489b-a4b9-c021e433d0b2",
-      "etag" : "0x8DB5B3DDA2DCCCB",
+      "client-request-id" : "fe44e992-cfec-4e29-b4ad-2170941db6be",
+      "etag" : "0x8DC4F0B3F637160",
       "dataserviceversion" : "3.0",
       "Body" : ""
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 23 May 2023 03:29:01 GMT",
+      "date" : "Thu, 28 Mar 2024 09:41:29 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "b77681ff-3381-40ed-8f4a-517afa0f3465",
+      "request-id" : "06406732-452e-43cb-9289-7d75ef56a530",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Tue, 23 May 2023 03:29:01 GMT",
+      "last-modified" : "Thu, 28 Mar 2024 09:41:30 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "64f24aa4-3b2a-4e3a-ad7d-3b06cf331939",
+      "client-request-id" : "aa278fdd-3a16-40c4-9941-2e89858e1b3b",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DB5B3DDA2DCCCB",
+      "etag" : "0x8DC4F0B3F637160",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#jobs/@Element\",\"id\":\"BatchUser-Job-CanUpdateState\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState\",\"eTag\":\"0x8DB5B3DDA2DCCCB\",\"lastModified\":\"2023-05-23T03:29:01.4624459Z\",\"creationTime\":\"2023-05-23T03:28:54.926235Z\",\"state\":\"disabled\",\"stateTransitionTime\":\"2023-05-23T03:28:57.4330845Z\",\"previousState\":\"active\",\"previousStateTransitionTime\":\"2023-05-23T03:28:54.9402366Z\",\"priority\":500,\"maxParallelTasks\":-1,\"usesTaskDependencies\":false,\"allowTaskPreemption\":false,\"constraints\":{\r\n    \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":3\r\n  },\"poolInfo\":{\r\n    \"poolId\":\"BatchUser-testpool\"\r\n  },\"executionInfo\":{\r\n    \"startTime\":\"2023-05-23T03:28:54.9402366Z\",\"poolId\":\"BatchUser-testpool\"\r\n  },\"onAllTasksComplete\":\"terminatejob\",\"onTaskFailure\":\"noaction\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#jobs/@Element\",\"id\":\"BatchUser-Job-CanUpdateState\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState\",\"eTag\":\"0x8DC4F0B3F637160\",\"lastModified\":\"2024-03-28T09:41:30.6484064Z\",\"creationTime\":\"2024-03-28T09:41:24.428471Z\",\"state\":\"disabled\",\"stateTransitionTime\":\"2024-03-28T09:41:26.0443494Z\",\"previousState\":\"active\",\"previousStateTransitionTime\":\"2024-03-28T09:41:24.44147Z\",\"priority\":500,\"maxParallelTasks\":-1,\"usesTaskDependencies\":false,\"allowTaskPreemption\":false,\"constraints\":{\r\n    \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":3\r\n  },\"poolInfo\":{\r\n    \"poolId\":\"BatchUser-testpool\"\r\n  },\"executionInfo\":{\r\n    \"startTime\":\"2024-03-28T09:41:24.44147Z\",\"poolId\":\"BatchUser-testpool\"\r\n  },\"onAllTasksComplete\":\"terminatejob\",\"onTaskFailure\":\"noaction\"\r\n}"
     }
   }, {
     "Method" : "POST",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState/enable?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState/enable?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 23 May 2023 03:29:01 GMT",
+      "date" : "Thu, 28 Mar 2024 09:41:30 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "dataserviceid" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState/enable",
+      "dataserviceid" : "https://sanjbatch.eastus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState/enable",
       "retry-after" : "0",
-      "request-id" : "9f6f4400-12a4-47c3-a6bd-ac649ed8ebe1",
+      "request-id" : "6829da63-a8d7-4391-8060-e89213e1f69a",
       "StatusCode" : "202",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Tue, 23 May 2023 03:29:01 GMT",
+      "last-modified" : "Thu, 28 Mar 2024 09:41:30 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "570ab43b-6905-4ec4-a2ec-df3574bda740",
-      "etag" : "0x8DB5B3DDA6D557B",
+      "client-request-id" : "506516ee-a796-4515-88ec-45d7e4b8eaea",
+      "etag" : "0x8DC4F0B3F92C9E0",
       "dataserviceversion" : "3.0",
       "Body" : ""
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 23 May 2023 03:29:01 GMT",
+      "date" : "Thu, 28 Mar 2024 09:41:30 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "71039ddc-a667-4d6f-9957-1997bcd1a877",
+      "request-id" : "938c44aa-44f8-4c88-ab0c-898dbab0e447",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Tue, 23 May 2023 03:29:01 GMT",
+      "last-modified" : "Thu, 28 Mar 2024 09:41:30 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "a52f394e-edf1-4f7e-bdad-35aa0d144e5a",
+      "client-request-id" : "bd6f6255-2dcd-4ef1-8dda-ce202e9c75ce",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DB5B3DDA6D557B",
+      "etag" : "0x8DC4F0B3F92C9E0",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#jobs/@Element\",\"id\":\"BatchUser-Job-CanUpdateState\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState\",\"eTag\":\"0x8DB5B3DDA6D557B\",\"lastModified\":\"2023-05-23T03:29:01.8788219Z\",\"creationTime\":\"2023-05-23T03:28:54.926235Z\",\"state\":\"active\",\"stateTransitionTime\":\"2023-05-23T03:29:01.8788219Z\",\"previousState\":\"disabled\",\"previousStateTransitionTime\":\"2023-05-23T03:28:57.4330845Z\",\"priority\":500,\"maxParallelTasks\":-1,\"usesTaskDependencies\":false,\"allowTaskPreemption\":false,\"constraints\":{\r\n    \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":3\r\n  },\"poolInfo\":{\r\n    \"poolId\":\"BatchUser-testpool\"\r\n  },\"executionInfo\":{\r\n    \"startTime\":\"2023-05-23T03:28:54.9402366Z\",\"poolId\":\"BatchUser-testpool\"\r\n  },\"onAllTasksComplete\":\"terminatejob\",\"onTaskFailure\":\"noaction\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#jobs/@Element\",\"id\":\"BatchUser-Job-CanUpdateState\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState\",\"eTag\":\"0x8DC4F0B3F92C9E0\",\"lastModified\":\"2024-03-28T09:41:30.9586912Z\",\"creationTime\":\"2024-03-28T09:41:24.428471Z\",\"state\":\"active\",\"stateTransitionTime\":\"2024-03-28T09:41:30.9586912Z\",\"previousState\":\"disabled\",\"previousStateTransitionTime\":\"2024-03-28T09:41:26.0443494Z\",\"priority\":500,\"maxParallelTasks\":-1,\"usesTaskDependencies\":false,\"allowTaskPreemption\":false,\"constraints\":{\r\n    \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":3\r\n  },\"poolInfo\":{\r\n    \"poolId\":\"BatchUser-testpool\"\r\n  },\"executionInfo\":{\r\n    \"startTime\":\"2024-03-28T09:41:24.44147Z\",\"poolId\":\"BatchUser-testpool\"\r\n  },\"onAllTasksComplete\":\"terminatejob\",\"onTaskFailure\":\"noaction\"\r\n}"
     }
   }, {
     "Method" : "POST",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState/terminate?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState/terminate?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 23 May 2023 03:29:01 GMT",
+      "date" : "Thu, 28 Mar 2024 09:41:30 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "dataserviceid" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState/terminate",
+      "dataserviceid" : "https://sanjbatch.eastus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState/terminate",
       "retry-after" : "0",
-      "request-id" : "304830fa-a879-4659-b5fa-ca62a5eb933c",
+      "request-id" : "e0de6baf-61be-4bfc-a90e-60ecf19eeaf2",
       "StatusCode" : "202",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Tue, 23 May 2023 03:29:02 GMT",
+      "last-modified" : "Thu, 28 Mar 2024 09:41:31 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "805ae564-dfd5-45b9-90c9-9dc46dccbad9",
-      "etag" : "0x8DB5B3DDAABECFC",
+      "client-request-id" : "49661621-eb07-4ce1-a57b-b15b962ee7c3",
+      "etag" : "0x8DC4F0B3FB842A9",
       "dataserviceversion" : "3.0",
       "Body" : ""
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 23 May 2023 03:29:01 GMT",
+      "date" : "Thu, 28 Mar 2024 09:41:30 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "c3e9339c-3e3b-44ac-a29a-587e46ce402a",
+      "request-id" : "62c2e629-c032-4e43-8934-4dda8c96bd70",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Tue, 23 May 2023 03:29:02 GMT",
+      "last-modified" : "Thu, 28 Mar 2024 09:41:31 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "16e17a6f-8b1d-4fdd-88bb-2211475e3d24",
+      "client-request-id" : "8062c60e-bfd3-4271-835d-eb66725c9e17",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DB5B3DDAABECFC",
+      "etag" : "0x8DC4F0B3FB842A9",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#jobs/@Element\",\"id\":\"BatchUser-Job-CanUpdateState\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState\",\"eTag\":\"0x8DB5B3DDAABECFC\",\"lastModified\":\"2023-05-23T03:29:02.2890236Z\",\"creationTime\":\"2023-05-23T03:28:54.926235Z\",\"state\":\"terminating\",\"stateTransitionTime\":\"2023-05-23T03:29:02.2890236Z\",\"previousState\":\"active\",\"previousStateTransitionTime\":\"2023-05-23T03:29:01.8788219Z\",\"priority\":500,\"maxParallelTasks\":-1,\"usesTaskDependencies\":false,\"allowTaskPreemption\":false,\"constraints\":{\r\n    \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":3\r\n  },\"poolInfo\":{\r\n    \"poolId\":\"BatchUser-testpool\"\r\n  },\"executionInfo\":{\r\n    \"startTime\":\"2023-05-23T03:28:54.9402366Z\",\"poolId\":\"BatchUser-testpool\",\"terminateReason\":\"myreason\"\r\n  },\"onAllTasksComplete\":\"terminatejob\",\"onTaskFailure\":\"noaction\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#jobs/@Element\",\"id\":\"BatchUser-Job-CanUpdateState\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState\",\"eTag\":\"0x8DC4F0B3FB842A9\",\"lastModified\":\"2024-03-28T09:41:31.2042665Z\",\"creationTime\":\"2024-03-28T09:41:24.428471Z\",\"state\":\"terminating\",\"stateTransitionTime\":\"2024-03-28T09:41:31.2042665Z\",\"previousState\":\"active\",\"previousStateTransitionTime\":\"2024-03-28T09:41:30.9586912Z\",\"priority\":500,\"maxParallelTasks\":-1,\"usesTaskDependencies\":false,\"allowTaskPreemption\":false,\"constraints\":{\r\n    \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":3\r\n  },\"poolInfo\":{\r\n    \"poolId\":\"BatchUser-testpool\"\r\n  },\"executionInfo\":{\r\n    \"startTime\":\"2024-03-28T09:41:24.44147Z\",\"poolId\":\"BatchUser-testpool\",\"terminateReason\":\"myreason\"\r\n  },\"onAllTasksComplete\":\"terminatejob\",\"onTaskFailure\":\"noaction\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 23 May 2023 03:29:04 GMT",
+      "date" : "Thu, 28 Mar 2024 09:41:33 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "c4768589-6b3c-4890-aa6f-1a889bb5c9c5",
+      "request-id" : "bb2af137-bd58-4c1d-800c-5be1794e4e96",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Tue, 23 May 2023 03:29:02 GMT",
+      "last-modified" : "Thu, 28 Mar 2024 09:41:31 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "30c3522c-0b8d-4be5-a0c9-cfeb912aeaa1",
+      "client-request-id" : "d7a85192-6f7b-428c-890c-1c0f563b94da",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DB5B3DDAABECFC",
+      "etag" : "0x8DC4F0B3FB842A9",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#jobs/@Element\",\"id\":\"BatchUser-Job-CanUpdateState\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState\",\"eTag\":\"0x8DB5B3DDAABECFC\",\"lastModified\":\"2023-05-23T03:29:02.2890236Z\",\"creationTime\":\"2023-05-23T03:28:54.926235Z\",\"state\":\"completed\",\"stateTransitionTime\":\"2023-05-23T03:29:02.92918Z\",\"previousState\":\"active\",\"previousStateTransitionTime\":\"2023-05-23T03:29:01.8788219Z\",\"priority\":500,\"maxParallelTasks\":-1,\"usesTaskDependencies\":false,\"allowTaskPreemption\":false,\"constraints\":{\r\n    \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":3\r\n  },\"poolInfo\":{\r\n    \"poolId\":\"BatchUser-testpool\"\r\n  },\"executionInfo\":{\r\n    \"startTime\":\"2023-05-23T03:28:54.9402366Z\",\"endTime\":\"2023-05-23T03:29:02.92918Z\",\"poolId\":\"BatchUser-testpool\",\"terminateReason\":\"myreason\"\r\n  },\"onAllTasksComplete\":\"terminatejob\",\"onTaskFailure\":\"noaction\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#jobs/@Element\",\"id\":\"BatchUser-Job-CanUpdateState\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState\",\"eTag\":\"0x8DC4F0B3FB842A9\",\"lastModified\":\"2024-03-28T09:41:31.2042665Z\",\"creationTime\":\"2024-03-28T09:41:24.428471Z\",\"state\":\"completed\",\"stateTransitionTime\":\"2024-03-28T09:41:32.0813611Z\",\"previousState\":\"active\",\"previousStateTransitionTime\":\"2024-03-28T09:41:30.9586912Z\",\"priority\":500,\"maxParallelTasks\":-1,\"usesTaskDependencies\":false,\"allowTaskPreemption\":false,\"constraints\":{\r\n    \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":3\r\n  },\"poolInfo\":{\r\n    \"poolId\":\"BatchUser-testpool\"\r\n  },\"executionInfo\":{\r\n    \"startTime\":\"2024-03-28T09:41:24.44147Z\",\"endTime\":\"2024-03-28T09:41:32.0813611Z\",\"poolId\":\"BatchUser-testpool\",\"terminateReason\":\"myreason\"\r\n  },\"onAllTasksComplete\":\"terminatejob\",\"onTaskFailure\":\"noaction\"\r\n}"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 23 May 2023 03:29:04 GMT",
+      "date" : "Thu, 28 Mar 2024 09:41:33 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "99b29d21-9190-43b7-a2e9-de113ce271fd",
+      "client-request-id" : "fffd0c05-dce7-4274-8c6a-7b3f4e0eb31f",
       "retry-after" : "0",
-      "request-id" : "759ffcdc-ecbf-40de-adb3-2a584823f406",
+      "request-id" : "e59934fb-0c02-4a36-909c-081cc0c8d8ab",
       "StatusCode" : "202",
       "dataserviceversion" : "3.0",
       "Body" : "",

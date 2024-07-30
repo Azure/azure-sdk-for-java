@@ -29,7 +29,8 @@ public final class ManagedPrivateEndpointResourceInnerTests {
     public void testSerialize() throws Exception {
         ManagedPrivateEndpointResourceInner model = new ManagedPrivateEndpointResourceInner().withId("d")
             .withProperties(new ManagedPrivateEndpoint().withConnectionState(new ConnectionStateProperties())
-                .withFqdns(Arrays.asList("qdtvqecrqctmxx", "tddmf", "huytxzvtzn", "pxbannovvoxc")).withGroupId("tprwnw")
+                .withFqdns(Arrays.asList("qdtvqecrqctmxx", "tddmf", "huytxzvtzn", "pxbannovvoxc"))
+                .withGroupId("tprwnw")
                 .withPrivateLinkResourceId("vytlyokrrrouuxvn")
                 .withAdditionalProperties(mapOf("isReserved", true, "provisioningState", "sbcrymodizrxklo")));
         model = BinaryData.fromObject(model).toObject(ManagedPrivateEndpointResourceInner.class);

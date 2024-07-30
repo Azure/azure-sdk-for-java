@@ -48,7 +48,8 @@ public final class PrivateEndpointConnectionResourceInnerTests {
                     VaultSubResourceType.AZURE_BACKUP_SECONDARY, VaultSubResourceType.AZURE_SITE_RECOVERY))
                 .withPrivateLinkServiceConnectionState(
                     new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointConnectionStatus.REJECTED)
-                        .withDescription("ywgndrv").withActionRequired("hzgpphrcgyncocpe")))
+                        .withDescription("ywgndrv")
+                        .withActionRequired("hzgpphrcgyncocpe")))
             .withEtag("vmmcoofs");
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionResourceInner.class);
         Assertions.assertEquals("lzevgbmqjqab", model.location());

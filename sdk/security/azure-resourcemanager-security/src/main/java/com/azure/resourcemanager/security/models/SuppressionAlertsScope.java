@@ -53,8 +53,8 @@ public final class SuppressionAlertsScope {
      */
     public void validate() {
         if (allOf() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property allOf in model SuppressionAlertsScope"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property allOf in model SuppressionAlertsScope"));
         } else {
             allOf().forEach(e -> e.validate());
         }

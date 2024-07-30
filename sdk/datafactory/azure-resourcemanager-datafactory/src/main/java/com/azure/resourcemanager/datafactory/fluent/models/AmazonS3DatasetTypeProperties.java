@@ -244,8 +244,9 @@ public final class AmazonS3DatasetTypeProperties {
      */
     public void validate() {
         if (bucketName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property bucketName in model AmazonS3DatasetTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property bucketName in model AmazonS3DatasetTypeProperties"));
         }
         if (format() != null) {
             format().validate();

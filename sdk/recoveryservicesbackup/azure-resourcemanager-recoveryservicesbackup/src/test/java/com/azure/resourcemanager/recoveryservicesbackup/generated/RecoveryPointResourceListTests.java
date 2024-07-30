@@ -27,23 +27,23 @@ public final class RecoveryPointResourceListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryPointResourceList model
-            = new RecoveryPointResourceList()
-                .withNextLink(
-                    "hxepcyvahfnlj")
-                .withValue(Arrays.asList(
-                    new RecoveryPointResourceInner().withLocation("u")
-                        .withTags(mapOf("vmezy", "vfaxkffeiith", "burvjxxjnspy", "shxmzsbbzoggigrx", "udwtiukbl",
-                            "ptkoenkoukn", "o", "ngkpocipazy"))
-                        .withProperties(new RecoveryPoint()).withEtag("hslkevleggzf"),
-                    new RecoveryPointResourceInner().withLocation("ifsjttgzfbishcb")
-                        .withTags(mapOf("alpbuxwgipwhon", "jdeyeamdpha", "kix", "wkgshwa", "eputtmrywnuzoqf", "bin",
-                            "qvyxlwhzlsicoho", "iyqzrnk"))
-                        .withProperties(new RecoveryPoint()).withEtag("xdeoejzic"),
-                    new RecoveryPointResourceInner()
-                        .withLocation("koklya").withTags(mapOf("zf", "onuq", "vjektcxsenh", "beypewrmjmw",
-                            "rzpwvlqdqgbiq", "lrsf", "vf", "lihkaetcktvfc"))
-                        .withProperties(new RecoveryPoint()).withEtag("hgyxzkonoc")));
+        RecoveryPointResourceList model = new RecoveryPointResourceList().withNextLink("hxepcyvahfnlj")
+            .withValue(Arrays.asList(
+                new RecoveryPointResourceInner().withLocation("u")
+                    .withTags(mapOf("vmezy", "vfaxkffeiith", "burvjxxjnspy", "shxmzsbbzoggigrx", "udwtiukbl",
+                        "ptkoenkoukn", "o", "ngkpocipazy"))
+                    .withProperties(new RecoveryPoint())
+                    .withEtag("hslkevleggzf"),
+                new RecoveryPointResourceInner().withLocation("ifsjttgzfbishcb")
+                    .withTags(mapOf("alpbuxwgipwhon", "jdeyeamdpha", "kix", "wkgshwa", "eputtmrywnuzoqf", "bin",
+                        "qvyxlwhzlsicoho", "iyqzrnk"))
+                    .withProperties(new RecoveryPoint())
+                    .withEtag("xdeoejzic"),
+                new RecoveryPointResourceInner().withLocation("koklya")
+                    .withTags(mapOf("zf", "onuq", "vjektcxsenh", "beypewrmjmw", "rzpwvlqdqgbiq", "lrsf", "vf",
+                        "lihkaetcktvfc"))
+                    .withProperties(new RecoveryPoint())
+                    .withEtag("hgyxzkonoc")));
         model = BinaryData.fromObject(model).toObject(RecoveryPointResourceList.class);
         Assertions.assertEquals("hxepcyvahfnlj", model.nextLink());
         Assertions.assertEquals("u", model.value().get(0).location());

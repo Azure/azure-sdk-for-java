@@ -14,12 +14,26 @@ import time
 import argparse
 
 from log import log
+from _constants import (
+    COMPATIBILITY_USAGE_TYPE,
+    INTEGRATION_USAGE_TYPE,
+    should_skip_artifacts_when_adding_dependency_management,
+    should_skip_artifacts_when_adding_dependency_management_with_spring_version,
+    is_integration_tests_artifact)
 
 
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('-b', '--spring_boot_dependencies_version', type = str, required = True)
     parser.add_argument('-c', '--spring_cloud_dependencies_version', type = str, required = True)
+    parser.add_argument(
+        '-u',
+        '--usage',
+        type=str,
+        choices=[COMPATIBILITY_USAGE_TYPE, INTEGRATION_USAGE_TYPE],
+        default=COMPATIBILITY_USAGE_TYPE,
+        help='Which usage type of this python script is target to use. The default is ' + COMPATIBILITY_USAGE_TYPE+ '.'
+    )
     return parser.parse_args()
 
 
@@ -27,7 +41,15 @@ def main():
     start_time = time.time()
     change_to_repo_root_dir()
     log.debug('Current working directory = {}.'.format(os.getcwd()))
-    add_dependency_management_for_all_poms_files_in_directory("./sdk/spring", get_args().spring_boot_dependencies_version, get_args().spring_cloud_dependencies_version)
+    usage_type = get_args().usage
+    if COMPATIBILITY_USAGE_TYPE == usage_type:
+        compatibility_adding_dependency_management_for_all_poms_files_in_directory("./sdk/spring",
+                                                                                   get_args().spring_boot_dependencies_version,
+                                                                                   get_args().spring_cloud_dependencies_version)
+    elif INTEGRATION_USAGE_TYPE == usage_type:
+        integration_adding_dependency_management_for_all_poms_files_in_directory("./sdk/spring",
+                                                                                   get_args().spring_boot_dependencies_version,
+                                                                                   get_args().spring_cloud_dependencies_version)
     elapsed_time = time.time() - start_time
     log.info('elapsed_time = {}'.format(elapsed_time))
 
@@ -37,11 +59,27 @@ def change_to_repo_root_dir():
     os.chdir('../../..')
 
 
-def add_dependency_management_for_all_poms_files_in_directory(directory, spring_boot_dependencies_version, spring_cloud_dependencies_version):
+def compatibility_adding_dependency_management_for_all_poms_files_in_directory(directory, spring_boot_dependencies_version, spring_cloud_dependencies_version):
     for root, dirs, files in os.walk(directory):
         for file_name in files:
             if file_name.startswith('pom') and file_name.endswith('.xml'):
                 file_path = root + os.sep + file_name
+                if (should_skip_artifacts_when_adding_dependency_management_with_spring_version(spring_boot_dependencies_version, file_path)
+                    or should_skip_artifacts_when_adding_dependency_management(file_path)):
+                    log.warn("Skip inserting dependency management for file: " + file_path)
+                    continue
+                add_dependency_management_for_file(file_path, spring_boot_dependencies_version, spring_cloud_dependencies_version)
+                update_spring_boot_starter_parent_for_file(file_path, spring_boot_dependencies_version)
+
+
+def integration_adding_dependency_management_for_all_poms_files_in_directory(directory, spring_boot_dependencies_version, spring_cloud_dependencies_version):
+    for root, dirs, files in os.walk(directory):
+        for file_name in files:
+            if file_name.startswith('pom') and file_name.endswith('.xml'):
+                file_path = root + os.sep + file_name
+                if not is_integration_tests_artifact(file_path):
+                    log.warn("Skip non-integration test module for file: " + file_path)
+                    continue
                 add_dependency_management_for_file(file_path, spring_boot_dependencies_version, spring_cloud_dependencies_version)
                 update_spring_boot_starter_parent_for_file(file_path, spring_boot_dependencies_version)
 
@@ -171,7 +209,6 @@ def get_dependency_management_content():
       </dependency>
     </dependencies>
   </dependencyManagement>
-
 """
 
 

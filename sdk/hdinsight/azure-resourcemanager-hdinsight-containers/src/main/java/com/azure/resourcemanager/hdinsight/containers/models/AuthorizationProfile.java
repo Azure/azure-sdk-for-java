@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Authorization profile with details of AAD user Ids and group Ids authorized for data plane access. */
+/**
+ * Authorization profile with details of AAD user Ids and group Ids authorized for data plane access.
+ */
 @Fluent
 public final class AuthorizationProfile {
     /*
@@ -23,13 +25,15 @@ public final class AuthorizationProfile {
     @JsonProperty(value = "groupIds")
     private List<String> groupIds;
 
-    /** Creates an instance of AuthorizationProfile class. */
+    /**
+     * Creates an instance of AuthorizationProfile class.
+     */
     public AuthorizationProfile() {
     }
 
     /**
      * Get the userIds property: AAD user Ids authorized for data plane access.
-     *
+     * 
      * @return the userIds value.
      */
     public List<String> userIds() {
@@ -38,7 +42,7 @@ public final class AuthorizationProfile {
 
     /**
      * Set the userIds property: AAD user Ids authorized for data plane access.
-     *
+     * 
      * @param userIds the userIds value to set.
      * @return the AuthorizationProfile object itself.
      */
@@ -49,7 +53,7 @@ public final class AuthorizationProfile {
 
     /**
      * Get the groupIds property: AAD group Ids authorized for data plane access.
-     *
+     * 
      * @return the groupIds value.
      */
     public List<String> groupIds() {
@@ -58,7 +62,7 @@ public final class AuthorizationProfile {
 
     /**
      * Set the groupIds property: AAD group Ids authorized for data plane access.
-     *
+     * 
      * @param groupIds the groupIds value to set.
      * @return the AuthorizationProfile object itself.
      */
@@ -69,7 +73,7 @@ public final class AuthorizationProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

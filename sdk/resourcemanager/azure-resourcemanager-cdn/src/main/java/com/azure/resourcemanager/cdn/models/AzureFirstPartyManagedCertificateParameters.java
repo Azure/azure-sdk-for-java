@@ -10,14 +10,19 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Azure FirstParty Managed Certificate provided by other first party resource providers to enable HTTPS. */
+/**
+ * Azure FirstParty Managed Certificate provided by other first party resource providers to enable HTTPS.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureFirstPartyManagedCertificate")
 @Fluent
 public final class AzureFirstPartyManagedCertificateParameters extends SecretParameters {
     /*
      * Resource reference to the Azure Key Vault certificate. Expected to be in format of
-     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{certificateName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
+     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}
+     * ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}
+     * ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{certificateName}
+     * ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
      */
     @JsonProperty(value = "secretSource", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceReference secretSource;
@@ -52,14 +57,17 @@ public final class AzureFirstPartyManagedCertificateParameters extends SecretPar
     @JsonProperty(value = "thumbprint", access = JsonProperty.Access.WRITE_ONLY)
     private String thumbprint;
 
-    /** Creates an instance of AzureFirstPartyManagedCertificateParameters class. */
+    /**
+     * Creates an instance of AzureFirstPartyManagedCertificateParameters class.
+     */
     public AzureFirstPartyManagedCertificateParameters() {
     }
 
     /**
-     * Get the secretSource property: Resource reference to the Azure Key Vault certificate. Expected to be in format of
+     * Get the secretSource property: Resource reference to the Azure Key Vault certificate. Expected to be in format
+     * of
      * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{certificateName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​.
-     *
+     * 
      * @return the secretSource value.
      */
     public ResourceReference secretSource() {
@@ -68,7 +76,7 @@ public final class AzureFirstPartyManagedCertificateParameters extends SecretPar
 
     /**
      * Get the subject property: Subject name in the certificate.
-     *
+     * 
      * @return the subject value.
      */
     public String subject() {
@@ -77,7 +85,7 @@ public final class AzureFirstPartyManagedCertificateParameters extends SecretPar
 
     /**
      * Get the expirationDate property: Certificate expiration date.
-     *
+     * 
      * @return the expirationDate value.
      */
     public String expirationDate() {
@@ -86,7 +94,7 @@ public final class AzureFirstPartyManagedCertificateParameters extends SecretPar
 
     /**
      * Get the certificateAuthority property: Certificate issuing authority.
-     *
+     * 
      * @return the certificateAuthority value.
      */
     public String certificateAuthority() {
@@ -95,7 +103,7 @@ public final class AzureFirstPartyManagedCertificateParameters extends SecretPar
 
     /**
      * Get the subjectAlternativeNames property: The list of SANs.
-     *
+     * 
      * @return the subjectAlternativeNames value.
      */
     public List<String> subjectAlternativeNames() {
@@ -104,19 +112,19 @@ public final class AzureFirstPartyManagedCertificateParameters extends SecretPar
 
     /**
      * Set the subjectAlternativeNames property: The list of SANs.
-     *
+     * 
      * @param subjectAlternativeNames the subjectAlternativeNames value to set.
      * @return the AzureFirstPartyManagedCertificateParameters object itself.
      */
-    public AzureFirstPartyManagedCertificateParameters withSubjectAlternativeNames(
-        List<String> subjectAlternativeNames) {
+    public AzureFirstPartyManagedCertificateParameters
+        withSubjectAlternativeNames(List<String> subjectAlternativeNames) {
         this.subjectAlternativeNames = subjectAlternativeNames;
         return this;
     }
 
     /**
      * Get the thumbprint property: Certificate thumbprint.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -125,7 +133,7 @@ public final class AzureFirstPartyManagedCertificateParameters extends SecretPar
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

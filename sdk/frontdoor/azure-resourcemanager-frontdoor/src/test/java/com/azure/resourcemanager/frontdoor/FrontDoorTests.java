@@ -10,8 +10,8 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SubResource;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestBase;
-import com.azure.core.test.annotation.DoNotRecord;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.core.test.annotation.LiveOnly;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.resourcemanager.frontdoor.fluent.models.FrontendEndpointInner;
 import com.azure.resourcemanager.frontdoor.models.Backend;
 import com.azure.resourcemanager.frontdoor.models.BackendEnabledState;
@@ -45,14 +45,14 @@ public class FrontDoorTests extends TestBase {
     private String fdName;
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void frontDoorTest() {
         StorageManager storageManager = StorageManager
-            .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
+            .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
         FrontDoorManager manager = FrontDoorManager
             .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
+            .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
         resourceGroupName = "rg" + randomPadding();
         String saName = "sa" + randomPadding();

@@ -6,67 +6,38 @@ package com.azure.resourcemanager.mobilenetwork.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mobilenetwork.MobileNetworkManager;
 import com.azure.resourcemanager.mobilenetwork.models.Slice;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class SlicesListByMobileNetworkMockTests {
     @Test
     public void testListByMobileNetwork() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"snssai\":{\"sst\":1327006192,\"sd\":\"exh\"},\"description\":\"trceqnkbrupob\"},\"location\":\"dmljzacvumepjp\",\"tags\":{\"leqirccjclykcgxv\":\"nzpphepife\"},\"id\":\"pjlvczuoda\",\"name\":\"punettepdjxq\",\"type\":\"skoynuiylpc\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"snssai\":{\"sst\":867213638,\"sd\":\"qcrj\"},\"description\":\"h\"},\"location\":\"ukvhd\",\"tags\":{\"jyixhaf\":\"yojbfqzdkf\",\"al\":\"atqxmbjroumzzn\",\"on\":\"jrhuzgf\",\"tiotzb\":\"tpusllywp\"},\"id\":\"d\",\"name\":\"ollgry\",\"type\":\"qiuasigrows\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MobileNetworkManager manager = MobileNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<Slice> response
+            = manager.slices().listByMobileNetwork("xricctkwmuqq", "ajxeiygle", com.azure.core.util.Context.NONE);
 
-        MobileNetworkManager manager =
-            MobileNetworkManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<Slice> response =
-            manager.slices().listByMobileNetwork("zkltrfowtdvrfmv", "ih", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("ukvhd", response.iterator().next().location());
-        Assertions.assertEquals("yojbfqzdkf", response.iterator().next().tags().get("jyixhaf"));
-        Assertions.assertEquals(867213638, response.iterator().next().snssai().sst());
-        Assertions.assertEquals("qcrj", response.iterator().next().snssai().sd());
-        Assertions.assertEquals("h", response.iterator().next().description());
+        Assertions.assertEquals("dmljzacvumepjp", response.iterator().next().location());
+        Assertions.assertEquals("nzpphepife", response.iterator().next().tags().get("leqirccjclykcgxv"));
+        Assertions.assertEquals(1327006192, response.iterator().next().snssai().sst());
+        Assertions.assertEquals("exh", response.iterator().next().snssai().sd());
+        Assertions.assertEquals("trceqnkbrupob", response.iterator().next().description());
     }
 }

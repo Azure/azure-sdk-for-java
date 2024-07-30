@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SIMs to delete. */
+/**
+ * The SIMs to delete.
+ */
 @Fluent
 public final class SimDeleteList {
     /*
@@ -18,13 +20,15 @@ public final class SimDeleteList {
     @JsonProperty(value = "sims", required = true)
     private List<String> sims;
 
-    /** Creates an instance of SimDeleteList class. */
+    /**
+     * Creates an instance of SimDeleteList class.
+     */
     public SimDeleteList() {
     }
 
     /**
      * Get the sims property: A list of SIM resource names to delete.
-     *
+     * 
      * @return the sims value.
      */
     public List<String> sims() {
@@ -33,7 +37,7 @@ public final class SimDeleteList {
 
     /**
      * Set the sims property: A list of SIM resource names to delete.
-     *
+     * 
      * @param sims the sims value to set.
      * @return the SimDeleteList object itself.
      */
@@ -44,14 +48,13 @@ public final class SimDeleteList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sims() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sims in model SimDeleteList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sims in model SimDeleteList"));
         }
     }
 

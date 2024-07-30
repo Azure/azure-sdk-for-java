@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.azure</groupId>
+  <artifactId>azure-storage-file-share-stress</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0.0-beta.1</version>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+    <!-- Always target the minimum supported Java release in stress tests. -->
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+
+    <!-- Skip missing Javadocs in stress tests. -->
+    <doclint>all,-missing</doclint>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.3.14</version> <!-- {x-version-update;ch.qos.logback:logback-classic;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>1.50.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.15.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-file-share</artifactId>
+      <version>12.23.0</version> <!-- {x-version-update;com.azure:azure-storage-file-share;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-stress</artifactId>
+      <version>1.0.0-beta.1</version>
+    </dependency>
+
+    <!-- logging, tracing, metrics -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
+      <version>1.0.0-beta.25</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry.instrumentation</groupId>
+      <artifactId>opentelemetry-runtime-telemetry-java8</artifactId>
+      <version>2.6.0-alpha</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry.instrumentation</groupId>
+      <artifactId>opentelemetry-logback-appender-1.0</artifactId>
+      <version>2.6.0-alpha</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;external_dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-tracing-opentelemetry</artifactId>
+      <version>1.0.0-beta.47</version> <!--{x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>3.7.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-assembly-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <archive>
+                <manifest>
+                  <mainClass>com.azure.storage.file.share.stress.App</mainClass>
+                </manifest>
+              </archive>
+              <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+              </descriptorRefs>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

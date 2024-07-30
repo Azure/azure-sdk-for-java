@@ -25,8 +25,7 @@ public final class MicrosoftAccessTableDatasetTypeProperties {
     }
 
     /**
-     * Get the tableName property: The Microsoft Access table name. Type: string (or Expression with resultType
-     * string).
+     * Get the tableName property: The Microsoft Access table name. Type: string (or Expression with resultType string).
      * 
      * @return the tableName value.
      */
@@ -35,8 +34,7 @@ public final class MicrosoftAccessTableDatasetTypeProperties {
     }
 
     /**
-     * Set the tableName property: The Microsoft Access table name. Type: string (or Expression with resultType
-     * string).
+     * Set the tableName property: The Microsoft Access table name. Type: string (or Expression with resultType string).
      * 
      * @param tableName the tableName value to set.
      * @return the MicrosoftAccessTableDatasetTypeProperties object itself.

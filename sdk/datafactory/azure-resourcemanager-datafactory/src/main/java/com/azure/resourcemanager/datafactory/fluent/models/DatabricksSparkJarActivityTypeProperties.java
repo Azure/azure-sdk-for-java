@@ -109,8 +109,9 @@ public final class DatabricksSparkJarActivityTypeProperties {
      */
     public void validate() {
         if (mainClassName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property mainClassName in model DatabricksSparkJarActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property mainClassName in model DatabricksSparkJarActivityTypeProperties"));
         }
     }
 

@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
+import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.implementation.routing.LocationHelper;
 import org.slf4j.Logger;
@@ -20,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 /**
@@ -57,6 +57,7 @@ public class GlobalEndpointManager implements AutoCloseable {
     public GlobalEndpointManager(DatabaseAccountManagerInternal owner, ConnectionPolicy connectionPolicy, Configs configs)  {
         this.backgroundRefreshLocationTimeIntervalInMS = configs.getUnavailableLocationsExpirationTimeInSeconds() * 1000;
         this.maxInitializationTime = Duration.ofSeconds(configs.getGlobalEndpointManagerMaxInitializationTimeInSeconds());
+
         try {
             this.locationCache = new LocationCache(
                     connectionPolicy,
@@ -103,12 +104,12 @@ public class GlobalEndpointManager implements AutoCloseable {
 
     public UnmodifiableList<URI> getApplicableReadEndpoints(List<String> excludedRegions) {
         // readonly
-        return this.locationCache.getApplicableReadEndpoints(excludedRegions);
+        return this.locationCache.getApplicableReadEndpoints(excludedRegions, Collections.emptyList());
     }
 
     public UnmodifiableList<URI> getApplicableWriteEndpoints(List<String> excludedRegions) {
         //readonly
-        return this.locationCache.getApplicableWriteEndpoints(excludedRegions);
+        return this.locationCache.getApplicableWriteEndpoints(excludedRegions, Collections.emptyList());
     }
 
     public List<URI> getAvailableReadEndpoints() {
@@ -293,7 +294,7 @@ public class GlobalEndpointManager implements AutoCloseable {
                 .flatMap(
                         t -> {
                             if (this.isClosed) {
-                                logger.warn("client already closed");
+                                logger.info("client already closed");
                                 // if client is already closed, nothing to be done, just return.
                                 return Mono.empty();
                             }
@@ -303,7 +304,7 @@ public class GlobalEndpointManager implements AutoCloseable {
                                     this::getDatabaseAccountAsync);
 
                             return databaseAccountObs.flatMap(dbAccount -> {
-                                logger.info("db account retrieved {}", databaseAccountObs);
+                                logger.info("db account retrieved {}", dbAccount);
                                 this.refreshInBackground.set(false);
                                 return this.refreshLocationPrivateAsync(dbAccount);
                             });
@@ -334,5 +335,9 @@ public class GlobalEndpointManager implements AutoCloseable {
 
     public String getRegionName(URI locationEndpoint, OperationType operationType) {
         return this.locationCache.getRegionName(locationEndpoint, operationType);
+    }
+
+    public ConnectionPolicy getConnectionPolicy() {
+        return this.connectionPolicy;
     }
 }

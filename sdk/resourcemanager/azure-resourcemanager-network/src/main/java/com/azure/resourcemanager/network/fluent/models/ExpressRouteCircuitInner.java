@@ -313,8 +313,8 @@ public final class ExpressRouteCircuitInner extends Resource {
     }
 
     /**
-     * Get the expressRoutePort property: The reference to the ExpressRoutePort resource when the circuit is
-     * provisioned on an ExpressRoutePort resource.
+     * Get the expressRoutePort property: The reference to the ExpressRoutePort resource when the circuit is provisioned
+     * on an ExpressRoutePort resource.
      * 
      * @return the expressRoutePort value.
      */
@@ -323,8 +323,8 @@ public final class ExpressRouteCircuitInner extends Resource {
     }
 
     /**
-     * Set the expressRoutePort property: The reference to the ExpressRoutePort resource when the circuit is
-     * provisioned on an ExpressRoutePort resource.
+     * Set the expressRoutePort property: The reference to the ExpressRoutePort resource when the circuit is provisioned
+     * on an ExpressRoutePort resource.
      * 
      * @param expressRoutePort the expressRoutePort value to set.
      * @return the ExpressRouteCircuitInner object itself.
@@ -456,6 +456,31 @@ public final class ExpressRouteCircuitInner extends Resource {
      */
     public String authorizationStatus() {
         return this.innerProperties() == null ? null : this.innerProperties().authorizationStatus();
+    }
+
+    /**
+     * Get the enableDirectPortRateLimit property: Flag denoting rate-limiting status of the ExpressRoute direct-port
+     * circuit.
+     * 
+     * @return the enableDirectPortRateLimit value.
+     */
+    public Boolean enableDirectPortRateLimit() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableDirectPortRateLimit();
+    }
+
+    /**
+     * Set the enableDirectPortRateLimit property: Flag denoting rate-limiting status of the ExpressRoute direct-port
+     * circuit.
+     * 
+     * @param enableDirectPortRateLimit the enableDirectPortRateLimit value to set.
+     * @return the ExpressRouteCircuitInner object itself.
+     */
+    public ExpressRouteCircuitInner withEnableDirectPortRateLimit(Boolean enableDirectPortRateLimit) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteCircuitPropertiesFormat();
+        }
+        this.innerProperties().withEnableDirectPortRateLimit(enableDirectPortRateLimit);
+        return this;
     }
 
     /**

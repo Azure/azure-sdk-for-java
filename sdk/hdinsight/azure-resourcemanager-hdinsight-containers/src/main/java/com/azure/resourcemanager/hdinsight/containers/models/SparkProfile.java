@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The spark cluster profile. */
+/**
+ * The spark cluster profile.
+ */
 @Fluent
 public final class SparkProfile {
     /*
@@ -28,13 +30,15 @@ public final class SparkProfile {
     @JsonProperty(value = "userPluginsSpec")
     private SparkUserPlugins userPluginsSpec;
 
-    /** Creates an instance of SparkProfile class. */
+    /**
+     * Creates an instance of SparkProfile class.
+     */
     public SparkProfile() {
     }
 
     /**
      * Get the defaultStorageUrl property: The default storage URL.
-     *
+     * 
      * @return the defaultStorageUrl value.
      */
     public String defaultStorageUrl() {
@@ -43,7 +47,7 @@ public final class SparkProfile {
 
     /**
      * Set the defaultStorageUrl property: The default storage URL.
-     *
+     * 
      * @param defaultStorageUrl the defaultStorageUrl value to set.
      * @return the SparkProfile object itself.
      */
@@ -54,7 +58,7 @@ public final class SparkProfile {
 
     /**
      * Get the metastoreSpec property: The metastore specification for Spark cluster.
-     *
+     * 
      * @return the metastoreSpec value.
      */
     public SparkMetastoreSpec metastoreSpec() {
@@ -63,7 +67,7 @@ public final class SparkProfile {
 
     /**
      * Set the metastoreSpec property: The metastore specification for Spark cluster.
-     *
+     * 
      * @param metastoreSpec the metastoreSpec value to set.
      * @return the SparkProfile object itself.
      */
@@ -74,7 +78,7 @@ public final class SparkProfile {
 
     /**
      * Get the userPluginsSpec property: Spark user plugins spec.
-     *
+     * 
      * @return the userPluginsSpec value.
      */
     public SparkUserPlugins userPluginsSpec() {
@@ -83,7 +87,7 @@ public final class SparkProfile {
 
     /**
      * Set the userPluginsSpec property: Spark user plugins spec.
-     *
+     * 
      * @param userPluginsSpec the userPluginsSpec value to set.
      * @return the SparkProfile object itself.
      */
@@ -94,7 +98,7 @@ public final class SparkProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

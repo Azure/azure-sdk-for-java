@@ -121,8 +121,8 @@ public final class VirtualNetworkTapPropertiesFormatInner {
      * Set the destinationLoadBalancerFrontEndIpConfiguration property: The reference to the private IP address on the
      * internal Load Balancer that will receive the tap.
      * 
-     * @param destinationLoadBalancerFrontEndIpConfiguration the destinationLoadBalancerFrontEndIpConfiguration value
-     * to set.
+     * @param destinationLoadBalancerFrontEndIpConfiguration the destinationLoadBalancerFrontEndIpConfiguration value to
+     * set.
      * @return the VirtualNetworkTapPropertiesFormatInner object itself.
      */
     public VirtualNetworkTapPropertiesFormatInner withDestinationLoadBalancerFrontEndIpConfiguration(

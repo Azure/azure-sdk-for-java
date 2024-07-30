@@ -6,6 +6,7 @@ package com.azure.resourcemanager.nginx.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 
 /**
  * The NginxCertificateProperties model.
@@ -35,6 +36,30 @@ public final class NginxCertificateProperties {
      */
     @JsonProperty(value = "keyVaultSecretId")
     private String keyVaultSecretId;
+
+    /*
+     * The sha1Thumbprint property.
+     */
+    @JsonProperty(value = "sha1Thumbprint", access = JsonProperty.Access.WRITE_ONLY)
+    private String sha1Thumbprint;
+
+    /*
+     * The keyVaultSecretVersion property.
+     */
+    @JsonProperty(value = "keyVaultSecretVersion", access = JsonProperty.Access.WRITE_ONLY)
+    private String keyVaultSecretVersion;
+
+    /*
+     * The keyVaultSecretCreated property.
+     */
+    @JsonProperty(value = "keyVaultSecretCreated", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime keyVaultSecretCreated;
+
+    /*
+     * The certificateError property.
+     */
+    @JsonProperty(value = "certificateError")
+    private NginxCertificateErrorResponseBody certificateError;
 
     /**
      * Creates an instance of NginxCertificateProperties class.
@@ -112,10 +137,60 @@ public final class NginxCertificateProperties {
     }
 
     /**
+     * Get the sha1Thumbprint property: The sha1Thumbprint property.
+     * 
+     * @return the sha1Thumbprint value.
+     */
+    public String sha1Thumbprint() {
+        return this.sha1Thumbprint;
+    }
+
+    /**
+     * Get the keyVaultSecretVersion property: The keyVaultSecretVersion property.
+     * 
+     * @return the keyVaultSecretVersion value.
+     */
+    public String keyVaultSecretVersion() {
+        return this.keyVaultSecretVersion;
+    }
+
+    /**
+     * Get the keyVaultSecretCreated property: The keyVaultSecretCreated property.
+     * 
+     * @return the keyVaultSecretCreated value.
+     */
+    public OffsetDateTime keyVaultSecretCreated() {
+        return this.keyVaultSecretCreated;
+    }
+
+    /**
+     * Get the certificateError property: The certificateError property.
+     * 
+     * @return the certificateError value.
+     */
+    public NginxCertificateErrorResponseBody certificateError() {
+        return this.certificateError;
+    }
+
+    /**
+     * Set the certificateError property: The certificateError property.
+     * 
+     * @param certificateError the certificateError value to set.
+     * @return the NginxCertificateProperties object itself.
+     */
+    public NginxCertificateProperties withCertificateError(NginxCertificateErrorResponseBody certificateError) {
+        this.certificateError = certificateError;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (certificateError() != null) {
+            certificateError().validate();
+        }
     }
 }

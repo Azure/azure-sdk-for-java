@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Request for the proof of possession nonce. */
+/**
+ * Request for the proof of possession nonce.
+ */
 @Fluent
 public final class ProofOfPossessionNonceRequest {
     /*
@@ -17,13 +19,15 @@ public final class ProofOfPossessionNonceRequest {
     @JsonProperty(value = "proofOfPossessionNonce", required = true)
     private String proofOfPossessionNonce;
 
-    /** Creates an instance of ProofOfPossessionNonceRequest class. */
+    /**
+     * Creates an instance of ProofOfPossessionNonceRequest class.
+     */
     public ProofOfPossessionNonceRequest() {
     }
 
     /**
      * Get the proofOfPossessionNonce property: The proof of possession nonce.
-     *
+     * 
      * @return the proofOfPossessionNonce value.
      */
     public String proofOfPossessionNonce() {
@@ -32,7 +36,7 @@ public final class ProofOfPossessionNonceRequest {
 
     /**
      * Set the proofOfPossessionNonce property: The proof of possession nonce.
-     *
+     * 
      * @param proofOfPossessionNonce the proofOfPossessionNonce value to set.
      * @return the ProofOfPossessionNonceRequest object itself.
      */
@@ -43,15 +47,13 @@ public final class ProofOfPossessionNonceRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (proofOfPossessionNonce() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property proofOfPossessionNonce in model ProofOfPossessionNonceRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property proofOfPossessionNonce in model ProofOfPossessionNonceRequest"));
         }
     }
 

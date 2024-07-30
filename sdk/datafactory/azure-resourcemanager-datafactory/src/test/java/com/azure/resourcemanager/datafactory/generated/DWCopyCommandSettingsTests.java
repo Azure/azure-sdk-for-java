@@ -16,19 +16,26 @@ public final class DWCopyCommandSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DWCopyCommandSettings model = BinaryData.fromString(
-            "{\"defaultValues\":[{\"columnName\":\"datagows\",\"defaultValue\":\"dataguap\"}],\"additionalOptions\":{\"byfacexp\":\"hh\",\"pkqiqs\":\"pqykicesqpvmoxil\"}}")
+            "{\"defaultValues\":[{\"columnName\":\"datapdcbhe\",\"defaultValue\":\"datautuaysxhfupvq\"},{\"columnName\":\"dataqlafi\",\"defaultValue\":\"dataw\"},{\"columnName\":\"dataipuyefhhdrmg\",\"defaultValue\":\"datafgyxkgqwmpghxpcx\"}],\"additionalOptions\":{\"dhx\":\"nkxhc\"}}")
             .toObject(DWCopyCommandSettings.class);
-        Assertions.assertEquals("hh", model.additionalOptions().get("byfacexp"));
+        Assertions.assertEquals("nkxhc", model.additionalOptions().get("dhx"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DWCopyCommandSettings model = new DWCopyCommandSettings()
-            .withDefaultValues(
-                Arrays.asList(new DWCopyCommandDefaultValue().withColumnName("datagows").withDefaultValue("dataguap")))
-            .withAdditionalOptions(mapOf("byfacexp", "hh", "pkqiqs", "pqykicesqpvmoxil"));
+        DWCopyCommandSettings model
+            = new DWCopyCommandSettings()
+                .withDefaultValues(
+                    Arrays
+                        .asList(
+                            new DWCopyCommandDefaultValue().withColumnName("datapdcbhe")
+                                .withDefaultValue("datautuaysxhfupvq"),
+                            new DWCopyCommandDefaultValue().withColumnName("dataqlafi").withDefaultValue("dataw"),
+                            new DWCopyCommandDefaultValue().withColumnName("dataipuyefhhdrmg")
+                                .withDefaultValue("datafgyxkgqwmpghxpcx")))
+                .withAdditionalOptions(mapOf("dhx", "nkxhc"));
         model = BinaryData.fromObject(model).toObject(DWCopyCommandSettings.class);
-        Assertions.assertEquals("hh", model.additionalOptions().get("byfacexp"));
+        Assertions.assertEquals("nkxhc", model.additionalOptions().get("dhx"));
     }
 
     // Use "Map.of" if available

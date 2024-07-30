@@ -13,7 +13,6 @@ jobs:
       DailyDocRepoLocation: $(Pipeline.Workspace)/daily
       DocRepoOwner: Azure
       DocRepoName: azure-docs-sdk-java
-      DocValidationImageId: azuresdkimages.azurecr.io/javarefautocr:latest
     steps:
       # Sync docs repo onboarding files/folders
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
@@ -29,12 +28,11 @@ jobs:
               WorkingDirectory: $(DocRepoLocation)
             - Name: azure-sdk/$(DocRepoName)
               WorkingDirectory: $(DailyDocRepoLocation)
-      # Pull and build the docker image.
-      - template: /eng/common/pipelines/templates/steps/docker-pull-image.yml
-        parameters:
-          ContainerRegistryClientId: $(azuresdkimages-cr-clientid)
-          ContainerRegistryClientSecret: $(azuresdkimages-cr-clientsecret)
-          ImageId: "$(DocValidationImageId)"
+
+
+      - template: /eng/pipelines/templates/steps/mvn-linux-repository-settings.yml
+
+      - template: /eng/pipelines/templates/steps/install-rex-validation-tool.yml
 
       - task: Powershell@2
         inputs:
@@ -48,7 +46,7 @@ jobs:
         inputs:
           pwsh: true
           filePath: eng/common/scripts/Update-DocsMsPackages.ps1
-          arguments: -DocRepoLocation $(DocRepoLocation) -ImageId '$(DocValidationImageId)'
+          arguments: -DocRepoLocation $(DocRepoLocation)
         displayName: Update Docs Onboarding for main branch
         condition: and(succeeded(), or(eq(variables['Build.Reason'], 'Schedule'), eq(variables['Force.MainUpdate'], 'true')))
 
@@ -87,7 +85,7 @@ jobs:
         parameters:
           BaseRepoBranch: $(DefaultBranch)
           BaseRepoOwner: $(DocRepoOwner)
-          CommitMsg: "Update docs CI configuration"
+          CommitMsg: "Update docs CI configuration Build: $(System.CollectionUri)$(System.TeamProject)/_build/results?buildId=$(Build.BuildId)"
           TargetRepoName: $(DocRepoName)
           TargetRepoOwner: $(DocRepoOwner)
           WorkingDirectory: $(DocRepoLocation)
@@ -96,21 +94,6 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/set-daily-docs-branch-name.yml
         parameters:
           DailyBranchVariableName: DailyDocsBranchName
-
-      # Docs daily updates is supposed to download packages from public feed repository, so we have to specify additional repositories in a POM or the profile.
-      # Here is maven documentation: https://maven.apache.org/guides/mini/guide-multiple-repositories.html
-      - powershell: |
-          # Linux mvn `setting.xml` is sitting under path `~/.m2/setting.xml`
-          Get-Command mvn
-          if (!(Test-Path '~/.m2/')) {
-            mkdir ~/.m2/
-          }
-          if (Test-Path '~/.m2/setting.xml') {
-            Write-Host "'setting.xml' exists. Overwriting the file to support multiple repositories."
-          }
-          Copy-Item "./eng/repo-docs/docms/daily.update.setting.xml" -Destination "~/.m2/settings.xml"
-        displayName: 'Configure mvn'
-        workingDirectory: $(Build.SourcesDirectory)
 
       - task: Powershell@2
         inputs:
@@ -160,14 +143,18 @@ jobs:
           ScriptDirectory: $(Build.SourcesDirectory)/eng/common/scripts
           PushArgs: -f
 
-      - task: PowerShell@2
+      - task: AzureCLI@2
         displayName: Queue Docs CI build
         inputs:
-          pwsh: true
-          filePath: eng/common/scripts/Queue-Pipeline.ps1
-          arguments: >
-            -Organization "apidrop"
-            -Project "Content%20CI"
-            -DefinitionId 3188
-            -AuthToken "$(azuresdk-apidrop-devops-queue-build-pat)"
-            -BuildParametersJson (@{ params = (Get-Content ./eng/dailydocsconfig.json -Raw) -replace '%%DailyDocsBranchName%%', "$(DailyDocsBranchName)" } | ConvertTo-Json)
+          azureSubscription: msdocs-apidrop-connection
+          scriptType: pscore
+          scriptLocation: inlineScript
+          inlineScript: |
+            $accessToken = az account get-access-token --resource "499b84ac-1321-427f-aa17-267ca6975798" --query "accessToken" --output tsv
+            $buildParamJson = (@{ params = (Get-Content ./eng/dailydocsconfig.json -Raw) -replace '%%DailyDocsBranchName%%', "$(DailyDocsBranchName)" } | ConvertTo-Json)
+            eng/common/scripts/Queue-Pipeline.ps1 `
+              -Organization "apidrop" `
+              -Project "Content%20CI" `
+              -DefinitionId 3188 `
+              -BuildParametersJson $buildParamJson `
+              -BearerToken $accessToken

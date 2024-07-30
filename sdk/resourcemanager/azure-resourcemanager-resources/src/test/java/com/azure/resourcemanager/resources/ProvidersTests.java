@@ -17,32 +17,42 @@ import java.util.List;
 
 public class ProvidersTests extends ResourceManagementTest {
 
-    @Override
-    protected void cleanUpResources() {
-    }
-
     // record data too big
     @DoNotRecord(skipInPlayback = true)
     @Test
-    public void canUnregisterAndRegisterProvider() throws Exception {
+    public void canUnregisterAndRegisterProvider() {
+        // take a rare provider that usually not registered
+        final String providerNamespace = "Microsoft.StandbyPool";
+
+        // list
         PagedIterable<Provider> providers = resourceClient.providers().list();
         int size = TestUtilities.getSize(providers);
         Assertions.assertTrue(size > 0);
-        Provider provider = providers.iterator().next();
+
+        // get and check if already registered
+        Provider provider = resourceClient.providers().getByName(providerNamespace);
+        List<ProviderResourceType> resourceTypes = provider.resourceTypes();
+        Assertions.assertFalse(resourceTypes.isEmpty());
+        Assertions.assertNotNull(provider);
+        if ("Registered".equals(provider.registrationState())) {
+            Assertions.fail(String.format("Provider '%s' already registered, please test with a provider that not currently registered.", providerNamespace));
+        }
+
+        // register
+        provider = resourceClient.providers().register(providerNamespace);
+        while (provider.registrationState().equals("Unregistered")
+            || provider.registrationState().equalsIgnoreCase("Registering")) {
+            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
+            provider = resourceClient.providers().getByName(provider.namespace());
+        }
+        Assertions.assertEquals("Registered", provider.registrationState());
+
+        // unregister
         resourceClient.providers().unregister(provider.namespace());
         provider = resourceClient.providers().getByName(provider.namespace());
         while (provider.registrationState().equals("Unregistering")) {
             ResourceManagerUtils.sleep(Duration.ofSeconds(5));
             provider = resourceClient.providers().getByName(provider.namespace());
         }
-        resourceClient.providers().register(provider.namespace());
-        while (provider.registrationState().equals("Unregistered")
-                || provider.registrationState().equalsIgnoreCase("Registering")) {
-            ResourceManagerUtils.sleep(Duration.ofSeconds(5));
-            provider = resourceClient.providers().getByName(provider.namespace());
-        }
-        Assertions.assertEquals("Registered", provider.registrationState());
-        List<ProviderResourceType> resourceTypes = provider.resourceTypes();
-        Assertions.assertTrue(resourceTypes.size() > 0);
     }
 }

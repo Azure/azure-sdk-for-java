@@ -173,8 +173,8 @@ public final class DynamicsAXLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -183,8 +183,8 @@ public final class DynamicsAXLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the DynamicsAXLinkedServiceTypeProperties object itself.
@@ -201,26 +201,31 @@ public final class DynamicsAXLinkedServiceTypeProperties {
      */
     public void validate() {
         if (url() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property url in model DynamicsAXLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property url in model DynamicsAXLinkedServiceTypeProperties"));
         }
         if (servicePrincipalId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property servicePrincipalId in model DynamicsAXLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property servicePrincipalId in model DynamicsAXLinkedServiceTypeProperties"));
         }
         if (servicePrincipalKey() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property servicePrincipalKey in model DynamicsAXLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property servicePrincipalKey in model DynamicsAXLinkedServiceTypeProperties"));
         } else {
             servicePrincipalKey().validate();
         }
         if (tenant() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property tenant in model DynamicsAXLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property tenant in model DynamicsAXLinkedServiceTypeProperties"));
         }
         if (aadResourceId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property aadResourceId in model DynamicsAXLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property aadResourceId in model DynamicsAXLinkedServiceTypeProperties"));
         }
     }
 

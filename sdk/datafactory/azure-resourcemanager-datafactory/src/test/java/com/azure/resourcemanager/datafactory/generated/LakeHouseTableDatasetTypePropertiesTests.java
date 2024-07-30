@@ -10,14 +10,15 @@ import com.azure.resourcemanager.datafactory.fluent.models.LakeHouseTableDataset
 public final class LakeHouseTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LakeHouseTableDatasetTypeProperties model = BinaryData.fromString("{\"table\":\"dataeiiewibdtpl\"}")
-            .toObject(LakeHouseTableDatasetTypeProperties.class);
+        LakeHouseTableDatasetTypeProperties model
+            = BinaryData.fromString("{\"schema\":\"datarcatkuhskegdkvv\",\"table\":\"datal\"}")
+                .toObject(LakeHouseTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LakeHouseTableDatasetTypeProperties model
-            = new LakeHouseTableDatasetTypeProperties().withTable("dataeiiewibdtpl");
+            = new LakeHouseTableDatasetTypeProperties().withSchema("datarcatkuhskegdkvv").withTable("datal");
         model = BinaryData.fromObject(model).toObject(LakeHouseTableDatasetTypeProperties.class);
     }
 }

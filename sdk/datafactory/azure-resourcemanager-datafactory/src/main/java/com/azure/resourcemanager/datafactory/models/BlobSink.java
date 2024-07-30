@@ -6,6 +6,7 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -13,10 +14,17 @@ import java.util.List;
 /**
  * A copy activity Azure Blob sink.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = BlobSink.class, visible = true)
 @JsonTypeName("BlobSink")
 @Fluent
 public final class BlobSink extends CopySink {
+    /*
+     * Copy sink type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "BlobSink";
+
     /*
      * Blob writer overwrite files. Type: boolean (or Expression with resultType boolean).
      */
@@ -42,8 +50,8 @@ public final class BlobSink extends CopySink {
     private Object copyBehavior;
 
     /*
-     * Specify the custom metadata to be added to sink data. Type: array of objects (or Expression with resultType
-     * array of objects).
+     * Specify the custom metadata to be added to sink data. Type: array of objects (or Expression with resultType array
+     * of objects).
      */
     @JsonProperty(value = "metadata")
     private List<MetadataItem> metadata;
@@ -52,6 +60,16 @@ public final class BlobSink extends CopySink {
      * Creates an instance of BlobSink class.
      */
     public BlobSink() {
+    }
+
+    /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

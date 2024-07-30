@@ -29,7 +29,8 @@ public final class ServiceAcrConfigurationInfoTests {
             .withOciArtifacts(Arrays.asList(
                 new ServiceOciArtifactEntry().withLoginServer("hxqh").withImageName("ifpikxwczby").withDigest("npqxuh"),
                 new ServiceOciArtifactEntry().withLoginServer("y").withImageName("iwbybrkxvdumjg").withDigest("fwvuk"),
-                new ServiceOciArtifactEntry().withLoginServer("audccsnhs").withImageName("nyejhkryhtnap")
+                new ServiceOciArtifactEntry().withLoginServer("audccsnhs")
+                    .withImageName("nyejhkryhtnap")
                     .withDigest("wlokjyem")));
         model = BinaryData.fromObject(model).toObject(ServiceAcrConfigurationInfo.class);
         Assertions.assertEquals("dbihanufhfcbj", model.loginServers().get(0));

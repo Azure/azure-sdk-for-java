@@ -5,16 +5,14 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The authentication options for Azure OpenAI On Your Data when using an Elasticsearch key and key ID pair.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("key_and_key_id")
 @Immutable
 public final class OnYourDataKeyAndKeyIdAuthenticationOptions extends OnYourDataAuthenticationOptions {
 
@@ -22,15 +20,13 @@ public final class OnYourDataKeyAndKeyIdAuthenticationOptions extends OnYourData
      * The key to use for authentication.
      */
     @Generated
-    @JsonProperty(value = "key")
-    private String key;
+    private final String key;
 
     /*
      * The key ID to use for authentication.
      */
     @Generated
-    @JsonProperty(value = "key_id")
-    private String keyId;
+    private final String keyId;
 
     /**
      * Creates an instance of OnYourDataKeyAndKeyIdAuthenticationOptions class.
@@ -39,9 +35,7 @@ public final class OnYourDataKeyAndKeyIdAuthenticationOptions extends OnYourData
      * @param keyId the keyId value to set.
      */
     @Generated
-    @JsonCreator
-    public OnYourDataKeyAndKeyIdAuthenticationOptions(@JsonProperty(value = "key") String key,
-        @JsonProperty(value = "key_id") String keyId) {
+    public OnYourDataKeyAndKeyIdAuthenticationOptions(String key, String keyId) {
         this.key = key;
         this.keyId = keyId;
     }
@@ -64,5 +58,70 @@ public final class OnYourDataKeyAndKeyIdAuthenticationOptions extends OnYourData
     @Generated
     public String getKeyId() {
         return this.keyId;
+    }
+
+    /*
+     * The authentication type.
+     */
+    @Generated
+    private OnYourDataAuthenticationType type = OnYourDataAuthenticationType.KEY_AND_KEY_ID;
+
+    /**
+     * Get the type property: The authentication type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public OnYourDataAuthenticationType getType() {
+        return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("key", this.key);
+        jsonWriter.writeStringField("key_id", this.keyId);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OnYourDataKeyAndKeyIdAuthenticationOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OnYourDataKeyAndKeyIdAuthenticationOptions if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OnYourDataKeyAndKeyIdAuthenticationOptions.
+     */
+    @Generated
+    public static OnYourDataKeyAndKeyIdAuthenticationOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String key = null;
+            String keyId = null;
+            OnYourDataAuthenticationType type = OnYourDataAuthenticationType.KEY_AND_KEY_ID;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("key".equals(fieldName)) {
+                    key = reader.getString();
+                } else if ("key_id".equals(fieldName)) {
+                    keyId = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    type = OnYourDataAuthenticationType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            OnYourDataKeyAndKeyIdAuthenticationOptions deserializedOnYourDataKeyAndKeyIdAuthenticationOptions
+                = new OnYourDataKeyAndKeyIdAuthenticationOptions(key, keyId);
+            deserializedOnYourDataKeyAndKeyIdAuthenticationOptions.type = type;
+            return deserializedOnYourDataKeyAndKeyIdAuthenticationOptions;
+        });
     }
 }

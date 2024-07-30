@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.datafactory.models.ContinuationSettingsReference;
 import com.azure.resourcemanager.datafactory.models.DataFlowReference;
 import com.azure.resourcemanager.datafactory.models.DataFlowStagingInfo;
 import com.azure.resourcemanager.datafactory.models.ExecuteDataFlowActivityTypePropertiesCompute;
@@ -107,6 +108,16 @@ public final class ExecutePowerQueryActivityTypeProperties extends ExecuteDataFl
     public ExecutePowerQueryActivityTypeProperties
         withIntegrationRuntime(IntegrationRuntimeReference integrationRuntime) {
         super.withIntegrationRuntime(integrationRuntime);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExecutePowerQueryActivityTypeProperties
+        withContinuationSettings(ContinuationSettingsReference continuationSettings) {
+        super.withContinuationSettings(continuationSettings);
         return this;
     }
 

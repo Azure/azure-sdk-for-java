@@ -6,6 +6,8 @@ package com.azure.identity;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.util.ValidationUtil;
 
+import java.util.function.Supplier;
+
 /**
  * Fluent credential builder for instantiating a {@link OnBehalfOfCredential}.
  *
@@ -47,6 +49,8 @@ public class OnBehalfOfCredentialBuilder extends AadCredentialBuilderBase<OnBeha
     private String clientSecret;
     private String clientCertificatePath;
     private String clientCertificatePassword;
+    private Supplier<String> clientAssertionSupplier;
+
 
     /**
      * Constructs an instance of OnBehalfOfCredentialBuilder.
@@ -137,6 +141,17 @@ public class OnBehalfOfCredentialBuilder extends AadCredentialBuilderBase<OnBeha
     }
 
     /**
+     * Sets the supplier containing the logic to supply the client assertion when invoked.
+     *
+     * @param clientAssertionSupplier the supplier supplying client assertion.
+     * @return An updated instance of this builder.
+     */
+    public OnBehalfOfCredentialBuilder clientAssertion(Supplier<String> clientAssertionSupplier) {
+        this.clientAssertionSupplier = clientAssertionSupplier;
+        return this;
+    }
+
+    /**
      * Creates a new {@link OnBehalfOfCredential} with the current configurations.
      *
      * @return a {@link OnBehalfOfCredential} with the current configurations.
@@ -146,19 +161,16 @@ public class OnBehalfOfCredentialBuilder extends AadCredentialBuilderBase<OnBeha
     public OnBehalfOfCredential build() {
         ValidationUtil.validate(CLASS_NAME, LOGGER, "clientId", clientId, "tenantId", tenantId);
 
-        if (clientSecret == null && clientCertificatePath == null) {
-            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("At least client secret or certificate "
-                + "path should provided in OnBehalfOfCredentialBuilder. Only one of them should "
-                + "be provided."));
-        }
-
-        if (clientCertificatePath != null && clientSecret != null) {
-            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("Both client secret and certificate "
-                + "path are provided in OnBehalfCredentialBuilder. Only one of them should "
-                + "be provided."));
+        if  ((clientSecret == null && clientCertificatePath == null && clientAssertionSupplier == null)
+            || (clientSecret != null && clientCertificatePath != null)
+            || (clientSecret != null && clientAssertionSupplier != null)
+            || (clientCertificatePath != null && clientAssertionSupplier != null)) {
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("Exactly one of client secret, "
+                + "client certificate path, or client assertion supplier must be provided "
+                + "in OnBehalfOfCredentialBuilder."));
         }
 
         return new OnBehalfOfCredential(clientId, tenantId, clientSecret, clientCertificatePath,
-            clientCertificatePassword, identityClientOptions);
+            clientCertificatePassword, clientAssertionSupplier, identityClientOptions);
     }
 }

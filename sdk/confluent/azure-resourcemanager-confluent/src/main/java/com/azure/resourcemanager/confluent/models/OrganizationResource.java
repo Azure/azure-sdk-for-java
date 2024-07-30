@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.confluent.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
@@ -182,7 +183,7 @@ public interface OrganizationResource {
             /**
              * Specifies resourceGroupName.
              * 
-             * @param resourceGroupName The name of the resource group. The name is case insensitive.
+             * @param resourceGroupName Resource group name.
              * @return the next definition stage.
              */
             WithOfferDetail withExistingResourceGroup(String resourceGroupName);
@@ -321,4 +322,27 @@ public interface OrganizationResource {
      * @return the refreshed resource.
      */
     OrganizationResource refresh(Context context);
+
+    /**
+     * cloud provider regions available for creating Schema Registry clusters.
+     * 
+     * @param body List Access Request Model.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of POST request to list regions supported by confluent along with {@link Response}.
+     */
+    Response<ListRegionsSuccessResponse> listRegionsWithResponse(ListAccessRequestModel body, Context context);
+
+    /**
+     * cloud provider regions available for creating Schema Registry clusters.
+     * 
+     * @param body List Access Request Model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of POST request to list regions supported by confluent.
+     */
+    ListRegionsSuccessResponse listRegions(ListAccessRequestModel body);
 }

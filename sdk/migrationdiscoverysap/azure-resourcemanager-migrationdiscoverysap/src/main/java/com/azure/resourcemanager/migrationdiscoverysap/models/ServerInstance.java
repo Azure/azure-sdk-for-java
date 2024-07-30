@@ -7,7 +7,6 @@ package com.azure.resourcemanager.migrationdiscoverysap.models;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.migrationdiscoverysap.fluent.models.ServerInstanceInner;
-import com.azure.resourcemanager.migrationdiscoverysap.fluent.models.ServerInstanceProperties;
 
 /**
  * An immutable client-side representation of ServerInstance.
@@ -35,85 +34,18 @@ public interface ServerInstance {
     String type();
 
     /**
+     * Gets the properties property: The resource-specific properties for this resource.
+     * 
+     * @return the properties value.
+     */
+    ServerInstanceProperties properties();
+
+    /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
      */
     SystemData systemData();
-
-    /**
-     * Gets the serverName property: This is the Virtual Machine Name of the SAP system. Add all the virtual machines
-     * attached to an SAP system which you wish to migrate to Azure. Keeping this not equal to ID as for single tier all
-     * InstanceTypes would be on same server, leading to multiple resources with same servername.
-     * 
-     * @return the serverName value.
-     */
-    String serverName();
-
-    /**
-     * Gets the sapInstanceType property: Defines the type SAP instance on this server instance.
-     * 
-     * @return the sapInstanceType value.
-     */
-    SapInstanceType sapInstanceType();
-
-    /**
-     * Gets the instanceSid property: This is the Instance SID for ASCS/AP/DB instance. An SAP system with HANA database
-     * for example could have a different SID for database Instance than that of ASCS instance.
-     * 
-     * @return the instanceSid value.
-     */
-    String instanceSid();
-
-    /**
-     * Gets the sapProduct property: This is the SAP Application Component; e.g. SAP S/4HANA 2022, SAP ERP ENHANCE
-     * PACKAGE.
-     * 
-     * @return the sapProduct value.
-     */
-    String sapProduct();
-
-    /**
-     * Gets the sapProductVersion property: Provide the product version of the SAP product.
-     * 
-     * @return the sapProductVersion value.
-     */
-    String sapProductVersion();
-
-    /**
-     * Gets the operatingSystem property: This is Operating System on which the host server is running.
-     * 
-     * @return the operatingSystem value.
-     */
-    OperatingSystem operatingSystem();
-
-    /**
-     * Gets the configurationData property: Configuration data for this server instance.
-     * 
-     * @return the configurationData value.
-     */
-    ConfigurationData configurationData();
-
-    /**
-     * Gets the performanceData property: Configuration data for this server instance.
-     * 
-     * @return the performanceData value.
-     */
-    PerformanceData performanceData();
-
-    /**
-     * Gets the provisioningState property: Defines the provisioning states.
-     * 
-     * @return the provisioningState value.
-     */
-    ProvisioningState provisioningState();
-
-    /**
-     * Gets the errors property: Defines the errors related to SAP Instance resource.
-     * 
-     * @return the errors value.
-     */
-    SapMigrateError errors();
 
     /**
      * Gets the name of the resource group.
@@ -166,7 +98,7 @@ public interface ServerInstance {
          * The stage of the ServerInstance definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate {
+        interface WithCreate extends DefinitionStages.WithProperties {
             /**
              * Executes the create request.
              * 
@@ -181,6 +113,19 @@ public interface ServerInstance {
              * @return the created resource.
              */
             ServerInstance create(Context context);
+        }
+
+        /**
+         * The stage of the ServerInstance definition allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: The resource-specific properties for this resource..
+             * 
+             * @param properties The resource-specific properties for this resource.
+             * @return the next definition stage.
+             */
+            WithCreate withProperties(ServerInstanceProperties properties);
         }
     }
 

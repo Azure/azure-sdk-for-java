@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Unit of the usage. e.g. count. */
+/**
+ * Unit of the usage. e.g. count.
+ */
 public final class ResourceUsageUnit extends ExpandableStringEnum<ResourceUsageUnit> {
-    /** Static value count for ResourceUsageUnit. */
+    /**
+     * Static value count for ResourceUsageUnit.
+     */
     public static final ResourceUsageUnit COUNT = fromString("count");
 
     /**
      * Creates a new instance of ResourceUsageUnit value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,7 +28,7 @@ public final class ResourceUsageUnit extends ExpandableStringEnum<ResourceUsageU
 
     /**
      * Creates or finds a ResourceUsageUnit from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ResourceUsageUnit.
      */
@@ -35,7 +39,7 @@ public final class ResourceUsageUnit extends ExpandableStringEnum<ResourceUsageU
 
     /**
      * Gets known ResourceUsageUnit values.
-     *
+     * 
      * @return known ResourceUsageUnit values.
      */
     public static Collection<ResourceUsageUnit> values() {

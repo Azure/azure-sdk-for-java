@@ -18,7 +18,8 @@ public final class DataFlowsDeleteSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void dataFlowsDelete(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.dataFlows().deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleDataFlow",
-            com.azure.core.util.Context.NONE);
+        manager.dataFlows()
+            .deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleDataFlow",
+                com.azure.core.util.Context.NONE);
     }
 }

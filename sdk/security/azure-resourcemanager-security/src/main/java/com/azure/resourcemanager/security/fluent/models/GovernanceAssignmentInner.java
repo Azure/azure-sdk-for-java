@@ -39,7 +39,7 @@ public final class GovernanceAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Get the owner property: The Owner for the governance assignment - e.g. user@contoso.com - see example.
+     * Get the owner property: The Owner for the governance assignment - e.g. user&#064;contoso.com - see example.
      * 
      * @return the owner value.
      */
@@ -48,7 +48,7 @@ public final class GovernanceAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Set the owner property: The Owner for the governance assignment - e.g. user@contoso.com - see example.
+     * Set the owner property: The Owner for the governance assignment - e.g. user&#064;contoso.com - see example.
      * 
      * @param owner the owner value to set.
      * @return the GovernanceAssignmentInner object itself.
@@ -62,8 +62,8 @@ public final class GovernanceAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Get the remediationDueDate property: The remediation due-date - after this date Secure Score will be affected
-     * (in case of active grace-period).
+     * Get the remediationDueDate property: The remediation due-date - after this date Secure Score will be affected (in
+     * case of active grace-period).
      * 
      * @return the remediationDueDate value.
      */
@@ -72,8 +72,8 @@ public final class GovernanceAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Set the remediationDueDate property: The remediation due-date - after this date Secure Score will be affected
-     * (in case of active grace-period).
+     * Set the remediationDueDate property: The remediation due-date - after this date Secure Score will be affected (in
+     * case of active grace-period).
      * 
      * @param remediationDueDate the remediationDueDate value to set.
      * @return the GovernanceAssignmentInner object itself.

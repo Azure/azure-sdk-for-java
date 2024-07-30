@@ -5,22 +5,21 @@ package com.azure.ai.translation.text.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Defines values for TextType.
+ * Translation text type.
  */
 public final class TextType extends ExpandableStringEnum<TextType> {
 
     /**
-     * Static value Plain for TextType.
+     * Plain text.
      */
     @Generated
     public static final TextType PLAIN = fromString("Plain");
 
     /**
-     * Static value Html for TextType.
+     * HTML-encoded text.
      */
     @Generated
     public static final TextType HTML = fromString("Html");
@@ -42,7 +41,6 @@ public final class TextType extends ExpandableStringEnum<TextType> {
      * @return the corresponding TextType.
      */
     @Generated
-    @JsonCreator
     public static TextType fromString(String name) {
         return fromString(name, TextType.class);
     }

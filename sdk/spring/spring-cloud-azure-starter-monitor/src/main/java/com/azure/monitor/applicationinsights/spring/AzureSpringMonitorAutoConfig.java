@@ -4,13 +4,17 @@
 package com.azure.monitor.applicationinsights.spring;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
 import io.opentelemetry.instrumentation.spring.autoconfigure.OpenTelemetryAutoConfiguration;
+import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
+import io.opentelemetry.sdk.autoconfigure.spi.logs.ConfigurableLogRecordExporterProvider;
+import io.opentelemetry.sdk.autoconfigure.spi.metrics.ConfigurableMetricExporterProvider;
+import io.opentelemetry.sdk.autoconfigure.spi.traces.ConfigurableSpanExporterProvider;
 import io.opentelemetry.sdk.logs.export.LogRecordExporter;
 import io.opentelemetry.sdk.metrics.export.MetricExporter;
-import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
@@ -28,9 +32,9 @@ import java.util.Optional;
 @ConditionalOnProperty(name = "otel.sdk.disabled", havingValue = "false", matchIfMissing = true)
 public class AzureSpringMonitorAutoConfig {
 
-    private static final ClientLogger LOGGER = new ClientLogger(AzureSpringMonitorAutoConfig.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AzureSpringMonitorAutoConfig.class);
 
-    private static final String CONNECTION_STRING_ERROR_MESSAGE = "Unable to find the Application Insights connection string.";
+    static final String AZURE_EXPORTER_NAME = "azure-exporter";
 
     private final Optional<AzureMonitorExporterBuilder> azureMonitorExporterBuilderOpt;
 
@@ -43,7 +47,7 @@ public class AzureSpringMonitorAutoConfig {
     public AzureSpringMonitorAutoConfig(@Value("${applicationinsights.connection.string:}") String connectionStringSysProp, ObjectProvider<HttpPipeline> httpPipeline) {
         this.azureMonitorExporterBuilderOpt = createAzureMonitorExporterBuilder(connectionStringSysProp, httpPipeline);
         if (!isNativeRuntimeExecution()) {
-            LOGGER.warning("You are using Application Insights for Spring in a non-native GraalVM runtime environment. We recommend using the Application Insights Java agent.");
+            LOG.warn("You are using Application Insights for Spring in a non-native GraalVM runtime environment. We recommend using the Application Insights Java agent.");
         }
     }
 
@@ -55,32 +59,40 @@ public class AzureSpringMonitorAutoConfig {
     private Optional<AzureMonitorExporterBuilder> createAzureMonitorExporterBuilder(String connectionStringSysProp, ObjectProvider<HttpPipeline> httpPipeline) {
         Optional<String> connectionString = ConnectionStringRetriever.retrieveConnectionString(connectionStringSysProp);
         if (connectionString.isPresent()) {
-            try {
-                AzureMonitorExporterBuilder azureMonitorExporterBuilder = new AzureMonitorExporterBuilder().connectionString(connectionString.get());
-                HttpPipeline providedHttpPipeline = httpPipeline.getIfAvailable();
-                if (providedHttpPipeline != null) {
-                    azureMonitorExporterBuilder = azureMonitorExporterBuilder.httpPipeline(providedHttpPipeline);
-                }
-                return Optional.of(azureMonitorExporterBuilder);
-            } catch (IllegalArgumentException illegalArgumentException) {
-                String errorMessage = illegalArgumentException.getMessage();
-                if (errorMessage.contains("InstrumentationKey")) {
-                    LOGGER.warning(CONNECTION_STRING_ERROR_MESSAGE + " Please check you have not used an instrumentation key instead of a connection string");
-                }
+            AzureMonitorExporterBuilder azureMonitorExporterBuilder = new AzureMonitorExporterBuilder().connectionString(connectionString.get());
+            HttpPipeline providedHttpPipeline = httpPipeline.getIfAvailable();
+            if (providedHttpPipeline != null) {
+                azureMonitorExporterBuilder = azureMonitorExporterBuilder.httpPipeline(providedHttpPipeline);
             }
+            return Optional.of(azureMonitorExporterBuilder);
         } else {
-            LOGGER.warning(CONNECTION_STRING_ERROR_MESSAGE);
+            LOG.warn("Unable to find the Application Insights connection string. The telemetry data won't be sent to Azure.");
         }
         return Optional.empty();
     }
 
     /**
-     * Declare a MetricExporter bean
+     * Declare a ConfigurableMetricExporterProvider bean
      *
-     * @return MetricExporter
+     * @return ConfigurableMetricExporterProvider
      */
     @Bean
-    public MetricExporter azureSpringMonitorMetricExporter() {
+    ConfigurableMetricExporterProvider otlpMetricExporterProvider() {
+        MetricExporter metricExporter = createMetricExporter();
+        return new ConfigurableMetricExporterProvider() {
+            @Override
+            public MetricExporter createExporter(ConfigProperties configProperties) {
+                return metricExporter;
+            }
+            @Override
+            public String getName() {
+                return AZURE_EXPORTER_NAME;
+            }
+        };
+
+    }
+
+    private MetricExporter createMetricExporter() {
         if (!azureMonitorExporterBuilderOpt.isPresent()) {
             return null;
         }
@@ -88,39 +100,68 @@ public class AzureSpringMonitorAutoConfig {
     }
 
     /**
-     * Declare a SpanExporter bean
+     * Declare a ConfigurableSpanExporterProvider bean
      *
-     * @return SpanExporter
+     * @return ConfigurableSpanExporterProvider
      */
     @Bean
-    public SpanExporter azureSpringMonitorSpanExporter() {
+    ConfigurableSpanExporterProvider otlpSpanExporterProvider() {
+        SpanExporter spanExporter = createSpanExporter();
+        return new ConfigurableSpanExporterProvider() {
+            @Override
+            public SpanExporter createExporter(ConfigProperties configProperties) {
+                return spanExporter;
+            }
+            @Override
+            public String getName() {
+                return AZURE_EXPORTER_NAME;
+            }
+        };
+    }
+
+    private SpanExporter createSpanExporter() {
         if (!azureMonitorExporterBuilderOpt.isPresent()) {
             return null;
         }
         return azureMonitorExporterBuilderOpt.get().buildTraceExporter();
     }
 
+
     /**
-     * Declare a LogRecordExporter bean
+     * Declare a ConfigurableLogRecordExporterProvider bean
      *
-     * @return LogRecordExporter
+     * @return ConfigurableLogRecordExporterProvider
      */
     @Bean
-    public LogRecordExporter azureSpringMonitorLogRecordExporter() {
+    ConfigurableLogRecordExporterProvider otlpLogRecordExporterProvider() {
+        LogRecordExporter logRecordExporter = createLogRecordExporter();
+        return new ConfigurableLogRecordExporterProvider() {
+            @Override
+            public LogRecordExporter createExporter(ConfigProperties configProperties) {
+                return logRecordExporter;
+            }
+            @Override
+            public String getName() {
+                return AZURE_EXPORTER_NAME;
+            }
+        };
+    }
+
+    private LogRecordExporter createLogRecordExporter() {
         if (!azureMonitorExporterBuilderOpt.isPresent()) {
             return null;
         }
         return azureMonitorExporterBuilderOpt.get().buildLogRecordExporter();
     }
 
+
     /**
      * Declare OpenTelemetryVersionCheckRunner bean to check the OpenTelemetry version
      *
-     * @param resource An OpenTelemetry resource
      * @return OpenTelemetryVersionCheckRunner
      */
     @Bean
-    public OpenTelemetryVersionCheckRunner openTelemetryVersionCheckRunner(Resource resource) {
-        return new OpenTelemetryVersionCheckRunner(resource);
+    public OpenTelemetryVersionCheckRunner openTelemetryVersionCheckRunner() {
+        return new OpenTelemetryVersionCheckRunner();
     }
 }

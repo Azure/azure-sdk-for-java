@@ -7,7 +7,9 @@ package com.azure.resourcemanager.devcenter.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A name/value pair to describe a capability. */
+/**
+ * A name/value pair to describe a capability.
+ */
 @Immutable
 public final class Capability {
     /*
@@ -22,13 +24,15 @@ public final class Capability {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
-    /** Creates an instance of Capability class. */
+    /**
+     * Creates an instance of Capability class.
+     */
     public Capability() {
     }
 
     /**
      * Get the name property: Name of the capability.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class Capability {
 
     /**
      * Get the value property: Value of the capability.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -46,7 +50,7 @@ public final class Capability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

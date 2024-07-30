@@ -9,6 +9,8 @@ what the following rules do, please see the checkstyle configuration
 page at http://checkstyle.sourceforge.net/config.html -->
 
 <module name="Checker">
+  <property name="haltOnException" value="false" />
+
   <!-- Exclude module-info.java from checks, as CheckStyle does not presently support it -->
   <module name="BeforeExecutionExclusionFileFilter">
     <property name="fileNamePattern" value="module\-info\.java$"/>
@@ -276,11 +278,11 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="ArrayTypeStyle"/>
 
     <!--Checks for package naming and name length limit. Package names have to starting with either-->
-    <!--'com.microsoft.azure' or 'com.azure', and then the extension names should only contains-->
-    <!--characters 'a' to 'z' with no more than 32 characters and  the package names should be no-->
-    <!--more than 80 characters.-->
+    <!--'com.microsoft.azure', 'com.azure', or 'io.clientcore' and then the extension names start with-->
+    <!--characters 'a' to 'z' and only contains 'a' to 'z' or '0' to '9' with no more than 32 characters-->
+    <!--and the package names should be no more than 80 characters.-->
     <module name="PackageName">
-      <property name="format" value="^(?=.{9,80}$)((com.microsoft|com.azure)(\.[a-z]{1,32})*)+$"/>
+      <property name="format" value="^(?=.{9,80}$)((com.microsoft|com.azure|io.clientcore)(\.[a-z][a-z0-9]{1,31})*)+$"/>
     </module>
 
     <!-- Javadoc checks                                   -->

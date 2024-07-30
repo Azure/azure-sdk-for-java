@@ -4,18 +4,21 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-/** Samples for ManagedEnvironments List. */
+/**
+ * Samples for ManagedEnvironments List.
+ */
 public final class ManagedEnvironmentsListSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/ManagedEnvironments_ListBySubscription.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
+     * ManagedEnvironments_ListBySubscription.json
      */
     /**
      * Sample code: List environments by subscription.
-     *
+     * 
      * @param manager Entry point to ContainerAppsApiManager.
      */
-    public static void listEnvironmentsBySubscription(
-        com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
+    public static void
+        listEnvironmentsBySubscription(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
         manager.managedEnvironments().list(com.azure.core.util.Context.NONE);
     }
 }

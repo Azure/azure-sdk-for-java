@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SSH connectivity endpoint details. */
+/**
+ * SSH connectivity endpoint details.
+ */
 @Fluent
 public final class SshConnectivityEndpoint {
     /*
@@ -17,13 +19,21 @@ public final class SshConnectivityEndpoint {
     @JsonProperty(value = "endpoint", required = true)
     private String endpoint;
 
-    /** Creates an instance of SshConnectivityEndpoint class. */
+    /*
+     * Private SSH connectivity endpoint. This property will only be returned when enableInternalIngress is true.
+     */
+    @JsonProperty(value = "privateSshEndpoint")
+    private String privateSshEndpoint;
+
+    /**
+     * Creates an instance of SshConnectivityEndpoint class.
+     */
     public SshConnectivityEndpoint() {
     }
 
     /**
      * Get the endpoint property: SSH connectivity endpoint.
-     *
+     * 
      * @return the endpoint value.
      */
     public String endpoint() {
@@ -32,7 +42,7 @@ public final class SshConnectivityEndpoint {
 
     /**
      * Set the endpoint property: SSH connectivity endpoint.
-     *
+     * 
      * @param endpoint the endpoint value to set.
      * @return the SshConnectivityEndpoint object itself.
      */
@@ -42,16 +52,36 @@ public final class SshConnectivityEndpoint {
     }
 
     /**
+     * Get the privateSshEndpoint property: Private SSH connectivity endpoint. This property will only be returned when
+     * enableInternalIngress is true.
+     * 
+     * @return the privateSshEndpoint value.
+     */
+    public String privateSshEndpoint() {
+        return this.privateSshEndpoint;
+    }
+
+    /**
+     * Set the privateSshEndpoint property: Private SSH connectivity endpoint. This property will only be returned when
+     * enableInternalIngress is true.
+     * 
+     * @param privateSshEndpoint the privateSshEndpoint value to set.
+     * @return the SshConnectivityEndpoint object itself.
+     */
+    public SshConnectivityEndpoint withPrivateSshEndpoint(String privateSshEndpoint) {
+        this.privateSshEndpoint = privateSshEndpoint;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (endpoint() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property endpoint in model SshConnectivityEndpoint"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property endpoint in model SshConnectivityEndpoint"));
         }
     }
 

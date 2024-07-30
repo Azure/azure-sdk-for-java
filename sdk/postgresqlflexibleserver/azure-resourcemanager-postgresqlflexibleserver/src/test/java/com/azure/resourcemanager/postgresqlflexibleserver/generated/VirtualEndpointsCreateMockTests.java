@@ -6,55 +6,40 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpointResource;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpointType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class VirtualEndpointsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"id\":\"hlwntsjgq\",\"name\":\"xypruuuy\",\"type\":\"chrszi\",\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"etndnbfqyggagf\",\"nlgmtrwahzjmu\"],\"virtualEndpoints\":[\"byrplrohkpig\"]}}";
+            = "{\"id\":\"phvtrrmhwrb\",\"name\":\"pyf\",\"type\":\"bhvjglr\",\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"hhmemhooclutnp\",\"memczjkmmyk\",\"ujxsglhsr\"],\"virtualEndpoints\":[\"ejylmbkzu\",\"nigrfihotjewl\",\"xuzzjgnrefq\",\"hqo\"]}}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        PostgreSqlManager manager = PostgreSqlManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PostgreSqlManager manager = PostgreSqlManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        VirtualEndpointResource response = manager.virtualEndpoints().define("ttvwkpqh")
-            .withExistingFlexibleServer("xfz", "j").withEndpointType(VirtualEndpointType.READ_WRITE)
-            .withMembers(Arrays.asList("punj", "ikczvvitacgxmf")).create();
+        VirtualEndpointResource response = manager.virtualEndpoints()
+            .define("tmhqykiz")
+            .withExistingFlexibleServer("owlkjxnqpv", "gf")
+            .withEndpointType(VirtualEndpointType.READ_WRITE)
+            .withMembers(Arrays.asList("cbvopwndyqleallk"))
+            .create();
 
         Assertions.assertEquals(VirtualEndpointType.READ_WRITE, response.endpointType());
-        Assertions.assertEquals("etndnbfqyggagf", response.members().get(0));
+        Assertions.assertEquals("hhmemhooclutnp", response.members().get(0));
     }
 }

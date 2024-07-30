@@ -6,7 +6,11 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -14,124 +18,107 @@ import java.util.Map;
  * The extended information of glossary.
  */
 @Immutable
-public final class AtlasGlossaryExtInfo {
+public final class AtlasGlossaryExtInfo implements JsonSerializable<AtlasGlossaryExtInfo> {
     /*
      * The GUID of the object.
      */
     @Generated
-    @JsonProperty(value = "guid")
     private String guid;
 
     /*
      * An array of classifications.
      */
     @Generated
-    @JsonProperty(value = "classifications")
     private List<AtlasClassification> classifications;
 
     /*
      * The long version description.
      */
     @Generated
-    @JsonProperty(value = "longDescription")
     private String longDescription;
 
     /*
      * The name of the glossary object.
      */
     @Generated
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The qualified name of the glossary object.
      */
     @Generated
-    @JsonProperty(value = "qualifiedName")
     private String qualifiedName;
 
     /*
      * The short version of description.
      */
     @Generated
-    @JsonProperty(value = "shortDescription")
     private String shortDescription;
 
     /*
      * ETag for concurrency control.
      */
     @Generated
-    @JsonProperty(value = "lastModifiedTS")
     private String lastModifiedTS;
 
     /*
      * The created time of the record.
      */
     @Generated
-    @JsonProperty(value = "createTime")
     private Long createTime;
 
     /*
      * The user who created the record.
      */
     @Generated
-    @JsonProperty(value = "createdBy")
     private String createdBy;
 
     /*
      * The update time of the record.
      */
     @Generated
-    @JsonProperty(value = "updateTime")
     private Long updateTime;
 
     /*
      * The user who updated the record.
      */
     @Generated
-    @JsonProperty(value = "updatedBy")
     private String updatedBy;
 
     /*
      * An array of categories.
      */
     @Generated
-    @JsonProperty(value = "categories")
     private List<AtlasRelatedCategoryHeader> categories;
 
     /*
      * The language of the glossary.
      */
     @Generated
-    @JsonProperty(value = "language")
     private String language;
 
     /*
      * An array of related term headers.
      */
     @Generated
-    @JsonProperty(value = "terms")
     private List<AtlasRelatedTermHeader> terms;
 
     /*
      * The usage of the glossary.
      */
     @Generated
-    @JsonProperty(value = "usage")
     private String usage;
 
     /*
      * The glossary category information.
      */
     @Generated
-    @JsonProperty(value = "categoryInfo")
     private Map<String, AtlasGlossaryCategory> categoryInfo;
 
     /*
      * The glossary term information.
      */
     @Generated
-    @JsonProperty(value = "termInfo")
     private Map<String, AtlasGlossaryTerm> termInfo;
 
     /**
@@ -309,5 +296,102 @@ public final class AtlasGlossaryExtInfo {
     @Generated
     public Map<String, AtlasGlossaryTerm> getTermInfo() {
         return this.termInfo;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("guid", this.guid);
+        jsonWriter.writeArrayField("classifications", this.classifications,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("longDescription", this.longDescription);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("qualifiedName", this.qualifiedName);
+        jsonWriter.writeStringField("shortDescription", this.shortDescription);
+        jsonWriter.writeStringField("lastModifiedTS", this.lastModifiedTS);
+        jsonWriter.writeNumberField("createTime", this.createTime);
+        jsonWriter.writeStringField("createdBy", this.createdBy);
+        jsonWriter.writeNumberField("updateTime", this.updateTime);
+        jsonWriter.writeStringField("updatedBy", this.updatedBy);
+        jsonWriter.writeArrayField("categories", this.categories, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("language", this.language);
+        jsonWriter.writeArrayField("terms", this.terms, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("usage", this.usage);
+        jsonWriter.writeMapField("categoryInfo", this.categoryInfo, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("termInfo", this.termInfo, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AtlasGlossaryExtInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AtlasGlossaryExtInfo if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AtlasGlossaryExtInfo.
+     */
+    @Generated
+    public static AtlasGlossaryExtInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AtlasGlossaryExtInfo deserializedAtlasGlossaryExtInfo = new AtlasGlossaryExtInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("guid".equals(fieldName)) {
+                    deserializedAtlasGlossaryExtInfo.guid = reader.getString();
+                } else if ("classifications".equals(fieldName)) {
+                    List<AtlasClassification> classifications
+                        = reader.readArray(reader1 -> AtlasClassification.fromJson(reader1));
+                    deserializedAtlasGlossaryExtInfo.classifications = classifications;
+                } else if ("longDescription".equals(fieldName)) {
+                    deserializedAtlasGlossaryExtInfo.longDescription = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAtlasGlossaryExtInfo.name = reader.getString();
+                } else if ("qualifiedName".equals(fieldName)) {
+                    deserializedAtlasGlossaryExtInfo.qualifiedName = reader.getString();
+                } else if ("shortDescription".equals(fieldName)) {
+                    deserializedAtlasGlossaryExtInfo.shortDescription = reader.getString();
+                } else if ("lastModifiedTS".equals(fieldName)) {
+                    deserializedAtlasGlossaryExtInfo.lastModifiedTS = reader.getString();
+                } else if ("createTime".equals(fieldName)) {
+                    deserializedAtlasGlossaryExtInfo.createTime = reader.getNullable(JsonReader::getLong);
+                } else if ("createdBy".equals(fieldName)) {
+                    deserializedAtlasGlossaryExtInfo.createdBy = reader.getString();
+                } else if ("updateTime".equals(fieldName)) {
+                    deserializedAtlasGlossaryExtInfo.updateTime = reader.getNullable(JsonReader::getLong);
+                } else if ("updatedBy".equals(fieldName)) {
+                    deserializedAtlasGlossaryExtInfo.updatedBy = reader.getString();
+                } else if ("categories".equals(fieldName)) {
+                    List<AtlasRelatedCategoryHeader> categories
+                        = reader.readArray(reader1 -> AtlasRelatedCategoryHeader.fromJson(reader1));
+                    deserializedAtlasGlossaryExtInfo.categories = categories;
+                } else if ("language".equals(fieldName)) {
+                    deserializedAtlasGlossaryExtInfo.language = reader.getString();
+                } else if ("terms".equals(fieldName)) {
+                    List<AtlasRelatedTermHeader> terms
+                        = reader.readArray(reader1 -> AtlasRelatedTermHeader.fromJson(reader1));
+                    deserializedAtlasGlossaryExtInfo.terms = terms;
+                } else if ("usage".equals(fieldName)) {
+                    deserializedAtlasGlossaryExtInfo.usage = reader.getString();
+                } else if ("categoryInfo".equals(fieldName)) {
+                    Map<String, AtlasGlossaryCategory> categoryInfo
+                        = reader.readMap(reader1 -> AtlasGlossaryCategory.fromJson(reader1));
+                    deserializedAtlasGlossaryExtInfo.categoryInfo = categoryInfo;
+                } else if ("termInfo".equals(fieldName)) {
+                    Map<String, AtlasGlossaryTerm> termInfo
+                        = reader.readMap(reader1 -> AtlasGlossaryTerm.fromJson(reader1));
+                    deserializedAtlasGlossaryExtInfo.termInfo = termInfo;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAtlasGlossaryExtInfo;
+        });
     }
 }

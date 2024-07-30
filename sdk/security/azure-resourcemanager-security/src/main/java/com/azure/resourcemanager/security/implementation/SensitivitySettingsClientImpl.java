@@ -4,12 +4,14 @@
 
 package com.azure.resourcemanager.security.implementation;
 
+import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
@@ -22,6 +24,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.security.fluent.SensitivitySettingsClient;
 import com.azure.resourcemanager.security.fluent.models.GetSensitivitySettingsListResponseInner;
+import com.azure.resourcemanager.security.fluent.models.GetSensitivitySettingsResponseInner;
+import com.azure.resourcemanager.security.models.UpdateSensitivitySettingsRequest;
 import reactor.core.publisher.Mono;
 
 /**
@@ -57,11 +61,213 @@ public final class SensitivitySettingsClientImpl implements SensitivitySettingsC
     @ServiceInterface(name = "SecurityCenterSensit")
     public interface SensitivitySettingsService {
         @Headers({ "Content-Type: application/json" })
+        @Put("/providers/Microsoft.Security/sensitivitySettings/current")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<GetSensitivitySettingsResponseInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") UpdateSensitivitySettingsRequest sensitivitySettings,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/providers/Microsoft.Security/sensitivitySettings/current")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<GetSensitivitySettingsResponseInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Security/sensitivitySettings")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<GetSensitivitySettingsListResponseInner>> list(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+    }
+
+    /**
+     * Create or update data sensitivity settings for sensitive data discovery.
+     * 
+     * @param sensitivitySettings The data sensitivity settings to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data sensitivity settings for sensitive data discovery along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<GetSensitivitySettingsResponseInner>>
+        createOrUpdateWithResponseAsync(UpdateSensitivitySettingsRequest sensitivitySettings) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (sensitivitySettings == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter sensitivitySettings is required and cannot be null."));
+        } else {
+            sensitivitySettings.validate();
+        }
+        final String apiVersion = "2023-02-15-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion, sensitivitySettings,
+                accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Create or update data sensitivity settings for sensitive data discovery.
+     * 
+     * @param sensitivitySettings The data sensitivity settings to update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data sensitivity settings for sensitive data discovery along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<GetSensitivitySettingsResponseInner>>
+        createOrUpdateWithResponseAsync(UpdateSensitivitySettingsRequest sensitivitySettings, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (sensitivitySettings == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter sensitivitySettings is required and cannot be null."));
+        } else {
+            sensitivitySettings.validate();
+        }
+        final String apiVersion = "2023-02-15-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.createOrUpdate(this.client.getEndpoint(), apiVersion, sensitivitySettings, accept, context);
+    }
+
+    /**
+     * Create or update data sensitivity settings for sensitive data discovery.
+     * 
+     * @param sensitivitySettings The data sensitivity settings to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data sensitivity settings for sensitive data discovery on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<GetSensitivitySettingsResponseInner>
+        createOrUpdateAsync(UpdateSensitivitySettingsRequest sensitivitySettings) {
+        return createOrUpdateWithResponseAsync(sensitivitySettings).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Create or update data sensitivity settings for sensitive data discovery.
+     * 
+     * @param sensitivitySettings The data sensitivity settings to update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data sensitivity settings for sensitive data discovery along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<GetSensitivitySettingsResponseInner>
+        createOrUpdateWithResponse(UpdateSensitivitySettingsRequest sensitivitySettings, Context context) {
+        return createOrUpdateWithResponseAsync(sensitivitySettings, context).block();
+    }
+
+    /**
+     * Create or update data sensitivity settings for sensitive data discovery.
+     * 
+     * @param sensitivitySettings The data sensitivity settings to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data sensitivity settings for sensitive data discovery.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GetSensitivitySettingsResponseInner createOrUpdate(UpdateSensitivitySettingsRequest sensitivitySettings) {
+        return createOrUpdateWithResponse(sensitivitySettings, Context.NONE).getValue();
+    }
+
+    /**
+     * Gets data sensitivity settings for sensitive data discovery.
+     * 
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data sensitivity settings for sensitive data discovery along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<GetSensitivitySettingsResponseInner>> getWithResponseAsync() {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String apiVersion = "2023-02-15-preview";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), apiVersion, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets data sensitivity settings for sensitive data discovery.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data sensitivity settings for sensitive data discovery along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<GetSensitivitySettingsResponseInner>> getWithResponseAsync(Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String apiVersion = "2023-02-15-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.get(this.client.getEndpoint(), apiVersion, accept, context);
+    }
+
+    /**
+     * Gets data sensitivity settings for sensitive data discovery.
+     * 
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data sensitivity settings for sensitive data discovery on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<GetSensitivitySettingsResponseInner> getAsync() {
+        return getWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets data sensitivity settings for sensitive data discovery.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data sensitivity settings for sensitive data discovery along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<GetSensitivitySettingsResponseInner> getWithResponse(Context context) {
+        return getWithResponseAsync(context).block();
+    }
+
+    /**
+     * Gets data sensitivity settings for sensitive data discovery.
+     * 
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data sensitivity settings for sensitive data discovery.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GetSensitivitySettingsResponseInner get() {
+        return getWithResponse(Context.NONE).getValue();
     }
 
     /**

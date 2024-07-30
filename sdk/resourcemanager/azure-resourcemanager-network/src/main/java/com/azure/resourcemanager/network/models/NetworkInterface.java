@@ -256,6 +256,17 @@ public interface NetworkInterface
             WithCreate withAcceleratedNetworking();
         }
 
+        /** The stage of the definition allowing to specify delete options for the public ip address. */
+        interface WithPublicIPAddressDeleteOptions {
+            /**
+             * Sets delete options for public ip address.
+             *
+             * @param deleteOptions the delete options for primary network interfaces
+             * @return the next stage of the update
+             */
+            WithCreate withPrimaryPublicIPAddressDeleteOptions(DeleteOptions deleteOptions);
+        }
+
         /**
          * The stage of the network interface definition which contains all the minimum required inputs for the resource
          * to be created, but also allows for any other optional settings to be specified.
@@ -268,7 +279,8 @@ public interface NetworkInterface
                 WithSecondaryIPConfiguration,
                 WithAcceleratedNetworking,
                 WithLoadBalancer,
-                WithApplicationSecurityGroup {
+                WithApplicationSecurityGroup,
+                WithPublicIPAddressDeleteOptions {
             /**
              * Enables IP forwarding in the network interface.
              *
@@ -576,6 +588,18 @@ public interface NetworkInterface
              */
             Update withoutLoadBalancerInboundNatRules();
         }
+
+        /** The stage of the network interface update allowing to specify delete options for the public ip address. */
+        interface WithPublicIPAddressDeleteOptions {
+
+            /**
+             * Sets delete options for public ip address.
+             *
+             * @param deleteOptions the delete options for primary network interfaces
+             * @return the next stage of the update
+             */
+            Update withPrimaryPublicIPAddressDeleteOptions(DeleteOptions deleteOptions);
+        }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
@@ -591,6 +615,7 @@ public interface NetworkInterface
             UpdateStages.WithIPConfiguration,
             UpdateStages.WithLoadBalancer,
             UpdateStages.WithAcceleratedNetworking,
-            UpdateStages.WithApplicationSecurityGroup {
+            UpdateStages.WithApplicationSecurityGroup,
+            UpdateStages.WithPublicIPAddressDeleteOptions {
     }
 }

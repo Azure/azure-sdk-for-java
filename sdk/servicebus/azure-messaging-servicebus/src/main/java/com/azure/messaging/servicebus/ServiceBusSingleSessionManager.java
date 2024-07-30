@@ -11,7 +11,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LoggingEventBuilder;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
+import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
@@ -34,11 +36,12 @@ final class ServiceBusSingleSessionManager implements IServiceBusSessionManager 
     private final MessageSerializer serializer;
     private final Duration operationTimeout;
     private final ServiceBusSessionReactorReceiver sessionReceiver;
-    private final MessageFlux messageFlux;
+    private final Flux<Message> messageFlux;
+    private final ServiceBusReceiverInstrumentation instrumentation;
 
     ServiceBusSingleSessionManager(ClientLogger logger, String identifier,
         ServiceBusSessionReactorReceiver sessionReceiver, int prefetch,
-        MessageSerializer serializer, AmqpRetryOptions retryOptions) {
+        MessageSerializer serializer, AmqpRetryOptions retryOptions, ServiceBusReceiverInstrumentation instrumentation) {
         this.logger = Objects.requireNonNull(logger, "logger cannot be null.");
         this.identifier = identifier;
         this.sessionReceiver = Objects.requireNonNull(sessionReceiver, "sessionReceiver cannot be null.");
@@ -46,7 +49,10 @@ final class ServiceBusSingleSessionManager implements IServiceBusSessionManager 
         Objects.requireNonNull(retryOptions, "retryOptions cannot be null.");
         this.operationTimeout = retryOptions.getTryTimeout();
         final Flux<ServiceBusSessionReactorReceiver> messageFluxUpstream = new SessionReceiverStream(sessionReceiver).flux();
-        this.messageFlux = new MessageFlux(messageFluxUpstream, prefetch, CreditFlowMode.RequestDriven, NULL_RETRY_POLICY);
+        this.instrumentation = Objects.requireNonNull(instrumentation, "instrumentation cannot be null");
+        MessageFlux messageFluxLocal = new MessageFlux(messageFluxUpstream, prefetch, CreditFlowMode.RequestDriven,
+            NULL_RETRY_POLICY);
+        this.messageFlux = TracingFluxOperator.create(messageFluxLocal, instrumentation);
     }
 
     @Override

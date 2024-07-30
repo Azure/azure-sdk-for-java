@@ -13,34 +13,39 @@ import org.junit.jupiter.api.Assertions;
 public final class PacketCoreDataPlanePropertiesFormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PacketCoreDataPlanePropertiesFormat model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Canceled\",\"userPlaneAccessInterface\":{\"name\":\"fznudaodvxzb\",\"ipv4Address\":\"blylpstdbh\",\"ipv4Subnet\":\"srzdzucerscdn\",\"ipv4Gateway\":\"evfiwjmygt\"},\"userPlaneAccessVirtualIpv4Addresses\":[\"lswtmweriofzpyqs\",\"mwabnetshhszhedp\"]}")
-                .toObject(PacketCoreDataPlanePropertiesFormat.class);
-        Assertions.assertEquals("fznudaodvxzb", model.userPlaneAccessInterface().name());
-        Assertions.assertEquals("blylpstdbh", model.userPlaneAccessInterface().ipv4Address());
-        Assertions.assertEquals("srzdzucerscdn", model.userPlaneAccessInterface().ipv4Subnet());
-        Assertions.assertEquals("evfiwjmygt", model.userPlaneAccessInterface().ipv4Gateway());
-        Assertions.assertEquals("lswtmweriofzpyqs", model.userPlaneAccessVirtualIpv4Addresses().get(0));
+        PacketCoreDataPlanePropertiesFormat model = BinaryData.fromString(
+            "{\"provisioningState\":\"Deleting\",\"userPlaneAccessInterface\":{\"name\":\"vaytdwkqbrq\",\"ipv4Address\":\"paxh\",\"ipv4Subnet\":\"iilivpdtiirqtd\",\"ipv4Gateway\":\"axoruzfgsquy\",\"vlanId\":1122552127,\"ipv4AddressList\":[\"l\",\"ptramxj\",\"zwl\"],\"bfdIpv4Endpoints\":[\"xuqlcvydypat\",\"ooaojkniodkooebw\",\"ujhemmsbvdkcrodt\",\"infwjlfltkacjve\"]},\"userPlaneAccessVirtualIpv4Addresses\":[\"lfoakg\",\"kfpagao\",\"pulpqblylsyxk\"]}")
+            .toObject(PacketCoreDataPlanePropertiesFormat.class);
+        Assertions.assertEquals("vaytdwkqbrq", model.userPlaneAccessInterface().name());
+        Assertions.assertEquals("paxh", model.userPlaneAccessInterface().ipv4Address());
+        Assertions.assertEquals("iilivpdtiirqtd", model.userPlaneAccessInterface().ipv4Subnet());
+        Assertions.assertEquals("axoruzfgsquy", model.userPlaneAccessInterface().ipv4Gateway());
+        Assertions.assertEquals(1122552127, model.userPlaneAccessInterface().vlanId());
+        Assertions.assertEquals("l", model.userPlaneAccessInterface().ipv4AddressList().get(0));
+        Assertions.assertEquals("xuqlcvydypat", model.userPlaneAccessInterface().bfdIpv4Endpoints().get(0));
+        Assertions.assertEquals("lfoakg", model.userPlaneAccessVirtualIpv4Addresses().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PacketCoreDataPlanePropertiesFormat model =
-            new PacketCoreDataPlanePropertiesFormat()
-                .withUserPlaneAccessInterface(
-                    new InterfaceProperties()
-                        .withName("fznudaodvxzb")
-                        .withIpv4Address("blylpstdbh")
-                        .withIpv4Subnet("srzdzucerscdn")
-                        .withIpv4Gateway("evfiwjmygt"))
-                .withUserPlaneAccessVirtualIpv4Addresses(Arrays.asList("lswtmweriofzpyqs", "mwabnetshhszhedp"));
+        PacketCoreDataPlanePropertiesFormat model = new PacketCoreDataPlanePropertiesFormat()
+            .withUserPlaneAccessInterface(new InterfaceProperties().withName("vaytdwkqbrq")
+                .withIpv4Address("paxh")
+                .withIpv4Subnet("iilivpdtiirqtd")
+                .withIpv4Gateway("axoruzfgsquy")
+                .withVlanId(1122552127)
+                .withIpv4AddressList(Arrays.asList("l", "ptramxj", "zwl"))
+                .withBfdIpv4Endpoints(
+                    Arrays.asList("xuqlcvydypat", "ooaojkniodkooebw", "ujhemmsbvdkcrodt", "infwjlfltkacjve")))
+            .withUserPlaneAccessVirtualIpv4Addresses(Arrays.asList("lfoakg", "kfpagao", "pulpqblylsyxk"));
         model = BinaryData.fromObject(model).toObject(PacketCoreDataPlanePropertiesFormat.class);
-        Assertions.assertEquals("fznudaodvxzb", model.userPlaneAccessInterface().name());
-        Assertions.assertEquals("blylpstdbh", model.userPlaneAccessInterface().ipv4Address());
-        Assertions.assertEquals("srzdzucerscdn", model.userPlaneAccessInterface().ipv4Subnet());
-        Assertions.assertEquals("evfiwjmygt", model.userPlaneAccessInterface().ipv4Gateway());
-        Assertions.assertEquals("lswtmweriofzpyqs", model.userPlaneAccessVirtualIpv4Addresses().get(0));
+        Assertions.assertEquals("vaytdwkqbrq", model.userPlaneAccessInterface().name());
+        Assertions.assertEquals("paxh", model.userPlaneAccessInterface().ipv4Address());
+        Assertions.assertEquals("iilivpdtiirqtd", model.userPlaneAccessInterface().ipv4Subnet());
+        Assertions.assertEquals("axoruzfgsquy", model.userPlaneAccessInterface().ipv4Gateway());
+        Assertions.assertEquals(1122552127, model.userPlaneAccessInterface().vlanId());
+        Assertions.assertEquals("l", model.userPlaneAccessInterface().ipv4AddressList().get(0));
+        Assertions.assertEquals("xuqlcvydypat", model.userPlaneAccessInterface().bfdIpv4Endpoints().get(0));
+        Assertions.assertEquals("lfoakg", model.userPlaneAccessVirtualIpv4Addresses().get(0));
     }
 }

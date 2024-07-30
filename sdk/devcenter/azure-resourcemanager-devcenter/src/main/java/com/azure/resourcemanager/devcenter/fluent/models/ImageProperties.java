@@ -10,7 +10,9 @@ import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.azure.resourcemanager.devcenter.models.RecommendedMachineConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of an image. */
+/**
+ * Properties of an image.
+ */
 @Immutable
 public final class ImageProperties {
     /*
@@ -50,19 +52,20 @@ public final class ImageProperties {
     private ProvisioningState provisioningState;
 
     /*
-     * Indicates whether this image has hibernate enabled. Not all images are capable of supporting hibernation. To
-     * find out more see https://aka.ms/devbox/hibernate
+     * Indicates whether this image has hibernate enabled. Not all images are capable of supporting hibernation. To find out more see https://aka.ms/devbox/hibernate
      */
     @JsonProperty(value = "hibernateSupport", access = JsonProperty.Access.WRITE_ONLY)
     private HibernateSupport hibernateSupport;
 
-    /** Creates an instance of ImageProperties class. */
+    /**
+     * Creates an instance of ImageProperties class.
+     */
     public ImageProperties() {
     }
 
     /**
      * Get the description property: The description of the image.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -71,7 +74,7 @@ public final class ImageProperties {
 
     /**
      * Get the publisher property: The publisher of the image.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -80,7 +83,7 @@ public final class ImageProperties {
 
     /**
      * Get the offer property: The name of the image offer.
-     *
+     * 
      * @return the offer value.
      */
     public String offer() {
@@ -89,7 +92,7 @@ public final class ImageProperties {
 
     /**
      * Get the sku property: The SKU name for the image.
-     *
+     * 
      * @return the sku value.
      */
     public String sku() {
@@ -98,7 +101,7 @@ public final class ImageProperties {
 
     /**
      * Get the recommendedMachineConfiguration property: The recommended machine configuration to use with the image.
-     *
+     * 
      * @return the recommendedMachineConfiguration value.
      */
     public RecommendedMachineConfiguration recommendedMachineConfiguration() {
@@ -107,7 +110,7 @@ public final class ImageProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -117,7 +120,7 @@ public final class ImageProperties {
     /**
      * Get the hibernateSupport property: Indicates whether this image has hibernate enabled. Not all images are capable
      * of supporting hibernation. To find out more see https://aka.ms/devbox/hibernate.
-     *
+     * 
      * @return the hibernateSupport value.
      */
     public HibernateSupport hibernateSupport() {
@@ -126,7 +129,7 @@ public final class ImageProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

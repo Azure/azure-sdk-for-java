@@ -10,7 +10,9 @@ import com.azure.resourcemanager.devcenter.models.EnvironmentDefinitionParameter
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of an environment definition. */
+/**
+ * Properties of an environment definition.
+ */
 @Immutable
 public final class EnvironmentDefinitionProperties {
     /*
@@ -37,13 +39,15 @@ public final class EnvironmentDefinitionProperties {
     @JsonProperty(value = "validationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private CatalogResourceValidationStatus validationStatus;
 
-    /** Creates an instance of EnvironmentDefinitionProperties class. */
+    /**
+     * Creates an instance of EnvironmentDefinitionProperties class.
+     */
     public EnvironmentDefinitionProperties() {
     }
 
     /**
      * Get the description property: A short description of the environment definition.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -52,7 +56,7 @@ public final class EnvironmentDefinitionProperties {
 
     /**
      * Get the parameters property: Input parameters passed to an environment.
-     *
+     * 
      * @return the parameters value.
      */
     public List<EnvironmentDefinitionParameter> parameters() {
@@ -61,7 +65,7 @@ public final class EnvironmentDefinitionProperties {
 
     /**
      * Get the templatePath property: Path to the Environment Definition entrypoint file.
-     *
+     * 
      * @return the templatePath value.
      */
     public String templatePath() {
@@ -70,7 +74,7 @@ public final class EnvironmentDefinitionProperties {
 
     /**
      * Get the validationStatus property: Validation status for the environment definition.
-     *
+     * 
      * @return the validationStatus value.
      */
     public CatalogResourceValidationStatus validationStatus() {
@@ -79,7 +83,7 @@ public final class EnvironmentDefinitionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

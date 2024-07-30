@@ -13,7 +13,7 @@ import java.util.Arrays;
 public final class VirtualMachineScaleSetsUpdateInstancesSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_UpdateInstances_MinimumSet_Gen.json
      */
     /**
@@ -23,15 +23,19 @@ public final class VirtualMachineScaleSetsUpdateInstancesSamples {
      */
     public static void
         virtualMachineScaleSetUpdateInstancesMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets().updateInstances("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa", new VirtualMachineScaleSetVMInstanceRequiredIDs()
-                .withInstanceIds(Arrays.asList("aaaaaaaaaaaaaaaaaaaaaaaaa")),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .updateInstances("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                new VirtualMachineScaleSetVMInstanceRequiredIDs()
+                    .withInstanceIds(Arrays.asList("aaaaaaaaaaaaaaaaaaaaaaaaa")),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_UpdateInstances_MaximumSet_Gen.json
      */
     /**
@@ -41,9 +45,11 @@ public final class VirtualMachineScaleSetsUpdateInstancesSamples {
      */
     public static void
         virtualMachineScaleSetUpdateInstancesMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets().updateInstances("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaaaaaa", new VirtualMachineScaleSetVMInstanceRequiredIDs()
-                .withInstanceIds(Arrays.asList("aaaaaaaaaaaaaaaaaaaaaaaaa")),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .updateInstances("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaa", new VirtualMachineScaleSetVMInstanceRequiredIDs()
+                .withInstanceIds(Arrays.asList("aaaaaaaaaaaaaaaaaaaaaaaaa")), com.azure.core.util.Context.NONE);
     }
 }

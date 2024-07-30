@@ -13,6 +13,44 @@
 
 ### Other Changes
 
+
+## 1.1.25 (2024-06-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
+
+
+## 1.1.24 (2024-05-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
+
+
+## 1.1.23 (2024-04-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+
+
+## 1.1.22 (2024-03-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
+- Upgraded `nimbus-jose-jwt` from `9.31` to version `9.37.3`.
+
+
 ## 1.1.21 (2024-02-20)
 
 ### Other Changes

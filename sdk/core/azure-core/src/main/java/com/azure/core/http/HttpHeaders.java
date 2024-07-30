@@ -33,7 +33,22 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     private final Map<String, HttpHeader> headers;
 
     static {
-        HttpHeadersAccessHelper.setAccessor(headers -> headers.headers);
+        HttpHeadersAccessHelper.setAccessor(new HttpHeadersAccessHelper.HttpHeadersAccessor() {
+            @Override
+            public Map<String, HttpHeader> getRawHeaderMap(HttpHeaders headers) {
+                return headers.headers;
+            }
+
+            @Override
+            public void addInternal(HttpHeaders headers, String formattedName, String name, String value) {
+                headers.addInternal(formattedName, name, value);
+            }
+
+            @Override
+            public void setInternal(HttpHeaders headers, String formattedName, String name, List<String> values) {
+                headers.setInternal(formattedName, name, values);
+            }
+        });
     }
 
     /**

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ApplicationGatewaysGetSslPredefinedPolicySamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * ApplicationGatewayAvailableSslOptionsPredefinedPolicyGet.json
      */
     /**
@@ -18,7 +18,10 @@ public final class ApplicationGatewaysGetSslPredefinedPolicySamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAvailableSslPredefinedPolicyByName(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getApplicationGateways()
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getApplicationGateways()
             .getSslPredefinedPolicyWithResponse("AppGwSslPolicy20150501", com.azure.core.util.Context.NONE);
     }
 }

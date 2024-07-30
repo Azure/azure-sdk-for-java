@@ -12,18 +12,18 @@ public final class DefenderFoDatabasesAwsOfferingRdsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderFoDatabasesAwsOfferingRds model
-            = BinaryData.fromString("{\"enabled\":false,\"cloudRoleArn\":\"kayrgwy\"}")
+            = BinaryData.fromString("{\"enabled\":false,\"cloudRoleArn\":\"kakddidahzllrqm\"}")
                 .toObject(DefenderFoDatabasesAwsOfferingRds.class);
         Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("kayrgwy", model.cloudRoleArn());
+        Assertions.assertEquals("kakddidahzllrqm", model.cloudRoleArn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderFoDatabasesAwsOfferingRds model
-            = new DefenderFoDatabasesAwsOfferingRds().withEnabled(false).withCloudRoleArn("kayrgwy");
+            = new DefenderFoDatabasesAwsOfferingRds().withEnabled(false).withCloudRoleArn("kakddidahzllrqm");
         model = BinaryData.fromObject(model).toObject(DefenderFoDatabasesAwsOfferingRds.class);
         Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("kayrgwy", model.cloudRoleArn());
+        Assertions.assertEquals("kakddidahzllrqm", model.cloudRoleArn());
     }
 }

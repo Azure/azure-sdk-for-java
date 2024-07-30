@@ -78,24 +78,20 @@ public final class EnvironmentTypeImpl implements EnvironmentType, EnvironmentTy
     }
 
     public EnvironmentType create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEnvironmentTypes()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, devCenterName, environmentTypeName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEnvironmentTypes()
+            .createOrUpdateWithResponse(resourceGroupName, devCenterName, environmentTypeName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public EnvironmentType create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEnvironmentTypes()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, devCenterName, environmentTypeName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEnvironmentTypes()
+            .createOrUpdateWithResponse(resourceGroupName, devCenterName, environmentTypeName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
@@ -111,51 +107,43 @@ public final class EnvironmentTypeImpl implements EnvironmentType, EnvironmentTy
     }
 
     public EnvironmentType apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEnvironmentTypes()
-                .updateWithResponse(resourceGroupName, devCenterName, environmentTypeName, updateBody, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEnvironmentTypes()
+            .updateWithResponse(resourceGroupName, devCenterName, environmentTypeName, updateBody, Context.NONE)
+            .getValue();
         return this;
     }
 
     public EnvironmentType apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEnvironmentTypes()
-                .updateWithResponse(resourceGroupName, devCenterName, environmentTypeName, updateBody, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEnvironmentTypes()
+            .updateWithResponse(resourceGroupName, devCenterName, environmentTypeName, updateBody, context)
+            .getValue();
         return this;
     }
 
-    EnvironmentTypeImpl(
-        EnvironmentTypeInner innerObject, com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
+    EnvironmentTypeImpl(EnvironmentTypeInner innerObject,
+        com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.devCenterName = Utils.getValueFromIdByName(innerObject.id(), "devcenters");
-        this.environmentTypeName = Utils.getValueFromIdByName(innerObject.id(), "environmentTypes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.devCenterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "devcenters");
+        this.environmentTypeName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "environmentTypes");
     }
 
     public EnvironmentType refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEnvironmentTypes()
-                .getWithResponse(resourceGroupName, devCenterName, environmentTypeName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEnvironmentTypes()
+            .getWithResponse(resourceGroupName, devCenterName, environmentTypeName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public EnvironmentType refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEnvironmentTypes()
-                .getWithResponse(resourceGroupName, devCenterName, environmentTypeName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEnvironmentTypes()
+            .getWithResponse(resourceGroupName, devCenterName, environmentTypeName, context)
+            .getValue();
         return this;
     }
 

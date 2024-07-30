@@ -15,7 +15,7 @@ import com.azure.resourcemanager.selfhelp.fluent.models.SolutionMetadataResource
  */
 public interface DiscoverySolutionsClient {
     /**
-     * Lists the relevant Azure diagnostics and solutions using [problemClassification
+     * Lists the relevant Azure Diagnostics, Solutions and Troubleshooters using [problemClassification
      * API](https://learn.microsoft.com/rest/api/support/problem-classifications/list?tabs=HTTP)) AND resourceUri or
      * resourceType.&lt;br/&gt; Discovery Solutions is the initial entry point within Help API, which identifies
      * relevant Azure diagnostics and solutions. &lt;br/&gt;&lt;br/&gt; Required Input : problemClassificationId (Use
@@ -25,18 +25,15 @@ public interface DiscoverySolutionsClient {
      * Discovery solutions response must be passed via ‘additionalParameters’ as an input to Diagnostics and Solutions
      * API.
      * 
-     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
-     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return discovery response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SolutionMetadataResourceInner> list(String scope);
+    PagedIterable<SolutionMetadataResourceInner> list();
 
     /**
-     * Lists the relevant Azure diagnostics and solutions using [problemClassification
+     * Lists the relevant Azure Diagnostics, Solutions and Troubleshooters using [problemClassification
      * API](https://learn.microsoft.com/rest/api/support/problem-classifications/list?tabs=HTTP)) AND resourceUri or
      * resourceType.&lt;br/&gt; Discovery Solutions is the initial entry point within Help API, which identifies
      * relevant Azure diagnostics and solutions. &lt;br/&gt;&lt;br/&gt; Required Input : problemClassificationId (Use
@@ -46,8 +43,6 @@ public interface DiscoverySolutionsClient {
      * Discovery solutions response must be passed via ‘additionalParameters’ as an input to Diagnostics and Solutions
      * API.
      * 
-     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
-     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param filter 'ProblemClassificationId' is a mandatory filter to get solutions ids. It also supports optional
      * 'ResourceType' and 'SolutionType' filters. The
      * [$filter](https://learn.microsoft.com/en-us/odata/webapi/first-odata-api#filter) supports only 'and', 'or' and
@@ -60,5 +55,5 @@ public interface DiscoverySolutionsClient {
      * @return discovery response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SolutionMetadataResourceInner> list(String scope, String filter, String skiptoken, Context context);
+    PagedIterable<SolutionMetadataResourceInner> list(String filter, String skiptoken, Context context);
 }

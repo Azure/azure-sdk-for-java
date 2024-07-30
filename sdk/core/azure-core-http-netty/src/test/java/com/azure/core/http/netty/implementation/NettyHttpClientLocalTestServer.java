@@ -36,6 +36,7 @@ public final class NettyHttpClientLocalTestServer {
     public static final String EXPECTED_HEADER = "userAgent";
     public static final String RETURN_HEADERS_AS_IS_PATH = "/returnHeadersAsIs";
     public static final String PROXY_TO_ADDRESS = "/proxyToAddress";
+    public static final String TIMEOUT = "/timeout";
 
     public static final byte[] SHORT_BODY = "hi there".getBytes(StandardCharsets.UTF_8);
     public static final byte[] LONG_BODY = createLongBody();
@@ -134,6 +135,16 @@ public final class NettyHttpClientLocalTestServer {
                 resp.getHttpOutput().write("I'm a teapot".getBytes(StandardCharsets.UTF_8));
                 resp.getHttpOutput().flush();
                 resp.getHttpOutput().complete(Callback.NOOP);
+            } else if (get && TIMEOUT.equals(path)) {
+                try {
+                    Thread.sleep(5000);
+                    resp.setStatus(200);
+                    resp.getHttpOutput().write(SHORT_BODY);
+                    resp.getHttpOutput().flush();
+                    resp.getHttpOutput().complete(Callback.NOOP);
+                } catch (InterruptedException e) {
+                    throw new ServletException(e);
+                }
             } else {
                 throw new ServletException("Unexpected request: " + req.getMethod() + " " + path);
             }

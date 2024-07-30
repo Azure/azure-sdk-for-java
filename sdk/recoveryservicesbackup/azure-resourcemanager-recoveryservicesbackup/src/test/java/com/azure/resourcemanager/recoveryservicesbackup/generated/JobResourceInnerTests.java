@@ -37,9 +37,12 @@ public final class JobResourceInnerTests {
             .withTags(mapOf("alupjm", "lve", "iplrbpbewtghfgb", "hfxobbcswsrtj", "wxzvlvqhjkb", "c", "iebwwaloayqcgwrt",
                 "gibtnm"))
             .withProperties(new Job().withEntityFriendlyName("iotwmcdytdxwit")
-                .withBackupManagementType(BackupManagementType.INVALID).withOperation("awgqwgxhni").withStatus("x")
+                .withBackupManagementType(BackupManagementType.INVALID)
+                .withOperation("awgqwgxhni")
+                .withStatus("x")
                 .withStartTime(OffsetDateTime.parse("2021-09-13T09:37:01Z"))
-                .withEndTime(OffsetDateTime.parse("2021-04-10T12:35:25Z")).withActivityId("gklwn"))
+                .withEndTime(OffsetDateTime.parse("2021-04-10T12:35:25Z"))
+                .withActivityId("gklwn"))
             .withEtag("hjdauwhvylwz");
         model = BinaryData.fromObject(model).toObject(JobResourceInner.class);
         Assertions.assertEquals("tdhxujznbmpowuwp", model.location());

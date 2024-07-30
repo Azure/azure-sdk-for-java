@@ -6,16 +6,28 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Alert notification source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "sourceType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "sourceType",
+    defaultImpl = NotificationsSourceAlert.class,
+    visible = true)
 @JsonTypeName("Alert")
 @Fluent
 public final class NotificationsSourceAlert extends NotificationsSource {
+    /*
+     * The source type that will trigger the notification
+     */
+    @JsonTypeId
+    @JsonProperty(value = "sourceType", required = true)
+    private SourceType sourceType = SourceType.ALERT;
+
     /*
      * Defines the minimal alert severity which will be sent as email notifications
      */
@@ -26,6 +38,16 @@ public final class NotificationsSourceAlert extends NotificationsSource {
      * Creates an instance of NotificationsSourceAlert class.
      */
     public NotificationsSourceAlert() {
+    }
+
+    /**
+     * Get the sourceType property: The source type that will trigger the notification.
+     * 
+     * @return the sourceType value.
+     */
+    @Override
+    public SourceType sourceType() {
+        return this.sourceType;
     }
 
     /**

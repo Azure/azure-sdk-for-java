@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class ExpressRouteConnectionsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/ExpressRouteConnectionDelete.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ExpressRouteConnectionDelete.
      * json
      */
     /**
@@ -19,7 +19,10 @@ public final class ExpressRouteConnectionsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void expressRouteConnectionDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getExpressRouteConnections().delete("resourceGroupName",
-            "expressRouteGatewayName", "connectionName", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getExpressRouteConnections()
+            .delete("resourceGroupName", "expressRouteGatewayName", "connectionName", com.azure.core.util.Context.NONE);
     }
 }

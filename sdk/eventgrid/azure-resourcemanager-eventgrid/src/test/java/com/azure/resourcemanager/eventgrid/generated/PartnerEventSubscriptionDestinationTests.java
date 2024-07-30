@@ -12,15 +12,16 @@ public final class PartnerEventSubscriptionDestinationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerEventSubscriptionDestination model = BinaryData
-            .fromString("{\"endpointType\":\"PartnerDestination\",\"properties\":{\"resourceId\":\"dqgmih\"}}")
+            .fromString("{\"endpointType\":\"PartnerDestination\",\"properties\":{\"resourceId\":\"bfvxovqkxiuxq\"}}")
             .toObject(PartnerEventSubscriptionDestination.class);
-        Assertions.assertEquals("dqgmih", model.resourceId());
+        Assertions.assertEquals("bfvxovqkxiuxq", model.resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PartnerEventSubscriptionDestination model = new PartnerEventSubscriptionDestination().withResourceId("dqgmih");
+        PartnerEventSubscriptionDestination model
+            = new PartnerEventSubscriptionDestination().withResourceId("bfvxovqkxiuxq");
         model = BinaryData.fromObject(model).toObject(PartnerEventSubscriptionDestination.class);
-        Assertions.assertEquals("dqgmih", model.resourceId());
+        Assertions.assertEquals("bfvxovqkxiuxq", model.resourceId());
     }
 }

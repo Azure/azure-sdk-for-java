@@ -18,7 +18,7 @@ public final class PipelinesListByFactorySamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void pipelinesListByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.pipelines().listByFactory("exampleResourceGroup", "exampleFactoryName",
-            com.azure.core.util.Context.NONE);
+        manager.pipelines()
+            .listByFactory("exampleResourceGroup", "exampleFactoryName", com.azure.core.util.Context.NONE);
     }
 }

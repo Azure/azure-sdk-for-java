@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The kubernetes ingress configuration to control access to packet core diagnostics over local APIs. */
+/**
+ * The kubernetes ingress configuration to control access to packet core diagnostics over local APIs.
+ */
 @Fluent
 public final class LocalDiagnosticsAccessConfiguration {
     /*
@@ -23,13 +25,15 @@ public final class LocalDiagnosticsAccessConfiguration {
     @JsonProperty(value = "httpsServerCertificate")
     private HttpsServerCertificate httpsServerCertificate;
 
-    /** Creates an instance of LocalDiagnosticsAccessConfiguration class. */
+    /**
+     * Creates an instance of LocalDiagnosticsAccessConfiguration class.
+     */
     public LocalDiagnosticsAccessConfiguration() {
     }
 
     /**
      * Get the authenticationType property: How to authenticate users who access local diagnostics APIs.
-     *
+     * 
      * @return the authenticationType value.
      */
     public AuthenticationType authenticationType() {
@@ -38,7 +42,7 @@ public final class LocalDiagnosticsAccessConfiguration {
 
     /**
      * Set the authenticationType property: How to authenticate users who access local diagnostics APIs.
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the LocalDiagnosticsAccessConfiguration object itself.
      */
@@ -50,7 +54,7 @@ public final class LocalDiagnosticsAccessConfiguration {
     /**
      * Get the httpsServerCertificate property: The HTTPS server TLS certificate used to secure local access to
      * diagnostics.
-     *
+     * 
      * @return the httpsServerCertificate value.
      */
     public HttpsServerCertificate httpsServerCertificate() {
@@ -60,27 +64,26 @@ public final class LocalDiagnosticsAccessConfiguration {
     /**
      * Set the httpsServerCertificate property: The HTTPS server TLS certificate used to secure local access to
      * diagnostics.
-     *
+     * 
      * @param httpsServerCertificate the httpsServerCertificate value to set.
      * @return the LocalDiagnosticsAccessConfiguration object itself.
      */
-    public LocalDiagnosticsAccessConfiguration withHttpsServerCertificate(
-        HttpsServerCertificate httpsServerCertificate) {
+    public LocalDiagnosticsAccessConfiguration
+        withHttpsServerCertificate(HttpsServerCertificate httpsServerCertificate) {
         this.httpsServerCertificate = httpsServerCertificate;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (authenticationType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property authenticationType in model LocalDiagnosticsAccessConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property authenticationType in model LocalDiagnosticsAccessConfiguration"));
         }
         if (httpsServerCertificate() != null) {
             httpsServerCertificate().validate();

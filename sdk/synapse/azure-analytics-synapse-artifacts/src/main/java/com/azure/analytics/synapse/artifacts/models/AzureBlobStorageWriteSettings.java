@@ -5,27 +5,43 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Azure blob write settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AzureBlobStorageWriteSettings")
 @Fluent
 public final class AzureBlobStorageWriteSettings extends StoreWriteSettings {
     /*
+     * The write setting type.
+     */
+    private String type = "AzureBlobStorageWriteSettings";
+
+    /*
      * Indicates the block size(MB) when writing data to blob. Type: integer (or Expression with resultType integer).
      */
-    @JsonProperty(value = "blockSizeInMB")
     private Object blockSizeInMB;
 
     /**
      * Creates an instance of AzureBlobStorageWriteSettings class.
      */
     public AzureBlobStorageWriteSettings() {
+    }
+
+    /**
+     * Get the type property: The write setting type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -66,5 +82,75 @@ public final class AzureBlobStorageWriteSettings extends StoreWriteSettings {
     public AzureBlobStorageWriteSettings setCopyBehavior(Object copyBehavior) {
         super.setCopyBehavior(copyBehavior);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureBlobStorageWriteSettings setMetadata(List<MetadataItem> metadata) {
+        super.setMetadata(metadata);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        jsonWriter.writeUntypedField("copyBehavior", getCopyBehavior());
+        jsonWriter.writeArrayField("metadata", getMetadata(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("blockSizeInMB", this.blockSizeInMB);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureBlobStorageWriteSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureBlobStorageWriteSettings if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureBlobStorageWriteSettings.
+     */
+    public static AzureBlobStorageWriteSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureBlobStorageWriteSettings deserializedAzureBlobStorageWriteSettings
+                = new AzureBlobStorageWriteSettings();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedAzureBlobStorageWriteSettings.setMaxConcurrentConnections(reader.readUntyped());
+                } else if ("copyBehavior".equals(fieldName)) {
+                    deserializedAzureBlobStorageWriteSettings.setCopyBehavior(reader.readUntyped());
+                } else if ("metadata".equals(fieldName)) {
+                    List<MetadataItem> metadata = reader.readArray(reader1 -> MetadataItem.fromJson(reader1));
+                    deserializedAzureBlobStorageWriteSettings.setMetadata(metadata);
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureBlobStorageWriteSettings.type = reader.getString();
+                } else if ("blockSizeInMB".equals(fieldName)) {
+                    deserializedAzureBlobStorageWriteSettings.blockSizeInMB = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAzureBlobStorageWriteSettings.setAdditionalProperties(additionalProperties);
+
+            return deserializedAzureBlobStorageWriteSettings;
+        });
     }
 }

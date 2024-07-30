@@ -368,9 +368,8 @@ public final class OpenAIClientImpl {
     /**
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * String
      * }</pre>
@@ -399,9 +398,8 @@ public final class OpenAIClientImpl {
     /**
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * String
      * }</pre>
@@ -428,9 +426,8 @@ public final class OpenAIClientImpl {
     /**
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -451,6 +448,13 @@ public final class OpenAIClientImpl {
      *                 int (Required)
      *             ]
      *             seek: int (Required)
+     *         }
+     *     ]
+     *     words (Optional): [
+     *          (Optional){
+     *             word: String (Required)
+     *             start: double (Required)
+     *             end: double (Required)
      *         }
      *     ]
      * }
@@ -480,9 +484,8 @@ public final class OpenAIClientImpl {
     /**
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -503,6 +506,13 @@ public final class OpenAIClientImpl {
      *                 int (Required)
      *             ]
      *             seek: int (Required)
+     *         }
+     *     ]
+     *     words (Optional): [
+     *          (Optional){
+     *             word: String (Required)
+     *             start: double (Required)
+     *             end: double (Required)
      *         }
      *     ]
      * }
@@ -530,9 +540,8 @@ public final class OpenAIClientImpl {
 
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * String
      * }</pre>
@@ -560,9 +569,8 @@ public final class OpenAIClientImpl {
 
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * String
      * }</pre>
@@ -589,9 +597,8 @@ public final class OpenAIClientImpl {
 
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -640,9 +647,8 @@ public final class OpenAIClientImpl {
 
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -693,9 +699,8 @@ public final class OpenAIClientImpl {
      * Gets completions for the provided input prompts.
      * Completions support a wide variety of tasks and generate text that continues from or "completes"
      * provided prompt data.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     prompt (Required): [
@@ -722,9 +727,9 @@ public final class OpenAIClientImpl {
      *     model: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -734,8 +739,8 @@ public final class OpenAIClientImpl {
      *             prompt_index: int (Required)
      *             content_filter_results (Required): {
      *                 sexual (Optional): {
-     *                     severity: String(safe/low/medium/high) (Required)
      *                     filtered: boolean (Required)
+     *                     severity: String(safe/low/medium/high) (Required)
      *                 }
      *                 violence (Optional): (recursive schema, see violence above)
      *                 hate (Optional): (recursive schema, see hate above)
@@ -744,12 +749,15 @@ public final class OpenAIClientImpl {
      *                     filtered: boolean (Required)
      *                     detected: boolean (Required)
      *                 }
-     *                 custom_blocklists (Optional): [
-     *                      (Optional){
-     *                         id: String (Required)
-     *                         filtered: boolean (Required)
-     *                     }
-     *                 ]
+     *                 custom_blocklists (Optional): {
+     *                     filtered: boolean (Required)
+     *                     details (Required): [
+     *                          (Required){
+     *                             filtered: boolean (Required)
+     *                             id: String (Required)
+     *                         }
+     *                     ]
+     *                 }
      *                 error (Optional): {
      *                     code: String (Required)
      *                     message: String (Required)
@@ -763,6 +771,7 @@ public final class OpenAIClientImpl {
      *                     }
      *                 }
      *                 jailbreak (Optional): (recursive schema, see jailbreak above)
+     *                 indirect_attack (Optional): (recursive schema, see indirect_attack above)
      *             }
      *         }
      *     ]
@@ -776,9 +785,7 @@ public final class OpenAIClientImpl {
      *                 hate (Optional): (recursive schema, see hate above)
      *                 self_harm (Optional): (recursive schema, see self_harm above)
      *                 profanity (Optional): (recursive schema, see profanity above)
-     *                 custom_blocklists (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
+     *                 custom_blocklists (Optional): (recursive schema, see custom_blocklists above)
      *                 error (Optional): (recursive schema, see error above)
      *                 protected_material_text (Optional): (recursive schema, see protected_material_text above)
      *                 protected_material_code (Optional): {
@@ -842,9 +849,8 @@ public final class OpenAIClientImpl {
      * Gets completions for the provided input prompts.
      * Completions support a wide variety of tasks and generate text that continues from or "completes"
      * provided prompt data.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     prompt (Required): [
@@ -871,9 +877,9 @@ public final class OpenAIClientImpl {
      *     model: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -883,8 +889,8 @@ public final class OpenAIClientImpl {
      *             prompt_index: int (Required)
      *             content_filter_results (Required): {
      *                 sexual (Optional): {
-     *                     severity: String(safe/low/medium/high) (Required)
      *                     filtered: boolean (Required)
+     *                     severity: String(safe/low/medium/high) (Required)
      *                 }
      *                 violence (Optional): (recursive schema, see violence above)
      *                 hate (Optional): (recursive schema, see hate above)
@@ -893,12 +899,15 @@ public final class OpenAIClientImpl {
      *                     filtered: boolean (Required)
      *                     detected: boolean (Required)
      *                 }
-     *                 custom_blocklists (Optional): [
-     *                      (Optional){
-     *                         id: String (Required)
-     *                         filtered: boolean (Required)
-     *                     }
-     *                 ]
+     *                 custom_blocklists (Optional): {
+     *                     filtered: boolean (Required)
+     *                     details (Required): [
+     *                          (Required){
+     *                             filtered: boolean (Required)
+     *                             id: String (Required)
+     *                         }
+     *                     ]
+     *                 }
      *                 error (Optional): {
      *                     code: String (Required)
      *                     message: String (Required)
@@ -912,6 +921,7 @@ public final class OpenAIClientImpl {
      *                     }
      *                 }
      *                 jailbreak (Optional): (recursive schema, see jailbreak above)
+     *                 indirect_attack (Optional): (recursive schema, see indirect_attack above)
      *             }
      *         }
      *     ]
@@ -925,9 +935,7 @@ public final class OpenAIClientImpl {
      *                 hate (Optional): (recursive schema, see hate above)
      *                 self_harm (Optional): (recursive schema, see self_harm above)
      *                 profanity (Optional): (recursive schema, see profanity above)
-     *                 custom_blocklists (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
+     *                 custom_blocklists (Optional): (recursive schema, see custom_blocklists above)
      *                 error (Optional): (recursive schema, see error above)
      *                 protected_material_text (Optional): (recursive schema, see protected_material_text above)
      *                 protected_material_code (Optional): {
@@ -990,13 +998,13 @@ public final class OpenAIClientImpl {
      * Gets chat completions for the provided chat messages.
      * Completions support a wide variety of tasks and generate text that continues from or "completes"
      * provided prompt data.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     messages (Required): [
      *          (Required){
+     *             role: String(system/assistant/user/function/tool) (Required)
      *         }
      *     ]
      *     functions (Optional): [
@@ -1024,6 +1032,7 @@ public final class OpenAIClientImpl {
      *     model: String (Optional)
      *     data_sources (Optional): [
      *          (Optional){
+     *             type: String(azure_search/azure_ml_index/azure_cosmos_db/elasticsearch/pinecone) (Required)
      *         }
      *     ]
      *     enhancements (Optional): {
@@ -1038,17 +1047,19 @@ public final class OpenAIClientImpl {
      *     logprobs: Boolean (Optional)
      *     top_logprobs: Integer (Optional)
      *     response_format (Optional): {
+     *         type: String (Required)
      *     }
      *     tools (Optional): [
      *          (Optional){
+     *             type: String (Required)
      *         }
      *     ]
      *     tool_choice: BinaryData (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1060,6 +1071,7 @@ public final class OpenAIClientImpl {
      *                 content: String (Required)
      *                 tool_calls (Optional): [
      *                      (Optional){
+     *                         type: String (Required)
      *                         id: String (Required)
      *                     }
      *                 ]
@@ -1078,6 +1090,22 @@ public final class OpenAIClientImpl {
      *                         }
      *                     ]
      *                     intent: String (Optional)
+     *                     all_retrieved_documents (Optional): [
+     *                          (Optional){
+     *                             content: String (Required)
+     *                             title: String (Optional)
+     *                             url: String (Optional)
+     *                             filepath: String (Optional)
+     *                             chunk_id: String (Optional)
+     *                             search_queries (Required): [
+     *                                 String (Required)
+     *                             ]
+     *                             data_source_index: int (Required)
+     *                             original_search_score: Double (Optional)
+     *                             rerank_score: Double (Optional)
+     *                             filter_reason: String(score/rerank) (Optional)
+     *                         }
+     *                     ]
      *                 }
      *             }
      *             logprobs (Required): {
@@ -1103,12 +1131,13 @@ public final class OpenAIClientImpl {
      *             index: int (Required)
      *             finish_reason: String(stop/length/content_filter/function_call/tool_calls) (Required)
      *             finish_details (Optional): {
+     *                 type: String (Required)
      *             }
      *             delta (Optional): (recursive schema, see delta above)
      *             content_filter_results (Optional): {
      *                 sexual (Optional): {
-     *                     severity: String(safe/low/medium/high) (Required)
      *                     filtered: boolean (Required)
+     *                     severity: String(safe/low/medium/high) (Required)
      *                 }
      *                 violence (Optional): (recursive schema, see violence above)
      *                 hate (Optional): (recursive schema, see hate above)
@@ -1117,12 +1146,15 @@ public final class OpenAIClientImpl {
      *                     filtered: boolean (Required)
      *                     detected: boolean (Required)
      *                 }
-     *                 custom_blocklists (Optional): [
-     *                      (Optional){
-     *                         id: String (Required)
-     *                         filtered: boolean (Required)
-     *                     }
-     *                 ]
+     *                 custom_blocklists (Optional): {
+     *                     filtered: boolean (Required)
+     *                     details (Required): [
+     *                          (Required){
+     *                             filtered: boolean (Required)
+     *                             id: String (Required)
+     *                         }
+     *                     ]
+     *                 }
      *                 error (Optional): {
      *                     code: String (Required)
      *                     message: String (Required)
@@ -1167,6 +1199,7 @@ public final class OpenAIClientImpl {
      *             }
      *         }
      *     ]
+     *     model: String (Optional)
      *     prompt_filter_results (Optional): [
      *          (Optional){
      *             prompt_index: int (Required)
@@ -1176,11 +1209,10 @@ public final class OpenAIClientImpl {
      *                 hate (Optional): (recursive schema, see hate above)
      *                 self_harm (Optional): (recursive schema, see self_harm above)
      *                 profanity (Optional): (recursive schema, see profanity above)
-     *                 custom_blocklists (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
+     *                 custom_blocklists (Optional): (recursive schema, see custom_blocklists above)
      *                 error (Optional): (recursive schema, see error above)
      *                 jailbreak (Optional): (recursive schema, see jailbreak above)
+     *                 indirect_attack (Optional): (recursive schema, see indirect_attack above)
      *             }
      *         }
      *     ]
@@ -1220,13 +1252,13 @@ public final class OpenAIClientImpl {
      * Gets chat completions for the provided chat messages.
      * Completions support a wide variety of tasks and generate text that continues from or "completes"
      * provided prompt data.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     messages (Required): [
      *          (Required){
+     *             role: String(system/assistant/user/function/tool) (Required)
      *         }
      *     ]
      *     functions (Optional): [
@@ -1254,6 +1286,7 @@ public final class OpenAIClientImpl {
      *     model: String (Optional)
      *     data_sources (Optional): [
      *          (Optional){
+     *             type: String(azure_search/azure_ml_index/azure_cosmos_db/elasticsearch/pinecone) (Required)
      *         }
      *     ]
      *     enhancements (Optional): {
@@ -1268,17 +1301,19 @@ public final class OpenAIClientImpl {
      *     logprobs: Boolean (Optional)
      *     top_logprobs: Integer (Optional)
      *     response_format (Optional): {
+     *         type: String (Required)
      *     }
      *     tools (Optional): [
      *          (Optional){
+     *             type: String (Required)
      *         }
      *     ]
      *     tool_choice: BinaryData (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1290,6 +1325,7 @@ public final class OpenAIClientImpl {
      *                 content: String (Required)
      *                 tool_calls (Optional): [
      *                      (Optional){
+     *                         type: String (Required)
      *                         id: String (Required)
      *                     }
      *                 ]
@@ -1308,6 +1344,22 @@ public final class OpenAIClientImpl {
      *                         }
      *                     ]
      *                     intent: String (Optional)
+     *                     all_retrieved_documents (Optional): [
+     *                          (Optional){
+     *                             content: String (Required)
+     *                             title: String (Optional)
+     *                             url: String (Optional)
+     *                             filepath: String (Optional)
+     *                             chunk_id: String (Optional)
+     *                             search_queries (Required): [
+     *                                 String (Required)
+     *                             ]
+     *                             data_source_index: int (Required)
+     *                             original_search_score: Double (Optional)
+     *                             rerank_score: Double (Optional)
+     *                             filter_reason: String(score/rerank) (Optional)
+     *                         }
+     *                     ]
      *                 }
      *             }
      *             logprobs (Required): {
@@ -1333,12 +1385,13 @@ public final class OpenAIClientImpl {
      *             index: int (Required)
      *             finish_reason: String(stop/length/content_filter/function_call/tool_calls) (Required)
      *             finish_details (Optional): {
+     *                 type: String (Required)
      *             }
      *             delta (Optional): (recursive schema, see delta above)
      *             content_filter_results (Optional): {
      *                 sexual (Optional): {
-     *                     severity: String(safe/low/medium/high) (Required)
      *                     filtered: boolean (Required)
+     *                     severity: String(safe/low/medium/high) (Required)
      *                 }
      *                 violence (Optional): (recursive schema, see violence above)
      *                 hate (Optional): (recursive schema, see hate above)
@@ -1347,12 +1400,15 @@ public final class OpenAIClientImpl {
      *                     filtered: boolean (Required)
      *                     detected: boolean (Required)
      *                 }
-     *                 custom_blocklists (Optional): [
-     *                      (Optional){
-     *                         id: String (Required)
-     *                         filtered: boolean (Required)
-     *                     }
-     *                 ]
+     *                 custom_blocklists (Optional): {
+     *                     filtered: boolean (Required)
+     *                     details (Required): [
+     *                          (Required){
+     *                             filtered: boolean (Required)
+     *                             id: String (Required)
+     *                         }
+     *                     ]
+     *                 }
      *                 error (Optional): {
      *                     code: String (Required)
      *                     message: String (Required)
@@ -1397,6 +1453,7 @@ public final class OpenAIClientImpl {
      *             }
      *         }
      *     ]
+     *     model: String (Optional)
      *     prompt_filter_results (Optional): [
      *          (Optional){
      *             prompt_index: int (Required)
@@ -1406,11 +1463,10 @@ public final class OpenAIClientImpl {
      *                 hate (Optional): (recursive schema, see hate above)
      *                 self_harm (Optional): (recursive schema, see self_harm above)
      *                 profanity (Optional): (recursive schema, see profanity above)
-     *                 custom_blocklists (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
+     *                 custom_blocklists (Optional): (recursive schema, see custom_blocklists above)
      *                 error (Optional): (recursive schema, see error above)
      *                 jailbreak (Optional): (recursive schema, see jailbreak above)
+     *                 indirect_attack (Optional): (recursive schema, see indirect_attack above)
      *             }
      *         }
      *     ]
@@ -1447,9 +1503,8 @@ public final class OpenAIClientImpl {
 
     /**
      * Creates an image given a prompt.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     model: String (Optional)
@@ -1462,9 +1517,9 @@ public final class OpenAIClientImpl {
      *     user: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     created: long (Required)
@@ -1474,8 +1529,8 @@ public final class OpenAIClientImpl {
      *             b64_json: String (Optional)
      *             content_filter_results (Optional): {
      *                 sexual (Optional): {
-     *                     severity: String(safe/low/medium/high) (Required)
      *                     filtered: boolean (Required)
+     *                     severity: String(safe/low/medium/high) (Required)
      *                 }
      *                 violence (Optional): (recursive schema, see violence above)
      *                 hate (Optional): (recursive schema, see hate above)
@@ -1492,6 +1547,15 @@ public final class OpenAIClientImpl {
      *                     detected: boolean (Required)
      *                 }
      *                 jailbreak (Optional): (recursive schema, see jailbreak above)
+     *                 custom_blocklists (Optional): {
+     *                     filtered: boolean (Required)
+     *                     details (Required): [
+     *                          (Required){
+     *                             filtered: boolean (Required)
+     *                             id: String (Required)
+     *                         }
+     *                     ]
+     *                 }
      *             }
      *         }
      *     ]
@@ -1520,9 +1584,8 @@ public final class OpenAIClientImpl {
 
     /**
      * Creates an image given a prompt.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     model: String (Optional)
@@ -1535,9 +1598,9 @@ public final class OpenAIClientImpl {
      *     user: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     created: long (Required)
@@ -1547,8 +1610,8 @@ public final class OpenAIClientImpl {
      *             b64_json: String (Optional)
      *             content_filter_results (Optional): {
      *                 sexual (Optional): {
-     *                     severity: String(safe/low/medium/high) (Required)
      *                     filtered: boolean (Required)
+     *                     severity: String(safe/low/medium/high) (Required)
      *                 }
      *                 violence (Optional): (recursive schema, see violence above)
      *                 hate (Optional): (recursive schema, see hate above)
@@ -1565,6 +1628,15 @@ public final class OpenAIClientImpl {
      *                     detected: boolean (Required)
      *                 }
      *                 jailbreak (Optional): (recursive schema, see jailbreak above)
+     *                 custom_blocklists (Optional): {
+     *                     filtered: boolean (Required)
+     *                     details (Required): [
+     *                          (Required){
+     *                             filtered: boolean (Required)
+     *                             id: String (Required)
+     *                         }
+     *                     ]
+     *                 }
      *             }
      *         }
      *     ]
@@ -1591,21 +1663,20 @@ public final class OpenAIClientImpl {
 
     /**
      * Generates text-to-speech audio from the input text.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     input: String (Required)
      *     voice: String(alloy/echo/fable/onyx/nova/shimmer) (Required)
-     *     response_format: String(mp3/opus/aac/flac) (Optional)
+     *     response_format: String(mp3/opus/aac/flac/wav/pcm) (Optional)
      *     speed: Double (Optional)
      *     model: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * BinaryData
      * }</pre>
@@ -1632,21 +1703,20 @@ public final class OpenAIClientImpl {
 
     /**
      * Generates text-to-speech audio from the input text.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     input: String (Required)
      *     voice: String(alloy/echo/fable/onyx/nova/shimmer) (Required)
-     *     response_format: String(mp3/opus/aac/flac) (Optional)
+     *     response_format: String(mp3/opus/aac/flac/wav/pcm) (Optional)
      *     speed: Double (Optional)
      *     model: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * BinaryData
      * }</pre>
@@ -1672,9 +1742,8 @@ public final class OpenAIClientImpl {
 
     /**
      * Return the embeddings for a given prompt.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     user: String (Optional)
@@ -1682,12 +1751,14 @@ public final class OpenAIClientImpl {
      *     input (Required): [
      *         String (Required)
      *     ]
+     *     encoding_format: String(float/base64) (Optional)
+     *     dimensions: Integer (Optional)
      *     input_type: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     data (Required): [
@@ -1731,9 +1802,8 @@ public final class OpenAIClientImpl {
 
     /**
      * Return the embeddings for a given prompt.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     user: String (Optional)
@@ -1741,12 +1811,14 @@ public final class OpenAIClientImpl {
      *     input (Required): [
      *         String (Required)
      *     ]
+     *     encoding_format: String(float/base64) (Optional)
+     *     dimensions: Integer (Optional)
      *     input_type: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     data (Required): [

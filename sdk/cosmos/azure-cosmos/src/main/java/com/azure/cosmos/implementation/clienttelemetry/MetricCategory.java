@@ -54,4 +54,13 @@ public enum MetricCategory {
         MetricCategory.OperationSummary,
         MetricCategory.System
     );
+
+    public static MetricCategory fromValue(String value) {
+        for (MetricCategory metricCategory : MetricCategory.values()) {
+            if (metricCategory.toLowerStringValue.equalsIgnoreCase(value)) {
+                return metricCategory;
+            }
+        }
+        return null;
+    }
 }

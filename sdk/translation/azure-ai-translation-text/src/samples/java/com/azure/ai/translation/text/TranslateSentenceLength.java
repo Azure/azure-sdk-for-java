@@ -3,15 +3,10 @@
 
 package com.azure.ai.translation.text;
 
-import java.util.List;
-import java.util.ArrayList;
-import com.azure.core.credential.AzureKeyCredential;
-import com.azure.ai.translation.text.models.InputTextItem;
-import com.azure.ai.translation.text.models.ProfanityAction;
-import com.azure.ai.translation.text.models.ProfanityMarker;
-import com.azure.ai.translation.text.models.TextType;
+import com.azure.ai.translation.text.models.TranslateOptions;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
-import com.azure.ai.translation.text.models.Translation;
+import com.azure.ai.translation.text.models.TranslationText;
+import com.azure.core.credential.AzureKeyCredential;
 
 /**
  * You can ask translator service to include sentence boundaries for the input text and the translated text.
@@ -33,21 +28,17 @@ public class TranslateSentenceLength {
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
 
-        Boolean includeSentenceLength = true;
-        String from = "en";
-        List<String> targetLanguages = new ArrayList<>();
-        targetLanguages.add("cs");
-        List<InputTextItem> content = new ArrayList<>();
-        content.add(new InputTextItem("The answer lies in machine translation. This is a test."));
+        TranslateOptions translateOptions = new TranslateOptions()
+            .setSourceLanguage("en")
+            .addTargetLanguage("cs")
+            .setIncludeSentenceLength(true);
 
-        List<TranslatedTextItem> translations = client.translate(targetLanguages, content, null, from, TextType.PLAIN, null, ProfanityAction.NO_ACTION, ProfanityMarker.ASTERISK, false, includeSentenceLength, null, null, null, false);
+        TranslatedTextItem translation = client.translate("The answer lies in machine translation. This is a test.", translateOptions);
 
-        for (TranslatedTextItem translation : translations) {
-            for (Translation textTranslation : translation.getTranslations()) {
-                System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
-                System.out.println("Source Sentence length: " + textTranslation.getSentLen().getSrcSentLen());
-                System.out.println("Translated Sentence length: " + textTranslation.getSentLen().getTransSentLen());
-            }
+        for (TranslationText textTranslation : translation.getTranslations()) {
+            System.out.println("Text was translated to: '" + textTranslation.getTargetLanguage() + "' and the result is: '" + textTranslation.getText() + "'.");
+            System.out.println("Source Sentence length: " + textTranslation.getSentenceBoundaries().getSourceSentencesLengths());
+            System.out.println("Translated Sentence length: " + textTranslation.getSentenceBoundaries().getTranslatedSentencesLengths());
         }
     }
 }

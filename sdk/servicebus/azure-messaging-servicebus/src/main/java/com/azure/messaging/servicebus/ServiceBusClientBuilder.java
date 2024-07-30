@@ -954,7 +954,7 @@ public final class ServiceBusClientBuilder implements
     }
 
     // Connection-caching for the V1-Stack.
-    private ServiceBusConnectionProcessor getOrCreateConnectionProcessor(MessageSerializer serializer) {
+    private ServiceBusConnectionProcessor getOrCreateConnectionProcessor(MessageSerializer serializer, Meter meter) {
         synchronized (connectionLock) {
             if (sharedConnection == null) {
                 final ConnectionOptions connectionOptions = getConnectionOptions();
@@ -962,7 +962,7 @@ public final class ServiceBusClientBuilder implements
                 final Flux<ServiceBusAmqpConnection> connectionFlux = Mono.fromCallable(() -> {
                     final String connectionId = StringUtil.getRandomString("MF");
                     final ReactorProvider provider = new ReactorProvider();
-                    final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
+                    final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider, meter);
                     final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
                         connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
                         connectionOptions.getAuthorizationScope());
@@ -1032,13 +1032,13 @@ public final class ServiceBusClientBuilder implements
             return new ConnectionOptions(getAndValidateFullyQualifiedNamespace(), credentials, authorizationType,
                 ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
                 options, verificationMode, LIBRARY_NAME, LIBRARY_VERSION, customEndpointAddress.getHost(),
-                customEndpointAddress.getPort());
+                customEndpointAddress.getPort(), true);
         }
     }
 
     // Connection-caching for the V2-Stack.
-    private ReactorConnectionCache<ServiceBusReactorAmqpConnection> getOrCreateConnectionCache(MessageSerializer serializer) {
-        return v2StackSupport.getOrCreateConnectionCache(getConnectionOptions(), serializer, crossEntityTransactions);
+    private ReactorConnectionCache<ServiceBusReactorAmqpConnection> getOrCreateConnectionCache(MessageSerializer serializer, Meter meter) {
+        return v2StackSupport.getOrCreateConnectionCache(getConnectionOptions(), serializer, crossEntityTransactions, meter);
     }
 
     private static boolean isNullOrEmpty(String item) {
@@ -1140,7 +1140,7 @@ public final class ServiceBusClientBuilder implements
         private static final String NON_SESSION_SYNC_RECEIVE_KEY = "com.azure.messaging.servicebus.nonSession.syncReceive.v2";
         private static final ConfigurationProperty<Boolean> NON_SESSION_SYNC_RECEIVE_PROPERTY = ConfigurationPropertyBuilder.ofBoolean(NON_SESSION_SYNC_RECEIVE_KEY)
             .environmentVariableName(NON_SESSION_SYNC_RECEIVE_KEY)
-            .defaultValue(false) // 'Non-Session' Sync Receiver Client is not on the new v2 stack by default.
+            .defaultValue(true) // 'Non-Session' Sync Receiver Client is on the new v2 stack by default.
             .shared(true)
             .build();
         private final AtomicReference<Boolean> nonSessionSyncReceiveFlag = new AtomicReference<>();
@@ -1156,7 +1156,7 @@ public final class ServiceBusClientBuilder implements
         private static final String SESSION_PROCESSOR_ASYNC_RECEIVE_KEY = "com.azure.messaging.servicebus.session.processor.asyncReceive.v2";
         private static final ConfigurationProperty<Boolean> SESSION_PROCESSOR_ASYNC_RECEIVE_PROPERTY = ConfigurationPropertyBuilder.ofBoolean(SESSION_PROCESSOR_ASYNC_RECEIVE_KEY)
             .environmentVariableName(SESSION_PROCESSOR_ASYNC_RECEIVE_KEY)
-            .defaultValue(false) // 'Session' Async[Processor]Receiver Client is not on the new v2 stack by default
+            .defaultValue(true) // 'Session' Async[Processor]Receiver Client is on the new v2 stack by default
             .shared(true)
             .build();
         private final AtomicReference<Boolean> sessionProcessorAsyncReceiveFlag = new AtomicReference<>();
@@ -1164,7 +1164,7 @@ public final class ServiceBusClientBuilder implements
         private static final String SESSION_REACTOR_ASYNC_RECEIVE_KEY = "com.azure.messaging.servicebus.session.reactor.asyncReceive.v2";
         private static final ConfigurationProperty<Boolean> SESSION_REACTOR_ASYNC_RECEIVE_PROPERTY = ConfigurationPropertyBuilder.ofBoolean(SESSION_REACTOR_ASYNC_RECEIVE_KEY)
             .environmentVariableName(SESSION_REACTOR_ASYNC_RECEIVE_KEY)
-            .defaultValue(false) // 'Session' Async[Reactor]Receiver Client is not on the new v2 stack by default
+            .defaultValue(true) // 'Session' Async[Reactor]Receiver Client is on the new v2 stack by default
             .shared(true)
             .build();
         private final AtomicReference<Boolean> sessionReactorAsyncReceiveFlag = new AtomicReference<>();
@@ -1172,7 +1172,7 @@ public final class ServiceBusClientBuilder implements
         private static final String SESSION_SYNC_RECEIVE_KEY = "com.azure.messaging.servicebus.session.syncReceive.v2";
         private static final ConfigurationProperty<Boolean> SESSION_SYNC_RECEIVE_PROPERTY = ConfigurationPropertyBuilder.ofBoolean(SESSION_SYNC_RECEIVE_KEY)
             .environmentVariableName(SESSION_SYNC_RECEIVE_KEY)
-            .defaultValue(false) // 'Session' Sync Receiver Client is not on the new v2 stack by default
+            .defaultValue(true) // 'Session' Sync Receiver Client is on the new v2 stack by default
             .shared(true)
             .build();
         private final AtomicReference<Boolean> sessionSyncReceiveFlag = new AtomicReference<>();
@@ -1193,13 +1193,13 @@ public final class ServiceBusClientBuilder implements
         }
 
         /**
-         * Non-Session SyncClient is not on the v2 stack by default, but the application may opt into the v2 stack.
+         * Non-Session SyncClient is on the v2 stack by default, but the application may opt out.
          *
          * @param configuration the client configuration.
          * @return true if Sync receive should use the v2 stack.
          */
         boolean isNonSessionSyncReceiveEnabled(Configuration configuration) {
-            return isOptedIn(configuration, NON_SESSION_SYNC_RECEIVE_PROPERTY, nonSessionSyncReceiveFlag);
+            return !isOptedOut(configuration, NON_SESSION_SYNC_RECEIVE_PROPERTY, nonSessionSyncReceiveFlag);
         }
 
         /**
@@ -1213,41 +1213,41 @@ public final class ServiceBusClientBuilder implements
         }
 
         /**
-         * Session Async ProcessorClient is not on the v2 stack by default, but the application may opt into the v2 stack.
+         * Session Async ProcessorClient is on the v2 stack by default, but the application may opt out.
          *
          * @param configuration the client configuration.
          * @return true if session processor receive should use the v2 stack.
          */
         boolean isSessionProcessorAsyncReceiveEnabled(Configuration configuration) {
-            return isOptedIn(configuration, SESSION_PROCESSOR_ASYNC_RECEIVE_PROPERTY, sessionProcessorAsyncReceiveFlag);
+            return !isOptedOut(configuration, SESSION_PROCESSOR_ASYNC_RECEIVE_PROPERTY, sessionProcessorAsyncReceiveFlag);
         }
 
         /**
-         * Session Async ReactorClient is not on the v2 stack by default, but the application may opt into the v2 stack.
+         * Session Async ReactorClient is on the v2 stack by default, but the application may opt out.
          *
          * @param configuration the client configuration.
          * @return true if session reactor receive should use the v2 stack.
          */
         boolean isSessionReactorAsyncReceiveEnabled(Configuration configuration) {
-            return isOptedIn(configuration, SESSION_REACTOR_ASYNC_RECEIVE_PROPERTY, sessionReactorAsyncReceiveFlag);
+            return !isOptedOut(configuration, SESSION_REACTOR_ASYNC_RECEIVE_PROPERTY, sessionReactorAsyncReceiveFlag);
         }
 
         /**
-         * Session SyncClient is not on the v2 stack by default, but the application may opt into the v2 stack.
+         * Session SyncClient is on the v2 stack by default, but the application may opt out.
          *
          * @param configuration the client configuration.
          * @return true if session Sync receive should use the v2 stack.
          */
         boolean isSessionSyncReceiveEnabled(Configuration configuration) {
-            return isOptedIn(configuration, SESSION_SYNC_RECEIVE_PROPERTY, sessionSyncReceiveFlag);
+            return !isOptedOut(configuration, SESSION_SYNC_RECEIVE_PROPERTY, sessionSyncReceiveFlag);
         }
 
         // Obtain the shared connection-cache based on the V2-Stack.
         ReactorConnectionCache<ServiceBusReactorAmqpConnection> getOrCreateConnectionCache(ConnectionOptions connectionOptions,
-            MessageSerializer serializer, boolean crossEntityTransactions) {
+            MessageSerializer serializer, boolean crossEntityTransactions, Meter meter) {
             synchronized (connectionLock) {
                 if (sharedConnectionCache == null) {
-                    sharedConnectionCache = createConnectionCache(connectionOptions, serializer, crossEntityTransactions);
+                    sharedConnectionCache = createConnectionCache(connectionOptions, serializer, crossEntityTransactions, meter);
                 }
             }
 
@@ -1345,11 +1345,11 @@ public final class ServiceBusClientBuilder implements
         }
 
         private static ReactorConnectionCache<ServiceBusReactorAmqpConnection> createConnectionCache(ConnectionOptions connectionOptions,
-            MessageSerializer serializer, boolean crossEntityTransactions) {
+            MessageSerializer serializer, boolean crossEntityTransactions, Meter meter) {
             final Supplier<ServiceBusReactorAmqpConnection> connectionSupplier = () -> {
                 final String connectionId = StringUtil.getRandomString("MF");
                 final ReactorProvider provider = new ReactorProvider();
-                final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
+                final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider, meter);
                 final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
                     connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
                     connectionOptions.getAuthorizationScope());
@@ -1425,12 +1425,13 @@ public final class ServiceBusClientBuilder implements
             final ConnectionCacheWrapper connectionCacheWrapper;
             final Runnable onClientClose;
             final boolean isSenderOnV2 = v2StackSupport.isSenderAndManageRulesEnabled(configuration);
+            final Meter meter = createMeter(clientOptions);
             if (isSenderOnV2) {
                 // Sender Client (async|sync) on the V2-Stack.
-                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer));
+                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer, meter));
                 onClientClose = ServiceBusClientBuilder.this.v2StackSupport::onClientClose;
             } else {
-                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer));
+                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer, meter));
                 onClientClose = ServiceBusClientBuilder.this::onClientClose;
             }
             final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, topicName,
@@ -1461,7 +1462,7 @@ public final class ServiceBusClientBuilder implements
             }
 
             final ServiceBusSenderInstrumentation instrumentation = new ServiceBusSenderInstrumentation(
-                createTracer(), createMeter(), connectionCacheWrapper.getFullyQualifiedNamespace(), entityName);
+                createTracer(clientOptions), meter, connectionCacheWrapper.getFullyQualifiedNamespace(), entityName);
 
             return new ServiceBusSenderAsyncClient(entityName, entityType, connectionCacheWrapper, retryOptions,
                 instrumentation, messageSerializer, onClientClose, null, clientIdentifier);
@@ -1565,15 +1566,28 @@ public final class ServiceBusClientBuilder implements
          * Sets the amount of time to continue auto-renewing the lock. Setting {@link Duration#ZERO} or {@code null}
          * disables auto-renewal. For {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} mode,
          * auto-renewal is disabled.
+         * <p>
+         * A Service Bus queue or subscription in a topic will have a lock duration set at the resource level.
+         * When the processor client connect to a session in the resource, the broker will apply an initial
+         * lock to the session. This initial lock lasts for the lock duration set at the resource level.
+         * If the client does not renew the initial lock before it expires then the session will be released and become
+         * available for other receivers. Each time the client renews the lock, the broker will extend the lock for the
+         * lock duration set at the resource level. To keep the session locked, the client will have to continuously
+         * renew the session lock before its expiration. {@code maxAutoLockRenewDuration} controls how long
+         * the background renewal task runs. So, it is possible that the previous renewed lock can be valid after
+         * the renewal task is disposed.
+         * </p>
+         * <p>
+         * By default, the session lock renewal task will run for 5 minutes.
+         * </p>
          *
          * @param maxAutoLockRenewDuration the amount of time to continue auto-renewing the lock. {@link Duration#ZERO}
          * or {@code null} indicates that auto-renewal is disabled.
-         *
          * @return The updated {@link ServiceBusSessionProcessorClientBuilder} object.
          * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
          */
         public ServiceBusSessionProcessorClientBuilder maxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
-            validateAndThrow(maxAutoLockRenewDuration);
+            validateAndThrow(maxAutoLockRenewDuration, "maxAutoLockRenewDuration");
             sessionReceiverClientBuilder.maxAutoLockRenewDuration(maxAutoLockRenewDuration);
             return this;
         }
@@ -1593,7 +1607,7 @@ public final class ServiceBusClientBuilder implements
          * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
          */
         public ServiceBusSessionProcessorClientBuilder sessionIdleTimeout(Duration sessionIdleTimeout) {
-            validateAndThrow(sessionIdleTimeout);
+            validateAndThrow(sessionIdleTimeout, "sessionIdleTimeout");
             sessionReceiverClientBuilder.sessionIdleTimeout(sessionIdleTimeout);
             return this;
         }
@@ -1834,6 +1848,20 @@ public final class ServiceBusClientBuilder implements
          * Sets the amount of time to continue auto-renewing the session lock. Setting {@link Duration#ZERO} or
          * {@code null} disables auto-renewal. For {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE}
          * mode, auto-renewal is disabled.
+         * <p>
+         * A Service Bus queue or subscription in a topic will have a lock duration set at the resource level.
+         * When the receiver client connect to a session in the resource, the broker will apply an initial
+         * lock to the session. This initial lock lasts for the lock duration set at the resource level.
+         * If the client does not renew the initial lock before it expires then the session will be released and become
+         * available for other receivers. Each time the client renews the lock, the broker will extend the lock for
+         * the lock duration set at the resource level. To keep the session locked, the client will have to continuously
+         * renew the session lock before its expiration. {@code maxAutoLockRenewDuration} controls how long
+         * the background renewal task runs. So, it is possible that the previous renewed lock can be valid after
+         * the renewal task is disposed
+         * </p>
+         * <p>
+         * By default, the session lock renewal task will run for 5 minutes.
+         * </p>
          *
          * @param maxAutoLockRenewDuration the amount of time to continue auto-renewing the session lock.
          * {@link Duration#ZERO} or {@code null} indicates that auto-renewal is disabled.
@@ -1842,7 +1870,7 @@ public final class ServiceBusClientBuilder implements
          * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
          */
         public ServiceBusSessionReceiverClientBuilder maxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
-            validateAndThrow(maxAutoLockRenewDuration);
+            validateAndThrow(maxAutoLockRenewDuration, "maxAutoLockRenewDuration");
             this.maxAutoLockRenewDuration = maxAutoLockRenewDuration;
             return this;
         }
@@ -1857,7 +1885,7 @@ public final class ServiceBusClientBuilder implements
          * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
          */
         ServiceBusSessionReceiverClientBuilder sessionIdleTimeout(Duration sessionIdleTimeout) {
-            validateAndThrow(sessionIdleTimeout);
+            validateAndThrow(sessionIdleTimeout, "sessionIdleTimeout");
             this.sessionIdleTimeout = sessionIdleTimeout;
             return this;
         }
@@ -1994,7 +2022,8 @@ public final class ServiceBusClientBuilder implements
                 maxAutoLockRenewDuration = Duration.ZERO;
             }
 
-            final ConnectionCacheWrapper connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer));
+            final Meter meter = createMeter(clientOptions);
+            final ConnectionCacheWrapper connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer, meter));
 
             final ReceiverOptions receiverOptions = createUnnamedSessionOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration, enableAutoComplete, maxConcurrentSessions, sessionIdleTimeout);
@@ -2008,7 +2037,7 @@ public final class ServiceBusClientBuilder implements
             }
 
             final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(
-                createTracer(), createMeter(), connectionCacheWrapper.getFullyQualifiedNamespace(),
+                createTracer(clientOptions), meter, connectionCacheWrapper.getFullyQualifiedNamespace(),
                 entityPath, subscriptionName, ReceiverKind.PROCESSOR);
 
             final ServiceBusSessionManager sessionManager = new ServiceBusSessionManager(entityPath, entityType,
@@ -2041,13 +2070,14 @@ public final class ServiceBusClientBuilder implements
             } else {
                 clientIdentifier = UUID.randomUUID().toString();
             }
-            final ConnectionCacheWrapper connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer));
+            final Meter meter = createMeter(clientOptions);
+            final ConnectionCacheWrapper connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer, meter));
 
             final ServiceBusSessionAcquirer sessionAcquirer = new ServiceBusSessionAcquirer(logger, clientIdentifier,
                 entityPath, entityType, receiveMode, retryOptions.getTryTimeout(), connectionCacheWrapper);
 
             final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(
-                createTracer(), createMeter(), connectionCacheWrapper.getFullyQualifiedNamespace(),
+                createTracer(clientOptions), meter, connectionCacheWrapper.getFullyQualifiedNamespace(),
                 entityPath, subscriptionName, ReceiverKind.PROCESSOR);
 
             final Runnable onTerminate = v2StackSupport::onClientClose;
@@ -2118,13 +2148,14 @@ public final class ServiceBusClientBuilder implements
                 maxAutoLockRenewDuration = Duration.ZERO;
             }
 
+            final Meter meter = createMeter(clientOptions);
             final ConnectionCacheWrapper connectionCacheWrapper;
             final Runnable onClientClose;
             if (isV2) {
-                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer));
+                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer, meter));
                 onClientClose = ServiceBusClientBuilder.this.v2StackSupport::onClientClose;
             } else {
-                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer));
+                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer, meter));
                 onClientClose = ServiceBusClientBuilder.this::onClientClose;
             }
             final ReceiverOptions receiverOptions = createUnnamedSessionOptions(receiveMode, prefetchCount,
@@ -2139,7 +2170,7 @@ public final class ServiceBusClientBuilder implements
             }
 
             final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(
-                createTracer(), createMeter(), connectionCacheWrapper.getFullyQualifiedNamespace(), entityPath, subscriptionName,
+                createTracer(clientOptions), meter, connectionCacheWrapper.getFullyQualifiedNamespace(), entityPath, subscriptionName,
                 ReceiverKind.ASYNC_RECEIVER);
             return new ServiceBusSessionReceiverAsyncClient(connectionCacheWrapper.getFullyQualifiedNamespace(),
                 entityPath, entityType, receiverOptions, connectionCacheWrapper, instrumentation, messageSerializer,
@@ -2383,6 +2414,19 @@ public final class ServiceBusClientBuilder implements
          * Sets the amount of time to continue auto-renewing the lock. Setting {@link Duration#ZERO} or {@code null}
          * disables auto-renewal. For {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} mode,
          * auto-renewal is disabled.
+         * <p>
+         * A Service Bus queue or subscription in a topic will have a lock duration set at the resource level.
+         * When the processor client pulls a message from the resource, the broker will apply an initial lock
+         * to the message. This initial lock lasts for the lock duration set at the resource level. If the client
+         * does not renew the initial lock before it expires then the message will be released and become available for
+         * other receivers. Each time the client renews the lock, the broker will extend the lock for the lock duration
+         * set at the resource level. To keep the message locked, the client will have to continuously renew the message
+         * lock before its expiration. {@code maxAutoLockRenewDuration} controls how long the background renewal task
+         * runs. So, it is possible that the previous renewed lock can be valid after the renewal task is disposed.
+         * </p>
+         * <p>
+         * By default, the message lock renewal task will run for 5 minutes.
+         * </p>
          *
          * @param maxAutoLockRenewDuration the amount of time to continue auto-renewing the lock. {@link Duration#ZERO}
          * or {@code null} indicates that auto-renewal is disabled.
@@ -2391,7 +2435,7 @@ public final class ServiceBusClientBuilder implements
          * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
          */
         public ServiceBusProcessorClientBuilder maxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
-            validateAndThrow(maxAutoLockRenewDuration);
+            validateAndThrow(maxAutoLockRenewDuration, "maxAutoLockRenewDuration");
             serviceBusReceiverClientBuilder.maxAutoLockRenewDuration(maxAutoLockRenewDuration);
             return this;
         }
@@ -2507,6 +2551,19 @@ public final class ServiceBusClientBuilder implements
          * Sets the amount of time to continue auto-renewing the lock. Setting {@link Duration#ZERO} or {@code null}
          * disables auto-renewal. For {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} mode,
          * auto-renewal is disabled.
+         * <p>
+         * A Service Bus queue or subscription in a topic will have a lock duration set at the resource level.
+         * When the receiver client pulls a message from the resource, the broker will apply an initial lock
+         * to the message. This initial lock lasts for the lock duration set at the resource level. If the client
+         * does not renew the initial lock before it expires then the message will be released and become available for
+         * other receivers. Each time the client renews the lock, the broker will extend the lock for the lock duration
+         * set at the resource level. To keep the message locked, the client will have to continuously renew the message
+         * lock before its expiration. {@code maxAutoLockRenewDuration} controls how long the background renewal task
+         * runs. So, it is possible that the previous renewed lock can be valid after the renewal task is disposed.
+         * </p>
+         * <p>
+         * By default, the message lock renewal task will run for 5 minutes.
+         * </p>
          *
          * @param maxAutoLockRenewDuration the amount of time to continue auto-renewing the lock. {@link Duration#ZERO}
          * or {@code null} indicates that auto-renewal is disabled.
@@ -2515,7 +2572,7 @@ public final class ServiceBusClientBuilder implements
          * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
          */
         public ServiceBusReceiverClientBuilder maxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
-            validateAndThrow(maxAutoLockRenewDuration);
+            validateAndThrow(maxAutoLockRenewDuration, "maxAutoLockRenewDuration");
             this.maxAutoLockRenewDuration = maxAutoLockRenewDuration;
             return this;
         }
@@ -2667,24 +2724,25 @@ public final class ServiceBusClientBuilder implements
 
             final ConnectionCacheWrapper connectionCacheWrapper;
             final Runnable onClientClose;
+            final Meter meter = createMeter(clientOptions);
             if (receiverKind == ReceiverKind.SYNC_RECEIVER) {
                 final boolean syncReceiveOnV2 = v2StackSupport.isNonSessionSyncReceiveEnabled(configuration);
                 if (syncReceiveOnV2) {
                     // "Non-Session" Sync Receiver-Client on the V2-Stack.
-                    connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer));
+                    connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer, meter));
                     onClientClose = ServiceBusClientBuilder.this.v2StackSupport::onClientClose;
                 } else {
-                    connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer));
+                    connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer, meter));
                     onClientClose = ServiceBusClientBuilder.this::onClientClose;
                 }
             } else {
                 final boolean asyncReceiveOnV2 = v2StackSupport.isNonSessionAsyncReceiveEnabled(configuration);
                 if (asyncReceiveOnV2) {
                     // "Non-Session" Async[Reactor|Processor] Receiver-Client on the V2-Stack.
-                    connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer));
+                    connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer, meter));
                     onClientClose = ServiceBusClientBuilder.this.v2StackSupport::onClientClose;
                 } else {
-                    connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer));
+                    connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer, meter));
                     onClientClose = ServiceBusClientBuilder.this::onClientClose;
                 }
             }
@@ -2700,7 +2758,7 @@ public final class ServiceBusClientBuilder implements
             }
 
             final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(
-                createTracer(), createMeter(), connectionCacheWrapper.getFullyQualifiedNamespace(), entityPath, subscriptionName, receiverKind);
+                createTracer(clientOptions), meter, connectionCacheWrapper.getFullyQualifiedNamespace(), entityPath, subscriptionName, receiverKind);
             return new ServiceBusReceiverAsyncClient(connectionCacheWrapper.getFullyQualifiedNamespace(), entityPath,
                 entityType, receiverOptions, connectionCacheWrapper, ServiceBusConstants.OPERATION_TIMEOUT,
                 instrumentation, messageSerializer, onClientClose, clientIdentifier);
@@ -2762,13 +2820,14 @@ public final class ServiceBusClientBuilder implements
                 null);
             final ConnectionCacheWrapper connectionCacheWrapper;
             final Runnable onClientClose;
+            final Meter meter = createMeter(clientOptions);
             final boolean isManageRulesOnV2 = v2StackSupport.isSenderAndManageRulesEnabled(configuration);
             if (isManageRulesOnV2) {
                 // RuleManager Client (async|sync) on the V2-Stack.
-                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer));
+                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer, meter));
                 onClientClose = ServiceBusClientBuilder.this.v2StackSupport::onClientClose;
             } else {
-                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer));
+                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer, meter));
                 onClientClose = ServiceBusClientBuilder.this::onClientClose;
             }
 
@@ -2796,19 +2855,19 @@ public final class ServiceBusClientBuilder implements
         }
     }
 
-    private void validateAndThrow(Duration maxLockRenewalDuration) {
+    private void validateAndThrow(Duration maxLockRenewalDuration, String parameterName) {
         if (maxLockRenewalDuration != null && maxLockRenewalDuration.isNegative()) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "'maxLockRenewalDuration' cannot be negative."));
+                String.format("'%s' cannot be negative.", parameterName)));
         }
     }
 
-    private Meter createMeter() {
+    private static Meter createMeter(ClientOptions clientOptions) {
         return MeterProvider.getDefaultProvider().createMeter(LIBRARY_NAME, LIBRARY_VERSION,
                 clientOptions == null ? null : clientOptions.getMetricsOptions());
     }
 
-    private Tracer createTracer() {
+    private static Tracer createTracer(ClientOptions clientOptions) {
         return TracerProvider.getDefaultProvider().createTracer(LIBRARY_NAME, LIBRARY_VERSION,
             AZ_TRACING_NAMESPACE_VALUE, clientOptions == null ? null : clientOptions.getTracingOptions());
     }

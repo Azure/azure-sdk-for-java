@@ -6,16 +6,28 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * IaaS VM specific backup protection intent item.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectionIntentItemType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "protectionIntentItemType",
+    defaultImpl = AzureResourceProtectionIntent.class,
+    visible = true)
 @JsonTypeName("AzureResourceItem")
 @Fluent
 public final class AzureResourceProtectionIntent extends ProtectionIntent {
+    /*
+     * backup protectionIntent type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "protectionIntentItemType", required = true)
+    private ProtectionIntentItemType protectionIntentItemType = ProtectionIntentItemType.AZURE_RESOURCE_ITEM;
+
     /*
      * Friendly name of the VM represented by this backup item.
      */
@@ -26,6 +38,16 @@ public final class AzureResourceProtectionIntent extends ProtectionIntent {
      * Creates an instance of AzureResourceProtectionIntent class.
      */
     public AzureResourceProtectionIntent() {
+    }
+
+    /**
+     * Get the protectionIntentItemType property: backup protectionIntent type.
+     * 
+     * @return the protectionIntentItemType value.
+     */
+    @Override
+    public ProtectionIntentItemType protectionIntentItemType() {
+        return this.protectionIntentItemType;
     }
 
     /**

@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.hybridcompute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridcompute.models.NetworkInterface;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes the network information on this machine. */
+/**
+ * Describes the network information on this machine.
+ */
 @Fluent
-public final class NetworkProfileInner {
+public final class NetworkProfileInner implements JsonSerializable<NetworkProfileInner> {
     /*
      * The list of network interfaces.
      */
-    @JsonProperty(value = "networkInterfaces")
     private List<NetworkInterface> networkInterfaces;
 
-    /** Creates an instance of NetworkProfileInner class. */
+    /**
+     * Creates an instance of NetworkProfileInner class.
+     */
     public NetworkProfileInner() {
     }
 
     /**
      * Get the networkInterfaces property: The list of network interfaces.
-     *
+     * 
      * @return the networkInterfaces value.
      */
     public List<NetworkInterface> networkInterfaces() {
@@ -33,7 +40,7 @@ public final class NetworkProfileInner {
 
     /**
      * Set the networkInterfaces property: The list of network interfaces.
-     *
+     * 
      * @param networkInterfaces the networkInterfaces value to set.
      * @return the NetworkProfileInner object itself.
      */
@@ -44,12 +51,51 @@ public final class NetworkProfileInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (networkInterfaces() != null) {
             networkInterfaces().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("networkInterfaces", this.networkInterfaces,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkProfileInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkProfileInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkProfileInner.
+     */
+    public static NetworkProfileInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkProfileInner deserializedNetworkProfileInner = new NetworkProfileInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("networkInterfaces".equals(fieldName)) {
+                    List<NetworkInterface> networkInterfaces
+                        = reader.readArray(reader1 -> NetworkInterface.fromJson(reader1));
+                    deserializedNetworkProfileInner.networkInterfaces = networkInterfaces;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkProfileInner;
+        });
     }
 }

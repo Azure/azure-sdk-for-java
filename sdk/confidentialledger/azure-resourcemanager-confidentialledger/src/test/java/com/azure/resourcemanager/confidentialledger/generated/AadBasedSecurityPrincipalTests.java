@@ -12,25 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class AadBasedSecurityPrincipalTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AadBasedSecurityPrincipal model =
-            BinaryData
-                .fromString("{\"principalId\":\"vamih\",\"tenantId\":\"gnarxzxtheo\",\"ledgerRoleName\":\"Reader\"}")
-                .toObject(AadBasedSecurityPrincipal.class);
-        Assertions.assertEquals("vamih", model.principalId());
-        Assertions.assertEquals("gnarxzxtheo", model.tenantId());
+        AadBasedSecurityPrincipal model = BinaryData
+            .fromString("{\"principalId\":\"ljofxqeofjaeqjh\",\"tenantId\":\"b\",\"ledgerRoleName\":\"Reader\"}")
+            .toObject(AadBasedSecurityPrincipal.class);
+        Assertions.assertEquals("ljofxqeofjaeqjh", model.principalId());
+        Assertions.assertEquals("b", model.tenantId());
         Assertions.assertEquals(LedgerRoleName.READER, model.ledgerRoleName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AadBasedSecurityPrincipal model =
-            new AadBasedSecurityPrincipal()
-                .withPrincipalId("vamih")
-                .withTenantId("gnarxzxtheo")
-                .withLedgerRoleName(LedgerRoleName.READER);
+        AadBasedSecurityPrincipal model = new AadBasedSecurityPrincipal().withPrincipalId("ljofxqeofjaeqjh")
+            .withTenantId("b")
+            .withLedgerRoleName(LedgerRoleName.READER);
         model = BinaryData.fromObject(model).toObject(AadBasedSecurityPrincipal.class);
-        Assertions.assertEquals("vamih", model.principalId());
-        Assertions.assertEquals("gnarxzxtheo", model.tenantId());
+        Assertions.assertEquals("ljofxqeofjaeqjh", model.principalId());
+        Assertions.assertEquals("b", model.tenantId());
         Assertions.assertEquals(LedgerRoleName.READER, model.ledgerRoleName());
     }
 }

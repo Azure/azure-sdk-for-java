@@ -12,15 +12,13 @@ import java.util.Map;
 public final class AlertEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AlertEntity model = BinaryData
-            .fromString(
-                "{\"type\":\"hlbzqixbnjrqvzy\",\"\":{\"me\":\"dataozonynp\",\"jxvcvaso\":\"datadpabcreuwzosg\"}}")
+        AlertEntity model = BinaryData.fromString("{\"type\":\"hgouarh\",\"\":{\"sjrclrvtzq\":\"dataxqqggljky\"}}")
             .toObject(AlertEntity.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AlertEntity model = new AlertEntity().withAdditionalProperties(mapOf("type", "hlbzqixbnjrqvzy"));
+        AlertEntity model = new AlertEntity().withAdditionalProperties(mapOf("type", "hgouarh"));
         model = BinaryData.fromObject(model).toObject(AlertEntity.class);
     }
 

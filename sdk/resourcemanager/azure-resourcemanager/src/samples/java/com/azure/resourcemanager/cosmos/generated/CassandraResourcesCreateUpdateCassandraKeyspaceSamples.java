@@ -7,6 +7,7 @@ package com.azure.resourcemanager.cosmos.generated;
 import com.azure.resourcemanager.cosmos.models.CassandraKeyspaceCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.CassandraKeyspaceResource;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,21 +16,24 @@ import java.util.Map;
  */
 public final class CassandraResourcesCreateUpdateCassandraKeyspaceSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
-     * CosmosDBCassandraKeyspaceCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBCassandraKeyspaceCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBCassandraKeyspaceCreateUpdate.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBCassandraKeyspaceCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getCassandraResources().createUpdateCassandraKeyspace("rg1",
-            "ddb1", "keyspaceName",
-            new CassandraKeyspaceCreateUpdateParameters().withLocation("West US").withTags(mapOf())
-                .withResource(new CassandraKeyspaceResource().withId("keyspaceName"))
-                .withOptions(new CreateUpdateOptions()),
-            com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getCassandraResources()
+            .createUpdateCassandraKeyspace("rg1", "ddb1", "keyspaceName",
+                new CassandraKeyspaceCreateUpdateParameters().withLocation("West US")
+                    .withTags(mapOf())
+                    .withResource(new CassandraKeyspaceResource().withId("keyspaceName"))
+                    .withOptions(new CreateUpdateOptions()),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

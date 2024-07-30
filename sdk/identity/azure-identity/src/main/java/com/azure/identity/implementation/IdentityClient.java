@@ -6,6 +6,7 @@ package com.azure.identity.implementation;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -28,6 +29,7 @@ import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
 import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.InteractiveRequestParameters;
+import com.microsoft.aad.msal4j.ManagedIdentityApplication;
 import com.microsoft.aad.msal4j.MsalInteractionRequiredException;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
@@ -39,6 +41,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.net.ssl.HttpsURLConnection;
+import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -50,6 +53,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -61,10 +65,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+
+import static com.azure.identity.implementation.util.ValidationUtil.validateSecretFile;
 
 /**
  * The identity client that contains APIs to retrieve access tokens
@@ -78,6 +83,7 @@ public class IdentityClient extends IdentityClientBase {
 
     private final SynchronizedAccessor<ConfidentialClientApplication> confidentialClientApplicationAccessorWithCae;
     private final SynchronizedAccessor<ConfidentialClientApplication> managedIdentityConfidentialClientApplicationAccessor;
+    private final SynchronizedAccessor<ManagedIdentityApplication> managedIdentityMsalApplicationAccessor;
     private final SynchronizedAccessor<ConfidentialClientApplication> workloadIdentityConfidentialClientApplicationAccessor;
     private final SynchronizedAccessor<String> clientAssertionAccessor;
 
@@ -97,13 +103,22 @@ public class IdentityClient extends IdentityClientBase {
      * @param clientAssertionTimeout the timeout to use for the client assertion.
      * @param options the options configuring the client.
      */
-    IdentityClient(String tenantId, String clientId, String clientSecret, String certificatePath,
-        String clientAssertionFilePath, String resourceId, Supplier<String> clientAssertionSupplier,
-        byte[] certificate, String certificatePassword, boolean isSharedTokenCacheCredential,
-        Duration clientAssertionTimeout, IdentityClientOptions options) {
+    IdentityClient(String tenantId,
+                   String clientId,
+                   String clientSecret,
+                   String certificatePath,
+                   String clientAssertionFilePath,
+                   String resourceId,
+                   Supplier<String> clientAssertionSupplier,
+                   Function<HttpPipeline, String> clientAssertionSupplierWithHttpPipeline,
+                   byte[] certificate,
+                   String certificatePassword,
+                   boolean isSharedTokenCacheCredential,
+                   Duration clientAssertionTimeout,
+                   IdentityClientOptions options) {
         super(tenantId, clientId, clientSecret, certificatePath, clientAssertionFilePath, resourceId,
-            clientAssertionSupplier, certificate, certificatePassword, isSharedTokenCacheCredential,
-            clientAssertionTimeout, options);
+            clientAssertionSupplier, clientAssertionSupplierWithHttpPipeline, certificate, certificatePassword,
+            isSharedTokenCacheCredential, clientAssertionTimeout, options);
 
         this.publicClientApplicationAccessor = new SynchronizedAccessor<>(() ->
             getPublicClientApplication(isSharedTokenCacheCredential, false));
@@ -118,11 +133,24 @@ public class IdentityClient extends IdentityClientBase {
         this.managedIdentityConfidentialClientApplicationAccessor =
             new SynchronizedAccessor<>(this::getManagedIdentityConfidentialClientApplication);
 
+        this.managedIdentityMsalApplicationAccessor =
+            new SynchronizedAccessor<>(this::getManagedIdentityMsalClient);
+
         this.workloadIdentityConfidentialClientApplicationAccessor =
             new SynchronizedAccessor<>(this::getWorkloadIdentityConfidentialClientApplication);
 
         Duration cacheTimeout = (clientAssertionTimeout == null) ? Duration.ofMinutes(5) : clientAssertionTimeout;
         this.clientAssertionAccessor = new SynchronizedAccessor<>(this::parseClientAssertion, cacheTimeout);
+    }
+
+    public Mono<ManagedIdentityApplication> getManagedIdentityMsalClient() {
+        return Mono.defer(() -> {
+            try {
+                return Mono.just(this.getManagedIdentityMsalApplication());
+            } catch (RuntimeException e) {
+                return Mono.error(e);
+            }
+        });
     }
 
     private Mono<ConfidentialClientApplication> getConfidentialClientApplication(boolean enableCae) {
@@ -411,11 +439,10 @@ public class IdentityClient extends IdentityClientBase {
         ValidationUtil.validateTenantIdCharacterRange(tenantId, LOGGER);
         List<CredentialUnavailableException> exceptions = new ArrayList<>(2);
 
-        PowershellManager defaultPowerShellManager = new PowershellManager(Platform.isWindows()
-            ? DEFAULT_WINDOWS_PS_EXECUTABLE : DEFAULT_LINUX_PS_EXECUTABLE);
+        PowershellManager defaultPowerShellManager = new PowershellManager(false);
 
         PowershellManager legacyPowerShellManager = Platform.isWindows()
-            ? new PowershellManager(LEGACY_WINDOWS_PS_EXECUTABLE) : null;
+            ? new PowershellManager(true) : null;
 
         List<PowershellManager> powershellManagers = new ArrayList<>(2);
         powershellManagers.add(defaultPowerShellManager);
@@ -472,9 +499,9 @@ public class IdentityClient extends IdentityClientBase {
         } catch (IllegalArgumentException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
-        return Mono.using(() -> powershellManager, manager -> manager.initSession().flatMap(m -> {
+        return Mono.defer(() -> {
             String azAccountsCommand = "Import-Module Az.Accounts -MinimumVersion 2.2.0 -PassThru";
-            return m.runCommand(azAccountsCommand).flatMap(output -> {
+            return powershellManager.runCommand(azAccountsCommand).flatMap(output -> {
                 if (output.contains("The specified module 'Az.Accounts' with version '2.2.0' was not loaded "
                                     + "because no valid module file")) {
                     return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
@@ -490,7 +517,7 @@ public class IdentityClient extends IdentityClientBase {
                 LOGGER.verbose("Azure Powershell Authentication => Executing the command `{}` in Azure "
                                + "Powershell to retrieve the Access Token.", command);
 
-                return m.runCommand(command).flatMap(out -> {
+                return powershellManager.runCommand(command).flatMap(out -> {
                     if (out.contains("Run Connect-AzAccount to login")) {
                         return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
                             new CredentialUnavailableException(
@@ -513,7 +540,7 @@ public class IdentityClient extends IdentityClientBase {
                     }
                 });
             });
-        }), PowershellManager::close);
+        });
     }
 
     /**
@@ -543,6 +570,9 @@ public class IdentityClient extends IdentityClientBase {
         if (clientAssertionSupplier != null) {
             builder.clientCredential(ClientCredentialFactory
                 .createFromClientAssertion(clientAssertionSupplier.get()));
+        } else if (clientAssertionSupplierWithHttpPipeline != null) {
+            builder.clientCredential(ClientCredentialFactory
+                .createFromClientAssertion(clientAssertionSupplierWithHttpPipeline.apply(getPipeline())));
         }
 
         if (request.isCaeEnabled() && request.getClaims() != null) {
@@ -560,6 +590,30 @@ public class IdentityClient extends IdentityClientBase {
                             .tenant(IdentityUtil
                                 .resolveTenantId(tenantId, request, options));
                     return confidentialClient.acquireToken(builder.build());
+                }
+            )).onErrorMap(t -> new CredentialUnavailableException("Managed Identity authentication is not available.", t))
+            .map(MsalToken::new);
+    }
+
+    public Mono<AccessToken> authenticateWithManagedIdentityMsalClient(TokenRequestContext request) {
+        String resource = ScopeUtil.scopesToResource(request.getScopes()) + "/";
+
+        String  managedIdnetitySourceType = String.valueOf(ManagedIdentityApplication.getManagedIdentitySource());
+        return Mono.fromSupplier(() -> options.isChained() && "DEFAULT_TO_IMDS".equals(managedIdnetitySourceType))
+            .flatMap(shouldProbe -> shouldProbe ? checkIMDSAvailable(getImdsEndpoint()) : Mono.just(true))
+            .flatMap(ignored ->  getTokenFromMsalMIClient(resource));
+    }
+
+    private Mono<AccessToken> getTokenFromMsalMIClient(String resource) {
+        return managedIdentityMsalApplicationAccessor.getValue()
+            .flatMap(managedIdentityApplication -> Mono.fromFuture(() -> {
+                    com.microsoft.aad.msal4j.ManagedIdentityParameters.ManagedIdentityParametersBuilder builder =
+                        com.microsoft.aad.msal4j.ManagedIdentityParameters.builder(resource);
+                    try {
+                        return managedIdentityApplication.acquireTokenForManagedIdentity(builder.build());
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             )).onErrorMap(t -> new CredentialUnavailableException("Managed Identity authentication is not available.", t))
             .map(MsalToken::new);
@@ -823,24 +877,36 @@ public class IdentityClient extends IdentityClientBase {
             return Mono.error(LOGGER.logExceptionAsError(new RuntimeException(e)));
         }
 
-        if (options.isBrokerEnabled() && options.useOperatingSystemAccount()) {
-            return getPublicClientInstance(request).getValue().flatMap(pc ->
-                Mono.fromFuture(() ->
-                    acquireTokenFromPublicClientSilently(request, pc, null, false)).
-                    map(MsalToken::new));
-        } else {
+        // If the broker is enabled, try to get the token for the default account by passing
+        // a null account to MSAL. If that fails, show the dialog.
 
+        return getPublicClientInstance(request).getValue().flatMap(pc -> {
+            if (options.isBrokerEnabled() && options.useDefaultBrokerAccount()) {
+                return Mono.fromFuture(() ->
+                    acquireTokenFromPublicClientSilently(request, pc, null, false))
+                    // The error case here represents the silent acquisition failing. There's nothing actionable and
+                    // in this case the fallback path of showing the dialog will capture any meaningful error and share it.
+                    .onErrorResume(e -> Mono.empty());
+            } else {
+                return Mono.empty();
+            }
+        })
+        .switchIfEmpty(Mono.defer(() -> {
             InteractiveRequestParameters.InteractiveRequestParametersBuilder builder =
                 buildInteractiveRequestParameters(request, loginHint, redirectUri);
 
             SynchronizedAccessor<PublicClientApplication> publicClient = getPublicClientInstance(request);
 
-            Mono<IAuthenticationResult> acquireToken = publicClient.getValue()
+            return publicClient.getValue()
                 .flatMap(pc -> Mono.fromFuture(() -> pc.acquireToken(builder.build())));
 
-            return acquireToken.onErrorMap(t -> new ClientAuthenticationException(
-                "Failed to acquire token with Interactive Browser Authentication.", null, t)).map(MsalToken::new);
-        }
+        }))
+        // If we're already throwing a ClientAuthenticationException we don't need to wrap it again.
+        .onErrorMap(t -> !(t instanceof ClientAuthenticationException),
+                        t -> {
+                throw new ClientAuthenticationException("Failed to acquire token with Interactive Browser Authentication.", null, t);
+            })
+        .map(MsalToken::new);
     }
 
     /**
@@ -945,8 +1011,10 @@ public class IdentityClient extends IdentityClientBase {
                         null));
                 }
 
-                String secretKeyPath = realm.substring(separatorIndex + 1);
-                secretKey = new String(Files.readAllBytes(Paths.get(secretKeyPath)), StandardCharsets.UTF_8);
+                String secretKeyPathHeaderValue = realm.substring(separatorIndex + 1);
+                Path secretKeyPath = validateSecretFile(new File(secretKeyPathHeaderValue), LOGGER);
+
+                secretKey = new String(Files.readAllBytes(secretKeyPath), StandardCharsets.UTF_8);
 
 
                 if (connection != null) {
@@ -1168,8 +1236,7 @@ public class IdentityClient extends IdentityClientBase {
             return Mono.error(exception);
         }
 
-        String endpoint = TRAILING_FORWARD_SLASHES.matcher(options.getImdsAuthorityHost()).replaceAll("")
-            + IdentityConstants.DEFAULT_IMDS_TOKENPATH;
+        String endpoint = getImdsEndpoint();
 
         return checkIMDSAvailable(endpoint).flatMap(available -> Mono.fromCallable(() -> {
             int retry = 1;
@@ -1224,8 +1291,7 @@ public class IdentityClient extends IdentityClientBase {
                             || responseCode == 429
                             || responseCode == 404
                             || (responseCode >= 500 && responseCode <= 599)) {
-                        int retryTimeoutInMs = options.getRetryTimeout()
-                                .apply(Duration.ofSeconds(ThreadLocalRandom.current().nextInt(retry))).getNano() / 1000;
+                        int retryTimeoutInMs = getRetryTimeoutInMs(retry);
                         // Error code 410 indicates IMDS upgrade is in progress, which can take up to 70s
                         //
                         retryTimeoutInMs =
@@ -1254,6 +1320,16 @@ public class IdentityClient extends IdentityClientBase {
         }));
     }
 
+    private String getImdsEndpoint() {
+        return TRAILING_FORWARD_SLASHES.matcher(options.getImdsAuthorityHost()).replaceAll("")
+            + IdentityConstants.DEFAULT_IMDS_TOKENPATH;
+    }
+
+    int getRetryTimeoutInMs(int retry) {
+        return (int) options.getRetryTimeout()
+            .apply(Duration.ofSeconds(retry)).toMillis();
+    }
+
     private Mono<Boolean> checkIMDSAvailable(String endpoint) {
         return Mono.fromCallable(() -> {
             HttpURLConnection connection = null;
@@ -1262,7 +1338,7 @@ public class IdentityClient extends IdentityClientBase {
             try {
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
-                connection.setConnectTimeout(500);
+                connection.setConnectTimeout(1000);
                 connection.connect();
             } catch (Exception e) {
                 throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,

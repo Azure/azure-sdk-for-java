@@ -59,6 +59,12 @@ public final class DevOpsConfigurationProperties {
     @JsonProperty(value = "topLevelInventoryList")
     private List<String> topLevelInventoryList;
 
+    /*
+     * List of capabilities assigned to the DevOps configuration during the discovery process.
+     */
+    @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
+    private List<DevOpsCapability> capabilities;
+
     /**
      * Creates an instance of DevOpsConfigurationProperties class.
      */
@@ -182,6 +188,16 @@ public final class DevOpsConfigurationProperties {
     }
 
     /**
+     * Get the capabilities property: List of capabilities assigned to the DevOps configuration during the discovery
+     * process.
+     * 
+     * @return the capabilities value.
+     */
+    public List<DevOpsCapability> capabilities() {
+        return this.capabilities;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -189,6 +205,9 @@ public final class DevOpsConfigurationProperties {
     public void validate() {
         if (authorization() != null) {
             authorization().validate();
+        }
+        if (capabilities() != null) {
+            capabilities().forEach(e -> e.validate());
         }
     }
 }

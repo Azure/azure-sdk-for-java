@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WafMetricsSeriesUnit. */
+/**
+ * Defines values for WafMetricsSeriesUnit.
+ */
 public final class WafMetricsSeriesUnit extends ExpandableStringEnum<WafMetricsSeriesUnit> {
-    /** Static value count for WafMetricsSeriesUnit. */
+    /**
+     * Static value count for WafMetricsSeriesUnit.
+     */
     public static final WafMetricsSeriesUnit COUNT = fromString("count");
 
     /**
      * Creates a new instance of WafMetricsSeriesUnit value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,7 +28,7 @@ public final class WafMetricsSeriesUnit extends ExpandableStringEnum<WafMetricsS
 
     /**
      * Creates or finds a WafMetricsSeriesUnit from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WafMetricsSeriesUnit.
      */
@@ -35,7 +39,7 @@ public final class WafMetricsSeriesUnit extends ExpandableStringEnum<WafMetricsS
 
     /**
      * Gets known WafMetricsSeriesUnit values.
-     *
+     * 
      * @return known WafMetricsSeriesUnit values.
      */
     public static Collection<WafMetricsSeriesUnit> values() {

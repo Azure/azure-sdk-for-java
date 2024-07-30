@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Authorization Profile. */
+/**
+ * Authorization Profile.
+ */
 @Immutable
 public final class AuthorizationProfile {
     /*
@@ -41,13 +43,15 @@ public final class AuthorizationProfile {
     @JsonProperty(value = "approver", access = JsonProperty.Access.WRITE_ONLY)
     private String approver;
 
-    /** Creates an instance of AuthorizationProfile class. */
+    /**
+     * Creates an instance of AuthorizationProfile class.
+     */
     public AuthorizationProfile() {
     }
 
     /**
      * Get the requestedTime property: The requested time.
-     *
+     * 
      * @return the requestedTime value.
      */
     public OffsetDateTime requestedTime() {
@@ -56,7 +60,7 @@ public final class AuthorizationProfile {
 
     /**
      * Get the requester property: The requester.
-     *
+     * 
      * @return the requester value.
      */
     public String requester() {
@@ -65,7 +69,7 @@ public final class AuthorizationProfile {
 
     /**
      * Get the requesterObjectId property: The requester object id.
-     *
+     * 
      * @return the requesterObjectId value.
      */
     public String requesterObjectId() {
@@ -74,7 +78,7 @@ public final class AuthorizationProfile {
 
     /**
      * Get the approvedTime property: The approved time.
-     *
+     * 
      * @return the approvedTime value.
      */
     public OffsetDateTime approvedTime() {
@@ -83,7 +87,7 @@ public final class AuthorizationProfile {
 
     /**
      * Get the approver property: The approver.
-     *
+     * 
      * @return the approver value.
      */
     public String approver() {
@@ -92,7 +96,7 @@ public final class AuthorizationProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

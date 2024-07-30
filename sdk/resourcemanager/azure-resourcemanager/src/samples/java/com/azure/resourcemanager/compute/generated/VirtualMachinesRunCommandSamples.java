@@ -12,7 +12,7 @@ import com.azure.resourcemanager.compute.models.RunCommandInput;
 public final class VirtualMachinesRunCommandSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/runCommandExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/runCommandExamples/
      * VirtualMachineRunCommand.json
      */
     /**
@@ -21,7 +21,11 @@ public final class VirtualMachinesRunCommandSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualMachineRunCommand(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().runCommand("crptestar98131", "vm3036",
-            new RunCommandInput().withCommandId("RunPowerShellScript"), com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .runCommand("crptestar98131", "vm3036", new RunCommandInput().withCommandId("RunPowerShellScript"),
+                com.azure.core.util.Context.NONE);
     }
 }

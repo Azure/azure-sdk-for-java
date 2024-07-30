@@ -19,7 +19,8 @@ public final class PrivateEndpointConnectionOperationDeleteSamples {
      */
     public static void deleteAPrivateEndpointConnectionForADatafactory(
         com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.privateEndpointConnectionOperations().deleteWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "connection", com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnectionOperations()
+            .deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "connection",
+                com.azure.core.util.Context.NONE);
     }
 }

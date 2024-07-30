@@ -7,144 +7,132 @@ package com.azure.resourcemanager.support.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for MicrosoftSupport class. */
+/**
+ * The interface for MicrosoftSupport class.
+ */
 public interface MicrosoftSupport {
     /**
-     * Gets Azure subscription Id.
-     *
+     * Gets The ID of the target subscription. The value must be an UUID.
+     * 
      * @return the subscriptionId value.
      */
     String getSubscriptionId();
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     String getEndpoint();
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     String getApiVersion();
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
 
     /**
      * Gets the ServicesClient object to access its operations.
-     *
+     * 
      * @return the ServicesClient object.
      */
     ServicesClient getServices();
 
     /**
      * Gets the ProblemClassificationsClient object to access its operations.
-     *
+     * 
      * @return the ProblemClassificationsClient object.
      */
     ProblemClassificationsClient getProblemClassifications();
 
     /**
      * Gets the SupportTicketsClient object to access its operations.
-     *
+     * 
      * @return the SupportTicketsClient object.
      */
     SupportTicketsClient getSupportTickets();
 
     /**
      * Gets the SupportTicketsNoSubscriptionsClient object to access its operations.
-     *
+     * 
      * @return the SupportTicketsNoSubscriptionsClient object.
      */
     SupportTicketsNoSubscriptionsClient getSupportTicketsNoSubscriptions();
 
     /**
      * Gets the CommunicationsClient object to access its operations.
-     *
+     * 
      * @return the CommunicationsClient object.
      */
     CommunicationsClient getCommunications();
 
     /**
      * Gets the CommunicationsNoSubscriptionsClient object to access its operations.
-     *
+     * 
      * @return the CommunicationsNoSubscriptionsClient object.
      */
     CommunicationsNoSubscriptionsClient getCommunicationsNoSubscriptions();
 
     /**
-     * Gets the SupportTicketCommunicationsNoSubscriptionsClient object to access its operations.
-     *
-     * @return the SupportTicketCommunicationsNoSubscriptionsClient object.
-     */
-    SupportTicketCommunicationsNoSubscriptionsClient getSupportTicketCommunicationsNoSubscriptions();
-
-    /**
      * Gets the ChatTranscriptsClient object to access its operations.
-     *
+     * 
      * @return the ChatTranscriptsClient object.
      */
     ChatTranscriptsClient getChatTranscripts();
 
     /**
-     * Gets the SupportTicketChatTranscriptsNoSubscriptionsClient object to access its operations.
-     *
-     * @return the SupportTicketChatTranscriptsNoSubscriptionsClient object.
-     */
-    SupportTicketChatTranscriptsNoSubscriptionsClient getSupportTicketChatTranscriptsNoSubscriptions();
-
-    /**
      * Gets the ChatTranscriptsNoSubscriptionsClient object to access its operations.
-     *
+     * 
      * @return the ChatTranscriptsNoSubscriptionsClient object.
      */
     ChatTranscriptsNoSubscriptionsClient getChatTranscriptsNoSubscriptions();
 
     /**
      * Gets the FileWorkspacesClient object to access its operations.
-     *
+     * 
      * @return the FileWorkspacesClient object.
      */
     FileWorkspacesClient getFileWorkspaces();
 
     /**
      * Gets the FileWorkspacesNoSubscriptionsClient object to access its operations.
-     *
+     * 
      * @return the FileWorkspacesNoSubscriptionsClient object.
      */
     FileWorkspacesNoSubscriptionsClient getFileWorkspacesNoSubscriptions();
 
     /**
      * Gets the FilesClient object to access its operations.
-     *
+     * 
      * @return the FilesClient object.
      */
     FilesClient getFiles();
 
     /**
      * Gets the FilesNoSubscriptionsClient object to access its operations.
-     *
+     * 
      * @return the FilesNoSubscriptionsClient object.
      */
     FilesNoSubscriptionsClient getFilesNoSubscriptions();

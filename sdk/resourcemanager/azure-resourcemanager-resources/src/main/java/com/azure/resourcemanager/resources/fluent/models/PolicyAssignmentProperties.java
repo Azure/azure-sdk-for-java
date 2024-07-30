@@ -15,7 +15,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The policy assignment properties. */
+/**
+ * The policy assignment properties.
+ */
 @Fluent
 public final class PolicyAssignmentProperties {
     /*
@@ -56,8 +58,7 @@ public final class PolicyAssignmentProperties {
     private String description;
 
     /*
-     * The policy assignment metadata. Metadata is an open ended object and is typically a collection of key value
-     * pairs.
+     * The policy assignment metadata. Metadata is an open ended object and is typically a collection of key value pairs.
      */
     @JsonProperty(value = "metadata")
     private Object metadata;
@@ -86,13 +87,15 @@ public final class PolicyAssignmentProperties {
     @JsonProperty(value = "overrides")
     private List<OverrideModel> overrides;
 
-    /** Creates an instance of PolicyAssignmentProperties class. */
+    /**
+     * Creates an instance of PolicyAssignmentProperties class.
+     */
     public PolicyAssignmentProperties() {
     }
 
     /**
      * Get the displayName property: The display name of the policy assignment.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -101,7 +104,7 @@ public final class PolicyAssignmentProperties {
 
     /**
      * Set the displayName property: The display name of the policy assignment.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the PolicyAssignmentProperties object itself.
      */
@@ -112,7 +115,7 @@ public final class PolicyAssignmentProperties {
 
     /**
      * Get the policyDefinitionId property: The ID of the policy definition or policy set definition being assigned.
-     *
+     * 
      * @return the policyDefinitionId value.
      */
     public String policyDefinitionId() {
@@ -121,7 +124,7 @@ public final class PolicyAssignmentProperties {
 
     /**
      * Set the policyDefinitionId property: The ID of the policy definition or policy set definition being assigned.
-     *
+     * 
      * @param policyDefinitionId the policyDefinitionId value to set.
      * @return the PolicyAssignmentProperties object itself.
      */
@@ -132,7 +135,7 @@ public final class PolicyAssignmentProperties {
 
     /**
      * Get the scope property: The scope for the policy assignment.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -141,7 +144,7 @@ public final class PolicyAssignmentProperties {
 
     /**
      * Get the notScopes property: The policy's excluded scopes.
-     *
+     * 
      * @return the notScopes value.
      */
     public List<String> notScopes() {
@@ -150,7 +153,7 @@ public final class PolicyAssignmentProperties {
 
     /**
      * Set the notScopes property: The policy's excluded scopes.
-     *
+     * 
      * @param notScopes the notScopes value to set.
      * @return the PolicyAssignmentProperties object itself.
      */
@@ -161,7 +164,7 @@ public final class PolicyAssignmentProperties {
 
     /**
      * Get the parameters property: The parameter values for the assigned policy rule. The keys are the parameter names.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, ParameterValuesValue> parameters() {
@@ -170,7 +173,7 @@ public final class PolicyAssignmentProperties {
 
     /**
      * Set the parameters property: The parameter values for the assigned policy rule. The keys are the parameter names.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the PolicyAssignmentProperties object itself.
      */
@@ -181,7 +184,7 @@ public final class PolicyAssignmentProperties {
 
     /**
      * Get the description property: This message will be part of response in case of policy violation.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -190,7 +193,7 @@ public final class PolicyAssignmentProperties {
 
     /**
      * Set the description property: This message will be part of response in case of policy violation.
-     *
+     * 
      * @param description the description value to set.
      * @return the PolicyAssignmentProperties object itself.
      */
@@ -202,7 +205,7 @@ public final class PolicyAssignmentProperties {
     /**
      * Get the metadata property: The policy assignment metadata. Metadata is an open ended object and is typically a
      * collection of key value pairs.
-     *
+     * 
      * @return the metadata value.
      */
     public Object metadata() {
@@ -212,7 +215,7 @@ public final class PolicyAssignmentProperties {
     /**
      * Set the metadata property: The policy assignment metadata. Metadata is an open ended object and is typically a
      * collection of key value pairs.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the PolicyAssignmentProperties object itself.
      */
@@ -224,7 +227,7 @@ public final class PolicyAssignmentProperties {
     /**
      * Get the enforcementMode property: The policy assignment enforcement mode. Possible values are Default and
      * DoNotEnforce.
-     *
+     * 
      * @return the enforcementMode value.
      */
     public EnforcementMode enforcementMode() {
@@ -234,7 +237,7 @@ public final class PolicyAssignmentProperties {
     /**
      * Set the enforcementMode property: The policy assignment enforcement mode. Possible values are Default and
      * DoNotEnforce.
-     *
+     * 
      * @param enforcementMode the enforcementMode value to set.
      * @return the PolicyAssignmentProperties object itself.
      */
@@ -246,7 +249,7 @@ public final class PolicyAssignmentProperties {
     /**
      * Get the nonComplianceMessages property: The messages that describe why a resource is non-compliant with the
      * policy.
-     *
+     * 
      * @return the nonComplianceMessages value.
      */
     public List<NonComplianceMessage> nonComplianceMessages() {
@@ -256,7 +259,7 @@ public final class PolicyAssignmentProperties {
     /**
      * Set the nonComplianceMessages property: The messages that describe why a resource is non-compliant with the
      * policy.
-     *
+     * 
      * @param nonComplianceMessages the nonComplianceMessages value to set.
      * @return the PolicyAssignmentProperties object itself.
      */
@@ -267,7 +270,7 @@ public final class PolicyAssignmentProperties {
 
     /**
      * Get the resourceSelectors property: The resource selector list to filter policies by resource properties.
-     *
+     * 
      * @return the resourceSelectors value.
      */
     public List<ResourceSelector> resourceSelectors() {
@@ -276,7 +279,7 @@ public final class PolicyAssignmentProperties {
 
     /**
      * Set the resourceSelectors property: The resource selector list to filter policies by resource properties.
-     *
+     * 
      * @param resourceSelectors the resourceSelectors value to set.
      * @return the PolicyAssignmentProperties object itself.
      */
@@ -287,7 +290,7 @@ public final class PolicyAssignmentProperties {
 
     /**
      * Get the overrides property: The policy property value override.
-     *
+     * 
      * @return the overrides value.
      */
     public List<OverrideModel> overrides() {
@@ -296,7 +299,7 @@ public final class PolicyAssignmentProperties {
 
     /**
      * Set the overrides property: The policy property value override.
-     *
+     * 
      * @param overrides the overrides value to set.
      * @return the PolicyAssignmentProperties object itself.
      */
@@ -307,19 +310,16 @@ public final class PolicyAssignmentProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (parameters() != null) {
-            parameters()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (nonComplianceMessages() != null) {
             nonComplianceMessages().forEach(e -> e.validate());

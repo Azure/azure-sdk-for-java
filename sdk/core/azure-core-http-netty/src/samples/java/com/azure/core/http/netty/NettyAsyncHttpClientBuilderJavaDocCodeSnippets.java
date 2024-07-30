@@ -28,7 +28,6 @@ public class NettyAsyncHttpClientBuilderJavaDocCodeSnippets {
         // BEGIN: com.azure.core.http.netty.instantiation-simple
         HttpClient client = new NettyAsyncHttpClientBuilder()
             .port(8080)
-            .wiretap(true)
             .build();
         // END: com.azure.core.http.netty.instantiation-simple
     }

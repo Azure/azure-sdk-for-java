@@ -12,34 +12,30 @@ import com.azure.resourcemanager.mobilenetwork.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for SimGroups CreateOrUpdate. */
+/**
+ * Samples for SimGroups CreateOrUpdate.
+ */
 public final class SimGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimGroupCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimGroupCreate.json
      */
     /**
      * Sample code: Create SIM group.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void createSIMGroup(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .simGroups()
+        manager.simGroups()
             .define("testSimGroup")
             .withRegion("eastus")
             .withExistingResourceGroup("rg1")
-            .withIdentity(
-                new ManagedServiceIdentity()
-                    .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf(
-                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUserAssignedManagedIdentity",
-                            new UserAssignedIdentity())))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUserAssignedManagedIdentity",
+                    new UserAssignedIdentity())))
             .withEncryptionKey(new KeyVaultKey().withKeyUrl("fakeTokenPlaceholder"))
-            .withMobileNetwork(
-                new MobileNetworkResourceId()
-                    .withId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork"))
+            .withMobileNetwork(new MobileNetworkResourceId().withId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork"))
             .create();
     }
 

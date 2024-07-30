@@ -28,23 +28,24 @@ public final class IntegrationRuntimeOutboundNetworkDependenciesEndpointsRespons
             = new IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner()
                 .withValue(
                     Arrays
-                        .asList(new IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint().withCategory("frlh")
-                            .withEndpoints(Arrays.asList(
-                                new IntegrationRuntimeOutboundNetworkDependenciesEndpoint().withDomainName("kyv")
-                                    .withEndpointDetails(Arrays
-                                        .asList(new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails())),
-                                new IntegrationRuntimeOutboundNetworkDependenciesEndpoint().withDomainName("n")
-                                    .withEndpointDetails(Arrays.asList(
-                                        new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails(),
-                                        new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails(),
-                                        new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails())),
-                                new IntegrationRuntimeOutboundNetworkDependenciesEndpoint().withDomainName("zka")
-                                    .withEndpointDetails(Arrays
-                                        .asList(new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails())),
-                                new IntegrationRuntimeOutboundNetworkDependenciesEndpoint().withDomainName("b")
-                                    .withEndpointDetails(Arrays.asList(
-                                        new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails(),
-                                        new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails()))))));
+                        .asList(
+                            new IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint().withCategory("frlh")
+                                .withEndpoints(Arrays.asList(
+                                    new IntegrationRuntimeOutboundNetworkDependenciesEndpoint().withDomainName("kyv")
+                                        .withEndpointDetails(Arrays.asList(
+                                            new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails())),
+                                    new IntegrationRuntimeOutboundNetworkDependenciesEndpoint().withDomainName("n")
+                                        .withEndpointDetails(Arrays.asList(
+                                            new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails(),
+                                            new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails(),
+                                            new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails())),
+                                    new IntegrationRuntimeOutboundNetworkDependenciesEndpoint().withDomainName("zka")
+                                        .withEndpointDetails(Arrays.asList(
+                                            new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails())),
+                                    new IntegrationRuntimeOutboundNetworkDependenciesEndpoint().withDomainName("b")
+                                        .withEndpointDetails(Arrays.asList(
+                                            new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails(),
+                                            new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails()))))));
         model = BinaryData.fromObject(model)
             .toObject(IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner.class);
         Assertions.assertEquals("frlh", model.value().get(0).category());

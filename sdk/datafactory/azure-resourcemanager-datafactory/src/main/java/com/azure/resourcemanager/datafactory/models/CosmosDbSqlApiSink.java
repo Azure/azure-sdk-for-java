@@ -6,16 +6,24 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity Azure CosmosDB (SQL API) Collection sink.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = CosmosDbSqlApiSink.class, visible = true)
 @JsonTypeName("CosmosDbSqlApiSink")
 @Fluent
 public final class CosmosDbSqlApiSink extends CopySink {
+    /*
+     * Copy sink type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "CosmosDbSqlApiSink";
+
     /*
      * Describes how to write data to Azure Cosmos DB. Type: string (or Expression with resultType string). Allowed
      * values: insert and upsert.
@@ -27,6 +35,16 @@ public final class CosmosDbSqlApiSink extends CopySink {
      * Creates an instance of CosmosDbSqlApiSink class.
      */
     public CosmosDbSqlApiSink() {
+    }
+
+    /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

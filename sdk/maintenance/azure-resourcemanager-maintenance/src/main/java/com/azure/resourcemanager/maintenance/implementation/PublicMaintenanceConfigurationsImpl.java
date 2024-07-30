@@ -21,8 +21,7 @@ public final class PublicMaintenanceConfigurationsImpl implements PublicMaintena
 
     private final com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager;
 
-    public PublicMaintenanceConfigurationsImpl(
-        PublicMaintenanceConfigurationsClient innerClient,
+    public PublicMaintenanceConfigurationsImpl(PublicMaintenanceConfigurationsClient innerClient,
         com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -30,21 +29,18 @@ public final class PublicMaintenanceConfigurationsImpl implements PublicMaintena
 
     public PagedIterable<MaintenanceConfiguration> list() {
         PagedIterable<MaintenanceConfigurationInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new MaintenanceConfigurationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MaintenanceConfigurationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<MaintenanceConfiguration> list(Context context) {
         PagedIterable<MaintenanceConfigurationInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new MaintenanceConfigurationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MaintenanceConfigurationImpl(inner1, this.manager()));
     }
 
     public Response<MaintenanceConfiguration> getWithResponse(String resourceName, Context context) {
         Response<MaintenanceConfigurationInner> inner = this.serviceClient().getWithResponse(resourceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new MaintenanceConfigurationImpl(inner.getValue(), this.manager()));
         } else {
             return null;

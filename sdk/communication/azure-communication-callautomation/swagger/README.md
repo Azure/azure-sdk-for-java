@@ -27,8 +27,9 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/model
 ### Code generation settings
 ``` yaml
 tag: package-2023-10-03-preview
+use: '@autorest/java@4.1.29'
 require:
-    - https://github.com/Azure/azure-rest-api-specs/blob/3abbcd8fe3f0527560c7db59255f654366e965d8/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/Azure/azure-rest-api-specs/blob/156ff363e44f764ddd8a0a6adcd371610240ba15/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -189,7 +190,7 @@ directive:
     to: SpeechResultInternal
 - rename-model:
     from: ExternalStorage
-    to: ExternalStorageInternal
+    to: RecordingStorageInternal
 - rename-model:
     from: BlobStorage
     to: BlobStorageInternal
@@ -254,6 +255,9 @@ directive:
 - remove-model: TranscriptionStopped
 - remove-model: TranscriptionUpdated
 - remove-model: TranscriptionFailed
+- remove-model: MediaStreamingStarted
+- remove-model: MediaStreamingStopped
+- remove-model: MediaStreamingFailed
 
 
 ```

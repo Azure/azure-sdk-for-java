@@ -5,67 +5,60 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Library resource info.
  */
 @Immutable
-public final class LibraryResourceInfo {
+public final class LibraryResourceInfo implements JsonSerializable<LibraryResourceInfo> {
     /*
-     * Fully qualified resource ID for the resource. Ex -
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
-     * resourceType}/{resourceName}
+     * Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * record Id of the library/package.
      */
-    @JsonProperty(value = "recordId", access = JsonProperty.Access.WRITE_ONLY)
     private Integer recordId;
 
     /*
      * Provisioning status of the library/package.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private String state;
 
     /*
      * The creation time of the library/package.
      */
-    @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
     private String created;
 
     /*
      * The last updated time of the library/package.
      */
-    @JsonProperty(value = "changed", access = JsonProperty.Access.WRITE_ONLY)
     private String changed;
 
     /*
      * The type of the resource. E.g. LibraryArtifact
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Name of the library/package.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Operation Id of the operation performed on library/package.
      */
-    @JsonProperty(value = "operationId", access = JsonProperty.Access.WRITE_ONLY)
     private String operationId;
 
     /*
      * artifact Id of the library/package.
      */
-    @JsonProperty(value = "artifactId", access = JsonProperty.Access.WRITE_ONLY)
     private String artifactId;
 
     /**
@@ -154,5 +147,56 @@ public final class LibraryResourceInfo {
      */
     public String getArtifactId() {
         return this.artifactId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LibraryResourceInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LibraryResourceInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LibraryResourceInfo.
+     */
+    public static LibraryResourceInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LibraryResourceInfo deserializedLibraryResourceInfo = new LibraryResourceInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLibraryResourceInfo.id = reader.getString();
+                } else if ("recordId".equals(fieldName)) {
+                    deserializedLibraryResourceInfo.recordId = reader.getNullable(JsonReader::getInt);
+                } else if ("state".equals(fieldName)) {
+                    deserializedLibraryResourceInfo.state = reader.getString();
+                } else if ("created".equals(fieldName)) {
+                    deserializedLibraryResourceInfo.created = reader.getString();
+                } else if ("changed".equals(fieldName)) {
+                    deserializedLibraryResourceInfo.changed = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedLibraryResourceInfo.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedLibraryResourceInfo.name = reader.getString();
+                } else if ("operationId".equals(fieldName)) {
+                    deserializedLibraryResourceInfo.operationId = reader.getString();
+                } else if ("artifactId".equals(fieldName)) {
+                    deserializedLibraryResourceInfo.artifactId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLibraryResourceInfo;
+        });
     }
 }

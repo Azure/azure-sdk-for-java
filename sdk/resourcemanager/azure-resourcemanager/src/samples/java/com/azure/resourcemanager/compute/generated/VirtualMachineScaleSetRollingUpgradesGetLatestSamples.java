@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class VirtualMachineScaleSetRollingUpgradesGetLatestSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSetRollingUpgrade_GetLatest_MaximumSet_Gen.json
      */
     /**
@@ -20,13 +20,16 @@ public final class VirtualMachineScaleSetRollingUpgradesGetLatestSamples {
      */
     public static void virtualMachineScaleSetRollingUpgradeGetLatestMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetRollingUpgrades()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetRollingUpgrades()
             .getLatestWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSetRollingUpgrade_GetLatest_MinimumSet_Gen.json
      */
     /**
@@ -36,7 +39,10 @@ public final class VirtualMachineScaleSetRollingUpgradesGetLatestSamples {
      */
     public static void virtualMachineScaleSetRollingUpgradeGetLatestMinimumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetRollingUpgrades()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetRollingUpgrades()
             .getLatestWithResponse("rgcompute", "aaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

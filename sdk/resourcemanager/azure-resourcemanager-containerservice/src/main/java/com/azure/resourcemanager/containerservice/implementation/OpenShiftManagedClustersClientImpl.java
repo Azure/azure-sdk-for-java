@@ -39,9 +39,10 @@ import com.azure.resourcemanager.containerservice.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in OpenShiftManagedClustersClient.
@@ -60,7 +61,7 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Initializes an instance of OpenShiftManagedClustersClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     OpenShiftManagedClustersClientImpl(ContainerServiceManagementClientImpl client) {
@@ -150,10 +151,10 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Gets a list of OpenShift managed clusters in the specified subscription.
-     * 
+     *
      * Gets a list of OpenShift managed clusters in the specified subscription. The operation returns properties of each
      * OpenShift managed cluster.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of OpenShift managed clusters in the specified subscription along with {@link PagedResponse} on
@@ -181,10 +182,10 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Gets a list of OpenShift managed clusters in the specified subscription.
-     * 
+     *
      * Gets a list of OpenShift managed clusters in the specified subscription. The operation returns properties of each
      * OpenShift managed cluster.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -212,10 +213,10 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Gets a list of OpenShift managed clusters in the specified subscription.
-     * 
+     *
      * Gets a list of OpenShift managed clusters in the specified subscription. The operation returns properties of each
      * OpenShift managed cluster.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of OpenShift managed clusters in the specified subscription as paginated response with
@@ -228,10 +229,10 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Gets a list of OpenShift managed clusters in the specified subscription.
-     * 
+     *
      * Gets a list of OpenShift managed clusters in the specified subscription. The operation returns properties of each
      * OpenShift managed cluster.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -247,10 +248,10 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Gets a list of OpenShift managed clusters in the specified subscription.
-     * 
+     *
      * Gets a list of OpenShift managed clusters in the specified subscription. The operation returns properties of each
      * OpenShift managed cluster.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of OpenShift managed clusters in the specified subscription as paginated response with
@@ -263,10 +264,10 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Gets a list of OpenShift managed clusters in the specified subscription.
-     * 
+     *
      * Gets a list of OpenShift managed clusters in the specified subscription. The operation returns properties of each
      * OpenShift managed cluster.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -281,10 +282,10 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Lists OpenShift managed clusters in the specified subscription and resource group.
-     * 
+     *
      * Lists OpenShift managed clusters in the specified subscription and resource group. The operation returns
      * properties of each OpenShift managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -319,10 +320,10 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Lists OpenShift managed clusters in the specified subscription and resource group.
-     * 
+     *
      * Lists OpenShift managed clusters in the specified subscription and resource group. The operation returns
      * properties of each OpenShift managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -358,10 +359,10 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Lists OpenShift managed clusters in the specified subscription and resource group.
-     * 
+     *
      * Lists OpenShift managed clusters in the specified subscription and resource group. The operation returns
      * properties of each OpenShift managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -377,10 +378,10 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Lists OpenShift managed clusters in the specified subscription and resource group.
-     * 
+     *
      * Lists OpenShift managed clusters in the specified subscription and resource group. The operation returns
      * properties of each OpenShift managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -398,10 +399,10 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Lists OpenShift managed clusters in the specified subscription and resource group.
-     * 
+     *
      * Lists OpenShift managed clusters in the specified subscription and resource group. The operation returns
      * properties of each OpenShift managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -416,10 +417,10 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Lists OpenShift managed clusters in the specified subscription and resource group.
-     * 
+     *
      * Lists OpenShift managed clusters in the specified subscription and resource group. The operation returns
      * properties of each OpenShift managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -435,9 +436,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Gets a OpenShift managed cluster.
-     * 
+     *
      * Gets the details of the managed OpenShift cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -474,9 +475,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Gets a OpenShift managed cluster.
-     * 
+     *
      * Gets the details of the managed OpenShift cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param context The context to associate with this operation.
@@ -513,9 +514,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Gets a OpenShift managed cluster.
-     * 
+     *
      * Gets the details of the managed OpenShift cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -532,9 +533,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Gets a OpenShift managed cluster.
-     * 
+     *
      * Gets the details of the managed OpenShift cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param context The context to associate with this operation.
@@ -552,9 +553,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Gets a OpenShift managed cluster.
-     * 
+     *
      * Gets the details of the managed OpenShift cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -569,9 +570,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Creates or updates an OpenShift managed cluster.
-     * 
+     *
      * Creates or updates a OpenShift managed cluster with the specified configuration for agents and OpenShift version.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param parameters Parameters supplied to the Create or Update an OpenShift Managed Cluster operation.
@@ -613,9 +614,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Creates or updates an OpenShift managed cluster.
-     * 
+     *
      * Creates or updates a OpenShift managed cluster with the specified configuration for agents and OpenShift version.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param parameters Parameters supplied to the Create or Update an OpenShift Managed Cluster operation.
@@ -657,9 +658,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Creates or updates an OpenShift managed cluster.
-     * 
+     *
      * Creates or updates a OpenShift managed cluster with the specified configuration for agents and OpenShift version.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param parameters Parameters supplied to the Create or Update an OpenShift Managed Cluster operation.
@@ -680,9 +681,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Creates or updates an OpenShift managed cluster.
-     * 
+     *
      * Creates or updates a OpenShift managed cluster with the specified configuration for agents and OpenShift version.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param parameters Parameters supplied to the Create or Update an OpenShift Managed Cluster operation.
@@ -705,9 +706,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Creates or updates an OpenShift managed cluster.
-     * 
+     *
      * Creates or updates a OpenShift managed cluster with the specified configuration for agents and OpenShift version.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param parameters Parameters supplied to the Create or Update an OpenShift Managed Cluster operation.
@@ -724,9 +725,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Creates or updates an OpenShift managed cluster.
-     * 
+     *
      * Creates or updates a OpenShift managed cluster with the specified configuration for agents and OpenShift version.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param parameters Parameters supplied to the Create or Update an OpenShift Managed Cluster operation.
@@ -744,9 +745,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Creates or updates an OpenShift managed cluster.
-     * 
+     *
      * Creates or updates a OpenShift managed cluster with the specified configuration for agents and OpenShift version.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param parameters Parameters supplied to the Create or Update an OpenShift Managed Cluster operation.
@@ -764,9 +765,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Creates or updates an OpenShift managed cluster.
-     * 
+     *
      * Creates or updates a OpenShift managed cluster with the specified configuration for agents and OpenShift version.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param parameters Parameters supplied to the Create or Update an OpenShift Managed Cluster operation.
@@ -785,9 +786,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Creates or updates an OpenShift managed cluster.
-     * 
+     *
      * Creates or updates a OpenShift managed cluster with the specified configuration for agents and OpenShift version.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param parameters Parameters supplied to the Create or Update an OpenShift Managed Cluster operation.
@@ -804,9 +805,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Creates or updates an OpenShift managed cluster.
-     * 
+     *
      * Creates or updates a OpenShift managed cluster with the specified configuration for agents and OpenShift version.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param parameters Parameters supplied to the Create or Update an OpenShift Managed Cluster operation.
@@ -824,9 +825,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Updates tags on an OpenShift managed cluster.
-     * 
+     *
      * Updates an OpenShift managed cluster with the specified tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param parameters Parameters supplied to the Update OpenShift Managed Cluster Tags operation.
@@ -868,9 +869,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Updates tags on an OpenShift managed cluster.
-     * 
+     *
      * Updates an OpenShift managed cluster with the specified tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param parameters Parameters supplied to the Update OpenShift Managed Cluster Tags operation.
@@ -912,9 +913,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Updates tags on an OpenShift managed cluster.
-     * 
+     *
      * Updates an OpenShift managed cluster with the specified tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param parameters Parameters supplied to the Update OpenShift Managed Cluster Tags operation.
@@ -935,9 +936,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Updates tags on an OpenShift managed cluster.
-     * 
+     *
      * Updates an OpenShift managed cluster with the specified tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param parameters Parameters supplied to the Update OpenShift Managed Cluster Tags operation.
@@ -960,9 +961,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Updates tags on an OpenShift managed cluster.
-     * 
+     *
      * Updates an OpenShift managed cluster with the specified tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param parameters Parameters supplied to the Update OpenShift Managed Cluster Tags operation.
@@ -979,9 +980,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Updates tags on an OpenShift managed cluster.
-     * 
+     *
      * Updates an OpenShift managed cluster with the specified tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param parameters Parameters supplied to the Update OpenShift Managed Cluster Tags operation.
@@ -999,9 +1000,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Updates tags on an OpenShift managed cluster.
-     * 
+     *
      * Updates an OpenShift managed cluster with the specified tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param parameters Parameters supplied to the Update OpenShift Managed Cluster Tags operation.
@@ -1019,9 +1020,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Updates tags on an OpenShift managed cluster.
-     * 
+     *
      * Updates an OpenShift managed cluster with the specified tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param parameters Parameters supplied to the Update OpenShift Managed Cluster Tags operation.
@@ -1040,9 +1041,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Updates tags on an OpenShift managed cluster.
-     * 
+     *
      * Updates an OpenShift managed cluster with the specified tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param parameters Parameters supplied to the Update OpenShift Managed Cluster Tags operation.
@@ -1059,9 +1060,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Updates tags on an OpenShift managed cluster.
-     * 
+     *
      * Updates an OpenShift managed cluster with the specified tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param parameters Parameters supplied to the Update OpenShift Managed Cluster Tags operation.
@@ -1079,9 +1080,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Deletes an OpenShift managed cluster.
-     * 
+     *
      * Deletes the OpenShift managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1116,9 +1117,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Deletes an OpenShift managed cluster.
-     * 
+     *
      * Deletes the OpenShift managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param context The context to associate with this operation.
@@ -1154,9 +1155,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Deletes an OpenShift managed cluster.
-     * 
+     *
      * Deletes the OpenShift managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1173,9 +1174,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Deletes an OpenShift managed cluster.
-     * 
+     *
      * Deletes the OpenShift managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param context The context to associate with this operation.
@@ -1195,9 +1196,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Deletes an OpenShift managed cluster.
-     * 
+     *
      * Deletes the OpenShift managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1212,9 +1213,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Deletes an OpenShift managed cluster.
-     * 
+     *
      * Deletes the OpenShift managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param context The context to associate with this operation.
@@ -1231,9 +1232,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Deletes an OpenShift managed cluster.
-     * 
+     *
      * Deletes the OpenShift managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1248,9 +1249,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Deletes an OpenShift managed cluster.
-     * 
+     *
      * Deletes the OpenShift managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param context The context to associate with this operation.
@@ -1267,9 +1268,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Deletes an OpenShift managed cluster.
-     * 
+     *
      * Deletes the OpenShift managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1283,9 +1284,9 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Deletes an OpenShift managed cluster.
-     * 
+     *
      * Deletes the OpenShift managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param context The context to associate with this operation.
@@ -1300,10 +1301,8 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1328,10 +1327,8 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1358,10 +1355,8 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1388,10 +1383,8 @@ public final class OpenShiftManagedClustersClientImpl implements InnerSupportsGe
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

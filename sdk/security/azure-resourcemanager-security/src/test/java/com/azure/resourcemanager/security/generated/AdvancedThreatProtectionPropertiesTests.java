@@ -12,14 +12,14 @@ public final class AdvancedThreatProtectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AdvancedThreatProtectionProperties model
-            = BinaryData.fromString("{\"isEnabled\":true}").toObject(AdvancedThreatProtectionProperties.class);
-        Assertions.assertEquals(true, model.isEnabled());
+            = BinaryData.fromString("{\"isEnabled\":false}").toObject(AdvancedThreatProtectionProperties.class);
+        Assertions.assertEquals(false, model.isEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AdvancedThreatProtectionProperties model = new AdvancedThreatProtectionProperties().withIsEnabled(true);
+        AdvancedThreatProtectionProperties model = new AdvancedThreatProtectionProperties().withIsEnabled(false);
         model = BinaryData.fromObject(model).toObject(AdvancedThreatProtectionProperties.class);
-        Assertions.assertEquals(true, model.isEnabled());
+        Assertions.assertEquals(false, model.isEnabled());
     }
 }

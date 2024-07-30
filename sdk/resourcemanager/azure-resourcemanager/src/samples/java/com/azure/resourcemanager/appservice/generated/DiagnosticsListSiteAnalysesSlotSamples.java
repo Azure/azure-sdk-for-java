@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class DiagnosticsListSiteAnalysesSlotSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/Diagnostics_ListSiteAnalyses.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/Diagnostics_ListSiteAnalyses.json
      */
     /**
      * Sample code: List App Analyses.
@@ -18,13 +17,16 @@ public final class DiagnosticsListSiteAnalysesSlotSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listAppAnalyses(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getDiagnostics().listSiteAnalysesSlot("Sample-WestUSResourceGroup",
-            "SampleApp", "availability", "Production", com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getDiagnostics()
+            .listSiteAnalysesSlot("Sample-WestUSResourceGroup", "SampleApp", "availability", "Production",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/Diagnostics_ListSiteAnalysesSlot.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/Diagnostics_ListSiteAnalysesSlot.json
      */
     /**
      * Sample code: List App Slot Analyses.
@@ -32,7 +34,11 @@ public final class DiagnosticsListSiteAnalysesSlotSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listAppSlotAnalyses(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getDiagnostics().listSiteAnalysesSlot("Sample-WestUSResourceGroup",
-            "SampleApp", "availability", "staging", com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getDiagnostics()
+            .listSiteAnalysesSlot("Sample-WestUSResourceGroup", "SampleApp", "availability", "staging",
+                com.azure.core.util.Context.NONE);
     }
 }

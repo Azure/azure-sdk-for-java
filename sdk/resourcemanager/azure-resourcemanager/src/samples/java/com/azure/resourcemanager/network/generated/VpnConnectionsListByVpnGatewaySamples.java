@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class VpnConnectionsListByVpnGatewaySamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VpnConnectionList.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VpnConnectionList.json
      */
     /**
      * Sample code: VpnConnectionList.
@@ -18,7 +18,10 @@ public final class VpnConnectionsListByVpnGatewaySamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void vpnConnectionList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVpnConnections().listByVpnGateway("rg1", "gateway1",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVpnConnections()
+            .listByVpnGateway("rg1", "gateway1", com.azure.core.util.Context.NONE);
     }
 }

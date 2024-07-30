@@ -80,8 +80,9 @@ public final class BinaryDatasetTypeProperties {
      */
     public void validate() {
         if (location() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property location in model BinaryDatasetTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model BinaryDatasetTypeProperties"));
         } else {
             location().validate();
         }

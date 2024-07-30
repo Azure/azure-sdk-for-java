@@ -10,13 +10,13 @@ import com.azure.resourcemanager.datafactory.models.SapHanaPartitionSettings;
 public final class SapHanaPartitionSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapHanaPartitionSettings model = BinaryData.fromString("{\"partitionColumnName\":\"dataujhejytrvlgu\"}")
-            .toObject(SapHanaPartitionSettings.class);
+        SapHanaPartitionSettings model
+            = BinaryData.fromString("{\"partitionColumnName\":\"datac\"}").toObject(SapHanaPartitionSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapHanaPartitionSettings model = new SapHanaPartitionSettings().withPartitionColumnName("dataujhejytrvlgu");
+        SapHanaPartitionSettings model = new SapHanaPartitionSettings().withPartitionColumnName("datac");
         model = BinaryData.fromObject(model).toObject(SapHanaPartitionSettings.class);
     }
 }

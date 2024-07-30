@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -40,7 +41,7 @@ public final class ApplicationGatewayFirewallRuleGroup {
 
     /**
      * Get the ruleGroupName property: The name of the web application firewall rule group.
-     * 
+     *
      * @return the ruleGroupName value.
      */
     public String ruleGroupName() {
@@ -49,7 +50,7 @@ public final class ApplicationGatewayFirewallRuleGroup {
 
     /**
      * Set the ruleGroupName property: The name of the web application firewall rule group.
-     * 
+     *
      * @param ruleGroupName the ruleGroupName value to set.
      * @return the ApplicationGatewayFirewallRuleGroup object itself.
      */
@@ -60,7 +61,7 @@ public final class ApplicationGatewayFirewallRuleGroup {
 
     /**
      * Get the description property: The description of the web application firewall rule group.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -69,7 +70,7 @@ public final class ApplicationGatewayFirewallRuleGroup {
 
     /**
      * Set the description property: The description of the web application firewall rule group.
-     * 
+     *
      * @param description the description value to set.
      * @return the ApplicationGatewayFirewallRuleGroup object itself.
      */
@@ -80,7 +81,7 @@ public final class ApplicationGatewayFirewallRuleGroup {
 
     /**
      * Get the rules property: The rules of the web application firewall rule group.
-     * 
+     *
      * @return the rules value.
      */
     public List<ApplicationGatewayFirewallRule> rules() {
@@ -89,7 +90,7 @@ public final class ApplicationGatewayFirewallRuleGroup {
 
     /**
      * Set the rules property: The rules of the web application firewall rule group.
-     * 
+     *
      * @param rules the rules value to set.
      * @return the ApplicationGatewayFirewallRuleGroup object itself.
      */
@@ -100,17 +101,19 @@ public final class ApplicationGatewayFirewallRuleGroup {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ruleGroupName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property ruleGroupName in model ApplicationGatewayFirewallRuleGroup"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property ruleGroupName in model ApplicationGatewayFirewallRuleGroup"));
         }
         if (rules() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property rules in model ApplicationGatewayFirewallRuleGroup"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property rules in model ApplicationGatewayFirewallRuleGroup"));
         } else {
             rules().forEach(e -> e.validate());
         }

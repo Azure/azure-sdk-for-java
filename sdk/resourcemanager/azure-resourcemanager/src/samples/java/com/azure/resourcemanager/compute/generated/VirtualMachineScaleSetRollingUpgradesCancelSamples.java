@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class VirtualMachineScaleSetRollingUpgradesCancelSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSetRollingUpgrade_Cancel_MinimumSet_Gen.json
      */
     /**
@@ -20,13 +20,16 @@ public final class VirtualMachineScaleSetRollingUpgradesCancelSamples {
      */
     public static void
         virtualMachineScaleSetRollingUpgradeCancelMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetRollingUpgrades().cancel("rgcompute",
-            "aaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetRollingUpgrades()
+            .cancel("rgcompute", "aaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSetRollingUpgrade_Cancel_MaximumSet_Gen.json
      */
     /**
@@ -36,7 +39,10 @@ public final class VirtualMachineScaleSetRollingUpgradesCancelSamples {
      */
     public static void
         virtualMachineScaleSetRollingUpgradeCancelMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetRollingUpgrades().cancel("rgcompute",
-            "aaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetRollingUpgrades()
+            .cancel("rgcompute", "aaaaa", com.azure.core.util.Context.NONE);
     }
 }

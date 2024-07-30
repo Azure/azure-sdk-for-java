@@ -8,8 +8,8 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The system generated resource properties associated with SQL databases, SQL containers, Gremlin databases and
- * Gremlin graphs.
+ * The system generated resource properties associated with SQL databases, SQL containers, Gremlin databases and Gremlin
+ * graphs.
  */
 @Immutable
 public class ExtendedResourceProperties {

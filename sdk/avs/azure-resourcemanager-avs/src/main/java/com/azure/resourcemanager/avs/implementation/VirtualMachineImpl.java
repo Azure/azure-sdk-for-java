@@ -4,8 +4,10 @@
 
 package com.azure.resourcemanager.avs.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.avs.fluent.models.VirtualMachineInner;
 import com.azure.resourcemanager.avs.models.VirtualMachine;
+import com.azure.resourcemanager.avs.models.VirtualMachineProvisioningState;
 import com.azure.resourcemanager.avs.models.VirtualMachineRestrictMovementState;
 
 public final class VirtualMachineImpl implements VirtualMachine {
@@ -28,6 +30,14 @@ public final class VirtualMachineImpl implements VirtualMachine {
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
+    public VirtualMachineProvisioningState provisioningState() {
+        return this.innerModel().provisioningState();
     }
 
     public String displayName() {

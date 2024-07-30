@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ContainerAppSecret;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -29,7 +30,7 @@ public final class SecretsCollectionInner {
 
     /**
      * Get the value property: Collection of resources.
-     * 
+     *
      * @return the value value.
      */
     public List<ContainerAppSecret> value() {
@@ -38,7 +39,7 @@ public final class SecretsCollectionInner {
 
     /**
      * Set the value property: Collection of resources.
-     * 
+     *
      * @param value the value value to set.
      * @return the SecretsCollectionInner object itself.
      */
@@ -49,13 +50,13 @@ public final class SecretsCollectionInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model SecretsCollectionInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model SecretsCollectionInner"));
         } else {
             value().forEach(e -> e.validate());
         }

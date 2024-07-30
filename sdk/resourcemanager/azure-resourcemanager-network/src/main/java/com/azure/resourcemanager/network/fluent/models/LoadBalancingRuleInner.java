@@ -58,8 +58,8 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Get the name property: The name of the resource that is unique within the set of load balancing rules used by
-     * the load balancer. This name can be used to access the resource.
+     * Get the name property: The name of the resource that is unique within the set of load balancing rules used by the
+     * load balancer. This name can be used to access the resource.
      * 
      * @return the name value.
      */
@@ -68,8 +68,8 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Set the name property: The name of the resource that is unique within the set of load balancing rules used by
-     * the load balancer. This name can be used to access the resource.
+     * Set the name property: The name of the resource that is unique within the set of load balancing rules used by the
+     * load balancer. This name can be used to access the resource.
      * 
      * @param name the name value to set.
      * @return the LoadBalancingRuleInner object itself.
@@ -374,8 +374,8 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Get the disableOutboundSnat property: Configures SNAT for the VMs in the backend pool to use the publicIP
-     * address specified in the frontend of the load balancing rule.
+     * Get the disableOutboundSnat property: Configures SNAT for the VMs in the backend pool to use the publicIP address
+     * specified in the frontend of the load balancing rule.
      * 
      * @return the disableOutboundSnat value.
      */
@@ -384,8 +384,8 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Set the disableOutboundSnat property: Configures SNAT for the VMs in the backend pool to use the publicIP
-     * address specified in the frontend of the load balancing rule.
+     * Set the disableOutboundSnat property: Configures SNAT for the VMs in the backend pool to use the publicIP address
+     * specified in the frontend of the load balancing rule.
      * 
      * @param disableOutboundSnat the disableOutboundSnat value to set.
      * @return the LoadBalancingRuleInner object itself.

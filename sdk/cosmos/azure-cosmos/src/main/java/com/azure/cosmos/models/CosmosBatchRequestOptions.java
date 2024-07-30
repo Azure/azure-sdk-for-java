@@ -5,13 +5,18 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Encapsulates options that can be specified for a {@link CosmosBatch}.
@@ -22,6 +27,29 @@ public final class CosmosBatchRequestOptions {
     private Map<String, String> customOptions;
     private CosmosDiagnosticsThresholds thresholds = new CosmosDiagnosticsThresholds();
     private List<String> excludeRegions;
+
+    private CosmosItemSerializer customSerializer;
+    private Set<String> keywordIdentifiers;
+    private static final Set<String> EMPTY_KEYWORD_IDENTIFIERS = Collections.unmodifiableSet(new HashSet<>());
+
+    /**
+     * Creates an instance of the CosmosBatchRequestOptions class
+     */
+    public CosmosBatchRequestOptions() {
+    }
+
+
+    CosmosBatchRequestOptions(CosmosBatchRequestOptions toBeCloned) {
+        this.consistencyLevel = toBeCloned.consistencyLevel;
+        this.sessionToken = toBeCloned.sessionToken;
+        this.customOptions = toBeCloned.customOptions;
+        this.thresholds = toBeCloned.thresholds;
+        this.customSerializer = toBeCloned.customSerializer;
+
+        if (toBeCloned.excludeRegions != null) {
+            this.excludeRegions = new ArrayList<>(toBeCloned.excludeRegions);
+        }
+    }
 
     /**
      * Gets the consistency level required for the request.
@@ -90,12 +118,15 @@ public final class CosmosBatchRequestOptions {
         requestOptions.setConsistencyLevel(getConsistencyLevel());
         requestOptions.setSessionToken(sessionToken);
         requestOptions.setDiagnosticsThresholds(thresholds);
+        requestOptions.setEffectiveItemSerializer(this.customSerializer);
+
         if(this.customOptions != null) {
             for(Map.Entry<String, String> entry : this.customOptions.entrySet()) {
                 requestOptions.setHeader(entry.getKey(), entry.getValue());
             }
         }
-        requestOptions.setExcludeRegions(excludeRegions);
+        requestOptions.setExcludedRegions(excludeRegions);
+        requestOptions.setKeywordIdentifiers(keywordIdentifiers);
 
         return requestOptions;
     }
@@ -142,12 +173,57 @@ public final class CosmosBatchRequestOptions {
     }
 
     /**
+     * Gets the custom item serializer defined for this instance of request options
+     * @return the custom item serializer
+     */
+    public CosmosItemSerializer getCustomItemSerializer() {
+        return this.customSerializer;
+    }
+
+    /**
+     * Allows specifying a custom item serializer to be used for this operation. If the serializer
+     * on the request options is null, the serializer on CosmosClientBuilder is used. If both serializers
+     * are null (the default), an internal Jackson ObjectMapper is ued for serialization/deserialization.
+     * @param customItemSerializer the custom item serializer for this operation
+     * @return  the CosmosItemRequestOptions.
+     */
+    public CosmosBatchRequestOptions setCustomItemSerializer(CosmosItemSerializer customItemSerializer) {
+        this.customSerializer = customItemSerializer;
+
+        return this;
+    }
+
+    /**
      * Gets the custom batch request options
      *
      * @return Map of custom request options
      */
     Map<String, String> getHeaders() {
         return this.customOptions;
+    }
+
+    /**
+     * Sets the custom ids.
+     *
+     * @param keywordIdentifiers the custom ids.
+     * @return the current request options.
+     */
+    public CosmosBatchRequestOptions setKeywordIdentifiers(Set<String> keywordIdentifiers) {
+        if (keywordIdentifiers != null) {
+            this.keywordIdentifiers = Collections.unmodifiableSet(keywordIdentifiers);
+        } else {
+            this.keywordIdentifiers = EMPTY_KEYWORD_IDENTIFIERS;
+        }
+        return this;
+    }
+
+    /**
+     * Gets the custom ids.
+     *
+     * @return the custom ids.
+     */
+    public Set<String> getKeywordIdentifiers() {
+        return keywordIdentifiers;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -178,9 +254,10 @@ public final class CosmosBatchRequestOptions {
                 }
 
                 @Override
-                public List<String> getExcludeRegions(CosmosBatchRequestOptions cosmosBatchRequestOptions) {
-                    return cosmosBatchRequestOptions.excludeRegions;
+                public CosmosBatchRequestOptions clone(CosmosBatchRequestOptions toBeCloned) {
+                    return new CosmosBatchRequestOptions(toBeCloned);
                 }
+
             }
         );
     }

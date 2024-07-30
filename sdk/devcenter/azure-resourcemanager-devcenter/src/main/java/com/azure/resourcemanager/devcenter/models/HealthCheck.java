@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** An individual health check item. */
+/**
+ * An individual health check item.
+ */
 @Immutable
 public final class HealthCheck {
     /*
@@ -53,13 +55,15 @@ public final class HealthCheck {
     @JsonProperty(value = "additionalDetails", access = JsonProperty.Access.WRITE_ONLY)
     private String additionalDetails;
 
-    /** Creates an instance of HealthCheck class. */
+    /**
+     * Creates an instance of HealthCheck class.
+     */
     public HealthCheck() {
     }
 
     /**
      * Get the status property: The status of the health check item.
-     *
+     * 
      * @return the status value.
      */
     public HealthCheckStatus status() {
@@ -68,7 +72,7 @@ public final class HealthCheck {
 
     /**
      * Get the displayName property: The display name of this health check item.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -77,7 +81,7 @@ public final class HealthCheck {
 
     /**
      * Get the startDateTime property: Start time of health check item.
-     *
+     * 
      * @return the startDateTime value.
      */
     public OffsetDateTime startDateTime() {
@@ -86,7 +90,7 @@ public final class HealthCheck {
 
     /**
      * Get the endDateTime property: End time of the health check item.
-     *
+     * 
      * @return the endDateTime value.
      */
     public OffsetDateTime endDateTime() {
@@ -95,7 +99,7 @@ public final class HealthCheck {
 
     /**
      * Get the errorType property: The type of error that occurred during this health check.
-     *
+     * 
      * @return the errorType value.
      */
     public String errorType() {
@@ -104,7 +108,7 @@ public final class HealthCheck {
 
     /**
      * Get the recommendedAction property: The recommended action to fix the corresponding error.
-     *
+     * 
      * @return the recommendedAction value.
      */
     public String recommendedAction() {
@@ -113,7 +117,7 @@ public final class HealthCheck {
 
     /**
      * Get the additionalDetails property: Additional details about the health check or the recommended action.
-     *
+     * 
      * @return the additionalDetails value.
      */
     public String additionalDetails() {
@@ -122,7 +126,7 @@ public final class HealthCheck {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

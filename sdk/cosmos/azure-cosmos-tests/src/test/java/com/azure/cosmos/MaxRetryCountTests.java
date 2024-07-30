@@ -131,10 +131,10 @@ public class MaxRetryCountTests extends TestSuiteBase {
             assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.SERVER_GENERATED_408);
         };
 
-    private final static BiConsumer<Integer, Integer> validateStatusCodeIsTimeout =
+    private final static BiConsumer<Integer, Integer> validateStatusCodeIsTransitTimeout =
         (statusCode, subStatusCode) -> {
             assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
-            assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.UNKNOWN);
+            assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.TRANSIT_TIMEOUT);
         };
 
     private final static BiConsumer<Integer, Integer> validateStatusCodeIsTransitTimeoutGenerated503ForWrite =
@@ -944,7 +944,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
                 notSpecifiedWhetherIdempotentWriteRetriesAreEnabled,
                 sameDocumentIdJustCreated,
                 injectTransitTimeoutIntoAllRegions.apply(minNetworkRequestTimeoutDuration),
-                validateStatusCodeIsTimeout, // when idempotent write is disabled, SDK will not retry for write operation, 408 will be bubbled up
+                validateStatusCodeIsTransitTimeout, // when idempotent write is disabled, SDK will not retry for write operation, 408 will be bubbled up
                 (TriConsumer<Integer, ConsistencyLevel, OperationType>)(requestCount, consistencyLevel, operationType) ->
                     assertThat(requestCount).isLessThanOrEqualTo(
                         expectedMaxNumberOfRetriesForTransientTimeout(
@@ -2559,8 +2559,10 @@ public class MaxRetryCountTests extends TestSuiteBase {
         }
 
         if (nonIdempotentWriteRetriesEnabled != null) {
-            builder.setNonIdempotentWriteRetryPolicy(
-                nonIdempotentWriteRetriesEnabled, true);
+            builder.nonIdempotentWriteRetryOptions(
+                new NonIdempotentWriteRetryOptions()
+                    .setEnabled(nonIdempotentWriteRetriesEnabled)
+                    .setTrackingIdUsed(true));
         }
 
         return builder.buildAsyncClient();

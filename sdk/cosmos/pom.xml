@@ -19,8 +19,10 @@
     <module>azure-cosmos-spark_3-2_2-12</module>
     <module>azure-cosmos-spark_3-3_2-12</module>
     <module>azure-cosmos-spark_3-4_2-12</module>
+    <module>azure-cosmos-spark_3-5_2-12</module>
     <module>azure-cosmos-test</module>
     <module>azure-cosmos-tests</module>
     <module>azure-cosmos-kafka-connect</module>
+    <module>azure-cosmos-spark-account-data-resolver-sample</module>
   </modules>
 </project>

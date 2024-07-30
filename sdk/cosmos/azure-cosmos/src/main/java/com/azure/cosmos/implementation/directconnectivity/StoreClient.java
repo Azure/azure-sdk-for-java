@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.IRetryPolicy;
+import com.azure.cosmos.implementation.ISessionContainer;
 import com.azure.cosmos.implementation.ISessionToken;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.OperationType;
@@ -22,7 +23,6 @@ import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
-import com.azure.cosmos.implementation.SessionContainer;
 import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
@@ -51,8 +51,7 @@ public class StoreClient implements IStoreClient {
     private final DiagnosticsClientContext diagnosticsClientContext;
     private final Logger logger = LoggerFactory.getLogger(StoreClient.class);
     private final GatewayServiceConfigurationReader serviceConfigurationReader;
-
-    private final SessionContainer sessionContainer;
+    private final ISessionContainer sessionContainer;
     private final ReplicatedResourceClient replicatedResourceClient;
     private final TransportClient transportClient;
     private final String ZERO_PARTITION_KEY_RANGE = "0";
@@ -61,7 +60,7 @@ public class StoreClient implements IStoreClient {
             DiagnosticsClientContext diagnosticsClientContext,
             Configs configs,
             IAddressResolver addressResolver,
-            SessionContainer sessionContainer,
+            ISessionContainer sessionContainer,
             GatewayServiceConfigurationReader serviceConfigurationReader, IAuthorizationTokenProvider userTokenProvider,
             TransportClient transportClient,
             boolean useMultipleWriteLocations,
@@ -189,6 +188,7 @@ public class StoreClient implements IStoreClient {
         RxDocumentServiceResponse rxDocumentServiceResponse =
             new RxDocumentServiceResponse(this.diagnosticsClientContext, storeResponse);
         rxDocumentServiceResponse.setCosmosDiagnostics(request.requestContext.cosmosDiagnostics);
+
         return rxDocumentServiceResponse;
     }
 

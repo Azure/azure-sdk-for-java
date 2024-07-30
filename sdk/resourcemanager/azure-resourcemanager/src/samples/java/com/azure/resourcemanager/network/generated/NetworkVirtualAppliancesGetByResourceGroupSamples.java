@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class NetworkVirtualAppliancesGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkVirtualApplianceGet.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkVirtualApplianceGet.
      * json
      */
     /**
@@ -19,7 +19,10 @@ public final class NetworkVirtualAppliancesGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getNetworkVirtualAppliance(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getNetworkVirtualAppliances().getByResourceGroupWithResponse("rg1",
-            "nva", null, com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getNetworkVirtualAppliances()
+            .getByResourceGroupWithResponse("rg1", "nva", null, com.azure.core.util.Context.NONE);
     }
 }

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.11 (Unreleased)
+## 1.0.0-beta.12 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,53 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.11 (2024-05-20)
+
+- Azure Resource Manager StorageCache client library for Java. This package contains Microsoft Azure SDK for StorageCache Management SDK. Azure Managed Lustre provides a fully managed Lustre® file system, integrated with Blob storage, for use on demand. These operations create and manage Azure Managed Lustre file systems. Package tag package-2024-03. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.ErrorResponse` was removed
+
+#### `models.AscOperation` was modified
+
+* `models.ErrorResponse error()` -> `models.AscOperationErrorResponse error()`
+
+### Features Added
+
+* `models.ConflictResolutionMode` was added
+
+* `models.ImportJobs` was added
+
+* `models.ImportJob$Update` was added
+
+* `models.ImportJobUpdate` was added
+
+* `models.ImportJob$UpdateStages` was added
+
+* `models.ImportJob` was added
+
+* `models.ImportJobProvisioningStateType` was added
+
+* `models.ImportJobsListResult` was added
+
+* `models.ImportJob$Definition` was added
+
+* `models.AscOperationErrorResponse` was added
+
+* `models.ImportJob$DefinitionStages` was added
+
+* `models.ImportStatusType` was added
+
+#### `models.AmlFilesystemHsmSettings` was modified
+
+* `withImportPrefixesInitial(java.util.List)` was added
+* `importPrefixesInitial()` was added
+
+#### `StorageCacheManager` was modified
+
+* `importJobs()` was added
 
 ## 1.0.0-beta.10 (2024-02-27)
 

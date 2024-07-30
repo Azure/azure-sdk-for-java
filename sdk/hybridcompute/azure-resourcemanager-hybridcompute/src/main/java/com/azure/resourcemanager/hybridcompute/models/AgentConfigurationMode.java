@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,15 +12,19 @@ import java.util.Collection;
  * and guest configuration, maintained by Microsoft.
  */
 public final class AgentConfigurationMode extends ExpandableStringEnum<AgentConfigurationMode> {
-    /** Static value full for AgentConfigurationMode. */
+    /**
+     * Static value full for AgentConfigurationMode.
+     */
     public static final AgentConfigurationMode FULL = fromString("full");
 
-    /** Static value monitor for AgentConfigurationMode. */
+    /**
+     * Static value monitor for AgentConfigurationMode.
+     */
     public static final AgentConfigurationMode MONITOR = fromString("monitor");
 
     /**
      * Creates a new instance of AgentConfigurationMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +33,17 @@ public final class AgentConfigurationMode extends ExpandableStringEnum<AgentConf
 
     /**
      * Creates or finds a AgentConfigurationMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AgentConfigurationMode.
      */
-    @JsonCreator
     public static AgentConfigurationMode fromString(String name) {
         return fromString(name, AgentConfigurationMode.class);
     }
 
     /**
      * Gets known AgentConfigurationMode values.
-     *
+     * 
      * @return known AgentConfigurationMode values.
      */
     public static Collection<AgentConfigurationMode> values() {

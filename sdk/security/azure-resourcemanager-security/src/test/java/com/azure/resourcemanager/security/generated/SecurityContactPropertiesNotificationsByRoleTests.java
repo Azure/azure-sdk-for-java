@@ -14,19 +14,22 @@ import org.junit.jupiter.api.Assertions;
 public final class SecurityContactPropertiesNotificationsByRoleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecurityContactPropertiesNotificationsByRole model
-            = BinaryData.fromString("{\"state\":\"Unsupported\",\"roles\":[\"Owner\"]}")
-                .toObject(SecurityContactPropertiesNotificationsByRole.class);
-        Assertions.assertEquals(State.UNSUPPORTED, model.state());
-        Assertions.assertEquals(SecurityContactRole.OWNER, model.roles().get(0));
+        SecurityContactPropertiesNotificationsByRole model = BinaryData
+            .fromString(
+                "{\"state\":\"Skipped\",\"roles\":[\"AccountAdmin\",\"ServiceAdmin\",\"Contributor\",\"Owner\"]}")
+            .toObject(SecurityContactPropertiesNotificationsByRole.class);
+        Assertions.assertEquals(State.SKIPPED, model.state());
+        Assertions.assertEquals(SecurityContactRole.ACCOUNT_ADMIN, model.roles().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecurityContactPropertiesNotificationsByRole model = new SecurityContactPropertiesNotificationsByRole()
-            .withState(State.UNSUPPORTED).withRoles(Arrays.asList(SecurityContactRole.OWNER));
+        SecurityContactPropertiesNotificationsByRole model
+            = new SecurityContactPropertiesNotificationsByRole().withState(State.SKIPPED)
+                .withRoles(Arrays.asList(SecurityContactRole.ACCOUNT_ADMIN, SecurityContactRole.SERVICE_ADMIN,
+                    SecurityContactRole.CONTRIBUTOR, SecurityContactRole.OWNER));
         model = BinaryData.fromObject(model).toObject(SecurityContactPropertiesNotificationsByRole.class);
-        Assertions.assertEquals(State.UNSUPPORTED, model.state());
-        Assertions.assertEquals(SecurityContactRole.OWNER, model.roles().get(0));
+        Assertions.assertEquals(State.SKIPPED, model.state());
+        Assertions.assertEquals(SecurityContactRole.ACCOUNT_ADMIN, model.roles().get(0));
     }
 }

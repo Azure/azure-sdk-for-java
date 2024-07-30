@@ -6,28 +6,38 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
 
-/** Identity properties of the AKS cluster agentpool MSI. */
+/**
+ * Identity properties of the AKS cluster agentpool MSI.
+ */
 @Fluent
 public final class AksClusterProfileAksClusterAgentPoolIdentityProfile extends IdentityProfile {
-    /** Creates an instance of AksClusterProfileAksClusterAgentPoolIdentityProfile class. */
+    /**
+     * Creates an instance of AksClusterProfileAksClusterAgentPoolIdentityProfile class.
+     */
     public AksClusterProfileAksClusterAgentPoolIdentityProfile() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AksClusterProfileAksClusterAgentPoolIdentityProfile withMsiResourceId(String msiResourceId) {
         super.withMsiResourceId(msiResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AksClusterProfileAksClusterAgentPoolIdentityProfile withMsiClientId(String msiClientId) {
         super.withMsiClientId(msiClientId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AksClusterProfileAksClusterAgentPoolIdentityProfile withMsiObjectId(String msiObjectId) {
         super.withMsiObjectId(msiObjectId);
@@ -36,7 +46,7 @@ public final class AksClusterProfileAksClusterAgentPoolIdentityProfile extends I
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

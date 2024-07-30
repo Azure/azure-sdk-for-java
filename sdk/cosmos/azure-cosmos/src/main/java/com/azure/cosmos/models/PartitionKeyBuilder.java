@@ -3,12 +3,19 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.PartitionKeyHelper;
 import com.azure.cosmos.implementation.Undefined;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Builder for partition keys.

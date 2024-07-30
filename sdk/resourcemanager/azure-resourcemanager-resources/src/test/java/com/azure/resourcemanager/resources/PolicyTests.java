@@ -5,6 +5,7 @@ package com.azure.resourcemanager.resources;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.resourcemanager.resources.models.EnforcementMode;
 import com.azure.resourcemanager.resources.models.ParameterDefinitionsValue;
 import com.azure.resourcemanager.resources.models.ParameterType;
@@ -20,6 +21,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PolicyTests extends ResourceManagementTest {
     private String policyRule = "{\"if\":{\"not\":{\"field\":\"location\",\"in\":[\"southcentralus\",\"westeurope\"]}},\"then\":{\"effect\":\"deny\"}}";
@@ -30,23 +33,31 @@ public class PolicyTests extends ResourceManagementTest {
 
     }
 
+    @SuppressWarnings("unchecked")
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void canCRUDPolicyDefinition() throws Exception {
         String policyName = generateRandomResourceName("policy", 15);
         String displayName = generateRandomResourceName("mypolicy", 15);
         try {
+            Map<String, String> metadata = new HashMap<>();
+            metadata.put("category", "Compute");
+
             // Create
             PolicyDefinition definition = resourceClient.policyDefinitions().define(policyName)
                     .withPolicyRuleJson(policyRule)
                     .withPolicyType(PolicyType.CUSTOM)
                     .withDisplayName(displayName)
                     .withDescription("This is my policy")
+                    .withMode("All")
+                    .withMetadata(metadata)
                     .create();
             Assertions.assertEquals(policyName, definition.name());
             Assertions.assertEquals(PolicyType.CUSTOM, definition.policyType());
             Assertions.assertEquals(displayName, definition.displayName());
             Assertions.assertEquals("This is my policy", definition.description());
+            Assertions.assertEquals("All", definition.mode());
+            Assertions.assertEquals("Compute", ((Map<String, String>) definition.metadata()).get("category"));
             // List
             PagedIterable<PolicyDefinition> definitions = resourceClient.policyDefinitions().list();
             boolean found = false;
@@ -60,6 +71,15 @@ public class PolicyTests extends ResourceManagementTest {
             definition = resourceClient.policyDefinitions().getByName(policyName);
             Assertions.assertNotNull(definition);
             Assertions.assertEquals(displayName, definition.displayName());
+            // Update
+            metadata.put("tag", "Test");
+            definition.update()
+                .withDescription("This is my updated policy")
+                .withMode("Indexed")
+                .withMetadata(metadata)
+                .apply();
+            Assertions.assertEquals("Indexed", definition.mode());
+            Assertions.assertEquals("Test", ((Map<String, String>) definition.metadata()).get("tag"));
         } finally {
             // Delete
             resourceClient.policyDefinitions().deleteByName(policyName);

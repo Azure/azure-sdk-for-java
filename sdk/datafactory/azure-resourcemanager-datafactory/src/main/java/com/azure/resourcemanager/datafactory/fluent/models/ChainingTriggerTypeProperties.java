@@ -80,14 +80,16 @@ public final class ChainingTriggerTypeProperties {
      */
     public void validate() {
         if (dependsOn() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property dependsOn in model ChainingTriggerTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dependsOn in model ChainingTriggerTypeProperties"));
         } else {
             dependsOn().forEach(e -> e.validate());
         }
         if (runDimension() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property runDimension in model ChainingTriggerTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property runDimension in model ChainingTriggerTypeProperties"));
         }
     }
 

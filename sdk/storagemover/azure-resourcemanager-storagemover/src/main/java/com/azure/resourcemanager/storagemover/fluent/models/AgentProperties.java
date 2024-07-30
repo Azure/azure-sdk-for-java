@@ -9,10 +9,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagemover.models.AgentPropertiesErrorDetails;
 import com.azure.resourcemanager.storagemover.models.AgentStatus;
 import com.azure.resourcemanager.storagemover.models.ProvisioningState;
+import com.azure.resourcemanager.storagemover.models.UploadLimitSchedule;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The AgentProperties model. */
+/**
+ * The AgentProperties model.
+ */
 @Fluent
 public final class AgentProperties {
     /*
@@ -76,6 +79,20 @@ public final class AgentProperties {
     private Long uptimeInSeconds;
 
     /*
+     * The agent's local time zone represented in Windows format.
+     */
+    @JsonProperty(value = "timeZone", access = JsonProperty.Access.WRITE_ONLY)
+    private String timeZone;
+
+    /*
+     * The WAN-link upload limit schedule that applies to any Job Run the agent executes. Data plane operations
+     * (migrating files) are affected. Control plane operations ensure seamless migration functionality and are not
+     * limited by this schedule. The schedule is interpreted with the agent's local time.
+     */
+    @JsonProperty(value = "uploadLimitSchedule")
+    private UploadLimitSchedule uploadLimitSchedule;
+
+    /*
      * The errorDetails property.
      */
     @JsonProperty(value = "errorDetails", access = JsonProperty.Access.WRITE_ONLY)
@@ -87,13 +104,15 @@ public final class AgentProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of AgentProperties class. */
+    /**
+     * Creates an instance of AgentProperties class.
+     */
     public AgentProperties() {
     }
 
     /**
      * Get the description property: A description for the Agent.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -102,7 +121,7 @@ public final class AgentProperties {
 
     /**
      * Set the description property: A description for the Agent.
-     *
+     * 
      * @param description the description value to set.
      * @return the AgentProperties object itself.
      */
@@ -113,7 +132,7 @@ public final class AgentProperties {
 
     /**
      * Get the agentVersion property: The Agent version.
-     *
+     * 
      * @return the agentVersion value.
      */
     public String agentVersion() {
@@ -122,7 +141,7 @@ public final class AgentProperties {
 
     /**
      * Get the arcResourceId property: The fully qualified resource ID of the Hybrid Compute resource for the Agent.
-     *
+     * 
      * @return the arcResourceId value.
      */
     public String arcResourceId() {
@@ -131,7 +150,7 @@ public final class AgentProperties {
 
     /**
      * Set the arcResourceId property: The fully qualified resource ID of the Hybrid Compute resource for the Agent.
-     *
+     * 
      * @param arcResourceId the arcResourceId value to set.
      * @return the AgentProperties object itself.
      */
@@ -142,7 +161,7 @@ public final class AgentProperties {
 
     /**
      * Get the arcVmUuid property: The VM UUID of the Hybrid Compute resource for the Agent.
-     *
+     * 
      * @return the arcVmUuid value.
      */
     public String arcVmUuid() {
@@ -151,7 +170,7 @@ public final class AgentProperties {
 
     /**
      * Set the arcVmUuid property: The VM UUID of the Hybrid Compute resource for the Agent.
-     *
+     * 
      * @param arcVmUuid the arcVmUuid value to set.
      * @return the AgentProperties object itself.
      */
@@ -162,7 +181,7 @@ public final class AgentProperties {
 
     /**
      * Get the agentStatus property: The Agent status.
-     *
+     * 
      * @return the agentStatus value.
      */
     public AgentStatus agentStatus() {
@@ -171,7 +190,7 @@ public final class AgentProperties {
 
     /**
      * Get the lastStatusUpdate property: The last updated time of the Agent status.
-     *
+     * 
      * @return the lastStatusUpdate value.
      */
     public OffsetDateTime lastStatusUpdate() {
@@ -180,7 +199,7 @@ public final class AgentProperties {
 
     /**
      * Get the localIpAddress property: Local IP address reported by the Agent.
-     *
+     * 
      * @return the localIpAddress value.
      */
     public String localIpAddress() {
@@ -189,7 +208,7 @@ public final class AgentProperties {
 
     /**
      * Get the memoryInMB property: Available memory reported by the Agent, in MB.
-     *
+     * 
      * @return the memoryInMB value.
      */
     public Long memoryInMB() {
@@ -198,7 +217,7 @@ public final class AgentProperties {
 
     /**
      * Get the numberOfCores property: Available compute cores reported by the Agent.
-     *
+     * 
      * @return the numberOfCores value.
      */
     public Long numberOfCores() {
@@ -207,7 +226,7 @@ public final class AgentProperties {
 
     /**
      * Get the uptimeInSeconds property: Uptime of the Agent in seconds.
-     *
+     * 
      * @return the uptimeInSeconds value.
      */
     public Long uptimeInSeconds() {
@@ -215,8 +234,43 @@ public final class AgentProperties {
     }
 
     /**
+     * Get the timeZone property: The agent's local time zone represented in Windows format.
+     * 
+     * @return the timeZone value.
+     */
+    public String timeZone() {
+        return this.timeZone;
+    }
+
+    /**
+     * Get the uploadLimitSchedule property: The WAN-link upload limit schedule that applies to any Job Run the agent
+     * executes. Data plane operations (migrating files) are affected. Control plane operations ensure seamless
+     * migration functionality and are not limited by this schedule. The schedule is interpreted with the agent's local
+     * time.
+     * 
+     * @return the uploadLimitSchedule value.
+     */
+    public UploadLimitSchedule uploadLimitSchedule() {
+        return this.uploadLimitSchedule;
+    }
+
+    /**
+     * Set the uploadLimitSchedule property: The WAN-link upload limit schedule that applies to any Job Run the agent
+     * executes. Data plane operations (migrating files) are affected. Control plane operations ensure seamless
+     * migration functionality and are not limited by this schedule. The schedule is interpreted with the agent's local
+     * time.
+     * 
+     * @param uploadLimitSchedule the uploadLimitSchedule value to set.
+     * @return the AgentProperties object itself.
+     */
+    public AgentProperties withUploadLimitSchedule(UploadLimitSchedule uploadLimitSchedule) {
+        this.uploadLimitSchedule = uploadLimitSchedule;
+        return this;
+    }
+
+    /**
      * Get the errorDetails property: The errorDetails property.
-     *
+     * 
      * @return the errorDetails value.
      */
     public AgentPropertiesErrorDetails errorDetails() {
@@ -225,7 +279,7 @@ public final class AgentProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of this resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -234,19 +288,20 @@ public final class AgentProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (arcResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property arcResourceId in model AgentProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property arcResourceId in model AgentProperties"));
         }
         if (arcVmUuid() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property arcVmUuid in model AgentProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property arcVmUuid in model AgentProperties"));
+        }
+        if (uploadLimitSchedule() != null) {
+            uploadLimitSchedule().validate();
         }
         if (errorDetails() != null) {
             errorDetails().validate();

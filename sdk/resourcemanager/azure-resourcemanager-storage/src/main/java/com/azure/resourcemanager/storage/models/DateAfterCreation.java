@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storage.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Object to define snapshot and version action conditions. */
+/**
+ * Object to define snapshot and version action conditions.
+ */
 @Fluent
 public final class DateAfterCreation {
     /*
@@ -24,13 +26,15 @@ public final class DateAfterCreation {
     @JsonProperty(value = "daysAfterLastTierChangeGreaterThan")
     private Float daysAfterLastTierChangeGreaterThan;
 
-    /** Creates an instance of DateAfterCreation class. */
+    /**
+     * Creates an instance of DateAfterCreation class.
+     */
     public DateAfterCreation() {
     }
 
     /**
      * Get the daysAfterCreationGreaterThan property: Value indicating the age in days after creation.
-     *
+     * 
      * @return the daysAfterCreationGreaterThan value.
      */
     public float daysAfterCreationGreaterThan() {
@@ -39,7 +43,7 @@ public final class DateAfterCreation {
 
     /**
      * Set the daysAfterCreationGreaterThan property: Value indicating the age in days after creation.
-     *
+     * 
      * @param daysAfterCreationGreaterThan the daysAfterCreationGreaterThan value to set.
      * @return the DateAfterCreation object itself.
      */
@@ -52,7 +56,7 @@ public final class DateAfterCreation {
      * Get the daysAfterLastTierChangeGreaterThan property: Value indicating the age in days after last blob tier change
      * time. This property is only applicable for tierToArchive actions and requires daysAfterCreationGreaterThan to be
      * set for snapshots and blob version based actions. The blob will be archived if both the conditions are satisfied.
-     *
+     * 
      * @return the daysAfterLastTierChangeGreaterThan value.
      */
     public Float daysAfterLastTierChangeGreaterThan() {
@@ -63,7 +67,7 @@ public final class DateAfterCreation {
      * Set the daysAfterLastTierChangeGreaterThan property: Value indicating the age in days after last blob tier change
      * time. This property is only applicable for tierToArchive actions and requires daysAfterCreationGreaterThan to be
      * set for snapshots and blob version based actions. The blob will be archived if both the conditions are satisfied.
-     *
+     * 
      * @param daysAfterLastTierChangeGreaterThan the daysAfterLastTierChangeGreaterThan value to set.
      * @return the DateAfterCreation object itself.
      */
@@ -74,7 +78,7 @@ public final class DateAfterCreation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

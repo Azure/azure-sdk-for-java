@@ -7,24 +7,20 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The security offering details.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "offeringType",
-    defaultImpl = CloudOffering.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "offeringType", defaultImpl = CloudOffering.class, visible = true)
 @JsonTypeName("CloudOffering")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "CspmMonitorAws", value = CspmMonitorAwsOffering.class),
     @JsonSubTypes.Type(name = "DefenderForContainersAws", value = DefenderForContainersAwsOffering.class),
     @JsonSubTypes.Type(name = "DefenderForServersAws", value = DefenderForServersAwsOffering.class),
     @JsonSubTypes.Type(name = "DefenderForDatabasesAws", value = DefenderFoDatabasesAwsOffering.class),
-    @JsonSubTypes.Type(name = "InformationProtectionAws", value = InformationProtectionAwsOffering.class),
     @JsonSubTypes.Type(name = "CspmMonitorGcp", value = CspmMonitorGcpOffering.class),
     @JsonSubTypes.Type(name = "DefenderForServersGcp", value = DefenderForServersGcpOffering.class),
     @JsonSubTypes.Type(name = "DefenderForDatabasesGcp", value = DefenderForDatabasesGcpOffering.class),
@@ -33,12 +29,16 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "CspmMonitorAzureDevOps", value = CspmMonitorAzureDevOpsOffering.class),
     @JsonSubTypes.Type(name = "DefenderCspmAws", value = DefenderCspmAwsOffering.class),
     @JsonSubTypes.Type(name = "DefenderCspmGcp", value = DefenderCspmGcpOffering.class),
-    @JsonSubTypes.Type(name = "DefenderForDevOpsGithub", value = DefenderForDevOpsGithubOffering.class),
-    @JsonSubTypes.Type(name = "DefenderForDevOpsAzureDevOps", value = DefenderForDevOpsAzureDevOpsOffering.class),
-    @JsonSubTypes.Type(name = "CspmMonitorGitLab", value = CspmMonitorGitLabOffering.class),
-    @JsonSubTypes.Type(name = "DefenderForDevOpsGitLab", value = DefenderForDevOpsGitLabOffering.class) })
+    @JsonSubTypes.Type(name = "CspmMonitorGitLab", value = CspmMonitorGitLabOffering.class) })
 @Immutable
 public class CloudOffering {
+    /*
+     * The type of the security offering.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "offeringType", required = true)
+    private OfferingType offeringType;
+
     /*
      * The offering description.
      */
@@ -49,6 +49,16 @@ public class CloudOffering {
      * Creates an instance of CloudOffering class.
      */
     public CloudOffering() {
+        this.offeringType = OfferingType.fromString("CloudOffering");
+    }
+
+    /**
+     * Get the offeringType property: The type of the security offering.
+     * 
+     * @return the offeringType value.
+     */
+    public OfferingType offeringType() {
+        return this.offeringType;
     }
 
     /**

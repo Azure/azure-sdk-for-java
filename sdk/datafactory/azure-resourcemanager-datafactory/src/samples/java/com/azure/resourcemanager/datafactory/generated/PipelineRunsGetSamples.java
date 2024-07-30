@@ -18,7 +18,8 @@ public final class PipelineRunsGetSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void pipelineRunsGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.pipelineRuns().getWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "2f7fdb90-5df1-4b8e-ac2f-064cfa58202b", com.azure.core.util.Context.NONE);
+        manager.pipelineRuns()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "2f7fdb90-5df1-4b8e-ac2f-064cfa58202b",
+                com.azure.core.util.Context.NONE);
     }
 }

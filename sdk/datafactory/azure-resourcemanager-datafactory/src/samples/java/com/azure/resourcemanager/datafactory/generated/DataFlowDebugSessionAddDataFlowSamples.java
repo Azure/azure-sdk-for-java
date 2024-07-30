@@ -39,13 +39,17 @@ public final class DataFlowDebugSessionAddDataFlowSamples {
      */
     public static void dataFlowDebugSessionAddDataFlow(com.azure.resourcemanager.datafactory.DataFactoryManager manager)
         throws IOException {
-        manager.dataFlowDebugSessions().addDataFlowWithResponse("exampleResourceGroup", "exampleFactoryName",
-            new DataFlowDebugPackage().withSessionId("f06ed247-9d07-49b2-b05e-2cb4a2fc871e")
-                .withDataFlow(new DataFlowDebugResource().withName("dataflow1").withProperties(new MappingDataFlow()
-                    .withSources(Arrays.asList(new DataFlowSource().withName("source1")
-                        .withDataset(new DatasetReference().withReferenceName("DelimitedText2"))))
-                    .withSinks(Arrays.asList()).withTransformations(Arrays.asList()).withScript(
-                        "\n\nsource(output(\n\t\tColumn_1 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1")))
+        manager.dataFlowDebugSessions()
+            .addDataFlowWithResponse("exampleResourceGroup", "exampleFactoryName", new DataFlowDebugPackage()
+                .withSessionId("f06ed247-9d07-49b2-b05e-2cb4a2fc871e")
+                .withDataFlow(new DataFlowDebugResource().withName("dataflow1")
+                    .withProperties(new MappingDataFlow()
+                        .withSources(Arrays.asList(new DataFlowSource().withName("source1")
+                            .withDataset(new DatasetReference().withReferenceName("DelimitedText2"))))
+                        .withSinks(Arrays.asList())
+                        .withTransformations(Arrays.asList())
+                        .withScript(
+                            "\n\nsource(output(\n\t\tColumn_1 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1")))
                 .withDatasets(Arrays.asList(new DatasetDebugResource().withName("dataset1")
                     .withProperties(new DelimitedTextDataset()
                         .withSchema(SerializerFactory.createDefaultManagementSerializerAdapter()
@@ -54,7 +58,10 @@ public final class DataFlowDebugSessionAddDataFlowSamples {
                         .withAnnotations(Arrays.asList())
                         .withLocation(new AzureBlobStorageLocation().withFileName("Ansiencoding.csv")
                             .withContainer("dataflow-sample-data"))
-                        .withColumnDelimiter(",").withQuoteChar("\"").withEscapeChar("\\").withFirstRowAsHeader(true))))
+                        .withColumnDelimiter(",")
+                        .withQuoteChar("\"")
+                        .withEscapeChar("\\")
+                        .withFirstRowAsHeader(true))))
                 .withLinkedServices(Arrays.asList(new LinkedServiceDebugResource().withName("linkedService1")
                     .withProperties(new AzureBlobStorageLinkedService().withAnnotations(Arrays.asList())
                         .withConnectionString(
@@ -62,16 +69,17 @@ public final class DataFlowDebugSessionAddDataFlowSamples {
                         .withEncryptedCredential("fakeTokenPlaceholder"))))
                 .withDebugSettings(new DataFlowDebugPackageDebugSettings()
                     .withSourceSettings(Arrays.asList(
-                        new DataFlowSourceSetting().withSourceName("source1").withRowLimit(1000)
+                        new DataFlowSourceSetting().withSourceName("source1")
+                            .withRowLimit(1000)
                             .withAdditionalProperties(mapOf()),
-                        new DataFlowSourceSetting()
-                            .withSourceName("source2").withRowLimit(222).withAdditionalProperties(mapOf())))
+                        new DataFlowSourceSetting().withSourceName("source2")
+                            .withRowLimit(222)
+                            .withAdditionalProperties(mapOf())))
                     .withParameters(mapOf("sourcePath", "Toy"))
-                    .withDatasetParameters(SerializerFactory.createDefaultManagementSerializerAdapter().deserialize(
-                        "{\"Movies\":{\"path\":\"abc\"},\"Output\":{\"time\":\"def\"}}", Object.class,
-                        SerializerEncoding.JSON)))
-                .withAdditionalProperties(mapOf()),
-            com.azure.core.util.Context.NONE);
+                    .withDatasetParameters(SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize("{\"Movies\":{\"path\":\"abc\"},\"Output\":{\"time\":\"def\"}}", Object.class,
+                            SerializerEncoding.JSON)))
+                .withAdditionalProperties(mapOf()), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

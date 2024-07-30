@@ -6,16 +6,13 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.CreateMode;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectedItem;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectedItemResource;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -23,49 +20,44 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ProtectedItemsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
             = "{\"properties\":{\"protectedItemType\":\"ProtectedItem\",\"backupManagementType\":\"AzureStorage\",\"workloadType\":\"Sharepoint\",\"containerName\":\"xricctkwmuqq\",\"sourceResourceId\":\"jxeiy\",\"policyId\":\"esrw\",\"lastRecoveryPoint\":\"2021-09-23T00:22:38Z\",\"backupSetName\":\"hdctrceqn\",\"createMode\":\"Default\",\"deferredDeleteTimeInUTC\":\"2021-01-22T20:14:34Z\",\"isScheduledForDeferredDelete\":true,\"deferredDeleteTimeRemaining\":\"hdmljz\",\"isDeferredDeleteScheduleUpcoming\":false,\"isRehydrate\":false,\"resourceGuardOperationRequests\":[\"jpbi\",\"nzpphepife\",\"leqirccjclykcgxv\"],\"isArchiveEnabled\":false,\"policyName\":\"vczuodacpune\",\"softDeleteRetentionPeriodInDays\":1031387254,\"vaultId\":\"djxqeskoynuiylpc\"},\"eTag\":\"ewsedveskwxe\",\"location\":\"qphr\",\"tags\":{\"tsghpbcbcp\":\"zhctm\",\"ypefcpczshnuqnda\":\"arpzeqacdldtzm\",\"vtvegwqiukvzw\":\"zupfkhuytuszxhm\"},\"id\":\"dwttha\",\"name\":\"kgkskjivbsshaj\",\"type\":\"fukpeexpgeu\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure().withHttpClient(httpClient)
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ProtectedItemResource response = manager.protectedItems().define("gcwn").withRegion("phm")
+        ProtectedItemResource response = manager.protectedItems()
+            .define("gcwn")
+            .withRegion("phm")
             .withExistingProtectionContainer("gybpmfb", "ununm", "zkrvfyi", "kdschlzvfictnkjj")
             .withTags(mapOf("nmwynefxexl", "kcgsuthhl", "mdskjhhxdlajfoxc", "ciatxtjrrl", "lxlhuavkrm", "scv",
                 "slojfkqidnqt", "kmyjmkxett"))
-            .withProperties(new ProtectedItem().withContainerName("rtogmhmj").withSourceResourceId("scdfpdqw")
-                .withPolicyId("gevgwmse").withLastRecoveryPoint(OffsetDateTime.parse("2021-06-22T21:43:44Z"))
-                .withBackupSetName("ifvqnr").withCreateMode(CreateMode.DEFAULT)
+            .withProperties(new ProtectedItem().withContainerName("rtogmhmj")
+                .withSourceResourceId("scdfpdqw")
+                .withPolicyId("gevgwmse")
+                .withLastRecoveryPoint(OffsetDateTime.parse("2021-06-22T21:43:44Z"))
+                .withBackupSetName("ifvqnr")
+                .withCreateMode(CreateMode.DEFAULT)
                 .withDeferredDeleteTimeInUtc(OffsetDateTime.parse("2021-10-28T06:45:39Z"))
-                .withIsScheduledForDeferredDelete(false).withDeferredDeleteTimeRemaining("nvwjhrsidqpxl")
-                .withIsDeferredDeleteScheduleUpcoming(true).withIsRehydrate(false)
+                .withIsScheduledForDeferredDelete(false)
+                .withDeferredDeleteTimeRemaining("nvwjhrsidqpxl")
+                .withIsDeferredDeleteScheduleUpcoming(true)
+                .withIsRehydrate(false)
                 .withResourceGuardOperationRequests(Arrays.asList("ngatwmy", "yutrymd", "mfjhpycvjqdvdwkq"))
-                .withIsArchiveEnabled(true).withPolicyName("lefgnaavuagnte").withSoftDeleteRetentionPeriod(2121929864))
-            .withEtag("duyeuyl").create();
+                .withIsArchiveEnabled(true)
+                .withPolicyName("lefgnaavuagnte")
+                .withSoftDeleteRetentionPeriod(2121929864))
+            .withEtag("duyeuyl")
+            .create();
 
         Assertions.assertEquals("qphr", response.location());
         Assertions.assertEquals("zhctm", response.tags().get("tsghpbcbcp"));

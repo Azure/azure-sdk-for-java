@@ -13,10 +13,8 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -24,10 +22,6 @@ import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.SharePermission;
-import com.azure.storage.file.share.implementation.models.ShareStats;
-import com.azure.storage.file.share.implementation.models.SharesCreateSnapshotHeaders;
-import com.azure.storage.file.share.implementation.models.SharesGetPropertiesHeaders;
-import com.azure.storage.file.share.implementation.models.SharesGetStatisticsHeaders;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.ShareErrorCode;
@@ -51,8 +45,6 @@ import com.azure.storage.file.share.options.ShareSetPropertiesOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
-import java.time.OffsetDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -374,9 +366,10 @@ public class ShareAsyncClient {
         String enabledProtocol = options.getProtocols() == null ? null : options.getProtocols().toString();
         enabledProtocol = "".equals(enabledProtocol) ? null : enabledProtocol;
         return azureFileStorageClient.getShares()
-            .createWithResponseAsync(shareName, null, options.getMetadata(), options.getQuotaInGb(),
-                options.getAccessTier(), enabledProtocol, options.getRootSquash(), context)
-            .map(this::mapToShareInfoResponse);
+            .createNoCustomHeadersWithResponseAsync(shareName, null, options.getMetadata(), options.getQuotaInGb(),
+                options.getAccessTier(), enabledProtocol, options.getRootSquash(),
+                options.isSnapshotVirtualDirectoryAccessEnabled(), context)
+            .map(ModelHelper::mapToShareInfoResponse);
     }
 
     /**
@@ -525,7 +518,7 @@ public class ShareAsyncClient {
     Mono<Response<ShareSnapshotInfo>> createSnapshotWithResponse(Map<String, String> metadata, Context context) {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getShares().createSnapshotWithResponseAsync(shareName, null, metadata, context)
-            .map(this::mapCreateSnapshotResponse);
+            .map(ModelHelper::mapCreateSnapshotResponse);
     }
 
     /**
@@ -624,11 +617,9 @@ public class ShareAsyncClient {
         ShareRequestConditions requestConditions = options.getRequestConditions() == null
             ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.getShares()
-            .deleteWithResponseAsync(shareName, snapshot, null,
-                ModelHelper.toDeleteSnapshotsOptionType(options.getDeleteSnapshotsOptions()),
-                requestConditions.getLeaseId(), context)
-            .map(response -> new SimpleResponse<>(response, null));
+        return azureFileStorageClient.getShares().deleteNoCustomHeadersWithResponseAsync(shareName, snapshot, null,
+            ModelHelper.toDeleteSnapshotsOptionType(options.getDeleteSnapshotsOptions()),
+            requestConditions.getLeaseId(), context);
     }
 
     /**
@@ -809,7 +800,7 @@ public class ShareAsyncClient {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getShares()
             .getPropertiesWithResponseAsync(shareName, snapshot, null, requestConditions.getLeaseId(), context)
-            .map(this::mapGetPropertiesResponse);
+            .map(ModelHelper::mapGetPropertiesResponse);
     }
 
     /**
@@ -932,9 +923,10 @@ public class ShareAsyncClient {
         ShareRequestConditions requestConditions = options.getRequestConditions() == null
             ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.getShares().setPropertiesWithResponseAsync(shareName, null,
-            options.getQuotaInGb(), options.getAccessTier(), requestConditions.getLeaseId(), options.getRootSquash(), context)
-            .map(this::mapToShareInfoResponse);
+        return azureFileStorageClient.getShares().setPropertiesNoCustomHeadersWithResponseAsync(shareName, null,
+            options.getQuotaInGb(), options.getAccessTier(), requestConditions.getLeaseId(), options.getRootSquash(),
+            options.isSnapshotVirtualDirectoryAccessEnabled(), context)
+            .map(ModelHelper::mapToShareInfoResponse);
     }
 
     /**
@@ -1056,9 +1048,9 @@ public class ShareAsyncClient {
         ShareRequestConditions requestConditions = options.getRequestConditions() == null
             ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.getShares().setMetadataWithResponseAsync(shareName, null,
+        return azureFileStorageClient.getShares().setMetadataNoCustomHeadersWithResponseAsync(shareName, null,
             options.getMetadata(), requestConditions.getLeaseId(), context)
-            .map(this::mapToShareInfoResponse);
+            .map(ModelHelper::mapToShareInfoResponse);
     }
 
     /**
@@ -1125,7 +1117,7 @@ public class ShareAsyncClient {
                     .map(response -> new PagedResponseBase<>(response.getRequest(),
                         response.getStatusCode(),
                         response.getHeaders(),
-                        response.getValue(),
+                        response.getValue().items(),
                         null,
                         response.getDeserializedHeaders()));
 
@@ -1245,30 +1237,14 @@ public class ShareAsyncClient {
         options = options == null ? new ShareSetAccessPolicyOptions() : options;
         ShareRequestConditions requestConditions = options.getRequestConditions() == null
             ? new ShareRequestConditions() : options.getRequestConditions();
-        List<ShareSignedIdentifier> permissions = options.getPermissions();
-        /*
-        We truncate to seconds because the service only supports nanoseconds or seconds, but doing an
-        OffsetDateTime.now will only give back milliseconds (more precise fields are zeroed and not serialized). This
-        allows for proper serialization with no real detriment to users as sub-second precision on active time for
-        signed identifiers is not really necessary.
-         */
-        if (permissions != null) {
-            for (ShareSignedIdentifier permission : permissions) {
-                if (permission.getAccessPolicy() != null && permission.getAccessPolicy().getStartsOn() != null) {
-                    permission.getAccessPolicy().setStartsOn(
-                        permission.getAccessPolicy().getStartsOn().truncatedTo(ChronoUnit.SECONDS));
-                }
-                if (permission.getAccessPolicy() != null && permission.getAccessPolicy().getExpiresOn() != null) {
-                    permission.getAccessPolicy().setExpiresOn(
-                        permission.getAccessPolicy().getExpiresOn().truncatedTo(ChronoUnit.SECONDS));
-                }
-            }
-        }
+        List<ShareSignedIdentifier> permissions =
+            ModelHelper.truncateAccessPolicyPermissionsToSeconds(options.getPermissions());
+
         context = context == null ? Context.NONE : context;
 
-        return azureFileStorageClient.getShares()
-            .setAccessPolicyWithResponseAsync(shareName, null, requestConditions.getLeaseId(), permissions, context)
-            .map(this::mapToShareInfoResponse);
+        return azureFileStorageClient.getShares().setAccessPolicyNoCustomHeadersWithResponseAsync(shareName, null,
+                requestConditions.getLeaseId(), permissions, context)
+            .map(ModelHelper::mapToShareInfoResponse);
     }
 
     /**
@@ -1357,9 +1333,9 @@ public class ShareAsyncClient {
         ShareRequestConditions requestConditions = options.getRequestConditions() == null
             ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.getShares().getStatisticsWithResponseAsync(shareName, null,
+        return azureFileStorageClient.getShares().getStatisticsNoCustomHeadersWithResponseAsync(shareName, null,
             requestConditions.getLeaseId(), context)
-            .map(this::mapGetStatisticsResponse);
+            .map(ModelHelper::mapGetStatisticsResponse);
     }
 
     /**
@@ -2268,56 +2244,5 @@ public class ShareAsyncClient {
     public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues, Context context) {
         return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName())
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
-    }
-
-    private Response<ShareInfo> mapToShareInfoResponse(Response<?> response) {
-        String eTag = response.getHeaders().getValue("ETag");
-        OffsetDateTime lastModified =
-            new DateTimeRfc1123(response.getHeaders().getValue("Last-Modified")).getDateTime();
-
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            new ShareInfo(eTag, lastModified));
-    }
-
-    private Response<ShareSnapshotInfo> mapCreateSnapshotResponse(
-        ResponseBase<SharesCreateSnapshotHeaders, Void> response) {
-        SharesCreateSnapshotHeaders headers = response.getDeserializedHeaders();
-        ShareSnapshotInfo snapshotInfo =
-            new ShareSnapshotInfo(headers.getXMsSnapshot(), headers.getETag(), headers.getLastModified());
-
-        return new SimpleResponse<>(response, snapshotInfo);
-    }
-
-    private Response<ShareProperties> mapGetPropertiesResponse(
-        ResponseBase<SharesGetPropertiesHeaders, Void> response) {
-        SharesGetPropertiesHeaders headers = response.getDeserializedHeaders();
-        ShareProperties shareProperties = new ShareProperties()
-            .setETag(headers.getETag())
-            .setLastModified(headers.getLastModified())
-            .setMetadata(headers.getXMsMeta())
-            .setQuota(headers.getXMsShareQuota())
-            .setNextAllowedQuotaDowngradeTime(headers.getXMsShareNextAllowedQuotaDowngradeTime())
-            .setProvisionedEgressMBps(headers.getXMsShareProvisionedEgressMbps())
-            .setProvisionedIngressMBps(headers.getXMsShareProvisionedIngressMbps())
-            .setProvisionedBandwidthMiBps(headers.getXMsShareProvisionedBandwidthMibps())
-            .setProvisionedIops(headers.getXMsShareProvisionedIops())
-            .setLeaseDuration(headers.getXMsLeaseDuration())
-            .setLeaseState(headers.getXMsLeaseState())
-            .setLeaseStatus(headers.getXMsLeaseStatus())
-            .setAccessTier(headers.getXMsAccessTier())
-            .setAccessTierChangeTime(headers.getXMsAccessTierChangeTime())
-            .setAccessTierTransitionState(headers.getXMsAccessTierTransitionState())
-            .setProtocols(ModelHelper.parseShareProtocols(headers.getXMsEnabledProtocols()))
-            .setRootSquash(headers.getXMsRootSquash());
-
-        return new SimpleResponse<>(response, shareProperties);
-    }
-
-    private Response<ShareStatistics> mapGetStatisticsResponse(
-        ResponseBase<SharesGetStatisticsHeaders, ShareStats> response) {
-        ShareStatistics shareStatistics =
-            new ShareStatistics(response.getValue().getShareUsageBytes());
-
-        return new SimpleResponse<>(response, shareStatistics);
     }
 }

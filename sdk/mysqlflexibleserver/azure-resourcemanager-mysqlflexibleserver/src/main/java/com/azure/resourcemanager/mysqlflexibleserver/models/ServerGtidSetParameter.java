@@ -7,22 +7,26 @@ package com.azure.resourcemanager.mysqlflexibleserver.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Server gtid set parameters. */
+/**
+ * Server Gtid set parameters.
+ */
 @Fluent
 public final class ServerGtidSetParameter {
     /*
-     * The gtid set of server.
+     * The Gtid set of server.
      */
     @JsonProperty(value = "gtidSet")
     private String gtidSet;
 
-    /** Creates an instance of ServerGtidSetParameter class. */
+    /**
+     * Creates an instance of ServerGtidSetParameter class.
+     */
     public ServerGtidSetParameter() {
     }
 
     /**
-     * Get the gtidSet property: The gtid set of server.
-     *
+     * Get the gtidSet property: The Gtid set of server.
+     * 
      * @return the gtidSet value.
      */
     public String gtidSet() {
@@ -30,8 +34,8 @@ public final class ServerGtidSetParameter {
     }
 
     /**
-     * Set the gtidSet property: The gtid set of server.
-     *
+     * Set the gtidSet property: The Gtid set of server.
+     * 
      * @param gtidSet the gtidSet value to set.
      * @return the ServerGtidSetParameter object itself.
      */
@@ -42,7 +46,7 @@ public final class ServerGtidSetParameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

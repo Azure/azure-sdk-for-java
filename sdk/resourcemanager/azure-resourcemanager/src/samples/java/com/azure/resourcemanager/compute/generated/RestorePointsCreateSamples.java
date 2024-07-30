@@ -14,7 +14,7 @@ import java.util.Arrays;
 public final class RestorePointsCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * restorePointExamples/RestorePoint_Copy_BetweenRegions.json
      */
     /**
@@ -23,16 +23,19 @@ public final class RestorePointsCreateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void copyARestorePointToADifferentRegion(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getRestorePoints().create("myResourceGroup", "rpcName",
-            "rpName",
-            new RestorePointInner().withSourceRestorePoint(new ApiEntityReference().withId(
-                "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/restorePointCollections/sourceRpcName/restorePoints/sourceRpName")),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getRestorePoints()
+            .create("myResourceGroup", "rpcName", "rpName",
+                new RestorePointInner().withSourceRestorePoint(new ApiEntityReference().withId(
+                    "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/restorePointCollections/sourceRpcName/restorePoints/sourceRpName")),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * restorePointExamples/RestorePoint_Create.json
      */
     /**
@@ -41,10 +44,13 @@ public final class RestorePointsCreateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createARestorePoint(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getRestorePoints().create("myResourceGroup", "rpcName",
-            "rpName",
-            new RestorePointInner().withExcludeDisks(Arrays.asList(new ApiEntityReference().withId(
-                "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/disk123"))),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getRestorePoints()
+            .create("myResourceGroup", "rpcName", "rpName",
+                new RestorePointInner().withExcludeDisks(Arrays.asList(new ApiEntityReference().withId(
+                    "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/disk123"))),
+                com.azure.core.util.Context.NONE);
     }
 }

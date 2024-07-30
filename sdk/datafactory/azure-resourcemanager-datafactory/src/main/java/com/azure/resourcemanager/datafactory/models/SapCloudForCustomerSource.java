@@ -6,16 +6,28 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity source for SAP Cloud for Customer source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = SapCloudForCustomerSource.class,
+    visible = true)
 @JsonTypeName("SapCloudForCustomerSource")
 @Fluent
 public final class SapCloudForCustomerSource extends TabularSource {
+    /*
+     * Copy source type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "SapCloudForCustomerSource";
+
     /*
      * SAP Cloud for Customer OData query. For example, "$top=1". Type: string (or Expression with resultType string).
      */
@@ -34,6 +46,16 @@ public final class SapCloudForCustomerSource extends TabularSource {
      * Creates an instance of SapCloudForCustomerSource class.
      */
     public SapCloudForCustomerSource() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

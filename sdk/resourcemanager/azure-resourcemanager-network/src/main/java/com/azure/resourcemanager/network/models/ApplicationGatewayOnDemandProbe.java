@@ -196,8 +196,8 @@ public final class ApplicationGatewayOnDemandProbe {
     }
 
     /**
-     * Get the backendAddressPool property: Reference to backend pool of application gateway to which probe request
-     * will be sent.
+     * Get the backendAddressPool property: Reference to backend pool of application gateway to which probe request will
+     * be sent.
      * 
      * @return the backendAddressPool value.
      */
@@ -206,8 +206,8 @@ public final class ApplicationGatewayOnDemandProbe {
     }
 
     /**
-     * Set the backendAddressPool property: Reference to backend pool of application gateway to which probe request
-     * will be sent.
+     * Set the backendAddressPool property: Reference to backend pool of application gateway to which probe request will
+     * be sent.
      * 
      * @param backendAddressPool the backendAddressPool value to set.
      * @return the ApplicationGatewayOnDemandProbe object itself.

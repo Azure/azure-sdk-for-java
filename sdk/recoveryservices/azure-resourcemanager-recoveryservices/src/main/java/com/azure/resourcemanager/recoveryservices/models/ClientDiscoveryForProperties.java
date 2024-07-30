@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservices.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Class to represent shoebox properties in json client discovery. */
+/**
+ * Class to represent shoebox properties in json client discovery.
+ */
 @Fluent
 public final class ClientDiscoveryForProperties {
     /*
@@ -16,13 +18,15 @@ public final class ClientDiscoveryForProperties {
     @JsonProperty(value = "serviceSpecification")
     private ClientDiscoveryForServiceSpecification serviceSpecification;
 
-    /** Creates an instance of ClientDiscoveryForProperties class. */
+    /**
+     * Creates an instance of ClientDiscoveryForProperties class.
+     */
     public ClientDiscoveryForProperties() {
     }
 
     /**
      * Get the serviceSpecification property: Operation properties.
-     *
+     * 
      * @return the serviceSpecification value.
      */
     public ClientDiscoveryForServiceSpecification serviceSpecification() {
@@ -31,19 +35,19 @@ public final class ClientDiscoveryForProperties {
 
     /**
      * Set the serviceSpecification property: Operation properties.
-     *
+     * 
      * @param serviceSpecification the serviceSpecification value to set.
      * @return the ClientDiscoveryForProperties object itself.
      */
-    public ClientDiscoveryForProperties withServiceSpecification(
-        ClientDiscoveryForServiceSpecification serviceSpecification) {
+    public ClientDiscoveryForProperties
+        withServiceSpecification(ClientDiscoveryForServiceSpecification serviceSpecification) {
         this.serviceSpecification = serviceSpecification;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

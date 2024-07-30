@@ -16,8 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class Db2LinkedServiceTypeProperties {
     /*
      * The connection string. It is mutually exclusive with server, database, authenticationType, userName,
-     * packageCollection and certificateCommonName property. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * packageCollection and certificateCommonName property. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "connectionString")
     private Object connectionString;
@@ -43,8 +42,8 @@ public final class Db2LinkedServiceTypeProperties {
     private Db2AuthenticationType authenticationType;
 
     /*
-     * Username for authentication. It is mutually exclusive with connectionString property. Type: string (or
-     * Expression with resultType string).
+     * Username for authentication. It is mutually exclusive with connectionString property. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "username")
     private Object username;
@@ -56,8 +55,8 @@ public final class Db2LinkedServiceTypeProperties {
     private SecretBase password;
 
     /*
-     * Under where packages are created when querying database. It is mutually exclusive with connectionString
-     * property. Type: string (or Expression with resultType string).
+     * Under where packages are created when querying database. It is mutually exclusive with connectionString property.
+     * Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "packageCollection")
     private Object packageCollection;
@@ -84,8 +83,8 @@ public final class Db2LinkedServiceTypeProperties {
 
     /**
      * Get the connectionString property: The connection string. It is mutually exclusive with server, database,
-     * authenticationType, userName, packageCollection and certificateCommonName property. Type: string, SecureString
-     * or AzureKeyVaultSecretReference.
+     * authenticationType, userName, packageCollection and certificateCommonName property. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
      * 
      * @return the connectionString value.
      */
@@ -95,8 +94,8 @@ public final class Db2LinkedServiceTypeProperties {
 
     /**
      * Set the connectionString property: The connection string. It is mutually exclusive with server, database,
-     * authenticationType, userName, packageCollection and certificateCommonName property. Type: string, SecureString
-     * or AzureKeyVaultSecretReference.
+     * authenticationType, userName, packageCollection and certificateCommonName property. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
      * 
      * @param connectionString the connectionString value to set.
      * @return the Db2LinkedServiceTypeProperties object itself.
@@ -129,8 +128,8 @@ public final class Db2LinkedServiceTypeProperties {
     }
 
     /**
-     * Get the database property: Database name for connection. It is mutually exclusive with connectionString
-     * property. Type: string (or Expression with resultType string).
+     * Get the database property: Database name for connection. It is mutually exclusive with connectionString property.
+     * Type: string (or Expression with resultType string).
      * 
      * @return the database value.
      */
@@ -139,8 +138,8 @@ public final class Db2LinkedServiceTypeProperties {
     }
 
     /**
-     * Set the database property: Database name for connection. It is mutually exclusive with connectionString
-     * property. Type: string (or Expression with resultType string).
+     * Set the database property: Database name for connection. It is mutually exclusive with connectionString property.
+     * Type: string (or Expression with resultType string).
      * 
      * @param database the database value to set.
      * @return the Db2LinkedServiceTypeProperties object itself.
@@ -259,9 +258,9 @@ public final class Db2LinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. It is mutually exclusive with connectionString
-     * property. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. It is mutually exclusive with connectionString property. Type:
+     * string.
      * 
      * @return the encryptedCredential value.
      */
@@ -270,9 +269,9 @@ public final class Db2LinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. It is mutually exclusive with connectionString
-     * property. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. It is mutually exclusive with connectionString property. Type:
+     * string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the Db2LinkedServiceTypeProperties object itself.

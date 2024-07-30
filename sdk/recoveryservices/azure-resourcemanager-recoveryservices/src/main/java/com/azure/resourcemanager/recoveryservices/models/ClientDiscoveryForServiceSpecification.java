@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Class to represent shoebox service specification in json client discovery. */
+/**
+ * Class to represent shoebox service specification in json client discovery.
+ */
 @Fluent
 public final class ClientDiscoveryForServiceSpecification {
     /*
@@ -17,13 +19,15 @@ public final class ClientDiscoveryForServiceSpecification {
     @JsonProperty(value = "logSpecifications")
     private List<ClientDiscoveryForLogSpecification> logSpecifications;
 
-    /** Creates an instance of ClientDiscoveryForServiceSpecification class. */
+    /**
+     * Creates an instance of ClientDiscoveryForServiceSpecification class.
+     */
     public ClientDiscoveryForServiceSpecification() {
     }
 
     /**
      * Get the logSpecifications property: List of log specifications of this operation.
-     *
+     * 
      * @return the logSpecifications value.
      */
     public List<ClientDiscoveryForLogSpecification> logSpecifications() {
@@ -32,19 +36,19 @@ public final class ClientDiscoveryForServiceSpecification {
 
     /**
      * Set the logSpecifications property: List of log specifications of this operation.
-     *
+     * 
      * @param logSpecifications the logSpecifications value to set.
      * @return the ClientDiscoveryForServiceSpecification object itself.
      */
-    public ClientDiscoveryForServiceSpecification withLogSpecifications(
-        List<ClientDiscoveryForLogSpecification> logSpecifications) {
+    public ClientDiscoveryForServiceSpecification
+        withLogSpecifications(List<ClientDiscoveryForLogSpecification> logSpecifications) {
         this.logSpecifications = logSpecifications;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

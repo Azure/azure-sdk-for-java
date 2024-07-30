@@ -12,32 +12,28 @@ import org.junit.jupiter.api.Assertions;
 public final class StorageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Storage model =
-            BinaryData
-                .fromString(
-                    "{\"storageSizeGB\":1338183758,\"iops\":837766841,\"autoGrow\":\"Disabled\",\"logOnDisk\":\"Disabled\",\"storageSku\":\"owskanyktz\",\"autoIoScaling\":\"Enabled\"}")
-                .toObject(Storage.class);
-        Assertions.assertEquals(1338183758, model.storageSizeGB());
-        Assertions.assertEquals(837766841, model.iops());
+        Storage model = BinaryData.fromString(
+            "{\"storageSizeGB\":847580815,\"iops\":1376492737,\"autoGrow\":\"Disabled\",\"logOnDisk\":\"Disabled\",\"storageSku\":\"al\",\"autoIoScaling\":\"Disabled\"}")
+            .toObject(Storage.class);
+        Assertions.assertEquals(847580815, model.storageSizeGB());
+        Assertions.assertEquals(1376492737, model.iops());
         Assertions.assertEquals(EnableStatusEnum.DISABLED, model.autoGrow());
         Assertions.assertEquals(EnableStatusEnum.DISABLED, model.logOnDisk());
-        Assertions.assertEquals(EnableStatusEnum.ENABLED, model.autoIoScaling());
+        Assertions.assertEquals(EnableStatusEnum.DISABLED, model.autoIoScaling());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Storage model =
-            new Storage()
-                .withStorageSizeGB(1338183758)
-                .withIops(837766841)
-                .withAutoGrow(EnableStatusEnum.DISABLED)
-                .withLogOnDisk(EnableStatusEnum.DISABLED)
-                .withAutoIoScaling(EnableStatusEnum.ENABLED);
+        Storage model = new Storage().withStorageSizeGB(847580815)
+            .withIops(1376492737)
+            .withAutoGrow(EnableStatusEnum.DISABLED)
+            .withLogOnDisk(EnableStatusEnum.DISABLED)
+            .withAutoIoScaling(EnableStatusEnum.DISABLED);
         model = BinaryData.fromObject(model).toObject(Storage.class);
-        Assertions.assertEquals(1338183758, model.storageSizeGB());
-        Assertions.assertEquals(837766841, model.iops());
+        Assertions.assertEquals(847580815, model.storageSizeGB());
+        Assertions.assertEquals(1376492737, model.iops());
         Assertions.assertEquals(EnableStatusEnum.DISABLED, model.autoGrow());
         Assertions.assertEquals(EnableStatusEnum.DISABLED, model.logOnDisk());
-        Assertions.assertEquals(EnableStatusEnum.ENABLED, model.autoIoScaling());
+        Assertions.assertEquals(EnableStatusEnum.DISABLED, model.autoIoScaling());
     }
 }

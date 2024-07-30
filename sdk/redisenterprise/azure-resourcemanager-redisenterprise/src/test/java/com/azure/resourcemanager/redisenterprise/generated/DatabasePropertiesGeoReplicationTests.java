@@ -14,20 +14,20 @@ public final class DatabasePropertiesGeoReplicationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatabasePropertiesGeoReplication model = BinaryData.fromString(
-            "{\"groupNickname\":\"q\",\"linkedDatabases\":[{\"id\":\"ixuigdtopbobj\",\"state\":\"UnlinkFailed\"},{\"id\":\"e\",\"state\":\"Linked\"},{\"id\":\"a\",\"state\":\"LinkFailed\"},{\"id\":\"ayvvtpgvdf\",\"state\":\"Unlinking\"}]}")
+            "{\"groupNickname\":\"fgugnxkrxdqmid\",\"linkedDatabases\":[{\"id\":\"rvqdra\",\"state\":\"UnlinkFailed\"},{\"id\":\"big\",\"state\":\"UnlinkFailed\"}]}")
             .toObject(DatabasePropertiesGeoReplication.class);
-        Assertions.assertEquals("q", model.groupNickname());
-        Assertions.assertEquals("ixuigdtopbobj", model.linkedDatabases().get(0).id());
+        Assertions.assertEquals("fgugnxkrxdqmid", model.groupNickname());
+        Assertions.assertEquals("rvqdra", model.linkedDatabases().get(0).id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DatabasePropertiesGeoReplication model
-            = new DatabasePropertiesGeoReplication().withGroupNickname("q").withLinkedDatabases(
-                Arrays.asList(new LinkedDatabase().withId("ixuigdtopbobj"), new LinkedDatabase().withId("e"),
-                    new LinkedDatabase().withId("a"), new LinkedDatabase().withId("ayvvtpgvdf")));
+            = new DatabasePropertiesGeoReplication().withGroupNickname("fgugnxkrxdqmid")
+                .withLinkedDatabases(
+                    Arrays.asList(new LinkedDatabase().withId("rvqdra"), new LinkedDatabase().withId("big")));
         model = BinaryData.fromObject(model).toObject(DatabasePropertiesGeoReplication.class);
-        Assertions.assertEquals("q", model.groupNickname());
-        Assertions.assertEquals("ixuigdtopbobj", model.linkedDatabases().get(0).id());
+        Assertions.assertEquals("fgugnxkrxdqmid", model.groupNickname());
+        Assertions.assertEquals("rvqdra", model.linkedDatabases().get(0).id());
     }
 }

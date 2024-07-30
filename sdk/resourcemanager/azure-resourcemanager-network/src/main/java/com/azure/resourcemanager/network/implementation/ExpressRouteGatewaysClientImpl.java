@@ -148,7 +148,7 @@ public final class ExpressRouteGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listBySubscription(this.client.getEndpoint(), apiVersion,
@@ -175,7 +175,7 @@ public final class ExpressRouteGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listBySubscription(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -243,7 +243,7 @@ public final class ExpressRouteGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -276,7 +276,7 @@ public final class ExpressRouteGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName, apiVersion,
@@ -363,7 +363,7 @@ public final class ExpressRouteGatewaysClientImpl
         } else {
             putExpressRouteGatewayParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -409,7 +409,7 @@ public final class ExpressRouteGatewaysClientImpl
         } else {
             putExpressRouteGatewayParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, expressRouteGatewayName, apiVersion,
@@ -497,8 +497,10 @@ public final class ExpressRouteGatewaysClientImpl
     public SyncPoller<PollResult<ExpressRouteGatewayInner>, ExpressRouteGatewayInner> beginCreateOrUpdate(
         String resourceGroupName, String expressRouteGatewayName,
         ExpressRouteGatewayInner putExpressRouteGatewayParameters, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, expressRouteGatewayName,
-            putExpressRouteGatewayParameters, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, expressRouteGatewayName, putExpressRouteGatewayParameters,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -516,7 +518,8 @@ public final class ExpressRouteGatewaysClientImpl
     public Mono<ExpressRouteGatewayInner> createOrUpdateAsync(String resourceGroupName, String expressRouteGatewayName,
         ExpressRouteGatewayInner putExpressRouteGatewayParameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, expressRouteGatewayName, putExpressRouteGatewayParameters)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -611,7 +614,7 @@ public final class ExpressRouteGatewaysClientImpl
         } else {
             expressRouteGatewayParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -656,7 +659,7 @@ public final class ExpressRouteGatewaysClientImpl
         } else {
             expressRouteGatewayParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -780,7 +783,8 @@ public final class ExpressRouteGatewaysClientImpl
     private Mono<ExpressRouteGatewayInner> updateTagsAsync(String resourceGroupName, String expressRouteGatewayName,
         TagsObject expressRouteGatewayParameters, Context context) {
         return beginUpdateTagsAsync(resourceGroupName, expressRouteGatewayName, expressRouteGatewayParameters, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -848,7 +852,7 @@ public final class ExpressRouteGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -886,7 +890,7 @@ public final class ExpressRouteGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, expressRouteGatewayName,
@@ -972,7 +976,7 @@ public final class ExpressRouteGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName,
@@ -1011,7 +1015,7 @@ public final class ExpressRouteGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, expressRouteGatewayName, apiVersion,

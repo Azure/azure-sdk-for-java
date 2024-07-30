@@ -20,8 +20,8 @@ public final class IntegrationRuntimeNodesUpdateSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void integrationRuntimeNodesUpdate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimeNodes().updateWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleIntegrationRuntime", "Node_1", new UpdateIntegrationRuntimeNodeRequest().withConcurrentJobsLimit(2),
-            com.azure.core.util.Context.NONE);
+        manager.integrationRuntimeNodes()
+            .updateWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime", "Node_1",
+                new UpdateIntegrationRuntimeNodeRequest().withConcurrentJobsLimit(2), com.azure.core.util.Context.NONE);
     }
 }

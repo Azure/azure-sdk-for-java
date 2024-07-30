@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Whether to reset all server parameters to default. */
+/**
+ * Whether to reset all server parameters to default.
+ */
 public final class ResetAllToDefault extends ExpandableStringEnum<ResetAllToDefault> {
-    /** Static value True for ResetAllToDefault. */
+    /**
+     * Static value True for ResetAllToDefault.
+     */
     public static final ResetAllToDefault TRUE = fromString("True");
 
-    /** Static value False for ResetAllToDefault. */
+    /**
+     * Static value False for ResetAllToDefault.
+     */
     public static final ResetAllToDefault FALSE = fromString("False");
 
     /**
      * Creates a new instance of ResetAllToDefault value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class ResetAllToDefault extends ExpandableStringEnum<ResetAllToDefa
 
     /**
      * Creates or finds a ResetAllToDefault from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ResetAllToDefault.
      */
@@ -38,7 +44,7 @@ public final class ResetAllToDefault extends ExpandableStringEnum<ResetAllToDefa
 
     /**
      * Gets known ResetAllToDefault values.
-     *
+     * 
      * @return known ResetAllToDefault values.
      */
     public static Collection<ResetAllToDefault> values() {

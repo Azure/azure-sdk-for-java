@@ -5,10 +5,10 @@ package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
-import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LoggingEventBuilder;
 import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
@@ -68,8 +68,7 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
         // Note: fullyQualifiedNamespace, (to an extent) entity-path are generic enough, but if we find more connection
         // description parameters that are non-generic, i.e., specific to individual messaging services, then consider
         // creating dedicated POJO types to pass around connection description parameters in corresponding libraries
-        // rather
-        // than polluting shared 'ReactorConnectionCache' type.
+        // rather than polluting shared 'ReactorConnectionCache' type.
         this.entityPath = entityPath;
         Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
         this.retryOptions = retryPolicy.getRetryOptions();
@@ -87,12 +86,11 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
         });
 
         this.createOrGetCachedConnection = newConnection.flatMap(c -> {
-            logger.atInfo().addKeyValue(CONNECTION_ID_KEY, c.getId()).log("Waiting to connect and become active.");
+            withConnectionId(logger, c.getId()).log("Waiting to connect and active.");
 
             return c.connectAndAwaitToActive().doOnCancel(() -> {
                 if (!c.isDisposed()) {
-                    c.closeAsync(createShutdownSignal("The connection request was canceled while waiting to active."))
-                        .subscribe();
+                    closeConnection(c, logger, "Request was canceled while waiting to connect and active.");
                 }
             });
         }).retryWhen(retryWhenSpec(retryPolicy)).<T>handle((c, sink) -> {
@@ -104,17 +102,15 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
                 currentConnection = connection;
             }
             if (terminated) {
-                connection.closeAsync(createShutdownSignal("Connection recovery support is terminated.")).subscribe();
+                closeConnection(connection, logger, "Connection recovery support is terminated.");
                 sink.error(TERMINATED_ERROR);
             } else {
-                logger.atInfo().addKeyValue(CONNECTION_ID_KEY, c.getId()).log("Emitting the new active connection.");
+                withConnectionId(logger, c.getId()).log("Emitting the new active connection.");
                 sink.next(connection);
             }
         }).cacheInvalidateIf(c -> {
             if (c.isDisposed()) {
-                logger.atInfo()
-                    .addKeyValue(CONNECTION_ID_KEY, c.getId())
-                    .log("The connection is closed, requesting a new connection.");
+                withConnectionId(logger, c.getId()).log("The connection is closed, requesting a new connection.");
                 return true;
             } else {
                 // Emit cached connection.
@@ -188,7 +184,7 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
             connection = currentConnection;
         }
         if (connection != null && !connection.isDisposed()) {
-            connection.closeAsync(createShutdownSignal("Terminating the connection recovery support.")).subscribe();
+            closeConnection(connection, logger, "Terminating the connection recovery support.");
         } else {
             logger.info("Terminating the connection recovery support.");
         }
@@ -227,7 +223,7 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
                     || (error instanceof RejectedExecutionException));
 
             if (!shouldRetry) {
-                logger.atWarning()
+                logger.atError()
                     .addKeyValue(TRY_COUNT_KEY, iteration)
                     .log("Exception is non-retriable, not retrying for a new connection.", error);
                 return Mono.error(error);
@@ -246,7 +242,7 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
             final Duration backoff = retryPolicy.calculateRetryDelay(errorToUse, (int) attempts);
 
             if (backoff == null) {
-                logger.atWarning()
+                logger.atError()
                     .addKeyValue(TRY_COUNT_KEY, iteration)
                     .log("Retry is disabled, not retrying for a new connection.", error);
                 return Mono.error(error);
@@ -265,7 +261,32 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
         }));
     }
 
-    private static AmqpShutdownSignal createShutdownSignal(String message) {
-        return new AmqpShutdownSignal(false, false, message);
+    /**
+     * Often, any connection closure (due to network error) happens outside of cache, and the cache needs to only check
+     * if cached connection is in closed state to see if it needs to be refreshed. But there are two cases when cache
+     * needs to close a connection explicitly,
+     * <ol>
+     * <li>When the cache itself is disposed then any cached connection or connection being cached needs to be closed
+     * explicitly. Such a cache disposal happens when all clients sharing the connection are closed.</li>
+     * <li>If all downstream cancels subscription to the cache while waiting for a new connection to connect and active,
+     * then that connection needs to be closed explicitly.</li>
+     * </ol>
+     *
+     * @param c the connection to close.
+     * @param logger the logger to log the closing of connection.
+     * @param message the message to log.
+     */
+    private static void closeConnection(ReactorConnection c, ClientLogger logger, String message) {
+        final LoggingEventBuilder builder = withConnectionId(logger, c.getId());
+        builder.log("closing connection (" + message + ").");
+        // Listen and log any terminal signals here, though when connection close finishes, closeAsync()::Mono only
+        // emits "completion terminal signal" no matter if there was an error while closing or not.
+        c.closeAsync().subscribe(__ -> {
+        }, t -> builder.log("connection close finished with error.", t),
+            () -> builder.log("connection close finished."));
+    }
+
+    private static LoggingEventBuilder withConnectionId(ClientLogger logger, String id) {
+        return logger.atInfo().addKeyValue(CONNECTION_ID_KEY, id);
     }
 }

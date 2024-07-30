@@ -8,12 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Defender CSPM CIEM AWS OIDC (open id connect) configuration.
+ * AWS Defender CSPM Permissions Management OIDC (open id connect) connection configurations.
  */
 @Fluent
 public final class DefenderCspmAwsOfferingCiemOidc {
     /*
-     * The cloud role ARN in AWS for CIEM oidc connection
+     * The cloud role ARN in AWS for Permissions Management used for oidc connection
      */
     @JsonProperty(value = "cloudRoleArn")
     private String cloudRoleArn;
@@ -31,7 +31,7 @@ public final class DefenderCspmAwsOfferingCiemOidc {
     }
 
     /**
-     * Get the cloudRoleArn property: The cloud role ARN in AWS for CIEM oidc connection.
+     * Get the cloudRoleArn property: The cloud role ARN in AWS for Permissions Management used for oidc connection.
      * 
      * @return the cloudRoleArn value.
      */
@@ -40,7 +40,7 @@ public final class DefenderCspmAwsOfferingCiemOidc {
     }
 
     /**
-     * Set the cloudRoleArn property: The cloud role ARN in AWS for CIEM oidc connection.
+     * Set the cloudRoleArn property: The cloud role ARN in AWS for Permissions Management used for oidc connection.
      * 
      * @param cloudRoleArn the cloudRoleArn value to set.
      * @return the DefenderCspmAwsOfferingCiemOidc object itself.

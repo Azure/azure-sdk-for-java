@@ -11,19 +11,20 @@ import org.junit.jupiter.api.Assertions;
 public final class SetVariableActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SetVariableActivityTypeProperties model = BinaryData
-            .fromString("{\"variableName\":\"rvghvfodrqmcgeqy\",\"value\":\"datard\",\"setSystemVariable\":true}")
-            .toObject(SetVariableActivityTypeProperties.class);
-        Assertions.assertEquals("rvghvfodrqmcgeqy", model.variableName());
-        Assertions.assertEquals(true, model.setSystemVariable());
+        SetVariableActivityTypeProperties model
+            = BinaryData.fromString("{\"variableName\":\"bjn\",\"value\":\"dataidinbf\",\"setSystemVariable\":false}")
+                .toObject(SetVariableActivityTypeProperties.class);
+        Assertions.assertEquals("bjn", model.variableName());
+        Assertions.assertEquals(false, model.setSystemVariable());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SetVariableActivityTypeProperties model = new SetVariableActivityTypeProperties()
-            .withVariableName("rvghvfodrqmcgeqy").withValue("datard").withSetSystemVariable(true);
+        SetVariableActivityTypeProperties model = new SetVariableActivityTypeProperties().withVariableName("bjn")
+            .withValue("dataidinbf")
+            .withSetSystemVariable(false);
         model = BinaryData.fromObject(model).toObject(SetVariableActivityTypeProperties.class);
-        Assertions.assertEquals("rvghvfodrqmcgeqy", model.variableName());
-        Assertions.assertEquals(true, model.setSystemVariable());
+        Assertions.assertEquals("bjn", model.variableName());
+        Assertions.assertEquals(false, model.setSystemVariable());
     }
 }

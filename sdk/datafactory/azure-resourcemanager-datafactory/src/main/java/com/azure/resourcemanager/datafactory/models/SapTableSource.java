@@ -6,16 +6,24 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity source for SAP Table source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = SapTableSource.class, visible = true)
 @JsonTypeName("SapTableSource")
 @Fluent
 public final class SapTableSource extends TabularSource {
+    /*
+     * Copy source type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "SapTableSource";
+
     /*
      * The number of rows to be retrieved. Type: integer(or Expression with resultType integer).
      */
@@ -81,6 +89,16 @@ public final class SapTableSource extends TabularSource {
      * Creates an instance of SapTableSource class.
      */
     public SapTableSource() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -172,8 +190,8 @@ public final class SapTableSource extends TabularSource {
     }
 
     /**
-     * Get the batchSize property: Specifies the maximum number of rows that will be retrieved at a time when
-     * retrieving data from SAP Table. Type: integer (or Expression with resultType integer).
+     * Get the batchSize property: Specifies the maximum number of rows that will be retrieved at a time when retrieving
+     * data from SAP Table. Type: integer (or Expression with resultType integer).
      * 
      * @return the batchSize value.
      */
@@ -182,8 +200,8 @@ public final class SapTableSource extends TabularSource {
     }
 
     /**
-     * Set the batchSize property: Specifies the maximum number of rows that will be retrieved at a time when
-     * retrieving data from SAP Table. Type: integer (or Expression with resultType integer).
+     * Set the batchSize property: Specifies the maximum number of rows that will be retrieved at a time when retrieving
+     * data from SAP Table. Type: integer (or Expression with resultType integer).
      * 
      * @param batchSize the batchSize value to set.
      * @return the SapTableSource object itself.
@@ -216,8 +234,8 @@ public final class SapTableSource extends TabularSource {
     }
 
     /**
-     * Get the sapDataColumnDelimiter property: The single character that will be used as delimiter passed to SAP RFC
-     * as well as splitting the output data retrieved. Type: string (or Expression with resultType string).
+     * Get the sapDataColumnDelimiter property: The single character that will be used as delimiter passed to SAP RFC as
+     * well as splitting the output data retrieved. Type: string (or Expression with resultType string).
      * 
      * @return the sapDataColumnDelimiter value.
      */
@@ -226,8 +244,8 @@ public final class SapTableSource extends TabularSource {
     }
 
     /**
-     * Set the sapDataColumnDelimiter property: The single character that will be used as delimiter passed to SAP RFC
-     * as well as splitting the output data retrieved. Type: string (or Expression with resultType string).
+     * Set the sapDataColumnDelimiter property: The single character that will be used as delimiter passed to SAP RFC as
+     * well as splitting the output data retrieved. Type: string (or Expression with resultType string).
      * 
      * @param sapDataColumnDelimiter the sapDataColumnDelimiter value to set.
      * @return the SapTableSource object itself.

@@ -15,25 +15,25 @@ public final class MapperTablePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MapperTableProperties model = BinaryData.fromString(
-            "{\"schema\":[{\"name\":\"toi\",\"dataType\":\"gygvfltgvdiho\"},{\"name\":\"krxwet\",\"dataType\":\"drcyrucpcun\"}],\"dslConnectorProperties\":[{\"name\":\"qumoeno\",\"value\":\"dataaienhqhsknd\"},{\"name\":\"lqkaadlknwf\",\"value\":\"datanniyopetxi\"}]}")
+            "{\"schema\":[{\"name\":\"wetp\",\"dataType\":\"ycyqiqyhgfsetzl\"},{\"name\":\"bsfledynojpziu\",\"dataType\":\"bzkkd\"}],\"dslConnectorProperties\":[{\"name\":\"sycljsel\",\"value\":\"datapbafvafhlbylc\"},{\"name\":\"evxrhyz\",\"value\":\"datawrso\"},{\"name\":\"ltdb\",\"value\":\"datairrhv\"}]}")
             .toObject(MapperTableProperties.class);
-        Assertions.assertEquals("toi", model.schema().get(0).name());
-        Assertions.assertEquals("gygvfltgvdiho", model.schema().get(0).dataType());
-        Assertions.assertEquals("qumoeno", model.dslConnectorProperties().get(0).name());
+        Assertions.assertEquals("wetp", model.schema().get(0).name());
+        Assertions.assertEquals("ycyqiqyhgfsetzl", model.schema().get(0).dataType());
+        Assertions.assertEquals("sycljsel", model.dslConnectorProperties().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MapperTableProperties model
-            = new MapperTableProperties()
-                .withSchema(Arrays.asList(new MapperTableSchema().withName("toi").withDataType("gygvfltgvdiho"),
-                    new MapperTableSchema().withName("krxwet").withDataType("drcyrucpcun")))
-                .withDslConnectorProperties(
-                    Arrays.asList(new MapperDslConnectorProperties().withName("qumoeno").withValue("dataaienhqhsknd"),
-                        new MapperDslConnectorProperties().withName("lqkaadlknwf").withValue("datanniyopetxi")));
+        MapperTableProperties model = new MapperTableProperties()
+            .withSchema(Arrays.asList(new MapperTableSchema().withName("wetp").withDataType("ycyqiqyhgfsetzl"),
+                new MapperTableSchema().withName("bsfledynojpziu").withDataType("bzkkd")))
+            .withDslConnectorProperties(
+                Arrays.asList(new MapperDslConnectorProperties().withName("sycljsel").withValue("datapbafvafhlbylc"),
+                    new MapperDslConnectorProperties().withName("evxrhyz").withValue("datawrso"),
+                    new MapperDslConnectorProperties().withName("ltdb").withValue("datairrhv")));
         model = BinaryData.fromObject(model).toObject(MapperTableProperties.class);
-        Assertions.assertEquals("toi", model.schema().get(0).name());
-        Assertions.assertEquals("gygvfltgvdiho", model.schema().get(0).dataType());
-        Assertions.assertEquals("qumoeno", model.dslConnectorProperties().get(0).name());
+        Assertions.assertEquals("wetp", model.schema().get(0).name());
+        Assertions.assertEquals("ycyqiqyhgfsetzl", model.schema().get(0).dataType());
+        Assertions.assertEquals("sycljsel", model.dslConnectorProperties().get(0).name());
     }
 }

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.models.GenerateExpressRoutePortsLoaRequ
 public final class ExpressRoutePortsGenerateLoaSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/GenerateExpressRoutePortsLOA.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/GenerateExpressRoutePortsLOA.
      * json
      */
     /**
@@ -21,8 +21,12 @@ public final class ExpressRoutePortsGenerateLoaSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void generateExpressRoutePortLOA(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getExpressRoutePorts().generateLoaWithResponse("rg1", "portName",
-            new GenerateExpressRoutePortsLoaRequest().withCustomerName("customerName"),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getExpressRoutePorts()
+            .generateLoaWithResponse("rg1", "portName",
+                new GenerateExpressRoutePortsLoaRequest().withCustomerName("customerName"),
+                com.azure.core.util.Context.NONE);
     }
 }

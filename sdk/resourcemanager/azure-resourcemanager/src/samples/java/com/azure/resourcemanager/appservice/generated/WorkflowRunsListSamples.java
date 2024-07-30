@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class WorkflowRunsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/WorkflowRuns_List.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/WorkflowRuns_List.json
      */
     /**
      * Sample code: List workflow runs.
@@ -18,7 +17,10 @@ public final class WorkflowRunsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listWorkflowRuns(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getWorkflowRuns().list("test-resource-group", "test-name",
-            "test-workflow", null, null, com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getWorkflowRuns()
+            .list("test-resource-group", "test-name", "test-workflow", null, null, com.azure.core.util.Context.NONE);
     }
 }

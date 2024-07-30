@@ -31,8 +31,8 @@ public final class CassandraTableDatasetTypeProperties {
     }
 
     /**
-     * Get the tableName property: The table name of the Cassandra database. Type: string (or Expression with
-     * resultType string).
+     * Get the tableName property: The table name of the Cassandra database. Type: string (or Expression with resultType
+     * string).
      * 
      * @return the tableName value.
      */
@@ -41,8 +41,8 @@ public final class CassandraTableDatasetTypeProperties {
     }
 
     /**
-     * Set the tableName property: The table name of the Cassandra database. Type: string (or Expression with
-     * resultType string).
+     * Set the tableName property: The table name of the Cassandra database. Type: string (or Expression with resultType
+     * string).
      * 
      * @param tableName the tableName value to set.
      * @return the CassandraTableDatasetTypeProperties object itself.

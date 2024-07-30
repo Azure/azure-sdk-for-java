@@ -11,14 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class LoginRoutesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LoginRoutes model = BinaryData.fromString("{\"logoutEndpoint\":\"sxlzevgbmqj\"}").toObject(LoginRoutes.class);
-        Assertions.assertEquals("sxlzevgbmqj", model.logoutEndpoint());
+        LoginRoutes model
+            = BinaryData.fromString("{\"logoutEndpoint\":\"qvpkvlrxnjeaseip\"}").toObject(LoginRoutes.class);
+        Assertions.assertEquals("qvpkvlrxnjeaseip", model.logoutEndpoint());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LoginRoutes model = new LoginRoutes().withLogoutEndpoint("sxlzevgbmqj");
+        LoginRoutes model = new LoginRoutes().withLogoutEndpoint("qvpkvlrxnjeaseip");
         model = BinaryData.fromObject(model).toObject(LoginRoutes.class);
-        Assertions.assertEquals("sxlzevgbmqj", model.logoutEndpoint());
+        Assertions.assertEquals("qvpkvlrxnjeaseip", model.logoutEndpoint());
     }
 }

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.common;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -12,7 +13,6 @@ import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 
 import java.util.Objects;
 
-import static com.azure.cosmos.BridgeInternal.setProperty;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class ChangeFeedStateV1 extends ChangeFeedState {
@@ -138,32 +138,32 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
     public void populatePropertyBag() {
         super.populatePropertyBag();
 
-        setProperty(
-            this,
+        this.set(
             Constants.Properties.CHANGE_FEED_STATE_VERSION,
-            ChangeFeedStateVersions.V1);
+            ChangeFeedStateVersions.V1,
+            CosmosItemSerializer.DEFAULT_SERIALIZER);
 
-        setProperty(
-            this,
+        this.set(
             Constants.Properties.CHANGE_FEED_STATE_RESOURCE_ID,
-            this.containerRid);
+            this.containerRid,
+            CosmosItemSerializer.DEFAULT_SERIALIZER);
 
-        setProperty(
-            this,
+        this.set(
             Constants.Properties.CHANGE_FEED_STATE_MODE,
-            this.mode);
+            this.mode,
+            CosmosItemSerializer.DEFAULT_SERIALIZER);
 
-        setProperty(
-            this,
+        this.set(
             Constants.Properties.CHANGE_FEED_STATE_START_FROM,
-            this.startFromSettings);
+            this.startFromSettings,
+            CosmosItemSerializer.DEFAULT_SERIALIZER);
 
         if (this.continuation != null) {
             this.continuation.populatePropertyBag();
-            setProperty(
-                this,
+            this.set(
                 Constants.Properties.CHANGE_FEED_STATE_CONTINUATION,
-                this.continuation);
+                this.continuation,
+                CosmosItemSerializer.DEFAULT_SERIALIZER);
             this.feedRange.removeProperties(this);
         } else {
             this.feedRange.setProperties(this, true);

@@ -20,8 +20,7 @@ public final class FileWorkspacesNoSubscriptionsImpl implements FileWorkspacesNo
 
     private final com.azure.resourcemanager.support.SupportManager serviceManager;
 
-    public FileWorkspacesNoSubscriptionsImpl(
-        FileWorkspacesNoSubscriptionsClient innerClient,
+    public FileWorkspacesNoSubscriptionsImpl(FileWorkspacesNoSubscriptionsClient innerClient,
         com.azure.resourcemanager.support.SupportManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -30,10 +29,7 @@ public final class FileWorkspacesNoSubscriptionsImpl implements FileWorkspacesNo
     public Response<FileWorkspaceDetails> getWithResponse(String fileWorkspaceName, Context context) {
         Response<FileWorkspaceDetailsInner> inner = this.serviceClient().getWithResponse(fileWorkspaceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new FileWorkspaceDetailsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -52,10 +48,7 @@ public final class FileWorkspacesNoSubscriptionsImpl implements FileWorkspacesNo
     public Response<FileWorkspaceDetails> createWithResponse(String fileWorkspaceName, Context context) {
         Response<FileWorkspaceDetailsInner> inner = this.serviceClient().createWithResponse(fileWorkspaceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new FileWorkspaceDetailsImpl(inner.getValue(), this.manager()));
         } else {
             return null;

@@ -18,62 +18,61 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedRuleGroupOverrideTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedRuleGroupOverride model =
-            BinaryData
-                .fromString(
-                    "{\"ruleGroupName\":\"theotusiv\",\"exclusions\":[{\"matchVariable\":\"QueryStringArgNames\",\"selectorMatchOperator\":\"StartsWith\",\"selector\":\"iqihn\"}],\"rules\":[{\"ruleId\":\"gbwjzrnf\",\"enabledState\":\"Enabled\",\"action\":\"Log\",\"exclusions\":[]},{\"ruleId\":\"emv\",\"enabledState\":\"Disabled\",\"action\":\"AnomalyScoring\",\"exclusions\":[]}]}")
-                .toObject(ManagedRuleGroupOverride.class);
-        Assertions.assertEquals("theotusiv", model.ruleGroupName());
-        Assertions
-            .assertEquals(
-                ManagedRuleExclusionMatchVariable.QUERY_STRING_ARG_NAMES, model.exclusions().get(0).matchVariable());
-        Assertions
-            .assertEquals(
-                ManagedRuleExclusionSelectorMatchOperator.STARTS_WITH,
-                model.exclusions().get(0).selectorMatchOperator());
-        Assertions.assertEquals("iqihn", model.exclusions().get(0).selector());
-        Assertions.assertEquals("gbwjzrnf", model.rules().get(0).ruleId());
-        Assertions.assertEquals(ManagedRuleEnabledState.ENABLED, model.rules().get(0).enabledState());
-        Assertions.assertEquals(ActionType.LOG, model.rules().get(0).action());
+        ManagedRuleGroupOverride model = BinaryData.fromString(
+            "{\"ruleGroupName\":\"aoqvuh\",\"exclusions\":[{\"matchVariable\":\"RequestBodyPostArgNames\",\"selectorMatchOperator\":\"StartsWith\",\"selector\":\"cyddglmjthjqk\"},{\"matchVariable\":\"RequestBodyJsonArgNames\",\"selectorMatchOperator\":\"Equals\",\"selector\":\"eicxmqciwqvhkhi\"},{\"matchVariable\":\"RequestHeaderNames\",\"selectorMatchOperator\":\"EndsWith\",\"selector\":\"gdtopbobjogh\"}],\"rules\":[{\"ruleId\":\"u\",\"enabledState\":\"Disabled\",\"action\":\"Allow\",\"exclusions\":[{\"matchVariable\":\"RequestBodyJsonArgNames\",\"selectorMatchOperator\":\"Contains\",\"selector\":\"vvtpgvdfgio\"}]}]}")
+            .toObject(ManagedRuleGroupOverride.class);
+        Assertions.assertEquals("aoqvuh", model.ruleGroupName());
+        Assertions.assertEquals(ManagedRuleExclusionMatchVariable.REQUEST_BODY_POST_ARG_NAMES,
+            model.exclusions().get(0).matchVariable());
+        Assertions.assertEquals(ManagedRuleExclusionSelectorMatchOperator.STARTS_WITH,
+            model.exclusions().get(0).selectorMatchOperator());
+        Assertions.assertEquals("cyddglmjthjqk", model.exclusions().get(0).selector());
+        Assertions.assertEquals("u", model.rules().get(0).ruleId());
+        Assertions.assertEquals(ManagedRuleEnabledState.DISABLED, model.rules().get(0).enabledState());
+        Assertions.assertEquals(ActionType.ALLOW, model.rules().get(0).action());
+        Assertions.assertEquals(ManagedRuleExclusionMatchVariable.REQUEST_BODY_JSON_ARG_NAMES,
+            model.rules().get(0).exclusions().get(0).matchVariable());
+        Assertions.assertEquals(ManagedRuleExclusionSelectorMatchOperator.CONTAINS,
+            model.rules().get(0).exclusions().get(0).selectorMatchOperator());
+        Assertions.assertEquals("vvtpgvdfgio", model.rules().get(0).exclusions().get(0).selector());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedRuleGroupOverride model =
-            new ManagedRuleGroupOverride()
-                .withRuleGroupName("theotusiv")
-                .withExclusions(
-                    Arrays
-                        .asList(
-                            new ManagedRuleExclusion()
-                                .withMatchVariable(ManagedRuleExclusionMatchVariable.QUERY_STRING_ARG_NAMES)
-                                .withSelectorMatchOperator(ManagedRuleExclusionSelectorMatchOperator.STARTS_WITH)
-                                .withSelector("iqihn")))
-                .withRules(
-                    Arrays
-                        .asList(
-                            new ManagedRuleOverride()
-                                .withRuleId("gbwjzrnf")
-                                .withEnabledState(ManagedRuleEnabledState.ENABLED)
-                                .withAction(ActionType.LOG)
-                                .withExclusions(Arrays.asList()),
-                            new ManagedRuleOverride()
-                                .withRuleId("emv")
-                                .withEnabledState(ManagedRuleEnabledState.DISABLED)
-                                .withAction(ActionType.ANOMALY_SCORING)
-                                .withExclusions(Arrays.asList())));
+        ManagedRuleGroupOverride model = new ManagedRuleGroupOverride().withRuleGroupName("aoqvuh")
+            .withExclusions(Arrays.asList(
+                new ManagedRuleExclusion()
+                    .withMatchVariable(ManagedRuleExclusionMatchVariable.REQUEST_BODY_POST_ARG_NAMES)
+                    .withSelectorMatchOperator(ManagedRuleExclusionSelectorMatchOperator.STARTS_WITH)
+                    .withSelector("cyddglmjthjqk"),
+                new ManagedRuleExclusion()
+                    .withMatchVariable(ManagedRuleExclusionMatchVariable.REQUEST_BODY_JSON_ARG_NAMES)
+                    .withSelectorMatchOperator(ManagedRuleExclusionSelectorMatchOperator.EQUALS)
+                    .withSelector("eicxmqciwqvhkhi"),
+                new ManagedRuleExclusion().withMatchVariable(ManagedRuleExclusionMatchVariable.REQUEST_HEADER_NAMES)
+                    .withSelectorMatchOperator(ManagedRuleExclusionSelectorMatchOperator.ENDS_WITH)
+                    .withSelector("gdtopbobjogh")))
+            .withRules(Arrays.asList(new ManagedRuleOverride().withRuleId("u")
+                .withEnabledState(ManagedRuleEnabledState.DISABLED)
+                .withAction(ActionType.ALLOW)
+                .withExclusions(Arrays.asList(new ManagedRuleExclusion()
+                    .withMatchVariable(ManagedRuleExclusionMatchVariable.REQUEST_BODY_JSON_ARG_NAMES)
+                    .withSelectorMatchOperator(ManagedRuleExclusionSelectorMatchOperator.CONTAINS)
+                    .withSelector("vvtpgvdfgio")))));
         model = BinaryData.fromObject(model).toObject(ManagedRuleGroupOverride.class);
-        Assertions.assertEquals("theotusiv", model.ruleGroupName());
-        Assertions
-            .assertEquals(
-                ManagedRuleExclusionMatchVariable.QUERY_STRING_ARG_NAMES, model.exclusions().get(0).matchVariable());
-        Assertions
-            .assertEquals(
-                ManagedRuleExclusionSelectorMatchOperator.STARTS_WITH,
-                model.exclusions().get(0).selectorMatchOperator());
-        Assertions.assertEquals("iqihn", model.exclusions().get(0).selector());
-        Assertions.assertEquals("gbwjzrnf", model.rules().get(0).ruleId());
-        Assertions.assertEquals(ManagedRuleEnabledState.ENABLED, model.rules().get(0).enabledState());
-        Assertions.assertEquals(ActionType.LOG, model.rules().get(0).action());
+        Assertions.assertEquals("aoqvuh", model.ruleGroupName());
+        Assertions.assertEquals(ManagedRuleExclusionMatchVariable.REQUEST_BODY_POST_ARG_NAMES,
+            model.exclusions().get(0).matchVariable());
+        Assertions.assertEquals(ManagedRuleExclusionSelectorMatchOperator.STARTS_WITH,
+            model.exclusions().get(0).selectorMatchOperator());
+        Assertions.assertEquals("cyddglmjthjqk", model.exclusions().get(0).selector());
+        Assertions.assertEquals("u", model.rules().get(0).ruleId());
+        Assertions.assertEquals(ManagedRuleEnabledState.DISABLED, model.rules().get(0).enabledState());
+        Assertions.assertEquals(ActionType.ALLOW, model.rules().get(0).action());
+        Assertions.assertEquals(ManagedRuleExclusionMatchVariable.REQUEST_BODY_JSON_ARG_NAMES,
+            model.rules().get(0).exclusions().get(0).matchVariable());
+        Assertions.assertEquals(ManagedRuleExclusionSelectorMatchOperator.CONTAINS,
+            model.rules().get(0).exclusions().get(0).selectorMatchOperator());
+        Assertions.assertEquals("vvtpgvdfgio", model.rules().get(0).exclusions().get(0).selector());
     }
 }

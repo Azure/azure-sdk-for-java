@@ -124,8 +124,8 @@ public final class SharePointOnlineListLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the servicePrincipalKey property: The client secret of your application registered in Azure Active
-     * Directory. Type: string (or Expression with resultType string).
+     * Get the servicePrincipalKey property: The client secret of your application registered in Azure Active Directory.
+     * Type: string (or Expression with resultType string).
      * 
      * @return the servicePrincipalKey value.
      */
@@ -134,8 +134,8 @@ public final class SharePointOnlineListLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the servicePrincipalKey property: The client secret of your application registered in Azure Active
-     * Directory. Type: string (or Expression with resultType string).
+     * Set the servicePrincipalKey property: The client secret of your application registered in Azure Active Directory.
+     * Type: string (or Expression with resultType string).
      * 
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the SharePointOnlineListLinkedServiceTypeProperties object itself.
@@ -146,8 +146,8 @@ public final class SharePointOnlineListLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -156,8 +156,8 @@ public final class SharePointOnlineListLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SharePointOnlineListLinkedServiceTypeProperties object itself.
@@ -174,20 +174,24 @@ public final class SharePointOnlineListLinkedServiceTypeProperties {
      */
     public void validate() {
         if (siteUrl() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property siteUrl in model SharePointOnlineListLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property siteUrl in model SharePointOnlineListLinkedServiceTypeProperties"));
         }
         if (tenantId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property tenantId in model SharePointOnlineListLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property tenantId in model SharePointOnlineListLinkedServiceTypeProperties"));
         }
         if (servicePrincipalId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property servicePrincipalId in model SharePointOnlineListLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property servicePrincipalId in model SharePointOnlineListLinkedServiceTypeProperties"));
         }
         if (servicePrincipalKey() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property servicePrincipalKey in model SharePointOnlineListLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property servicePrincipalKey in model SharePointOnlineListLinkedServiceTypeProperties"));
         } else {
             servicePrincipalKey().validate();
         }

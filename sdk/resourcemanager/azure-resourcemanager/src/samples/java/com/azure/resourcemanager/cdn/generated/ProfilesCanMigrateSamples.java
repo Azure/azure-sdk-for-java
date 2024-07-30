@@ -7,29 +7,23 @@ package com.azure.resourcemanager.cdn.generated;
 import com.azure.resourcemanager.cdn.models.CanMigrateParameters;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
 
-/** Samples for Profiles CanMigrate. */
+/**
+ * Samples for Profiles CanMigrate.
+ */
 public final class ProfilesCanMigrateSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Profiles_CanMigrate.json
+     * x-ms-original-file:
+     * specification/cdn/resource-manager/Microsoft.Cdn/stable/2024-02-01/examples/Profiles_CanMigrate.json
      */
     /**
      * Sample code: Profiles_CanMigrate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void profilesCanMigrate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cdnProfiles()
-            .manager()
-            .serviceClient()
-            .getProfiles()
-            .canMigrate(
-                "RG",
-                new CanMigrateParameters()
-                    .withClassicResourceReference(
-                        new ResourceReference()
-                            .withId(
-                                "/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Network/frontdoors/frontdoorname")),
-                com.azure.core.util.Context.NONE);
+        azure.cdnProfiles().manager().serviceClient().getProfiles().canMigrate("RG",
+            new CanMigrateParameters().withClassicResourceReference(new ResourceReference()
+                .withId("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Network/frontdoors/frontdoorname")),
+            com.azure.core.util.Context.NONE);
     }
 }

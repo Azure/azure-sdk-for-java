@@ -3,6 +3,8 @@
 
 package com.azure.resourcemanager;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuit;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitSkuType;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuits;
@@ -13,6 +15,8 @@ import org.junit.jupiter.api.Assertions;
 
 /** Tests Express Route Circuit. */
 public class TestExpressRouteCircuit {
+    private static final ClientLogger LOGGER = new ClientLogger(TestExpressRouteCircuit.class);
+
     private String testId = "";
     private static final Region REGION = Region.ASIA_SOUTHEAST;
     private String circuitName;
@@ -54,7 +58,7 @@ public class TestExpressRouteCircuit {
                 .apply();
             resource.refresh();
             Assertions.assertTrue(resource.tags().containsKey("tag2"));
-            Assertions.assertTrue(!resource.tags().containsKey("tag1"));
+            Assertions.assertFalse(resource.tags().containsKey("tag1"));
             Assertions.assertEquals(Integer.valueOf(200), resource.serviceProviderProperties().bandwidthInMbps());
             Assertions.assertEquals(ExpressRouteCircuitSkuType.PREMIUM_UNLIMITEDDATA, resource.sku());
 
@@ -131,18 +135,8 @@ public class TestExpressRouteCircuit {
     }
 
     private static void printExpressRouteCircuit(ExpressRouteCircuit resource) {
-        StringBuilder info = new StringBuilder();
-        info
-            .append("Express Route Circuit: ")
-            .append(resource.id())
-            .append("\n\tName: ")
-            .append(resource.name())
-            .append("\n\tResource group: ")
-            .append(resource.resourceGroupName())
-            .append("\n\tRegion: ")
-            .append(resource.regionName())
-            .append("\n\tTags: ")
-            .append(resource.tags());
-        System.out.println(info.toString());
+        LOGGER.log(LogLevel.VERBOSE, () -> "Express Route Circuit: " + resource.id() + "\n\tName: " + resource.name()
+            + "\n\tResource group: " + resource.resourceGroupName() + "\n\tRegion: " + resource.regionName()
+            + "\n\tTags: " + resource.tags());
     }
 }

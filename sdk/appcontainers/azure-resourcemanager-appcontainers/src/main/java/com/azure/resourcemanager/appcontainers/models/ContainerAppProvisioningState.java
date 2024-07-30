@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Provisioning state of the Container App. */
+/**
+ * Provisioning state of the Container App.
+ */
 public final class ContainerAppProvisioningState extends ExpandableStringEnum<ContainerAppProvisioningState> {
-    /** Static value InProgress for ContainerAppProvisioningState. */
+    /**
+     * Static value InProgress for ContainerAppProvisioningState.
+     */
     public static final ContainerAppProvisioningState IN_PROGRESS = fromString("InProgress");
 
-    /** Static value Succeeded for ContainerAppProvisioningState. */
+    /**
+     * Static value Succeeded for ContainerAppProvisioningState.
+     */
     public static final ContainerAppProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for ContainerAppProvisioningState. */
+    /**
+     * Static value Failed for ContainerAppProvisioningState.
+     */
     public static final ContainerAppProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Canceled for ContainerAppProvisioningState. */
+    /**
+     * Static value Canceled for ContainerAppProvisioningState.
+     */
     public static final ContainerAppProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value Deleting for ContainerAppProvisioningState. */
+    /**
+     * Static value Deleting for ContainerAppProvisioningState.
+     */
     public static final ContainerAppProvisioningState DELETING = fromString("Deleting");
 
     /**
      * Creates a new instance of ContainerAppProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class ContainerAppProvisioningState extends ExpandableStringEnum<Co
 
     /**
      * Creates or finds a ContainerAppProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ContainerAppProvisioningState.
      */
-    @JsonCreator
     public static ContainerAppProvisioningState fromString(String name) {
         return fromString(name, ContainerAppProvisioningState.class);
     }
 
     /**
      * Gets known ContainerAppProvisioningState values.
-     *
+     * 
      * @return known ContainerAppProvisioningState values.
      */
     public static Collection<ContainerAppProvisioningState> values() {

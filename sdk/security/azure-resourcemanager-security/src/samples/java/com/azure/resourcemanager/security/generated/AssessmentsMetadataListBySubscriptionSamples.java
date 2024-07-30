@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class AssessmentsMetadataListBySubscriptionSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/AssessmentsMetadata/
-     * ListAssessmentsMetadata_subscription_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/AssessmentsMetadata/ListAssessmentsMetadata_subscription_example.json
      */
     /**
      * Sample code: List security assessment metadata for subscription.

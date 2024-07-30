@@ -7,7 +7,9 @@ package com.azure.resourcemanager.resources.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information regarding paired region. */
+/**
+ * Information regarding paired region.
+ */
 @Immutable
 public final class PairedRegion {
     /*
@@ -17,8 +19,7 @@ public final class PairedRegion {
     private String name;
 
     /*
-     * The fully qualified ID of the location. For example,
-     * /subscriptions/8d65815f-a5b6-402f-9298-045155da7d74/locations/westus.
+     * The fully qualified ID of the location. For example, /subscriptions/8d65815f-a5b6-402f-9298-045155da7d74/locations/westus.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
@@ -29,13 +30,15 @@ public final class PairedRegion {
     @JsonProperty(value = "subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
     private String subscriptionId;
 
-    /** Creates an instance of PairedRegion class. */
+    /**
+     * Creates an instance of PairedRegion class.
+     */
     public PairedRegion() {
     }
 
     /**
      * Get the name property: The name of the paired region.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -45,7 +48,7 @@ public final class PairedRegion {
     /**
      * Get the id property: The fully qualified ID of the location. For example,
      * /subscriptions/8d65815f-a5b6-402f-9298-045155da7d74/locations/westus.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -54,7 +57,7 @@ public final class PairedRegion {
 
     /**
      * Get the subscriptionId property: The subscription ID.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -63,7 +66,7 @@ public final class PairedRegion {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

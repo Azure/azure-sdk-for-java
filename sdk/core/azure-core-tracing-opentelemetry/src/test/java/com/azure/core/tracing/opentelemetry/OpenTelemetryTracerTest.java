@@ -36,6 +36,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.Exceptions;
 
 import java.io.IOException;
@@ -285,6 +286,28 @@ public class OpenTelemetryTracerTest {
         assertEquals(SpanKind.CONSUMER, spanData.getKind());
     }
 
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void testIsRecording(boolean isRecording) {
+        // Arrange
+        SpanContext remoteParent
+            = SpanContext.create(IdGenerator.random().generateTraceId(), IdGenerator.random().generateSpanId(),
+                isRecording ? TraceFlags.getSampled() : TraceFlags.getDefault(), TraceState.getDefault());
+        StartSpanOptions options = new StartSpanOptions(com.azure.core.util.tracing.SpanKind.CLIENT)
+            .setRemoteParent(new Context(SPAN_CONTEXT_KEY, remoteParent));
+
+        // Act
+        final Context span = openTelemetryTracer.start(METHOD_NAME, options, Context.NONE);
+
+        // Assert
+        assertEquals(isRecording, openTelemetryTracer.isRecording(span));
+    }
+
+    @Test
+    public void testIsRecordingNoSpan() {
+        assertFalse(openTelemetryTracer.isRecording(Context.NONE));
+    }
+
     @Test
     @SuppressWarnings("deprecation")
     public void startSpanProcessKindSend() {
@@ -462,7 +485,6 @@ public class OpenTelemetryTracerTest {
     @Test
     @SuppressWarnings("deprecation")
     public void startSpanOverloadNullPointerException() {
-
         // Assert
         assertThrows(NullPointerException.class, () -> openTelemetryTracer.start("", Context.NONE, null));
     }
@@ -476,23 +498,19 @@ public class OpenTelemetryTracerTest {
             new StartSpanOptions(com.azure.core.util.tracing.SpanKind.CONSUMER), Context.NONE));
         assertThrows(NullPointerException.class, () -> openTelemetryTracer.start("span",
             new StartSpanOptions(com.azure.core.util.tracing.SpanKind.CONSUMER), null));
-
     }
 
     @Test
-    @SuppressWarnings("deprecation")
     public void addLinkTest() {
         // Arrange
-        StartSpanOptions spanBuilder = new StartSpanOptions(com.azure.core.util.tracing.SpanKind.INTERNAL);
         Span toLinkSpan = tracer.spanBuilder("new test span").startSpan();
-
         Context linkContext = new Context(SPAN_CONTEXT_KEY, toLinkSpan.getSpanContext());
         LinkData expectedLink = LinkData.create(toLinkSpan.getSpanContext());
 
+        StartSpanOptions startOptions
+            = new StartSpanOptions(com.azure.core.util.tracing.SpanKind.INTERNAL).addLink(new TracingLink(linkContext));
         // Act
-        openTelemetryTracer.addLink(linkContext.addData(SPAN_BUILDER_KEY, spanBuilder));
-
-        Context span = openTelemetryTracer.start(METHOD_NAME, spanBuilder, Context.NONE);
+        Context span = openTelemetryTracer.start(METHOD_NAME, startOptions, Context.NONE);
         ReadableSpan span1 = getSpan(span);
 
         // Assert
@@ -887,6 +905,36 @@ public class OpenTelemetryTracerTest {
     }
 
     @Test
+    public void spanAttributes() {
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("S", "foo");
+        attributes.put("I", 1);
+        attributes.put("L", 10L);
+        attributes.put("D", 0.1d);
+        attributes.put("B", true);
+        attributes.put("S[]", new String[] { "foo" });
+        attributes.put("L[]", new long[] { 10L });
+        attributes.put("D[]", new double[] { 0.1d });
+        attributes.put("B[]", new boolean[] { true });
+        attributes.put("I[]", new int[] { 1 });
+        attributes.put("Complex", Collections.singletonMap("key", "value"));
+
+        Attributes expectedAttributes = Attributes.builder()
+            .put("S", "foo")
+            .put("L", 10L)
+            .put("I", 1)
+            .put("D", 0.1d)
+            .put("B", true)
+            .put("az.namespace", AZ_NAMESPACE_VALUE)
+            .build();
+
+        Context spanCtx = openTelemetryTracer.start(METHOD_NAME, tracingContext);
+        attributes.forEach((key, value) -> openTelemetryTracer.setAttribute(key, value, spanCtx));
+        final ReadableSpan span = getSpan(spanCtx);
+        verifySpanAttributes(expectedAttributes, span.toSpanData().getAttributes());
+    }
+
+    @Test
     public void suppressNestedClientSpan() {
         Context outer = openTelemetryTracer.start("outer", Context.NONE);
         Context innerSuppressed = openTelemetryTracer.start("innerSuppressed", outer);
@@ -909,9 +957,9 @@ public class OpenTelemetryTracerTest {
     }
 
     @Test
-    @SuppressWarnings("deprecation")
     public void suppressNestedInterleavedClientSpan() {
-        Context outer = openTelemetryTracer.start("outer", Context.NONE, com.azure.core.util.tracing.ProcessKind.SEND);
+        Context outer = openTelemetryTracer.start("outer",
+            new StartSpanOptions(com.azure.core.util.tracing.SpanKind.CONSUMER), Context.NONE);
 
         Context inner1NotSuppressed = openTelemetryTracer.start("innerSuppressed", outer);
         Context inner2Suppressed = openTelemetryTracer.start("innerSuppressed", inner1NotSuppressed);
@@ -940,7 +988,7 @@ public class OpenTelemetryTracerTest {
 
         Context inner1Suppressed = openTelemetryTracer.start("innerSuppressed", outer);
         Context inner1NotSuppressed = openTelemetryTracer.start("innerNotSuppressed",
-            new StartSpanOptions(com.azure.core.util.tracing.SpanKind.CLIENT), inner1Suppressed);
+            new StartSpanOptions(com.azure.core.util.tracing.SpanKind.PRODUCER), inner1Suppressed);
         Context inner2Suppressed = openTelemetryTracer.start("innerSuppressed", inner1NotSuppressed);
 
         openTelemetryTracer.end("ok", null, inner2Suppressed);
@@ -1009,7 +1057,7 @@ public class OpenTelemetryTracerTest {
             Arguments.of(com.azure.core.util.tracing.SpanKind.CLIENT, com.azure.core.util.tracing.SpanKind.CLIENT,
                 false),
             Arguments.of(com.azure.core.util.tracing.SpanKind.CLIENT, com.azure.core.util.tracing.SpanKind.INTERNAL,
-                false),
+                true),
             Arguments.of(com.azure.core.util.tracing.SpanKind.CLIENT, com.azure.core.util.tracing.SpanKind.PRODUCER,
                 false),
             Arguments.of(com.azure.core.util.tracing.SpanKind.CLIENT, com.azure.core.util.tracing.SpanKind.CONSUMER,

@@ -5,31 +5,12 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The ARC autoprovisioning configuration.
  */
 @Fluent
-public final class DefenderForServersAwsOfferingArcAutoProvisioning {
-    /*
-     * Is arc auto provisioning enabled
-     */
-    @JsonProperty(value = "enabled")
-    private Boolean enabled;
-
-    /*
-     * The cloud role ARN in AWS for this feature
-     */
-    @JsonProperty(value = "cloudRoleArn")
-    private String cloudRoleArn;
-
-    /*
-     * Configuration for servers Arc auto provisioning
-     */
-    @JsonProperty(value = "configuration")
-    private DefenderForServersAwsOfferingArcAutoProvisioningConfiguration configuration;
-
+public final class DefenderForServersAwsOfferingArcAutoProvisioning extends ArcAutoProvisioningAws {
     /**
      * Creates an instance of DefenderForServersAwsOfferingArcAutoProvisioning class.
      */
@@ -37,63 +18,30 @@ public final class DefenderForServersAwsOfferingArcAutoProvisioning {
     }
 
     /**
-     * Get the enabled property: Is arc auto provisioning enabled.
-     * 
-     * @return the enabled value.
+     * {@inheritDoc}
      */
-    public Boolean enabled() {
-        return this.enabled;
-    }
-
-    /**
-     * Set the enabled property: Is arc auto provisioning enabled.
-     * 
-     * @param enabled the enabled value to set.
-     * @return the DefenderForServersAwsOfferingArcAutoProvisioning object itself.
-     */
-    public DefenderForServersAwsOfferingArcAutoProvisioning withEnabled(Boolean enabled) {
-        this.enabled = enabled;
-        return this;
-    }
-
-    /**
-     * Get the cloudRoleArn property: The cloud role ARN in AWS for this feature.
-     * 
-     * @return the cloudRoleArn value.
-     */
-    public String cloudRoleArn() {
-        return this.cloudRoleArn;
-    }
-
-    /**
-     * Set the cloudRoleArn property: The cloud role ARN in AWS for this feature.
-     * 
-     * @param cloudRoleArn the cloudRoleArn value to set.
-     * @return the DefenderForServersAwsOfferingArcAutoProvisioning object itself.
-     */
+    @Override
     public DefenderForServersAwsOfferingArcAutoProvisioning withCloudRoleArn(String cloudRoleArn) {
-        this.cloudRoleArn = cloudRoleArn;
+        super.withCloudRoleArn(cloudRoleArn);
         return this;
     }
 
     /**
-     * Get the configuration property: Configuration for servers Arc auto provisioning.
-     * 
-     * @return the configuration value.
+     * {@inheritDoc}
      */
-    public DefenderForServersAwsOfferingArcAutoProvisioningConfiguration configuration() {
-        return this.configuration;
+    @Override
+    public DefenderForServersAwsOfferingArcAutoProvisioning withEnabled(Boolean enabled) {
+        super.withEnabled(enabled);
+        return this;
     }
 
     /**
-     * Set the configuration property: Configuration for servers Arc auto provisioning.
-     * 
-     * @param configuration the configuration value to set.
-     * @return the DefenderForServersAwsOfferingArcAutoProvisioning object itself.
+     * {@inheritDoc}
      */
+    @Override
     public DefenderForServersAwsOfferingArcAutoProvisioning
-        withConfiguration(DefenderForServersAwsOfferingArcAutoProvisioningConfiguration configuration) {
-        this.configuration = configuration;
+        withConfiguration(ArcAutoProvisioningConfiguration configuration) {
+        super.withConfiguration(configuration);
         return this;
     }
 
@@ -102,9 +50,8 @@ public final class DefenderForServersAwsOfferingArcAutoProvisioning {
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
-        if (configuration() != null) {
-            configuration().validate();
-        }
+        super.validate();
     }
 }

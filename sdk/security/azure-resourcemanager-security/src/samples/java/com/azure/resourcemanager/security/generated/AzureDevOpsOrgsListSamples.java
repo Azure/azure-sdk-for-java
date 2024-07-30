@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class AzureDevOpsOrgsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2023-09-01-preview/examples/
-     * SecurityConnectorsDevOps/ListAzureDevOpsOrgs_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/ListAzureDevOpsOrgs_example.json
      */
     /**
      * Sample code: List_AzureDevOpsOrgs.

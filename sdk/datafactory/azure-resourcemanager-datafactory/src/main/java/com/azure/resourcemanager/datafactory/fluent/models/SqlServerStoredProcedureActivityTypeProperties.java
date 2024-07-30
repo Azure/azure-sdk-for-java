@@ -32,8 +32,7 @@ public final class SqlServerStoredProcedureActivityTypeProperties {
     }
 
     /**
-     * Get the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType
-     * string).
+     * Get the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType string).
      * 
      * @return the storedProcedureName value.
      */
@@ -42,8 +41,7 @@ public final class SqlServerStoredProcedureActivityTypeProperties {
     }
 
     /**
-     * Set the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType
-     * string).
+     * Set the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType string).
      * 
      * @param storedProcedureName the storedProcedureName value to set.
      * @return the SqlServerStoredProcedureActivityTypeProperties object itself.
@@ -83,8 +81,9 @@ public final class SqlServerStoredProcedureActivityTypeProperties {
      */
     public void validate() {
         if (storedProcedureName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property storedProcedureName in model SqlServerStoredProcedureActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storedProcedureName in model SqlServerStoredProcedureActivityTypeProperties"));
         }
     }
 

@@ -5,31 +5,44 @@
 package com.azure.maps.search.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of entry point. Value can be either _main_ or _minor_. */
+/**
+ * The type of entry point. Value can be either _main_ or _minor_.
+ */
 public final class EntryPointType extends ExpandableStringEnum<EntryPointType> {
-    /** Static value main for EntryPointType. */
+    /**
+     * Static value main for EntryPointType.
+     */
     public static final EntryPointType MAIN = fromString("main");
 
-    /** Static value minor for EntryPointType. */
+    /**
+     * Static value minor for EntryPointType.
+     */
     public static final EntryPointType MINOR = fromString("minor");
 
     /**
+     * Creates a new instance of EntryPointType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EntryPointType() {
+    }
+
+    /**
      * Creates or finds a EntryPointType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EntryPointType.
      */
-    @JsonCreator
     public static EntryPointType fromString(String name) {
         return fromString(name, EntryPointType.class);
     }
 
     /**
      * Gets known EntryPointType values.
-     *
+     * 
      * @return known EntryPointType values.
      */
     public static Collection<EntryPointType> values() {

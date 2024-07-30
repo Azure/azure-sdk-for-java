@@ -6,16 +6,28 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity Document Database Collection sink.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = DocumentDbCollectionSink.class,
+    visible = true)
 @JsonTypeName("DocumentDbCollectionSink")
 @Fluent
 public final class DocumentDbCollectionSink extends CopySink {
+    /*
+     * Copy sink type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "DocumentDbCollectionSink";
+
     /*
      * Nested properties separator. Default is . (dot). Type: string (or Expression with resultType string).
      */
@@ -33,6 +45,16 @@ public final class DocumentDbCollectionSink extends CopySink {
      * Creates an instance of DocumentDbCollectionSink class.
      */
     public DocumentDbCollectionSink() {
+    }
+
+    /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

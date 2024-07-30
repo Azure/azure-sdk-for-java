@@ -15,7 +15,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Service resource. Must be created in the same location as its parent mobile network. */
+/**
+ * Service resource. Must be created in the same location as its parent mobile network.
+ */
 @Fluent
 public final class ServiceInner extends Resource {
     /*
@@ -30,13 +32,15 @@ public final class ServiceInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ServiceInner class. */
+    /**
+     * Creates an instance of ServiceInner class.
+     */
     public ServiceInner() {
     }
 
     /**
      * Get the innerProperties property: Service Properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ServicePropertiesFormat innerProperties() {
@@ -45,21 +49,25 @@ public final class ServiceInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -68,7 +76,7 @@ public final class ServiceInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the service resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -79,7 +87,7 @@ public final class ServiceInner extends Resource {
      * Get the servicePrecedence property: A precedence value that is used to decide between services when identifying
      * the QoS values to use for a particular SIM. A lower value means a higher priority. This value should be unique
      * among all services configured in the mobile network.
-     *
+     * 
      * @return the servicePrecedence value.
      */
     public int servicePrecedence() {
@@ -90,7 +98,7 @@ public final class ServiceInner extends Resource {
      * Set the servicePrecedence property: A precedence value that is used to decide between services when identifying
      * the QoS values to use for a particular SIM. A lower value means a higher priority. This value should be unique
      * among all services configured in the mobile network.
-     *
+     * 
      * @param servicePrecedence the servicePrecedence value to set.
      * @return the ServiceInner object itself.
      */
@@ -106,7 +114,7 @@ public final class ServiceInner extends Resource {
      * Get the serviceQosPolicy property: The QoS policy to use for packets matching this service. This can be
      * overridden for particular flows using the ruleQosPolicy field in a PccRuleConfiguration. If this field is null
      * then the UE's SIM policy will define the QoS settings.
-     *
+     * 
      * @return the serviceQosPolicy value.
      */
     public QosPolicy serviceQosPolicy() {
@@ -117,7 +125,7 @@ public final class ServiceInner extends Resource {
      * Set the serviceQosPolicy property: The QoS policy to use for packets matching this service. This can be
      * overridden for particular flows using the ruleQosPolicy field in a PccRuleConfiguration. If this field is null
      * then the UE's SIM policy will define the QoS settings.
-     *
+     * 
      * @param serviceQosPolicy the serviceQosPolicy value to set.
      * @return the ServiceInner object itself.
      */
@@ -131,7 +139,7 @@ public final class ServiceInner extends Resource {
 
     /**
      * Get the pccRules property: The set of data flow policy rules that make up this service.
-     *
+     * 
      * @return the pccRules value.
      */
     public List<PccRuleConfiguration> pccRules() {
@@ -140,7 +148,7 @@ public final class ServiceInner extends Resource {
 
     /**
      * Set the pccRules property: The set of data flow policy rules that make up this service.
-     *
+     * 
      * @param pccRules the pccRules value to set.
      * @return the ServiceInner object itself.
      */
@@ -154,14 +162,13 @@ public final class ServiceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model ServiceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property innerProperties in model ServiceInner"));
         } else {
             innerProperties().validate();
         }

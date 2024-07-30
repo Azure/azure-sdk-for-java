@@ -10,19 +10,16 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * A copy activity sink.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = CopySink.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = CopySink.class, visible = true)
 @JsonTypeName("CopySink")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "DelimitedTextSink", value = DelimitedTextSink.class),
@@ -71,6 +68,13 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "SalesforceServiceCloudV2Sink", value = SalesforceServiceCloudV2Sink.class) })
 @Fluent
 public class CopySink {
+    /*
+     * Copy sink type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "CopySink";
+
     /*
      * Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
      */
@@ -121,6 +125,15 @@ public class CopySink {
      * Creates an instance of CopySink class.
      */
     public CopySink() {
+    }
+
+    /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -210,8 +223,8 @@ public class CopySink {
     }
 
     /**
-     * Get the maxConcurrentConnections property: The maximum concurrent connection count for the sink data store.
-     * Type: integer (or Expression with resultType integer).
+     * Get the maxConcurrentConnections property: The maximum concurrent connection count for the sink data store. Type:
+     * integer (or Expression with resultType integer).
      * 
      * @return the maxConcurrentConnections value.
      */
@@ -220,8 +233,8 @@ public class CopySink {
     }
 
     /**
-     * Set the maxConcurrentConnections property: The maximum concurrent connection count for the sink data store.
-     * Type: integer (or Expression with resultType integer).
+     * Set the maxConcurrentConnections property: The maximum concurrent connection count for the sink data store. Type:
+     * integer (or Expression with resultType integer).
      * 
      * @param maxConcurrentConnections the maxConcurrentConnections value to set.
      * @return the CopySink object itself.
@@ -277,7 +290,7 @@ public class CopySink {
     @JsonAnySetter
     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }

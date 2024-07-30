@@ -10,11 +10,10 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.hdinsight.containers.fluent.models.ClusterInner;
 import com.azure.resourcemanager.hdinsight.containers.models.Cluster;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterPatch;
-import com.azure.resourcemanager.hdinsight.containers.models.ClusterProfile;
+import com.azure.resourcemanager.hdinsight.containers.models.ClusterPatchProperties;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterResizeData;
-import com.azure.resourcemanager.hdinsight.containers.models.ComputeProfile;
-import com.azure.resourcemanager.hdinsight.containers.models.ProvisioningStatus;
-import com.azure.resourcemanager.hdinsight.containers.models.UpdatableClusterProfile;
+import com.azure.resourcemanager.hdinsight.containers.models.ClusterResourceProperties;
+import com.azure.resourcemanager.hdinsight.containers.models.ClusterUpgrade;
 import java.util.Collections;
 import java.util.Map;
 
@@ -48,32 +47,12 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         }
     }
 
+    public ClusterResourceProperties properties() {
+        return this.innerModel().properties();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
-    }
-
-    public ProvisioningStatus provisioningState() {
-        return this.innerModel().provisioningState();
-    }
-
-    public String clusterType() {
-        return this.innerModel().clusterType();
-    }
-
-    public String deploymentId() {
-        return this.innerModel().deploymentId();
-    }
-
-    public ComputeProfile computeProfile() {
-        return this.innerModel().computeProfile();
-    }
-
-    public ClusterProfile clusterProfile() {
-        return this.innerModel().clusterProfile();
-    }
-
-    public String status() {
-        return this.innerModel().status();
     }
 
     public Region region() {
@@ -111,20 +90,14 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public Cluster create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusters()
-                .create(resourceGroupName, clusterPoolName, clusterName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getClusters().create(resourceGroupName, clusterPoolName,
+            clusterName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Cluster create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusters()
-                .create(resourceGroupName, clusterPoolName, clusterName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getClusters().create(resourceGroupName, clusterPoolName,
+            clusterName, this.innerModel(), context);
         return this;
     }
 
@@ -140,51 +113,46 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public Cluster apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusters()
-                .update(resourceGroupName, clusterPoolName, clusterName, updateClusterPatchRequest, Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getClusters().update(resourceGroupName, clusterPoolName,
+            clusterName, updateClusterPatchRequest, Context.NONE);
         return this;
     }
 
     public Cluster apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusters()
-                .update(resourceGroupName, clusterPoolName, clusterName, updateClusterPatchRequest, context);
+        this.innerObject = serviceManager.serviceClient().getClusters().update(resourceGroupName, clusterPoolName,
+            clusterName, updateClusterPatchRequest, context);
         return this;
     }
 
-    ClusterImpl(
-        ClusterInner innerObject,
+    ClusterImpl(ClusterInner innerObject,
         com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterPoolName = Utils.getValueFromIdByName(innerObject.id(), "clusterpools");
-        this.clusterName = Utils.getValueFromIdByName(innerObject.id(), "clusters");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.clusterPoolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusterpools");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
     }
 
     public Cluster refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusters()
-                .getWithResponse(resourceGroupName, clusterPoolName, clusterName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getClusters()
+            .getWithResponse(resourceGroupName, clusterPoolName, clusterName, Context.NONE).getValue();
         return this;
     }
 
     public Cluster refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusters()
-                .getWithResponse(resourceGroupName, clusterPoolName, clusterName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getClusters()
+            .getWithResponse(resourceGroupName, clusterPoolName, clusterName, context).getValue();
         return this;
+    }
+
+    public Cluster upgrade(ClusterUpgrade clusterUpgradeRequest) {
+        return serviceManager.clusters().upgrade(resourceGroupName, clusterPoolName, clusterName,
+            clusterUpgradeRequest);
+    }
+
+    public Cluster upgrade(ClusterUpgrade clusterUpgradeRequest, Context context) {
+        return serviceManager.clusters().upgrade(resourceGroupName, clusterPoolName, clusterName, clusterUpgradeRequest,
+            context);
     }
 
     public Cluster resize(ClusterResizeData clusterResizeRequest) {
@@ -192,9 +160,8 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public Cluster resize(ClusterResizeData clusterResizeRequest, Context context) {
-        return serviceManager
-            .clusters()
-            .resize(resourceGroupName, clusterPoolName, clusterName, clusterResizeRequest, context);
+        return serviceManager.clusters().resize(resourceGroupName, clusterPoolName, clusterName, clusterResizeRequest,
+            context);
     }
 
     public ClusterImpl withRegion(Region location) {
@@ -217,23 +184,13 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         }
     }
 
-    public ClusterImpl withClusterType(String clusterType) {
-        this.innerModel().withClusterType(clusterType);
+    public ClusterImpl withProperties(ClusterResourceProperties properties) {
+        this.innerModel().withProperties(properties);
         return this;
     }
 
-    public ClusterImpl withComputeProfile(ComputeProfile computeProfile) {
-        this.innerModel().withComputeProfile(computeProfile);
-        return this;
-    }
-
-    public ClusterImpl withClusterProfile(ClusterProfile clusterProfile) {
-        this.innerModel().withClusterProfile(clusterProfile);
-        return this;
-    }
-
-    public ClusterImpl withClusterProfile(UpdatableClusterProfile clusterProfile) {
-        this.updateClusterPatchRequest.withClusterProfile(clusterProfile);
+    public ClusterImpl withProperties(ClusterPatchProperties properties) {
+        this.updateClusterPatchRequest.withProperties(properties);
         return this;
     }
 

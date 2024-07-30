@@ -24,8 +24,10 @@ public final class PreValidateEnableBackupRequestTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PreValidateEnableBackupRequest model
-            = new PreValidateEnableBackupRequest().withResourceType(DataSourceType.SHAREPOINT).withResourceId("gdf")
-                .withVaultId("lzl").withProperties("xrifkwmrvkts");
+            = new PreValidateEnableBackupRequest().withResourceType(DataSourceType.SHAREPOINT)
+                .withResourceId("gdf")
+                .withVaultId("lzl")
+                .withProperties("xrifkwmrvkts");
         model = BinaryData.fromObject(model).toObject(PreValidateEnableBackupRequest.class);
         Assertions.assertEquals(DataSourceType.SHAREPOINT, model.resourceType());
         Assertions.assertEquals("gdf", model.resourceId());

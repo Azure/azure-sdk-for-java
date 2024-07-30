@@ -8,10 +8,12 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.test.utils.TestUtils;
+import com.azure.core.implementation.util.HttpUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.UrlBuilder;
 import org.junit.jupiter.api.Assertions;
@@ -36,6 +38,7 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.http.HttpTimeoutException;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
@@ -53,8 +56,13 @@ import java.util.stream.Collectors;
 
 import static com.azure.core.http.jdk.httpclient.JdkHttpClientLocalTestServer.LONG_BODY;
 import static com.azure.core.http.jdk.httpclient.JdkHttpClientLocalTestServer.SHORT_BODY;
+import static com.azure.core.http.jdk.httpclient.JdkHttpClientLocalTestServer.TIMEOUT;
+import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTimeout;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisabledForJreRange(max = JRE.JAVA_11)
@@ -89,7 +97,7 @@ public class JdkHttpClientTests {
     public void testBufferResponseSync() {
         HttpClient client = new JdkHttpClientBuilder().build();
         try (HttpResponse response = doRequestSync(client, "/long").buffer()) {
-            TestUtils.assertArraysEqual(LONG_BODY, response.getBodyAsBinaryData().toBytes());
+            assertArraysEqual(LONG_BODY, response.getBodyAsBinaryData().toBytes());
         }
     }
 
@@ -98,7 +106,7 @@ public class JdkHttpClientTests {
         HttpClient client = new JdkHttpClientBuilder().build();
         HttpRequest request = new HttpRequest(HttpMethod.GET, url("/long"));
         try (HttpResponse response = client.sendSync(request, new Context("azure-eagerly-read-response", true))) {
-            TestUtils.assertArraysEqual(LONG_BODY, response.getBodyAsBinaryData().toBytes());
+            assertArraysEqual(LONG_BODY, response.getBodyAsBinaryData().toBytes());
         }
     }
 
@@ -149,8 +157,8 @@ public class JdkHttpClientTests {
     public void testMultipleGetBinaryDataSync() {
         HttpClient client = new JdkHttpClientBuilder().build();
         try (HttpResponse response = doRequestSync(client, "/short")) {
-            TestUtils.assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
-            TestUtils.assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
+            assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
+            assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
         }
     }
 
@@ -340,7 +348,7 @@ public class JdkHttpClientTests {
             .flatMap(response -> Mono.using(() -> response, HttpResponse::getBodyAsByteArray, HttpResponse::close));
 
         StepVerifier.create(responses).thenConsumeWhile(response -> {
-            TestUtils.assertArraysEqual(LONG_BODY, response);
+            assertArraysEqual(LONG_BODY, response);
             return true;
         }).expectComplete().verify(Duration.ofSeconds(60));
     }
@@ -356,7 +364,7 @@ public class JdkHttpClientTests {
             requests.add(() -> {
                 try (HttpResponse response = doRequestSync(client, "/long")) {
                     byte[] body = response.getBodyAsBinaryData().toBytes();
-                    TestUtils.assertArraysEqual(LONG_BODY, body);
+                    assertArraysEqual(LONG_BODY, body);
                     return null;
                 }
             });
@@ -376,6 +384,131 @@ public class JdkHttpClientTests {
                 response.writeBodyTo(new ThrowingWritableByteChannel());
             }
         });
+    }
+
+    @Test
+    public void noResponseTimesOutAsync() {
+        HttpClient client = new JdkHttpClientProvider()
+            .createInstance(new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(1)));
+
+        StepVerifier.create(doRequest(client, "/noResponse"))
+            .expectError(HttpTimeoutException.class)
+            .verify(Duration.ofSeconds(5));
+    }
+
+    @Test
+    public void noResponseTimesOutSync() {
+        HttpClient client = new JdkHttpClientProvider()
+            .createInstance(new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(1)));
+
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> assertTimeout(Duration.ofSeconds(5), () -> {
+            try (HttpResponse response = doRequestSync(client, "/noResponse")) {
+                assertNotNull(response);
+            }
+        }));
+
+        assertInstanceOf(HttpTimeoutException.class, ex.getCause());
+    }
+
+    @Test
+    public void slowStreamReadingTimesOutSync() {
+        // Set both the response timeout and read timeout to make sure we aren't getting a response timeout when the
+        // response body is slow to be sent.
+        HttpClient client = new JdkHttpClientProvider().createInstance(
+            new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(1)).setReadTimeout(Duration.ofSeconds(1)));
+
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> assertTimeout(Duration.ofSeconds(5), () -> {
+            try (HttpResponse response = doRequestSync(client, "/slowResponse")) {
+                assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
+            }
+        }));
+
+        assertInstanceOf(HttpTimeoutException.class, ex.getCause());
+    }
+
+    @Test
+    public void slowStreamReadingTimesOutAsync() {
+        // Set both the response timeout and read timeout to make sure we aren't getting a response timeout when the
+        // response body is slow to be sent.
+        HttpClient client = new JdkHttpClientProvider().createInstance(
+            new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(1)).setReadTimeout(Duration.ofSeconds(1)));
+
+        StepVerifier
+            .create(doRequest(client, "/slowResponse").flatMap(
+                response -> FluxUtil.collectBytesFromNetworkResponse(response.getBody(), response.getHeaders())))
+            .expectError(HttpTimeoutException.class)
+            .verify(Duration.ofSeconds(5));
+    }
+
+    @Test
+    public void slowEagerReadingTimesOutSync() {
+        // Set both the response timeout and read timeout to make sure we aren't getting a response timeout when the
+        // response body is slow to be sent.
+        HttpClient client = new JdkHttpClientProvider().createInstance(
+            new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(1)).setReadTimeout(Duration.ofSeconds(1)));
+
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> assertTimeout(Duration.ofSeconds(5), () -> {
+            try (HttpResponse response
+                = doRequestSync(client, "/slowResponse", new Context("azure-eagerly-read-response", true))) {
+                assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
+            }
+        }));
+
+        assertInstanceOf(HttpTimeoutException.class, ex.getCause());
+    }
+
+    @Test
+    public void slowEagerReadingTimesOutAsync() {
+        // Set both the response timeout and read timeout to make sure we aren't getting a response timeout when the
+        // response body is slow to be sent.
+        HttpClient client = new JdkHttpClientProvider().createInstance(
+            new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(1)).setReadTimeout(Duration.ofSeconds(1)));
+
+        StepVerifier
+            .create(doRequest(client, "/slowResponse", new Context("azure-eagerly-read-response", true))
+                .flatMap(HttpResponse::getBodyAsByteArray))
+            .expectError(HttpTimeoutException.class)
+            .verify(Duration.ofSeconds(5));
+    }
+
+    @Test
+    public void perCallTimeout() {
+        HttpClient client = new JdkHttpClientBuilder().responseTimeout(Duration.ofSeconds(10)).build();
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(TIMEOUT));
+
+        // Verify a smaller timeout sent through Context times out the request.
+        StepVerifier.create(client.send(request, new Context(HttpUtils.AZURE_RESPONSE_TIMEOUT, Duration.ofSeconds(1))))
+            .expectErrorMatches(e -> e instanceof HttpTimeoutException)
+            .verify();
+
+        // Then verify not setting a timeout through Context does not time out the request.
+        StepVerifier.create(client.send(request)
+            .flatMap(response -> Mono.zip(FluxUtil.collectBytesInByteBufferStream(response.getBody()),
+                Mono.just(response.getStatusCode()))))
+            .assertNext(tuple -> {
+                assertArraysEqual(SHORT_BODY, tuple.getT1());
+                assertEquals(200, tuple.getT2());
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void perCallTimeoutSync() {
+        HttpClient client = new JdkHttpClientBuilder().responseTimeout(Duration.ofSeconds(10)).build();
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(TIMEOUT));
+
+        // Verify a smaller timeout sent through Context times out the request.
+        RuntimeException ex = assertThrows(RuntimeException.class,
+            () -> client.sendSync(request, new Context(HttpUtils.AZURE_RESPONSE_TIMEOUT, Duration.ofSeconds(1))));
+        assertInstanceOf(HttpTimeoutException.class, ex.getCause());
+
+        // Then verify not setting a timeout through Context does not time out the request.
+        try (HttpResponse response = client.sendSync(request, Context.NONE)) {
+            assertEquals(200, response.getStatusCode());
+            assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
+        }
     }
 
     private static Mono<HttpResponse> getResponse(String path) {
@@ -405,7 +538,7 @@ public class JdkHttpClientTests {
     private static void checkBodyReceived(byte[] expectedBody, String path) {
         HttpClient client = new JdkHttpClientBuilder().build();
         StepVerifier.create(doRequest(client, path).flatMap(HttpResponse::getBodyAsByteArray))
-            .assertNext(bytes -> TestUtils.assertArraysEqual(expectedBody, bytes))
+            .assertNext(bytes -> assertArraysEqual(expectedBody, bytes))
             .verifyComplete();
     }
 
@@ -415,16 +548,24 @@ public class JdkHttpClientTests {
             ByteArrayOutputStream outStream = new ByteArrayOutputStream();
             WritableByteChannel body = Channels.newChannel(outStream);
             response.writeBodyTo(body);
-            TestUtils.assertArraysEqual(expectedBody, outStream.toByteArray());
+            assertArraysEqual(expectedBody, outStream.toByteArray());
         }
     }
 
     private static Mono<HttpResponse> doRequest(HttpClient client, String path) {
-        return client.send(new HttpRequest(HttpMethod.GET, url(path)));
+        return doRequest(client, path, Context.NONE);
+    }
+
+    private static Mono<HttpResponse> doRequest(HttpClient client, String path, Context context) {
+        return client.send(new HttpRequest(HttpMethod.GET, url(path)), context);
     }
 
     private static HttpResponse doRequestSync(HttpClient client, String path) {
-        return client.sendSync(new HttpRequest(HttpMethod.GET, url(path)), Context.NONE);
+        return doRequestSync(client, path, Context.NONE);
+    }
+
+    private static HttpResponse doRequestSync(HttpClient client, String path, Context context) {
+        return client.sendSync(new HttpRequest(HttpMethod.GET, url(path)), context);
     }
 
     private static Path writeToTempFile(byte[] body) throws IOException {

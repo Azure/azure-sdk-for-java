@@ -1,0 +1,45 @@
+steps:
+  - task: PowerShell@2
+    displayName: Clean up maven local cache
+    inputs:
+      pwsh: true
+      filePath: $(Build.SourcesDirectory)/eng/scripts/Remove-Azure-Artifacts-From-Cache.ps1
+      arguments: >
+        -MavenCacheFolder $(MAVEN_CACHE_FOLDER)
+    continueOnError: true
+
+  # Clean up /target folders to reduce scope of what may be scanned. /target folders aren't released, therefore don't
+  # need to waste time during scanning.
+  - task: Maven@3
+    displayName: 'Clean after tests'
+    inputs:
+      mavenPomFile: pom.xml
+      options: '$(DefaultTestOptions) -T 1C'
+      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: $(JavaTestVersion)
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: false
+      goals: 'clean'
+    condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
+
+  - task: Maven@3
+    displayName: 'Clean after tests for From Source run'
+    inputs:
+      mavenPomFile: ClientFromSourcePom.xml
+      options: $(DefaultTestOptions) -amd -T 1C
+      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: $(JavaTestVersion)
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: false
+      goals: 'clean'
+    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
+
+  # Clean up .assets folder to reduce scope of what may be scanned. .assets come another repository with scanning and
+  # don't need to waste time during scanning.
+  - pwsh: |
+      if (Test-Path -Path .assets) {
+        Remove-Item -Path .assets -Recurse -Force
+      }
+    displayName: 'Remove assets'

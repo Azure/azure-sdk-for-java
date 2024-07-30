@@ -23,9 +23,9 @@ public final class IntegrationRuntimeResourceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeResourceInner model
-            = new IntegrationRuntimeResourceInner().withId("uosvmkfssxqukk").withProperties(new IntegrationRuntime()
-                .withDescription("yoxa").withAdditionalProperties(mapOf("type", "IntegrationRuntime")));
+        IntegrationRuntimeResourceInner model = new IntegrationRuntimeResourceInner().withId("uosvmkfssxqukk")
+            .withProperties(new IntegrationRuntime().withDescription("yoxa")
+                .withAdditionalProperties(mapOf("type", "IntegrationRuntime")));
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeResourceInner.class);
         Assertions.assertEquals("uosvmkfssxqukk", model.id());
         Assertions.assertEquals("yoxa", model.properties().description());

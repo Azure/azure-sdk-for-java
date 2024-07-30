@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Default config details. */
+/**
+ * Default config details.
+ */
 @Fluent
 public final class ServiceConfigListResultValueEntity {
     /*
@@ -23,13 +25,15 @@ public final class ServiceConfigListResultValueEntity {
     @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of ServiceConfigListResultValueEntity class. */
+    /**
+     * Creates an instance of ServiceConfigListResultValueEntity class.
+     */
     public ServiceConfigListResultValueEntity() {
     }
 
     /**
      * Get the value property: Config value.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -38,7 +42,7 @@ public final class ServiceConfigListResultValueEntity {
 
     /**
      * Set the value property: Config value.
-     *
+     * 
      * @param value the value value to set.
      * @return the ServiceConfigListResultValueEntity object itself.
      */
@@ -49,7 +53,7 @@ public final class ServiceConfigListResultValueEntity {
 
     /**
      * Get the description property: Config description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -58,7 +62,7 @@ public final class ServiceConfigListResultValueEntity {
 
     /**
      * Set the description property: Config description.
-     *
+     * 
      * @param description the description value to set.
      * @return the ServiceConfigListResultValueEntity object itself.
      */
@@ -69,15 +73,13 @@ public final class ServiceConfigListResultValueEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model ServiceConfigListResultValueEntity"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model ServiceConfigListResultValueEntity"));
         }
     }
 

@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Dapr component metadata. */
+/**
+ * Dapr component metadata.
+ */
 @Fluent
-public final class DaprMetadata {
+public final class DaprMetadata implements JsonSerializable<DaprMetadata> {
     /*
      * Metadata property name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Metadata property value.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /*
      * Name of the Dapr Component secret from which to pull the metadata property value.
      */
-    @JsonProperty(value = "secretRef")
     private String secretRef;
 
-    /** Creates an instance of DaprMetadata class. */
+    /**
+     * Creates an instance of DaprMetadata class.
+     */
     public DaprMetadata() {
     }
 
     /**
      * Get the name property: Metadata property name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -43,7 +48,7 @@ public final class DaprMetadata {
 
     /**
      * Set the name property: Metadata property name.
-     *
+     * 
      * @param name the name value to set.
      * @return the DaprMetadata object itself.
      */
@@ -54,7 +59,7 @@ public final class DaprMetadata {
 
     /**
      * Get the value property: Metadata property value.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -63,7 +68,7 @@ public final class DaprMetadata {
 
     /**
      * Set the value property: Metadata property value.
-     *
+     * 
      * @param value the value value to set.
      * @return the DaprMetadata object itself.
      */
@@ -74,7 +79,7 @@ public final class DaprMetadata {
 
     /**
      * Get the secretRef property: Name of the Dapr Component secret from which to pull the metadata property value.
-     *
+     * 
      * @return the secretRef value.
      */
     public String secretRef() {
@@ -83,7 +88,7 @@ public final class DaprMetadata {
 
     /**
      * Set the secretRef property: Name of the Dapr Component secret from which to pull the metadata property value.
-     *
+     * 
      * @param secretRef the secretRef value to set.
      * @return the DaprMetadata object itself.
      */
@@ -94,9 +99,51 @@ public final class DaprMetadata {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeStringField("secretRef", this.secretRef);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DaprMetadata from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DaprMetadata if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DaprMetadata.
+     */
+    public static DaprMetadata fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DaprMetadata deserializedDaprMetadata = new DaprMetadata();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDaprMetadata.name = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedDaprMetadata.value = reader.getString();
+                } else if ("secretRef".equals(fieldName)) {
+                    deserializedDaprMetadata.secretRef = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDaprMetadata;
+        });
     }
 }

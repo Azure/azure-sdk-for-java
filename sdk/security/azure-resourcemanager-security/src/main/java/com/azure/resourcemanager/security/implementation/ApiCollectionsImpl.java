@@ -105,8 +105,8 @@ public final class ApiCollectionsImpl implements ApiCollections {
 
     public Response<Void> offboardAzureApiManagementApiWithResponse(String resourceGroupName, String serviceName,
         String apiId, Context context) {
-        return this.serviceClient().offboardAzureApiManagementApiWithResponse(resourceGroupName, serviceName, apiId,
-            context);
+        return this.serviceClient()
+            .offboardAzureApiManagementApiWithResponse(resourceGroupName, serviceName, apiId, context);
     }
 
     public void offboardAzureApiManagementApi(String resourceGroupName, String serviceName, String apiId) {

@@ -157,20 +157,24 @@ public final class ConnectionMonitorTestGroup {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model ConnectionMonitorTestGroup"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property name in model ConnectionMonitorTestGroup"));
         }
         if (testConfigurations() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property testConfigurations in model ConnectionMonitorTestGroup"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property testConfigurations in model ConnectionMonitorTestGroup"));
         }
         if (sources() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property sources in model ConnectionMonitorTestGroup"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sources in model ConnectionMonitorTestGroup"));
         }
         if (destinations() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property destinations in model ConnectionMonitorTestGroup"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property destinations in model ConnectionMonitorTestGroup"));
         }
     }
 

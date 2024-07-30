@@ -7,6 +7,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -15,15 +16,22 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "backupEngineType",
-    defaultImpl = BackupEngineBase.class)
+    defaultImpl = BackupEngineBase.class,
+    visible = true)
 @JsonTypeName("BackupEngineBase")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AzureBackupServerEngine", value = AzureBackupServerEngine.class),
     @JsonSubTypes.Type(name = "DpmBackupEngine", value = DpmBackupEngine.class) })
 @Fluent
 public class BackupEngineBase {
+    /*
+     * Type of the backup engine.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "backupEngineType", required = true)
+    private BackupEngineType backupEngineType;
+
     /*
      * Friendly name of the backup engine.
      */
@@ -100,6 +108,16 @@ public class BackupEngineBase {
      * Creates an instance of BackupEngineBase class.
      */
     public BackupEngineBase() {
+        this.backupEngineType = BackupEngineType.fromString("BackupEngineBase");
+    }
+
+    /**
+     * Get the backupEngineType property: Type of the backup engine.
+     * 
+     * @return the backupEngineType value.
+     */
+    public BackupEngineType backupEngineType() {
+        return this.backupEngineType;
     }
 
     /**

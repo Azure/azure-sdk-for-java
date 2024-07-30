@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class NetworkVirtualAppliancesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkVirtualApplianceDelete
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkVirtualApplianceDelete
      * .json
      */
     /**
@@ -19,7 +19,10 @@ public final class NetworkVirtualAppliancesDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteNetworkVirtualAppliance(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getNetworkVirtualAppliances().delete("rg1", "nva",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getNetworkVirtualAppliances()
+            .delete("rg1", "nva", com.azure.core.util.Context.NONE);
     }
 }

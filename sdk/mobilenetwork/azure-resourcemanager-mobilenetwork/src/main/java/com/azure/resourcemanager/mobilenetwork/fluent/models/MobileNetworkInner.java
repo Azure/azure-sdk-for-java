@@ -8,12 +8,17 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.mobilenetwork.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.mobilenetwork.models.PlmnId;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
+import com.azure.resourcemanager.mobilenetwork.models.PublicLandMobileNetwork;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
-/** Mobile network resource. */
+/**
+ * Mobile network resource.
+ */
 @Fluent
 public final class MobileNetworkInner extends Resource {
     /*
@@ -23,18 +28,26 @@ public final class MobileNetworkInner extends Resource {
     private MobileNetworkPropertiesFormat innerProperties = new MobileNetworkPropertiesFormat();
 
     /*
+     * The identity used to retrieve any private keys used for SUPI concealment from Azure key vault.
+     */
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
+
+    /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of MobileNetworkInner class. */
+    /**
+     * Creates an instance of MobileNetworkInner class.
+     */
     public MobileNetworkInner() {
     }
 
     /**
      * Get the innerProperties property: Mobile network properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MobileNetworkPropertiesFormat innerProperties() {
@@ -42,22 +55,48 @@ public final class MobileNetworkInner extends Resource {
     }
 
     /**
+     * Get the identity property: The identity used to retrieve any private keys used for SUPI concealment from Azure
+     * key vault.
+     * 
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity used to retrieve any private keys used for SUPI concealment from Azure
+     * key vault.
+     * 
+     * @param identity the identity value to set.
+     * @return the MobileNetworkInner object itself.
+     */
+    public MobileNetworkInner withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MobileNetworkInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MobileNetworkInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -66,7 +105,7 @@ public final class MobileNetworkInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the mobile network resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -75,10 +114,9 @@ public final class MobileNetworkInner extends Resource {
 
     /**
      * Get the publicLandMobileNetworkIdentifier property: The unique public land mobile network identifier for the
-     * network. This is made up of the mobile country code and mobile network code, as defined in
-     * https://www.itu.int/rec/T-REC-E.212. The values 001-01 and 001-001 can be used for testing and the values 999-99
-     * and 999-999 can be used on internal private networks.
-     *
+     * network. If both 'publicLandMobileNetworks' and 'publicLandMobileNetworkIdentifier' are specified, then the
+     * 'publicLandMobileNetworks' will take precedence.
+     * 
      * @return the publicLandMobileNetworkIdentifier value.
      */
     public PlmnId publicLandMobileNetworkIdentifier() {
@@ -87,10 +125,9 @@ public final class MobileNetworkInner extends Resource {
 
     /**
      * Set the publicLandMobileNetworkIdentifier property: The unique public land mobile network identifier for the
-     * network. This is made up of the mobile country code and mobile network code, as defined in
-     * https://www.itu.int/rec/T-REC-E.212. The values 001-01 and 001-001 can be used for testing and the values 999-99
-     * and 999-999 can be used on internal private networks.
-     *
+     * network. If both 'publicLandMobileNetworks' and 'publicLandMobileNetworkIdentifier' are specified, then the
+     * 'publicLandMobileNetworks' will take precedence.
+     * 
      * @param publicLandMobileNetworkIdentifier the publicLandMobileNetworkIdentifier value to set.
      * @return the MobileNetworkInner object itself.
      */
@@ -103,8 +140,35 @@ public final class MobileNetworkInner extends Resource {
     }
 
     /**
+     * Get the publicLandMobileNetworks property: A list of public land mobile networks including their identifiers. If
+     * both 'publicLandMobileNetworks' and 'publicLandMobileNetworkIdentifier' are specified, then the
+     * 'publicLandMobileNetworks' will take precedence.
+     * 
+     * @return the publicLandMobileNetworks value.
+     */
+    public List<PublicLandMobileNetwork> publicLandMobileNetworks() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicLandMobileNetworks();
+    }
+
+    /**
+     * Set the publicLandMobileNetworks property: A list of public land mobile networks including their identifiers. If
+     * both 'publicLandMobileNetworks' and 'publicLandMobileNetworkIdentifier' are specified, then the
+     * 'publicLandMobileNetworks' will take precedence.
+     * 
+     * @param publicLandMobileNetworks the publicLandMobileNetworks value to set.
+     * @return the MobileNetworkInner object itself.
+     */
+    public MobileNetworkInner withPublicLandMobileNetworks(List<PublicLandMobileNetwork> publicLandMobileNetworks) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MobileNetworkPropertiesFormat();
+        }
+        this.innerProperties().withPublicLandMobileNetworks(publicLandMobileNetworks);
+        return this;
+    }
+
+    /**
      * Get the serviceKey property: The mobile network resource identifier.
-     *
+     * 
      * @return the serviceKey value.
      */
     public String serviceKey() {
@@ -113,17 +177,19 @@ public final class MobileNetworkInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model MobileNetworkInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model MobileNetworkInner"));
         } else {
             innerProperties().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 

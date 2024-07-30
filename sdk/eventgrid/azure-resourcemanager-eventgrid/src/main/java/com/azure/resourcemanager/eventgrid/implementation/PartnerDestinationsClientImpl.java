@@ -35,8 +35,8 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.eventgrid.fluent.PartnerDestinationsClient;
 import com.azure.resourcemanager.eventgrid.fluent.models.PartnerDestinationInner;
-import com.azure.resourcemanager.eventgrid.models.PartnerDestinationUpdateParameters;
 import com.azure.resourcemanager.eventgrid.models.PartnerDestinationsListResult;
+import com.azure.resourcemanager.eventgrid.models.PartnerDestinationUpdateParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -1004,7 +1004,8 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     private Mono<PartnerDestinationInner> updateAsync(String resourceGroupName, String partnerDestinationName,
         PartnerDestinationUpdateParameters partnerDestinationUpdateParameters, Context context) {
         return beginUpdateAsync(resourceGroupName, partnerDestinationName, partnerDestinationUpdateParameters, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

@@ -7,6 +7,8 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.keys.cryptography.CryptographyClient;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
@@ -40,6 +42,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class KeyClientTest extends KeyClientTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(KeyClientTest.class);
+
     protected KeyClient keyClient;
 
     @Override
@@ -66,7 +70,15 @@ public class KeyClientTest extends KeyClientTestBase {
     public void createKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyClient(httpClient, serviceVersion);
 
-        createKeyRunner((keyToCreate) -> assertKeyEquals(keyToCreate, keyClient.createKey(keyToCreate)));
+        createKeyRunner((keyToCreate) -> {
+            KeyVaultKey createdKey = keyClient.createKey(keyToCreate);
+
+            assertKeyEquals(keyToCreate, createdKey);
+
+            if (!isHsmEnabled) {
+                assertEquals("0", createdKey.getProperties().getHsmPlatform());
+            }
+        });
     }
 
     /**
@@ -184,7 +196,13 @@ public class KeyClientTest extends KeyClientTestBase {
         getKeyRunner((keyToSetAndGet) -> {
             keyClient.createKey(keyToSetAndGet);
 
-            assertKeyEquals(keyToSetAndGet, keyClient.getKey(keyToSetAndGet.getName()));
+            KeyVaultKey retrievedKey = keyClient.getKey(keyToSetAndGet.getName());
+
+            assertKeyEquals(keyToSetAndGet, retrievedKey);
+
+            if (!isHsmEnabled) {
+                assertEquals("0", retrievedKey.getProperties().getHsmPlatform());
+            }
         });
     }
 
@@ -743,6 +761,6 @@ public class KeyClientTest extends KeyClientTestBase {
             }
         }
 
-        System.err.printf("Deleted Key %s was not purged \n", keyName);
+        LOGGER.log(LogLevel.VERBOSE, () -> "Deleted Key " + keyName + " was not purged");
     }
 }

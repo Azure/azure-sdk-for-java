@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomLocationResourceIdTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomLocationResourceId model =
-            BinaryData.fromString("{\"id\":\"kyzxuutk\"}").toObject(CustomLocationResourceId.class);
-        Assertions.assertEquals("kyzxuutk", model.id());
+        CustomLocationResourceId model
+            = BinaryData.fromString("{\"id\":\"vo\"}").toObject(CustomLocationResourceId.class);
+        Assertions.assertEquals("vo", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomLocationResourceId model = new CustomLocationResourceId().withId("kyzxuutk");
+        CustomLocationResourceId model = new CustomLocationResourceId().withId("vo");
         model = BinaryData.fromObject(model).toObject(CustomLocationResourceId.class);
-        Assertions.assertEquals("kyzxuutk", model.id());
+        Assertions.assertEquals("vo", model.id());
     }
 }

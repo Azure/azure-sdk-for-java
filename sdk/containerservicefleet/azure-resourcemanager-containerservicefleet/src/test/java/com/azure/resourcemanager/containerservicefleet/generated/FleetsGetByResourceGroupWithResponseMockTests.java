@@ -6,69 +6,41 @@ package com.azure.resourcemanager.containerservicefleet.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager;
 import com.azure.resourcemanager.containerservicefleet.models.Fleet;
 import com.azure.resourcemanager.containerservicefleet.models.ManagedServiceIdentityType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class FleetsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Updating\",\"hubProfile\":{\"dnsPrefix\":\"cjooxdjebwpucwwf\",\"apiServerAccessProfile\":{\"enablePrivateCluster\":true},\"agentProfile\":{\"subnetId\":\"euecivyhzceuoj\",\"vmSize\":\"rw\"},\"fqdn\":\"eiotwmcdytdx\",\"kubernetesVersion\":\"txnrjaw\",\"portalFqdn\":\"wgxhn\"}},\"eTag\":\"kxfbkpycgklwndn\",\"identity\":{\"principalId\":\"64d071a1-ed72-4d75-985a-ada7a2511617\",\"tenantId\":\"41f838da-ddbf-4765-9a49-05dacfc1eedb\",\"type\":\"SystemAssigned, UserAssigned\",\"userAssignedIdentities\":{\"l\":{\"principalId\":\"85c20802-6b77-4ae7-b488-a438ed76d315\",\"clientId\":\"bc8e46de-cc49-4b21-a455-1c38b5dab5e7\"},\"tdhxujznbmpowuwp\":{\"principalId\":\"1dd0b519-b2cb-4650-b7c9-6ce18df08cb2\",\"clientId\":\"096688a4-354b-417f-a258-e6060b790f44\"}}},\"location\":\"qlveualupjmkh\",\"tags\":{\"lrbpbewtghfgbl\":\"bbcswsrtjri\"},\"id\":\"gw\",\"name\":\"zvlvqhjkbegib\",\"type\":\"nmxiebwwaloayqc\"}";
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Canceled\"},\"eTag\":\"rbpbewtghfgblcg\",\"identity\":{\"principalId\":\"f0f61d0f-c014-4564-89a6-7cff2137dcc6\",\"tenantId\":\"708ef820-279d-43de-b69b-94e9098ab075\",\"type\":\"SystemAssigned,"
-                + " UserAssigned\",\"userAssignedIdentities\":{\"kbegibt\":{\"principalId\":\"c9b19de9-9f16-4d40-be41-39ace52fb22e\",\"clientId\":\"8a366ebc-46dd-4883-9702-535eafc36190\"}}},\"location\":\"xiebwwaloayqcg\",\"tags\":{\"htxongmtsavjc\":\"zjuzgwyz\",\"rknftguvriuhprwm\":\"pwxqp\",\"bexrmcq\":\"yvxqtayriwwroy\",\"e\":\"bycnojvkn\"},\"id\":\"qsgzvahapj\",\"name\":\"zhpvgqzcjrvxd\",\"type\":\"zlmwlxkvugfhz\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ContainerServiceFleetManager manager = ContainerServiceFleetManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Fleet response = manager.fleets()
+            .getByResourceGroupWithResponse("urqhaka", "hashsfwxosow", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        ContainerServiceFleetManager manager =
-            ContainerServiceFleetManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Fleet response =
-            manager
-                .fleets()
-                .getByResourceGroupWithResponse("lupj", "khfxobbcswsrt", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("xiebwwaloayqcg", response.location());
-        Assertions.assertEquals("zjuzgwyz", response.tags().get("htxongmtsavjc"));
+        Assertions.assertEquals("qlveualupjmkh", response.location());
+        Assertions.assertEquals("bbcswsrtjri", response.tags().get("lrbpbewtghfgbl"));
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("cjooxdjebwpucwwf", response.hubProfile().dnsPrefix());
+        Assertions.assertEquals(true, response.hubProfile().apiServerAccessProfile().enablePrivateCluster());
+        Assertions.assertEquals("euecivyhzceuoj", response.hubProfile().agentProfile().subnetId());
+        Assertions.assertEquals("rw", response.hubProfile().agentProfile().vmSize());
     }
 }

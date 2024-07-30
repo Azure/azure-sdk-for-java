@@ -3,6 +3,7 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
@@ -220,7 +221,7 @@ public class ChangeFeedTest extends TestSuiteBase {
             .getContinuationToken();
 
         Document docToBeDeleted = partitionKeyToDocuments.get(partitionKey).stream().findFirst().get();
-        deleteDocument(client, docToBeDeleted.getSelfLink(), new PartitionKey(partitionKey));
+        deleteDocument(client, docToBeDeleted.getSelfLink(), new PartitionKey(partitionKey), TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId()));
 
         CosmosChangeFeedRequestOptions changeFeedOptionForContinuationAfterDeletes =
             CosmosChangeFeedRequestOptions
@@ -451,7 +452,7 @@ public class ChangeFeedTest extends TestSuiteBase {
 
     public Document updateDocument(AsyncDocumentClient client, Document originalDocument) {
         String uuid = UUID.randomUUID().toString();
-        BridgeInternal.setProperty(originalDocument, "prop", uuid);
+        originalDocument.set("prop", uuid, CosmosItemSerializer.DEFAULT_SERIALIZER);
 
         return client
             .replaceDocument(originalDocument.getSelfLink(), originalDocument, null)
@@ -539,8 +540,8 @@ public class ChangeFeedTest extends TestSuiteBase {
         String uuid = UUID.randomUUID().toString();
         Document doc = new Document();
         doc.setId(uuid);
-        BridgeInternal.setProperty(doc, "mypk", partitionKey);
-        BridgeInternal.setProperty(doc, "prop", uuid);
+        doc.set("mypk", partitionKey, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        doc.set("prop", uuid, CosmosItemSerializer.DEFAULT_SERIALIZER);
         return doc;
     }
 

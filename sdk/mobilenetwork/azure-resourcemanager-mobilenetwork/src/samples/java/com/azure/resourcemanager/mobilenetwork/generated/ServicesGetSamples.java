@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-/** Samples for Services Get. */
+/**
+ * Samples for Services Get.
+ */
 public final class ServicesGetSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/ServiceGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/ServiceGet.json
      */
     /**
      * Sample code: Get service.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void getService(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.containerservice.generated;
 public final class ManagedClustersListClusterAdminCredentialsSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-01-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
      * ManagedClustersListClusterAdminCredentials.json
      */
     /**
@@ -19,7 +19,10 @@ public final class ManagedClustersListClusterAdminCredentialsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getManagedCluster(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.kubernetesClusters().manager().serviceClient().getManagedClusters()
+        azure.kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getManagedClusters()
             .listClusterAdminCredentialsWithResponse("rg1", "clustername1", null, com.azure.core.util.Context.NONE);
     }
 }

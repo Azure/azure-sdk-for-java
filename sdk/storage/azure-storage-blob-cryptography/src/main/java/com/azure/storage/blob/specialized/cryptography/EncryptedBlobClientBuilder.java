@@ -50,7 +50,6 @@ import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.BuilderUtils;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
@@ -537,8 +536,6 @@ public final class EncryptedBlobClientBuilder implements
     /**
      * Sets the service endpoint, additionally parses it for information (SAS token, container name, blob name)
      *
-     * <p>If the blob name contains special characters, pass in the url encoded version of the blob name. </p>
-     *
      * <p>If the endpoint is to a blob in the root container, this method will fail as it will interpret the blob name
      * as the container name. With only one path element, it is impossible to distinguish between a container name and a
      * blob in the root container, so it is assumed to be the container name as this is much more common. When working
@@ -559,7 +556,7 @@ public final class EncryptedBlobClientBuilder implements
             this.endpoint = BuilderHelper.getEndpoint(parts);
             this.containerName = parts.getBlobContainerName() == null ? this.containerName
                 : parts.getBlobContainerName();
-            this.blobName = parts.getBlobName() == null ? this.blobName : Utility.urlEncode(parts.getBlobName());
+            this.blobName = parts.getBlobName() == null ? this.blobName : parts.getBlobName();
             this.snapshot = parts.getSnapshot();
             this.versionId = parts.getVersionId();
 
@@ -595,8 +592,7 @@ public final class EncryptedBlobClientBuilder implements
      * @throws NullPointerException If {@code blobName} is {@code null}
      */
     public EncryptedBlobClientBuilder blobName(String blobName) {
-        this.blobName = Utility.urlEncode(Utility.urlDecode(Objects.requireNonNull(blobName,
-            "'blobName' cannot be null.")));
+        this.blobName = Objects.requireNonNull(blobName, "'blobName' cannot be null.");
         return this;
     }
 

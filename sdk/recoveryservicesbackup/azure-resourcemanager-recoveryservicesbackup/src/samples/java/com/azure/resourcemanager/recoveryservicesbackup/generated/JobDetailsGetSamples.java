@@ -9,9 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class JobDetailsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * Common/GetJobDetails.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/Common/GetJobDetails.json
      */
     /**
      * Sample code: Get Job Details.
@@ -20,7 +18,8 @@ public final class JobDetailsGetSamples {
      */
     public static void
         getJobDetails(com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.jobDetails().getWithResponse("NetSDKTestRsVault", "SwaggerTestRg",
-            "00000000-0000-0000-0000-000000000000", com.azure.core.util.Context.NONE);
+        manager.jobDetails()
+            .getWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "00000000-0000-0000-0000-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }

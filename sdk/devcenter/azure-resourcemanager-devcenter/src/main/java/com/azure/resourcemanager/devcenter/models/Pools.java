@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Pools. */
+/**
+ * Resource collection API of Pools.
+ */
 public interface Pools {
     /**
      * Lists pools for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface Pools {
 
     /**
      * Lists pools for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -38,7 +40,7 @@ public interface Pools {
 
     /**
      * Gets a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -52,7 +54,7 @@ public interface Pools {
 
     /**
      * Gets a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -65,7 +67,7 @@ public interface Pools {
 
     /**
      * Deletes a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -77,7 +79,7 @@ public interface Pools {
 
     /**
      * Deletes a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -90,7 +92,7 @@ public interface Pools {
 
     /**
      * Triggers a refresh of the pool status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -102,7 +104,7 @@ public interface Pools {
 
     /**
      * Triggers a refresh of the pool status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -115,7 +117,7 @@ public interface Pools {
 
     /**
      * Gets a machine pool.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -126,7 +128,7 @@ public interface Pools {
 
     /**
      * Gets a machine pool.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -138,7 +140,7 @@ public interface Pools {
 
     /**
      * Deletes a machine pool.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -148,7 +150,7 @@ public interface Pools {
 
     /**
      * Deletes a machine pool.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -159,7 +161,7 @@ public interface Pools {
 
     /**
      * Begins definition for a new Pool resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Pool definition.
      */

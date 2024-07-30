@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines when it is acceptable to reboot a VM during a software update operation. */
+/**
+ * Defines when it is acceptable to reboot a VM during a software update operation.
+ */
 public final class VMGuestPatchRebootSetting extends ExpandableStringEnum<VMGuestPatchRebootSetting> {
-    /** Static value IfRequired for VMGuestPatchRebootSetting. */
+    /**
+     * Static value IfRequired for VMGuestPatchRebootSetting.
+     */
     public static final VMGuestPatchRebootSetting IF_REQUIRED = fromString("IfRequired");
 
-    /** Static value Never for VMGuestPatchRebootSetting. */
+    /**
+     * Static value Never for VMGuestPatchRebootSetting.
+     */
     public static final VMGuestPatchRebootSetting NEVER = fromString("Never");
 
-    /** Static value Always for VMGuestPatchRebootSetting. */
+    /**
+     * Static value Always for VMGuestPatchRebootSetting.
+     */
     public static final VMGuestPatchRebootSetting ALWAYS = fromString("Always");
 
     /**
      * Creates a new instance of VMGuestPatchRebootSetting value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class VMGuestPatchRebootSetting extends ExpandableStringEnum<VMGues
 
     /**
      * Creates or finds a VMGuestPatchRebootSetting from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VMGuestPatchRebootSetting.
      */
-    @JsonCreator
     public static VMGuestPatchRebootSetting fromString(String name) {
         return fromString(name, VMGuestPatchRebootSetting.class);
     }
 
     /**
      * Gets known VMGuestPatchRebootSetting values.
-     *
+     * 
      * @return known VMGuestPatchRebootSetting values.
      */
     public static Collection<VMGuestPatchRebootSetting> values() {

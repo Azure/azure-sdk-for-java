@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class NetworkVirtualApplianceConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * NetworkVirtualApplianceConnectionPut.json
      */
     /**
@@ -24,10 +24,16 @@ public final class NetworkVirtualApplianceConnectionsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void networkVirtualApplianceConnectionPut(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getNetworkVirtualApplianceConnections()
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getNetworkVirtualApplianceConnections()
             .createOrUpdate("rg1", "nva1", "connection1", new NetworkVirtualApplianceConnectionInner()
-                .withNamePropertiesName("connection1").withAsn(64512L).withTunnelIdentifier(0L)
-                .withBgpPeerAddress(Arrays.asList("169.254.16.13", "169.254.16.14")).withEnableInternetSecurity(false)
+                .withNamePropertiesName("connection1")
+                .withAsn(64512L)
+                .withTunnelIdentifier(0L)
+                .withBgpPeerAddress(Arrays.asList("169.254.16.13", "169.254.16.14"))
+                .withEnableInternetSecurity(false)
                 .withRoutingConfiguration(new RoutingConfiguration().withAssociatedRouteTable(new SubResource().withId(
                     "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/hubRouteTables/hubRouteTable1"))
                     .withPropagatedRouteTables(new PropagatedRouteTable().withLabels(Arrays.asList("label1"))

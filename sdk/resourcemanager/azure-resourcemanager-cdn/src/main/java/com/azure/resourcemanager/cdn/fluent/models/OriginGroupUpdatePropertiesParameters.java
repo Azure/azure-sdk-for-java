@@ -11,7 +11,9 @@ import com.azure.resourcemanager.cdn.models.ResponseBasedOriginErrorDetectionPar
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The JSON object that contains the properties of the origin group. */
+/**
+ * The JSON object that contains the properties of the origin group.
+ */
 @Fluent
 public class OriginGroupUpdatePropertiesParameters {
     /*
@@ -40,14 +42,16 @@ public class OriginGroupUpdatePropertiesParameters {
     @JsonProperty(value = "responseBasedOriginErrorDetectionSettings")
     private ResponseBasedOriginErrorDetectionParameters responseBasedOriginErrorDetectionSettings;
 
-    /** Creates an instance of OriginGroupUpdatePropertiesParameters class. */
+    /**
+     * Creates an instance of OriginGroupUpdatePropertiesParameters class.
+     */
     public OriginGroupUpdatePropertiesParameters() {
     }
 
     /**
-     * Get the healthProbeSettings property: Health probe settings to the origin that is used to determine the health of
-     * the origin.
-     *
+     * Get the healthProbeSettings property: Health probe settings to the origin that is used to determine the health
+     * of the origin.
+     * 
      * @return the healthProbeSettings value.
      */
     public HealthProbeParameters healthProbeSettings() {
@@ -55,9 +59,9 @@ public class OriginGroupUpdatePropertiesParameters {
     }
 
     /**
-     * Set the healthProbeSettings property: Health probe settings to the origin that is used to determine the health of
-     * the origin.
-     *
+     * Set the healthProbeSettings property: Health probe settings to the origin that is used to determine the health
+     * of the origin.
+     * 
      * @param healthProbeSettings the healthProbeSettings value to set.
      * @return the OriginGroupUpdatePropertiesParameters object itself.
      */
@@ -68,7 +72,7 @@ public class OriginGroupUpdatePropertiesParameters {
 
     /**
      * Get the origins property: The source of the content being delivered via CDN within given origin group.
-     *
+     * 
      * @return the origins value.
      */
     public List<ResourceReference> origins() {
@@ -77,7 +81,7 @@ public class OriginGroupUpdatePropertiesParameters {
 
     /**
      * Set the origins property: The source of the content being delivered via CDN within given origin group.
-     *
+     * 
      * @param origins the origins value to set.
      * @return the OriginGroupUpdatePropertiesParameters object itself.
      */
@@ -90,7 +94,7 @@ public class OriginGroupUpdatePropertiesParameters {
      * Get the trafficRestorationTimeToHealedOrNewEndpointsInMinutes property: Time in minutes to shift the traffic to
      * the endpoint gradually when an unhealthy endpoint comes healthy or a new endpoint is added. Default is 10 mins.
      * This property is currently not supported.
-     *
+     * 
      * @return the trafficRestorationTimeToHealedOrNewEndpointsInMinutes value.
      */
     public Integer trafficRestorationTimeToHealedOrNewEndpointsInMinutes() {
@@ -101,22 +105,22 @@ public class OriginGroupUpdatePropertiesParameters {
      * Set the trafficRestorationTimeToHealedOrNewEndpointsInMinutes property: Time in minutes to shift the traffic to
      * the endpoint gradually when an unhealthy endpoint comes healthy or a new endpoint is added. Default is 10 mins.
      * This property is currently not supported.
-     *
+     * 
      * @param trafficRestorationTimeToHealedOrNewEndpointsInMinutes the
-     *     trafficRestorationTimeToHealedOrNewEndpointsInMinutes value to set.
+     * trafficRestorationTimeToHealedOrNewEndpointsInMinutes value to set.
      * @return the OriginGroupUpdatePropertiesParameters object itself.
      */
     public OriginGroupUpdatePropertiesParameters withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
         Integer trafficRestorationTimeToHealedOrNewEndpointsInMinutes) {
-        this.trafficRestorationTimeToHealedOrNewEndpointsInMinutes =
-            trafficRestorationTimeToHealedOrNewEndpointsInMinutes;
+        this.trafficRestorationTimeToHealedOrNewEndpointsInMinutes
+            = trafficRestorationTimeToHealedOrNewEndpointsInMinutes;
         return this;
     }
 
     /**
      * Get the responseBasedOriginErrorDetectionSettings property: The JSON object that contains the properties to
      * determine origin health using real requests/responses. This property is currently not supported.
-     *
+     * 
      * @return the responseBasedOriginErrorDetectionSettings value.
      */
     public ResponseBasedOriginErrorDetectionParameters responseBasedOriginErrorDetectionSettings() {
@@ -126,7 +130,7 @@ public class OriginGroupUpdatePropertiesParameters {
     /**
      * Set the responseBasedOriginErrorDetectionSettings property: The JSON object that contains the properties to
      * determine origin health using real requests/responses. This property is currently not supported.
-     *
+     * 
      * @param responseBasedOriginErrorDetectionSettings the responseBasedOriginErrorDetectionSettings value to set.
      * @return the OriginGroupUpdatePropertiesParameters object itself.
      */
@@ -138,7 +142,7 @@ public class OriginGroupUpdatePropertiesParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

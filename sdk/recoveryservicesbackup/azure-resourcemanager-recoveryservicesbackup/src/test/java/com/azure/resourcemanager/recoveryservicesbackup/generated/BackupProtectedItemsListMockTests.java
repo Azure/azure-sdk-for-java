@@ -6,52 +6,34 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.CreateMode;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectedItemResource;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class BackupProtectedItemsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
             = "{\"value\":[{\"properties\":{\"protectedItemType\":\"ProtectedItem\",\"backupManagementType\":\"AzureSql\",\"workloadType\":\"SQLDB\",\"containerName\":\"hqet\",\"sourceResourceId\":\"qrtvaoznqni\",\"policyId\":\"ezeagmceituuge\",\"lastRecoveryPoint\":\"2021-10-04T20:29:19Z\",\"backupSetName\":\"jstlzmblsyj\",\"createMode\":\"Recover\",\"deferredDeleteTimeInUTC\":\"2020-12-23T16:02:01Z\",\"isScheduledForDeferredDelete\":true,\"deferredDeleteTimeRemaining\":\"bfsyrledjcustb\",\"isDeferredDeleteScheduleUpcoming\":false,\"isRehydrate\":true,\"resourceGuardOperationRequests\":[\"zvsgeafgfosehxlz\",\"xezppk\",\"waaeskyfjl\"],\"isArchiveEnabled\":false,\"policyName\":\"toyrplixlajml\",\"softDeleteRetentionPeriodInDays\":1773397214,\"vaultId\":\"evhamfowg\"},\"eTag\":\"tmk\",\"location\":\"kxpkzwaq\",\"tags\":{\"vf\":\"qovchiqbp\",\"gmsfepxyi\":\"dusztekxby\"},\"id\":\"pqadagrhrdicxdwy\",\"name\":\"fowxwyovcxjsgbi\",\"type\":\"cu\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure().withHttpClient(httpClient)
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ProtectedItemResource> response = manager.backupProtectedItems().list("bectvtfjmskdch",
-            "aiubavlzwpvgmfa", "kzaz", "gokedgjqafkm", com.azure.core.util.Context.NONE);
+        PagedIterable<ProtectedItemResource> response = manager.backupProtectedItems()
+            .list("bectvtfjmskdch", "aiubavlzwpvgmfa", "kzaz", "gokedgjqafkm", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("kxpkzwaq", response.iterator().next().location());
         Assertions.assertEquals("qovchiqbp", response.iterator().next().tags().get("vf"));

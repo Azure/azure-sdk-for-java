@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.models.InboundSecurityRules;
+import com.azure.resourcemanager.network.models.InboundSecurityRuleType;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -15,6 +16,13 @@ import java.util.List;
  */
 @Fluent
 public final class InboundSecurityRuleProperties {
+    /*
+     * Rule Type. This should be either AutoExpire or Permanent. Auto Expire Rule only creates NSG rules. Permanent Rule
+     * creates NSG rule and SLB LB Rule.
+     */
+    @JsonProperty(value = "ruleType")
+    private InboundSecurityRuleType ruleType;
+
     /*
      * List of allowed rules.
      */
@@ -31,6 +39,28 @@ public final class InboundSecurityRuleProperties {
      * Creates an instance of InboundSecurityRuleProperties class.
      */
     public InboundSecurityRuleProperties() {
+    }
+
+    /**
+     * Get the ruleType property: Rule Type. This should be either AutoExpire or Permanent. Auto Expire Rule only
+     * creates NSG rules. Permanent Rule creates NSG rule and SLB LB Rule.
+     * 
+     * @return the ruleType value.
+     */
+    public InboundSecurityRuleType ruleType() {
+        return this.ruleType;
+    }
+
+    /**
+     * Set the ruleType property: Rule Type. This should be either AutoExpire or Permanent. Auto Expire Rule only
+     * creates NSG rules. Permanent Rule creates NSG rule and SLB LB Rule.
+     * 
+     * @param ruleType the ruleType value to set.
+     * @return the InboundSecurityRuleProperties object itself.
+     */
+    public InboundSecurityRuleProperties withRuleType(InboundSecurityRuleType ruleType) {
+        this.ruleType = ruleType;
+        return this;
     }
 
     /**

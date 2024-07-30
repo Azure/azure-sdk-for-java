@@ -6,16 +6,28 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * This class is used to send blob details after exporting jobs.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "objectType",
+    defaultImpl = ExportJobsOperationResultInfo.class,
+    visible = true)
 @JsonTypeName("ExportJobsOperationResultInfo")
 @Fluent
 public final class ExportJobsOperationResultInfo extends OperationResultInfoBase {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "objectType", required = true)
+    private String objectType = "ExportJobsOperationResultInfo";
+
     /*
      * URL of the blob into which the serialized string of list of jobs is exported.
      */
@@ -44,6 +56,17 @@ public final class ExportJobsOperationResultInfo extends OperationResultInfoBase
      * Creates an instance of ExportJobsOperationResultInfo class.
      */
     public ExportJobsOperationResultInfo() {
+    }
+
+    /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
     }
 
     /**

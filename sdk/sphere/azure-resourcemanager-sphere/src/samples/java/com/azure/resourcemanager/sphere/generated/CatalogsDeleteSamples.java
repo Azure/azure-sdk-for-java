@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.sphere.generated;
 
-/** Samples for Catalogs Delete. */
+/**
+ * Samples for Catalogs Delete.
+ */
 public final class CatalogsDeleteSamples {
     /*
-     * x-ms-original-file: specification/sphere/resource-manager/Microsoft.AzureSphere/preview/2022-09-01-preview/examples/DeleteCatalog.json
+     * x-ms-original-file:
+     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/DeleteCatalog.json
      */
     /**
      * Sample code: Catalogs_Delete.
-     *
+     * 
      * @param manager Entry point to AzureSphereManager.
      */
     public static void catalogsDelete(com.azure.resourcemanager.sphere.AzureSphereManager manager) {

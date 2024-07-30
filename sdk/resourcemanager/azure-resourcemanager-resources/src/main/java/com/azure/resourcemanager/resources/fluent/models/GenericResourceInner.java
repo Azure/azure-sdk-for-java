@@ -13,7 +13,9 @@ import com.azure.resourcemanager.resources.models.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Resource information. */
+/**
+ * Resource information.
+ */
 @Fluent
 public class GenericResourceInner extends Resource {
     /*
@@ -58,13 +60,15 @@ public class GenericResourceInner extends Resource {
     @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
 
-    /** Creates an instance of GenericResourceInner class. */
+    /**
+     * Creates an instance of GenericResourceInner class.
+     */
     public GenericResourceInner() {
     }
 
     /**
      * Get the plan property: The plan of the resource.
-     *
+     * 
      * @return the plan value.
      */
     public Plan plan() {
@@ -73,7 +77,7 @@ public class GenericResourceInner extends Resource {
 
     /**
      * Set the plan property: The plan of the resource.
-     *
+     * 
      * @param plan the plan value to set.
      * @return the GenericResourceInner object itself.
      */
@@ -84,7 +88,7 @@ public class GenericResourceInner extends Resource {
 
     /**
      * Get the properties property: The resource properties.
-     *
+     * 
      * @return the properties value.
      */
     public Object properties() {
@@ -93,7 +97,7 @@ public class GenericResourceInner extends Resource {
 
     /**
      * Set the properties property: The resource properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the GenericResourceInner object itself.
      */
@@ -104,7 +108,7 @@ public class GenericResourceInner extends Resource {
 
     /**
      * Get the kind property: The kind of the resource.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -113,7 +117,7 @@ public class GenericResourceInner extends Resource {
 
     /**
      * Set the kind property: The kind of the resource.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the GenericResourceInner object itself.
      */
@@ -124,7 +128,7 @@ public class GenericResourceInner extends Resource {
 
     /**
      * Get the managedBy property: ID of the resource that manages this resource.
-     *
+     * 
      * @return the managedBy value.
      */
     public String managedBy() {
@@ -133,7 +137,7 @@ public class GenericResourceInner extends Resource {
 
     /**
      * Set the managedBy property: ID of the resource that manages this resource.
-     *
+     * 
      * @param managedBy the managedBy value to set.
      * @return the GenericResourceInner object itself.
      */
@@ -144,7 +148,7 @@ public class GenericResourceInner extends Resource {
 
     /**
      * Get the sku property: The SKU of the resource.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -153,7 +157,7 @@ public class GenericResourceInner extends Resource {
 
     /**
      * Set the sku property: The SKU of the resource.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the GenericResourceInner object itself.
      */
@@ -164,7 +168,7 @@ public class GenericResourceInner extends Resource {
 
     /**
      * Get the identity property: The identity of the resource.
-     *
+     * 
      * @return the identity value.
      */
     public Identity identity() {
@@ -173,7 +177,7 @@ public class GenericResourceInner extends Resource {
 
     /**
      * Set the identity property: The identity of the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the GenericResourceInner object itself.
      */
@@ -184,7 +188,7 @@ public class GenericResourceInner extends Resource {
 
     /**
      * Get the extendedLocation property: Resource extended location.
-     *
+     * 
      * @return the extendedLocation value.
      */
     public ExtendedLocation extendedLocation() {
@@ -193,7 +197,7 @@ public class GenericResourceInner extends Resource {
 
     /**
      * Set the extendedLocation property: Resource extended location.
-     *
+     * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the GenericResourceInner object itself.
      */
@@ -202,14 +206,18 @@ public class GenericResourceInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -218,7 +226,7 @@ public class GenericResourceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

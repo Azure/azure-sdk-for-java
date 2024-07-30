@@ -10,14 +10,13 @@ import com.azure.resourcemanager.datafactory.fluent.models.MySqlTableDatasetType
 public final class MySqlTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MySqlTableDatasetTypeProperties model = BinaryData.fromString("{\"tableName\":\"dataglxoqwbztilqb\"}")
-            .toObject(MySqlTableDatasetTypeProperties.class);
+        MySqlTableDatasetTypeProperties model
+            = BinaryData.fromString("{\"tableName\":\"databbfjmd\"}").toObject(MySqlTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MySqlTableDatasetTypeProperties model
-            = new MySqlTableDatasetTypeProperties().withTableName("dataglxoqwbztilqb");
+        MySqlTableDatasetTypeProperties model = new MySqlTableDatasetTypeProperties().withTableName("databbfjmd");
         model = BinaryData.fromObject(model).toObject(MySqlTableDatasetTypeProperties.class);
     }
 }

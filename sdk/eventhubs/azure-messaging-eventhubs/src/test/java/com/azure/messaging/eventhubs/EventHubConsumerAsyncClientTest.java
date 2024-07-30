@@ -24,6 +24,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.tracing.SpanKind;
 import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
@@ -60,7 +61,6 @@ import reactor.test.publisher.TestPublisher;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
@@ -756,7 +756,7 @@ class EventHubConsumerAsyncClientTest {
                 List<TestMeasurement<Double>> measurements = consumerLag.getMeasurements();
                 TestMeasurement<Double> last = measurements.get(measurements.size() - 1);
                 assertEquals(Duration.between(enqueuedTime, afterReceived).toMillis() / 1000d, last.getValue(), 1);
-                assertAttributes(EVENT_HUB_NAME, e.getPartitionContext().getPartitionId(), last.getAttributes());
+                assertAttributes(e.getPartitionContext().getPartitionId(), last.getAttributes());
                 return true;
             })
             .expectComplete()
@@ -793,7 +793,7 @@ class EventHubConsumerAsyncClientTest {
                 List<TestMeasurement<Double>> measurements = consumerLag.getMeasurements();
                 TestMeasurement<Double> last = measurements.get(measurements.size() - 1);
                 assertEquals(0, last.getValue());
-                assertAttributes(EVENT_HUB_NAME, e.getPartitionContext().getPartitionId(), last.getAttributes());
+                assertAttributes(e.getPartitionContext().getPartitionId(), last.getAttributes());
             })
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
@@ -960,9 +960,9 @@ class EventHubConsumerAsyncClientTest {
     }
 
     private void assertPartition(String partitionId, PartitionEvent event) {
-        System.out.println("Event received: " + event.getPartitionContext().getPartitionId());
+        LOGGER.log(LogLevel.VERBOSE, () -> "Event received: " + event.getPartitionContext().getPartitionId());
         final Object value = event.getData().getProperties().get(PARTITION_ID_HEADER);
-        Assertions.assertTrue(value instanceof String);
+        Assertions.assertInstanceOf(String.class, value);
         Assertions.assertEquals(partitionId, value);
 
         Assertions.assertEquals(partitionId, event.getPartitionContext().getPartitionId());
@@ -971,28 +971,26 @@ class EventHubConsumerAsyncClientTest {
     }
 
     private void sendMessages(TestPublisher<Message> testPublisher, int numberOfEvents, String partitionId) {
-        Map<String, String> map = Collections.singletonMap(PARTITION_ID_HEADER, partitionId);
-
-        for (int i = 0; i < numberOfEvents; i++) {
-            testPublisher.next(getMessage(PAYLOAD_BYTES, messageTrackingUUID, map));
-        }
+        sendMessages(testPublisher, numberOfEvents, partitionId, null);
     }
 
     private void sendMessages(TestPublisher<Message> testPublisher, int numberOfEvents, String partitionId, Instant enqueueTime) {
-        Map<String, String> map = Collections.singletonMap(PARTITION_ID_HEADER, partitionId);
-
         for (int i = 0; i < numberOfEvents; i++) {
-            Message message = getMessage(PAYLOAD_BYTES, messageTrackingUUID, map);
-            message.getMessageAnnotations().getValue().put(Symbol.valueOf(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()), enqueueTime);
+            Message message = getMessage(PAYLOAD_BYTES, messageTrackingUUID);
+            message.getApplicationProperties().getValue().put(PARTITION_ID_HEADER, partitionId);
+
+            if (enqueueTime != null) {
+                message.getMessageAnnotations().getValue().put(Symbol.valueOf(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()), enqueueTime);
+            }
+
             testPublisher.next(message);
         }
     }
 
-
-    private void assertAttributes(String entityName, String entityPath, Map<String, Object> attributes) {
+    private void assertAttributes(String entityPath, Map<String, Object> attributes) {
         assertEquals(4, attributes.size());
         assertEquals(HOSTNAME, attributes.get("hostName"));
-        assertEquals(entityName, attributes.get("entityName"));
+        assertEquals(EVENT_HUB_NAME, attributes.get("entityName"));
         assertEquals(CONSUMER_GROUP, attributes.get("consumerGroup"));
         assertEquals(entityPath, attributes.get("partitionId"));
     }

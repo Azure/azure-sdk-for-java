@@ -23,9 +23,10 @@ public final class ProtectableContainerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProtectableContainer model
-            = new ProtectableContainer().withFriendlyName("n").withBackupManagementType(BackupManagementType.MAB)
-                .withHealthStatus("xwczelpcire").withContainerId("feaenwab");
+        ProtectableContainer model = new ProtectableContainer().withFriendlyName("n")
+            .withBackupManagementType(BackupManagementType.MAB)
+            .withHealthStatus("xwczelpcire")
+            .withContainerId("feaenwab");
         model = BinaryData.fromObject(model).toObject(ProtectableContainer.class);
         Assertions.assertEquals("n", model.friendlyName());
         Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());

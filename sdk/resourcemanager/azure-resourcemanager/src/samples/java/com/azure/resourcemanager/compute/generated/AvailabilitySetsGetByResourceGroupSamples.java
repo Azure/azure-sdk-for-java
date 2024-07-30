@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class AvailabilitySetsGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * availabilitySetExamples/AvailabilitySet_Get_MaximumSet_Gen.json
      */
     /**
@@ -19,13 +19,16 @@ public final class AvailabilitySetsGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void availabilitySetGetMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getAvailabilitySets()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getAvailabilitySets()
             .getByResourceGroupWithResponse("rgcompute", "aaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * availabilitySetExamples/AvailabilitySet_Get_MinimumSet_Gen.json
      */
     /**
@@ -34,7 +37,10 @@ public final class AvailabilitySetsGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void availabilitySetGetMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getAvailabilitySets()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getAvailabilitySets()
             .getByResourceGroupWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

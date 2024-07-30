@@ -16,7 +16,7 @@ import java.util.Arrays;
 public final class VirtualMachineScaleSetExtensionsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
@@ -26,23 +26,30 @@ public final class VirtualMachineScaleSetExtensionsCreateOrUpdateSamples {
      */
     public static void virtualMachineScaleSetExtensionCreateOrUpdateMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) throws IOException {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetExtensions().createOrUpdate(
-            "rgcompute", "aaaaaaa", "aaaaaaaaaaaaaaaaaaaaa",
-            new VirtualMachineScaleSetExtensionInner().withName("{extension-name}").withForceUpdateTag("aaaaaaaaa")
-                .withPublisher("{extension-Publisher}").withTypePropertiesType("{extension-Type}")
-                .withTypeHandlerVersion("{handler-version}").withAutoUpgradeMinorVersion(true)
-                .withEnableAutomaticUpgrade(true)
-                .withSettings(SerializerFactory.createDefaultManagementSerializerAdapter().deserialize("{}",
-                    Object.class, SerializerEncoding.JSON))
-                .withProtectedSettings(SerializerFactory.createDefaultManagementSerializerAdapter().deserialize("{}",
-                    Object.class, SerializerEncoding.JSON))
-                .withProvisionAfterExtensions(Arrays.asList("aa")).withSuppressFailures(true),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetExtensions()
+            .createOrUpdate("rgcompute", "aaaaaaa", "aaaaaaaaaaaaaaaaaaaaa",
+                new VirtualMachineScaleSetExtensionInner().withName("{extension-name}")
+                    .withForceUpdateTag("aaaaaaaaa")
+                    .withPublisher("{extension-Publisher}")
+                    .withTypePropertiesType("{extension-Type}")
+                    .withTypeHandlerVersion("{handler-version}")
+                    .withAutoUpgradeMinorVersion(true)
+                    .withEnableAutomaticUpgrade(true)
+                    .withSettings(SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize("{}", Object.class, SerializerEncoding.JSON))
+                    .withProtectedSettings(SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize("{}", Object.class, SerializerEncoding.JSON))
+                    .withProvisionAfterExtensions(Arrays.asList("aa"))
+                    .withSuppressFailures(true),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
@@ -52,8 +59,11 @@ public final class VirtualMachineScaleSetExtensionsCreateOrUpdateSamples {
      */
     public static void virtualMachineScaleSetExtensionCreateOrUpdateMinimumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetExtensions().createOrUpdate(
-            "rgcompute", "aaaaaaaaaaa", "aaaaaaaaaaa", new VirtualMachineScaleSetExtensionInner(),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetExtensions()
+            .createOrUpdate("rgcompute", "aaaaaaaaaaa", "aaaaaaaaaaa", new VirtualMachineScaleSetExtensionInner(),
+                com.azure.core.util.Context.NONE);
     }
 }

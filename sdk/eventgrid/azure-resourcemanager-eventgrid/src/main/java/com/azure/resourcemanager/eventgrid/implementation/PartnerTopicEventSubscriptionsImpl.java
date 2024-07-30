@@ -56,8 +56,8 @@ public final class PartnerTopicEventSubscriptionsImpl implements PartnerTopicEve
 
     public EventSubscription createOrUpdate(String resourceGroupName, String partnerTopicName,
         String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo) {
-        EventSubscriptionInner inner = this.serviceClient().createOrUpdate(resourceGroupName, partnerTopicName,
-            eventSubscriptionName, eventSubscriptionInfo);
+        EventSubscriptionInner inner = this.serviceClient()
+            .createOrUpdate(resourceGroupName, partnerTopicName, eventSubscriptionName, eventSubscriptionInfo);
         if (inner != null) {
             return new EventSubscriptionImpl(inner, this.manager());
         } else {
@@ -67,8 +67,8 @@ public final class PartnerTopicEventSubscriptionsImpl implements PartnerTopicEve
 
     public EventSubscription createOrUpdate(String resourceGroupName, String partnerTopicName,
         String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo, Context context) {
-        EventSubscriptionInner inner = this.serviceClient().createOrUpdate(resourceGroupName, partnerTopicName,
-            eventSubscriptionName, eventSubscriptionInfo, context);
+        EventSubscriptionInner inner = this.serviceClient()
+            .createOrUpdate(resourceGroupName, partnerTopicName, eventSubscriptionName, eventSubscriptionInfo, context);
         if (inner != null) {
             return new EventSubscriptionImpl(inner, this.manager());
         } else {
@@ -87,8 +87,8 @@ public final class PartnerTopicEventSubscriptionsImpl implements PartnerTopicEve
 
     public EventSubscription update(String resourceGroupName, String partnerTopicName, String eventSubscriptionName,
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
-        EventSubscriptionInner inner = this.serviceClient().update(resourceGroupName, partnerTopicName,
-            eventSubscriptionName, eventSubscriptionUpdateParameters);
+        EventSubscriptionInner inner = this.serviceClient()
+            .update(resourceGroupName, partnerTopicName, eventSubscriptionName, eventSubscriptionUpdateParameters);
         if (inner != null) {
             return new EventSubscriptionImpl(inner, this.manager());
         } else {
@@ -98,8 +98,9 @@ public final class PartnerTopicEventSubscriptionsImpl implements PartnerTopicEve
 
     public EventSubscription update(String resourceGroupName, String partnerTopicName, String eventSubscriptionName,
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters, Context context) {
-        EventSubscriptionInner inner = this.serviceClient().update(resourceGroupName, partnerTopicName,
-            eventSubscriptionName, eventSubscriptionUpdateParameters, context);
+        EventSubscriptionInner inner = this.serviceClient()
+            .update(resourceGroupName, partnerTopicName, eventSubscriptionName, eventSubscriptionUpdateParameters,
+                context);
         if (inner != null) {
             return new EventSubscriptionImpl(inner, this.manager());
         } else {
@@ -109,8 +110,8 @@ public final class PartnerTopicEventSubscriptionsImpl implements PartnerTopicEve
 
     public Response<EventSubscriptionFullUrl> getFullUrlWithResponse(String resourceGroupName, String partnerTopicName,
         String eventSubscriptionName, Context context) {
-        Response<EventSubscriptionFullUrlInner> inner = this.serviceClient().getFullUrlWithResponse(resourceGroupName,
-            partnerTopicName, eventSubscriptionName, context);
+        Response<EventSubscriptionFullUrlInner> inner = this.serviceClient()
+            .getFullUrlWithResponse(resourceGroupName, partnerTopicName, eventSubscriptionName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new EventSubscriptionFullUrlImpl(inner.getValue(), this.manager()));
@@ -133,14 +134,14 @@ public final class PartnerTopicEventSubscriptionsImpl implements PartnerTopicEve
     public PagedIterable<EventSubscription> listByPartnerTopic(String resourceGroupName, String partnerTopicName) {
         PagedIterable<EventSubscriptionInner> inner
             = this.serviceClient().listByPartnerTopic(resourceGroupName, partnerTopicName);
-        return Utils.mapPage(inner, inner1 -> new EventSubscriptionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventSubscriptionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<EventSubscription> listByPartnerTopic(String resourceGroupName, String partnerTopicName,
         String filter, Integer top, Context context) {
         PagedIterable<EventSubscriptionInner> inner
             = this.serviceClient().listByPartnerTopic(resourceGroupName, partnerTopicName, filter, top, context);
-        return Utils.mapPage(inner, inner1 -> new EventSubscriptionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventSubscriptionImpl(inner1, this.manager()));
     }
 
     public Response<DeliveryAttributeListResult> getDeliveryAttributesWithResponse(String resourceGroupName,

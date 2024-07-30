@@ -5,37 +5,73 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Container App container Azure Queue based scaling rule. */
+/**
+ * Container App container Azure Queue based scaling rule.
+ */
 @Fluent
-public final class QueueScaleRule {
+public final class QueueScaleRule implements JsonSerializable<QueueScaleRule> {
+    /*
+     * Storage account name. required if using managed identity to authenticate
+     */
+    private String accountName;
+
     /*
      * Queue name.
      */
-    @JsonProperty(value = "queueName")
     private String queueName;
 
     /*
      * Queue length.
      */
-    @JsonProperty(value = "queueLength")
     private Integer queueLength;
 
     /*
      * Authentication secrets for the queue scale rule.
      */
-    @JsonProperty(value = "auth")
     private List<ScaleRuleAuth> auth;
 
-    /** Creates an instance of QueueScaleRule class. */
+    /*
+     * The resource ID of a user-assigned managed identity that is assigned to the Container App, or 'system' for
+     * system-assigned identity.
+     */
+    private String identity;
+
+    /**
+     * Creates an instance of QueueScaleRule class.
+     */
     public QueueScaleRule() {
     }
 
     /**
+     * Get the accountName property: Storage account name. required if using managed identity to authenticate.
+     * 
+     * @return the accountName value.
+     */
+    public String accountName() {
+        return this.accountName;
+    }
+
+    /**
+     * Set the accountName property: Storage account name. required if using managed identity to authenticate.
+     * 
+     * @param accountName the accountName value to set.
+     * @return the QueueScaleRule object itself.
+     */
+    public QueueScaleRule withAccountName(String accountName) {
+        this.accountName = accountName;
+        return this;
+    }
+
+    /**
      * Get the queueName property: Queue name.
-     *
+     * 
      * @return the queueName value.
      */
     public String queueName() {
@@ -44,7 +80,7 @@ public final class QueueScaleRule {
 
     /**
      * Set the queueName property: Queue name.
-     *
+     * 
      * @param queueName the queueName value to set.
      * @return the QueueScaleRule object itself.
      */
@@ -55,7 +91,7 @@ public final class QueueScaleRule {
 
     /**
      * Get the queueLength property: Queue length.
-     *
+     * 
      * @return the queueLength value.
      */
     public Integer queueLength() {
@@ -64,7 +100,7 @@ public final class QueueScaleRule {
 
     /**
      * Set the queueLength property: Queue length.
-     *
+     * 
      * @param queueLength the queueLength value to set.
      * @return the QueueScaleRule object itself.
      */
@@ -75,7 +111,7 @@ public final class QueueScaleRule {
 
     /**
      * Get the auth property: Authentication secrets for the queue scale rule.
-     *
+     * 
      * @return the auth value.
      */
     public List<ScaleRuleAuth> auth() {
@@ -84,7 +120,7 @@ public final class QueueScaleRule {
 
     /**
      * Set the auth property: Authentication secrets for the queue scale rule.
-     *
+     * 
      * @param auth the auth value to set.
      * @return the QueueScaleRule object itself.
      */
@@ -94,13 +130,84 @@ public final class QueueScaleRule {
     }
 
     /**
+     * Get the identity property: The resource ID of a user-assigned managed identity that is assigned to the Container
+     * App, or 'system' for system-assigned identity.
+     * 
+     * @return the identity value.
+     */
+    public String identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The resource ID of a user-assigned managed identity that is assigned to the Container
+     * App, or 'system' for system-assigned identity.
+     * 
+     * @param identity the identity value to set.
+     * @return the QueueScaleRule object itself.
+     */
+    public QueueScaleRule withIdentity(String identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (auth() != null) {
             auth().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("accountName", this.accountName);
+        jsonWriter.writeStringField("queueName", this.queueName);
+        jsonWriter.writeNumberField("queueLength", this.queueLength);
+        jsonWriter.writeArrayField("auth", this.auth, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QueueScaleRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QueueScaleRule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QueueScaleRule.
+     */
+    public static QueueScaleRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QueueScaleRule deserializedQueueScaleRule = new QueueScaleRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accountName".equals(fieldName)) {
+                    deserializedQueueScaleRule.accountName = reader.getString();
+                } else if ("queueName".equals(fieldName)) {
+                    deserializedQueueScaleRule.queueName = reader.getString();
+                } else if ("queueLength".equals(fieldName)) {
+                    deserializedQueueScaleRule.queueLength = reader.getNullable(JsonReader::getInt);
+                } else if ("auth".equals(fieldName)) {
+                    List<ScaleRuleAuth> auth = reader.readArray(reader1 -> ScaleRuleAuth.fromJson(reader1));
+                    deserializedQueueScaleRule.auth = auth;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedQueueScaleRule.identity = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQueueScaleRule;
+        });
     }
 }

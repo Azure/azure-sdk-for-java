@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Indicates the directory service used. Note that this enum may be extended in the future. */
+/**
+ * Indicates the directory service used. Note that this enum may be extended in the future.
+ */
 public final class DirectoryServiceOptions extends ExpandableStringEnum<DirectoryServiceOptions> {
-    /** Static value None for DirectoryServiceOptions. */
+    /**
+     * Static value None for DirectoryServiceOptions.
+     */
     public static final DirectoryServiceOptions NONE = fromString("None");
 
-    /** Static value AADDS for DirectoryServiceOptions. */
+    /**
+     * Static value AADDS for DirectoryServiceOptions.
+     */
     public static final DirectoryServiceOptions AADDS = fromString("AADDS");
 
-    /** Static value AD for DirectoryServiceOptions. */
+    /**
+     * Static value AD for DirectoryServiceOptions.
+     */
     public static final DirectoryServiceOptions AD = fromString("AD");
 
-    /** Static value AADKERB for DirectoryServiceOptions. */
+    /**
+     * Static value AADKERB for DirectoryServiceOptions.
+     */
     public static final DirectoryServiceOptions AADKERB = fromString("AADKERB");
 
     /**
      * Creates a new instance of DirectoryServiceOptions value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class DirectoryServiceOptions extends ExpandableStringEnum<Director
 
     /**
      * Creates or finds a DirectoryServiceOptions from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DirectoryServiceOptions.
      */
@@ -44,7 +54,7 @@ public final class DirectoryServiceOptions extends ExpandableStringEnum<Director
 
     /**
      * Gets known DirectoryServiceOptions values.
-     *
+     * 
      * @return known DirectoryServiceOptions values.
      */
     public static Collection<DirectoryServiceOptions> values() {

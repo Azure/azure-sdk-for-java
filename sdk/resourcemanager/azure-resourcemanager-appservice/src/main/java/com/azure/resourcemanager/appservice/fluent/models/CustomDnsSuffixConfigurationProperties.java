@@ -32,15 +32,13 @@ public final class CustomDnsSuffixConfigurationProperties {
     private String dnsSuffix;
 
     /*
-     * The URL referencing the Azure Key Vault certificate secret that should be used as the default SSL/TLS
-     * certificate for sites with the custom domain suffix.
+     * The URL referencing the Azure Key Vault certificate secret that should be used as the default SSL/TLS certificate for sites with the custom domain suffix.
      */
     @JsonProperty(value = "certificateUrl")
     private String certificateUrl;
 
     /*
-     * The user-assigned identity to use for resolving the key vault certificate reference. If not specified, the
-     * system-assigned ASE identity will be used if available.
+     * The user-assigned identity to use for resolving the key vault certificate reference. If not specified, the system-assigned ASE identity will be used if available.
      */
     @JsonProperty(value = "keyVaultReferenceIdentity")
     private String keyVaultReferenceIdentity;

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.eventgrid.models.NetworkSecurityPerimeterInfo;
 import com.azure.resourcemanager.eventgrid.models.NetworkSecurityPerimeterProfileAccessRuleDirection;
+import com.azure.resourcemanager.eventgrid.models.NetworkSecurityPerimeterSubscription;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public final class NetworkSecurityPerimeterProfileAccessRuleProperties {
      * List of subscriptions.
      */
     @JsonProperty(value = "subscriptions")
-    private List<String> subscriptions;
+    private List<NetworkSecurityPerimeterSubscription> subscriptions;
 
     /*
      * Network security perimeters.
@@ -109,7 +110,7 @@ public final class NetworkSecurityPerimeterProfileAccessRuleProperties {
      * 
      * @return the subscriptions value.
      */
-    public List<String> subscriptions() {
+    public List<NetworkSecurityPerimeterSubscription> subscriptions() {
         return this.subscriptions;
     }
 
@@ -119,7 +120,8 @@ public final class NetworkSecurityPerimeterProfileAccessRuleProperties {
      * @param subscriptions the subscriptions value to set.
      * @return the NetworkSecurityPerimeterProfileAccessRuleProperties object itself.
      */
-    public NetworkSecurityPerimeterProfileAccessRuleProperties withSubscriptions(List<String> subscriptions) {
+    public NetworkSecurityPerimeterProfileAccessRuleProperties
+        withSubscriptions(List<NetworkSecurityPerimeterSubscription> subscriptions) {
         this.subscriptions = subscriptions;
         return this;
     }
@@ -212,6 +214,9 @@ public final class NetworkSecurityPerimeterProfileAccessRuleProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (subscriptions() != null) {
+            subscriptions().forEach(e -> e.validate());
+        }
         if (networkSecurityPerimeters() != null) {
             networkSecurityPerimeters().forEach(e -> e.validate());
         }

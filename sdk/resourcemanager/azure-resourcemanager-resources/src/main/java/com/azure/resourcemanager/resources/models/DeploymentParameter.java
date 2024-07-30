@@ -7,7 +7,9 @@ package com.azure.resourcemanager.resources.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Deployment parameter for the template. */
+/**
+ * Deployment parameter for the template.
+ */
 @Fluent
 public final class DeploymentParameter {
     /*
@@ -22,13 +24,15 @@ public final class DeploymentParameter {
     @JsonProperty(value = "reference")
     private KeyVaultParameterReference reference;
 
-    /** Creates an instance of DeploymentParameter class. */
+    /**
+     * Creates an instance of DeploymentParameter class.
+     */
     public DeploymentParameter() {
     }
 
     /**
      * Get the value property: Input value to the parameter .
-     *
+     * 
      * @return the value value.
      */
     public Object value() {
@@ -37,7 +41,7 @@ public final class DeploymentParameter {
 
     /**
      * Set the value property: Input value to the parameter .
-     *
+     * 
      * @param value the value value to set.
      * @return the DeploymentParameter object itself.
      */
@@ -48,7 +52,7 @@ public final class DeploymentParameter {
 
     /**
      * Get the reference property: Azure Key Vault parameter reference.
-     *
+     * 
      * @return the reference value.
      */
     public KeyVaultParameterReference reference() {
@@ -57,7 +61,7 @@ public final class DeploymentParameter {
 
     /**
      * Set the reference property: Azure Key Vault parameter reference.
-     *
+     * 
      * @param reference the reference value to set.
      * @return the DeploymentParameter object itself.
      */
@@ -68,7 +72,7 @@ public final class DeploymentParameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

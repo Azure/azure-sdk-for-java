@@ -25,7 +25,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-developer-devcenter</artifactId>
-    <version>1.0.0-beta.3</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -48,74 +48,117 @@ DevCenterClient devCenterClient =
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .buildClient();
 
-DevBoxesClient devBoxClient =
-                new DevBoxesClientBuilder()
-                        .endpoint(endpoint)
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .buildClient();
+DevBoxesClient devBoxClient = devCenterClient.getDevBoxesClient();
 
 // Find available Projects and Pools
-PagedIterable<BinaryData> projectListResponse = devCenterClient.listProjects(null);
-for (BinaryData p: projectListResponse) {
-    System.out.println(p);
+PagedIterable<DevCenterProject> projectListResponse = devCenterClient.listProjects();
+for (DevCenterProject project: projectListResponse) {
+    System.out.println(project.getName());
 }
 
-PagedIterable<BinaryData> poolListResponse = devBoxClient.listPools("myProject", null);
-for (BinaryData p: poolListResponse) {
-    System.out.println(p);
+// Use the first project in the list
+DevCenterProject project = projectListResponse.iterator().next();
+String projectName = project.getName();
+
+PagedIterable<DevBoxPool> poolListResponse = devBoxClient.listPools(projectName);
+for (DevBoxPool pool: poolListResponse) {
+    System.out.println(pool.getName());
 }
+
+// Use the first pool in the list
+DevBoxPool pool = poolListResponse.iterator().next();
+String poolName = pool.getName();
+
+System.out.println("Starting to create dev box in project " + projectName + " and pool " + poolName);
 
 // Provision a Dev Box
-BinaryData devBoxBody = BinaryData.fromString("{\"poolName\":\"MyPool\"}");
-SyncPoller<BinaryData, BinaryData> devBoxCreateResponse =
-        devBoxClient.beginCreateDevBox("myProject", "me", "MyDevBox", devBoxBody, null);
+SyncPoller<DevCenterOperationDetails, DevBox> devBoxCreateResponse =
+                devBoxClient.beginCreateDevBox(projectName, "me", new DevBox("MyDevBox", poolName));
 devBoxCreateResponse.waitForCompletion();
+DevBox devBox = devBoxCreateResponse.getFinalResult();
 
+String devBoxName = devBox.getName();
+System.out.println("DevBox " + devBoxName + "finished provisioning with status " + devBox.getProvisioningState());
 
-Response<BinaryData> remoteConnectionResponse =
-                devBoxClient.getRemoteConnectionWithResponse("myProject", "me", "MyDevBox", null);
-System.out.println(remoteConnectionResponse.getValue());
+RemoteConnection remoteConnection =
+                devBoxClient.getRemoteConnection(projectName, "me", devBoxName);
+System.out.println("Dev Box web url is " + remoteConnection.getWebUrl());
 
+System.out.println("Start deleting dev box");
 // Tear down the Dev Box when we're finished:
-SyncPoller<BinaryData, Void> devBoxDeleteResponse =
-                devBoxClient.beginDeleteDevBox("myProject", "me", "MyDevBox", null);
+SyncPoller<DevCenterOperationDetails, Void> devBoxDeleteResponse =
+                devBoxClient.beginDeleteDevBox(projectName, "me", devBoxName);
 devBoxDeleteResponse.waitForCompletion();
+System.out.println("Done deleting dev box");
 ```
 
 ### Environments Scenarios
 ```java com.azure.developer.devcenter.readme.environments
-DeploymentEnvironmentsClient environmentsClient =
-                    new DeploymentEnvironmentsClientBuilder()
-                            .endpoint(endpoint)
-                            .credential(new DefaultAzureCredentialBuilder().build())
-                            .buildClient();
+String endpoint = Configuration.getGlobalConfiguration().get("DEVCENTER_ENDPOINT");
+
+// Build our clients
+DevCenterClient devCenterClient =
+                new DevCenterClientBuilder()
+                        .endpoint(endpoint)
+                        .credential(new DefaultAzureCredentialBuilder().build())
+                        .buildClient();
+       
+DeploymentEnvironmentsClient environmentsClient = devCenterClient.getDeploymentEnvironmentsClient();
+
+// Find available Projects 
+PagedIterable<DevCenterProject> projectListResponse = devCenterClient.listProjects();
+for (DevCenterProject project: projectListResponse) {
+    System.out.println(project.getName());
+}
+
+// Use the first project in the list
+DevCenterProject project = projectListResponse.iterator().next();
+String projectName = project.getName();
 
 // Fetch available environment definitions and environment types
-PagedIterable<BinaryData> listCatalogsResponse = environmentsClient.listCatalogs("myProject", null);
-for (BinaryData p: listCatalogsResponse) {
-    System.out.println(p);
+PagedIterable<DevCenterCatalog> catalogs = environmentsClient.listCatalogs(projectName);
+for (DevCenterCatalog catalog: catalogs) {
+    System.out.println(catalog.getName());
 }
 
-PagedIterable<BinaryData> environmentDefinitionsListResponse = environmentsClient.listEnvironmentDefinitionsByCatalog("myProject", "myCatalog", null);
-for (BinaryData p: environmentDefinitionsListResponse) {
-    System.out.println(p);
+// Use the first catalog in the list
+String catalogName = catalogs.iterator().next().getName();
+
+PagedIterable<EnvironmentDefinition> environmentDefinitions = environmentsClient.listEnvironmentDefinitionsByCatalog(projectName, catalogName);
+for (EnvironmentDefinition environmentDefinition: environmentDefinitions) {
+    System.out.println(environmentDefinition.getName());
 }
 
-PagedIterable<BinaryData> environmentTypesListResponse = environmentsClient.listEnvironmentTypes("myProject", null);
-for (BinaryData p: environmentTypesListResponse) {
-    System.out.println(p);
+// Use the first environment definition in the list
+String envDefinitionName = environmentDefinitions.iterator().next().getName();
+
+PagedIterable<DevCenterEnvironmentType> environmentTypes = environmentsClient.listEnvironmentTypes(projectName);
+for (DevCenterEnvironmentType envType: environmentTypes) {
+    System.out.println(envType.getName());
 }
+
+// Use the first environment type in the list
+String envTypeName = environmentTypes.iterator().next().getName();
+
+System.out.println("Starting to create environment in project " + projectName + ", with catalog " + catalogName
+    + ", environment definition " + envDefinitionName + ", environment type " + envTypeName);
 
 // Create an environment
-BinaryData environmentBody = BinaryData.fromString("{\"environmentDefinitionName\":\"myEnvironmentDefinition\", \"environmentType\":\"myEnvironmentType\", \"catalogName\":\"myCatalog\"}");
-SyncPoller<BinaryData, BinaryData> environmentCreateResponse =
-                environmentsClient.beginCreateOrUpdateEnvironment("myProject", "me", "TestEnvironment", environmentBody, null);
+SyncPoller<DevCenterOperationDetails, DevCenterEnvironment> environmentCreateResponse 
+            = environmentsClient.beginCreateOrUpdateEnvironment(projectName, "me",
+                new DevCenterEnvironment("myEnvironmentName", envTypeName, catalogName, envDefinitionName));
 environmentCreateResponse.waitForCompletion();
+DevCenterEnvironment environment = environmentCreateResponse.getFinalResult();
 
+String environmentName = environment.getName();
+System.out.println("Environment " + environmentName + "finished provisioning with status " + environment.getProvisioningState());
+
+System.out.println("Start deleting environment " + environmentName);
 // Delete the environment when we're finished:
-SyncPoller<BinaryData, Void> environmentDeleteResponse =
-                environmentsClient.beginDeleteEnvironment("myProject", "me", "TestEnvironment", null);
+SyncPoller<DevCenterOperationDetails, Void> environmentDeleteResponse =
+                environmentsClient.beginDeleteEnvironment(projectName, "me", environmentName);
 environmentDeleteResponse.waitForCompletion();
+System.out.println("Done deleting environment" + environmentName);
 ```
 
 ## Troubleshooting

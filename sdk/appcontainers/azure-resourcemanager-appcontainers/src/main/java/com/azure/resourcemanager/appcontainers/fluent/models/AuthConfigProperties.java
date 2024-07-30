@@ -5,57 +5,67 @@
 package com.azure.resourcemanager.appcontainers.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appcontainers.models.AuthPlatform;
+import com.azure.resourcemanager.appcontainers.models.EncryptionSettings;
 import com.azure.resourcemanager.appcontainers.models.GlobalValidation;
 import com.azure.resourcemanager.appcontainers.models.HttpSettings;
 import com.azure.resourcemanager.appcontainers.models.IdentityProviders;
 import com.azure.resourcemanager.appcontainers.models.Login;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** AuthConfig resource specific properties. */
+/**
+ * AuthConfig resource specific properties.
+ */
 @Fluent
-public final class AuthConfigProperties {
+public final class AuthConfigProperties implements JsonSerializable<AuthConfigProperties> {
     /*
      * The configuration settings of the platform of ContainerApp Service Authentication/Authorization.
      */
-    @JsonProperty(value = "platform")
     private AuthPlatform platform;
 
     /*
-     * The configuration settings that determines the validation flow of users using  Service
+     * The configuration settings that determines the validation flow of users using Service
      * Authentication/Authorization.
      */
-    @JsonProperty(value = "globalValidation")
     private GlobalValidation globalValidation;
 
     /*
      * The configuration settings of each of the identity providers used to configure ContainerApp Service
      * Authentication/Authorization.
      */
-    @JsonProperty(value = "identityProviders")
     private IdentityProviders identityProviders;
 
     /*
      * The configuration settings of the login flow of users using ContainerApp Service Authentication/Authorization.
      */
-    @JsonProperty(value = "login")
     private Login login;
 
     /*
      * The configuration settings of the HTTP requests for authentication and authorization requests made against
      * ContainerApp Service Authentication/Authorization.
      */
-    @JsonProperty(value = "httpSettings")
     private HttpSettings httpSettings;
 
-    /** Creates an instance of AuthConfigProperties class. */
+    /*
+     * The configuration settings of the secrets references of encryption key and signing key for ContainerApp Service
+     * Authentication/Authorization.
+     */
+    private EncryptionSettings encryptionSettings;
+
+    /**
+     * Creates an instance of AuthConfigProperties class.
+     */
     public AuthConfigProperties() {
     }
 
     /**
      * Get the platform property: The configuration settings of the platform of ContainerApp Service
      * Authentication/Authorization.
-     *
+     * 
      * @return the platform value.
      */
     public AuthPlatform platform() {
@@ -65,7 +75,7 @@ public final class AuthConfigProperties {
     /**
      * Set the platform property: The configuration settings of the platform of ContainerApp Service
      * Authentication/Authorization.
-     *
+     * 
      * @param platform the platform value to set.
      * @return the AuthConfigProperties object itself.
      */
@@ -77,7 +87,7 @@ public final class AuthConfigProperties {
     /**
      * Get the globalValidation property: The configuration settings that determines the validation flow of users using
      * Service Authentication/Authorization.
-     *
+     * 
      * @return the globalValidation value.
      */
     public GlobalValidation globalValidation() {
@@ -87,7 +97,7 @@ public final class AuthConfigProperties {
     /**
      * Set the globalValidation property: The configuration settings that determines the validation flow of users using
      * Service Authentication/Authorization.
-     *
+     * 
      * @param globalValidation the globalValidation value to set.
      * @return the AuthConfigProperties object itself.
      */
@@ -99,7 +109,7 @@ public final class AuthConfigProperties {
     /**
      * Get the identityProviders property: The configuration settings of each of the identity providers used to
      * configure ContainerApp Service Authentication/Authorization.
-     *
+     * 
      * @return the identityProviders value.
      */
     public IdentityProviders identityProviders() {
@@ -109,7 +119,7 @@ public final class AuthConfigProperties {
     /**
      * Set the identityProviders property: The configuration settings of each of the identity providers used to
      * configure ContainerApp Service Authentication/Authorization.
-     *
+     * 
      * @param identityProviders the identityProviders value to set.
      * @return the AuthConfigProperties object itself.
      */
@@ -121,7 +131,7 @@ public final class AuthConfigProperties {
     /**
      * Get the login property: The configuration settings of the login flow of users using ContainerApp Service
      * Authentication/Authorization.
-     *
+     * 
      * @return the login value.
      */
     public Login login() {
@@ -131,7 +141,7 @@ public final class AuthConfigProperties {
     /**
      * Set the login property: The configuration settings of the login flow of users using ContainerApp Service
      * Authentication/Authorization.
-     *
+     * 
      * @param login the login value to set.
      * @return the AuthConfigProperties object itself.
      */
@@ -143,7 +153,7 @@ public final class AuthConfigProperties {
     /**
      * Get the httpSettings property: The configuration settings of the HTTP requests for authentication and
      * authorization requests made against ContainerApp Service Authentication/Authorization.
-     *
+     * 
      * @return the httpSettings value.
      */
     public HttpSettings httpSettings() {
@@ -153,7 +163,7 @@ public final class AuthConfigProperties {
     /**
      * Set the httpSettings property: The configuration settings of the HTTP requests for authentication and
      * authorization requests made against ContainerApp Service Authentication/Authorization.
-     *
+     * 
      * @param httpSettings the httpSettings value to set.
      * @return the AuthConfigProperties object itself.
      */
@@ -163,8 +173,30 @@ public final class AuthConfigProperties {
     }
 
     /**
+     * Get the encryptionSettings property: The configuration settings of the secrets references of encryption key and
+     * signing key for ContainerApp Service Authentication/Authorization.
+     * 
+     * @return the encryptionSettings value.
+     */
+    public EncryptionSettings encryptionSettings() {
+        return this.encryptionSettings;
+    }
+
+    /**
+     * Set the encryptionSettings property: The configuration settings of the secrets references of encryption key and
+     * signing key for ContainerApp Service Authentication/Authorization.
+     * 
+     * @param encryptionSettings the encryptionSettings value to set.
+     * @return the AuthConfigProperties object itself.
+     */
+    public AuthConfigProperties withEncryptionSettings(EncryptionSettings encryptionSettings) {
+        this.encryptionSettings = encryptionSettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -183,5 +215,59 @@ public final class AuthConfigProperties {
         if (httpSettings() != null) {
             httpSettings().validate();
         }
+        if (encryptionSettings() != null) {
+            encryptionSettings().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("platform", this.platform);
+        jsonWriter.writeJsonField("globalValidation", this.globalValidation);
+        jsonWriter.writeJsonField("identityProviders", this.identityProviders);
+        jsonWriter.writeJsonField("login", this.login);
+        jsonWriter.writeJsonField("httpSettings", this.httpSettings);
+        jsonWriter.writeJsonField("encryptionSettings", this.encryptionSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AuthConfigProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AuthConfigProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AuthConfigProperties.
+     */
+    public static AuthConfigProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AuthConfigProperties deserializedAuthConfigProperties = new AuthConfigProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("platform".equals(fieldName)) {
+                    deserializedAuthConfigProperties.platform = AuthPlatform.fromJson(reader);
+                } else if ("globalValidation".equals(fieldName)) {
+                    deserializedAuthConfigProperties.globalValidation = GlobalValidation.fromJson(reader);
+                } else if ("identityProviders".equals(fieldName)) {
+                    deserializedAuthConfigProperties.identityProviders = IdentityProviders.fromJson(reader);
+                } else if ("login".equals(fieldName)) {
+                    deserializedAuthConfigProperties.login = Login.fromJson(reader);
+                } else if ("httpSettings".equals(fieldName)) {
+                    deserializedAuthConfigProperties.httpSettings = HttpSettings.fromJson(reader);
+                } else if ("encryptionSettings".equals(fieldName)) {
+                    deserializedAuthConfigProperties.encryptionSettings = EncryptionSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAuthConfigProperties;
+        });
     }
 }

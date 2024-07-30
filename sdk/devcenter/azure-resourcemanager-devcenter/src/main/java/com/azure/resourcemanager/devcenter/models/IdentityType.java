@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Values can be systemAssignedIdentity or userAssignedIdentity. */
+/**
+ * Values can be systemAssignedIdentity or userAssignedIdentity.
+ */
 public final class IdentityType extends ExpandableStringEnum<IdentityType> {
-    /** Static value systemAssignedIdentity for IdentityType. */
+    /**
+     * Static value systemAssignedIdentity for IdentityType.
+     */
     public static final IdentityType SYSTEM_ASSIGNED_IDENTITY = fromString("systemAssignedIdentity");
 
-    /** Static value userAssignedIdentity for IdentityType. */
+    /**
+     * Static value userAssignedIdentity for IdentityType.
+     */
     public static final IdentityType USER_ASSIGNED_IDENTITY = fromString("userAssignedIdentity");
 
-    /** Static value delegatedResourceIdentity for IdentityType. */
+    /**
+     * Static value delegatedResourceIdentity for IdentityType.
+     */
     public static final IdentityType DELEGATED_RESOURCE_IDENTITY = fromString("delegatedResourceIdentity");
 
     /**
      * Creates a new instance of IdentityType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class IdentityType extends ExpandableStringEnum<IdentityType> {
 
     /**
      * Creates or finds a IdentityType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IdentityType.
      */
@@ -41,7 +49,7 @@ public final class IdentityType extends ExpandableStringEnum<IdentityType> {
 
     /**
      * Gets known IdentityType values.
-     *
+     * 
      * @return known IdentityType values.
      */
     public static Collection<IdentityType> values() {

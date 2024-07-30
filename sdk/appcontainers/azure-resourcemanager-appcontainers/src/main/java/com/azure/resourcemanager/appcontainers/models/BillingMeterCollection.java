@@ -7,18 +7,20 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.resourcemanager.appcontainers.fluent.models.BillingMeterCollectionInner;
 import java.util.List;
 
-/** An immutable client-side representation of BillingMeterCollection. */
+/**
+ * An immutable client-side representation of BillingMeterCollection.
+ */
 public interface BillingMeterCollection {
     /**
      * Gets the value property: Collection of billing meters.
-     *
+     * 
      * @return the value value.
      */
     List<BillingMeter> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.appcontainers.fluent.models.BillingMeterCollectionInner object.
-     *
+     * 
      * @return the inner object.
      */
     BillingMeterCollectionInner innerModel();

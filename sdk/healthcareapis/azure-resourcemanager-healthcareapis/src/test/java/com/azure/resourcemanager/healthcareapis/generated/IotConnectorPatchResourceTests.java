@@ -17,23 +17,21 @@ public final class IotConnectorPatchResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IotConnectorPatchResource model = BinaryData.fromString(
-            "{\"identity\":{\"type\":\"SystemAssigned,UserAssigned\",\"principalId\":\"52eafb81-8285-4515-a15c-a3f20344a4d4\",\"tenantId\":\"a9ba01d1-d710-4438-b30d-e61262fb3605\",\"userAssignedIdentities\":{\"yexz\":{\"principalId\":\"ce3f42ea-1499-4be7-adbc-02491a1242ac\",\"clientId\":\"521b7d9d-3899-41a0-babe-f998c827d493\"},\"ixhnrztf\":{\"principalId\":\"2d5170f1-759d-40c5-aa91-8fd64c40d31b\",\"clientId\":\"0ba3a7fb-e059-412d-be59-639ea013965e\"},\"bnxknalaulppg\":{\"principalId\":\"3451f2f7-4cd9-4b5c-af23-81b173dfd961\",\"clientId\":\"1b466a83-a0ef-4a1d-ace3-abc4a1b51f07\"},\"pnapnyiropuh\":{\"principalId\":\"9755c4a1-a929-4bd3-be7d-d8f202f70933\",\"clientId\":\"9fc27027-e738-4e80-aeec-077a5a83b1e3\"}}},\"tags\":{\"v\":\"vpgylgqgitxmed\",\"zzhxgktrm\":\"slynqwwnc\"}}")
+            "{\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"c455047c-634c-443b-b77a-685eb7e4b2ba\",\"tenantId\":\"242c167a-d3a6-44ac-adcb-44be1b408302\",\"userAssignedIdentities\":{\"xnrj\":{\"principalId\":\"d7466da9-b041-4fc5-9821-d034c8f1480c\",\"clientId\":\"ec9c2f73-e05c-4a45-849c-cc0df7b9b591\"}}},\"tags\":{\"bkpyc\":\"qwgxhniskx\",\"l\":\"klwndnhjdauwhv\",\"xujznbmpowu\":\"zbtd\",\"lupj\":\"przqlveu\"}}")
             .toObject(IotConnectorPatchResource.class);
-        Assertions.assertEquals("vpgylgqgitxmed", model.tags().get("v"));
-        Assertions.assertEquals(ServiceManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("qwgxhniskx", model.tags().get("bkpyc"));
+        Assertions.assertEquals(ServiceManagedIdentityType.SYSTEM_ASSIGNED, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IotConnectorPatchResource model
-            = new IotConnectorPatchResource().withTags(mapOf("v", "vpgylgqgitxmed", "zzhxgktrm", "slynqwwnc"))
-                .withIdentity(new ServiceManagedIdentityIdentity()
-                    .withType(ServiceManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED).withUserAssignedIdentities(
-                        mapOf("yexz", new UserAssignedIdentity(), "ixhnrztf", new UserAssignedIdentity(),
-                            "bnxknalaulppg", new UserAssignedIdentity(), "pnapnyiropuh", new UserAssignedIdentity())));
+        IotConnectorPatchResource model = new IotConnectorPatchResource()
+            .withTags(mapOf("bkpyc", "qwgxhniskx", "l", "klwndnhjdauwhv", "xujznbmpowu", "zbtd", "lupj", "przqlveu"))
+            .withIdentity(new ServiceManagedIdentityIdentity().withType(ServiceManagedIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("xnrj", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(IotConnectorPatchResource.class);
-        Assertions.assertEquals("vpgylgqgitxmed", model.tags().get("v"));
-        Assertions.assertEquals(ServiceManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("qwgxhniskx", model.tags().get("bkpyc"));
+        Assertions.assertEquals(ServiceManagedIdentityType.SYSTEM_ASSIGNED, model.identity().type());
     }
 
     // Use "Map.of" if available

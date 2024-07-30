@@ -21,9 +21,23 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.query.implementation.logs.AzureLogAnalyticsImplBuilder;
 
 /**
- * Fluent builder for creating instances of {@link LogsQueryClient} and {@link LogsQueryAsyncClient}.
+ * <p>Fluent builder for creating instances of {@link LogsQueryClient} and {@link LogsQueryAsyncClient}.</p>
  *
- * <p><strong>Instantiating an asynchronous Logs query Client</strong></p>
+ * <p>The LogsQueryClientBuilder is responsible for authenticating a building instances of {@link LogsQueryClient} and
+ *  {@link LogsQueryAsyncClient}. Customizations can be applied to clients through the builder using the various options
+ *  available.</p>
+ *
+ * <h2>Getting Started</h2>
+ *
+ * <p>
+ *     To create instances of the clients, sufficient authentication credentials are required. {@link TokenCredential} is
+ *     a common form of authentication. The resource / workspace is not required for client creation, but the authentication
+ *     credentials must have access to the resources / workspaces utilized by the client.
+ * </p>
+ *
+ * <h3>Client Builder Usage</h3>
+ *
+ * <p>The following sample shows instantiating an asynchronous Logs query Client using Token Credential</p>
  *
  * <!-- src_embed com.azure.monitor.query.LogsQueryAsyncClient.instantiation -->
  * <pre>
@@ -33,7 +47,7 @@ import com.azure.monitor.query.implementation.logs.AzureLogAnalyticsImplBuilder;
  * </pre>
  * <!-- end com.azure.monitor.query.LogsQueryAsyncClient.instantiation -->
  *
- * <p><strong>Instantiating a synchronous Logs query Client</strong></p>
+ * <p>The following sample shows instantiating a synchronous Logs query Client using Token Credential</p>
  *
  * <!-- src_embed com.azure.monitor.query.LogsQueryClient.instantiation -->
  * <pre>
@@ -42,6 +56,15 @@ import com.azure.monitor.query.implementation.logs.AzureLogAnalyticsImplBuilder;
  *         .buildClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.monitor.query.LogsQueryClient.instantiation -->
+ *
+ * <p>
+ *     For more information about the other types of credentials that can be used to authenticate your client, please see
+ *     this documentation: <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">Azure Identity</a>
+ * </p>
+ *
+ * @see com.azure.monitor.query
+ * @see LogsQueryClient
+ * @see LogsQueryAsyncClient
  */
 @ServiceClientBuilder(serviceClients = {LogsQueryClient.class, LogsQueryAsyncClient.class})
 public final class LogsQueryClientBuilder implements EndpointTrait<LogsQueryClientBuilder>,
@@ -49,6 +72,11 @@ public final class LogsQueryClientBuilder implements EndpointTrait<LogsQueryClie
     private final ClientLogger logger = new ClientLogger(LogsQueryClientBuilder.class);
     private final AzureLogAnalyticsImplBuilder innerLogBuilder = new AzureLogAnalyticsImplBuilder();
     private LogsQueryServiceVersion serviceVersion;
+
+    /**
+     * Creates an instance of LogsQueryClientBuilder.
+     */
+    public LogsQueryClientBuilder() { }
 
     /**
      * Sets the log query endpoint.

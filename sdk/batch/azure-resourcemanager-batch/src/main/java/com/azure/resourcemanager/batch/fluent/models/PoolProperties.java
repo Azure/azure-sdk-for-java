@@ -20,6 +20,7 @@ import com.azure.resourcemanager.batch.models.ResizeOperationStatus;
 import com.azure.resourcemanager.batch.models.ScaleSettings;
 import com.azure.resourcemanager.batch.models.StartTask;
 import com.azure.resourcemanager.batch.models.TaskSchedulingPolicy;
+import com.azure.resourcemanager.batch.models.UpgradePolicy;
 import com.azure.resourcemanager.batch.models.UserAccount;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -255,6 +256,12 @@ public final class PoolProperties {
      */
     @JsonProperty(value = "currentNodeCommunicationMode", access = JsonProperty.Access.WRITE_ONLY)
     private NodeCommunicationMode currentNodeCommunicationMode;
+
+    /*
+     * Describes an upgrade policy - automatic, manual, or rolling.
+     */
+    @JsonProperty(value = "upgradePolicy")
+    private UpgradePolicy upgradePolicy;
 
     /*
      * The user-defined tags to be associated with the Azure Batch Pool. When specified, these tags are propagated to
@@ -813,6 +820,26 @@ public final class PoolProperties {
     }
 
     /**
+     * Get the upgradePolicy property: Describes an upgrade policy - automatic, manual, or rolling.
+     * 
+     * @return the upgradePolicy value.
+     */
+    public UpgradePolicy upgradePolicy() {
+        return this.upgradePolicy;
+    }
+
+    /**
+     * Set the upgradePolicy property: Describes an upgrade policy - automatic, manual, or rolling.
+     * 
+     * @param upgradePolicy the upgradePolicy value to set.
+     * @return the PoolProperties object itself.
+     */
+    public PoolProperties withUpgradePolicy(UpgradePolicy upgradePolicy) {
+        this.upgradePolicy = upgradePolicy;
+        return this;
+    }
+
+    /**
      * Get the resourceTags property: The user-defined tags to be associated with the Azure Batch Pool. When specified,
      * these tags are propagated to the backing Azure resources associated with the pool. This property can only be
      * specified when the Batch account was created with the poolAllocationMode property set to 'UserSubscription'.
@@ -877,6 +904,9 @@ public final class PoolProperties {
         }
         if (mountConfiguration() != null) {
             mountConfiguration().forEach(e -> e.validate());
+        }
+        if (upgradePolicy() != null) {
+            upgradePolicy().validate();
         }
     }
 }

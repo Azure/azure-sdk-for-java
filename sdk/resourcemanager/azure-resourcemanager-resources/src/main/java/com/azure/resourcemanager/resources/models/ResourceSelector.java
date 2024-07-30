@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The resource selector to filter policies by resource properties. */
+/**
+ * The resource selector to filter policies by resource properties.
+ */
 @Fluent
 public final class ResourceSelector {
     /*
@@ -23,13 +25,15 @@ public final class ResourceSelector {
     @JsonProperty(value = "selectors")
     private List<Selector> selectors;
 
-    /** Creates an instance of ResourceSelector class. */
+    /**
+     * Creates an instance of ResourceSelector class.
+     */
     public ResourceSelector() {
     }
 
     /**
      * Get the name property: The name of the resource selector.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,7 +42,7 @@ public final class ResourceSelector {
 
     /**
      * Set the name property: The name of the resource selector.
-     *
+     * 
      * @param name the name value to set.
      * @return the ResourceSelector object itself.
      */
@@ -49,7 +53,7 @@ public final class ResourceSelector {
 
     /**
      * Get the selectors property: The list of the selector expressions.
-     *
+     * 
      * @return the selectors value.
      */
     public List<Selector> selectors() {
@@ -58,7 +62,7 @@ public final class ResourceSelector {
 
     /**
      * Set the selectors property: The list of the selector expressions.
-     *
+     * 
      * @param selectors the selectors value to set.
      * @return the ResourceSelector object itself.
      */
@@ -69,7 +73,7 @@ public final class ResourceSelector {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

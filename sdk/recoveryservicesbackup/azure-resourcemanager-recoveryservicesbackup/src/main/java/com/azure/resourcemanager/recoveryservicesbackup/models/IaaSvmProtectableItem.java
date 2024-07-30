@@ -7,6 +7,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -15,9 +16,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "protectableItemType",
-    defaultImpl = IaaSvmProtectableItem.class)
+    defaultImpl = IaaSvmProtectableItem.class,
+    visible = true)
 @JsonTypeName("IaaSVMProtectableItem")
 @JsonSubTypes({
     @JsonSubTypes.Type(
@@ -26,6 +27,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "Microsoft.Compute/virtualMachines", value = AzureIaaSComputeVMProtectableItem.class) })
 @Fluent
 public class IaaSvmProtectableItem extends WorkloadProtectableItem {
+    /*
+     * Type of the backup item.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "protectableItemType", required = true)
+    private String protectableItemType = "IaaSVMProtectableItem";
+
     /*
      * Fully qualified ARM ID of the virtual machine.
      */
@@ -51,6 +59,16 @@ public class IaaSvmProtectableItem extends WorkloadProtectableItem {
     }
 
     /**
+     * Get the protectableItemType property: Type of the backup item.
+     * 
+     * @return the protectableItemType value.
+     */
+    @Override
+    public String protectableItemType() {
+        return this.protectableItemType;
+    }
+
+    /**
      * Get the virtualMachineId property: Fully qualified ARM ID of the virtual machine.
      * 
      * @return the virtualMachineId value.
@@ -71,8 +89,8 @@ public class IaaSvmProtectableItem extends WorkloadProtectableItem {
     }
 
     /**
-     * Get the virtualMachineVersion property: Specifies whether the container represents a Classic or an Azure
-     * Resource Manager VM.
+     * Get the virtualMachineVersion property: Specifies whether the container represents a Classic or an Azure Resource
+     * Manager VM.
      * 
      * @return the virtualMachineVersion value.
      */
@@ -81,8 +99,8 @@ public class IaaSvmProtectableItem extends WorkloadProtectableItem {
     }
 
     /**
-     * Set the virtualMachineVersion property: Specifies whether the container represents a Classic or an Azure
-     * Resource Manager VM.
+     * Set the virtualMachineVersion property: Specifies whether the container represents a Classic or an Azure Resource
+     * Manager VM.
      * 
      * @param virtualMachineVersion the virtualMachineVersion value to set.
      * @return the IaaSvmProtectableItem object itself.

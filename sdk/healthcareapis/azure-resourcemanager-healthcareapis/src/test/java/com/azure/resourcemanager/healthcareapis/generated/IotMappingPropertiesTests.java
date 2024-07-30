@@ -11,12 +11,12 @@ public final class IotMappingPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IotMappingProperties model
-            = BinaryData.fromString("{\"content\":\"datajixisxyawjoyaqcs\"}").toObject(IotMappingProperties.class);
+            = BinaryData.fromString("{\"content\":\"datajrwjueiotwm\"}").toObject(IotMappingProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IotMappingProperties model = new IotMappingProperties().withContent("datajixisxyawjoyaqcs");
+        IotMappingProperties model = new IotMappingProperties().withContent("datajrwjueiotwm");
         model = BinaryData.fromObject(model).toObject(IotMappingProperties.class);
     }
 }

@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-/** Samples for ManagedCertificates List. */
+/**
+ * Samples for ManagedCertificates List.
+ */
 public final class ManagedCertificatesListSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/ManagedCertificates_ListByManagedEnvironment.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
+     * ManagedCertificates_ListByManagedEnvironment.json
      */
     /**
      * Sample code: List Managed Certificates by Managed Environment.
-     *
+     * 
      * @param manager Entry point to ContainerAppsApiManager.
      */
     public static void listManagedCertificatesByManagedEnvironment(

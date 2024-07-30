@@ -9,8 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class GremlinResourcesDeleteGremlinDatabaseSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
-     * CosmosDBGremlinDatabaseDelete.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBGremlinDatabaseDelete.json
      */
     /**
      * Sample code: CosmosDBGremlinDatabaseDelete.
@@ -18,7 +17,10 @@ public final class GremlinResourcesDeleteGremlinDatabaseSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBGremlinDatabaseDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getGremlinResources().deleteGremlinDatabase("rg1", "ddb1",
-            "databaseName", com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getGremlinResources()
+            .deleteGremlinDatabase("rg1", "ddb1", "databaseName", com.azure.core.util.Context.NONE);
     }
 }

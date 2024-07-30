@@ -19,30 +19,34 @@ public final class OdbcTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OdbcTableDataset model = BinaryData.fromString(
-            "{\"type\":\"OdbcTable\",\"typeProperties\":{\"tableName\":\"dataizp\"},\"description\":\"fxzspfyvslazippl\",\"structure\":\"datatdumjtycildrzn\",\"schema\":\"dataxozqthkwxfugfziz\",\"linkedServiceName\":{\"referenceName\":\"xduyjnqzbrqcakm\",\"parameters\":{\"nsbqoitwhmuc\":\"dataviyjuca\",\"xy\":\"dataiuh\",\"ycudus\":\"dataehyklelyqdvpqfbx\",\"vfopkyl\":\"datamtxqlefnohey\"}},\"parameters\":{\"w\":{\"type\":\"SecureString\",\"defaultValue\":\"datanj\"}},\"annotations\":[\"datafwtwrsvevc\",\"datae\",\"dataswxhqhgkhtbzv\"],\"folder\":{\"name\":\"evvjncpmyhtxg\"},\"\":{\"bcyjrtalqee\":\"dataghcmixmlwkfe\",\"tomsgoihlqwbywaa\":\"dataudfyimooaez\"}}")
+            "{\"type\":\"OdbcTable\",\"typeProperties\":{\"tableName\":\"dataygzkztxfexwacyy\"},\"description\":\"lxppd\",\"structure\":\"datazkf\",\"schema\":\"datauiiu\",\"linkedServiceName\":{\"referenceName\":\"ibfkcjytq\",\"parameters\":{\"qqfopvno\":\"dataz\"}},\"parameters\":{\"zyfbkmvldzmxojz\":{\"type\":\"Float\",\"defaultValue\":\"datasfhoxqlyo\"},\"vhyejthgeecbp\":{\"type\":\"String\",\"defaultValue\":\"dataaigbq\"},\"kknpugzjw\":{\"type\":\"Int\",\"defaultValue\":\"datawlckihbamyqs\"}},\"annotations\":[\"datacrjixiujzkcs\",\"dataxgkrswksykkbxk\",\"dataxbbwlmnwz\"],\"folder\":{\"name\":\"vuqddlgg\"},\"\":{\"gcmfnsffetpkmixw\":\"dataolgzubakdlkv\"}}")
             .toObject(OdbcTableDataset.class);
-        Assertions.assertEquals("fxzspfyvslazippl", model.description());
-        Assertions.assertEquals("xduyjnqzbrqcakm", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("w").type());
-        Assertions.assertEquals("evvjncpmyhtxg", model.folder().name());
+        Assertions.assertEquals("lxppd", model.description());
+        Assertions.assertEquals("ibfkcjytq", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("zyfbkmvldzmxojz").type());
+        Assertions.assertEquals("vuqddlgg", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OdbcTableDataset model = new OdbcTableDataset().withDescription("fxzspfyvslazippl")
-            .withStructure("datatdumjtycildrzn").withSchema("dataxozqthkwxfugfziz")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("xduyjnqzbrqcakm")
-                .withParameters(mapOf("nsbqoitwhmuc", "dataviyjuca", "xy", "dataiuh", "ycudus", "dataehyklelyqdvpqfbx",
-                    "vfopkyl", "datamtxqlefnohey")))
-            .withParameters(mapOf("w",
-                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datanj")))
-            .withAnnotations(Arrays.asList("datafwtwrsvevc", "datae", "dataswxhqhgkhtbzv"))
-            .withFolder(new DatasetFolder().withName("evvjncpmyhtxg")).withTableName("dataizp");
+        OdbcTableDataset model = new OdbcTableDataset().withDescription("lxppd")
+            .withStructure("datazkf")
+            .withSchema("datauiiu")
+            .withLinkedServiceName(
+                new LinkedServiceReference().withReferenceName("ibfkcjytq").withParameters(mapOf("qqfopvno", "dataz")))
+            .withParameters(mapOf("zyfbkmvldzmxojz",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datasfhoxqlyo"),
+                "vhyejthgeecbp",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataaigbq"), "kknpugzjw",
+                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datawlckihbamyqs")))
+            .withAnnotations(Arrays.asList("datacrjixiujzkcs", "dataxgkrswksykkbxk", "dataxbbwlmnwz"))
+            .withFolder(new DatasetFolder().withName("vuqddlgg"))
+            .withTableName("dataygzkztxfexwacyy");
         model = BinaryData.fromObject(model).toObject(OdbcTableDataset.class);
-        Assertions.assertEquals("fxzspfyvslazippl", model.description());
-        Assertions.assertEquals("xduyjnqzbrqcakm", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("w").type());
-        Assertions.assertEquals("evvjncpmyhtxg", model.folder().name());
+        Assertions.assertEquals("lxppd", model.description());
+        Assertions.assertEquals("ibfkcjytq", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("zyfbkmvldzmxojz").type());
+        Assertions.assertEquals("vuqddlgg", model.folder().name());
     }
 
     // Use "Map.of" if available

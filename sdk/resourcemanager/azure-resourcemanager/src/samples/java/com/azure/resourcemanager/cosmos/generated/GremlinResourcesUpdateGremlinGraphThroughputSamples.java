@@ -6,6 +6,7 @@ package com.azure.resourcemanager.cosmos.generated;
 
 import com.azure.resourcemanager.cosmos.models.ThroughputSettingsResource;
 import com.azure.resourcemanager.cosmos.models.ThroughputSettingsUpdateParameters;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,19 +15,23 @@ import java.util.Map;
  */
 public final class GremlinResourcesUpdateGremlinGraphThroughputSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
-     * CosmosDBGremlinGraphThroughputUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBGremlinGraphThroughputUpdate.json
      */
     /**
      * Sample code: CosmosDBGremlinGraphThroughputUpdate.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBGremlinGraphThroughputUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getGremlinResources().updateGremlinGraphThroughput("rg1",
-            "ddb1", "databaseName", "graphName", new ThroughputSettingsUpdateParameters().withLocation("West US")
-                .withTags(mapOf()).withResource(new ThroughputSettingsResource().withThroughput(400)),
-            com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getGremlinResources()
+            .updateGremlinGraphThroughput("rg1", "ddb1", "databaseName", "graphName",
+                new ThroughputSettingsUpdateParameters().withLocation("West US")
+                    .withTags(mapOf())
+                    .withResource(new ThroughputSettingsResource().withThroughput(400)),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

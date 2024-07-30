@@ -32,8 +32,7 @@ public final class SapOdpResourceDatasetTypeProperties {
     }
 
     /**
-     * Get the context property: The context of the SAP ODP Object. Type: string (or Expression with resultType
-     * string).
+     * Get the context property: The context of the SAP ODP Object. Type: string (or Expression with resultType string).
      * 
      * @return the context value.
      */
@@ -42,8 +41,7 @@ public final class SapOdpResourceDatasetTypeProperties {
     }
 
     /**
-     * Set the context property: The context of the SAP ODP Object. Type: string (or Expression with resultType
-     * string).
+     * Set the context property: The context of the SAP ODP Object. Type: string (or Expression with resultType string).
      * 
      * @param context the context value to set.
      * @return the SapOdpResourceDatasetTypeProperties object itself.
@@ -54,8 +52,7 @@ public final class SapOdpResourceDatasetTypeProperties {
     }
 
     /**
-     * Get the objectName property: The name of the SAP ODP Object. Type: string (or Expression with resultType
-     * string).
+     * Get the objectName property: The name of the SAP ODP Object. Type: string (or Expression with resultType string).
      * 
      * @return the objectName value.
      */
@@ -64,8 +61,7 @@ public final class SapOdpResourceDatasetTypeProperties {
     }
 
     /**
-     * Set the objectName property: The name of the SAP ODP Object. Type: string (or Expression with resultType
-     * string).
+     * Set the objectName property: The name of the SAP ODP Object. Type: string (or Expression with resultType string).
      * 
      * @param objectName the objectName value to set.
      * @return the SapOdpResourceDatasetTypeProperties object itself.
@@ -82,12 +78,14 @@ public final class SapOdpResourceDatasetTypeProperties {
      */
     public void validate() {
         if (context() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property context in model SapOdpResourceDatasetTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property context in model SapOdpResourceDatasetTypeProperties"));
         }
         if (objectName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property objectName in model SapOdpResourceDatasetTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property objectName in model SapOdpResourceDatasetTypeProperties"));
         }
     }
 

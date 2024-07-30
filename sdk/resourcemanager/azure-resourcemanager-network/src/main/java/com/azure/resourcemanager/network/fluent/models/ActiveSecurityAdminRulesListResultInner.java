@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.models.ActiveBaseSecurityAdminRule;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -22,8 +23,8 @@ public final class ActiveSecurityAdminRulesListResultInner {
     private List<ActiveBaseSecurityAdminRule> value;
 
     /*
-     * When present, the value can be passed to a subsequent query call (together with the same query and scopes used
-     * in the current request) to retrieve the next page of data.
+     * When present, the value can be passed to a subsequent query call (together with the same query and scopes used in
+     * the current request) to retrieve the next page of data.
      */
     @JsonProperty(value = "skipToken")
     private String skipToken;
@@ -36,7 +37,7 @@ public final class ActiveSecurityAdminRulesListResultInner {
 
     /**
      * Get the value property: Gets a page of active security admin rules.
-     * 
+     *
      * @return the value value.
      */
     public List<ActiveBaseSecurityAdminRule> value() {
@@ -45,7 +46,7 @@ public final class ActiveSecurityAdminRulesListResultInner {
 
     /**
      * Set the value property: Gets a page of active security admin rules.
-     * 
+     *
      * @param value the value value to set.
      * @return the ActiveSecurityAdminRulesListResultInner object itself.
      */
@@ -57,7 +58,7 @@ public final class ActiveSecurityAdminRulesListResultInner {
     /**
      * Get the skipToken property: When present, the value can be passed to a subsequent query call (together with the
      * same query and scopes used in the current request) to retrieve the next page of data.
-     * 
+     *
      * @return the skipToken value.
      */
     public String skipToken() {
@@ -67,7 +68,7 @@ public final class ActiveSecurityAdminRulesListResultInner {
     /**
      * Set the skipToken property: When present, the value can be passed to a subsequent query call (together with the
      * same query and scopes used in the current request) to retrieve the next page of data.
-     * 
+     *
      * @param skipToken the skipToken value to set.
      * @return the ActiveSecurityAdminRulesListResultInner object itself.
      */
@@ -78,7 +79,7 @@ public final class ActiveSecurityAdminRulesListResultInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

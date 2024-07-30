@@ -13,23 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class LocalDiagnosticsAccessConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LocalDiagnosticsAccessConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"authenticationType\":\"Password\",\"httpsServerCertificate\":{\"certificateUrl\":\"scwsv\",\"provisioning\":{\"state\":\"NotProvisioned\",\"reason\":\"g\"}}}")
-                .toObject(LocalDiagnosticsAccessConfiguration.class);
+        LocalDiagnosticsAccessConfiguration model = BinaryData.fromString(
+            "{\"authenticationType\":\"Password\",\"httpsServerCertificate\":{\"certificateUrl\":\"meue\",\"provisioning\":{\"state\":\"NotProvisioned\",\"reason\":\"zceuojgjrw\"}}}")
+            .toObject(LocalDiagnosticsAccessConfiguration.class);
         Assertions.assertEquals(AuthenticationType.PASSWORD, model.authenticationType());
-        Assertions.assertEquals("scwsv", model.httpsServerCertificate().certificateUrl());
+        Assertions.assertEquals("meue", model.httpsServerCertificate().certificateUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LocalDiagnosticsAccessConfiguration model =
-            new LocalDiagnosticsAccessConfiguration()
-                .withAuthenticationType(AuthenticationType.PASSWORD)
-                .withHttpsServerCertificate(new HttpsServerCertificate().withCertificateUrl("scwsv"));
+        LocalDiagnosticsAccessConfiguration model
+            = new LocalDiagnosticsAccessConfiguration().withAuthenticationType(AuthenticationType.PASSWORD)
+                .withHttpsServerCertificate(new HttpsServerCertificate().withCertificateUrl("meue"));
         model = BinaryData.fromObject(model).toObject(LocalDiagnosticsAccessConfiguration.class);
         Assertions.assertEquals(AuthenticationType.PASSWORD, model.authenticationType());
-        Assertions.assertEquals("scwsv", model.httpsServerCertificate().certificateUrl());
+        Assertions.assertEquals("meue", model.httpsServerCertificate().certificateUrl());
     }
 }

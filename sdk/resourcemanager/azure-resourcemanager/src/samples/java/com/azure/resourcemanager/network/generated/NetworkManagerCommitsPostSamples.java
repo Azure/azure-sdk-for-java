@@ -14,7 +14,7 @@ import java.util.Arrays;
 public final class NetworkManagerCommitsPostSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkManagerCommitPost.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkManagerCommitPost.json
      */
     /**
      * Sample code: NetworkManageCommitPost.
@@ -22,12 +22,14 @@ public final class NetworkManagerCommitsPostSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void networkManageCommitPost(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getNetworkManagerCommits().post("resoureGroupSample",
-            "testNetworkManager",
-            new NetworkManagerCommitInner().withTargetLocations(Arrays.asList("useast"))
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getNetworkManagerCommits()
+            .post("resoureGroupSample", "testNetworkManager", new NetworkManagerCommitInner()
+                .withTargetLocations(Arrays.asList("useast"))
                 .withConfigurationIds(Arrays.asList(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resoureGroupSample/providers/Microsoft.Network/networkManagers/testNetworkManager/securityAdminConfigurations/SampleSecurityAdminConfig"))
-                .withCommitType(ConfigurationType.SECURITY_ADMIN),
-            com.azure.core.util.Context.NONE);
+                .withCommitType(ConfigurationType.SECURITY_ADMIN), com.azure.core.util.Context.NONE);
     }
 }

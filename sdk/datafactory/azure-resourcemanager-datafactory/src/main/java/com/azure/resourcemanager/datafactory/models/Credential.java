@@ -10,9 +10,10 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,17 +21,20 @@ import java.util.Map;
  * The Azure Data Factory nested object which contains the information and credential which can be used to connect with
  * related store or compute resource.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = Credential.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = Credential.class, visible = true)
 @JsonTypeName("Credential")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "ManagedIdentity", value = ManagedIdentityCredential.class),
-    @JsonSubTypes.Type(name = "ServicePrincipal", value = ServicePrincipalCredential.class) })
+    @JsonSubTypes.Type(name = "ServicePrincipal", value = ServicePrincipalCredential.class),
+    @JsonSubTypes.Type(name = "ManagedIdentity", value = ManagedIdentityCredential.class) })
 @Fluent
 public class Credential {
+    /*
+     * Type of credential.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "Credential";
+
     /*
      * Credential description.
      */
@@ -54,6 +58,15 @@ public class Credential {
      * Creates an instance of Credential class.
      */
     public Credential() {
+    }
+
+    /**
+     * Get the type property: Type of credential.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -122,7 +135,7 @@ public class Credential {
     @JsonAnySetter
     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }

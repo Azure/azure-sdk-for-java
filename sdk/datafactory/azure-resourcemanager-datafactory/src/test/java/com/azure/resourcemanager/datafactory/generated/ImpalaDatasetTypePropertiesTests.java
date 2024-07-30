@@ -11,14 +11,16 @@ public final class ImpalaDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImpalaDatasetTypeProperties model = BinaryData
-            .fromString("{\"tableName\":\"datamby\",\"table\":\"datavwnbu\",\"schema\":\"dataodtevzshqykebmps\"}")
+            .fromString(
+                "{\"tableName\":\"databjsarxsvmfpa\",\"table\":\"databpzgfgqpu\",\"schema\":\"datagxgieabbfp\"}")
             .toObject(ImpalaDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImpalaDatasetTypeProperties model = new ImpalaDatasetTypeProperties().withTableName("datamby")
-            .withTable("datavwnbu").withSchema("dataodtevzshqykebmps");
+        ImpalaDatasetTypeProperties model = new ImpalaDatasetTypeProperties().withTableName("databjsarxsvmfpa")
+            .withTable("databpzgfgqpu")
+            .withSchema("datagxgieabbfp");
         model = BinaryData.fromObject(model).toObject(ImpalaDatasetTypeProperties.class);
     }
 }

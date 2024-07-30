@@ -113,6 +113,11 @@ public class Configuration implements Cloneable {
     public static final String PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD = "AZURE_CLIENT_CERTIFICATE_PASSWORD";
 
     /**
+     * Flag to enable sending the certificate chain in x5c header to support subject name / issuer based authentication.
+     */
+    public static final String PROPERTY_AZURE_CLIENT_SEND_CERTIFICATE_CHAIN = "AZURE_CLIENT_SEND_CERTIFICATE_CHAIN";
+
+    /**
      * Flag to disable the CP1 client capabilities in Azure Identity Token credentials.
      */
     public static final String PROPERTY_AZURE_IDENTITY_DISABLE_CP1 = "AZURE_IDENTITY_DISABLE_CP1";
@@ -552,7 +557,7 @@ public class Configuration implements Cloneable {
         return null;
     }
 
-    private <T> String getWithFallback(ConfigurationProperty<T> property) {
+    private String getWithFallback(ConfigurationProperty<?> property) {
         String name = property.getName();
         if (!CoreUtils.isNullOrEmpty(name)) {
             String value = getLocalProperty(name, property.getAliases(), property.getValueSanitizer());
@@ -567,31 +572,28 @@ public class Configuration implements Cloneable {
                 }
             }
         }
-        return getFromEnvironment(property);
+        return getFromEnvironment(property.getSystemPropertyName(), property.getEnvironmentVariableName(),
+            property.getValueSanitizer());
     }
 
-    private <T> String getFromEnvironment(ConfigurationProperty<T> property) {
-        String systemProperty = property.getSystemPropertyName();
+    String getFromEnvironment(String systemProperty, String envVar, Function<String, String> valueSanitizer) {
         if (systemProperty != null) {
             final String value = environmentConfiguration.getSystemProperty(systemProperty);
             if (value != null) {
                 LOGGER.atVerbose()
-                    .addKeyValue("name", property.getName())
                     .addKeyValue("systemProperty", systemProperty)
-                    .addKeyValue("value", () -> property.getValueSanitizer().apply(value))
+                    .addKeyValue("value", () -> valueSanitizer.apply(value))
                     .log("Got property from system property.");
                 return value;
             }
         }
 
-        String envVar = property.getEnvironmentVariableName();
         if (envVar != null) {
             final String value = environmentConfiguration.getEnvironmentVariable(envVar);
             if (value != null) {
                 LOGGER.atVerbose()
-                    .addKeyValue("name", property.getName())
                     .addKeyValue("envVar", envVar)
-                    .addKeyValue("value", () -> property.getValueSanitizer().apply(value))
+                    .addKeyValue("value", () -> valueSanitizer.apply(value))
                     .log("Got property from environment variable.");
                 return value;
             }

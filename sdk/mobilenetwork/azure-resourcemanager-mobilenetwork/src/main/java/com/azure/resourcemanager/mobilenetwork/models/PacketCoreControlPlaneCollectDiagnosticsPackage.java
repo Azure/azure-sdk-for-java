@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Packet core control plane collect diagnostics package options. */
+/**
+ * Packet core control plane collect diagnostics package options.
+ */
 @Fluent
 public final class PacketCoreControlPlaneCollectDiagnosticsPackage {
     /*
@@ -17,13 +19,15 @@ public final class PacketCoreControlPlaneCollectDiagnosticsPackage {
     @JsonProperty(value = "storageAccountBlobUrl", required = true)
     private String storageAccountBlobUrl;
 
-    /** Creates an instance of PacketCoreControlPlaneCollectDiagnosticsPackage class. */
+    /**
+     * Creates an instance of PacketCoreControlPlaneCollectDiagnosticsPackage class.
+     */
     public PacketCoreControlPlaneCollectDiagnosticsPackage() {
     }
 
     /**
      * Get the storageAccountBlobUrl property: The Storage Account Blob URL to upload the diagnostics package to.
-     *
+     * 
      * @return the storageAccountBlobUrl value.
      */
     public String storageAccountBlobUrl() {
@@ -32,7 +36,7 @@ public final class PacketCoreControlPlaneCollectDiagnosticsPackage {
 
     /**
      * Set the storageAccountBlobUrl property: The Storage Account Blob URL to upload the diagnostics package to.
-     *
+     * 
      * @param storageAccountBlobUrl the storageAccountBlobUrl value to set.
      * @return the PacketCoreControlPlaneCollectDiagnosticsPackage object itself.
      */
@@ -43,16 +47,14 @@ public final class PacketCoreControlPlaneCollectDiagnosticsPackage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (storageAccountBlobUrl() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageAccountBlobUrl in model"
-                            + " PacketCoreControlPlaneCollectDiagnosticsPackage"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageAccountBlobUrl in model PacketCoreControlPlaneCollectDiagnosticsPackage"));
         }
     }
 

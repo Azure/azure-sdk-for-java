@@ -9,8 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class MongoDBResourcesListMongoRoleDefinitionsSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
-     * CosmosDBMongoDBRoleDefinitionList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBMongoDBRoleDefinitionList.json
      */
     /**
      * Sample code: CosmosDBMongoDBRoleDefinitionList.
@@ -18,7 +17,10 @@ public final class MongoDBResourcesListMongoRoleDefinitionsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBMongoDBRoleDefinitionList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getMongoDBResources()
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getMongoDBResources()
             .listMongoRoleDefinitions("myResourceGroupName", "myAccountName", com.azure.core.util.Context.NONE);
     }
 }

@@ -14,32 +14,28 @@ import org.junit.jupiter.api.Assertions;
 public final class SliceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SliceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Canceled\",\"snssai\":{\"sst\":2043816183,\"sd\":\"rddga\"},\"description\":\"uhiosrsju\"},\"location\":\"fcdis\",\"tags\":{\"rxzbujr\":\"nxzhcze\",\"nlnzonzlrpi\":\"rhqvwrevkh\"},\"id\":\"yw\",\"name\":\"cvjtszcofiz\",\"type\":\"htd\"}")
-                .toObject(SliceInner.class);
-        Assertions.assertEquals("fcdis", model.location());
-        Assertions.assertEquals("nxzhcze", model.tags().get("rxzbujr"));
-        Assertions.assertEquals(2043816183, model.snssai().sst());
-        Assertions.assertEquals("rddga", model.snssai().sd());
-        Assertions.assertEquals("uhiosrsju", model.description());
+        SliceInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Accepted\",\"snssai\":{\"sst\":593896600,\"sd\":\"sckdlp\"},\"description\":\"zrcxfailcfxwmdbo\"},\"location\":\"fgsftufqob\",\"tags\":{\"cc\":\"nac\",\"kizvytn\":\"knh\"},\"id\":\"zvulj\",\"name\":\"aaeranokqgukk\",\"type\":\"qnvb\"}")
+            .toObject(SliceInner.class);
+        Assertions.assertEquals("fgsftufqob", model.location());
+        Assertions.assertEquals("nac", model.tags().get("cc"));
+        Assertions.assertEquals(593896600, model.snssai().sst());
+        Assertions.assertEquals("sckdlp", model.snssai().sd());
+        Assertions.assertEquals("zrcxfailcfxwmdbo", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SliceInner model =
-            new SliceInner()
-                .withLocation("fcdis")
-                .withTags(mapOf("rxzbujr", "nxzhcze", "nlnzonzlrpi", "rhqvwrevkh"))
-                .withSnssai(new Snssai().withSst(2043816183).withSd("rddga"))
-                .withDescription("uhiosrsju");
+        SliceInner model = new SliceInner().withLocation("fgsftufqob")
+            .withTags(mapOf("cc", "nac", "kizvytn", "knh"))
+            .withSnssai(new Snssai().withSst(593896600).withSd("sckdlp"))
+            .withDescription("zrcxfailcfxwmdbo");
         model = BinaryData.fromObject(model).toObject(SliceInner.class);
-        Assertions.assertEquals("fcdis", model.location());
-        Assertions.assertEquals("nxzhcze", model.tags().get("rxzbujr"));
-        Assertions.assertEquals(2043816183, model.snssai().sst());
-        Assertions.assertEquals("rddga", model.snssai().sd());
-        Assertions.assertEquals("uhiosrsju", model.description());
+        Assertions.assertEquals("fgsftufqob", model.location());
+        Assertions.assertEquals("nac", model.tags().get("cc"));
+        Assertions.assertEquals(593896600, model.snssai().sst());
+        Assertions.assertEquals("sckdlp", model.snssai().sd());
+        Assertions.assertEquals("zrcxfailcfxwmdbo", model.description());
     }
 
     // Use "Map.of" if available

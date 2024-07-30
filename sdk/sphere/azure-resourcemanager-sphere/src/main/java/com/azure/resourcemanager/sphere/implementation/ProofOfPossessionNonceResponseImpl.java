@@ -15,8 +15,7 @@ public final class ProofOfPossessionNonceResponseImpl implements ProofOfPossessi
 
     private final com.azure.resourcemanager.sphere.AzureSphereManager serviceManager;
 
-    ProofOfPossessionNonceResponseImpl(
-        ProofOfPossessionNonceResponseInner innerObject,
+    ProofOfPossessionNonceResponseImpl(ProofOfPossessionNonceResponseInner innerObject,
         com.azure.resourcemanager.sphere.AzureSphereManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

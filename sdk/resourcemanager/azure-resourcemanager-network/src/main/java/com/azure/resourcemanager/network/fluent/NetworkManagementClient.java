@@ -343,6 +343,27 @@ public interface NetworkManagementClient {
     FirewallPolicyIdpsSignaturesFilterValuesClient getFirewallPolicyIdpsSignaturesFilterValues();
 
     /**
+     * Gets the FirewallPolicyDraftsClient object to access its operations.
+     * 
+     * @return the FirewallPolicyDraftsClient object.
+     */
+    FirewallPolicyDraftsClient getFirewallPolicyDrafts();
+
+    /**
+     * Gets the FirewallPolicyDeploymentsClient object to access its operations.
+     * 
+     * @return the FirewallPolicyDeploymentsClient object.
+     */
+    FirewallPolicyDeploymentsClient getFirewallPolicyDeployments();
+
+    /**
+     * Gets the FirewallPolicyRuleCollectionGroupDraftsClient object to access its operations.
+     * 
+     * @return the FirewallPolicyRuleCollectionGroupDraftsClient object.
+     */
+    FirewallPolicyRuleCollectionGroupDraftsClient getFirewallPolicyRuleCollectionGroupDrafts();
+
+    /**
      * Gets the IpAllocationsClient object to access its operations.
      * 
      * @return the IpAllocationsClient object.

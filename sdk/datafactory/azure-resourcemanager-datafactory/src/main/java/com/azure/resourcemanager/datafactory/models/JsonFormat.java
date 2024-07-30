@@ -6,16 +6,24 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The data stored in JSON format.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = JsonFormat.class, visible = true)
 @JsonTypeName("JsonFormat")
 @Fluent
 public final class JsonFormat extends DatasetStorageFormat {
+    /*
+     * Type of dataset storage format.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "JsonFormat";
+
     /*
      * File pattern of JSON. To be more specific, the way of separating a collection of JSON objects. The default value
      * is 'setOfObjects'. It is case-sensitive.
@@ -47,10 +55,10 @@ public final class JsonFormat extends DatasetStorageFormat {
     private Object jsonNodeReference;
 
     /*
-     * The JSONPath definition for each column mapping with a customized column name to extract data from JSON file.
-     * For fields under root object, start with "$"; for fields inside the array chosen by jsonNodeReference property,
-     * start from the array element. Example: {"Column1": "$.Column1Path", "Column2": "Column2PathInArray"}. Type:
-     * object (or Expression with resultType object).
+     * The JSONPath definition for each column mapping with a customized column name to extract data from JSON file. For
+     * fields under root object, start with "$"; for fields inside the array chosen by jsonNodeReference property, start
+     * from the array element. Example: {"Column1": "$.Column1Path", "Column2": "Column2PathInArray"}. Type: object (or
+     * Expression with resultType object).
      */
     @JsonProperty(value = "jsonPathDefinition")
     private Object jsonPathDefinition;
@@ -59,6 +67,16 @@ public final class JsonFormat extends DatasetStorageFormat {
      * Creates an instance of JsonFormat class.
      */
     public JsonFormat() {
+    }
+
+    /**
+     * Get the type property: Type of dataset storage format.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

@@ -33,8 +33,10 @@ public final class ActivityTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Activity model = new Activity().withName("volvtn").withDescription("qfzgemjdftul")
-            .withState(ActivityState.ACTIVE).withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SKIPPED)
+        Activity model = new Activity().withName("volvtn")
+            .withDescription("qfzgemjdftul")
+            .withState(ActivityState.ACTIVE)
+            .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SKIPPED)
             .withDependsOn(Arrays.asList(
                 new ActivityDependency().withActivity("amtmcz")
                     .withDependencyConditions(Arrays.asList(DependencyCondition.SUCCEEDED))

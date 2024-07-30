@@ -78,8 +78,9 @@ public final class VaultRetentionPolicy {
      */
     public void validate() {
         if (vaultRetention() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property vaultRetention in model VaultRetentionPolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property vaultRetention in model VaultRetentionPolicy"));
         } else {
             vaultRetention().validate();
         }

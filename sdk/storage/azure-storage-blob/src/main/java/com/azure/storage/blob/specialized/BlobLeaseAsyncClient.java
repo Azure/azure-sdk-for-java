@@ -399,17 +399,13 @@ public final class BlobLeaseAsyncClient {
         context = context == null ? Context.NONE : context;
 
         if (this.isBlob) {
-            return this.client.getBlobs().releaseLeaseWithResponseAsync(containerName, blobName, this.leaseId, null,
-                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+            return this.client.getBlobs().releaseLeaseNoCustomHeadersWithResponseAsync(containerName, blobName,
+                this.leaseId, null, requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
                 requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
-                requestConditions.getTagsConditions(), null,
-                context)
-                .map(response -> new SimpleResponse<>(response, null));
+                requestConditions.getTagsConditions(), null, context);
         } else {
-            return this.client.getContainers().releaseLeaseWithResponseAsync(containerName, this.leaseId, null,
-                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
-                null, context)
-                .map(response -> new SimpleResponse<>(response, null));
+            return this.client.getContainers().releaseLeaseNoCustomHeadersWithResponseAsync(containerName, this.leaseId,
+                null, requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(), null, context);
         }
     }
 

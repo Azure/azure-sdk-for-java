@@ -7,7 +7,9 @@ package com.azure.resourcemanager.support.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** This property indicates secondary consent for the support ticket. */
+/**
+ * This property indicates secondary consent for the support ticket.
+ */
 @Fluent
 public final class SecondaryConsent {
     /*
@@ -17,19 +19,20 @@ public final class SecondaryConsent {
     private UserConsent userConsent;
 
     /*
-     * The service name for which the secondary consent is being provided. The value needs to be retrieved from the
-     * Problem Classification API response.
+     * The service name for which the secondary consent is being provided. The value needs to be retrieved from the Problem Classification API response.
      */
     @JsonProperty(value = "type")
     private String type;
 
-    /** Creates an instance of SecondaryConsent class. */
+    /**
+     * Creates an instance of SecondaryConsent class.
+     */
     public SecondaryConsent() {
     }
 
     /**
      * Get the userConsent property: User consent value provided.
-     *
+     * 
      * @return the userConsent value.
      */
     public UserConsent userConsent() {
@@ -38,7 +41,7 @@ public final class SecondaryConsent {
 
     /**
      * Set the userConsent property: User consent value provided.
-     *
+     * 
      * @param userConsent the userConsent value to set.
      * @return the SecondaryConsent object itself.
      */
@@ -50,7 +53,7 @@ public final class SecondaryConsent {
     /**
      * Get the type property: The service name for which the secondary consent is being provided. The value needs to be
      * retrieved from the Problem Classification API response.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -60,7 +63,7 @@ public final class SecondaryConsent {
     /**
      * Set the type property: The service name for which the secondary consent is being provided. The value needs to be
      * retrieved from the Problem Classification API response.
-     *
+     * 
      * @param type the type value to set.
      * @return the SecondaryConsent object itself.
      */
@@ -71,7 +74,7 @@ public final class SecondaryConsent {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

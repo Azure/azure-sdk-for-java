@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Schedules. */
+/**
+ * Resource collection API of Schedules.
+ */
 public interface Schedules {
     /**
      * Lists schedules for a pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -25,7 +27,7 @@ public interface Schedules {
 
     /**
      * Lists schedules for a pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -36,12 +38,12 @@ public interface Schedules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the schedule list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Schedule> listByPool(
-        String resourceGroupName, String projectName, String poolName, Integer top, Context context);
+    PagedIterable<Schedule> listByPool(String resourceGroupName, String projectName, String poolName, Integer top,
+        Context context);
 
     /**
      * Gets a schedule resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -53,17 +55,12 @@ public interface Schedules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a schedule resource along with {@link Response}.
      */
-    Response<Schedule> getWithResponse(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        Integer top,
-        Context context);
+    Response<Schedule> getWithResponse(String resourceGroupName, String projectName, String poolName,
+        String scheduleName, Integer top, Context context);
 
     /**
      * Gets a schedule resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -77,7 +74,7 @@ public interface Schedules {
 
     /**
      * Deletes a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -90,7 +87,7 @@ public interface Schedules {
 
     /**
      * Deletes a Scheduled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -101,17 +98,12 @@ public interface Schedules {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        Integer top,
+    void delete(String resourceGroupName, String projectName, String poolName, String scheduleName, Integer top,
         Context context);
 
     /**
      * Gets a schedule resource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -122,7 +114,7 @@ public interface Schedules {
 
     /**
      * Gets a schedule resource.
-     *
+     * 
      * @param id the resource ID.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -135,7 +127,7 @@ public interface Schedules {
 
     /**
      * Deletes a Scheduled.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -145,7 +137,7 @@ public interface Schedules {
 
     /**
      * Deletes a Scheduled.
-     *
+     * 
      * @param id the resource ID.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -157,7 +149,7 @@ public interface Schedules {
 
     /**
      * Begins definition for a new Schedule resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Schedule definition.
      */

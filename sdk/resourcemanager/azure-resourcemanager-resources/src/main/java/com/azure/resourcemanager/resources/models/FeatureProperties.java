@@ -7,7 +7,9 @@ package com.azure.resourcemanager.resources.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information about feature. */
+/**
+ * Information about feature.
+ */
 @Fluent
 public final class FeatureProperties {
     /*
@@ -16,13 +18,15 @@ public final class FeatureProperties {
     @JsonProperty(value = "state")
     private String state;
 
-    /** Creates an instance of FeatureProperties class. */
+    /**
+     * Creates an instance of FeatureProperties class.
+     */
     public FeatureProperties() {
     }
 
     /**
      * Get the state property: The registration state of the feature for the subscription.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -31,7 +35,7 @@ public final class FeatureProperties {
 
     /**
      * Set the state property: The registration state of the feature for the subscription.
-     *
+     * 
      * @param state the state value to set.
      * @return the FeatureProperties object itself.
      */
@@ -42,7 +46,7 @@ public final class FeatureProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

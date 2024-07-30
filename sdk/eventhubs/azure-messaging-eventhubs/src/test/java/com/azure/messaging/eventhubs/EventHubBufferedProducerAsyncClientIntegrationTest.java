@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.messaging.eventhubs.models.SendBatchSucceededContext;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Tag;
@@ -59,7 +60,7 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
 
     @Override
     protected void beforeTest() {
-        this.hubClient = toClose(new EventHubClientBuilder().connectionString(getConnectionString())
+        this.hubClient = toClose(new EventHubClientBuilder().connectionString(TestUtils.getConnectionString())
             .buildClient());
 
         List<String> allIds = new ArrayList<>();
@@ -92,7 +93,7 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
         final int queueSize = 10;
 
         producer = toClose(new EventHubBufferedProducerClientBuilder()
-            .connectionString(getConnectionString())
+            .connectionString(TestUtils.getConnectionString())
             .retryOptions(RETRY_OPTIONS)
             .onSendBatchFailed(failed -> {
                 anyFailures.set(true);
@@ -157,7 +158,7 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
         final int queueSize = 10;
 
         producer = new EventHubBufferedProducerClientBuilder()
-            .connectionString(getConnectionString())
+            .connectionString(TestUtils.getConnectionString())
             .retryOptions(RETRY_OPTIONS)
             .onSendBatchFailed(failed -> {
                 anyFailures.set(true);
@@ -196,9 +197,9 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
                 });
 
                 return Mono.delay(Duration.ofSeconds(delay)).then(producer.enqueueEvent(eventData, sendOptions)
-                    .doFinally(signal  -> {
-                        System.out.printf("\t[%s] %s Published event.%n", expectedPartitionId, formatter.format(Instant.now()));
-                    }));
+                    .doFinally(signal  -> logger.log(LogLevel.VERBOSE,
+                        () -> String.format("\t[%s] %s Published event.%n", expectedPartitionId,
+                            formatter.format(Instant.now())))));
             }).collect(Collectors.toList());
 
         // Waiting for at least maxWaitTime because events will get published by then.

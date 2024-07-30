@@ -39,6 +39,7 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayUrlConfigurati
 import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.network.models.ManagedServiceIdentityUserAssignedIdentities;
 import com.azure.resourcemanager.network.models.ResourceIdentityType;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -49,22 +50,26 @@ import java.util.Map;
 public final class ApplicationGatewaysCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/ApplicationGatewayCreate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ApplicationGatewayCreate.json
      */
     /**
      * Sample code: Create Application Gateway.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createApplicationGateway(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getApplicationGateways().createOrUpdate("rg1", "appgw",
-            new ApplicationGatewayInner().withLocation("eastus").withIdentity(new ManagedServiceIdentity()
-                .withType(ResourceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf(
-                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1",
-                    new ManagedServiceIdentityUserAssignedIdentities())))
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getApplicationGateways()
+            .createOrUpdate("rg1", "appgw", new ApplicationGatewayInner().withLocation("eastus")
+                .withIdentity(new ManagedServiceIdentity().withType(ResourceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1",
+                        new ManagedServiceIdentityUserAssignedIdentities())))
                 .withSku(new ApplicationGatewaySku().withName(ApplicationGatewaySkuName.STANDARD_V2)
-                    .withTier(ApplicationGatewayTier.STANDARD_V2).withCapacity(3))
+                    .withTier(ApplicationGatewayTier.STANDARD_V2)
+                    .withCapacity(3))
                 .withGatewayIpConfigurations(Arrays.asList(new ApplicationGatewayIpConfigurationInner()
                     .withName("appgwipc")
                     .withSubnet(new SubResource().withId(
@@ -76,7 +81,8 @@ public final class ApplicationGatewaysCreateOrUpdateSamples {
                 .withTrustedClientCertificates(Arrays
                     .asList(new ApplicationGatewayTrustedClientCertificate().withName("clientcert").withData("****")))
                 .withSslCertificates(Arrays.asList(
-                    new ApplicationGatewaySslCertificateInner().withName("sslcert").withData("****")
+                    new ApplicationGatewaySslCertificateInner().withName("sslcert")
+                        .withData("****")
                         .withPassword("fakeTokenPlaceholder"),
                     new ApplicationGatewaySslCertificateInner().withName("sslcert2")
                         .withKeyVaultSecretId("fakeTokenPlaceholder")))
@@ -89,17 +95,21 @@ public final class ApplicationGatewaysCreateOrUpdateSamples {
                 .withBackendAddressPools(
                     Arrays.asList(
                         new ApplicationGatewayBackendAddressPool().withName("appgwpool")
-                            .withBackendAddresses(Arrays.asList(new ApplicationGatewayBackendAddress()
-                                .withIpAddress("10.0.1.1"),
+                            .withBackendAddresses(Arrays.asList(
+                                new ApplicationGatewayBackendAddress().withIpAddress("10.0.1.1"),
                                 new ApplicationGatewayBackendAddress().withIpAddress("10.0.1.2"))),
                         new ApplicationGatewayBackendAddressPool().withId(
                             "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendAddressPools/appgwpool1")
-                            .withName("appgwpool1").withBackendAddresses(
+                            .withName("appgwpool1")
+                            .withBackendAddresses(
                                 Arrays.asList(new ApplicationGatewayBackendAddress().withIpAddress("10.0.0.1"),
                                     new ApplicationGatewayBackendAddress().withIpAddress("10.0.0.2")))))
-                .withBackendHttpSettingsCollection(Arrays.asList(new ApplicationGatewayBackendHttpSettings()
-                    .withName("appgwbhs").withPort(80).withProtocol(ApplicationGatewayProtocol.HTTP)
-                    .withCookieBasedAffinity(ApplicationGatewayCookieBasedAffinity.DISABLED).withRequestTimeout(30)))
+                .withBackendHttpSettingsCollection(
+                    Arrays.asList(new ApplicationGatewayBackendHttpSettings().withName("appgwbhs")
+                        .withPort(80)
+                        .withProtocol(ApplicationGatewayProtocol.HTTP)
+                        .withCookieBasedAffinity(ApplicationGatewayCookieBasedAffinity.DISABLED)
+                        .withRequestTimeout(30)))
                 .withHttpListeners(Arrays.asList(new ApplicationGatewayHttpListener().withName("appgwhl")
                     .withFrontendIpConfiguration(new SubResource().withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/frontendIPConfigurations/appgwfip"))
@@ -117,19 +127,20 @@ public final class ApplicationGatewaysCreateOrUpdateSamples {
                         .withFrontendPort(new SubResource().withId(
                             "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/frontendPorts/appgwfp80"))
                         .withProtocol(ApplicationGatewayProtocol.HTTP)))
-                .withSslProfiles(Arrays.asList(new ApplicationGatewaySslProfile()
-                    .withName("sslProfile1")
+                .withSslProfiles(Arrays.asList(new ApplicationGatewaySslProfile().withName("sslProfile1")
                     .withTrustedClientCertificates(Arrays.asList(new SubResource().withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/trustedClientCertificates/clientcert")))
-                    .withSslPolicy(new ApplicationGatewaySslPolicy()
-                        .withPolicyType(ApplicationGatewaySslPolicyType.CUSTOM)
-                        .withCipherSuites(
-                            Arrays.asList(ApplicationGatewaySslCipherSuite.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256))
-                        .withMinProtocolVersion(ApplicationGatewaySslProtocol.TLSV1_1))
+                    .withSslPolicy(
+                        new ApplicationGatewaySslPolicy().withPolicyType(ApplicationGatewaySslPolicyType.CUSTOM)
+                            .withCipherSuites(
+                                Arrays.asList(ApplicationGatewaySslCipherSuite.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256))
+                            .withMinProtocolVersion(ApplicationGatewaySslProtocol.TLSV1_1))
                     .withClientAuthConfiguration(
                         new ApplicationGatewayClientAuthConfiguration().withVerifyClientCertIssuerDN(true))))
                 .withRequestRoutingRules(Arrays.asList(new ApplicationGatewayRequestRoutingRuleInner()
-                    .withName("appgwrule").withRuleType(ApplicationGatewayRequestRoutingRuleType.BASIC).withPriority(10)
+                    .withName("appgwrule")
+                    .withRuleType(ApplicationGatewayRequestRoutingRuleType.BASIC)
+                    .withPriority(10)
                     .withBackendAddressPool(new SubResource().withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendAddressPools/appgwpool"))
                     .withBackendHttpSettings(new SubResource().withId(
@@ -142,9 +153,12 @@ public final class ApplicationGatewaysCreateOrUpdateSamples {
                     Arrays
                         .asList(new ApplicationGatewayRewriteRuleSet().withName("rewriteRuleSet1")
                             .withRewriteRules(Arrays.asList(new ApplicationGatewayRewriteRule()
-                                .withName("Set X-Forwarded-For").withRuleSequence(102)
+                                .withName("Set X-Forwarded-For")
+                                .withRuleSequence(102)
                                 .withConditions(Arrays.asList(new ApplicationGatewayRewriteRuleCondition()
-                                    .withVariable("http_req_Authorization").withPattern("^Bearer").withIgnoreCase(true)
+                                    .withVariable("http_req_Authorization")
+                                    .withPattern("^Bearer")
+                                    .withIgnoreCase(true)
                                     .withNegate(false)))
                                 .withActionSet(new ApplicationGatewayRewriteRuleActionSet()
                                     .withRequestHeaderConfigurations(Arrays.asList(
@@ -158,7 +172,7 @@ public final class ApplicationGatewaysCreateOrUpdateSamples {
                                         new ApplicationGatewayUrlConfiguration().withModifiedPath("/abc")))))))
                 .withGlobalConfiguration(new ApplicationGatewayGlobalConfiguration().withEnableRequestBuffering(true)
                     .withEnableResponseBuffering(true)),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

@@ -5,7 +5,6 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -58,7 +57,6 @@ public final class CreateMode extends ExpandableStringEnum<CreateMode> {
      * @param name a name to look for.
      * @return the corresponding CreateMode.
      */
-    @JsonCreator
     public static CreateMode fromString(String name) {
         return fromString(name, CreateMode.class);
     }

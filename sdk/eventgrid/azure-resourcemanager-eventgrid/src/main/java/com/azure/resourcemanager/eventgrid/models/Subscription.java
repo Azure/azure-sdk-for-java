@@ -8,6 +8,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.fluent.models.SubscriptionInner;
+import java.time.OffsetDateTime;
 
 /**
  * An immutable client-side representation of Subscription.
@@ -70,6 +71,13 @@ public interface Subscription {
     FiltersConfiguration filtersConfiguration();
 
     /**
+     * Gets the expirationTimeUtc property: Expiration time of the event subscription.
+     * 
+     * @return the expirationTimeUtc value.
+     */
+    OffsetDateTime expirationTimeUtc();
+
+    /**
      * Gets the name of the resource group.
      * 
      * @return the name of the resource group.
@@ -119,8 +127,9 @@ public interface Subscription {
          * The stage of the Subscription definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithDeliveryConfiguration,
-            DefinitionStages.WithEventDeliverySchema, DefinitionStages.WithFiltersConfiguration {
+        interface WithCreate
+            extends DefinitionStages.WithDeliveryConfiguration, DefinitionStages.WithEventDeliverySchema,
+            DefinitionStages.WithFiltersConfiguration, DefinitionStages.WithExpirationTimeUtc {
             /**
              * Executes the create request.
              * 
@@ -176,6 +185,19 @@ public interface Subscription {
              */
             WithCreate withFiltersConfiguration(FiltersConfiguration filtersConfiguration);
         }
+
+        /**
+         * The stage of the Subscription definition allowing to specify expirationTimeUtc.
+         */
+        interface WithExpirationTimeUtc {
+            /**
+             * Specifies the expirationTimeUtc property: Expiration time of the event subscription..
+             * 
+             * @param expirationTimeUtc Expiration time of the event subscription.
+             * @return the next definition stage.
+             */
+            WithCreate withExpirationTimeUtc(OffsetDateTime expirationTimeUtc);
+        }
     }
 
     /**
@@ -189,7 +211,7 @@ public interface Subscription {
      * The template for Subscription update.
      */
     interface Update extends UpdateStages.WithDeliveryConfiguration, UpdateStages.WithEventDeliverySchema,
-        UpdateStages.WithFiltersConfiguration {
+        UpdateStages.WithFiltersConfiguration, UpdateStages.WithExpirationTimeUtc {
         /**
          * Executes the update request.
          * 
@@ -249,6 +271,19 @@ public interface Subscription {
              */
             Update withFiltersConfiguration(FiltersConfiguration filtersConfiguration);
         }
+
+        /**
+         * The stage of the Subscription update allowing to specify expirationTimeUtc.
+         */
+        interface WithExpirationTimeUtc {
+            /**
+             * Specifies the expirationTimeUtc property: Expiration time of the event subscription..
+             * 
+             * @param expirationTimeUtc Expiration time of the event subscription.
+             * @return the next definition stage.
+             */
+            Update withExpirationTimeUtc(OffsetDateTime expirationTimeUtc);
+        }
     }
 
     /**
@@ -289,4 +324,28 @@ public interface Subscription {
      * @return all delivery attributes for an event subscription of a namespace topic.
      */
     DeliveryAttributeListResult getDeliveryAttributes();
+
+    /**
+     * Get full URL of an event subscription of a namespace topic.
+     * 
+     * Get the full endpoint URL for an event subscription of a namespace topic.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the full endpoint URL for an event subscription of a namespace topic along with {@link Response}.
+     */
+    Response<SubscriptionFullUrl> getFullUrlWithResponse(Context context);
+
+    /**
+     * Get full URL of an event subscription of a namespace topic.
+     * 
+     * Get the full endpoint URL for an event subscription of a namespace topic.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the full endpoint URL for an event subscription of a namespace topic.
+     */
+    SubscriptionFullUrl getFullUrl();
 }

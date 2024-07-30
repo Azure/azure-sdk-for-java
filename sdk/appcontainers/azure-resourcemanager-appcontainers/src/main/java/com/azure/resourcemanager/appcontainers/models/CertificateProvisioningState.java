@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Provisioning state of the certificate. */
+/**
+ * Provisioning state of the certificate.
+ */
 public final class CertificateProvisioningState extends ExpandableStringEnum<CertificateProvisioningState> {
-    /** Static value Succeeded for CertificateProvisioningState. */
+    /**
+     * Static value Succeeded for CertificateProvisioningState.
+     */
     public static final CertificateProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for CertificateProvisioningState. */
+    /**
+     * Static value Failed for CertificateProvisioningState.
+     */
     public static final CertificateProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Canceled for CertificateProvisioningState. */
+    /**
+     * Static value Canceled for CertificateProvisioningState.
+     */
     public static final CertificateProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value DeleteFailed for CertificateProvisioningState. */
+    /**
+     * Static value DeleteFailed for CertificateProvisioningState.
+     */
     public static final CertificateProvisioningState DELETE_FAILED = fromString("DeleteFailed");
 
-    /** Static value Pending for CertificateProvisioningState. */
+    /**
+     * Static value Pending for CertificateProvisioningState.
+     */
     public static final CertificateProvisioningState PENDING = fromString("Pending");
 
     /**
      * Creates a new instance of CertificateProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class CertificateProvisioningState extends ExpandableStringEnum<Cer
 
     /**
      * Creates or finds a CertificateProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CertificateProvisioningState.
      */
-    @JsonCreator
     public static CertificateProvisioningState fromString(String name) {
         return fromString(name, CertificateProvisioningState.class);
     }
 
     /**
      * Gets known CertificateProvisioningState values.
-     *
+     * 
      * @return known CertificateProvisioningState values.
      */
     public static Collection<CertificateProvisioningState> values() {

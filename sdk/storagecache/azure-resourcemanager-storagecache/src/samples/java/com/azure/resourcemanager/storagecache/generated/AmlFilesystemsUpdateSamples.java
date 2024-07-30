@@ -20,9 +20,7 @@ import java.util.Map;
  */
 public final class AmlFilesystemsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-11-01-preview/examples/
-     * amlFilesystems_Update.json
+     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/amlFilesystems_Update.json
      */
     /**
      * Sample code: amlFilesystems_Update.
@@ -31,16 +29,21 @@ public final class AmlFilesystemsUpdateSamples {
      */
     public static void amlFilesystemsUpdate(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {
         AmlFilesystem resource = manager.amlFilesystems()
-            .getByResourceGroupWithResponse("scgroup", "fs1", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withTags(mapOf("Dept", "ContosoAds")).withEncryptionSettings(
-            new AmlFilesystemEncryptionSettings().withKeyEncryptionKey(new KeyVaultKeyReference()
-                .withKeyUrl("fakeTokenPlaceholder")
-                .withSourceVault(new KeyVaultKeyReferenceSourceVault().withId(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.KeyVault/vaults/keyvault-cmk"))))
-            .withMaintenanceWindow(new AmlFilesystemUpdatePropertiesMaintenanceWindow()
-                .withDayOfWeek(MaintenanceDayOfWeekType.FRIDAY).withTimeOfDayUtc("22:00"))
+            .getByResourceGroupWithResponse("scgroup", "fs1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("Dept", "ContosoAds"))
+            .withEncryptionSettings(new AmlFilesystemEncryptionSettings()
+                .withKeyEncryptionKey(new KeyVaultKeyReference().withKeyUrl("fakeTokenPlaceholder")
+                    .withSourceVault(new KeyVaultKeyReferenceSourceVault().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.KeyVault/vaults/keyvault-cmk"))))
+            .withMaintenanceWindow(
+                new AmlFilesystemUpdatePropertiesMaintenanceWindow().withDayOfWeek(MaintenanceDayOfWeekType.FRIDAY)
+                    .withTimeOfDayUtc("22:00"))
             .withRootSquashSettings(new AmlFilesystemRootSquashSettings().withMode(AmlFilesystemSquashMode.ALL)
-                .withNoSquashNidLists("10.0.0.[5-6]@tcp;10.0.1.2@tcp").withSquashUid(99L).withSquashGid(99L))
+                .withNoSquashNidLists("10.0.0.[5-6]@tcp;10.0.1.2@tcp")
+                .withSquashUid(99L)
+                .withSquashGid(99L))
             .apply();
     }
 

@@ -5,34 +5,45 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Self referenced tumbling window trigger dependency.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("SelfDependencyTumblingWindowTriggerReference")
 @Fluent
 public final class SelfDependencyTumblingWindowTriggerReference extends DependencyReference {
     /*
+     * The type of dependency reference.
+     */
+    private String type = "SelfDependencyTumblingWindowTriggerReference";
+
+    /*
      * Timespan applied to the start time of a tumbling window when evaluating dependency.
      */
-    @JsonProperty(value = "offset", required = true)
     private String offset;
 
     /*
-     * The size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be
-     * used.
+     * The size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be used.
      */
-    @JsonProperty(value = "size")
     private String size;
 
     /**
      * Creates an instance of SelfDependencyTumblingWindowTriggerReference class.
      */
     public SelfDependencyTumblingWindowTriggerReference() {
+    }
+
+    /**
+     * Get the type property: The type of dependency reference.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -75,5 +86,49 @@ public final class SelfDependencyTumblingWindowTriggerReference extends Dependen
     public SelfDependencyTumblingWindowTriggerReference setSize(String size) {
         this.size = size;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("offset", this.offset);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("size", this.size);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SelfDependencyTumblingWindowTriggerReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SelfDependencyTumblingWindowTriggerReference if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SelfDependencyTumblingWindowTriggerReference.
+     */
+    public static SelfDependencyTumblingWindowTriggerReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SelfDependencyTumblingWindowTriggerReference deserializedSelfDependencyTumblingWindowTriggerReference
+                = new SelfDependencyTumblingWindowTriggerReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("offset".equals(fieldName)) {
+                    deserializedSelfDependencyTumblingWindowTriggerReference.offset = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSelfDependencyTumblingWindowTriggerReference.type = reader.getString();
+                } else if ("size".equals(fieldName)) {
+                    deserializedSelfDependencyTumblingWindowTriggerReference.size = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSelfDependencyTumblingWindowTriggerReference;
+        });
     }
 }

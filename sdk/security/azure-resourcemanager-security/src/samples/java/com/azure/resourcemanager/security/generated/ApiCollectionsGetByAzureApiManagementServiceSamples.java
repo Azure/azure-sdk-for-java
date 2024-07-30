@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class ApiCollectionsGetByAzureApiManagementServiceSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/stable/2023-11-15/examples/ApiCollections/
-     * APICollections_GetByAzureApiManagementService_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2023-11-15/examples/ApiCollections/APICollections_GetByAzureApiManagementService_example.json
      */
     /**
      * Sample code: Gets an Azure API Management API if it has been onboarded to Microsoft Defender for APIs.
@@ -20,7 +18,8 @@ public final class ApiCollectionsGetByAzureApiManagementServiceSamples {
      */
     public static void getsAnAzureAPIManagementAPIIfItHasBeenOnboardedToMicrosoftDefenderForAPIs(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.apiCollections().getByAzureApiManagementServiceWithResponse("rg1", "apimService1", "echo-api",
-            com.azure.core.util.Context.NONE);
+        manager.apiCollections()
+            .getByAzureApiManagementServiceWithResponse("rg1", "apimService1", "echo-api",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -12,9 +12,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,11 +23,7 @@ import java.util.Map;
  * The Azure Data Factory nested object which identifies data within different data stores, such as tables, files,
  * folders, and documents.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = Dataset.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = Dataset.class, visible = true)
 @JsonTypeName("Dataset")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AmazonS3Object", value = AmazonS3Dataset.class),
@@ -136,6 +133,13 @@ import java.util.Map;
 @Fluent
 public class Dataset {
     /*
+     * Type of dataset.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "Dataset";
+
+    /*
      * Dataset description.
      */
     @JsonProperty(value = "description")
@@ -191,6 +195,15 @@ public class Dataset {
      * Creates an instance of Dataset class.
      */
     public Dataset() {
+    }
+
+    /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -365,7 +378,7 @@ public class Dataset {
     @JsonAnySetter
     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }
@@ -377,8 +390,8 @@ public class Dataset {
      */
     public void validate() {
         if (linkedServiceName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property linkedServiceName in model Dataset"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property linkedServiceName in model Dataset"));
         } else {
             linkedServiceName().validate();
         }

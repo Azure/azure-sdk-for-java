@@ -6,15 +6,19 @@ package com.azure.storage.file.share;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.ListSharesOptions;
 import com.azure.storage.file.share.models.ShareCorsRule;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareItem;
 import com.azure.storage.file.share.models.ShareMetrics;
 import com.azure.storage.file.share.models.ShareProperties;
+import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareRetentionPolicy;
 import com.azure.storage.file.share.models.ShareServiceProperties;
+import com.azure.storage.file.share.options.ShareCreateOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -299,5 +303,33 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
         StepVerifier.create(primaryFileServiceAsyncClient.undeleteShare(generateShareName(), "01D60F8BB59A4652"))
             .verifyErrorSatisfies(it -> FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, 404,
                 ShareErrorCode.SHARE_NOT_FOUND));
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @Test
+    public void listSharesEnableSnapshotVirtualDirectoryAccess() {
+        ShareCreateOptions options = new ShareCreateOptions();
+        ShareProtocols protocols = ModelHelper.parseShareProtocols(Constants.HeaderConstants.NFS_PROTOCOL);
+        options.setProtocols(protocols);
+        options.setSnapshotVirtualDirectoryAccessEnabled(true);
+
+        String shareName = generateShareName();
+
+        ShareAsyncClient shareClient = premiumFileServiceAsyncClient.getShareAsyncClient(shareName);
+
+        Flux<ShareItem> response = shareClient.createWithResponse(options)
+            .thenMany(premiumFileServiceAsyncClient.listShares());
+
+        List<ShareItem> shares = new ArrayList<>();
+
+        StepVerifier.create(response)
+            .thenConsumeWhile(shares::add)
+            .verifyComplete();
+
+        ShareItem share = shares.stream().filter(r -> r.getName().equals(shareName)).findFirst().get();
+
+        ShareProperties properties = share.getProperties();
+        assertEquals(protocols.toString(), properties.getProtocols().toString());
+        assertTrue(properties.isSnapshotVirtualDirectoryAccessEnabled());
     }
 }

@@ -8,33 +8,49 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The state. */
+/**
+ * The state.
+ */
 public final class SubscriptionFeatureRegistrationState
     extends ExpandableStringEnum<SubscriptionFeatureRegistrationState> {
-    /** Static value NotSpecified for SubscriptionFeatureRegistrationState. */
+    /**
+     * Static value NotSpecified for SubscriptionFeatureRegistrationState.
+     */
     public static final SubscriptionFeatureRegistrationState NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value NotRegistered for SubscriptionFeatureRegistrationState. */
+    /**
+     * Static value NotRegistered for SubscriptionFeatureRegistrationState.
+     */
     public static final SubscriptionFeatureRegistrationState NOT_REGISTERED = fromString("NotRegistered");
 
-    /** Static value Pending for SubscriptionFeatureRegistrationState. */
+    /**
+     * Static value Pending for SubscriptionFeatureRegistrationState.
+     */
     public static final SubscriptionFeatureRegistrationState PENDING = fromString("Pending");
 
-    /** Static value Registering for SubscriptionFeatureRegistrationState. */
+    /**
+     * Static value Registering for SubscriptionFeatureRegistrationState.
+     */
     public static final SubscriptionFeatureRegistrationState REGISTERING = fromString("Registering");
 
-    /** Static value Registered for SubscriptionFeatureRegistrationState. */
+    /**
+     * Static value Registered for SubscriptionFeatureRegistrationState.
+     */
     public static final SubscriptionFeatureRegistrationState REGISTERED = fromString("Registered");
 
-    /** Static value Unregistering for SubscriptionFeatureRegistrationState. */
+    /**
+     * Static value Unregistering for SubscriptionFeatureRegistrationState.
+     */
     public static final SubscriptionFeatureRegistrationState UNREGISTERING = fromString("Unregistering");
 
-    /** Static value Unregistered for SubscriptionFeatureRegistrationState. */
+    /**
+     * Static value Unregistered for SubscriptionFeatureRegistrationState.
+     */
     public static final SubscriptionFeatureRegistrationState UNREGISTERED = fromString("Unregistered");
 
     /**
      * Creates a new instance of SubscriptionFeatureRegistrationState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -43,7 +59,7 @@ public final class SubscriptionFeatureRegistrationState
 
     /**
      * Creates or finds a SubscriptionFeatureRegistrationState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SubscriptionFeatureRegistrationState.
      */
@@ -54,7 +70,7 @@ public final class SubscriptionFeatureRegistrationState
 
     /**
      * Gets known SubscriptionFeatureRegistrationState values.
-     *
+     * 
      * @return known SubscriptionFeatureRegistrationState values.
      */
     public static Collection<SubscriptionFeatureRegistrationState> values() {

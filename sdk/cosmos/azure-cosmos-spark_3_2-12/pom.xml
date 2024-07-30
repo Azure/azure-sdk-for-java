@@ -20,10 +20,11 @@
     <maven.build.timestamp.format>MM-dd-HH-mm-ss</maven.build.timestamp.format>
     <jacoco.min.branchcoverage>0.17</jacoco.min.branchcoverage>
     <jacoco.min.linecoverage>0.18</jacoco.min.linecoverage>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
+    <maven.compiler.source>8</maven.compiler.source>
+    <maven.compiler.target>8</maven.compiler.target>
     <jacoco.skip>true</jacoco.skip>
     <shadingPrefix>azure_cosmos_spark</shadingPrefix>
+    <shadingPrefixNetty>azurecosmosspark</shadingPrefixNetty>
     <legal>
       <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]>
     </legal>
@@ -46,12 +47,11 @@
     </developer>
   </developers>
 
-
   <dependencies>
     <dependency>
       <groupId>org.scala-lang</groupId>
       <artifactId>scala-library</artifactId>
-      <version>2.12.10</version> <!-- {x-version-update;cosmos_org.scala-lang:scala-library;external_dependency} -->
+      <version>2.12.19</version> <!-- {x-version-update;cosmos_org.scala-lang:scala-library;external_dependency} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -63,7 +63,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.57.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.63.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>org.scala-lang.modules</groupId>
@@ -84,12 +84,12 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-cosmos</artifactId>
-      <version>2.36.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;dependency} -->
+      <version>2.40.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.11.4</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.13.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -100,13 +100,18 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.14.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.15.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
           <artifactId>azure-core</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.module</groupId>
+      <artifactId>jackson-module-afterburner</artifactId>
+      <version>2.13.5</version> <!-- {x-version-update;cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
     </dependency>
 
     <!-- Test -->
@@ -125,7 +130,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.34</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.38</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -156,6 +161,12 @@
       <groupId>org.scalamock</groupId>
       <artifactId>scalamock_2.12</artifactId>
       <version>5.0.0</version> <!-- {x-version-update;cosmos_org.scalamock:scalamock_2.12;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-cosmos-test</artifactId>
+      <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure:azure-cosmos-test;current} -->
       <scope>test</scope>
     </dependency>
 
@@ -207,7 +218,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
@@ -220,19 +231,25 @@
                 <include>org.apache.spark:spark-sql_2.12:[3.2.0]</include> <!-- {x-include-update;cosmos-spark_3-2_org.apache.spark:spark-sql_2.12;external_dependency} -->
                 <include>org.apache.spark:spark-sql_2.12:[3.3.0]</include> <!-- {x-include-update;cosmos-spark_3-3_org.apache.spark:spark-sql_2.12;external_dependency} -->
                 <include>org.apache.spark:spark-sql_2.12:[3.4.0]</include> <!-- {x-include-update;cosmos-spark_3-4_org.apache.spark:spark-sql_2.12;external_dependency} -->
+                <include>org.apache.spark:spark-sql_2.12:[3.5.0]</include> <!-- {x-include-update;cosmos-spark_3-5_org.apache.spark:spark-sql_2.12;external_dependency} -->
                 <include>commons-io:commons-io:[2.4]</include> <!-- {x-include-update;cosmos_commons-io:commons-io;external_dependency} -->
-                <include>org.scala-lang:scala-library:[2.12.10]</include> <!-- {x-include-update;cosmos_org.scala-lang:scala-library;external_dependency} -->
+                <include>org.scala-lang:scala-library:[2.12.19]</include> <!-- {x-include-update;cosmos_org.scala-lang:scala-library;external_dependency} -->
                 <include>org.scala-lang.modules:scala-java8-compat_2.12:[0.8.0]</include> <!-- {x-include-update;cosmos_org.scala-lang.modules:scala-java8-compat_2.12;external_dependency} -->
                 <include>io.projectreactor:reactor-scala-extensions_2.12:[0.8.0]</include> <!-- {x-include-update;cosmos_io.projectreactor:reactor-scala-extensions_2.12;external_dependency} -->
                 <include>org.scalatest:scalatest_2.12:[3.2.2]</include> <!-- {x-include-update;cosmos_org.scalatest:scalatest_2.12;external_dependency} -->
+                <include>org.apache.maven.plugins:maven-antrun-plugin:[3.1.0]</include> <!-- {x-include-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
                 <include>net.alchim31.maven:scala-maven-plugin:[4.8.1]</include> <!-- {x-include-update;cosmos_net.alchim31.maven:scala-maven-plugin;external_dependency} -->
                 <include>org.scalastyle:scalastyle-maven-plugin:[1.0.0]</include> <!-- {x-include-update;cosmos_org.scalastyle:scalastyle-maven-plugin;external_dependency} -->
+                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>com.fasterxml.jackson.module:jackson-module-scala_2.12:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
-                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.15.2]</include> <!-- {x-include-update;cosmos_com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-databind:[2.15.2]</include> <!-- {x-include-update;cosmos_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                <include>com.fasterxml.jackson.module:jackson-module-scala_2.12:[2.15.2]</include> <!-- {x-include-update;cosmos_com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
                 <include>io.micrometer:micrometer-registry-azure-monitor:[1.9.17]</include> <!-- {x-include-update;io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
                 <include>com.microsoft.azure:applicationinsights-core:[2.6.4]</include> <!-- {x-include-update;cosmos_com.microsoft.azure:applicationinsights-core;external_dependency} -->
                 <include>com.globalmentor:hadoop-bare-naked-local-fs:[0.1.0]</include> <!-- {x-include-update;cosmos_com.globalmentor:hadoop-bare-naked-local-fs;external_dependency} -->
+                <include>com.fasterxml.jackson.module:jackson-module-afterburner:[2.13.5]</include> <!-- {x-include-update;cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -254,7 +271,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.12.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <failOnWarning>false</failOnWarning>
             </configuration>
@@ -271,7 +288,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.6.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>attach-javadocs</id>
@@ -294,10 +311,10 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-jar-plugin</artifactId>
-            <version>3.2.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+            <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
             <executions>
               <execution>
-                <id>empty-javadoc-jar-with-readme</id>
+                <id>01-empty-javadoc-jar-with-readme</id>
                 <phase>package</phase>
                 <goals>
                   <goal>jar</goal>
@@ -310,40 +327,13 @@
             </executions>
           </plugin>
           <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <version>3.0.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>copy-readme-to-javadocTemp</id>
-                <phase>prepare-package</phase>
-                <configuration>
-                  <target>
-                    <echo>Deleting existing ${project.basedir}/javadocTemp</echo>
-                    <delete includeEmptyDirs="true" quiet="true">
-                      <fileset dir="${project.basedir}/javadocTemp"/>
-                    </delete>
-                    <echo>Copying ${project.basedir}/README.md to
-                      ${project.basedir}/javadocTemp/README.md
-                    </echo>
-                    <copy file="${project.basedir}/README.md" tofile="${project.basedir}/javadocTemp/README.md"/>
-                  </target>
-                </configuration>
-                <goals>
-                  <goal>run</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <!-- END: Empty Java Doc -->
-          <plugin>
             <groupId>net.alchim31.maven</groupId>
             <artifactId>scala-maven-plugin</artifactId>
             <version>4.8.1</version> <!-- {x-version-update;cosmos_net.alchim31.maven:scala-maven-plugin;external_dependency} -->
             <configuration>
-              <source>11</source>
-              <target>11</target>
-              <scalaVersion>2.12.10</scalaVersion>
+              <source>1.8</source>
+              <target>1.8</target>
+              <scalaVersion>2.12.19</scalaVersion>
             </configuration>
             <executions>
               <execution>
@@ -392,10 +382,10 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-shade-plugin</artifactId>
-            <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
+            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
             <executions>
               <execution>
-                <id>shade</id>
+                <id>02-shade</id>
                 <phase>package</phase>
                 <goals>
                   <goal>shade</goal>
@@ -423,7 +413,7 @@
                     </relocation>
                     <relocation>
                       <pattern>io.netty</pattern>
-                      <shadedPattern>${shadingPrefix}.io.netty</shadedPattern>
+                      <shadedPattern>${shadingPrefixNetty}.io.netty</shadedPattern>
                     </relocation>
                     <relocation>
                       <pattern>org.codehaus</pattern>
@@ -524,6 +514,12 @@
                       </includes>
                     </filter>
                     <filter>
+                      <artifact>com.azure:azure-cosmos-test</artifact>
+                      <includes>
+                        <include>**</include>
+                      </includes>
+                    </filter>
+                    <filter>
                       <artifact>*:*</artifact>
                       <excludes>
                         <!-- suppress warning: Discovered module-info.class. Shading will break its strong encapsulation. -->
@@ -601,9 +597,57 @@
             </executions>
           </plugin>
           <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>01-copy-readme-to-javadocTemp</id>
+                <phase>prepare-package</phase>
+                <configuration>
+                  <target>
+                    <echo>Deleting existing ${project.basedir}/javadocTemp</echo>
+                    <delete includeEmptyDirs="true" quiet="true">
+                      <fileset dir="${project.basedir}/javadocTemp"/>
+                    </delete>
+                    <echo>Copying ${project.basedir}/README.md to
+                      ${project.basedir}/javadocTemp/README.md
+                    </echo>
+                    <copy file="${project.basedir}/README.md" tofile="${project.basedir}/javadocTemp/README.md"/>
+                  </target>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>03-repack</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <unzip src="${project.build.directory}/${project.build.finalName}.jar" dest="${project.build.directory}/tmp" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_resolver_dns_native_macos_x86_64.jnilib" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmosspark_netty_resolver_dns_native_macos_x86_64.jnilib" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_tcnative_linux_aarch_64.so" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmosspark_netty_tcnative_linux_aarch_64.so" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_tcnative_linux_x86_64.so" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmosspark_netty_tcnative_linux_x86_64.so" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_tcnative_osx_aarch_64.jnilib" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmosspark_netty_tcnative_osx_aarch_64.jnilib" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_tcnative_osx_x86_64.jnilib" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmosspark_netty_tcnative_osx_x86_64.jnilib" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_transport_native_epoll_x86_64.so" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmosspark_netty_transport_native_epoll_x86_64.so" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_transport_native_kqueue_x86_64.jnilib" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmosspark_netty_transport_native_kqueue_x86_64.jnilib" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/netty_tcnative_windows_x86_64.dll" tofile="${project.build.directory}/tmp/META-INF/native/azurecosmosspark_netty_tcnative_windows_x86_64.dll" />
+                    <zip basedir="${project.build.directory}/tmp" destfile="${project.build.directory}/${project.build.finalName}.jar" />
+                    <delete dir="${project.build.directory}/tmp" />
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>xml-maven-plugin</artifactId>
-            <version>1.0.2</version> <!-- {x-version-update;org.codehaus.mojo:xml-maven-plugin;external_dependency} -->
+            <version>1.1.0</version> <!-- {x-version-update;org.codehaus.mojo:xml-maven-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>stripDependencyReducedPom</id>
@@ -658,7 +702,7 @@
           <plugin>
             <groupId>org.scalatest</groupId>
             <artifactId>scalatest-maven-plugin</artifactId>
-            <version>2.0.2</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest-maven-plugin;external_dependency} -->
+            <version>2.1.0</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest-maven-plugin;external_dependency} -->
             <configuration>
               <systemProperties>
                 <cosmos-spark-version>${cosmos-spark-version}</cosmos-spark-version>
@@ -692,7 +736,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.12.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <skipMain>true</skipMain>
             </configuration>
@@ -701,7 +745,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.6.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration>
               <skip>true</skip>
             </configuration>
@@ -710,7 +754,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-jar-plugin</artifactId>
-            <version>3.2.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+            <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
             <configuration>
               <skip>true</skip>
             </configuration>
@@ -730,18 +774,18 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.12.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>default-compile</id>
                 <configuration>
-                  <release>11</release>
+                  <release>8</release>
                 </configuration>
               </execution>
               <!-- Here the 'base-compile' execution section of java-lts profile defined in parent pom.client.xml is
               overridden. In parent pom, this execution entry enforces java8 release compatibility. The Spark
-              connectors for Spark 3.0 and above not available in Java8, hence here in this pom we override that
-              release compact to 11.
+              connectors for Spark 3.0 and above are available in Java8, hence here in this pom we override that
+              release compact to 1.8.
               -->
               <execution>
                 <id>base-compile</id>
@@ -749,7 +793,7 @@
                   <goal>compile</goal>
                 </goals>
                 <configuration combine.self="override">
-                  <release>11</release>
+                  <release>8</release>
                 </configuration>
               </execution>
               <execution>
@@ -758,8 +802,8 @@
                   <goal>testCompile</goal>
                 </goals>
                 <configuration>
-                  <release>11</release>
-                  <testRelease>11</testRelease>
+                  <release>8</release>
+                  <testRelease>8</testRelease>
                 </configuration>
               </execution>
               <execution>
@@ -768,7 +812,7 @@
                   <goal>testCompile</goal>
                 </goals>
                 <configuration combine.self="override">
-                  <testRelease>11</testRelease>
+                  <testRelease>8</testRelease>
                 </configuration>
               </execution>
             </executions>

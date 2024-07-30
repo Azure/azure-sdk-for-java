@@ -4,113 +4,152 @@
 
 package com.azure.resourcemanager.devcenter.models;
 
+import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.fluent.models.ScheduleInner;
 import java.util.Map;
 
-/** An immutable client-side representation of Schedule. */
+/**
+ * An immutable client-side representation of Schedule.
+ */
 public interface Schedule {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
 
     /**
      * Gets the typePropertiesType property: Supported type this scheduled task represents.
-     *
+     * 
      * @return the typePropertiesType value.
      */
     ScheduledType typePropertiesType();
 
     /**
      * Gets the frequency property: The frequency of this scheduled task.
-     *
+     * 
      * @return the frequency value.
      */
     ScheduledFrequency frequency();
 
     /**
      * Gets the time property: The target time to trigger the action. The format is HH:MM.
-     *
+     * 
      * @return the time value.
      */
     String time();
 
     /**
      * Gets the timeZone property: The IANA timezone id at which the schedule should execute.
-     *
+     * 
      * @return the timeZone value.
      */
     String timeZone();
 
     /**
      * Gets the state property: Indicates whether or not this scheduled task is enabled.
-     *
+     * 
      * @return the state value.
      */
     ScheduleEnableStatus state();
 
     /**
+     * Gets the tags property: Resource tags.
+     * 
+     * @return the tags value.
+     */
+    Map<String, String> tags();
+
+    /**
+     * Gets the location property: The geo-location where the resource lives.
+     * 
+     * @return the location value.
+     */
+    String location();
+
+    /**
+     * Gets the region of the resource.
+     * 
+     * @return the region of the resource.
+     */
+    Region region();
+
+    /**
+     * Gets the name of the resource region.
+     * 
+     * @return the name of the resource region.
+     */
+    String regionName();
+
+    /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.devcenter.fluent.models.ScheduleInner object.
-     *
+     * 
      * @return the inner object.
      */
     ScheduleInner innerModel();
 
-    /** The entirety of the Schedule definition. */
+    /**
+     * The entirety of the Schedule definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The Schedule definition stages. */
+    /**
+     * The Schedule definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the Schedule definition. */
+        /**
+         * The first stage of the Schedule definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the Schedule definition allowing to specify parent resource. */
+        /**
+         * The stage of the Schedule definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, projectName, poolName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param projectName The name of the project.
              * @param poolName Name of the pool.
@@ -123,90 +162,132 @@ public interface Schedule {
          * The stage of the Schedule definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTypePropertiesType,
-                DefinitionStages.WithFrequency,
-                DefinitionStages.WithTime,
-                DefinitionStages.WithTimeZone,
-                DefinitionStages.WithState,
-                DefinitionStages.WithTop {
+        interface WithCreate extends DefinitionStages.WithLocation, DefinitionStages.WithTags,
+            DefinitionStages.WithTypePropertiesType, DefinitionStages.WithFrequency, DefinitionStages.WithTime,
+            DefinitionStages.WithTimeZone, DefinitionStages.WithState, DefinitionStages.WithTop {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             Schedule create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             Schedule create(Context context);
         }
 
-        /** The stage of the Schedule definition allowing to specify typePropertiesType. */
+        /**
+         * The stage of the Schedule definition allowing to specify location.
+         */
+        interface WithLocation {
+            /**
+             * Specifies the region for the resource.
+             * 
+             * @param location The geo-location where the resource lives.
+             * @return the next definition stage.
+             */
+            WithCreate withRegion(Region location);
+
+            /**
+             * Specifies the region for the resource.
+             * 
+             * @param location The geo-location where the resource lives.
+             * @return the next definition stage.
+             */
+            WithCreate withRegion(String location);
+        }
+
+        /**
+         * The stage of the Schedule definition allowing to specify tags.
+         */
+        interface WithTags {
+            /**
+             * Specifies the tags property: Resource tags..
+             * 
+             * @param tags Resource tags.
+             * @return the next definition stage.
+             */
+            WithCreate withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the Schedule definition allowing to specify typePropertiesType.
+         */
         interface WithTypePropertiesType {
             /**
              * Specifies the typePropertiesType property: Supported type this scheduled task represents..
-             *
+             * 
              * @param typePropertiesType Supported type this scheduled task represents.
              * @return the next definition stage.
              */
             WithCreate withTypePropertiesType(ScheduledType typePropertiesType);
         }
 
-        /** The stage of the Schedule definition allowing to specify frequency. */
+        /**
+         * The stage of the Schedule definition allowing to specify frequency.
+         */
         interface WithFrequency {
             /**
              * Specifies the frequency property: The frequency of this scheduled task..
-             *
+             * 
              * @param frequency The frequency of this scheduled task.
              * @return the next definition stage.
              */
             WithCreate withFrequency(ScheduledFrequency frequency);
         }
 
-        /** The stage of the Schedule definition allowing to specify time. */
+        /**
+         * The stage of the Schedule definition allowing to specify time.
+         */
         interface WithTime {
             /**
              * Specifies the time property: The target time to trigger the action. The format is HH:MM..
-             *
+             * 
              * @param time The target time to trigger the action. The format is HH:MM.
              * @return the next definition stage.
              */
             WithCreate withTime(String time);
         }
 
-        /** The stage of the Schedule definition allowing to specify timeZone. */
+        /**
+         * The stage of the Schedule definition allowing to specify timeZone.
+         */
         interface WithTimeZone {
             /**
              * Specifies the timeZone property: The IANA timezone id at which the schedule should execute..
-             *
+             * 
              * @param timeZone The IANA timezone id at which the schedule should execute.
              * @return the next definition stage.
              */
             WithCreate withTimeZone(String timeZone);
         }
 
-        /** The stage of the Schedule definition allowing to specify state. */
+        /**
+         * The stage of the Schedule definition allowing to specify state.
+         */
         interface WithState {
             /**
              * Specifies the state property: Indicates whether or not this scheduled task is enabled..
-             *
+             * 
              * @param state Indicates whether or not this scheduled task is enabled.
              * @return the next definition stage.
              */
             WithCreate withState(ScheduleEnableStatus state);
         }
 
-        /** The stage of the Schedule definition allowing to specify top. */
+        /**
+         * The stage of the Schedule definition allowing to specify top.
+         */
         interface WithTop {
             /**
              * Specifies the top property: The maximum number of resources to return from the operation. Example:
              * '$top=10'..
-             *
+             * 
              * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
              * @return the next definition stage.
              */
@@ -216,110 +297,122 @@ public interface Schedule {
 
     /**
      * Begins update for the Schedule resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     Schedule.Update update();
 
-    /** The template for Schedule update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithType,
-            UpdateStages.WithFrequency,
-            UpdateStages.WithTime,
-            UpdateStages.WithTimeZone,
-            UpdateStages.WithState,
-            UpdateStages.WithTop {
+    /**
+     * The template for Schedule update.
+     */
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithType, UpdateStages.WithFrequency,
+        UpdateStages.WithTime, UpdateStages.WithTimeZone, UpdateStages.WithState, UpdateStages.WithTop {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         Schedule apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         Schedule apply(Context context);
     }
 
-    /** The Schedule update stages. */
+    /**
+     * The Schedule update stages.
+     */
     interface UpdateStages {
-        /** The stage of the Schedule update allowing to specify tags. */
+        /**
+         * The stage of the Schedule update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
         }
 
-        /** The stage of the Schedule update allowing to specify type. */
+        /**
+         * The stage of the Schedule update allowing to specify type.
+         */
         interface WithType {
             /**
              * Specifies the type property: Supported type this scheduled task represents..
-             *
+             * 
              * @param type Supported type this scheduled task represents.
              * @return the next definition stage.
              */
             Update withType(ScheduledType type);
         }
 
-        /** The stage of the Schedule update allowing to specify frequency. */
+        /**
+         * The stage of the Schedule update allowing to specify frequency.
+         */
         interface WithFrequency {
             /**
              * Specifies the frequency property: The frequency of this scheduled task..
-             *
+             * 
              * @param frequency The frequency of this scheduled task.
              * @return the next definition stage.
              */
             Update withFrequency(ScheduledFrequency frequency);
         }
 
-        /** The stage of the Schedule update allowing to specify time. */
+        /**
+         * The stage of the Schedule update allowing to specify time.
+         */
         interface WithTime {
             /**
              * Specifies the time property: The target time to trigger the action. The format is HH:MM..
-             *
+             * 
              * @param time The target time to trigger the action. The format is HH:MM.
              * @return the next definition stage.
              */
             Update withTime(String time);
         }
 
-        /** The stage of the Schedule update allowing to specify timeZone. */
+        /**
+         * The stage of the Schedule update allowing to specify timeZone.
+         */
         interface WithTimeZone {
             /**
              * Specifies the timeZone property: The IANA timezone id at which the schedule should execute..
-             *
+             * 
              * @param timeZone The IANA timezone id at which the schedule should execute.
              * @return the next definition stage.
              */
             Update withTimeZone(String timeZone);
         }
 
-        /** The stage of the Schedule update allowing to specify state. */
+        /**
+         * The stage of the Schedule update allowing to specify state.
+         */
         interface WithState {
             /**
              * Specifies the state property: Indicates whether or not this scheduled task is enabled..
-             *
+             * 
              * @param state Indicates whether or not this scheduled task is enabled.
              * @return the next definition stage.
              */
             Update withState(ScheduleEnableStatus state);
         }
 
-        /** The stage of the Schedule update allowing to specify top. */
+        /**
+         * The stage of the Schedule update allowing to specify top.
+         */
         interface WithTop {
             /**
              * Specifies the top property: The maximum number of resources to return from the operation. Example:
              * '$top=10'..
-             *
+             * 
              * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
              * @return the next definition stage.
              */
@@ -329,14 +422,14 @@ public interface Schedule {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     Schedule refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

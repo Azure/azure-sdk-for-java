@@ -7,7 +7,6 @@ import com.azure.core.test.annotation.DoNotRecord;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
-import org.opentest4j.TestAbortedException;
 
 import java.lang.reflect.Method;
 
@@ -15,7 +14,6 @@ import static com.azure.core.test.FakeTestClass.DONOTRECORD_FALSE_SKIPINPLAYBACK
 import static com.azure.core.test.FakeTestClass.DONOTRECORD_SKIPINPLAYBACK;
 import static com.azure.core.test.FakeTestClass.METHOD_WITHOUT_DONOTRECORD;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -60,10 +58,12 @@ public class TestContextManagerTests {
     public void testWithDoNotRecordSkipInPlayback() {
         Method testMethod = DONOTRECORD_SKIPINPLAYBACK;
 
-        assertThrows(TestAbortedException.class,
-            () -> new TestContextManager(testMethod, TestMode.PLAYBACK, false, false, null));
+        TestContextManager testContextManager
+            = new TestContextManager(testMethod, TestMode.PLAYBACK, false, false, null);
+        assertTrue(testContextManager.doNotRecordTest());
+        assertFalse(testContextManager.didTestRun());
 
-        TestContextManager testContextManager = new TestContextManager(testMethod, TestMode.LIVE, false, false, null);
+        testContextManager = new TestContextManager(testMethod, TestMode.LIVE, false, false, null);
         assertTrue(testContextManager.doNotRecordTest());
         assertTrue(testContextManager.didTestRun());
 

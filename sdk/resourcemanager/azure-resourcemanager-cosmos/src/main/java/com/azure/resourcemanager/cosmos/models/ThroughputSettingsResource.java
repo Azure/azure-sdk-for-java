@@ -13,15 +13,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public class ThroughputSettingsResource {
     /*
-     * Value of the Cosmos DB resource throughput. Either throughput is required or autoscaleSettings is required, but
-     * not both.
+     * Value of the Cosmos DB resource throughput. Either throughput is required or autoscaleSettings is required, but not both.
      */
     @JsonProperty(value = "throughput")
     private Integer throughput;
 
     /*
-     * Cosmos DB resource for autoscale settings. Either throughput is required or autoscaleSettings is required, but
-     * not both.
+     * Cosmos DB resource for autoscale settings. Either throughput is required or autoscaleSettings is required, but not both.
      */
     @JsonProperty(value = "autoscaleSettings")
     private AutoscaleSettingsResource autoscaleSettings;

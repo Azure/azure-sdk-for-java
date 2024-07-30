@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CustomEntityStoreAssignmentRequestProperties {
     /*
-     * The principal assigned with entity store. If not provided, will use caller principal. Format of principal is:
-     * [AAD type]=[PrincipalObjectId];[TenantId]
+     * The principal assigned with entity store. If not provided, will use caller principal. Format of principal is: [AAD type]=[PrincipalObjectId];[TenantId]
      */
     @JsonProperty(value = "principal")
     private String principal;
@@ -26,8 +25,8 @@ public final class CustomEntityStoreAssignmentRequestProperties {
     }
 
     /**
-     * Get the principal property: The principal assigned with entity store. If not provided, will use caller
-     * principal. Format of principal is: [AAD type]=[PrincipalObjectId];[TenantId].
+     * Get the principal property: The principal assigned with entity store. If not provided, will use caller principal.
+     * Format of principal is: [AAD type]=[PrincipalObjectId];[TenantId].
      * 
      * @return the principal value.
      */
@@ -36,8 +35,8 @@ public final class CustomEntityStoreAssignmentRequestProperties {
     }
 
     /**
-     * Set the principal property: The principal assigned with entity store. If not provided, will use caller
-     * principal. Format of principal is: [AAD type]=[PrincipalObjectId];[TenantId].
+     * Set the principal property: The principal assigned with entity store. If not provided, will use caller principal.
+     * Format of principal is: [AAD type]=[PrincipalObjectId];[TenantId].
      * 
      * @param principal the principal value to set.
      * @return the CustomEntityStoreAssignmentRequestProperties object itself.

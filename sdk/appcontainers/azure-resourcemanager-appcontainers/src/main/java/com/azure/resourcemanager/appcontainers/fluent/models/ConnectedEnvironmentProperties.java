@@ -5,56 +5,58 @@
 package com.azure.resourcemanager.appcontainers.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appcontainers.models.ConnectedEnvironmentProvisioningState;
 import com.azure.resourcemanager.appcontainers.models.CustomDomainConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** ConnectedEnvironment resource specific properties. */
+/**
+ * ConnectedEnvironment resource specific properties.
+ */
 @Fluent
-public final class ConnectedEnvironmentProperties {
+public final class ConnectedEnvironmentProperties implements JsonSerializable<ConnectedEnvironmentProperties> {
     /*
      * Provisioning state of the Kubernetes Environment.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ConnectedEnvironmentProvisioningState provisioningState;
 
     /*
      * Any errors that occurred during deployment or deployment validation
      */
-    @JsonProperty(value = "deploymentErrors", access = JsonProperty.Access.WRITE_ONLY)
     private String deploymentErrors;
 
     /*
      * Default Domain Name for the cluster
      */
-    @JsonProperty(value = "defaultDomain", access = JsonProperty.Access.WRITE_ONLY)
     private String defaultDomain;
 
     /*
      * Static IP of the connectedEnvironment
      */
-    @JsonProperty(value = "staticIp")
     private String staticIp;
 
     /*
      * Application Insights connection string used by Dapr to export Service to Service communication telemetry
      */
-    @JsonProperty(value = "daprAIConnectionString")
     private String daprAIConnectionString;
 
     /*
      * Custom domain configuration for the environment
      */
-    @JsonProperty(value = "customDomainConfiguration")
     private CustomDomainConfiguration customDomainConfiguration;
 
-    /** Creates an instance of ConnectedEnvironmentProperties class. */
+    /**
+     * Creates an instance of ConnectedEnvironmentProperties class.
+     */
     public ConnectedEnvironmentProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning state of the Kubernetes Environment.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ConnectedEnvironmentProvisioningState provisioningState() {
@@ -63,7 +65,7 @@ public final class ConnectedEnvironmentProperties {
 
     /**
      * Get the deploymentErrors property: Any errors that occurred during deployment or deployment validation.
-     *
+     * 
      * @return the deploymentErrors value.
      */
     public String deploymentErrors() {
@@ -72,7 +74,7 @@ public final class ConnectedEnvironmentProperties {
 
     /**
      * Get the defaultDomain property: Default Domain Name for the cluster.
-     *
+     * 
      * @return the defaultDomain value.
      */
     public String defaultDomain() {
@@ -81,7 +83,7 @@ public final class ConnectedEnvironmentProperties {
 
     /**
      * Get the staticIp property: Static IP of the connectedEnvironment.
-     *
+     * 
      * @return the staticIp value.
      */
     public String staticIp() {
@@ -90,7 +92,7 @@ public final class ConnectedEnvironmentProperties {
 
     /**
      * Set the staticIp property: Static IP of the connectedEnvironment.
-     *
+     * 
      * @param staticIp the staticIp value to set.
      * @return the ConnectedEnvironmentProperties object itself.
      */
@@ -102,7 +104,7 @@ public final class ConnectedEnvironmentProperties {
     /**
      * Get the daprAIConnectionString property: Application Insights connection string used by Dapr to export Service to
      * Service communication telemetry.
-     *
+     * 
      * @return the daprAIConnectionString value.
      */
     public String daprAIConnectionString() {
@@ -112,7 +114,7 @@ public final class ConnectedEnvironmentProperties {
     /**
      * Set the daprAIConnectionString property: Application Insights connection string used by Dapr to export Service to
      * Service communication telemetry.
-     *
+     * 
      * @param daprAIConnectionString the daprAIConnectionString value to set.
      * @return the ConnectedEnvironmentProperties object itself.
      */
@@ -123,7 +125,7 @@ public final class ConnectedEnvironmentProperties {
 
     /**
      * Get the customDomainConfiguration property: Custom domain configuration for the environment.
-     *
+     * 
      * @return the customDomainConfiguration value.
      */
     public CustomDomainConfiguration customDomainConfiguration() {
@@ -132,24 +134,75 @@ public final class ConnectedEnvironmentProperties {
 
     /**
      * Set the customDomainConfiguration property: Custom domain configuration for the environment.
-     *
+     * 
      * @param customDomainConfiguration the customDomainConfiguration value to set.
      * @return the ConnectedEnvironmentProperties object itself.
      */
-    public ConnectedEnvironmentProperties withCustomDomainConfiguration(
-        CustomDomainConfiguration customDomainConfiguration) {
+    public ConnectedEnvironmentProperties
+        withCustomDomainConfiguration(CustomDomainConfiguration customDomainConfiguration) {
         this.customDomainConfiguration = customDomainConfiguration;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (customDomainConfiguration() != null) {
             customDomainConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("staticIp", this.staticIp);
+        jsonWriter.writeStringField("daprAIConnectionString", this.daprAIConnectionString);
+        jsonWriter.writeJsonField("customDomainConfiguration", this.customDomainConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectedEnvironmentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectedEnvironmentProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectedEnvironmentProperties.
+     */
+    public static ConnectedEnvironmentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectedEnvironmentProperties deserializedConnectedEnvironmentProperties
+                = new ConnectedEnvironmentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedConnectedEnvironmentProperties.provisioningState
+                        = ConnectedEnvironmentProvisioningState.fromString(reader.getString());
+                } else if ("deploymentErrors".equals(fieldName)) {
+                    deserializedConnectedEnvironmentProperties.deploymentErrors = reader.getString();
+                } else if ("defaultDomain".equals(fieldName)) {
+                    deserializedConnectedEnvironmentProperties.defaultDomain = reader.getString();
+                } else if ("staticIp".equals(fieldName)) {
+                    deserializedConnectedEnvironmentProperties.staticIp = reader.getString();
+                } else if ("daprAIConnectionString".equals(fieldName)) {
+                    deserializedConnectedEnvironmentProperties.daprAIConnectionString = reader.getString();
+                } else if ("customDomainConfiguration".equals(fieldName)) {
+                    deserializedConnectedEnvironmentProperties.customDomainConfiguration
+                        = CustomDomainConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectedEnvironmentProperties;
+        });
     }
 }

@@ -43,8 +43,8 @@ public final class GitLabProjectsImpl implements GitLabProjects {
 
     public Response<GitLabProject> getWithResponse(String resourceGroupName, String securityConnectorName,
         String groupFQName, String projectName, Context context) {
-        Response<GitLabProjectInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            securityConnectorName, groupFQName, projectName, context);
+        Response<GitLabProjectInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, securityConnectorName, groupFQName, projectName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new GitLabProjectImpl(inner.getValue(), this.manager()));

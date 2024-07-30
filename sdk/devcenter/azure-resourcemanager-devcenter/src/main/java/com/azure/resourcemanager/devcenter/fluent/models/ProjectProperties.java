@@ -5,10 +5,13 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.devcenter.models.ProjectCatalogSettings;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of a project. */
+/**
+ * Properties of a project.
+ */
 @Fluent
 public final class ProjectProperties extends ProjectUpdateProperties {
     /*
@@ -23,13 +26,15 @@ public final class ProjectProperties extends ProjectUpdateProperties {
     @JsonProperty(value = "devCenterUri", access = JsonProperty.Access.WRITE_ONLY)
     private String devCenterUri;
 
-    /** Creates an instance of ProjectProperties class. */
+    /**
+     * Creates an instance of ProjectProperties class.
+     */
     public ProjectProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -38,35 +43,43 @@ public final class ProjectProperties extends ProjectUpdateProperties {
 
     /**
      * Get the devCenterUri property: The URI of the Dev Center resource this project is associated with.
-     *
+     * 
      * @return the devCenterUri value.
      */
     public String devCenterUri() {
         return this.devCenterUri;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProjectProperties withDevCenterId(String devCenterId) {
         super.withDevCenterId(devCenterId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProjectProperties withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProjectProperties withMaxDevBoxesPerUser(Integer maxDevBoxesPerUser) {
         super.withMaxDevBoxesPerUser(maxDevBoxesPerUser);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProjectProperties withDisplayName(String displayName) {
         super.withDisplayName(displayName);
@@ -74,8 +87,17 @@ public final class ProjectProperties extends ProjectUpdateProperties {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ProjectProperties withCatalogSettings(ProjectCatalogSettings catalogSettings) {
+        super.withCatalogSettings(catalogSettings);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

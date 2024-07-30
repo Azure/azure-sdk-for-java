@@ -26,11 +26,13 @@ public final class PipelinesCreateRunSamples {
      */
     public static void pipelinesCreateRun(com.azure.resourcemanager.datafactory.DataFactoryManager manager)
         throws IOException {
-        manager.pipelines().createRunWithResponse("exampleResourceGroup", "exampleFactoryName", "examplePipeline", null,
-            null, null, null,
-            mapOf("OutputBlobNameList", SerializerFactory.createDefaultManagementSerializerAdapter()
-                .deserialize("[\"exampleoutput.csv\"]", Object.class, SerializerEncoding.JSON)),
-            com.azure.core.util.Context.NONE);
+        manager.pipelines()
+            .createRunWithResponse("exampleResourceGroup", "exampleFactoryName", "examplePipeline", null, null, null,
+                null,
+                mapOf("OutputBlobNameList",
+                    SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize("[\"exampleoutput.csv\"]", Object.class, SerializerEncoding.JSON)),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

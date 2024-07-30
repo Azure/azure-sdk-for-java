@@ -14,57 +14,42 @@ import org.junit.jupiter.api.Assertions;
 public final class PagedDeviceInsightTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PagedDeviceInsight model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"deviceId\":\"w\",\"description\":\"hzdobpxjmflbvvnc\",\"startTimestampUtc\":\"2021-11-01T14:14:41Z\",\"endTimestampUtc\":\"2021-05-23T11:48:05Z\",\"eventCategory\":\"cciw\",\"eventClass\":\"zjuqkhrsaj\",\"eventType\":\"wkuofoskghsauu\",\"eventCount\":2118838793},{\"deviceId\":\"jmvxie\",\"description\":\"uugidyjrrfby\",\"startTimestampUtc\":\"2021-09-15T05:38:02Z\",\"endTimestampUtc\":\"2021-05-02T14:53:40Z\",\"eventCategory\":\"v\",\"eventClass\":\"xc\",\"eventType\":\"onpc\",\"eventCount\":316608134}],\"nextLink\":\"cohslkev\"}")
-                .toObject(PagedDeviceInsight.class);
-        Assertions.assertEquals("w", model.value().get(0).deviceId());
-        Assertions.assertEquals("hzdobpxjmflbvvnc", model.value().get(0).description());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-01T14:14:41Z"), model.value().get(0).startTimestampUtc());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-23T11:48:05Z"), model.value().get(0).endTimestampUtc());
-        Assertions.assertEquals("cciw", model.value().get(0).eventCategory());
-        Assertions.assertEquals("zjuqkhrsaj", model.value().get(0).eventClass());
-        Assertions.assertEquals("wkuofoskghsauu", model.value().get(0).eventType());
-        Assertions.assertEquals(2118838793, model.value().get(0).eventCount());
-        Assertions.assertEquals("cohslkev", model.nextLink());
+        PagedDeviceInsight model = BinaryData.fromString(
+            "{\"value\":[{\"deviceId\":\"rsa\",\"description\":\"iwkuofos\",\"startTimestampUtc\":\"2021-06-28T14:02:06Z\",\"endTimestampUtc\":\"2021-03-08T03:12:48Z\",\"eventCategory\":\"sauuimj\",\"eventClass\":\"vxieduugidyj\",\"eventType\":\"rfbyaosvexcso\",\"eventCount\":771742090},{\"deviceId\":\"clhocohsl\",\"description\":\"ev\",\"startTimestampUtc\":\"2021-02-15T02:43:43Z\",\"endTimestampUtc\":\"2021-07-27T15:45:18Z\",\"eventCategory\":\"gz\",\"eventClass\":\"buhfmvfaxkffeiit\",\"eventType\":\"lvmezyvshxmzsbbz\",\"eventCount\":681165656},{\"deviceId\":\"gigr\",\"description\":\"wburvjxxjnspydpt\",\"startTimestampUtc\":\"2021-07-25T09:18:50Z\",\"endTimestampUtc\":\"2021-09-24T03:08Z\",\"eventCategory\":\"nkoukn\",\"eventClass\":\"udwtiukbl\",\"eventType\":\"ngkpocipazy\",\"eventCount\":212177726}],\"nextLink\":\"gukgjnpiucgygevq\"}")
+            .toObject(PagedDeviceInsight.class);
+        Assertions.assertEquals("rsa", model.value().get(0).deviceId());
+        Assertions.assertEquals("iwkuofos", model.value().get(0).description());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-28T14:02:06Z"), model.value().get(0).startTimestampUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-08T03:12:48Z"), model.value().get(0).endTimestampUtc());
+        Assertions.assertEquals("sauuimj", model.value().get(0).eventCategory());
+        Assertions.assertEquals("vxieduugidyj", model.value().get(0).eventClass());
+        Assertions.assertEquals("rfbyaosvexcso", model.value().get(0).eventType());
+        Assertions.assertEquals(771742090, model.value().get(0).eventCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PagedDeviceInsight model =
-            new PagedDeviceInsight()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DeviceInsightInner()
-                                .withDeviceId("w")
-                                .withDescription("hzdobpxjmflbvvnc")
-                                .withStartTimestampUtc(OffsetDateTime.parse("2021-11-01T14:14:41Z"))
-                                .withEndTimestampUtc(OffsetDateTime.parse("2021-05-23T11:48:05Z"))
-                                .withEventCategory("cciw")
-                                .withEventClass("zjuqkhrsaj")
-                                .withEventType("wkuofoskghsauu")
-                                .withEventCount(2118838793),
-                            new DeviceInsightInner()
-                                .withDeviceId("jmvxie")
-                                .withDescription("uugidyjrrfby")
-                                .withStartTimestampUtc(OffsetDateTime.parse("2021-09-15T05:38:02Z"))
-                                .withEndTimestampUtc(OffsetDateTime.parse("2021-05-02T14:53:40Z"))
-                                .withEventCategory("v")
-                                .withEventClass("xc")
-                                .withEventType("onpc")
-                                .withEventCount(316608134)))
-                .withNextLink("cohslkev");
+        PagedDeviceInsight model = new PagedDeviceInsight().withValue(Arrays.asList(
+            new DeviceInsightInner().withDeviceId("rsa").withDescription("iwkuofos")
+                .withStartTimestampUtc(OffsetDateTime.parse("2021-06-28T14:02:06Z"))
+                .withEndTimestampUtc(OffsetDateTime.parse("2021-03-08T03:12:48Z")).withEventCategory("sauuimj")
+                .withEventClass("vxieduugidyj").withEventType("rfbyaosvexcso").withEventCount(771742090),
+            new DeviceInsightInner().withDeviceId("clhocohsl").withDescription("ev")
+                .withStartTimestampUtc(OffsetDateTime.parse("2021-02-15T02:43:43Z"))
+                .withEndTimestampUtc(OffsetDateTime.parse("2021-07-27T15:45:18Z")).withEventCategory("gz")
+                .withEventClass("buhfmvfaxkffeiit").withEventType("lvmezyvshxmzsbbz").withEventCount(681165656),
+            new DeviceInsightInner().withDeviceId("gigr").withDescription("wburvjxxjnspydpt")
+                .withStartTimestampUtc(OffsetDateTime.parse("2021-07-25T09:18:50Z"))
+                .withEndTimestampUtc(OffsetDateTime.parse("2021-09-24T03:08Z")).withEventCategory("nkoukn")
+                .withEventClass("udwtiukbl").withEventType("ngkpocipazy").withEventCount(212177726)));
         model = BinaryData.fromObject(model).toObject(PagedDeviceInsight.class);
-        Assertions.assertEquals("w", model.value().get(0).deviceId());
-        Assertions.assertEquals("hzdobpxjmflbvvnc", model.value().get(0).description());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-01T14:14:41Z"), model.value().get(0).startTimestampUtc());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-23T11:48:05Z"), model.value().get(0).endTimestampUtc());
-        Assertions.assertEquals("cciw", model.value().get(0).eventCategory());
-        Assertions.assertEquals("zjuqkhrsaj", model.value().get(0).eventClass());
-        Assertions.assertEquals("wkuofoskghsauu", model.value().get(0).eventType());
-        Assertions.assertEquals(2118838793, model.value().get(0).eventCount());
-        Assertions.assertEquals("cohslkev", model.nextLink());
+        Assertions.assertEquals("rsa", model.value().get(0).deviceId());
+        Assertions.assertEquals("iwkuofos", model.value().get(0).description());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-28T14:02:06Z"), model.value().get(0).startTimestampUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-08T03:12:48Z"), model.value().get(0).endTimestampUtc());
+        Assertions.assertEquals("sauuimj", model.value().get(0).eventCategory());
+        Assertions.assertEquals("vxieduugidyj", model.value().get(0).eventClass());
+        Assertions.assertEquals("rfbyaosvexcso", model.value().get(0).eventType());
+        Assertions.assertEquals(771742090, model.value().get(0).eventCount());
     }
 }

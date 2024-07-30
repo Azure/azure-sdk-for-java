@@ -19,31 +19,35 @@ public final class ResponsysObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResponsysObjectDataset model = BinaryData.fromString(
-            "{\"type\":\"ResponsysObject\",\"typeProperties\":{\"tableName\":\"dataxcsdqoxhdenmj\"},\"description\":\"xgrggyciw\",\"structure\":\"dataqinr\",\"schema\":\"datavvmrn\",\"linkedServiceName\":{\"referenceName\":\"rdijox\",\"parameters\":{\"b\":\"datasychdcjggcmpncj\",\"owvfxe\":\"databnoq\",\"irvcpol\":\"datatzgwjeky\",\"ilbdvxlfhlzzgap\":\"datavgppp\"}},\"parameters\":{\"xnroyhthesyw\":{\"type\":\"SecureString\",\"defaultValue\":\"datablscrmzquuzywkgo\"}},\"annotations\":[\"datavg\"],\"folder\":{\"name\":\"c\"},\"\":{\"zyrgrlh\":\"datazcwuejmxlfzl\"}}")
+            "{\"type\":\"ResponsysObject\",\"typeProperties\":{\"tableName\":\"datapdzy\"},\"description\":\"khxfpz\",\"structure\":\"dataudqhad\",\"schema\":\"datavvlyibweuaugtxl\",\"linkedServiceName\":{\"referenceName\":\"ncoqxtvytzq\",\"parameters\":{\"zbdbrlbo\":\"datadjvzmxyrazzstjvc\",\"acbibtk\":\"dataltyo\"}},\"parameters\":{\"iiul\":{\"type\":\"Int\",\"defaultValue\":\"datapmwxdsokrlnrpeyl\"},\"xwwwvunknsgvxhx\":{\"type\":\"Int\",\"defaultValue\":\"dataiqlnh\"},\"tehqyoytrcoufkq\":{\"type\":\"Float\",\"defaultValue\":\"dataatrtcqyfjvifbmo\"}},\"annotations\":[\"dataukdfpknvkiv\"],\"folder\":{\"name\":\"ezchmeodhzjlrknc\"},\"\":{\"eqkwqphfvsfts\":\"dataxmu\",\"hdtezgfctu\":\"datatwlpxca\"}}")
             .toObject(ResponsysObjectDataset.class);
-        Assertions.assertEquals("xgrggyciw", model.description());
-        Assertions.assertEquals("rdijox", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("xnroyhthesyw").type());
-        Assertions.assertEquals("c", model.folder().name());
+        Assertions.assertEquals("khxfpz", model.description());
+        Assertions.assertEquals("ncoqxtvytzq", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("iiul").type());
+        Assertions.assertEquals("ezchmeodhzjlrknc", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResponsysObjectDataset model = new ResponsysObjectDataset().withDescription("xgrggyciw")
-            .withStructure("dataqinr").withSchema("datavvmrn")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("rdijox")
-                .withParameters(mapOf("b", "datasychdcjggcmpncj", "owvfxe", "databnoq", "irvcpol", "datatzgwjeky",
-                    "ilbdvxlfhlzzgap", "datavgppp")))
-            .withParameters(mapOf("xnroyhthesyw",
-                new ParameterSpecification().withType(ParameterType.SECURE_STRING)
-                    .withDefaultValue("datablscrmzquuzywkgo")))
-            .withAnnotations(Arrays.asList("datavg")).withFolder(new DatasetFolder().withName("c"))
-            .withTableName("dataxcsdqoxhdenmj");
+        ResponsysObjectDataset model = new ResponsysObjectDataset().withDescription("khxfpz")
+            .withStructure("dataudqhad")
+            .withSchema("datavvlyibweuaugtxl")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("ncoqxtvytzq")
+                .withParameters(mapOf("zbdbrlbo", "datadjvzmxyrazzstjvc", "acbibtk", "dataltyo")))
+            .withParameters(mapOf("iiul",
+                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datapmwxdsokrlnrpeyl"),
+                "xwwwvunknsgvxhx",
+                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("dataiqlnh"),
+                "tehqyoytrcoufkq",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataatrtcqyfjvifbmo")))
+            .withAnnotations(Arrays.asList("dataukdfpknvkiv"))
+            .withFolder(new DatasetFolder().withName("ezchmeodhzjlrknc"))
+            .withTableName("datapdzy");
         model = BinaryData.fromObject(model).toObject(ResponsysObjectDataset.class);
-        Assertions.assertEquals("xgrggyciw", model.description());
-        Assertions.assertEquals("rdijox", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("xnroyhthesyw").type());
-        Assertions.assertEquals("c", model.folder().name());
+        Assertions.assertEquals("khxfpz", model.description());
+        Assertions.assertEquals("ncoqxtvytzq", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("iiul").type());
+        Assertions.assertEquals("ezchmeodhzjlrknc", model.folder().name());
     }
 
     // Use "Map.of" if available

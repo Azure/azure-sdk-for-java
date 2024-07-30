@@ -7,27 +7,32 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.network.models.AdminRule;
+import com.azure.resourcemanager.network.models.AdminRuleKind;
 import com.azure.resourcemanager.network.models.ChildResource;
 import com.azure.resourcemanager.network.models.DefaultAdminRule;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Network base admin rule.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "kind",
-    defaultImpl = BaseAdminRuleInner.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = BaseAdminRuleInner.class, visible = true)
 @JsonTypeName("BaseAdminRule")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Custom", value = AdminRule.class),
     @JsonSubTypes.Type(name = "Default", value = DefaultAdminRule.class) })
 @Immutable
 public class BaseAdminRuleInner extends ChildResource {
+    /*
+     * Whether the rule is custom or default.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "kind", required = true)
+    private AdminRuleKind kind = AdminRuleKind.fromString("BaseAdminRule");
+
     /*
      * The system metadata related to this resource.
      */
@@ -38,6 +43,15 @@ public class BaseAdminRuleInner extends ChildResource {
      * Creates an instance of BaseAdminRuleInner class.
      */
     public BaseAdminRuleInner() {
+    }
+
+    /**
+     * Get the kind property: Whether the rule is custom or default.
+     * 
+     * @return the kind value.
+     */
+    public AdminRuleKind kind() {
+        return this.kind;
     }
 
     /**

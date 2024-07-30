@@ -15,8 +15,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class RunQueryOrderBy {
     /*
      * Parameter name to be used for order by. The allowed parameters to order by for pipeline runs are PipelineName,
-     * RunStart, RunEnd and Status; for activity runs are ActivityName, ActivityRunStart, ActivityRunEnd and Status;
-     * for trigger runs are TriggerName, TriggerRunTimestamp and Status.
+     * RunStart, RunEnd and Status; for activity runs are ActivityName, ActivityRunStart, ActivityRunEnd and Status; for
+     * trigger runs are TriggerName, TriggerRunTimestamp and Status.
      */
     @JsonProperty(value = "orderBy", required = true)
     private RunQueryOrderByField orderBy;
@@ -34,9 +34,9 @@ public final class RunQueryOrderBy {
     }
 
     /**
-     * Get the orderBy property: Parameter name to be used for order by. The allowed parameters to order by for
-     * pipeline runs are PipelineName, RunStart, RunEnd and Status; for activity runs are ActivityName,
-     * ActivityRunStart, ActivityRunEnd and Status; for trigger runs are TriggerName, TriggerRunTimestamp and Status.
+     * Get the orderBy property: Parameter name to be used for order by. The allowed parameters to order by for pipeline
+     * runs are PipelineName, RunStart, RunEnd and Status; for activity runs are ActivityName, ActivityRunStart,
+     * ActivityRunEnd and Status; for trigger runs are TriggerName, TriggerRunTimestamp and Status.
      * 
      * @return the orderBy value.
      */
@@ -45,9 +45,9 @@ public final class RunQueryOrderBy {
     }
 
     /**
-     * Set the orderBy property: Parameter name to be used for order by. The allowed parameters to order by for
-     * pipeline runs are PipelineName, RunStart, RunEnd and Status; for activity runs are ActivityName,
-     * ActivityRunStart, ActivityRunEnd and Status; for trigger runs are TriggerName, TriggerRunTimestamp and Status.
+     * Set the orderBy property: Parameter name to be used for order by. The allowed parameters to order by for pipeline
+     * runs are PipelineName, RunStart, RunEnd and Status; for activity runs are ActivityName, ActivityRunStart,
+     * ActivityRunEnd and Status; for trigger runs are TriggerName, TriggerRunTimestamp and Status.
      * 
      * @param orderBy the orderBy value to set.
      * @return the RunQueryOrderBy object itself.
@@ -84,12 +84,12 @@ public final class RunQueryOrderBy {
      */
     public void validate() {
         if (orderBy() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property orderBy in model RunQueryOrderBy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property orderBy in model RunQueryOrderBy"));
         }
         if (order() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property order in model RunQueryOrderBy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property order in model RunQueryOrderBy"));
         }
     }
 

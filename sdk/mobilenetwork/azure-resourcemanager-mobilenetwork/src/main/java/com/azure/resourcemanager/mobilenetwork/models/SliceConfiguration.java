@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Per-slice settings. */
+/**
+ * Per-slice settings.
+ */
 @Fluent
 public final class SliceConfiguration {
     /*
@@ -19,27 +21,27 @@ public final class SliceConfiguration {
     private SliceResourceId slice;
 
     /*
-     * The default data network to use if the UE does not explicitly specify it. Configuration for this object must
-     * exist in the `dataNetworkConfigurations` map. The data network must be in the same location as the SIM policy.
+     * The default data network to use if the UE does not explicitly specify it. Configuration for this object must exist in the `dataNetworkConfigurations` map. The data network must be in the same location as the SIM policy.
      */
     @JsonProperty(value = "defaultDataNetwork", required = true)
     private DataNetworkResourceId defaultDataNetwork;
 
     /*
-     * The allowed data networks and the settings to use for them. The list must not contain duplicate items and must
-     * contain at least one item.
+     * The allowed data networks and the settings to use for them. The list must not contain duplicate items and must contain at least one item.
      */
     @JsonProperty(value = "dataNetworkConfigurations", required = true)
     private List<DataNetworkConfiguration> dataNetworkConfigurations;
 
-    /** Creates an instance of SliceConfiguration class. */
+    /**
+     * Creates an instance of SliceConfiguration class.
+     */
     public SliceConfiguration() {
     }
 
     /**
      * Get the slice property: A reference to the slice that these settings apply to. The slice must be in the same
      * location as the SIM policy.
-     *
+     * 
      * @return the slice value.
      */
     public SliceResourceId slice() {
@@ -49,7 +51,7 @@ public final class SliceConfiguration {
     /**
      * Set the slice property: A reference to the slice that these settings apply to. The slice must be in the same
      * location as the SIM policy.
-     *
+     * 
      * @param slice the slice value to set.
      * @return the SliceConfiguration object itself.
      */
@@ -62,7 +64,7 @@ public final class SliceConfiguration {
      * Get the defaultDataNetwork property: The default data network to use if the UE does not explicitly specify it.
      * Configuration for this object must exist in the `dataNetworkConfigurations` map. The data network must be in the
      * same location as the SIM policy.
-     *
+     * 
      * @return the defaultDataNetwork value.
      */
     public DataNetworkResourceId defaultDataNetwork() {
@@ -73,7 +75,7 @@ public final class SliceConfiguration {
      * Set the defaultDataNetwork property: The default data network to use if the UE does not explicitly specify it.
      * Configuration for this object must exist in the `dataNetworkConfigurations` map. The data network must be in the
      * same location as the SIM policy.
-     *
+     * 
      * @param defaultDataNetwork the defaultDataNetwork value to set.
      * @return the SliceConfiguration object itself.
      */
@@ -85,7 +87,7 @@ public final class SliceConfiguration {
     /**
      * Get the dataNetworkConfigurations property: The allowed data networks and the settings to use for them. The list
      * must not contain duplicate items and must contain at least one item.
-     *
+     * 
      * @return the dataNetworkConfigurations value.
      */
     public List<DataNetworkConfiguration> dataNetworkConfigurations() {
@@ -95,7 +97,7 @@ public final class SliceConfiguration {
     /**
      * Set the dataNetworkConfigurations property: The allowed data networks and the settings to use for them. The list
      * must not contain duplicate items and must contain at least one item.
-     *
+     * 
      * @param dataNetworkConfigurations the dataNetworkConfigurations value to set.
      * @return the SliceConfiguration object itself.
      */
@@ -106,30 +108,27 @@ public final class SliceConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (slice() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property slice in model SliceConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property slice in model SliceConfiguration"));
         } else {
             slice().validate();
         }
         if (defaultDataNetwork() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property defaultDataNetwork in model SliceConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property defaultDataNetwork in model SliceConfiguration"));
         } else {
             defaultDataNetwork().validate();
         }
         if (dataNetworkConfigurations() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataNetworkConfigurations in model SliceConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataNetworkConfigurations in model SliceConfiguration"));
         } else {
             dataNetworkConfigurations().forEach(e -> e.validate());
         }

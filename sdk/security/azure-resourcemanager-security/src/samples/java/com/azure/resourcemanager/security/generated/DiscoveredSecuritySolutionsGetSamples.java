@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class DiscoveredSecuritySolutionsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/DiscoveredSecuritySolutions
-     * /GetDiscoveredSecuritySolutionResourceGroupLocation_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/DiscoveredSecuritySolutions/GetDiscoveredSecuritySolutionResourceGroupLocation_example.json
      */
     /**
      * Sample code: Get discovered security solution from a security data location.
@@ -20,7 +18,7 @@ public final class DiscoveredSecuritySolutionsGetSamples {
      */
     public static void getDiscoveredSecuritySolutionFromASecurityDataLocation(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.discoveredSecuritySolutions().getWithResponse("myRg2", "centralus", "paloalto7",
-            com.azure.core.util.Context.NONE);
+        manager.discoveredSecuritySolutions()
+            .getWithResponse("myRg2", "centralus", "paloalto7", com.azure.core.util.Context.NONE);
     }
 }

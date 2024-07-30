@@ -5,29 +5,81 @@
 package com.azure.resourcemanager.selfhelp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Only for AutomatedStep type.
  */
 @Fluent
-public final class AutomatedCheckResult {
+public final class AutomatedCheckResult implements JsonSerializable<AutomatedCheckResult> {
+    /*
+     * Version for automated check result
+     */
+    private String version;
+
+    /*
+     * Status for automated check result
+     */
+    private String status;
+
     /*
      * Insight Article Content
      */
-    @JsonProperty(value = "result")
     private String result;
 
     /*
      * Type of Result.
      */
-    @JsonProperty(value = "type")
     private AutomatedCheckResultType type;
 
     /**
      * Creates an instance of AutomatedCheckResult class.
      */
     public AutomatedCheckResult() {
+    }
+
+    /**
+     * Get the version property: Version for automated check result.
+     * 
+     * @return the version value.
+     */
+    public String version() {
+        return this.version;
+    }
+
+    /**
+     * Set the version property: Version for automated check result.
+     * 
+     * @param version the version value to set.
+     * @return the AutomatedCheckResult object itself.
+     */
+    public AutomatedCheckResult withVersion(String version) {
+        this.version = version;
+        return this;
+    }
+
+    /**
+     * Get the status property: Status for automated check result.
+     * 
+     * @return the status value.
+     */
+    public String status() {
+        return this.status;
+    }
+
+    /**
+     * Set the status property: Status for automated check result.
+     * 
+     * @param status the status value to set.
+     * @return the AutomatedCheckResult object itself.
+     */
+    public AutomatedCheckResult withStatus(String status) {
+        this.status = status;
+        return this;
     }
 
     /**
@@ -76,5 +128,50 @@ public final class AutomatedCheckResult {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeStringField("result", this.result);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutomatedCheckResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutomatedCheckResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutomatedCheckResult.
+     */
+    public static AutomatedCheckResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutomatedCheckResult deserializedAutomatedCheckResult = new AutomatedCheckResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedAutomatedCheckResult.version = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedAutomatedCheckResult.status = reader.getString();
+                } else if ("result".equals(fieldName)) {
+                    deserializedAutomatedCheckResult.result = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAutomatedCheckResult.type = AutomatedCheckResultType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutomatedCheckResult;
+        });
     }
 }

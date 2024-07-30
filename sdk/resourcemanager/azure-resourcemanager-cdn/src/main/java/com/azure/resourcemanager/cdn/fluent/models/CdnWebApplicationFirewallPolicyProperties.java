@@ -17,11 +17,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Defines CDN web application firewall policy properties. */
+/**
+ * Defines CDN web application firewall policy properties.
+ */
 @Fluent
 public final class CdnWebApplicationFirewallPolicyProperties {
     /*
-     * Describes  policySettings for policy
+     * Describes policySettings for policy
      */
     @JsonProperty(value = "policySettings")
     private PolicySettings policySettings;
@@ -69,13 +71,15 @@ public final class CdnWebApplicationFirewallPolicyProperties {
     @JsonProperty(value = "resourceState", access = JsonProperty.Access.WRITE_ONLY)
     private PolicyResourceState resourceState;
 
-    /** Creates an instance of CdnWebApplicationFirewallPolicyProperties class. */
+    /**
+     * Creates an instance of CdnWebApplicationFirewallPolicyProperties class.
+     */
     public CdnWebApplicationFirewallPolicyProperties() {
     }
 
     /**
      * Get the policySettings property: Describes policySettings for policy.
-     *
+     * 
      * @return the policySettings value.
      */
     public PolicySettings policySettings() {
@@ -84,7 +88,7 @@ public final class CdnWebApplicationFirewallPolicyProperties {
 
     /**
      * Set the policySettings property: Describes policySettings for policy.
-     *
+     * 
      * @param policySettings the policySettings value to set.
      * @return the CdnWebApplicationFirewallPolicyProperties object itself.
      */
@@ -95,7 +99,7 @@ public final class CdnWebApplicationFirewallPolicyProperties {
 
     /**
      * Get the rateLimitRules property: Describes rate limit rules inside the policy.
-     *
+     * 
      * @return the rateLimitRules value.
      */
     public RateLimitRuleList rateLimitRules() {
@@ -104,7 +108,7 @@ public final class CdnWebApplicationFirewallPolicyProperties {
 
     /**
      * Set the rateLimitRules property: Describes rate limit rules inside the policy.
-     *
+     * 
      * @param rateLimitRules the rateLimitRules value to set.
      * @return the CdnWebApplicationFirewallPolicyProperties object itself.
      */
@@ -115,7 +119,7 @@ public final class CdnWebApplicationFirewallPolicyProperties {
 
     /**
      * Get the customRules property: Describes custom rules inside the policy.
-     *
+     * 
      * @return the customRules value.
      */
     public CustomRuleList customRules() {
@@ -124,7 +128,7 @@ public final class CdnWebApplicationFirewallPolicyProperties {
 
     /**
      * Set the customRules property: Describes custom rules inside the policy.
-     *
+     * 
      * @param customRules the customRules value to set.
      * @return the CdnWebApplicationFirewallPolicyProperties object itself.
      */
@@ -135,7 +139,7 @@ public final class CdnWebApplicationFirewallPolicyProperties {
 
     /**
      * Get the managedRules property: Describes managed rules inside the policy.
-     *
+     * 
      * @return the managedRules value.
      */
     public ManagedRuleSetList managedRules() {
@@ -144,7 +148,7 @@ public final class CdnWebApplicationFirewallPolicyProperties {
 
     /**
      * Set the managedRules property: Describes managed rules inside the policy.
-     *
+     * 
      * @param managedRules the managedRules value to set.
      * @return the CdnWebApplicationFirewallPolicyProperties object itself.
      */
@@ -156,7 +160,7 @@ public final class CdnWebApplicationFirewallPolicyProperties {
     /**
      * Get the endpointLinks property: Describes Azure CDN endpoints associated with this Web Application Firewall
      * policy.
-     *
+     * 
      * @return the endpointLinks value.
      */
     public List<EndpointResource> endpointLinks() {
@@ -166,7 +170,7 @@ public final class CdnWebApplicationFirewallPolicyProperties {
     /**
      * Get the extendedProperties property: Key-Value pair representing additional properties for Web Application
      * Firewall policy.
-     *
+     * 
      * @return the extendedProperties value.
      */
     public Map<String, String> extendedProperties() {
@@ -176,7 +180,7 @@ public final class CdnWebApplicationFirewallPolicyProperties {
     /**
      * Set the extendedProperties property: Key-Value pair representing additional properties for Web Application
      * Firewall policy.
-     *
+     * 
      * @param extendedProperties the extendedProperties value to set.
      * @return the CdnWebApplicationFirewallPolicyProperties object itself.
      */
@@ -187,7 +191,7 @@ public final class CdnWebApplicationFirewallPolicyProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the WebApplicationFirewallPolicy.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -196,7 +200,7 @@ public final class CdnWebApplicationFirewallPolicyProperties {
 
     /**
      * Get the resourceState property: Resource status of the policy.
-     *
+     * 
      * @return the resourceState value.
      */
     public PolicyResourceState resourceState() {
@@ -205,7 +209,7 @@ public final class CdnWebApplicationFirewallPolicyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -123,16 +123,11 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
         return authorizeRequest(context).then(Mono.defer(next::process)).flatMap(httpResponse -> {
             String authHeader = httpResponse.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
             if (httpResponse.getStatusCode() == 401 && authHeader != null) {
-                return authorizeRequestOnChallenge(context, httpResponse).flatMap(retry -> {
-                    if (retry) {
-                        // Both Netty and OkHttp expect the requestBody to be closed after the response has been read.
-                        // Failure to do so results in memory leak.
-                        // In case of StreamResponse (or other scenarios where we do not eagerly read the response)
-                        // the response body may not be consumed.
-                        // This can cause potential leaks in the scenarios like above, where the policy
-                        // may intercept the response and it may never be read.
-                        // Forcing the read here - so that the memory can be released.
-                        return httpResponse.getBody().ignoreElements().then(nextPolicy.process());
+                return authorizeRequestOnChallenge(context, httpResponse).flatMap(authorized -> {
+                    if (authorized) {
+                        // body needs to be closed or read to the end to release the connection
+                        httpResponse.close();
+                        return nextPolicy.process();
                     } else {
                         return Mono.just(httpResponse);
                     }
@@ -155,13 +150,8 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
         String authHeader = httpResponse.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
         if (httpResponse.getStatusCode() == 401 && authHeader != null) {
             if (authorizeRequestOnChallengeSync(context, httpResponse)) {
-                // Both Netty and OkHttp expect the requestBody to be closed after the response has been read.
-                // Failure to do so results in memory leak.
-                // In case of StreamResponse (or other scenarios where we do not eagerly read the response)
-                // the response body may not be consumed.
-                // This can cause potential leaks in the scenarios like above, where the policy
-                // may intercept the response and it may never be read.
-                // Forcing the read here - so that the memory can be released.
+                // body needs to be closed or read to the end to release the connection
+                httpResponse.close();
                 return nextPolicy.processSync();
             } else {
                 return httpResponse;

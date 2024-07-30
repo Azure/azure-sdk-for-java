@@ -9,7 +9,9 @@ import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.frontdoor.fluent.models.HealthProbeSettingsProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Load balancing settings for a backend pool. */
+/**
+ * Load balancing settings for a backend pool.
+ */
 @Fluent
 public final class HealthProbeSettingsModel extends SubResource {
     /*
@@ -30,13 +32,15 @@ public final class HealthProbeSettingsModel extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of HealthProbeSettingsModel class. */
+    /**
+     * Creates an instance of HealthProbeSettingsModel class.
+     */
     public HealthProbeSettingsModel() {
     }
 
     /**
      * Get the innerProperties property: Properties of the health probe settings.
-     *
+     * 
      * @return the innerProperties value.
      */
     private HealthProbeSettingsProperties innerProperties() {
@@ -45,7 +49,7 @@ public final class HealthProbeSettingsModel extends SubResource {
 
     /**
      * Get the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -54,7 +58,7 @@ public final class HealthProbeSettingsModel extends SubResource {
 
     /**
      * Set the name property: Resource name.
-     *
+     * 
      * @param name the name value to set.
      * @return the HealthProbeSettingsModel object itself.
      */
@@ -65,14 +69,16 @@ public final class HealthProbeSettingsModel extends SubResource {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HealthProbeSettingsModel withId(String id) {
         super.withId(id);
@@ -81,9 +87,9 @@ public final class HealthProbeSettingsModel extends SubResource {
 
     /**
      * Get the resourceState property: Resource status of the Front Door or Front Door SubResource.
-     *
-     * <p>Resource status.
-     *
+     * 
+     * Resource status.
+     * 
      * @return the resourceState value.
      */
     public FrontDoorResourceState resourceState() {
@@ -92,7 +98,7 @@ public final class HealthProbeSettingsModel extends SubResource {
 
     /**
      * Get the path property: The path to use for the health probe. Default is /.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -101,7 +107,7 @@ public final class HealthProbeSettingsModel extends SubResource {
 
     /**
      * Set the path property: The path to use for the health probe. Default is /.
-     *
+     * 
      * @param path the path value to set.
      * @return the HealthProbeSettingsModel object itself.
      */
@@ -115,7 +121,7 @@ public final class HealthProbeSettingsModel extends SubResource {
 
     /**
      * Get the protocol property: Protocol scheme to use for this probe.
-     *
+     * 
      * @return the protocol value.
      */
     public FrontDoorProtocol protocol() {
@@ -124,7 +130,7 @@ public final class HealthProbeSettingsModel extends SubResource {
 
     /**
      * Set the protocol property: Protocol scheme to use for this probe.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the HealthProbeSettingsModel object itself.
      */
@@ -138,7 +144,7 @@ public final class HealthProbeSettingsModel extends SubResource {
 
     /**
      * Get the intervalInSeconds property: The number of seconds between health probes.
-     *
+     * 
      * @return the intervalInSeconds value.
      */
     public Integer intervalInSeconds() {
@@ -147,7 +153,7 @@ public final class HealthProbeSettingsModel extends SubResource {
 
     /**
      * Set the intervalInSeconds property: The number of seconds between health probes.
-     *
+     * 
      * @param intervalInSeconds the intervalInSeconds value to set.
      * @return the HealthProbeSettingsModel object itself.
      */
@@ -162,7 +168,7 @@ public final class HealthProbeSettingsModel extends SubResource {
     /**
      * Get the healthProbeMethod property: Configures which HTTP method to use to probe the backends defined under
      * backendPools.
-     *
+     * 
      * @return the healthProbeMethod value.
      */
     public FrontDoorHealthProbeMethod healthProbeMethod() {
@@ -172,7 +178,7 @@ public final class HealthProbeSettingsModel extends SubResource {
     /**
      * Set the healthProbeMethod property: Configures which HTTP method to use to probe the backends defined under
      * backendPools.
-     *
+     * 
      * @param healthProbeMethod the healthProbeMethod value to set.
      * @return the HealthProbeSettingsModel object itself.
      */
@@ -188,7 +194,7 @@ public final class HealthProbeSettingsModel extends SubResource {
      * Get the enabledState property: Whether to enable health probes to be made against backends defined under
      * backendPools. Health probes can only be disabled if there is a single enabled backend in single enabled backend
      * pool.
-     *
+     * 
      * @return the enabledState value.
      */
     public HealthProbeEnabled enabledState() {
@@ -199,7 +205,7 @@ public final class HealthProbeSettingsModel extends SubResource {
      * Set the enabledState property: Whether to enable health probes to be made against backends defined under
      * backendPools. Health probes can only be disabled if there is a single enabled backend in single enabled backend
      * pool.
-     *
+     * 
      * @param enabledState the enabledState value to set.
      * @return the HealthProbeSettingsModel object itself.
      */
@@ -213,7 +219,7 @@ public final class HealthProbeSettingsModel extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

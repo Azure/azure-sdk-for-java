@@ -6,6 +6,7 @@ package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.cdn.models.CustomDomainHttpsParameters;
 import com.azure.resourcemanager.cdn.models.CustomDomainResourceState;
 import com.azure.resourcemanager.cdn.models.CustomHttpsProvisioningState;
@@ -24,13 +25,21 @@ public final class CustomDomainInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private CustomDomainProperties innerProperties;
 
-    /** Creates an instance of CustomDomainInner class. */
+    /*
+     * Read only system data
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Creates an instance of CustomDomainInner class.
+     */
     public CustomDomainInner() {
     }
 
     /**
      * Get the innerProperties property: The JSON object that contains the properties of the custom domain to create.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CustomDomainProperties innerProperties() {
@@ -38,8 +47,17 @@ public final class CustomDomainInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Read only system data.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
      * Get the hostname property: The host name of the custom domain. Must be a domain name.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -48,7 +66,7 @@ public final class CustomDomainInner extends ProxyResource {
 
     /**
      * Set the hostname property: The host name of the custom domain. Must be a domain name.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the CustomDomainInner object itself.
      */
@@ -62,7 +80,7 @@ public final class CustomDomainInner extends ProxyResource {
 
     /**
      * Get the resourceState property: Resource status of the custom domain.
-     *
+     * 
      * @return the resourceState value.
      */
     public CustomDomainResourceState resourceState() {
@@ -71,7 +89,7 @@ public final class CustomDomainInner extends ProxyResource {
 
     /**
      * Get the customHttpsProvisioningState property: Provisioning status of the custom domain.
-     *
+     * 
      * @return the customHttpsProvisioningState value.
      */
     public CustomHttpsProvisioningState customHttpsProvisioningState() {
@@ -81,7 +99,7 @@ public final class CustomDomainInner extends ProxyResource {
     /**
      * Get the customHttpsProvisioningSubstate property: Provisioning substate shows the progress of custom HTTPS
      * enabling/disabling process step by step.
-     *
+     * 
      * @return the customHttpsProvisioningSubstate value.
      */
     public CustomHttpsProvisioningSubstate customHttpsProvisioningSubstate() {
@@ -90,7 +108,7 @@ public final class CustomDomainInner extends ProxyResource {
 
     /**
      * Get the customHttpsParameters property: Certificate parameters for securing custom HTTPS.
-     *
+     * 
      * @return the customHttpsParameters value.
      */
     public CustomDomainHttpsParameters customHttpsParameters() {
@@ -99,7 +117,7 @@ public final class CustomDomainInner extends ProxyResource {
 
     /**
      * Set the customHttpsParameters property: Certificate parameters for securing custom HTTPS.
-     *
+     * 
      * @param customHttpsParameters the customHttpsParameters value to set.
      * @return the CustomDomainInner object itself.
      */
@@ -115,7 +133,7 @@ public final class CustomDomainInner extends ProxyResource {
      * Get the validationData property: Special validation or data may be required when delivering CDN to some regions
      * due to local compliance reasons. E.g. ICP license number of a custom domain is required to deliver content in
      * China.
-     *
+     * 
      * @return the validationData value.
      */
     public String validationData() {
@@ -126,7 +144,7 @@ public final class CustomDomainInner extends ProxyResource {
      * Set the validationData property: Special validation or data may be required when delivering CDN to some regions
      * due to local compliance reasons. E.g. ICP license number of a custom domain is required to deliver content in
      * China.
-     *
+     * 
      * @param validationData the validationData value to set.
      * @return the CustomDomainInner object itself.
      */
@@ -140,7 +158,7 @@ public final class CustomDomainInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning status of Custom Https of the custom domain.
-     *
+     * 
      * @return the provisioningState value.
      */
     public CustomHttpsProvisioningState provisioningState() {
@@ -149,7 +167,7 @@ public final class CustomDomainInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

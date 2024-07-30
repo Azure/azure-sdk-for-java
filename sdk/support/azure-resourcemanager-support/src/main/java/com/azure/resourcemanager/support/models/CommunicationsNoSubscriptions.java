@@ -4,16 +4,19 @@
 
 package com.azure.resourcemanager.support.models;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.support.fluent.models.CommunicationDetailsInner;
 
-/** Resource collection API of CommunicationsNoSubscriptions. */
+/**
+ * Resource collection API of CommunicationsNoSubscriptions.
+ */
 public interface CommunicationsNoSubscriptions {
     /**
      * Check the availability of a resource name. This API should be used to check the uniqueness of the name for adding
      * a new communication to the support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param checkNameAvailabilityInput Input to check.
      * @param context The context to associate with this operation.
@@ -22,13 +25,13 @@ public interface CommunicationsNoSubscriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return output of check name availability API along with {@link Response}.
      */
-    Response<CheckNameAvailabilityOutput> checkNameAvailabilityWithResponse(
-        String supportTicketName, CheckNameAvailabilityInput checkNameAvailabilityInput, Context context);
+    Response<CheckNameAvailabilityOutput> checkNameAvailabilityWithResponse(String supportTicketName,
+        CheckNameAvailabilityInput checkNameAvailabilityInput, Context context);
 
     /**
      * Check the availability of a resource name. This API should be used to check the uniqueness of the name for adding
      * a new communication to the support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param checkNameAvailabilityInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -36,12 +39,50 @@ public interface CommunicationsNoSubscriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return output of check name availability API.
      */
-    CheckNameAvailabilityOutput checkNameAvailability(
-        String supportTicketName, CheckNameAvailabilityInput checkNameAvailabilityInput);
+    CheckNameAvailabilityOutput checkNameAvailability(String supportTicketName,
+        CheckNameAvailabilityInput checkNameAvailabilityInput);
+
+    /**
+     * Lists all communications (attachments not included) for a support ticket. &lt;br/&gt;&lt;/br&gt; You can also
+     * filter support ticket communications by _CreatedDate_ or _CommunicationType_ using the $filter parameter. The
+     * only type of communication supported today is _Web_. Output will be a paged result with _nextLink_, using which
+     * you can retrieve the next set of Communication results. &lt;br/&gt;&lt;br/&gt;Support ticket data is available
+     * for 18 months after ticket creation. If a ticket was created more than 18 months ago, a request for data might
+     * cause an error.
+     * 
+     * @param supportTicketName Support ticket name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of Communication resources as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<CommunicationDetails> list(String supportTicketName);
+
+    /**
+     * Lists all communications (attachments not included) for a support ticket. &lt;br/&gt;&lt;/br&gt; You can also
+     * filter support ticket communications by _CreatedDate_ or _CommunicationType_ using the $filter parameter. The
+     * only type of communication supported today is _Web_. Output will be a paged result with _nextLink_, using which
+     * you can retrieve the next set of Communication results. &lt;br/&gt;&lt;br/&gt;Support ticket data is available
+     * for 18 months after ticket creation. If a ticket was created more than 18 months ago, a request for data might
+     * cause an error.
+     * 
+     * @param supportTicketName Support ticket name.
+     * @param top The number of values to return in the collection. Default is 10 and max is 10.
+     * @param filter The filter to apply on the operation. You can filter by communicationType and createdDate
+     * properties. CommunicationType supports Equals ('eq') operator and createdDate supports Greater Than ('gt') and
+     * Greater Than or Equals ('ge') operators. You may combine the CommunicationType and CreatedDate filters by Logical
+     * And ('and') operator.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of Communication resources as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<CommunicationDetails> list(String supportTicketName, Integer top, String filter, Context context);
 
     /**
      * Returns communication details for a support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param communicationName Communication name.
      * @param context The context to associate with this operation.
@@ -54,7 +95,7 @@ public interface CommunicationsNoSubscriptions {
 
     /**
      * Returns communication details for a support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param communicationName Communication name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -66,7 +107,7 @@ public interface CommunicationsNoSubscriptions {
 
     /**
      * Adds a new customer communication to an Azure support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param communicationName Communication name.
      * @param createCommunicationParameters Communication object.
@@ -75,12 +116,12 @@ public interface CommunicationsNoSubscriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that represents a Communication resource.
      */
-    CommunicationDetails create(
-        String supportTicketName, String communicationName, CommunicationDetailsInner createCommunicationParameters);
+    CommunicationDetails create(String supportTicketName, String communicationName,
+        CommunicationDetailsInner createCommunicationParameters);
 
     /**
      * Adds a new customer communication to an Azure support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param communicationName Communication name.
      * @param createCommunicationParameters Communication object.
@@ -90,9 +131,6 @@ public interface CommunicationsNoSubscriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that represents a Communication resource.
      */
-    CommunicationDetails create(
-        String supportTicketName,
-        String communicationName,
-        CommunicationDetailsInner createCommunicationParameters,
-        Context context);
+    CommunicationDetails create(String supportTicketName, String communicationName,
+        CommunicationDetailsInner createCommunicationParameters, Context context);
 }

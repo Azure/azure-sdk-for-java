@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The deleted share to be restored. */
+/**
+ * The deleted share to be restored.
+ */
 @Fluent
 public final class DeletedShare {
     /*
@@ -23,13 +25,15 @@ public final class DeletedShare {
     @JsonProperty(value = "deletedShareVersion", required = true)
     private String deletedShareVersion;
 
-    /** Creates an instance of DeletedShare class. */
+    /**
+     * Creates an instance of DeletedShare class.
+     */
     public DeletedShare() {
     }
 
     /**
      * Get the deletedShareName property: Required. Identify the name of the deleted share that will be restored.
-     *
+     * 
      * @return the deletedShareName value.
      */
     public String deletedShareName() {
@@ -38,7 +42,7 @@ public final class DeletedShare {
 
     /**
      * Set the deletedShareName property: Required. Identify the name of the deleted share that will be restored.
-     *
+     * 
      * @param deletedShareName the deletedShareName value to set.
      * @return the DeletedShare object itself.
      */
@@ -49,7 +53,7 @@ public final class DeletedShare {
 
     /**
      * Get the deletedShareVersion property: Required. Identify the version of the deleted share that will be restored.
-     *
+     * 
      * @return the deletedShareVersion value.
      */
     public String deletedShareVersion() {
@@ -58,7 +62,7 @@ public final class DeletedShare {
 
     /**
      * Set the deletedShareVersion property: Required. Identify the version of the deleted share that will be restored.
-     *
+     * 
      * @param deletedShareVersion the deletedShareVersion value to set.
      * @return the DeletedShare object itself.
      */
@@ -69,20 +73,18 @@ public final class DeletedShare {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (deletedShareName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property deletedShareName in model DeletedShare"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property deletedShareName in model DeletedShare"));
         }
         if (deletedShareVersion() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property deletedShareVersion in model DeletedShare"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property deletedShareVersion in model DeletedShare"));
         }
     }
 

@@ -14,7 +14,7 @@ import java.util.Arrays;
 public final class VirtualHubRouteTableV2SCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualHubRouteTableV2Put.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualHubRouteTableV2Put.
      * json
      */
     /**
@@ -23,16 +23,22 @@ public final class VirtualHubRouteTableV2SCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualHubRouteTableV2Put(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualHubRouteTableV2S().createOrUpdate("rg1", "virtualHub1",
-            "virtualHubRouteTable1a",
-            new VirtualHubRouteTableV2Inner()
-                .withRoutes(Arrays.asList(
-                    new VirtualHubRouteV2().withDestinationType("CIDR")
-                        .withDestinations(Arrays.asList("20.10.0.0/16", "20.20.0.0/16")).withNextHopType("IPAddress")
-                        .withNextHops(Arrays.asList("10.0.0.68")),
-                    new VirtualHubRouteV2().withDestinationType("CIDR").withDestinations(Arrays.asList("0.0.0.0/0"))
-                        .withNextHopType("IPAddress").withNextHops(Arrays.asList("10.0.0.68"))))
-                .withAttachedConnections(Arrays.asList("All_Vnets")),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualHubRouteTableV2S()
+            .createOrUpdate("rg1", "virtualHub1", "virtualHubRouteTable1a",
+                new VirtualHubRouteTableV2Inner()
+                    .withRoutes(Arrays.asList(
+                        new VirtualHubRouteV2().withDestinationType("CIDR")
+                            .withDestinations(Arrays.asList("20.10.0.0/16", "20.20.0.0/16"))
+                            .withNextHopType("IPAddress")
+                            .withNextHops(Arrays.asList("10.0.0.68")),
+                        new VirtualHubRouteV2().withDestinationType("CIDR")
+                            .withDestinations(Arrays.asList("0.0.0.0/0"))
+                            .withNextHopType("IPAddress")
+                            .withNextHops(Arrays.asList("10.0.0.68"))))
+                    .withAttachedConnections(Arrays.asList("All_Vnets")),
+                com.azure.core.util.Context.NONE);
     }
 }

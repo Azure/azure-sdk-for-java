@@ -5,25 +5,27 @@
 package com.azure.monitor.query.implementation.metricsbatch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A time series result type. The discriminator value is always TimeSeries in this case.
  */
 @Fluent
-public final class TimeSeriesElement {
+public final class TimeSeriesElement implements JsonSerializable<TimeSeriesElement> {
     /*
      * The metadata values returned if $filter was specified in the call.
      */
-    @JsonProperty(value = "metadatavalues")
     private List<MetadataValue> metadatavalues;
 
     /*
      * An array of data points representing the metric values. This is only returned if a result type of data is
      * specified.
      */
-    @JsonProperty(value = "data")
     private List<MetricValue> data;
 
     /**
@@ -72,5 +74,44 @@ public final class TimeSeriesElement {
     public TimeSeriesElement setData(List<MetricValue> data) {
         this.data = data;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("metadatavalues", this.metadatavalues,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("data", this.data, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TimeSeriesElement from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TimeSeriesElement if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TimeSeriesElement.
+     */
+    public static TimeSeriesElement fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TimeSeriesElement deserializedTimeSeriesElement = new TimeSeriesElement();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metadatavalues".equals(fieldName)) {
+                    List<MetadataValue> metadatavalues = reader.readArray(reader1 -> MetadataValue.fromJson(reader1));
+                    deserializedTimeSeriesElement.metadatavalues = metadatavalues;
+                } else if ("data".equals(fieldName)) {
+                    List<MetricValue> data = reader.readArray(reader1 -> MetricValue.fromJson(reader1));
+                    deserializedTimeSeriesElement.data = data;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTimeSeriesElement;
+        });
     }
 }

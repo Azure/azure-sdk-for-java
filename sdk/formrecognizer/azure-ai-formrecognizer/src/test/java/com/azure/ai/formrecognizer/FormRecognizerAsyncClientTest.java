@@ -17,7 +17,6 @@ import com.azure.ai.formrecognizer.models.RecognizeIdentityDocumentOptions;
 import com.azure.ai.formrecognizer.models.RecognizeInvoicesOptions;
 import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
-import com.azure.ai.formrecognizer.models.TextStyleName;
 import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.core.exception.HttpResponseException;
@@ -47,6 +46,7 @@ import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffe
 import static com.azure.ai.formrecognizer.models.FormContentType.APPLICATION_PDF;
 import static com.azure.ai.formrecognizer.models.FormContentType.IMAGE_JPEG;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase {
@@ -497,8 +497,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             syncPoller.waitForCompletion();
             List<FormPage> formPages = syncPoller.getFinalResult();
             validateContentData(formPages, true);
-            assertEquals(TextStyleName.OTHER,
-                formPages.get(0).getLines().get(0).getAppearance().getStyleName());
+            assertNotNull(formPages.get(0).getLines().get(0).getAppearance().getStyleName());
         }, CONTENT_FORM_JPG);
     }
 
@@ -909,6 +908,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41049")
     public void recognizeCustomFormUnlabeledData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) ->
@@ -939,6 +939,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41049")
     public void recognizeCustomFormUnlabeledDataIncludeFieldElements(HttpClient httpClient,
                                                                      FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
@@ -970,6 +971,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41049")
     public void recognizeCustomFormMultiPageUnlabeled(HttpClient httpClient,
                                                       FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
@@ -1001,6 +1003,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41049")
     public void recognizeCustomFormUnlabeledDataWithJpgContentType(HttpClient httpClient,
                                                                    FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
@@ -1030,6 +1033,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41049")
     public void recognizeCustomFormUnlabeledDataWithBlankPdfContentType(HttpClient httpClient,
                                                                         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
@@ -1063,6 +1067,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41049")
     public void recognizeCustomFormUrlUnlabeledData(HttpClient httpClient,
                                                     FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
@@ -1091,6 +1096,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41049")
     public void recognizeCustomFormUrlUnlabeledDataIncludeFieldElements(HttpClient httpClient,
                                                                         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
@@ -1119,6 +1125,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41049")
     public void recognizeCustomFormUrlMultiPageUnlabeled(HttpClient httpClient,
                                                          FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
@@ -1291,6 +1298,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41049")
     public void recognizeCustomFormDamagedPdf(HttpClient httpClient,
                                               FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);

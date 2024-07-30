@@ -6,20 +6,19 @@ package com.azure.resourcemanager.sphere.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sphere.fluent.models.CertificateInner;
+import com.azure.resourcemanager.sphere.models.CertificateProperties;
 
 public final class CertificateInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CertificateInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"certificate\":\"eotusivyevc\",\"status\":\"Active\",\"subject\":\"hn\",\"thumbprint\":\"ngbwjz\",\"expiryUtc\":\"2020-12-28T13:19:57Z\",\"notBeforeUtc\":\"2021-11-04T09:44:48Z\",\"provisioningState\":\"Failed\"},\"id\":\"spemvtzfk\",\"name\":\"fublj\",\"type\":\"fxqeof\"}")
-                .toObject(CertificateInner.class);
+        CertificateInner model = BinaryData.fromString(
+            "{\"properties\":{\"certificate\":\"oc\",\"status\":\"Inactive\",\"subject\":\"blgphuticn\",\"thumbprint\":\"kao\",\"expiryUtc\":\"2021-10-08T07:48:08Z\",\"notBeforeUtc\":\"2021-02-22T11:39:16Z\",\"provisioningState\":\"Updating\"},\"id\":\"xhurok\",\"name\":\"tyxolniwpwc\",\"type\":\"kjfkg\"}")
+            .toObject(CertificateInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CertificateInner model = new CertificateInner();
+        CertificateInner model = new CertificateInner().withProperties(new CertificateProperties());
         model = BinaryData.fromObject(model).toObject(CertificateInner.class);
     }
 }

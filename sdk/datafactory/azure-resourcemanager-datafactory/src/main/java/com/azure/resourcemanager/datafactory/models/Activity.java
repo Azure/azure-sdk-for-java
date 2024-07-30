@@ -11,20 +11,17 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * A pipeline activity.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = Activity.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = Activity.class, visible = true)
 @JsonTypeName("Activity")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Container", value = ControlActivity.class),
@@ -32,6 +29,13 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "ExecuteWranglingDataflow", value = ExecuteWranglingDataflowActivity.class) })
 @Fluent
 public class Activity {
+    /*
+     * Type of activity.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "Activity";
+
     /*
      * Activity name.
      */
@@ -51,8 +55,8 @@ public class Activity {
     private ActivityState state;
 
     /*
-     * Status result of the activity when the state is set to Inactive. This is an optional property and if not
-     * provided when the activity is inactive, the status will be Succeeded by default.
+     * Status result of the activity when the state is set to Inactive. This is an optional property and if not provided
+     * when the activity is inactive, the status will be Succeeded by default.
      */
     @JsonProperty(value = "onInactiveMarkAs")
     private ActivityOnInactiveMarkAs onInactiveMarkAs;
@@ -79,6 +83,15 @@ public class Activity {
      * Creates an instance of Activity class.
      */
     public Activity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -229,7 +242,7 @@ public class Activity {
     @JsonAnySetter
     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }
@@ -241,8 +254,8 @@ public class Activity {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Activity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model Activity"));
         }
         if (dependsOn() != null) {
             dependsOn().forEach(e -> e.validate());

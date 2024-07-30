@@ -12,9 +12,9 @@ import java.util.Map;
 public final class ImportSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImportSettings model
-            = BinaryData.fromString("{\"type\":\"ImportSettings\",\"\":{\"qmbnfvygttdcfjal\":\"dataojvcr\"}}")
-                .toObject(ImportSettings.class);
+        ImportSettings model = BinaryData.fromString(
+            "{\"type\":\"ImportSettings\",\"\":{\"glwacsfbmbtcef\":\"datattptsdeequovan\",\"uslxyt\":\"datakuxgyumoamqxw\",\"nfpdilhzgjjeo\":\"dataobjledjxblob\"}}")
+            .toObject(ImportSettings.class);
     }
 
     @org.junit.jupiter.api.Test

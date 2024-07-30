@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.nginx.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
@@ -229,4 +230,25 @@ public interface NginxConfiguration {
      * @return the refreshed resource.
      */
     NginxConfiguration refresh(Context context);
+
+    /**
+     * Analyze an NGINX configuration without applying it to the NGINXaaS deployment.
+     * 
+     * @param body The NGINX configuration to analyze.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body for an analysis request along with {@link Response}.
+     */
+    Response<AnalysisResult> analysisWithResponse(AnalysisCreate body, Context context);
+
+    /**
+     * Analyze an NGINX configuration without applying it to the NGINXaaS deployment.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body for an analysis request.
+     */
+    AnalysisResult analysis();
 }

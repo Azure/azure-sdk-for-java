@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class EsuKeyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EsuKey model =
-            BinaryData.fromString("{\"sku\":\"ltyfsop\",\"licenseStatus\":\"suesnzw\"}").toObject(EsuKey.class);
-        Assertions.assertEquals("ltyfsop", model.sku());
-        Assertions.assertEquals("suesnzw", model.licenseStatus());
+        EsuKey model = BinaryData.fromString("{\"sku\":\"ovm\",\"licenseStatus\":1785940860}").toObject(EsuKey.class);
+        Assertions.assertEquals("ovm", model.sku());
+        Assertions.assertEquals(1785940860, model.licenseStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EsuKey model = new EsuKey().withSku("ltyfsop").withLicenseStatus("suesnzw");
+        EsuKey model = new EsuKey().withSku("ovm").withLicenseStatus(1785940860);
         model = BinaryData.fromObject(model).toObject(EsuKey.class);
-        Assertions.assertEquals("ltyfsop", model.sku());
-        Assertions.assertEquals("suesnzw", model.licenseStatus());
+        Assertions.assertEquals("ovm", model.sku());
+        Assertions.assertEquals(1785940860, model.licenseStatus());
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ExpressRouteCrossConnectionsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * ExpressRouteCrossConnectionGet.json
      */
     /**
@@ -18,7 +18,11 @@ public final class ExpressRouteCrossConnectionsGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getExpressRouteCrossConnection(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getExpressRouteCrossConnections().getByResourceGroupWithResponse(
-            "CrossConnection-SiliconValley", "<circuitServiceKey>", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getExpressRouteCrossConnections()
+            .getByResourceGroupWithResponse("CrossConnection-SiliconValley", "<circuitServiceKey>",
+                com.azure.core.util.Context.NONE);
     }
 }

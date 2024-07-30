@@ -21,8 +21,10 @@ public final class ServiceAuthenticationConfigurationInfoTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceAuthenticationConfigurationInfo model = new ServiceAuthenticationConfigurationInfo()
-            .withAuthority("wlrxyb").withAudience("oqijgkdmbpaz").withSmartProxyEnabled(false);
+        ServiceAuthenticationConfigurationInfo model
+            = new ServiceAuthenticationConfigurationInfo().withAuthority("wlrxyb")
+                .withAudience("oqijgkdmbpaz")
+                .withSmartProxyEnabled(false);
         model = BinaryData.fromObject(model).toObject(ServiceAuthenticationConfigurationInfo.class);
         Assertions.assertEquals("wlrxyb", model.authority());
         Assertions.assertEquals("oqijgkdmbpaz", model.audience());

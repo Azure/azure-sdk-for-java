@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -16,15 +17,22 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "type",
-    defaultImpl = FactoryRepoConfiguration.class)
+    defaultImpl = FactoryRepoConfiguration.class,
+    visible = true)
 @JsonTypeName("FactoryRepoConfiguration")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "FactoryVSTSConfiguration", value = FactoryVstsConfiguration.class),
     @JsonSubTypes.Type(name = "FactoryGitHubConfiguration", value = FactoryGitHubConfiguration.class) })
 @Fluent
 public class FactoryRepoConfiguration {
+    /*
+     * Type of repo configuration.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "FactoryRepoConfiguration";
+
     /*
      * Account name.
      */
@@ -65,6 +73,15 @@ public class FactoryRepoConfiguration {
      * Creates an instance of FactoryRepoConfiguration class.
      */
     public FactoryRepoConfiguration() {
+    }
+
+    /**
+     * Get the type property: Type of repo configuration.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -194,20 +211,24 @@ public class FactoryRepoConfiguration {
      */
     public void validate() {
         if (accountName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property accountName in model FactoryRepoConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property accountName in model FactoryRepoConfiguration"));
         }
         if (repositoryName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property repositoryName in model FactoryRepoConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property repositoryName in model FactoryRepoConfiguration"));
         }
         if (collaborationBranch() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property collaborationBranch in model FactoryRepoConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property collaborationBranch in model FactoryRepoConfiguration"));
         }
         if (rootFolder() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property rootFolder in model FactoryRepoConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property rootFolder in model FactoryRepoConfiguration"));
         }
     }
 

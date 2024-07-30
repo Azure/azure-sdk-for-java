@@ -7,7 +7,9 @@ package com.azure.resourcemanager.resources.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** HTTP message. */
+/**
+ * HTTP message.
+ */
 @Fluent
 public final class HttpMessage {
     /*
@@ -16,13 +18,15 @@ public final class HttpMessage {
     @JsonProperty(value = "content")
     private Object content;
 
-    /** Creates an instance of HttpMessage class. */
+    /**
+     * Creates an instance of HttpMessage class.
+     */
     public HttpMessage() {
     }
 
     /**
      * Get the content property: HTTP message content.
-     *
+     * 
      * @return the content value.
      */
     public Object content() {
@@ -31,7 +35,7 @@ public final class HttpMessage {
 
     /**
      * Set the content property: HTTP message content.
-     *
+     * 
      * @param content the content value to set.
      * @return the HttpMessage object itself.
      */
@@ -42,7 +46,7 @@ public final class HttpMessage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

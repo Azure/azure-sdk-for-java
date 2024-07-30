@@ -5,7 +5,6 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class HBaseAuthenticationType extends ExpandableStringEnum<HBaseAut
      * @param name a name to look for.
      * @return the corresponding HBaseAuthenticationType.
      */
-    @JsonCreator
     public static HBaseAuthenticationType fromString(String name) {
         return fromString(name, HBaseAuthenticationType.class);
     }

@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Defines the SslProtocol condition for the delivery rule. */
+/**
+ * Defines the SslProtocol condition for the delivery rule.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "name")
 @JsonTypeName("SslProtocol")
 @Fluent
@@ -21,13 +23,15 @@ public final class DeliveryRuleSslProtocolCondition extends DeliveryRuleConditio
     @JsonProperty(value = "parameters", required = true)
     private SslProtocolMatchConditionParameters parameters;
 
-    /** Creates an instance of DeliveryRuleSslProtocolCondition class. */
+    /**
+     * Creates an instance of DeliveryRuleSslProtocolCondition class.
+     */
     public DeliveryRuleSslProtocolCondition() {
     }
 
     /**
      * Get the parameters property: Defines the parameters for the condition.
-     *
+     * 
      * @return the parameters value.
      */
     public SslProtocolMatchConditionParameters parameters() {
@@ -36,7 +40,7 @@ public final class DeliveryRuleSslProtocolCondition extends DeliveryRuleConditio
 
     /**
      * Set the parameters property: Defines the parameters for the condition.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DeliveryRuleSslProtocolCondition object itself.
      */
@@ -47,17 +51,15 @@ public final class DeliveryRuleSslProtocolCondition extends DeliveryRuleConditio
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (parameters() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property parameters in model DeliveryRuleSslProtocolCondition"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property parameters in model DeliveryRuleSslProtocolCondition"));
         } else {
             parameters().validate();
         }

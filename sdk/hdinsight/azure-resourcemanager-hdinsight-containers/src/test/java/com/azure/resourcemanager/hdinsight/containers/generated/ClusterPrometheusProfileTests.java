@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterPrometheusProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterPrometheusProfile model =
-            BinaryData.fromString("{\"enabled\":true}").toObject(ClusterPrometheusProfile.class);
+        ClusterPrometheusProfile model
+            = BinaryData.fromString("{\"enabled\":true}").toObject(ClusterPrometheusProfile.class);
         Assertions.assertEquals(true, model.enabled());
     }
 

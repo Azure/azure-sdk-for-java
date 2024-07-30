@@ -79,8 +79,8 @@ public final class SystemTopicEventSubscriptionsImpl implements SystemTopicEvent
 
     public EventSubscription createOrUpdate(String resourceGroupName, String systemTopicName,
         String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo) {
-        EventSubscriptionInner inner = this.serviceClient().createOrUpdate(resourceGroupName, systemTopicName,
-            eventSubscriptionName, eventSubscriptionInfo);
+        EventSubscriptionInner inner = this.serviceClient()
+            .createOrUpdate(resourceGroupName, systemTopicName, eventSubscriptionName, eventSubscriptionInfo);
         if (inner != null) {
             return new EventSubscriptionImpl(inner, this.manager());
         } else {
@@ -90,8 +90,8 @@ public final class SystemTopicEventSubscriptionsImpl implements SystemTopicEvent
 
     public EventSubscription createOrUpdate(String resourceGroupName, String systemTopicName,
         String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo, Context context) {
-        EventSubscriptionInner inner = this.serviceClient().createOrUpdate(resourceGroupName, systemTopicName,
-            eventSubscriptionName, eventSubscriptionInfo, context);
+        EventSubscriptionInner inner = this.serviceClient()
+            .createOrUpdate(resourceGroupName, systemTopicName, eventSubscriptionName, eventSubscriptionInfo, context);
         if (inner != null) {
             return new EventSubscriptionImpl(inner, this.manager());
         } else {
@@ -110,8 +110,8 @@ public final class SystemTopicEventSubscriptionsImpl implements SystemTopicEvent
 
     public EventSubscription update(String resourceGroupName, String systemTopicName, String eventSubscriptionName,
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
-        EventSubscriptionInner inner = this.serviceClient().update(resourceGroupName, systemTopicName,
-            eventSubscriptionName, eventSubscriptionUpdateParameters);
+        EventSubscriptionInner inner = this.serviceClient()
+            .update(resourceGroupName, systemTopicName, eventSubscriptionName, eventSubscriptionUpdateParameters);
         if (inner != null) {
             return new EventSubscriptionImpl(inner, this.manager());
         } else {
@@ -121,8 +121,9 @@ public final class SystemTopicEventSubscriptionsImpl implements SystemTopicEvent
 
     public EventSubscription update(String resourceGroupName, String systemTopicName, String eventSubscriptionName,
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters, Context context) {
-        EventSubscriptionInner inner = this.serviceClient().update(resourceGroupName, systemTopicName,
-            eventSubscriptionName, eventSubscriptionUpdateParameters, context);
+        EventSubscriptionInner inner = this.serviceClient()
+            .update(resourceGroupName, systemTopicName, eventSubscriptionName, eventSubscriptionUpdateParameters,
+                context);
         if (inner != null) {
             return new EventSubscriptionImpl(inner, this.manager());
         } else {
@@ -132,8 +133,8 @@ public final class SystemTopicEventSubscriptionsImpl implements SystemTopicEvent
 
     public Response<EventSubscriptionFullUrl> getFullUrlWithResponse(String resourceGroupName, String systemTopicName,
         String eventSubscriptionName, Context context) {
-        Response<EventSubscriptionFullUrlInner> inner = this.serviceClient().getFullUrlWithResponse(resourceGroupName,
-            systemTopicName, eventSubscriptionName, context);
+        Response<EventSubscriptionFullUrlInner> inner = this.serviceClient()
+            .getFullUrlWithResponse(resourceGroupName, systemTopicName, eventSubscriptionName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new EventSubscriptionFullUrlImpl(inner.getValue(), this.manager()));
@@ -156,14 +157,14 @@ public final class SystemTopicEventSubscriptionsImpl implements SystemTopicEvent
     public PagedIterable<EventSubscription> listBySystemTopic(String resourceGroupName, String systemTopicName) {
         PagedIterable<EventSubscriptionInner> inner
             = this.serviceClient().listBySystemTopic(resourceGroupName, systemTopicName);
-        return Utils.mapPage(inner, inner1 -> new EventSubscriptionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventSubscriptionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<EventSubscription> listBySystemTopic(String resourceGroupName, String systemTopicName,
         String filter, Integer top, Context context) {
         PagedIterable<EventSubscriptionInner> inner
             = this.serviceClient().listBySystemTopic(resourceGroupName, systemTopicName, filter, top, context);
-        return Utils.mapPage(inner, inner1 -> new EventSubscriptionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventSubscriptionImpl(inner1, this.manager()));
     }
 
     private SystemTopicEventSubscriptionsClient serviceClient() {

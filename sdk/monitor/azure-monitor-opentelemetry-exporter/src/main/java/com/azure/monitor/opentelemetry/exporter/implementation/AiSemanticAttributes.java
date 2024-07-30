@@ -6,7 +6,7 @@ package com.azure.monitor.opentelemetry.exporter.implementation;
 import io.opentelemetry.api.common.AttributeKey;
 
 import static io.opentelemetry.api.common.AttributeKey.booleanKey;
-import static io.opentelemetry.api.common.AttributeKey.longKey;
+import static io.opentelemetry.api.common.AttributeKey.doubleKey;
 import static io.opentelemetry.api.common.AttributeKey.stringKey;
 
 public final class AiSemanticAttributes {
@@ -48,8 +48,8 @@ public final class AiSemanticAttributes {
     public static final AttributeKey<String> OPERATION_NAME =
         stringKey("applicationinsights.internal.operation_name");
 
-    public static final AttributeKey<Long> ITEM_COUNT =
-        longKey("applicationinsights.internal.item_count");
+    public static final AttributeKey<Double> SAMPLE_RATE =
+        doubleKey("applicationinsights.internal.sample_rate");
 
     // marks whether a request is coming from a "real" user, or a "synthetic" user (e.g. a bot or
     // health check)

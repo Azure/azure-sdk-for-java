@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** One credential result item. */
+/**
+ * One credential result item.
+ */
 @Immutable
 public final class FleetCredentialResult {
     /*
@@ -23,13 +25,15 @@ public final class FleetCredentialResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private byte[] value;
 
-    /** Creates an instance of FleetCredentialResult class. */
+    /**
+     * Creates an instance of FleetCredentialResult class.
+     */
     public FleetCredentialResult() {
     }
 
     /**
      * Get the name property: The name of the credential.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,7 +42,7 @@ public final class FleetCredentialResult {
 
     /**
      * Get the value property: Base64-encoded Kubernetes configuration file.
-     *
+     * 
      * @return the value value.
      */
     public byte[] value() {
@@ -47,7 +51,7 @@ public final class FleetCredentialResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

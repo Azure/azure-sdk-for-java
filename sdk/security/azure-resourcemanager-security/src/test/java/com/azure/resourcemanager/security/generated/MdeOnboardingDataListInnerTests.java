@@ -13,14 +13,14 @@ public final class MdeOnboardingDataListInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MdeOnboardingDataListInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{},\"id\":\"ibyqunyowxwlmdj\",\"name\":\"kv\",\"type\":\"g\"},{\"properties\":{},\"id\":\"p\",\"name\":\"bodacizsjq\",\"type\":\"hkr\"},{\"properties\":{},\"id\":\"eibq\",\"name\":\"p\",\"type\":\"kghv\"}]}")
+            "{\"value\":[{\"properties\":{},\"id\":\"ondjmq\",\"name\":\"xvy\",\"type\":\"omgkopkwho\"},{\"properties\":{},\"id\":\"jqg\",\"name\":\"ysmocmbqfqvmkcxo\",\"type\":\"apvhelxprgly\"}]}")
             .toObject(MdeOnboardingDataListInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MdeOnboardingDataListInner model = new MdeOnboardingDataListInner().withValue(
-            Arrays.asList(new MdeOnboardingDataInner(), new MdeOnboardingDataInner(), new MdeOnboardingDataInner()));
+        MdeOnboardingDataListInner model = new MdeOnboardingDataListInner()
+            .withValue(Arrays.asList(new MdeOnboardingDataInner(), new MdeOnboardingDataInner()));
         model = BinaryData.fromObject(model).toObject(MdeOnboardingDataListInner.class);
     }
 }

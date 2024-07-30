@@ -7,7 +7,9 @@ package com.azure.resourcemanager.resources.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Deployment dependency information. */
+/**
+ * Deployment dependency information.
+ */
 @Fluent
 public final class BasicDependency {
     /*
@@ -28,13 +30,15 @@ public final class BasicDependency {
     @JsonProperty(value = "resourceName")
     private String resourceName;
 
-    /** Creates an instance of BasicDependency class. */
+    /**
+     * Creates an instance of BasicDependency class.
+     */
     public BasicDependency() {
     }
 
     /**
      * Get the id property: The ID of the dependency.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -43,7 +47,7 @@ public final class BasicDependency {
 
     /**
      * Set the id property: The ID of the dependency.
-     *
+     * 
      * @param id the id value to set.
      * @return the BasicDependency object itself.
      */
@@ -54,7 +58,7 @@ public final class BasicDependency {
 
     /**
      * Get the resourceType property: The dependency resource type.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -63,7 +67,7 @@ public final class BasicDependency {
 
     /**
      * Set the resourceType property: The dependency resource type.
-     *
+     * 
      * @param resourceType the resourceType value to set.
      * @return the BasicDependency object itself.
      */
@@ -74,7 +78,7 @@ public final class BasicDependency {
 
     /**
      * Get the resourceName property: The dependency resource name.
-     *
+     * 
      * @return the resourceName value.
      */
     public String resourceName() {
@@ -83,7 +87,7 @@ public final class BasicDependency {
 
     /**
      * Set the resourceName property: The dependency resource name.
-     *
+     * 
      * @param resourceName the resourceName value to set.
      * @return the BasicDependency object itself.
      */
@@ -94,7 +98,7 @@ public final class BasicDependency {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

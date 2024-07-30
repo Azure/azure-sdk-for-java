@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -42,7 +43,6 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
-import java.util.stream.StreamSupport;
 
 import static com.azure.core.amqp.implementation.RetryUtil.getRetryPolicy;
 import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
@@ -223,6 +223,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      */
     static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
     private static final String TRANSACTION_LINK_NAME = "coordinator";
+    private static final ServiceBusMessage END = new ServiceBusMessage(new byte[0]);
     private static final CreateMessageBatchOptions DEFAULT_BATCH_OPTIONS =  new CreateMessageBatchOptions();
 
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusSenderAsyncClient.class);
@@ -766,12 +767,47 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         if (Objects.isNull(messages)) {
             return monoError(LOGGER, new NullPointerException("'messages' cannot be null."));
         }
+        final Iterator<ServiceBusMessage> messagesItr = messages.iterator();
+        if (messagesItr.hasNext()) {
+            return sendNextIterableBatch(messagesItr.next(), messagesItr, transaction);
+        } else {
+            return Mono.empty();
+        }
+    }
 
-        return createMessageBatch().flatMap(messageBatch -> {
-            StreamSupport.stream(messages.spliterator(), false)
-                .forEach(message -> messageBatch.tryAddMessage(message));
-            return sendInternal(messageBatch, transaction);
-        }).onErrorMap(this::mapError);
+    private Mono<Void> sendNextIterableBatch(ServiceBusMessage first, Iterator<ServiceBusMessage> messagesItr,
+        ServiceBusTransactionContext transaction) {
+        return this.createMessageBatch().flatMap(batch -> {
+            ServiceBusMessage next = first;
+            do {
+                if (!batch.tryAddMessage(next)) {
+                    if (next == first) {
+                        return monoError(LOGGER,
+                            new IllegalArgumentException("The message " + first + " is too big to send even in a batch."));
+                    }
+                    if (transaction != null) {
+                        return this.sendMessages(batch, transaction).then(Mono.just(next));
+                    } else {
+                        return this.sendMessages(batch).then(Mono.just(next));
+                    }
+                }
+                if (messagesItr.hasNext()) {
+                    next = messagesItr.next();
+                } else {
+                    if (transaction != null) {
+                        return this.sendMessages(batch, transaction).then(Mono.just(END));
+                    } else {
+                        return this.sendMessages(batch).then(Mono.just(END));
+                    }
+                }
+            } while (true);
+        }).flatMap(missed -> {
+            if (missed == END) {
+                return Mono.empty();
+            } else {
+                return sendNextIterableBatch(missed, messagesItr, transaction);
+            }
+        });
     }
 
     private Mono<Long> scheduleMessageInternal(ServiceBusMessage message, OffsetDateTime scheduledEnqueueTime,

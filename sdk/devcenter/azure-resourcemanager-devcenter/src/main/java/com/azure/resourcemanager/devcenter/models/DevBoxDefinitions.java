@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of DevBoxDefinitions. */
+/**
+ * Resource collection API of DevBoxDefinitions.
+ */
 public interface DevBoxDefinitions {
     /**
      * List Dev Box definitions for a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface DevBoxDefinitions {
 
     /**
      * List Dev Box definitions for a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -34,12 +36,12 @@ public interface DevBoxDefinitions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of the Dev Box definition list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DevBoxDefinition> listByDevCenter(
-        String resourceGroupName, String devCenterName, Integer top, Context context);
+    PagedIterable<DevBoxDefinition> listByDevCenter(String resourceGroupName, String devCenterName, Integer top,
+        Context context);
 
     /**
      * Gets a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -49,12 +51,12 @@ public interface DevBoxDefinitions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Dev Box definition along with {@link Response}.
      */
-    Response<DevBoxDefinition> getWithResponse(
-        String resourceGroupName, String devCenterName, String devBoxDefinitionName, Context context);
+    Response<DevBoxDefinition> getWithResponse(String resourceGroupName, String devCenterName,
+        String devBoxDefinitionName, Context context);
 
     /**
      * Gets a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -67,7 +69,7 @@ public interface DevBoxDefinitions {
 
     /**
      * Deletes a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -79,7 +81,7 @@ public interface DevBoxDefinitions {
 
     /**
      * Deletes a Dev Box definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -92,7 +94,7 @@ public interface DevBoxDefinitions {
 
     /**
      * List Dev Box definitions configured for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -104,7 +106,7 @@ public interface DevBoxDefinitions {
 
     /**
      * List Dev Box definitions configured for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -114,12 +116,12 @@ public interface DevBoxDefinitions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of the Dev Box definition list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DevBoxDefinition> listByProject(
-        String resourceGroupName, String projectName, Integer top, Context context);
+    PagedIterable<DevBoxDefinition> listByProject(String resourceGroupName, String projectName, Integer top,
+        Context context);
 
     /**
      * Gets a Dev Box definition configured for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -129,12 +131,12 @@ public interface DevBoxDefinitions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Dev Box definition configured for a project along with {@link Response}.
      */
-    Response<DevBoxDefinition> getByProjectWithResponse(
-        String resourceGroupName, String projectName, String devBoxDefinitionName, Context context);
+    Response<DevBoxDefinition> getByProjectWithResponse(String resourceGroupName, String projectName,
+        String devBoxDefinitionName, Context context);
 
     /**
      * Gets a Dev Box definition configured for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param devBoxDefinitionName The name of the Dev Box definition.
@@ -147,7 +149,7 @@ public interface DevBoxDefinitions {
 
     /**
      * Gets a Dev Box definition.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -158,7 +160,7 @@ public interface DevBoxDefinitions {
 
     /**
      * Gets a Dev Box definition.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -170,7 +172,7 @@ public interface DevBoxDefinitions {
 
     /**
      * Deletes a Dev Box definition.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -180,7 +182,7 @@ public interface DevBoxDefinitions {
 
     /**
      * Deletes a Dev Box definition.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -191,7 +193,7 @@ public interface DevBoxDefinitions {
 
     /**
      * Begins definition for a new DevBoxDefinition resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new DevBoxDefinition definition.
      */

@@ -100,7 +100,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> create(@HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData atlasGlossary, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/glossary")
         @ExpectedResponses({ 200 })
@@ -109,7 +109,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createSync(@HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData atlasGlossary, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/glossary/categories")
         @ExpectedResponses({ 200 })
@@ -138,7 +138,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createCategory(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData atlasGlossaryCategory,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/glossary/category")
@@ -148,7 +148,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createCategorySync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData atlasGlossaryCategory,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/glossary/category/{categoryId}")
@@ -179,8 +179,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateCategory(@HostParam("endpoint") String endpoint,
             @PathParam("categoryId") String categoryId, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData atlasGlossaryCategory, RequestOptions requestOptions,
-            Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/glossary/category/{categoryId}")
         @ExpectedResponses({ 200 })
@@ -190,8 +189,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateCategorySync(@HostParam("endpoint") String endpoint,
             @PathParam("categoryId") String categoryId, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData atlasGlossaryCategory, RequestOptions requestOptions,
-            Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/glossary/category/{categoryId}")
         @ExpectedResponses({ 204 })
@@ -280,7 +278,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createTerm(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData atlasGlossaryTerm,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/glossary/term")
@@ -290,7 +288,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createTermSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData atlasGlossaryTerm,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/glossary/term/{termId}")
@@ -321,7 +319,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateTerm(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("termId") String termId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData atlasGlossaryTerm,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/glossary/term/{termId}")
@@ -332,7 +330,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateTermSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("termId") String termId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData atlasGlossaryTerm,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/glossary/term/{termId}")
@@ -502,7 +500,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> update(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("glossaryId") String glossaryId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData atlasGlossary,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/glossary/{glossaryId}")
@@ -513,7 +511,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("glossaryId") String glossaryId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData atlasGlossary,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/glossary/{glossaryId}")
@@ -660,52 +658,20 @@ public final class GlossariesImpl {
     /**
      * Get all glossaries. Recommend using limit/offset to get pagination result.
      * Recommend using 'ignoreTermsAndCategories=true' and fetch terms/categories
-     * separately using
-     * 
-     * 'GET /datamap/api/atlas/v2/glossary/{glossaryId}/terms'
-     * and
-     * 
-     * 'GET '/datamap/api/atlas/v2/glossary/{glossaryId}/categories'.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * separately using 'GET /datamap/api/atlas/v2/glossary/{glossaryId}/terms'
+     * and 'GET '/datamap/api/atlas/v2/glossary/{glossaryId}/categories'.
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The page size - by default there is no paging.</td>
-     * </tr>
-     * <tr>
-     * <td>offset</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The offset for pagination purpose.</td>
-     * </tr>
-     * <tr>
-     * <td>sort</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The sort order, ASC (default) or DESC.</td>
-     * </tr>
-     * <tr>
-     * <td>ignoreTermsAndCategories</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether ignore terms and categories</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     * <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     * <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
+     * <tr><td>ignoreTermsAndCategories</td><td>Boolean</td><td>No</td><td>Whether ignore terms and categories</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -781,52 +747,20 @@ public final class GlossariesImpl {
     /**
      * Get all glossaries. Recommend using limit/offset to get pagination result.
      * Recommend using 'ignoreTermsAndCategories=true' and fetch terms/categories
-     * separately using
-     * 
-     * 'GET /datamap/api/atlas/v2/glossary/{glossaryId}/terms'
-     * and
-     * 
-     * 'GET '/datamap/api/atlas/v2/glossary/{glossaryId}/categories'.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * separately using 'GET /datamap/api/atlas/v2/glossary/{glossaryId}/terms'
+     * and 'GET '/datamap/api/atlas/v2/glossary/{glossaryId}/categories'.
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The page size - by default there is no paging.</td>
-     * </tr>
-     * <tr>
-     * <td>offset</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The offset for pagination purpose.</td>
-     * </tr>
-     * <tr>
-     * <td>sort</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The sort order, ASC (default) or DESC.</td>
-     * </tr>
-     * <tr>
-     * <td>ignoreTermsAndCategories</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether ignore terms and categories</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     * <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     * <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
+     * <tr><td>ignoreTermsAndCategories</td><td>Boolean</td><td>No</td><td>Whether ignore terms and categories</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -901,67 +835,8 @@ public final class GlossariesImpl {
 
     /**
      * Create a glossary.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     guid: String (Optional)
-     *     classifications (Optional): [
-     *          (Optional){
-     *             attributes (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *             typeName: String (Optional)
-     *             lastModifiedTS: String (Optional)
-     *             entityGuid: String (Optional)
-     *             entityStatus: String(ACTIVE/DELETED) (Optional)
-     *             removePropagationsOnEntityDelete: Boolean (Optional)
-     *             validityPeriods (Optional): [
-     *                  (Optional){
-     *                     endTime: String (Optional)
-     *                     startTime: String (Optional)
-     *                     timeZone: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *     ]
-     *     longDescription: String (Optional)
-     *     name: String (Optional)
-     *     qualifiedName: String (Optional)
-     *     shortDescription: String (Optional)
-     *     lastModifiedTS: String (Optional)
-     *     createTime: Long (Optional)
-     *     createdBy: String (Optional)
-     *     updateTime: Long (Optional)
-     *     updatedBy: String (Optional)
-     *     categories (Optional): [
-     *          (Optional){
-     *             categoryGuid: String (Optional)
-     *             description: String (Optional)
-     *             displayText: String (Optional)
-     *             parentCategoryGuid: String (Optional)
-     *             relationGuid: String (Optional)
-     *         }
-     *     ]
-     *     language: String (Optional)
-     *     terms (Optional): [
-     *          (Optional){
-     *             description: String (Optional)
-     *             displayText: String (Optional)
-     *             expression: String (Optional)
-     *             relationGuid: String (Optional)
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
-     *             steward: String (Optional)
-     *             termGuid: String (Optional)
-     *         }
-     *     ]
-     *     usage: String (Optional)
-     * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -1018,7 +893,65 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param atlasGlossary The glossary object.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     createTime: Long (Optional)
+     *     createdBy: String (Optional)
+     *     updateTime: Long (Optional)
+     *     updatedBy: String (Optional)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
+     *         }
+     *     ]
+     *     language: String (Optional)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
+     *         }
+     *     ]
+     *     usage: String (Optional)
+     * }
+     * }</pre>
+     * 
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1027,75 +960,16 @@ public final class GlossariesImpl {
      * @return the glossary object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createWithResponseAsync(BinaryData atlasGlossary, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.create(this.client.getEndpoint(), accept, atlasGlossary, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.create(this.client.getEndpoint(), accept, body, requestOptions, context));
     }
 
     /**
      * Create a glossary.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     guid: String (Optional)
-     *     classifications (Optional): [
-     *          (Optional){
-     *             attributes (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *             typeName: String (Optional)
-     *             lastModifiedTS: String (Optional)
-     *             entityGuid: String (Optional)
-     *             entityStatus: String(ACTIVE/DELETED) (Optional)
-     *             removePropagationsOnEntityDelete: Boolean (Optional)
-     *             validityPeriods (Optional): [
-     *                  (Optional){
-     *                     endTime: String (Optional)
-     *                     startTime: String (Optional)
-     *                     timeZone: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *     ]
-     *     longDescription: String (Optional)
-     *     name: String (Optional)
-     *     qualifiedName: String (Optional)
-     *     shortDescription: String (Optional)
-     *     lastModifiedTS: String (Optional)
-     *     createTime: Long (Optional)
-     *     createdBy: String (Optional)
-     *     updateTime: Long (Optional)
-     *     updatedBy: String (Optional)
-     *     categories (Optional): [
-     *          (Optional){
-     *             categoryGuid: String (Optional)
-     *             description: String (Optional)
-     *             displayText: String (Optional)
-     *             parentCategoryGuid: String (Optional)
-     *             relationGuid: String (Optional)
-     *         }
-     *     ]
-     *     language: String (Optional)
-     *     terms (Optional): [
-     *          (Optional){
-     *             description: String (Optional)
-     *             displayText: String (Optional)
-     *             expression: String (Optional)
-     *             relationGuid: String (Optional)
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
-     *             steward: String (Optional)
-     *             termGuid: String (Optional)
-     *         }
-     *     ]
-     *     usage: String (Optional)
-     * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -1152,7 +1026,65 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param atlasGlossary The glossary object.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     createTime: Long (Optional)
+     *     createdBy: String (Optional)
+     *     updateTime: Long (Optional)
+     *     updatedBy: String (Optional)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
+     *         }
+     *     ]
+     *     language: String (Optional)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
+     *         }
+     *     ]
+     *     usage: String (Optional)
+     * }
+     * }</pre>
+     * 
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1161,16 +1093,15 @@ public final class GlossariesImpl {
      * @return the glossary object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createWithResponse(BinaryData atlasGlossary, RequestOptions requestOptions) {
+    public Response<BinaryData> createWithResponse(BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), accept, atlasGlossary, requestOptions, Context.NONE);
+        return service.createSync(this.client.getEndpoint(), accept, body, requestOptions, Context.NONE);
     }
 
     /**
      * Create glossary category in bulk.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -1232,9 +1163,9 @@ public final class GlossariesImpl {
      *     }
      * ]
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -1315,9 +1246,8 @@ public final class GlossariesImpl {
 
     /**
      * Create glossary category in bulk.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -1379,9 +1309,9 @@ public final class GlossariesImpl {
      *     }
      * ]
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -1460,71 +1390,8 @@ public final class GlossariesImpl {
 
     /**
      * Create a glossary category.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     guid: String (Optional)
-     *     classifications (Optional): [
-     *          (Optional){
-     *             attributes (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *             typeName: String (Optional)
-     *             lastModifiedTS: String (Optional)
-     *             entityGuid: String (Optional)
-     *             entityStatus: String(ACTIVE/DELETED) (Optional)
-     *             removePropagationsOnEntityDelete: Boolean (Optional)
-     *             validityPeriods (Optional): [
-     *                  (Optional){
-     *                     endTime: String (Optional)
-     *                     startTime: String (Optional)
-     *                     timeZone: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *     ]
-     *     longDescription: String (Optional)
-     *     name: String (Optional)
-     *     qualifiedName: String (Optional)
-     *     shortDescription: String (Optional)
-     *     lastModifiedTS: String (Optional)
-     *     createTime: Long (Optional)
-     *     createdBy: String (Optional)
-     *     updateTime: Long (Optional)
-     *     updatedBy: String (Optional)
-     *     anchor (Optional): {
-     *         displayText: String (Optional)
-     *         glossaryGuid: String (Optional)
-     *         relationGuid: String (Optional)
-     *     }
-     *     childrenCategories (Optional): [
-     *          (Optional){
-     *             categoryGuid: String (Optional)
-     *             description: String (Optional)
-     *             displayText: String (Optional)
-     *             parentCategoryGuid: String (Optional)
-     *             relationGuid: String (Optional)
-     *         }
-     *     ]
-     *     parentCategory (Optional): (recursive schema, see parentCategory above)
-     *     terms (Optional): [
-     *          (Optional){
-     *             description: String (Optional)
-     *             displayText: String (Optional)
-     *             expression: String (Optional)
-     *             relationGuid: String (Optional)
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
-     *             steward: String (Optional)
-     *             termGuid: String (Optional)
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -1585,7 +1452,69 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param atlasGlossaryCategory The glossary category.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     createTime: Long (Optional)
+     *     createdBy: String (Optional)
+     *     updateTime: Long (Optional)
+     *     updatedBy: String (Optional)
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
+     *     }
+     *     childrenCategories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
+     *         }
+     *     ]
+     *     parentCategory (Optional): (recursive schema, see parentCategory above)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     * 
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1594,80 +1523,16 @@ public final class GlossariesImpl {
      * @return the glossary category along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createCategoryWithResponseAsync(BinaryData atlasGlossaryCategory,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createCategoryWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createCategory(this.client.getEndpoint(), accept,
-            atlasGlossaryCategory, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.createCategory(this.client.getEndpoint(), accept, body, requestOptions, context));
     }
 
     /**
      * Create a glossary category.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     guid: String (Optional)
-     *     classifications (Optional): [
-     *          (Optional){
-     *             attributes (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *             typeName: String (Optional)
-     *             lastModifiedTS: String (Optional)
-     *             entityGuid: String (Optional)
-     *             entityStatus: String(ACTIVE/DELETED) (Optional)
-     *             removePropagationsOnEntityDelete: Boolean (Optional)
-     *             validityPeriods (Optional): [
-     *                  (Optional){
-     *                     endTime: String (Optional)
-     *                     startTime: String (Optional)
-     *                     timeZone: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *     ]
-     *     longDescription: String (Optional)
-     *     name: String (Optional)
-     *     qualifiedName: String (Optional)
-     *     shortDescription: String (Optional)
-     *     lastModifiedTS: String (Optional)
-     *     createTime: Long (Optional)
-     *     createdBy: String (Optional)
-     *     updateTime: Long (Optional)
-     *     updatedBy: String (Optional)
-     *     anchor (Optional): {
-     *         displayText: String (Optional)
-     *         glossaryGuid: String (Optional)
-     *         relationGuid: String (Optional)
-     *     }
-     *     childrenCategories (Optional): [
-     *          (Optional){
-     *             categoryGuid: String (Optional)
-     *             description: String (Optional)
-     *             displayText: String (Optional)
-     *             parentCategoryGuid: String (Optional)
-     *             relationGuid: String (Optional)
-     *         }
-     *     ]
-     *     parentCategory (Optional): (recursive schema, see parentCategory above)
-     *     terms (Optional): [
-     *          (Optional){
-     *             description: String (Optional)
-     *             displayText: String (Optional)
-     *             expression: String (Optional)
-     *             relationGuid: String (Optional)
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
-     *             steward: String (Optional)
-     *             termGuid: String (Optional)
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -1728,7 +1593,69 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param atlasGlossaryCategory The glossary category.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     createTime: Long (Optional)
+     *     createdBy: String (Optional)
+     *     updateTime: Long (Optional)
+     *     updatedBy: String (Optional)
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
+     *     }
+     *     childrenCategories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
+     *         }
+     *     ]
+     *     parentCategory (Optional): (recursive schema, see parentCategory above)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     * 
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1737,18 +1664,15 @@ public final class GlossariesImpl {
      * @return the glossary category along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createCategoryWithResponse(BinaryData atlasGlossaryCategory,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> createCategoryWithResponse(BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.createCategorySync(this.client.getEndpoint(), accept, atlasGlossaryCategory, requestOptions,
-            Context.NONE);
+        return service.createCategorySync(this.client.getEndpoint(), accept, body, requestOptions, Context.NONE);
     }
 
     /**
      * Get specific glossary category by its GUID.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -1827,9 +1751,8 @@ public final class GlossariesImpl {
 
     /**
      * Get specific glossary category by its GUID.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -1906,9 +1829,8 @@ public final class GlossariesImpl {
 
     /**
      * Update the given glossary category by its GUID.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -1968,9 +1890,9 @@ public final class GlossariesImpl {
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -2032,7 +1954,7 @@ public final class GlossariesImpl {
      * }</pre>
      * 
      * @param categoryId The globally unique identifier of the category.
-     * @param atlasGlossaryCategory The glossary category.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2041,18 +1963,17 @@ public final class GlossariesImpl {
      * @return the glossary category along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateCategoryWithResponseAsync(String categoryId,
-        BinaryData atlasGlossaryCategory, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> updateCategoryWithResponseAsync(String categoryId, BinaryData body,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.updateCategory(this.client.getEndpoint(), categoryId, accept,
-            atlasGlossaryCategory, requestOptions, context));
+            body, requestOptions, context));
     }
 
     /**
      * Update the given glossary category by its GUID.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -2112,9 +2033,9 @@ public final class GlossariesImpl {
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -2176,7 +2097,7 @@ public final class GlossariesImpl {
      * }</pre>
      * 
      * @param categoryId The globally unique identifier of the category.
-     * @param atlasGlossaryCategory The glossary category.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2185,11 +2106,11 @@ public final class GlossariesImpl {
      * @return the glossary category along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateCategoryWithResponse(String categoryId, BinaryData atlasGlossaryCategory,
+    public Response<BinaryData> updateCategoryWithResponse(String categoryId, BinaryData body,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.updateCategorySync(this.client.getEndpoint(), categoryId, accept, atlasGlossaryCategory,
-            requestOptions, Context.NONE);
+        return service.updateCategorySync(this.client.getEndpoint(), categoryId, accept, body, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -2230,17 +2151,16 @@ public final class GlossariesImpl {
     /**
      * Update the glossary category partially. So far we only supports partial
      * updating shortDescription and longDescription for category.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     String: String (Required)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -2322,17 +2242,16 @@ public final class GlossariesImpl {
     /**
      * Update the glossary category partially. So far we only supports partial
      * updating shortDescription and longDescription for category.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     String: String (Required)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -2414,40 +2333,17 @@ public final class GlossariesImpl {
     /**
      * Get all related categories (parent and children). Limit, offset, and sort
      * parameters are currently not being enabled and won't work even they are passed.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The page size - by default there is no paging.</td>
-     * </tr>
-     * <tr>
-     * <td>offset</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The offset for pagination purpose.</td>
-     * </tr>
-     * <tr>
-     * <td>sort</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The sort order, ASC (default) or DESC.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     * <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     * <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     String (Required): [
@@ -2482,40 +2378,17 @@ public final class GlossariesImpl {
     /**
      * Get all related categories (parent and children). Limit, offset, and sort
      * parameters are currently not being enabled and won't work even they are passed.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The page size - by default there is no paging.</td>
-     * </tr>
-     * <tr>
-     * <td>offset</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The offset for pagination purpose.</td>
-     * </tr>
-     * <tr>
-     * <td>sort</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The sort order, ASC (default) or DESC.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     * <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     * <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     String (Required): [
@@ -2547,40 +2420,17 @@ public final class GlossariesImpl {
 
     /**
      * Get all terms associated with the specific category.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The page size - by default there is no paging.</td>
-     * </tr>
-     * <tr>
-     * <td>offset</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The offset for pagination purpose.</td>
-     * </tr>
-     * <tr>
-     * <td>sort</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The sort order, ASC (default) or DESC.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     * <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     * <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -2614,40 +2464,17 @@ public final class GlossariesImpl {
 
     /**
      * Get all terms associated with the specific category.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The page size - by default there is no paging.</td>
-     * </tr>
-     * <tr>
-     * <td>offset</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The offset for pagination purpose.</td>
-     * </tr>
-     * <tr>
-     * <td>sort</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The sort order, ASC (default) or DESC.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     * <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     * <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -2679,191 +2506,15 @@ public final class GlossariesImpl {
 
     /**
      * Create a glossary term.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>includeTermHierarchy</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether include term hierarchy</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     guid: String (Optional)
-     *     classifications (Optional): [
-     *          (Optional){
-     *             attributes (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *             typeName: String (Optional)
-     *             lastModifiedTS: String (Optional)
-     *             entityGuid: String (Optional)
-     *             entityStatus: String(ACTIVE/DELETED) (Optional)
-     *             removePropagationsOnEntityDelete: Boolean (Optional)
-     *             validityPeriods (Optional): [
-     *                  (Optional){
-     *                     endTime: String (Optional)
-     *                     startTime: String (Optional)
-     *                     timeZone: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *     ]
-     *     longDescription: String (Optional)
-     *     name: String (Optional)
-     *     qualifiedName: String (Optional)
-     *     shortDescription: String (Optional)
-     *     lastModifiedTS: String (Optional)
-     *     createTime: Long (Optional)
-     *     createdBy: String (Optional)
-     *     updateTime: Long (Optional)
-     *     updatedBy: String (Optional)
-     *     abbreviation: String (Optional)
-     *     templateName (Optional): [
-     *         Object (Optional)
-     *     ]
-     *     anchor (Optional): {
-     *         displayText: String (Optional)
-     *         glossaryGuid: String (Optional)
-     *         relationGuid: String (Optional)
-     *     }
-     *     antonyms (Optional): [
-     *          (Optional){
-     *             description: String (Optional)
-     *             displayText: String (Optional)
-     *             expression: String (Optional)
-     *             relationGuid: String (Optional)
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
-     *             steward: String (Optional)
-     *             termGuid: String (Optional)
-     *         }
-     *     ]
-     *     status: String(Draft/Approved/Alert/Expired) (Optional)
-     *     nickName: String (Optional)
-     *     hierarchyInfo (Optional): [
-     *          (Optional){
-     *             guid: String (Optional)
-     *             typeName: String (Optional)
-     *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *             name: String (Optional)
-     *             displayText: String (Optional)
-     *             itemPath: String (Optional)
-     *             resourceId: String (Optional)
-     *             properties (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
-     *     ]
-     *     resources (Optional): [
-     *          (Optional){
-     *             displayName: String (Optional)
-     *             url: String (Optional)
-     *         }
-     *     ]
-     *     contacts (Optional): {
-     *         String (Required): [
-     *              (Required){
-     *                 id: String (Optional)
-     *                 info: String (Optional)
-     *             }
-     *         ]
-     *     }
-     *     attributes (Optional): {
-     *         String (Required): {
-     *             String: Object (Required)
-     *         }
-     *     }
-     *     assignedEntities (Optional): [
-     *          (Optional){
-     *             guid: String (Optional)
-     *             typeName: String (Optional)
-     *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *             displayText: String (Optional)
-     *             entityStatus: String(ACTIVE/DELETED) (Optional)
-     *             relationshipType: String (Optional)
-     *             relationshipAttributes (Optional): {
-     *                 attributes (Optional): {
-     *                     String: Object (Required)
-     *                 }
-     *                 typeName: String (Optional)
-     *                 lastModifiedTS: String (Optional)
-     *             }
-     *             relationshipGuid: String (Optional)
-     *             relationshipStatus: String(ACTIVE/DELETED) (Optional)
-     *         }
-     *     ]
-     *     categories (Optional): [
-     *          (Optional){
-     *             categoryGuid: String (Optional)
-     *             description: String (Optional)
-     *             displayText: String (Optional)
-     *             relationGuid: String (Optional)
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
-     *         }
-     *     ]
-     *     classifies (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     examples (Optional): [
-     *         String (Optional)
-     *     ]
-     *     isA (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     preferredTerms (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     preferredToTerms (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     replacedBy (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     replacementTerms (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     seeAlso (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     synonyms (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     translatedTerms (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     translationTerms (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     usage: String (Optional)
-     *     validValues (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     validValuesFor (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -3025,7 +2676,170 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param atlasGlossaryTerm The glossary term.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     createTime: Long (Optional)
+     *     createdBy: String (Optional)
+     *     updateTime: Long (Optional)
+     *     updatedBy: String (Optional)
+     *     abbreviation: String (Optional)
+     *     templateName (Optional): [
+     *         Object (Optional)
+     *     ]
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
+     *     }
+     *     antonyms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
+     *         }
+     *     ]
+     *     status: String(Draft/Approved/Alert/Expired) (Optional)
+     *     nickName: String (Optional)
+     *     hierarchyInfo (Optional): [
+     *          (Optional){
+     *             guid: String (Optional)
+     *             typeName: String (Optional)
+     *             uniqueAttributes (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *             name: String (Optional)
+     *             displayText: String (Optional)
+     *             itemPath: String (Optional)
+     *             resourceId: String (Optional)
+     *             properties (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     ]
+     *     resources (Optional): [
+     *          (Optional){
+     *             displayName: String (Optional)
+     *             url: String (Optional)
+     *         }
+     *     ]
+     *     contacts (Optional): {
+     *         String (Required): [
+     *              (Required){
+     *                 id: String (Optional)
+     *                 info: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     attributes (Optional): {
+     *         String (Required): {
+     *             String: Object (Required)
+     *         }
+     *     }
+     *     assignedEntities (Optional): [
+     *          (Optional){
+     *             guid: String (Optional)
+     *             typeName: String (Optional)
+     *             uniqueAttributes (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *             displayText: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             relationshipType: String (Optional)
+     *             relationshipAttributes (Optional): {
+     *                 attributes (Optional): {
+     *                     String: Object (Required)
+     *                 }
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
+     *             }
+     *             relationshipGuid: String (Optional)
+     *             relationshipStatus: String(ACTIVE/DELETED) (Optional)
+     *         }
+     *     ]
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             relationGuid: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *         }
+     *     ]
+     *     classifies (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     examples (Optional): [
+     *         String (Optional)
+     *     ]
+     *     isA (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     preferredTerms (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     preferredToTerms (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     replacedBy (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     replacementTerms (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     seeAlso (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     synonyms (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     translatedTerms (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     translationTerms (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     usage: String (Optional)
+     *     validValues (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     validValuesFor (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     * }
+     * }</pre>
+     * 
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3034,200 +2848,23 @@ public final class GlossariesImpl {
      * @return the glossary term along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createTermWithResponseAsync(BinaryData atlasGlossaryTerm,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createTermWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createTerm(this.client.getEndpoint(), accept, atlasGlossaryTerm,
-            requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.createTerm(this.client.getEndpoint(), accept, body, requestOptions, context));
     }
 
     /**
      * Create a glossary term.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>includeTermHierarchy</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether include term hierarchy</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     guid: String (Optional)
-     *     classifications (Optional): [
-     *          (Optional){
-     *             attributes (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *             typeName: String (Optional)
-     *             lastModifiedTS: String (Optional)
-     *             entityGuid: String (Optional)
-     *             entityStatus: String(ACTIVE/DELETED) (Optional)
-     *             removePropagationsOnEntityDelete: Boolean (Optional)
-     *             validityPeriods (Optional): [
-     *                  (Optional){
-     *                     endTime: String (Optional)
-     *                     startTime: String (Optional)
-     *                     timeZone: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *     ]
-     *     longDescription: String (Optional)
-     *     name: String (Optional)
-     *     qualifiedName: String (Optional)
-     *     shortDescription: String (Optional)
-     *     lastModifiedTS: String (Optional)
-     *     createTime: Long (Optional)
-     *     createdBy: String (Optional)
-     *     updateTime: Long (Optional)
-     *     updatedBy: String (Optional)
-     *     abbreviation: String (Optional)
-     *     templateName (Optional): [
-     *         Object (Optional)
-     *     ]
-     *     anchor (Optional): {
-     *         displayText: String (Optional)
-     *         glossaryGuid: String (Optional)
-     *         relationGuid: String (Optional)
-     *     }
-     *     antonyms (Optional): [
-     *          (Optional){
-     *             description: String (Optional)
-     *             displayText: String (Optional)
-     *             expression: String (Optional)
-     *             relationGuid: String (Optional)
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
-     *             steward: String (Optional)
-     *             termGuid: String (Optional)
-     *         }
-     *     ]
-     *     status: String(Draft/Approved/Alert/Expired) (Optional)
-     *     nickName: String (Optional)
-     *     hierarchyInfo (Optional): [
-     *          (Optional){
-     *             guid: String (Optional)
-     *             typeName: String (Optional)
-     *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *             name: String (Optional)
-     *             displayText: String (Optional)
-     *             itemPath: String (Optional)
-     *             resourceId: String (Optional)
-     *             properties (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
-     *     ]
-     *     resources (Optional): [
-     *          (Optional){
-     *             displayName: String (Optional)
-     *             url: String (Optional)
-     *         }
-     *     ]
-     *     contacts (Optional): {
-     *         String (Required): [
-     *              (Required){
-     *                 id: String (Optional)
-     *                 info: String (Optional)
-     *             }
-     *         ]
-     *     }
-     *     attributes (Optional): {
-     *         String (Required): {
-     *             String: Object (Required)
-     *         }
-     *     }
-     *     assignedEntities (Optional): [
-     *          (Optional){
-     *             guid: String (Optional)
-     *             typeName: String (Optional)
-     *             uniqueAttributes (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *             displayText: String (Optional)
-     *             entityStatus: String(ACTIVE/DELETED) (Optional)
-     *             relationshipType: String (Optional)
-     *             relationshipAttributes (Optional): {
-     *                 attributes (Optional): {
-     *                     String: Object (Required)
-     *                 }
-     *                 typeName: String (Optional)
-     *                 lastModifiedTS: String (Optional)
-     *             }
-     *             relationshipGuid: String (Optional)
-     *             relationshipStatus: String(ACTIVE/DELETED) (Optional)
-     *         }
-     *     ]
-     *     categories (Optional): [
-     *          (Optional){
-     *             categoryGuid: String (Optional)
-     *             description: String (Optional)
-     *             displayText: String (Optional)
-     *             relationGuid: String (Optional)
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
-     *         }
-     *     ]
-     *     classifies (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     examples (Optional): [
-     *         String (Optional)
-     *     ]
-     *     isA (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     preferredTerms (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     preferredToTerms (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     replacedBy (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     replacementTerms (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     seeAlso (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     synonyms (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     translatedTerms (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     translationTerms (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     usage: String (Optional)
-     *     validValues (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     validValuesFor (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -3389,7 +3026,170 @@ public final class GlossariesImpl {
      * }
      * }</pre>
      * 
-     * @param atlasGlossaryTerm The glossary term.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     createTime: Long (Optional)
+     *     createdBy: String (Optional)
+     *     updateTime: Long (Optional)
+     *     updatedBy: String (Optional)
+     *     abbreviation: String (Optional)
+     *     templateName (Optional): [
+     *         Object (Optional)
+     *     ]
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
+     *     }
+     *     antonyms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
+     *         }
+     *     ]
+     *     status: String(Draft/Approved/Alert/Expired) (Optional)
+     *     nickName: String (Optional)
+     *     hierarchyInfo (Optional): [
+     *          (Optional){
+     *             guid: String (Optional)
+     *             typeName: String (Optional)
+     *             uniqueAttributes (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *             name: String (Optional)
+     *             displayText: String (Optional)
+     *             itemPath: String (Optional)
+     *             resourceId: String (Optional)
+     *             properties (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     ]
+     *     resources (Optional): [
+     *          (Optional){
+     *             displayName: String (Optional)
+     *             url: String (Optional)
+     *         }
+     *     ]
+     *     contacts (Optional): {
+     *         String (Required): [
+     *              (Required){
+     *                 id: String (Optional)
+     *                 info: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     attributes (Optional): {
+     *         String (Required): {
+     *             String: Object (Required)
+     *         }
+     *     }
+     *     assignedEntities (Optional): [
+     *          (Optional){
+     *             guid: String (Optional)
+     *             typeName: String (Optional)
+     *             uniqueAttributes (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *             displayText: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             relationshipType: String (Optional)
+     *             relationshipAttributes (Optional): {
+     *                 attributes (Optional): {
+     *                     String: Object (Required)
+     *                 }
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
+     *             }
+     *             relationshipGuid: String (Optional)
+     *             relationshipStatus: String(ACTIVE/DELETED) (Optional)
+     *         }
+     *     ]
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             relationGuid: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *         }
+     *     ]
+     *     classifies (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     examples (Optional): [
+     *         String (Optional)
+     *     ]
+     *     isA (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     preferredTerms (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     preferredToTerms (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     replacedBy (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     replacementTerms (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     seeAlso (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     synonyms (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     translatedTerms (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     translationTerms (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     usage: String (Optional)
+     *     validValues (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     validValuesFor (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     * }
+     * }</pre>
+     * 
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3398,17 +3198,15 @@ public final class GlossariesImpl {
      * @return the glossary term along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createTermWithResponse(BinaryData atlasGlossaryTerm, RequestOptions requestOptions) {
+    public Response<BinaryData> createTermWithResponse(BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.createTermSync(this.client.getEndpoint(), accept, atlasGlossaryTerm, requestOptions,
-            Context.NONE);
+        return service.createTermSync(this.client.getEndpoint(), accept, body, requestOptions, Context.NONE);
     }
 
     /**
      * Get a specific glossary term by its GUID.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -3588,9 +3386,8 @@ public final class GlossariesImpl {
 
     /**
      * Get a specific glossary term by its GUID.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -3769,28 +3566,15 @@ public final class GlossariesImpl {
 
     /**
      * Update the given glossary term by its GUID.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>includeTermHierarchy</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether include term hierarchy</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -3951,9 +3735,9 @@ public final class GlossariesImpl {
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -4116,7 +3900,7 @@ public final class GlossariesImpl {
      * }</pre>
      * 
      * @param termId The globally unique identifier for glossary term.
-     * @param atlasGlossaryTerm The glossary term.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4125,37 +3909,24 @@ public final class GlossariesImpl {
      * @return the glossary term along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateTermWithResponseAsync(String termId, BinaryData atlasGlossaryTerm,
+    public Mono<Response<BinaryData>> updateTermWithResponseAsync(String termId, BinaryData body,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.updateTerm(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), termId, accept, atlasGlossaryTerm, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), termId, accept, body, requestOptions, context));
     }
 
     /**
      * Update the given glossary term by its GUID.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>includeTermHierarchy</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether include term hierarchy</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -4316,9 +4087,9 @@ public final class GlossariesImpl {
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -4481,7 +4252,7 @@ public final class GlossariesImpl {
      * }</pre>
      * 
      * @param termId The globally unique identifier for glossary term.
-     * @param atlasGlossaryTerm The glossary term.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4490,11 +4261,10 @@ public final class GlossariesImpl {
      * @return the glossary term along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateTermWithResponse(String termId, BinaryData atlasGlossaryTerm,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> updateTermWithResponse(String termId, BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.updateTermSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), termId,
-            accept, atlasGlossaryTerm, requestOptions, Context.NONE);
+            accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -4535,36 +4305,23 @@ public final class GlossariesImpl {
     /**
      * Update the glossary term partially. So far we only supports partial updating
      * shortDescription, longDescription, abbreviation, usage and status for term.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>includeTermHierarchy</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether include term hierarchy</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     String: String (Required)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -4747,36 +4504,23 @@ public final class GlossariesImpl {
     /**
      * Update the glossary term partially. So far we only supports partial updating
      * shortDescription, longDescription, abbreviation, usage and status for term.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>includeTermHierarchy</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether include term hierarchy</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     String: String (Required)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -4958,28 +4702,15 @@ public final class GlossariesImpl {
 
     /**
      * Create glossary terms in bulk.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>includeTermHierarchy</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether include term hierarchy</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -5142,9 +4873,9 @@ public final class GlossariesImpl {
      *     }
      * ]
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -5325,28 +5056,15 @@ public final class GlossariesImpl {
 
     /**
      * Create glossary terms in bulk.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>includeTermHierarchy</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether include term hierarchy</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -5509,9 +5227,9 @@ public final class GlossariesImpl {
      *     }
      * ]
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -5693,40 +5411,17 @@ public final class GlossariesImpl {
     /**
      * List all related objects assigned with the specified term. Recommend using
      * limit/offset to get pagination result.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The page size - by default there is no paging.</td>
-     * </tr>
-     * <tr>
-     * <td>offset</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The offset for pagination purpose.</td>
-     * </tr>
-     * <tr>
-     * <td>sort</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The sort order, ASC (default) or DESC.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     * <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     * <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -5770,40 +5465,17 @@ public final class GlossariesImpl {
     /**
      * List all related objects assigned with the specified term. Recommend using
      * limit/offset to get pagination result.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The page size - by default there is no paging.</td>
-     * </tr>
-     * <tr>
-     * <td>offset</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The offset for pagination purpose.</td>
-     * </tr>
-     * <tr>
-     * <td>sort</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The sort order, ASC (default) or DESC.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     * <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     * <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -5850,9 +5522,8 @@ public final class GlossariesImpl {
      * [Entities Create Or Update
      * operation](https://learn.microsoft.com/en-us/rest/api/purview/datamapdataplane/entity/bulk-create-or-update?tabs=HTTP)
      * is an alternative to assign a term to multiple entities.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -5901,9 +5572,8 @@ public final class GlossariesImpl {
      * [Entities Create Or Update
      * operation](https://learn.microsoft.com/en-us/rest/api/purview/datamapdataplane/entity/bulk-create-or-update?tabs=HTTP)
      * is an alternative to assign a term to multiple entities.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -5947,9 +5617,8 @@ public final class GlossariesImpl {
 
     /**
      * Delete the term assignment for the given list of related objects.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -5993,9 +5662,8 @@ public final class GlossariesImpl {
 
     /**
      * Delete the term assignment for the given list of related objects.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -6040,40 +5708,17 @@ public final class GlossariesImpl {
     /**
      * Get all related terms for a specific term by its GUID. Limit, offset, and sort
      * parameters are currently not being enabled and won't work even they are passed.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The page size - by default there is no paging.</td>
-     * </tr>
-     * <tr>
-     * <td>offset</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The offset for pagination purpose.</td>
-     * </tr>
-     * <tr>
-     * <td>sort</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The sort order, ASC (default) or DESC.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     * <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     * <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     String (Required): [
@@ -6109,40 +5754,17 @@ public final class GlossariesImpl {
     /**
      * Get all related terms for a specific term by its GUID. Limit, offset, and sort
      * parameters are currently not being enabled and won't work even they are passed.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The page size - by default there is no paging.</td>
-     * </tr>
-     * <tr>
-     * <td>offset</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The offset for pagination purpose.</td>
-     * </tr>
-     * <tr>
-     * <td>sort</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The sort order, ASC (default) or DESC.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     * <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     * <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     String (Required): [
@@ -6176,9 +5798,8 @@ public final class GlossariesImpl {
 
     /**
      * Get a specific Glossary by its GUID.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -6252,9 +5873,8 @@ public final class GlossariesImpl {
 
     /**
      * Get a specific Glossary by its GUID.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -6327,28 +5947,15 @@ public final class GlossariesImpl {
 
     /**
      * Update the given glossary.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>ignoreTermsAndCategories</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether ignore terms and categories</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>ignoreTermsAndCategories</td><td>Boolean</td><td>No</td><td>Whether ignore terms and categories</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -6404,9 +6011,9 @@ public final class GlossariesImpl {
      *     usage: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -6464,7 +6071,7 @@ public final class GlossariesImpl {
      * }</pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
-     * @param atlasGlossary The glossary object.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -6473,37 +6080,24 @@ public final class GlossariesImpl {
      * @return the glossary object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateWithResponseAsync(String glossaryId, BinaryData atlasGlossary,
+    public Mono<Response<BinaryData>> updateWithResponseAsync(String glossaryId, BinaryData body,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), glossaryId, accept, atlasGlossary, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), glossaryId, accept, body, requestOptions, context));
     }
 
     /**
      * Update the given glossary.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>ignoreTermsAndCategories</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether ignore terms and categories</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>ignoreTermsAndCategories</td><td>Boolean</td><td>No</td><td>Whether ignore terms and categories</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -6559,9 +6153,9 @@ public final class GlossariesImpl {
      *     usage: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -6619,7 +6213,7 @@ public final class GlossariesImpl {
      * }</pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
-     * @param atlasGlossary The glossary object.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -6628,11 +6222,10 @@ public final class GlossariesImpl {
      * @return the glossary object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateWithResponse(String glossaryId, BinaryData atlasGlossary,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> updateWithResponse(String glossaryId, BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), glossaryId,
-            accept, atlasGlossary, requestOptions, Context.NONE);
+            accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -6675,40 +6268,17 @@ public final class GlossariesImpl {
     /**
      * Get the categories belonging to a specific glossary. Recommend using
      * limit/offset to get pagination result.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The page size - by default there is no paging.</td>
-     * </tr>
-     * <tr>
-     * <td>offset</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The offset for pagination purpose.</td>
-     * </tr>
-     * <tr>
-     * <td>sort</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The sort order, ASC (default) or DESC.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     * <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     * <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -6790,40 +6360,17 @@ public final class GlossariesImpl {
     /**
      * Get the categories belonging to a specific glossary. Recommend using
      * limit/offset to get pagination result.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The page size - by default there is no paging.</td>
-     * </tr>
-     * <tr>
-     * <td>offset</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The offset for pagination purpose.</td>
-     * </tr>
-     * <tr>
-     * <td>sort</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The sort order, ASC (default) or DESC.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     * <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     * <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -6903,40 +6450,17 @@ public final class GlossariesImpl {
     /**
      * Get the category headers belonging to a specific glossary. Recommend using
      * limit/offset to get pagination result.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The page size - by default there is no paging.</td>
-     * </tr>
-     * <tr>
-     * <td>offset</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The offset for pagination purpose.</td>
-     * </tr>
-     * <tr>
-     * <td>sort</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The sort order, ASC (default) or DESC.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     * <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     * <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -6969,40 +6493,17 @@ public final class GlossariesImpl {
     /**
      * Get the category headers belonging to a specific glossary. Recommend using
      * limit/offset to get pagination result.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The page size - by default there is no paging.</td>
-     * </tr>
-     * <tr>
-     * <td>offset</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The offset for pagination purpose.</td>
-     * </tr>
-     * <tr>
-     * <td>sort</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The sort order, ASC (default) or DESC.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     * <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     * <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -7039,9 +6540,8 @@ public final class GlossariesImpl {
      * GET /datamap/api/atlas/v2/glossary/{glossaryId}/terms and
      * 
      * GET /datamap/api/atlas/v2/glossary/{glossaryId}/categories.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -7284,9 +6784,8 @@ public final class GlossariesImpl {
      * GET /datamap/api/atlas/v2/glossary/{glossaryId}/terms and
      * 
      * GET /datamap/api/atlas/v2/glossary/{glossaryId}/categories.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -7528,36 +7027,23 @@ public final class GlossariesImpl {
      * 
      * Recommend
      * using 'ignoreTermsAndCategories=true' to reduce response body size.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>ignoreTermsAndCategories</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether ignore terms and categories</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>ignoreTermsAndCategories</td><td>Boolean</td><td>No</td><td>Whether ignore terms and categories</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     String: String (Required)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -7641,36 +7127,23 @@ public final class GlossariesImpl {
      * 
      * Recommend
      * using 'ignoreTermsAndCategories=true' to reduce response body size.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>ignoreTermsAndCategories</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether ignore terms and categories</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>ignoreTermsAndCategories</td><td>Boolean</td><td>No</td><td>Whether ignore terms and categories</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     String: String (Required)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -7748,40 +7221,17 @@ public final class GlossariesImpl {
     /**
      * Get terms belonging to a specific glossary. Recommend using limit/offset to get
      * pagination result.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The page size - by default there is no paging.</td>
-     * </tr>
-     * <tr>
-     * <td>offset</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The offset for pagination purpose.</td>
-     * </tr>
-     * <tr>
-     * <td>sort</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The sort order, ASC (default) or DESC.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     * <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     * <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -7964,40 +7414,17 @@ public final class GlossariesImpl {
     /**
      * Get terms belonging to a specific glossary. Recommend using limit/offset to get
      * pagination result.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The page size - by default there is no paging.</td>
-     * </tr>
-     * <tr>
-     * <td>offset</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The offset for pagination purpose.</td>
-     * </tr>
-     * <tr>
-     * <td>sort</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The sort order, ASC (default) or DESC.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     * <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     * <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -8179,40 +7606,17 @@ public final class GlossariesImpl {
     /**
      * Get term headers belonging to a specific glossary. Recommend using limit/offset
      * to get pagination result.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The page size - by default there is no paging.</td>
-     * </tr>
-     * <tr>
-     * <td>offset</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The offset for pagination purpose.</td>
-     * </tr>
-     * <tr>
-     * <td>sort</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The sort order, ASC (default) or DESC.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     * <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     * <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -8247,40 +7651,17 @@ public final class GlossariesImpl {
     /**
      * Get term headers belonging to a specific glossary. Recommend using limit/offset
      * to get pagination result.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The page size - by default there is no paging.</td>
-     * </tr>
-     * <tr>
-     * <td>offset</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The offset for pagination purpose.</td>
-     * </tr>
-     * <tr>
-     * <td>sort</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The sort order, ASC (default) or DESC.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     * <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     * <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){

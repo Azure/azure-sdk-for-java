@@ -12,18 +12,24 @@ public final class TabularTranslatorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TabularTranslator model = BinaryData.fromString(
-            "{\"type\":\"TabularTranslator\",\"columnMappings\":\"dataqvdivzjyx\",\"schemaMapping\":\"datablblxjbrqbutmacn\",\"collectionReference\":\"datadmyduvawea\",\"mapComplexValuesToString\":\"datafbvbvkw\",\"mappings\":\"datarz\",\"typeConversion\":\"datayymh\",\"typeConversionSettings\":{\"allowDataTruncation\":\"dataobhltmpay\",\"treatBooleanAsNumber\":\"dataqgrsytto\",\"dateTimeFormat\":\"datazbbxifacrhpuzcag\",\"dateTimeOffsetFormat\":\"datavpbwt\",\"timeSpanFormat\":\"datauiguo\",\"culture\":\"datao\"},\"\":{\"gdv\":\"databuexrkoxwyxodp\"}}")
+            "{\"type\":\"TabularTranslator\",\"columnMappings\":\"dataeib\",\"schemaMapping\":\"datawikmgwxysut\",\"collectionReference\":\"datafdhrifekstrms\",\"mapComplexValuesToString\":\"datadgrzkeuplorn\",\"mappings\":\"datassmaaxz\",\"typeConversion\":\"datalnvupi\",\"typeConversionSettings\":{\"allowDataTruncation\":\"datazyhtbjyycacoelvo\",\"treatBooleanAsNumber\":\"datatm\",\"dateTimeFormat\":\"dataalqqrymjwwo\",\"dateTimeOffsetFormat\":\"datanefellhdsgogdu\",\"timeSpanFormat\":\"datamalthcbvuvwdp\",\"culture\":\"dataphnag\"},\"\":{\"ml\":\"dataaxjmnbm\",\"vlrsfmtrmod\":\"dataqatswvtddpicwnb\",\"pqrke\":\"datanxerkaiikbpfaq\",\"uaez\":\"datah\"}}")
             .toObject(TabularTranslator.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TabularTranslator model = new TabularTranslator().withColumnMappings("dataqvdivzjyx")
-            .withSchemaMapping("datablblxjbrqbutmacn").withCollectionReference("datadmyduvawea")
-            .withMapComplexValuesToString("datafbvbvkw").withMappings("datarz").withTypeConversion("datayymh")
-            .withTypeConversionSettings(new TypeConversionSettings().withAllowDataTruncation("dataobhltmpay")
-                .withTreatBooleanAsNumber("dataqgrsytto").withDateTimeFormat("datazbbxifacrhpuzcag")
-                .withDateTimeOffsetFormat("datavpbwt").withTimeSpanFormat("datauiguo").withCulture("datao"));
+        TabularTranslator model = new TabularTranslator().withColumnMappings("dataeib")
+            .withSchemaMapping("datawikmgwxysut")
+            .withCollectionReference("datafdhrifekstrms")
+            .withMapComplexValuesToString("datadgrzkeuplorn")
+            .withMappings("datassmaaxz")
+            .withTypeConversion("datalnvupi")
+            .withTypeConversionSettings(new TypeConversionSettings().withAllowDataTruncation("datazyhtbjyycacoelvo")
+                .withTreatBooleanAsNumber("datatm")
+                .withDateTimeFormat("dataalqqrymjwwo")
+                .withDateTimeOffsetFormat("datanefellhdsgogdu")
+                .withTimeSpanFormat("datamalthcbvuvwdp")
+                .withCulture("dataphnag"));
         model = BinaryData.fromObject(model).toObject(TabularTranslator.class);
     }
 }

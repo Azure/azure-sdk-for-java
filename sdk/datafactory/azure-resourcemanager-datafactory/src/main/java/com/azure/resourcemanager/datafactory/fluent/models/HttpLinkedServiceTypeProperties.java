@@ -48,9 +48,9 @@ public final class HttpLinkedServiceTypeProperties {
     private Object authHeaders;
 
     /*
-     * Base64 encoded certificate data for ClientCertificate authentication. For on-premises copy with
-     * ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should be specified. Type:
-     * string (or Expression with resultType string).
+     * Base64 encoded certificate data for ClientCertificate authentication. For on-premises copy with ClientCertificate
+     * authentication, either CertThumbprint or EmbeddedCertData/Password should be specified. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "embeddedCertData")
     private Object embeddedCertData;
@@ -193,8 +193,8 @@ public final class HttpLinkedServiceTypeProperties {
 
     /**
      * Get the embeddedCertData property: Base64 encoded certificate data for ClientCertificate authentication. For
-     * on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password
-     * should be specified. Type: string (or Expression with resultType string).
+     * on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should
+     * be specified. Type: string (or Expression with resultType string).
      * 
      * @return the embeddedCertData value.
      */
@@ -204,8 +204,8 @@ public final class HttpLinkedServiceTypeProperties {
 
     /**
      * Set the embeddedCertData property: Base64 encoded certificate data for ClientCertificate authentication. For
-     * on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password
-     * should be specified. Type: string (or Expression with resultType string).
+     * on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should
+     * be specified. Type: string (or Expression with resultType string).
      * 
      * @param embeddedCertData the embeddedCertData value to set.
      * @return the HttpLinkedServiceTypeProperties object itself.
@@ -240,8 +240,8 @@ public final class HttpLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -250,8 +250,8 @@ public final class HttpLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the HttpLinkedServiceTypeProperties object itself.
@@ -291,8 +291,9 @@ public final class HttpLinkedServiceTypeProperties {
      */
     public void validate() {
         if (url() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property url in model HttpLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property url in model HttpLinkedServiceTypeProperties"));
         }
         if (password() != null) {
             password().validate();

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,15 +12,24 @@ import java.util.Collection;
  * disabled (access to Azure Arc services only via private link).
  */
 public final class PublicNetworkAccessType extends ExpandableStringEnum<PublicNetworkAccessType> {
-    /** Static value Enabled for PublicNetworkAccessType. */
+    /**
+     * Static value Enabled for PublicNetworkAccessType.
+     */
     public static final PublicNetworkAccessType ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for PublicNetworkAccessType. */
+    /**
+     * Static value Disabled for PublicNetworkAccessType.
+     */
     public static final PublicNetworkAccessType DISABLED = fromString("Disabled");
 
     /**
+     * Static value SecuredByPerimeter for PublicNetworkAccessType.
+     */
+    public static final PublicNetworkAccessType SECURED_BY_PERIMETER = fromString("SecuredByPerimeter");
+
+    /**
      * Creates a new instance of PublicNetworkAccessType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +38,17 @@ public final class PublicNetworkAccessType extends ExpandableStringEnum<PublicNe
 
     /**
      * Creates or finds a PublicNetworkAccessType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PublicNetworkAccessType.
      */
-    @JsonCreator
     public static PublicNetworkAccessType fromString(String name) {
         return fromString(name, PublicNetworkAccessType.class);
     }
 
     /**
      * Gets known PublicNetworkAccessType values.
-     *
+     * 
      * @return known PublicNetworkAccessType values.
      */
     public static Collection<PublicNetworkAccessType> values() {

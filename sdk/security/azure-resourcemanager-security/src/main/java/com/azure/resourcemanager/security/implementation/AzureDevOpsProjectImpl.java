@@ -65,14 +65,17 @@ public final class AzureDevOpsProjectImpl
     }
 
     public AzureDevOpsProject create() {
-        this.innerObject = serviceManager.serviceClient().getAzureDevOpsProjects().createOrUpdate(resourceGroupName,
-            securityConnectorName, orgName, projectName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureDevOpsProjects()
+            .createOrUpdate(resourceGroupName, securityConnectorName, orgName, projectName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public AzureDevOpsProject create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAzureDevOpsProjects().createOrUpdate(resourceGroupName,
-            securityConnectorName, orgName, projectName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureDevOpsProjects()
+            .createOrUpdate(resourceGroupName, securityConnectorName, orgName, projectName, this.innerModel(), context);
         return this;
     }
 
@@ -87,14 +90,16 @@ public final class AzureDevOpsProjectImpl
     }
 
     public AzureDevOpsProject apply() {
-        this.innerObject = serviceManager.serviceClient().getAzureDevOpsProjects().update(resourceGroupName,
-            securityConnectorName, orgName, projectName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureDevOpsProjects()
+            .update(resourceGroupName, securityConnectorName, orgName, projectName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public AzureDevOpsProject apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAzureDevOpsProjects().update(resourceGroupName,
-            securityConnectorName, orgName, projectName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureDevOpsProjects()
+            .update(resourceGroupName, securityConnectorName, orgName, projectName, this.innerModel(), context);
         return this;
     }
 
@@ -109,14 +114,18 @@ public final class AzureDevOpsProjectImpl
     }
 
     public AzureDevOpsProject refresh() {
-        this.innerObject = serviceManager.serviceClient().getAzureDevOpsProjects()
-            .getWithResponse(resourceGroupName, securityConnectorName, orgName, projectName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureDevOpsProjects()
+            .getWithResponse(resourceGroupName, securityConnectorName, orgName, projectName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AzureDevOpsProject refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAzureDevOpsProjects()
-            .getWithResponse(resourceGroupName, securityConnectorName, orgName, projectName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureDevOpsProjects()
+            .getWithResponse(resourceGroupName, securityConnectorName, orgName, projectName, context)
+            .getValue();
         return this;
     }
 

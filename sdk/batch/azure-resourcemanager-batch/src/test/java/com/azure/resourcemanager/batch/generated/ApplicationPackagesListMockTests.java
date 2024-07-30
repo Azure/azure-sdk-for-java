@@ -31,7 +31,7 @@ public final class ApplicationPackagesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"state\":\"Pending\",\"format\":\"rjreafxts\",\"storageUrl\":\"mhjglikkxwslolb\",\"storageUrlExpiry\":\"2021-11-05T04:06:51Z\",\"lastActivationTime\":\"2021-08-07T04:15:04Z\"},\"etag\":\"m\",\"id\":\"felfktg\",\"name\":\"lcrpw\",\"type\":\"xeznoi\"}]}";
+            = "{\"value\":[{\"properties\":{\"state\":\"Active\",\"format\":\"dpsqx\",\"storageUrl\":\"psvuoymgc\",\"storageUrlExpiry\":\"2021-08-18T08:31:36Z\",\"lastActivationTime\":\"2021-01-01T10:52:13Z\"},\"etag\":\"rypqlmfeo\",\"id\":\"erqwkyhkobopg\",\"name\":\"edkowepbqpcrfk\",\"type\":\"wccsnjvcdwxlpqek\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -48,8 +48,8 @@ public final class ApplicationPackagesListMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ApplicationPackage> response = manager.applicationPackages().list("s", "ronzmyhgfip", "sxkm",
-            2130942717, com.azure.core.util.Context.NONE);
+        PagedIterable<ApplicationPackage> response = manager.applicationPackages().list("hwyg", "lvdnkfx", "semdwzrmu",
+            114396091, com.azure.core.util.Context.NONE);
 
     }
 }

@@ -3,12 +3,12 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import java.io.IOException;
+import java.util.Map;
 
-import static com.azure.cosmos.BridgeInternal.setProperty;
 /**
  * Represents a document in the Azure Cosmos DB database service.
  * <p>
@@ -17,6 +17,9 @@ import static com.azure.cosmos.BridgeInternal.setProperty;
  * can be authorized using the master key or resource keys.
  */
 public class Document extends Resource {
+    private final static ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
+    private final static ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor itemSerializerAccessor =
+        ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor();
 
     /**
      * Constructor.
@@ -63,16 +66,20 @@ public class Document extends Resource {
         super(jsonString);
     }
 
-    public static Document fromObject(Object document, ObjectMapper objectMapper) {
+    public static Document fromObject(Object document, CosmosItemSerializer itemSerializer) {
         Document typedDocument;
         if (document instanceof Document) {
             typedDocument = (Document) document;
         } else {
-            try {
-                return new Document(objectMapper.writeValueAsString(document));
-            } catch (IOException e) {
-                throw new IllegalArgumentException("Can't serialize the object into the json string", e);
+            Map<String, Object> jsonTreeMap = itemSerializerAccessor.serializeSafe(itemSerializer, document);
+            ObjectNode objectNode = null;
+            if (jsonTreeMap instanceof ObjectNodeMap) {
+                objectNode = ((ObjectNodeMap)jsonTreeMap).getObjectNode();
+            } else {
+                objectNode = OBJECT_MAPPER.convertValue(jsonTreeMap, ObjectNode.class);
             }
+
+            return new Document(objectNode);
         }
         return typedDocument;
     }
@@ -110,9 +117,9 @@ public class Document extends Resource {
         // a "null" value is represented as a missing element on the wire.
         // setting timeToLive to null should remove the property from the property bag.
         if (timeToLive != null) {
-            setProperty(this, Constants.Properties.TTL, timeToLive);
+            this.set(Constants.Properties.TTL, timeToLive, CosmosItemSerializer.DEFAULT_SERIALIZER);
         } else if (super.has(Constants.Properties.TTL)) {
-            remove(Constants.Properties.TTL);
+            this.remove(Constants.Properties.TTL);
         }
     }
 

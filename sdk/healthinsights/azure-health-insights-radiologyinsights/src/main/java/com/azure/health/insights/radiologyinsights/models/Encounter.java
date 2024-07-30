@@ -19,7 +19,7 @@ public final class Encounter {
      */
     @Generated
     @JsonProperty(value = "id")
-    private String id;
+    private final String id;
 
     /*
      * Time period of the visit.

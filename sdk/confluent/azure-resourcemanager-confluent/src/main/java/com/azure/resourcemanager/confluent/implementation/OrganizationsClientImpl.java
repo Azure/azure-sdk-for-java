@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -33,7 +34,17 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.confluent.fluent.OrganizationsClient;
+import com.azure.resourcemanager.confluent.fluent.models.ApiKeyRecordInner;
+import com.azure.resourcemanager.confluent.fluent.models.ListRegionsSuccessResponseInner;
 import com.azure.resourcemanager.confluent.fluent.models.OrganizationResourceInner;
+import com.azure.resourcemanager.confluent.fluent.models.SCClusterRecordInner;
+import com.azure.resourcemanager.confluent.fluent.models.SCEnvironmentRecordInner;
+import com.azure.resourcemanager.confluent.fluent.models.SchemaRegistryClusterRecordInner;
+import com.azure.resourcemanager.confluent.models.CreateApiKeyModel;
+import com.azure.resourcemanager.confluent.models.GetEnvironmentsResponse;
+import com.azure.resourcemanager.confluent.models.ListAccessRequestModel;
+import com.azure.resourcemanager.confluent.models.ListClustersSuccessResponse;
+import com.azure.resourcemanager.confluent.models.ListSchemaRegistryClustersResponse;
 import com.azure.resourcemanager.confluent.models.OrganizationResourceListResult;
 import com.azure.resourcemanager.confluent.models.OrganizationResourceUpdate;
 import java.nio.ByteBuffer;
@@ -132,6 +143,112 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<GetEnvironmentsResponse>> listEnvironments(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("organizationName") String organizationName, @QueryParam("pageSize") Integer pageSize,
+            @QueryParam("pageToken") String pageToken, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<SCEnvironmentRecordInner>> getEnvironmentById(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("organizationName") String organizationName, @PathParam("environmentId") String environmentId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/clusters")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ListClustersSuccessResponse>> listClusters(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("organizationName") String organizationName, @PathParam("environmentId") String environmentId,
+            @QueryParam("pageSize") Integer pageSize, @QueryParam("pageToken") String pageToken,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/schemaRegistryClusters")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ListSchemaRegistryClustersResponse>> listSchemaRegistryClusters(
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("organizationName") String organizationName, @PathParam("environmentId") String environmentId,
+            @QueryParam("pageSize") Integer pageSize, @QueryParam("pageToken") String pageToken,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/listRegions")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ListRegionsSuccessResponseInner>> listRegions(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("organizationName") String organizationName,
+            @BodyParam("application/json") ListAccessRequestModel body, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/clusters/{clusterId}/createAPIKey")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ApiKeyRecordInner>> createApiKey(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("organizationName") String organizationName, @PathParam("environmentId") String environmentId,
+            @PathParam("clusterId") String clusterId, @BodyParam("application/json") CreateApiKeyModel body,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/apiKeys/{apiKeyId}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> deleteClusterApiKey(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("organizationName") String organizationName, @PathParam("apiKeyId") String apiKeyId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/apiKeys/{apiKeyId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ApiKeyRecordInner>> getClusterApiKey(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("organizationName") String organizationName, @PathParam("apiKeyId") String apiKeyId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/schemaRegistryClusters/{clusterId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<SchemaRegistryClusterRecordInner>> getSchemaRegistryClusterById(
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("organizationName") String organizationName, @PathParam("environmentId") String environmentId,
+            @PathParam("clusterId") String clusterId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/clusters/{clusterId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<SCClusterRecordInner>> getClusterById(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("organizationName") String organizationName, @PathParam("environmentId") String environmentId,
+            @PathParam("clusterId") String clusterId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -144,6 +261,30 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OrganizationResourceListResult>> listByResourceGroupNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<GetEnvironmentsResponse>> listEnvironmentsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ListClustersSuccessResponse>> listClustersNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ListSchemaRegistryClustersResponse>> listSchemaRegistryClustersNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -261,7 +402,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * List all Organizations under the specified resource group.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -295,7 +436,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * List all Organizations under the specified resource group.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -330,7 +471,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * List all Organizations under the specified resource group.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -345,7 +486,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * List all Organizations under the specified resource group.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -361,7 +502,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * List all Organizations under the specified resource group.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -375,7 +516,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * List all Organizations under the specified resource group.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -390,7 +531,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Get the properties of a specific Organization resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -427,7 +568,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Get the properties of a specific Organization resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -464,7 +605,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Get the properties of a specific Organization resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -480,7 +621,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Get the properties of a specific Organization resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -497,7 +638,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Get the properties of a specific Organization resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -512,7 +653,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Create Organization resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Organization resource model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -552,7 +693,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Create Organization resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Organization resource model.
      * @param context The context to associate with this operation.
@@ -592,7 +733,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Create Organization resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Organization resource model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -612,7 +753,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Create Organization resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -632,7 +773,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Create Organization resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Organization resource model.
      * @param context The context to associate with this operation.
@@ -654,7 +795,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Create Organization resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -671,7 +812,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Create Organization resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Organization resource model.
      * @param context The context to associate with this operation.
@@ -689,7 +830,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Create Organization resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Organization resource model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -707,7 +848,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Create Organization resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -724,7 +865,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Create Organization resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Organization resource model.
      * @param context The context to associate with this operation.
@@ -743,7 +884,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Create Organization resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -759,7 +900,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Create Organization resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Organization resource model.
      * @param context The context to associate with this operation.
@@ -777,7 +918,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Update Organization resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Updated Organization resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -817,7 +958,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Update Organization resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Updated Organization resource.
      * @param context The context to associate with this operation.
@@ -857,7 +998,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Update Organization resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -874,7 +1015,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Update Organization resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Updated Organization resource.
      * @param context The context to associate with this operation.
@@ -892,7 +1033,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Update Organization resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -908,7 +1049,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Delete Organization resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -944,7 +1085,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Delete Organization resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -980,7 +1121,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Delete Organization resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -997,7 +1138,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Delete Organization resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1017,7 +1158,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Delete Organization resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1032,7 +1173,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Delete Organization resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1049,7 +1190,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Delete Organization resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1065,7 +1206,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Delete Organization resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1082,7 +1223,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Delete Organization resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1096,7 +1237,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Delete Organization resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1106,6 +1247,1588 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String organizationName, Context context) {
         deleteAsync(resourceGroupName, organizationName, context).block();
+    }
+
+    /**
+     * Lists of all the environments in a organization.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param pageSize Pagination size.
+     * @param pageToken An opaque pagination token to fetch the next set of records.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of GET request to list Confluent operations along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SCEnvironmentRecordInner>> listEnvironmentsSinglePageAsync(String resourceGroupName,
+        String organizationName, Integer pageSize, String pageToken) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (organizationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listEnvironments(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, organizationName, pageSize, pageToken, accept,
+                context))
+            .<PagedResponse<SCEnvironmentRecordInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Lists of all the environments in a organization.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param pageSize Pagination size.
+     * @param pageToken An opaque pagination token to fetch the next set of records.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of GET request to list Confluent operations along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SCEnvironmentRecordInner>> listEnvironmentsSinglePageAsync(String resourceGroupName,
+        String organizationName, Integer pageSize, String pageToken, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (organizationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listEnvironments(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, organizationName, pageSize, pageToken, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Lists of all the environments in a organization.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param pageSize Pagination size.
+     * @param pageToken An opaque pagination token to fetch the next set of records.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of GET request to list Confluent operations as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<SCEnvironmentRecordInner> listEnvironmentsAsync(String resourceGroupName, String organizationName,
+        Integer pageSize, String pageToken) {
+        return new PagedFlux<>(
+            () -> listEnvironmentsSinglePageAsync(resourceGroupName, organizationName, pageSize, pageToken),
+            nextLink -> listEnvironmentsNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists of all the environments in a organization.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of GET request to list Confluent operations as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<SCEnvironmentRecordInner> listEnvironmentsAsync(String resourceGroupName,
+        String organizationName) {
+        final Integer pageSize = null;
+        final String pageToken = null;
+        return new PagedFlux<>(
+            () -> listEnvironmentsSinglePageAsync(resourceGroupName, organizationName, pageSize, pageToken),
+            nextLink -> listEnvironmentsNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists of all the environments in a organization.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param pageSize Pagination size.
+     * @param pageToken An opaque pagination token to fetch the next set of records.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of GET request to list Confluent operations as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<SCEnvironmentRecordInner> listEnvironmentsAsync(String resourceGroupName, String organizationName,
+        Integer pageSize, String pageToken, Context context) {
+        return new PagedFlux<>(
+            () -> listEnvironmentsSinglePageAsync(resourceGroupName, organizationName, pageSize, pageToken, context),
+            nextLink -> listEnvironmentsNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Lists of all the environments in a organization.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of GET request to list Confluent operations as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SCEnvironmentRecordInner> listEnvironments(String resourceGroupName, String organizationName) {
+        final Integer pageSize = null;
+        final String pageToken = null;
+        return new PagedIterable<>(listEnvironmentsAsync(resourceGroupName, organizationName, pageSize, pageToken));
+    }
+
+    /**
+     * Lists of all the environments in a organization.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param pageSize Pagination size.
+     * @param pageToken An opaque pagination token to fetch the next set of records.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of GET request to list Confluent operations as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SCEnvironmentRecordInner> listEnvironments(String resourceGroupName, String organizationName,
+        Integer pageSize, String pageToken, Context context) {
+        return new PagedIterable<>(
+            listEnvironmentsAsync(resourceGroupName, organizationName, pageSize, pageToken, context));
+    }
+
+    /**
+     * Get Environment details by environment Id.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return environment details by environment Id along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<SCEnvironmentRecordInner>> getEnvironmentByIdWithResponseAsync(String resourceGroupName,
+        String organizationName, String environmentId) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (organizationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
+        }
+        if (environmentId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter environmentId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getEnvironmentById(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, organizationName, environmentId, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get Environment details by environment Id.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return environment details by environment Id along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<SCEnvironmentRecordInner>> getEnvironmentByIdWithResponseAsync(String resourceGroupName,
+        String organizationName, String environmentId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (organizationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
+        }
+        if (environmentId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter environmentId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.getEnvironmentById(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, organizationName, environmentId, accept, context);
+    }
+
+    /**
+     * Get Environment details by environment Id.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return environment details by environment Id on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<SCEnvironmentRecordInner> getEnvironmentByIdAsync(String resourceGroupName, String organizationName,
+        String environmentId) {
+        return getEnvironmentByIdWithResponseAsync(resourceGroupName, organizationName, environmentId)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get Environment details by environment Id.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return environment details by environment Id along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SCEnvironmentRecordInner> getEnvironmentByIdWithResponse(String resourceGroupName,
+        String organizationName, String environmentId, Context context) {
+        return getEnvironmentByIdWithResponseAsync(resourceGroupName, organizationName, environmentId, context).block();
+    }
+
+    /**
+     * Get Environment details by environment Id.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return environment details by environment Id.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SCEnvironmentRecordInner getEnvironmentById(String resourceGroupName, String organizationName,
+        String environmentId) {
+        return getEnvironmentByIdWithResponse(resourceGroupName, organizationName, environmentId, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Lists of all the clusters in a environment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param pageSize Pagination size.
+     * @param pageToken An opaque pagination token to fetch the next set of records.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of GET request to list clusters in the environment of a confluent organization along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SCClusterRecordInner>> listClustersSinglePageAsync(String resourceGroupName,
+        String organizationName, String environmentId, Integer pageSize, String pageToken) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (organizationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
+        }
+        if (environmentId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter environmentId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listClusters(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, organizationName, environmentId, pageSize,
+                pageToken, accept, context))
+            .<PagedResponse<SCClusterRecordInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Lists of all the clusters in a environment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param pageSize Pagination size.
+     * @param pageToken An opaque pagination token to fetch the next set of records.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of GET request to list clusters in the environment of a confluent organization along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SCClusterRecordInner>> listClustersSinglePageAsync(String resourceGroupName,
+        String organizationName, String environmentId, Integer pageSize, String pageToken, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (organizationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
+        }
+        if (environmentId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter environmentId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listClusters(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, organizationName, environmentId, pageSize, pageToken, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Lists of all the clusters in a environment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param pageSize Pagination size.
+     * @param pageToken An opaque pagination token to fetch the next set of records.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of GET request to list clusters in the environment of a confluent organization as paginated
+     * response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<SCClusterRecordInner> listClustersAsync(String resourceGroupName, String organizationName,
+        String environmentId, Integer pageSize, String pageToken) {
+        return new PagedFlux<>(
+            () -> listClustersSinglePageAsync(resourceGroupName, organizationName, environmentId, pageSize, pageToken),
+            nextLink -> listClustersNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists of all the clusters in a environment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of GET request to list clusters in the environment of a confluent organization as paginated
+     * response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<SCClusterRecordInner> listClustersAsync(String resourceGroupName, String organizationName,
+        String environmentId) {
+        final Integer pageSize = null;
+        final String pageToken = null;
+        return new PagedFlux<>(
+            () -> listClustersSinglePageAsync(resourceGroupName, organizationName, environmentId, pageSize, pageToken),
+            nextLink -> listClustersNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists of all the clusters in a environment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param pageSize Pagination size.
+     * @param pageToken An opaque pagination token to fetch the next set of records.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of GET request to list clusters in the environment of a confluent organization as paginated
+     * response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<SCClusterRecordInner> listClustersAsync(String resourceGroupName, String organizationName,
+        String environmentId, Integer pageSize, String pageToken, Context context) {
+        return new PagedFlux<>(() -> listClustersSinglePageAsync(resourceGroupName, organizationName, environmentId,
+            pageSize, pageToken, context), nextLink -> listClustersNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Lists of all the clusters in a environment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of GET request to list clusters in the environment of a confluent organization as paginated
+     * response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SCClusterRecordInner> listClusters(String resourceGroupName, String organizationName,
+        String environmentId) {
+        final Integer pageSize = null;
+        final String pageToken = null;
+        return new PagedIterable<>(
+            listClustersAsync(resourceGroupName, organizationName, environmentId, pageSize, pageToken));
+    }
+
+    /**
+     * Lists of all the clusters in a environment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param pageSize Pagination size.
+     * @param pageToken An opaque pagination token to fetch the next set of records.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of GET request to list clusters in the environment of a confluent organization as paginated
+     * response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SCClusterRecordInner> listClusters(String resourceGroupName, String organizationName,
+        String environmentId, Integer pageSize, String pageToken, Context context) {
+        return new PagedIterable<>(
+            listClustersAsync(resourceGroupName, organizationName, environmentId, pageSize, pageToken, context));
+    }
+
+    /**
+     * Get schema registry clusters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param pageSize Pagination size.
+     * @param pageToken An opaque pagination token to fetch the next set of records.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema registry clusters along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SchemaRegistryClusterRecordInner>> listSchemaRegistryClustersSinglePageAsync(
+        String resourceGroupName, String organizationName, String environmentId, Integer pageSize, String pageToken) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (organizationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
+        }
+        if (environmentId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter environmentId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listSchemaRegistryClusters(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, organizationName,
+                environmentId, pageSize, pageToken, accept, context))
+            .<PagedResponse<SchemaRegistryClusterRecordInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get schema registry clusters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param pageSize Pagination size.
+     * @param pageToken An opaque pagination token to fetch the next set of records.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema registry clusters along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SchemaRegistryClusterRecordInner>> listSchemaRegistryClustersSinglePageAsync(
+        String resourceGroupName, String organizationName, String environmentId, Integer pageSize, String pageToken,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (organizationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
+        }
+        if (environmentId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter environmentId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listSchemaRegistryClusters(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, organizationName, environmentId, pageSize,
+                pageToken, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Get schema registry clusters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param pageSize Pagination size.
+     * @param pageToken An opaque pagination token to fetch the next set of records.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema registry clusters as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<SchemaRegistryClusterRecordInner> listSchemaRegistryClustersAsync(String resourceGroupName,
+        String organizationName, String environmentId, Integer pageSize, String pageToken) {
+        return new PagedFlux<>(() -> listSchemaRegistryClustersSinglePageAsync(resourceGroupName, organizationName,
+            environmentId, pageSize, pageToken), nextLink -> listSchemaRegistryClustersNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Get schema registry clusters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema registry clusters as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<SchemaRegistryClusterRecordInner> listSchemaRegistryClustersAsync(String resourceGroupName,
+        String organizationName, String environmentId) {
+        final Integer pageSize = null;
+        final String pageToken = null;
+        return new PagedFlux<>(() -> listSchemaRegistryClustersSinglePageAsync(resourceGroupName, organizationName,
+            environmentId, pageSize, pageToken), nextLink -> listSchemaRegistryClustersNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Get schema registry clusters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param pageSize Pagination size.
+     * @param pageToken An opaque pagination token to fetch the next set of records.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema registry clusters as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<SchemaRegistryClusterRecordInner> listSchemaRegistryClustersAsync(String resourceGroupName,
+        String organizationName, String environmentId, Integer pageSize, String pageToken, Context context) {
+        return new PagedFlux<>(
+            () -> listSchemaRegistryClustersSinglePageAsync(resourceGroupName, organizationName, environmentId,
+                pageSize, pageToken, context),
+            nextLink -> listSchemaRegistryClustersNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Get schema registry clusters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema registry clusters as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SchemaRegistryClusterRecordInner> listSchemaRegistryClusters(String resourceGroupName,
+        String organizationName, String environmentId) {
+        final Integer pageSize = null;
+        final String pageToken = null;
+        return new PagedIterable<>(
+            listSchemaRegistryClustersAsync(resourceGroupName, organizationName, environmentId, pageSize, pageToken));
+    }
+
+    /**
+     * Get schema registry clusters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param pageSize Pagination size.
+     * @param pageToken An opaque pagination token to fetch the next set of records.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema registry clusters as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SchemaRegistryClusterRecordInner> listSchemaRegistryClusters(String resourceGroupName,
+        String organizationName, String environmentId, Integer pageSize, String pageToken, Context context) {
+        return new PagedIterable<>(listSchemaRegistryClustersAsync(resourceGroupName, organizationName, environmentId,
+            pageSize, pageToken, context));
+    }
+
+    /**
+     * cloud provider regions available for creating Schema Registry clusters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body List Access Request Model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of POST request to list regions supported by confluent along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ListRegionsSuccessResponseInner>> listRegionsWithResponseAsync(String resourceGroupName,
+        String organizationName, ListAccessRequestModel body) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (organizationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listRegions(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, organizationName, body, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * cloud provider regions available for creating Schema Registry clusters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body List Access Request Model.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of POST request to list regions supported by confluent along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ListRegionsSuccessResponseInner>> listRegionsWithResponseAsync(String resourceGroupName,
+        String organizationName, ListAccessRequestModel body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (organizationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listRegions(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, organizationName, body, accept, context);
+    }
+
+    /**
+     * cloud provider regions available for creating Schema Registry clusters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body List Access Request Model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of POST request to list regions supported by confluent on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ListRegionsSuccessResponseInner> listRegionsAsync(String resourceGroupName, String organizationName,
+        ListAccessRequestModel body) {
+        return listRegionsWithResponseAsync(resourceGroupName, organizationName, body)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * cloud provider regions available for creating Schema Registry clusters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body List Access Request Model.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of POST request to list regions supported by confluent along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ListRegionsSuccessResponseInner> listRegionsWithResponse(String resourceGroupName,
+        String organizationName, ListAccessRequestModel body, Context context) {
+        return listRegionsWithResponseAsync(resourceGroupName, organizationName, body, context).block();
+    }
+
+    /**
+     * cloud provider regions available for creating Schema Registry clusters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body List Access Request Model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of POST request to list regions supported by confluent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ListRegionsSuccessResponseInner listRegions(String resourceGroupName, String organizationName,
+        ListAccessRequestModel body) {
+        return listRegionsWithResponse(resourceGroupName, organizationName, body, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates API key for a schema registry Cluster ID or Kafka Cluster ID under a environment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param clusterId Confluent kafka or schema registry cluster id.
+     * @param body Request payload for get creating API Key for schema registry Cluster ID or Kafka Cluster ID under a
+     * environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details API key along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ApiKeyRecordInner>> createApiKeyWithResponseAsync(String resourceGroupName,
+        String organizationName, String environmentId, String clusterId, CreateApiKeyModel body) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (organizationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
+        }
+        if (environmentId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter environmentId is required and cannot be null."));
+        }
+        if (clusterId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterId is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.createApiKey(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, organizationName, environmentId, clusterId, body,
+                accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Creates API key for a schema registry Cluster ID or Kafka Cluster ID under a environment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param clusterId Confluent kafka or schema registry cluster id.
+     * @param body Request payload for get creating API Key for schema registry Cluster ID or Kafka Cluster ID under a
+     * environment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details API key along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ApiKeyRecordInner>> createApiKeyWithResponseAsync(String resourceGroupName,
+        String organizationName, String environmentId, String clusterId, CreateApiKeyModel body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (organizationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
+        }
+        if (environmentId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter environmentId is required and cannot be null."));
+        }
+        if (clusterId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterId is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.createApiKey(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, organizationName, environmentId, clusterId, body,
+            accept, context);
+    }
+
+    /**
+     * Creates API key for a schema registry Cluster ID or Kafka Cluster ID under a environment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param clusterId Confluent kafka or schema registry cluster id.
+     * @param body Request payload for get creating API Key for schema registry Cluster ID or Kafka Cluster ID under a
+     * environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details API key on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ApiKeyRecordInner> createApiKeyAsync(String resourceGroupName, String organizationName,
+        String environmentId, String clusterId, CreateApiKeyModel body) {
+        return createApiKeyWithResponseAsync(resourceGroupName, organizationName, environmentId, clusterId, body)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creates API key for a schema registry Cluster ID or Kafka Cluster ID under a environment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param clusterId Confluent kafka or schema registry cluster id.
+     * @param body Request payload for get creating API Key for schema registry Cluster ID or Kafka Cluster ID under a
+     * environment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details API key along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ApiKeyRecordInner> createApiKeyWithResponse(String resourceGroupName, String organizationName,
+        String environmentId, String clusterId, CreateApiKeyModel body, Context context) {
+        return createApiKeyWithResponseAsync(resourceGroupName, organizationName, environmentId, clusterId, body,
+            context).block();
+    }
+
+    /**
+     * Creates API key for a schema registry Cluster ID or Kafka Cluster ID under a environment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param clusterId Confluent kafka or schema registry cluster id.
+     * @param body Request payload for get creating API Key for schema registry Cluster ID or Kafka Cluster ID under a
+     * environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details API key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApiKeyRecordInner createApiKey(String resourceGroupName, String organizationName, String environmentId,
+        String clusterId, CreateApiKeyModel body) {
+        return createApiKeyWithResponse(resourceGroupName, organizationName, environmentId, clusterId, body,
+            Context.NONE).getValue();
+    }
+
+    /**
+     * Deletes API key of a kafka or schema registry cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param apiKeyId Confluent API Key id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> deleteClusterApiKeyWithResponseAsync(String resourceGroupName, String organizationName,
+        String apiKeyId) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (organizationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
+        }
+        if (apiKeyId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter apiKeyId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.deleteClusterApiKey(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, organizationName, apiKeyId, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Deletes API key of a kafka or schema registry cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param apiKeyId Confluent API Key id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> deleteClusterApiKeyWithResponseAsync(String resourceGroupName, String organizationName,
+        String apiKeyId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (organizationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
+        }
+        if (apiKeyId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter apiKeyId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.deleteClusterApiKey(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, organizationName, apiKeyId, accept, context);
+    }
+
+    /**
+     * Deletes API key of a kafka or schema registry cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param apiKeyId Confluent API Key id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteClusterApiKeyAsync(String resourceGroupName, String organizationName, String apiKeyId) {
+        return deleteClusterApiKeyWithResponseAsync(resourceGroupName, organizationName, apiKeyId)
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Deletes API key of a kafka or schema registry cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param apiKeyId Confluent API Key id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteClusterApiKeyWithResponse(String resourceGroupName, String organizationName,
+        String apiKeyId, Context context) {
+        return deleteClusterApiKeyWithResponseAsync(resourceGroupName, organizationName, apiKeyId, context).block();
+    }
+
+    /**
+     * Deletes API key of a kafka or schema registry cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param apiKeyId Confluent API Key id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteClusterApiKey(String resourceGroupName, String organizationName, String apiKeyId) {
+        deleteClusterApiKeyWithResponse(resourceGroupName, organizationName, apiKeyId, Context.NONE);
+    }
+
+    /**
+     * Get API key details of a kafka or schema registry cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param apiKeyId Confluent API Key id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return aPI key details of a kafka or schema registry cluster along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ApiKeyRecordInner>> getClusterApiKeyWithResponseAsync(String resourceGroupName,
+        String organizationName, String apiKeyId) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (organizationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
+        }
+        if (apiKeyId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter apiKeyId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getClusterApiKey(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, organizationName, apiKeyId, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get API key details of a kafka or schema registry cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param apiKeyId Confluent API Key id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return aPI key details of a kafka or schema registry cluster along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ApiKeyRecordInner>> getClusterApiKeyWithResponseAsync(String resourceGroupName,
+        String organizationName, String apiKeyId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (organizationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
+        }
+        if (apiKeyId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter apiKeyId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.getClusterApiKey(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, organizationName, apiKeyId, accept, context);
+    }
+
+    /**
+     * Get API key details of a kafka or schema registry cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param apiKeyId Confluent API Key id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return aPI key details of a kafka or schema registry cluster on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ApiKeyRecordInner> getClusterApiKeyAsync(String resourceGroupName, String organizationName,
+        String apiKeyId) {
+        return getClusterApiKeyWithResponseAsync(resourceGroupName, organizationName, apiKeyId)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get API key details of a kafka or schema registry cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param apiKeyId Confluent API Key id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return aPI key details of a kafka or schema registry cluster along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ApiKeyRecordInner> getClusterApiKeyWithResponse(String resourceGroupName, String organizationName,
+        String apiKeyId, Context context) {
+        return getClusterApiKeyWithResponseAsync(resourceGroupName, organizationName, apiKeyId, context).block();
+    }
+
+    /**
+     * Get API key details of a kafka or schema registry cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param apiKeyId Confluent API Key id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return aPI key details of a kafka or schema registry cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApiKeyRecordInner getClusterApiKey(String resourceGroupName, String organizationName, String apiKeyId) {
+        return getClusterApiKeyWithResponse(resourceGroupName, organizationName, apiKeyId, Context.NONE).getValue();
+    }
+
+    /**
+     * Get schema registry cluster by Id.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param clusterId Confluent kafka or schema registry cluster id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema registry cluster by Id along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<SchemaRegistryClusterRecordInner>> getSchemaRegistryClusterByIdWithResponseAsync(
+        String resourceGroupName, String organizationName, String environmentId, String clusterId) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (organizationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
+        }
+        if (environmentId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter environmentId is required and cannot be null."));
+        }
+        if (clusterId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getSchemaRegistryClusterById(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, organizationName,
+                environmentId, clusterId, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get schema registry cluster by Id.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param clusterId Confluent kafka or schema registry cluster id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema registry cluster by Id along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<SchemaRegistryClusterRecordInner>> getSchemaRegistryClusterByIdWithResponseAsync(
+        String resourceGroupName, String organizationName, String environmentId, String clusterId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (organizationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
+        }
+        if (environmentId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter environmentId is required and cannot be null."));
+        }
+        if (clusterId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.getSchemaRegistryClusterById(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, organizationName, environmentId, clusterId, accept,
+            context);
+    }
+
+    /**
+     * Get schema registry cluster by Id.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param clusterId Confluent kafka or schema registry cluster id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema registry cluster by Id on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<SchemaRegistryClusterRecordInner> getSchemaRegistryClusterByIdAsync(String resourceGroupName,
+        String organizationName, String environmentId, String clusterId) {
+        return getSchemaRegistryClusterByIdWithResponseAsync(resourceGroupName, organizationName, environmentId,
+            clusterId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get schema registry cluster by Id.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param clusterId Confluent kafka or schema registry cluster id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema registry cluster by Id along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SchemaRegistryClusterRecordInner> getSchemaRegistryClusterByIdWithResponse(String resourceGroupName,
+        String organizationName, String environmentId, String clusterId, Context context) {
+        return getSchemaRegistryClusterByIdWithResponseAsync(resourceGroupName, organizationName, environmentId,
+            clusterId, context).block();
+    }
+
+    /**
+     * Get schema registry cluster by Id.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param clusterId Confluent kafka or schema registry cluster id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema registry cluster by Id.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SchemaRegistryClusterRecordInner getSchemaRegistryClusterById(String resourceGroupName,
+        String organizationName, String environmentId, String clusterId) {
+        return getSchemaRegistryClusterByIdWithResponse(resourceGroupName, organizationName, environmentId, clusterId,
+            Context.NONE).getValue();
+    }
+
+    /**
+     * Get cluster by Id.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param clusterId Confluent kafka or schema registry cluster id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster by Id along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<SCClusterRecordInner>> getClusterByIdWithResponseAsync(String resourceGroupName,
+        String organizationName, String environmentId, String clusterId) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (organizationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
+        }
+        if (environmentId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter environmentId is required and cannot be null."));
+        }
+        if (clusterId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getClusterById(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, organizationName, environmentId, clusterId, accept,
+                context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get cluster by Id.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param clusterId Confluent kafka or schema registry cluster id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster by Id along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<SCClusterRecordInner>> getClusterByIdWithResponseAsync(String resourceGroupName,
+        String organizationName, String environmentId, String clusterId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (organizationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
+        }
+        if (environmentId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter environmentId is required and cannot be null."));
+        }
+        if (clusterId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.getClusterById(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, organizationName, environmentId, clusterId, accept,
+            context);
+    }
+
+    /**
+     * Get cluster by Id.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param clusterId Confluent kafka or schema registry cluster id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster by Id on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<SCClusterRecordInner> getClusterByIdAsync(String resourceGroupName, String organizationName,
+        String environmentId, String clusterId) {
+        return getClusterByIdWithResponseAsync(resourceGroupName, organizationName, environmentId, clusterId)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get cluster by Id.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param clusterId Confluent kafka or schema registry cluster id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster by Id along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SCClusterRecordInner> getClusterByIdWithResponse(String resourceGroupName, String organizationName,
+        String environmentId, String clusterId, Context context) {
+        return getClusterByIdWithResponseAsync(resourceGroupName, organizationName, environmentId, clusterId, context)
+            .block();
+    }
+
+    /**
+     * Get cluster by Id.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param environmentId Confluent environment id.
+     * @param clusterId Confluent kafka or schema registry cluster id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster by Id.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SCClusterRecordInner getClusterById(String resourceGroupName, String organizationName, String environmentId,
+        String clusterId) {
+        return getClusterByIdWithResponse(resourceGroupName, organizationName, environmentId, clusterId, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1224,6 +2947,185 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of GET request to list Confluent operations along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SCEnvironmentRecordInner>> listEnvironmentsNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listEnvironmentsNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<SCEnvironmentRecordInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of GET request to list Confluent operations along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SCEnvironmentRecordInner>> listEnvironmentsNextSinglePageAsync(String nextLink,
+        Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listEnvironmentsNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of GET request to list clusters in the environment of a confluent organization along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SCClusterRecordInner>> listClustersNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listClustersNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<SCClusterRecordInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of GET request to list clusters in the environment of a confluent organization along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SCClusterRecordInner>> listClustersNextSinglePageAsync(String nextLink,
+        Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listClustersNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of GET request to list schema registry clusters in the environment of a confluent organization
+     * along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SchemaRegistryClusterRecordInner>>
+        listSchemaRegistryClustersNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.listSchemaRegistryClustersNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<SchemaRegistryClusterRecordInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of GET request to list schema registry clusters in the environment of a confluent organization
+     * along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SchemaRegistryClusterRecordInner>>
+        listSchemaRegistryClustersNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listSchemaRegistryClustersNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }

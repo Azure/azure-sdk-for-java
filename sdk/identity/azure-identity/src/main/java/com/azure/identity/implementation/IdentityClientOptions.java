@@ -36,7 +36,7 @@ import java.util.function.Function;
  */
 public final class IdentityClientOptions implements Cloneable {
     private static final ClientLogger LOGGER = new ClientLogger(IdentityClientOptions.class);
-    private static final int MAX_RETRY_DEFAULT_LIMIT = 3;
+    private static final int MAX_RETRY_DEFAULT_LIMIT = 6;
     public static final String AZURE_IDENTITY_DISABLE_MULTI_TENANT_AUTH = "AZURE_IDENTITY_DISABLE_MULTITENANTAUTH";
     public static final String AZURE_POD_IDENTITY_AUTHORITY_HOST = "AZURE_POD_IDENTITY_AUTHORITY_HOST";
 
@@ -79,7 +79,9 @@ public final class IdentityClientOptions implements Cloneable {
     private long brokerWindowHandle;
     private boolean brokerEnabled;
     private boolean enableMsaPassthrough;
-    private boolean useOperatingSystemAccount;
+    private boolean useDefaultBrokerAccount;
+
+    private boolean useImdsRetryStrategy;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -90,13 +92,22 @@ public final class IdentityClientOptions implements Cloneable {
         identityLogOptionsImpl = new IdentityLogOptionsImpl();
         browserCustomizationOptions = new BrowserCustomizationOptions();
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
-        retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
+        retryTimeout = getIMDSretryTimeoutFunction();
         perCallPolicies = new ArrayList<>();
         perRetryPolicies = new ArrayList<>();
         additionallyAllowedTenants = new HashSet<>();
         regionalAuthority = RegionalAuthority.fromString(
             configuration.get(Configuration.PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME));
         instanceDiscovery = true;
+    }
+
+    private static Function<Duration, Duration> getIMDSretryTimeoutFunction() {
+        return inputDuration -> {
+            long retries = inputDuration.getSeconds();
+            // Calculate the delay as 800ms * (2 ^ (retries - 1)), ensuring retries start at 1 for the first attempt
+            long delay = (long) (800 * Math.pow(2, retries - 1));
+            return Duration.ofMillis(delay);
+        };
     }
 
     /**
@@ -567,6 +578,15 @@ public final class IdentityClientOptions implements Cloneable {
         return this.retryPolicy;
     }
 
+    public boolean getUseImdsRetryStrategy() {
+        return this.useImdsRetryStrategy;
+    }
+
+    public void setUseImdsRetryStrategy() {
+        this.useImdsRetryStrategy = true;
+    }
+
+
     /**
      * Add a per call policy.
      * @param httpPipelinePolicy the http pipeline policy to add.
@@ -784,11 +804,11 @@ public final class IdentityClientOptions implements Cloneable {
 
     /**
      * Sets whether to use the logged-in user's account for broker authentication.
-     * @param useOperatingSystemAccount
+     * @param useDefaultBrokerAccount
      * @return the updated client options
      */
-    public IdentityClientOptions setUseOperatingSystemAccount(boolean useOperatingSystemAccount) {
-        this.useOperatingSystemAccount = useOperatingSystemAccount;
+    public IdentityClientOptions setUseDefaultBrokerAccount(boolean useDefaultBrokerAccount) {
+        this.useDefaultBrokerAccount = useDefaultBrokerAccount;
         return this;
     }
 
@@ -804,8 +824,8 @@ public final class IdentityClientOptions implements Cloneable {
      * Gets the status whether to use the logged-in user's account for broker authentication.
      * @return the flag indicating if the logged-in user's account should be used for broker authentication.
      */
-    public boolean useOperatingSystemAccount() {
-        return this.useOperatingSystemAccount;
+    public boolean useDefaultBrokerAccount() {
+        return this.useDefaultBrokerAccount;
     }
 
     public IdentityClientOptions clone() {

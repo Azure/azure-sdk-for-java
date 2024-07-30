@@ -7,24 +7,27 @@ package com.azure.resourcemanager.support.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Additional information for technical support ticket. */
+/**
+ * Additional information for technical support ticket.
+ */
 @Fluent
 public final class TechnicalTicketDetails {
     /*
-     * This is the resource Id of the Azure service resource (For example: A virtual machine resource or an HDInsight
-     * resource) for which the support ticket is created.
+     * This is the resource Id of the Azure service resource (For example: A virtual machine resource or an HDInsight resource) for which the support ticket is created.
      */
     @JsonProperty(value = "resourceId")
     private String resourceId;
 
-    /** Creates an instance of TechnicalTicketDetails class. */
+    /**
+     * Creates an instance of TechnicalTicketDetails class.
+     */
     public TechnicalTicketDetails() {
     }
 
     /**
      * Get the resourceId property: This is the resource Id of the Azure service resource (For example: A virtual
      * machine resource or an HDInsight resource) for which the support ticket is created.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -34,7 +37,7 @@ public final class TechnicalTicketDetails {
     /**
      * Set the resourceId property: This is the resource Id of the Azure service resource (For example: A virtual
      * machine resource or an HDInsight resource) for which the support ticket is created.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the TechnicalTicketDetails object itself.
      */
@@ -45,7 +48,7 @@ public final class TechnicalTicketDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

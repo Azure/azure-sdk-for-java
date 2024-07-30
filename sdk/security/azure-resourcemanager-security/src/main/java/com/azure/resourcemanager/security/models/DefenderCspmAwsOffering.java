@@ -6,18 +6,30 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The CSPM P1 for AWS offering.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "offeringType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "offeringType",
+    defaultImpl = DefenderCspmAwsOffering.class,
+    visible = true)
 @JsonTypeName("DefenderCspmAws")
 @Fluent
 public final class DefenderCspmAwsOffering extends CloudOffering {
     /*
-     * The Microsoft Defender for Server VM scanning configuration
+     * The type of the security offering.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "offeringType", required = true)
+    private OfferingType offeringType = OfferingType.DEFENDER_CSPM_AWS;
+
+    /*
+     * The Microsoft Defender for CSPM offering VM scanning configuration
      */
     @JsonProperty(value = "vmScanners")
     private DefenderCspmAwsOfferingVmScanners vmScanners;
@@ -35,7 +47,7 @@ public final class DefenderCspmAwsOffering extends CloudOffering {
     private DefenderCspmAwsOfferingDatabasesDspm databasesDspm;
 
     /*
-     * Defenders CSPM Cloud infrastructure entitlement management (CIEM) offering configurations
+     * Defenders CSPM Permissions Management offering configurations
      */
     @JsonProperty(value = "ciem")
     private DefenderCspmAwsOfferingCiem ciem;
@@ -59,7 +71,17 @@ public final class DefenderCspmAwsOffering extends CloudOffering {
     }
 
     /**
-     * Get the vmScanners property: The Microsoft Defender for Server VM scanning configuration.
+     * Get the offeringType property: The type of the security offering.
+     * 
+     * @return the offeringType value.
+     */
+    @Override
+    public OfferingType offeringType() {
+        return this.offeringType;
+    }
+
+    /**
+     * Get the vmScanners property: The Microsoft Defender for CSPM offering VM scanning configuration.
      * 
      * @return the vmScanners value.
      */
@@ -68,7 +90,7 @@ public final class DefenderCspmAwsOffering extends CloudOffering {
     }
 
     /**
-     * Set the vmScanners property: The Microsoft Defender for Server VM scanning configuration.
+     * Set the vmScanners property: The Microsoft Defender for CSPM offering VM scanning configuration.
      * 
      * @param vmScanners the vmScanners value to set.
      * @return the DefenderCspmAwsOffering object itself.
@@ -120,8 +142,7 @@ public final class DefenderCspmAwsOffering extends CloudOffering {
     }
 
     /**
-     * Get the ciem property: Defenders CSPM Cloud infrastructure entitlement management (CIEM) offering
-     * configurations.
+     * Get the ciem property: Defenders CSPM Permissions Management offering configurations.
      * 
      * @return the ciem value.
      */
@@ -130,8 +151,7 @@ public final class DefenderCspmAwsOffering extends CloudOffering {
     }
 
     /**
-     * Set the ciem property: Defenders CSPM Cloud infrastructure entitlement management (CIEM) offering
-     * configurations.
+     * Set the ciem property: Defenders CSPM Permissions Management offering configurations.
      * 
      * @param ciem the ciem value to set.
      * @return the DefenderCspmAwsOffering object itself.

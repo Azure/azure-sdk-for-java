@@ -9,9 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class ProtectionPoliciesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * AzureIaasVm/ProtectionPolicies_Get.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/AzureIaasVm/ProtectionPolicies_Get.json
      */
     /**
      * Sample code: Get Azure IaasVm Protection Policy Details.
@@ -20,14 +18,12 @@ public final class ProtectionPoliciesGetSamples {
      */
     public static void getAzureIaasVmProtectionPolicyDetails(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.protectionPolicies().getWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "testPolicy1",
-            com.azure.core.util.Context.NONE);
+        manager.protectionPolicies()
+            .getWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "testPolicy1", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * AzureIaasVm/V2Policy/v2-Get-Policy.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/AzureIaasVm/V2Policy/v2-Get-Policy.json
      */
     /**
      * Sample code: Get Azure IaasVm Enhanced Protection Policy Details.
@@ -36,7 +32,7 @@ public final class ProtectionPoliciesGetSamples {
      */
     public static void getAzureIaasVmEnhancedProtectionPolicyDetails(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.protectionPolicies().getWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "v2-daily-sample",
-            com.azure.core.util.Context.NONE);
+        manager.protectionPolicies()
+            .getWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "v2-daily-sample", com.azure.core.util.Context.NONE);
     }
 }

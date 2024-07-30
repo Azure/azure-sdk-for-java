@@ -12,7 +12,9 @@ import com.azure.resourcemanager.resources.models.ResourceTypeAliases;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The data policy manifest. */
+/**
+ * The data policy manifest.
+ */
 @Fluent
 public final class DataPolicyManifestInner extends ProxyResource {
     /*
@@ -21,13 +23,15 @@ public final class DataPolicyManifestInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private DataPolicyManifestProperties innerProperties;
 
-    /** Creates an instance of DataPolicyManifestInner class. */
+    /**
+     * Creates an instance of DataPolicyManifestInner class.
+     */
     public DataPolicyManifestInner() {
     }
 
     /**
      * Get the innerProperties property: The data policy manifest properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DataPolicyManifestProperties innerProperties() {
@@ -36,7 +40,7 @@ public final class DataPolicyManifestInner extends ProxyResource {
 
     /**
      * Get the namespaces property: The list of namespaces for the data policy manifest.
-     *
+     * 
      * @return the namespaces value.
      */
     public List<String> namespaces() {
@@ -45,7 +49,7 @@ public final class DataPolicyManifestInner extends ProxyResource {
 
     /**
      * Set the namespaces property: The list of namespaces for the data policy manifest.
-     *
+     * 
      * @param namespaces the namespaces value to set.
      * @return the DataPolicyManifestInner object itself.
      */
@@ -59,7 +63,7 @@ public final class DataPolicyManifestInner extends ProxyResource {
 
     /**
      * Get the policyMode property: The policy mode of the data policy manifest.
-     *
+     * 
      * @return the policyMode value.
      */
     public String policyMode() {
@@ -68,7 +72,7 @@ public final class DataPolicyManifestInner extends ProxyResource {
 
     /**
      * Set the policyMode property: The policy mode of the data policy manifest.
-     *
+     * 
      * @param policyMode the policyMode value to set.
      * @return the DataPolicyManifestInner object itself.
      */
@@ -82,7 +86,7 @@ public final class DataPolicyManifestInner extends ProxyResource {
 
     /**
      * Get the isBuiltInOnly property: A value indicating whether policy mode is allowed only in built-in definitions.
-     *
+     * 
      * @return the isBuiltInOnly value.
      */
     public Boolean isBuiltInOnly() {
@@ -91,7 +95,7 @@ public final class DataPolicyManifestInner extends ProxyResource {
 
     /**
      * Set the isBuiltInOnly property: A value indicating whether policy mode is allowed only in built-in definitions.
-     *
+     * 
      * @param isBuiltInOnly the isBuiltInOnly value to set.
      * @return the DataPolicyManifestInner object itself.
      */
@@ -105,7 +109,7 @@ public final class DataPolicyManifestInner extends ProxyResource {
 
     /**
      * Get the resourceTypeAliases property: An array of resource type aliases.
-     *
+     * 
      * @return the resourceTypeAliases value.
      */
     public List<ResourceTypeAliases> resourceTypeAliases() {
@@ -114,7 +118,7 @@ public final class DataPolicyManifestInner extends ProxyResource {
 
     /**
      * Set the resourceTypeAliases property: An array of resource type aliases.
-     *
+     * 
      * @param resourceTypeAliases the resourceTypeAliases value to set.
      * @return the DataPolicyManifestInner object itself.
      */
@@ -128,7 +132,7 @@ public final class DataPolicyManifestInner extends ProxyResource {
 
     /**
      * Get the effects property: The effect definition.
-     *
+     * 
      * @return the effects value.
      */
     public List<DataEffect> effects() {
@@ -137,7 +141,7 @@ public final class DataPolicyManifestInner extends ProxyResource {
 
     /**
      * Set the effects property: The effect definition.
-     *
+     * 
      * @param effects the effects value to set.
      * @return the DataPolicyManifestInner object itself.
      */
@@ -151,7 +155,7 @@ public final class DataPolicyManifestInner extends ProxyResource {
 
     /**
      * Get the fieldValues property: The non-alias field accessor values that can be used in the policy rule.
-     *
+     * 
      * @return the fieldValues value.
      */
     public List<String> fieldValues() {
@@ -160,7 +164,7 @@ public final class DataPolicyManifestInner extends ProxyResource {
 
     /**
      * Set the fieldValues property: The non-alias field accessor values that can be used in the policy rule.
-     *
+     * 
      * @param fieldValues the fieldValues value to set.
      * @return the DataPolicyManifestInner object itself.
      */
@@ -174,7 +178,7 @@ public final class DataPolicyManifestInner extends ProxyResource {
 
     /**
      * Get the standard property: The standard resource functions (subscription and/or resourceGroup).
-     *
+     * 
      * @return the standard value.
      */
     public List<String> standard() {
@@ -183,7 +187,7 @@ public final class DataPolicyManifestInner extends ProxyResource {
 
     /**
      * Set the standard property: The standard resource functions (subscription and/or resourceGroup).
-     *
+     * 
      * @param standard the standard value to set.
      * @return the DataPolicyManifestInner object itself.
      */
@@ -197,7 +201,7 @@ public final class DataPolicyManifestInner extends ProxyResource {
 
     /**
      * Get the custom property: An array of data manifest custom resource definition.
-     *
+     * 
      * @return the custom value.
      */
     public List<DataManifestCustomResourceFunctionDefinition> custom() {
@@ -206,7 +210,7 @@ public final class DataPolicyManifestInner extends ProxyResource {
 
     /**
      * Set the custom property: An array of data manifest custom resource definition.
-     *
+     * 
      * @param custom the custom value to set.
      * @return the DataPolicyManifestInner object itself.
      */
@@ -220,7 +224,7 @@ public final class DataPolicyManifestInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

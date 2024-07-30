@@ -27,14 +27,16 @@ public final class ObjectReplicationPolicyFilter {
     @JsonProperty(value = "minCreationTime")
     private String minCreationTime;
 
-    /** Creates an instance of ObjectReplicationPolicyFilter class. */
+    /**
+     * Creates an instance of ObjectReplicationPolicyFilter class.
+     */
     public ObjectReplicationPolicyFilter() {
     }
 
     /**
      * Get the prefixMatch property: Optional. Filters the results to replicate only blobs whose names begin with the
      * specified prefix.
-     *
+     * 
      * @return the prefixMatch value.
      */
     public List<String> prefixMatch() {
@@ -44,7 +46,7 @@ public final class ObjectReplicationPolicyFilter {
     /**
      * Set the prefixMatch property: Optional. Filters the results to replicate only blobs whose names begin with the
      * specified prefix.
-     *
+     * 
      * @param prefixMatch the prefixMatch value to set.
      * @return the ObjectReplicationPolicyFilter object itself.
      */
@@ -56,7 +58,7 @@ public final class ObjectReplicationPolicyFilter {
     /**
      * Get the minCreationTime property: Blobs created after the time will be replicated to the destination. It must be
      * in datetime format 'yyyy-MM-ddTHH:mm:ssZ'. Example: 2020-02-19T16:05:00Z.
-     *
+     * 
      * @return the minCreationTime value.
      */
     public String minCreationTime() {
@@ -66,7 +68,7 @@ public final class ObjectReplicationPolicyFilter {
     /**
      * Set the minCreationTime property: Blobs created after the time will be replicated to the destination. It must be
      * in datetime format 'yyyy-MM-ddTHH:mm:ssZ'. Example: 2020-02-19T16:05:00Z.
-     *
+     * 
      * @param minCreationTime the minCreationTime value to set.
      * @return the ObjectReplicationPolicyFilter object itself.
      */
@@ -77,7 +79,7 @@ public final class ObjectReplicationPolicyFilter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

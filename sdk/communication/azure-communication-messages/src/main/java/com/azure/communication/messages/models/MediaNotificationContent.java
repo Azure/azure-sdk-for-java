@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -14,7 +15,11 @@ import java.util.List;
 /**
  * A request to send a media notification.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = MediaNotificationContent.class,
+    visible = true)
 @JsonTypeName("image")
 @Fluent
 public final class MediaNotificationContent extends NotificationContent {
@@ -31,7 +36,7 @@ public final class MediaNotificationContent extends NotificationContent {
      */
     @Generated
     @JsonProperty(value = "mediaUri")
-    private String mediaUrl;
+    private final String mediaUrl;
 
     /**
      * Creates an instance of MediaNotificationContent class.
@@ -79,5 +84,24 @@ public final class MediaNotificationContent extends NotificationContent {
     @Generated
     public String getMediaUrl() {
         return this.mediaUrl;
+    }
+
+    /*
+     * The type discriminator describing a notification type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private CommunicationMessageKind kind = CommunicationMessageKind.IMAGE;
+
+    /**
+     * Get the kind property: The type discriminator describing a notification type.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public CommunicationMessageKind getKind() {
+        return this.kind;
     }
 }

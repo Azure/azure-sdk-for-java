@@ -9,9 +9,7 @@ package com.azure.resourcemanager.eventgrid.generated;
  */
 public final class PartnerTopicsDeactivateSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
-     * PartnerTopics_Deactivate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/PartnerTopics_Deactivate.json
      */
     /**
      * Sample code: PartnerTopics_Deactivate.
@@ -19,7 +17,7 @@ public final class PartnerTopicsDeactivateSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void partnerTopicsDeactivate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.partnerTopics().deactivateWithResponse("examplerg", "examplePartnerTopic1",
-            com.azure.core.util.Context.NONE);
+        manager.partnerTopics()
+            .deactivateWithResponse("examplerg", "examplePartnerTopic1", com.azure.core.util.Context.NONE);
     }
 }

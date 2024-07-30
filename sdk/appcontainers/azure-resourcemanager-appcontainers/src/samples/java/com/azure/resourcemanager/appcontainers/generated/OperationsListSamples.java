@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/Operations_List.json
+     * x-ms-original-file:
+     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/Operations_List.json
      */
     /**
      * Sample code: List all operations.
-     *
+     * 
      * @param manager Entry point to ContainerAppsApiManager.
      */
     public static void listAllOperations(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {

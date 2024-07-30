@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -15,15 +16,23 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "ruleCollectionType",
-    defaultImpl = FirewallPolicyRuleCollection.class)
+    defaultImpl = FirewallPolicyRuleCollection.class,
+    visible = true)
 @JsonTypeName("FirewallPolicyRuleCollection")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "FirewallPolicyNatRuleCollection", value = FirewallPolicyNatRuleCollection.class),
     @JsonSubTypes.Type(name = "FirewallPolicyFilterRuleCollection", value = FirewallPolicyFilterRuleCollection.class) })
 @Fluent
 public class FirewallPolicyRuleCollection {
+    /*
+     * The type of the rule collection.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "ruleCollectionType", required = true)
+    private FirewallPolicyRuleCollectionType ruleCollectionType
+        = FirewallPolicyRuleCollectionType.fromString("FirewallPolicyRuleCollection");
+
     /*
      * The name of the rule collection.
      */
@@ -40,6 +49,15 @@ public class FirewallPolicyRuleCollection {
      * Creates an instance of FirewallPolicyRuleCollection class.
      */
     public FirewallPolicyRuleCollection() {
+    }
+
+    /**
+     * Get the ruleCollectionType property: The type of the rule collection.
+     * 
+     * @return the ruleCollectionType value.
+     */
+    public FirewallPolicyRuleCollectionType ruleCollectionType() {
+        return this.ruleCollectionType;
     }
 
     /**

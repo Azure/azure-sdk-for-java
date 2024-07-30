@@ -13,19 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class VaultJobExtendedInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VaultJobExtendedInfo model = BinaryData
-            .fromString(
-                "{\"propertyBag\":{\"rv\":\"ffplfmuvapckcc\",\"moiroqb\":\"eyoxoyyukphai\",\"yyrmfsvbp\":\"shbraga\"}}")
+        VaultJobExtendedInfo model = BinaryData.fromString(
+            "{\"propertyBag\":{\"grfihotjewlp\":\"kzudn\",\"hqo\":\"uzzjgnrefq\",\"diw\":\"oihiqak\",\"hcspo\":\"brkwpzdqt\"}}")
             .toObject(VaultJobExtendedInfo.class);
-        Assertions.assertEquals("ffplfmuvapckcc", model.propertyBag().get("rv"));
+        Assertions.assertEquals("kzudn", model.propertyBag().get("grfihotjewlp"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VaultJobExtendedInfo model = new VaultJobExtendedInfo()
-            .withPropertyBag(mapOf("rv", "ffplfmuvapckcc", "moiroqb", "eyoxoyyukphai", "yyrmfsvbp", "shbraga"));
+        VaultJobExtendedInfo model = new VaultJobExtendedInfo().withPropertyBag(
+            mapOf("grfihotjewlp", "kzudn", "hqo", "uzzjgnrefq", "diw", "oihiqak", "hcspo", "brkwpzdqt"));
         model = BinaryData.fromObject(model).toObject(VaultJobExtendedInfo.class);
-        Assertions.assertEquals("ffplfmuvapckcc", model.propertyBag().get("rv"));
+        Assertions.assertEquals("kzudn", model.propertyBag().get("grfihotjewlp"));
     }
 
     // Use "Map.of" if available

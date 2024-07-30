@@ -19,7 +19,8 @@ public final class TriggerRunsCancelSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void triggersCancel(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.triggerRuns().cancelWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleTrigger",
-            "2f7fdb90-5df1-4b8e-ac2f-064cfa58202b", com.azure.core.util.Context.NONE);
+        manager.triggerRuns()
+            .cancelWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleTrigger",
+                "2f7fdb90-5df1-4b8e-ac2f-064cfa58202b", com.azure.core.util.Context.NONE);
     }
 }

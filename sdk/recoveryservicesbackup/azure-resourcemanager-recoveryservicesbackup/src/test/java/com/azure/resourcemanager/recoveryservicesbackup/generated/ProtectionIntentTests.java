@@ -26,7 +26,9 @@ public final class ProtectionIntentTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ProtectionIntent model = new ProtectionIntent().withBackupManagementType(BackupManagementType.AZURE_SQL)
-            .withSourceResourceId("kvnipjoxz").withItemId("chgejspodm").withPolicyId("lzydehojwyahux")
+            .withSourceResourceId("kvnipjoxz")
+            .withItemId("chgejspodm")
+            .withPolicyId("lzydehojwyahux")
             .withProtectionState(ProtectionStatus.PROTECTION_FAILED);
         model = BinaryData.fromObject(model).toObject(ProtectionIntent.class);
         Assertions.assertEquals(BackupManagementType.AZURE_SQL, model.backupManagementType());

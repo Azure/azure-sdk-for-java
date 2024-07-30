@@ -10,7 +10,9 @@ import com.azure.resourcemanager.resources.models.ResourceGroupProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Resource group information. */
+/**
+ * Resource group information.
+ */
 @Fluent
 public final class ResourceGroupInner extends Resource {
     /*
@@ -25,13 +27,15 @@ public final class ResourceGroupInner extends Resource {
     @JsonProperty(value = "managedBy")
     private String managedBy;
 
-    /** Creates an instance of ResourceGroupInner class. */
+    /**
+     * Creates an instance of ResourceGroupInner class.
+     */
     public ResourceGroupInner() {
     }
 
     /**
      * Get the properties property: The resource group properties.
-     *
+     * 
      * @return the properties value.
      */
     public ResourceGroupProperties properties() {
@@ -40,7 +44,7 @@ public final class ResourceGroupInner extends Resource {
 
     /**
      * Set the properties property: The resource group properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ResourceGroupInner object itself.
      */
@@ -51,7 +55,7 @@ public final class ResourceGroupInner extends Resource {
 
     /**
      * Get the managedBy property: The ID of the resource that manages this resource group.
-     *
+     * 
      * @return the managedBy value.
      */
     public String managedBy() {
@@ -60,7 +64,7 @@ public final class ResourceGroupInner extends Resource {
 
     /**
      * Set the managedBy property: The ID of the resource that manages this resource group.
-     *
+     * 
      * @param managedBy the managedBy value to set.
      * @return the ResourceGroupInner object itself.
      */
@@ -69,14 +73,18 @@ public final class ResourceGroupInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceGroupInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceGroupInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -85,7 +93,7 @@ public final class ResourceGroupInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

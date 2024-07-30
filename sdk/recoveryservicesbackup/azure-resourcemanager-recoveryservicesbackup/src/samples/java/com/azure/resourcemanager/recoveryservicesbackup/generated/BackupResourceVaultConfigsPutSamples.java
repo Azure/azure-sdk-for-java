@@ -14,9 +14,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.SoftDeleteFeature
  */
 public final class BackupResourceVaultConfigsPutSamples {
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * Common/BackupResourceVaultConfigs_Put.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/Common/BackupResourceVaultConfigs_Put.json
      */
     /**
      * Sample code: Update Vault Security Config.
@@ -25,10 +23,11 @@ public final class BackupResourceVaultConfigsPutSamples {
      */
     public static void updateVaultSecurityConfig(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.backupResourceVaultConfigs().putWithResponse("SwaggerTest", "SwaggerTestRg",
-            new BackupResourceVaultConfigResourceInner()
-                .withProperties(new BackupResourceVaultConfig().withEnhancedSecurityState(EnhancedSecurityState.ENABLED)
-                    .withSoftDeleteFeatureState(SoftDeleteFeatureState.ENABLED)),
-            com.azure.core.util.Context.NONE);
+        manager.backupResourceVaultConfigs()
+            .putWithResponse("SwaggerTest", "SwaggerTestRg",
+                new BackupResourceVaultConfigResourceInner().withProperties(
+                    new BackupResourceVaultConfig().withEnhancedSecurityState(EnhancedSecurityState.ENABLED)
+                        .withSoftDeleteFeatureState(SoftDeleteFeatureState.ENABLED)),
+                com.azure.core.util.Context.NONE);
     }
 }

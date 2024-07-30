@@ -15,19 +15,19 @@ public final class GitLabGroupInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GitLabGroupInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningStatusMessage\":\"ihehcecybmr\",\"provisioningStatusUpdateTimeUtc\":\"2021-10-27T04:01:09Z\",\"provisioningState\":\"DeletionFailure\",\"fullyQualifiedName\":\"mpxdlvy\",\"fullyQualifiedFriendlyName\":\"rexcrseqwjksghu\",\"url\":\"zhxogjggsvo\",\"onboardingState\":\"OnboardedByOtherConnector\"},\"id\":\"xibdafhrkmdyo\",\"name\":\"kxfbvfbhdyirhp\",\"type\":\"pgddeimawz\"}")
+            "{\"properties\":{\"provisioningStatusMessage\":\"cakznhokhoitwhrj\",\"provisioningStatusUpdateTimeUtc\":\"2021-10-09T11:08:07Z\",\"provisioningState\":\"Canceled\",\"fullyQualifiedName\":\"dnckidbjpglhz\",\"fullyQualifiedFriendlyName\":\"xzbawkikc\",\"url\":\"fhbssdpjeyoqxded\",\"onboardingState\":\"NotApplicable\"},\"id\":\"iwhagxsur\",\"name\":\"jqrshz\",\"type\":\"bgullc\"}")
             .toObject(GitLabGroupInner.class);
-        Assertions.assertEquals(DevOpsProvisioningState.DELETION_FAILURE, model.properties().provisioningState());
-        Assertions.assertEquals(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR, model.properties().onboardingState());
+        Assertions.assertEquals(DevOpsProvisioningState.CANCELED, model.properties().provisioningState());
+        Assertions.assertEquals(OnboardingState.NOT_APPLICABLE, model.properties().onboardingState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GitLabGroupInner model = new GitLabGroupInner()
-            .withProperties(new GitLabGroupProperties().withProvisioningState(DevOpsProvisioningState.DELETION_FAILURE)
-                .withOnboardingState(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR));
+            .withProperties(new GitLabGroupProperties().withProvisioningState(DevOpsProvisioningState.CANCELED)
+                .withOnboardingState(OnboardingState.NOT_APPLICABLE));
         model = BinaryData.fromObject(model).toObject(GitLabGroupInner.class);
-        Assertions.assertEquals(DevOpsProvisioningState.DELETION_FAILURE, model.properties().provisioningState());
-        Assertions.assertEquals(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR, model.properties().onboardingState());
+        Assertions.assertEquals(DevOpsProvisioningState.CANCELED, model.properties().provisioningState());
+        Assertions.assertEquals(OnboardingState.NOT_APPLICABLE, model.properties().onboardingState());
     }
 }

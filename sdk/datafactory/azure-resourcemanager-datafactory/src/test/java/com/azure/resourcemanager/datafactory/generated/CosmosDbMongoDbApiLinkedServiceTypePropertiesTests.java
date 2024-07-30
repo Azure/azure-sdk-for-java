@@ -11,14 +11,16 @@ public final class CosmosDbMongoDbApiLinkedServiceTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CosmosDbMongoDbApiLinkedServiceTypeProperties model = BinaryData.fromString(
-            "{\"isServerVersionAbove32\":\"dataxgce\",\"connectionString\":\"datax\",\"database\":\"dataanudvqannenxg\"}")
+            "{\"isServerVersionAbove32\":\"datay\",\"connectionString\":\"dataijribeskkopbksri\",\"database\":\"datambtmorikcze\"}")
             .toObject(CosmosDbMongoDbApiLinkedServiceTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CosmosDbMongoDbApiLinkedServiceTypeProperties model = new CosmosDbMongoDbApiLinkedServiceTypeProperties()
-            .withIsServerVersionAbove32("dataxgce").withConnectionString("datax").withDatabase("dataanudvqannenxg");
+        CosmosDbMongoDbApiLinkedServiceTypeProperties model
+            = new CosmosDbMongoDbApiLinkedServiceTypeProperties().withIsServerVersionAbove32("datay")
+                .withConnectionString("dataijribeskkopbksri")
+                .withDatabase("datambtmorikcze");
         model = BinaryData.fromObject(model).toObject(CosmosDbMongoDbApiLinkedServiceTypeProperties.class);
     }
 }

@@ -86,8 +86,8 @@ public final class SapOdpLinkedServiceTypeProperties {
     private Object sncMyName;
 
     /*
-     * Communication partner's SNC name to access the SAP server where the table is located. Type: string (or
-     * Expression with resultType string).
+     * Communication partner's SNC name to access the SAP server where the table is located. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "sncPartnerName")
     private Object sncPartnerName;
@@ -444,8 +444,8 @@ public final class SapOdpLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the x509CertificatePath property: SNC X509 certificate file path. Type: string (or Expression with
-     * resultType string).
+     * Get the x509CertificatePath property: SNC X509 certificate file path. Type: string (or Expression with resultType
+     * string).
      * 
      * @return the x509CertificatePath value.
      */
@@ -454,8 +454,8 @@ public final class SapOdpLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the x509CertificatePath property: SNC X509 certificate file path. Type: string (or Expression with
-     * resultType string).
+     * Set the x509CertificatePath property: SNC X509 certificate file path. Type: string (or Expression with resultType
+     * string).
      * 
      * @param x509CertificatePath the x509CertificatePath value to set.
      * @return the SapOdpLinkedServiceTypeProperties object itself.
@@ -508,8 +508,8 @@ public final class SapOdpLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -518,8 +518,8 @@ public final class SapOdpLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SapOdpLinkedServiceTypeProperties object itself.

@@ -15,7 +15,7 @@ import java.util.Map;
 public final class VirtualRoutersCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualRouterPut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualRouterPut.json
      */
     /**
      * Sample code: Create VirtualRouter.
@@ -23,11 +23,15 @@ public final class VirtualRoutersCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createVirtualRouter(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualRouters().createOrUpdate("rg1", "virtualRouter",
-            new VirtualRouterInner().withLocation("West US").withTags(mapOf("key1", "fakeTokenPlaceholder"))
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualRouters()
+            .createOrUpdate("rg1", "virtualRouter", new VirtualRouterInner().withLocation("West US")
+                .withTags(mapOf("key1", "fakeTokenPlaceholder"))
                 .withHostedGateway(new SubResource().withId(
                     "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vnetGateway")),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

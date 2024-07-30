@@ -8,6 +8,7 @@ import com.azure.resourcemanager.cosmos.models.MongoRoleDefinitionCreateUpdatePa
 import com.azure.resourcemanager.cosmos.models.Privilege;
 import com.azure.resourcemanager.cosmos.models.PrivilegeResource;
 import com.azure.resourcemanager.cosmos.models.Role;
+
 import java.util.Arrays;
 
 /**
@@ -15,22 +16,25 @@ import java.util.Arrays;
  */
 public final class MongoDBResourcesCreateUpdateMongoRoleDefinitionSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
-     * CosmosDBMongoDBRoleDefinitionCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBMongoDBRoleDefinitionCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBMongoDBRoleDefinitionCreateUpdate.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBMongoDBRoleDefinitionCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getMongoDBResources().createUpdateMongoRoleDefinition(
-            "myMongoRoleDefinitionId", "myResourceGroupName", "myAccountName",
-            new MongoRoleDefinitionCreateUpdateParameters().withRoleName("myRoleName").withDatabaseName("sales")
-                .withPrivileges(Arrays.asList(
-                    new Privilege().withResource(new PrivilegeResource().withDb("sales").withCollection("sales"))
-                        .withActions(Arrays.asList("insert", "find"))))
-                .withRoles(Arrays.asList(new Role().withDb("sales").withRole("myInheritedRole"))),
-            com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getMongoDBResources()
+            .createUpdateMongoRoleDefinition("myMongoRoleDefinitionId", "myResourceGroupName", "myAccountName",
+                new MongoRoleDefinitionCreateUpdateParameters().withRoleName("myRoleName")
+                    .withDatabaseName("sales")
+                    .withPrivileges(Arrays.asList(
+                        new Privilege().withResource(new PrivilegeResource().withDb("sales").withCollection("sales"))
+                            .withActions(Arrays.asList("insert", "find"))))
+                    .withRoles(Arrays.asList(new Role().withDb("sales").withRole("myInheritedRole"))),
+                com.azure.core.util.Context.NONE);
     }
 }

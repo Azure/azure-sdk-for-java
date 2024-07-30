@@ -19,8 +19,7 @@ public final class PartnerDetails {
     private String description;
 
     /*
-     * Long description for the partner's scenarios and integration.Length of this description should not exceed 2048
-     * characters.
+     * Long description for the partner's scenarios and integration.Length of this description should not exceed 2048 characters.
      */
     @JsonProperty(value = "longDescription")
     private String longDescription;

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.selfhelp.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -23,6 +22,16 @@ public final class SolutionType extends ExpandableStringEnum<SolutionType> {
     public static final SolutionType SOLUTIONS = fromString("Solutions");
 
     /**
+     * Static value Troubleshooters for SolutionType.
+     */
+    public static final SolutionType TROUBLESHOOTERS = fromString("Troubleshooters");
+
+    /**
+     * Static value SelfHelp for SolutionType.
+     */
+    public static final SolutionType SELF_HELP = fromString("SelfHelp");
+
+    /**
      * Creates a new instance of SolutionType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -37,7 +46,6 @@ public final class SolutionType extends ExpandableStringEnum<SolutionType> {
      * @param name a name to look for.
      * @return the corresponding SolutionType.
      */
-    @JsonCreator
     public static SolutionType fromString(String name) {
         return fromString(name, SolutionType.class);
     }

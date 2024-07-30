@@ -41,8 +41,8 @@ public final class AzureDataLakeAnalyticsLinkedServiceTypeProperties {
     private Object tenant;
 
     /*
-     * Data Lake Analytics account subscription ID (if different from Data Factory account). Type: string (or
-     * Expression with resultType string).
+     * Data Lake Analytics account subscription ID (if different from Data Factory account). Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "subscriptionId")
     private Object subscriptionId;
@@ -118,8 +118,8 @@ public final class AzureDataLakeAnalyticsLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the servicePrincipalKey property: The Key of the application used to authenticate against the Azure Data
-     * Lake Analytics account.
+     * Get the servicePrincipalKey property: The Key of the application used to authenticate against the Azure Data Lake
+     * Analytics account.
      * 
      * @return the servicePrincipalKey value.
      */
@@ -128,8 +128,8 @@ public final class AzureDataLakeAnalyticsLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the servicePrincipalKey property: The Key of the application used to authenticate against the Azure Data
-     * Lake Analytics account.
+     * Set the servicePrincipalKey property: The Key of the application used to authenticate against the Azure Data Lake
+     * Analytics account.
      * 
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the AzureDataLakeAnalyticsLinkedServiceTypeProperties object itself.
@@ -228,8 +228,8 @@ public final class AzureDataLakeAnalyticsLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -238,8 +238,8 @@ public final class AzureDataLakeAnalyticsLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureDataLakeAnalyticsLinkedServiceTypeProperties object itself.
@@ -256,15 +256,17 @@ public final class AzureDataLakeAnalyticsLinkedServiceTypeProperties {
      */
     public void validate() {
         if (accountName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property accountName in model AzureDataLakeAnalyticsLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property accountName in model AzureDataLakeAnalyticsLinkedServiceTypeProperties"));
         }
         if (servicePrincipalKey() != null) {
             servicePrincipalKey().validate();
         }
         if (tenant() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property tenant in model AzureDataLakeAnalyticsLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property tenant in model AzureDataLakeAnalyticsLinkedServiceTypeProperties"));
         }
     }
 

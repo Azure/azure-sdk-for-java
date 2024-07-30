@@ -18,7 +18,7 @@ public final class DatasetsListByFactorySamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void datasetsListByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.datasets().listByFactory("exampleResourceGroup", "exampleFactoryName",
-            com.azure.core.util.Context.NONE);
+        manager.datasets()
+            .listByFactory("exampleResourceGroup", "exampleFactoryName", com.azure.core.util.Context.NONE);
     }
 }

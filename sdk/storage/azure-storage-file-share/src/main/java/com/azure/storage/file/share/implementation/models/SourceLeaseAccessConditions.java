@@ -5,25 +5,26 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/** Parameter group. */
-@JacksonXmlRootElement(localName = "SourceLeaseAccessConditions")
+/**
+ * Parameter group.
+ */
 @Fluent
 public final class SourceLeaseAccessConditions {
     /*
      * Required if the source file has an active infinite lease.
      */
-    @JsonProperty(value = "sourceLeaseId")
     private String sourceLeaseId;
 
-    /** Creates an instance of SourceLeaseAccessConditions class. */
-    public SourceLeaseAccessConditions() {}
+    /**
+     * Creates an instance of SourceLeaseAccessConditions class.
+     */
+    public SourceLeaseAccessConditions() {
+    }
 
     /**
      * Get the sourceLeaseId property: Required if the source file has an active infinite lease.
-     *
+     * 
      * @return the sourceLeaseId value.
      */
     public String getSourceLeaseId() {
@@ -32,7 +33,7 @@ public final class SourceLeaseAccessConditions {
 
     /**
      * Set the sourceLeaseId property: Required if the source file has an active infinite lease.
-     *
+     * 
      * @param sourceLeaseId the sourceLeaseId value to set.
      * @return the SourceLeaseAccessConditions object itself.
      */

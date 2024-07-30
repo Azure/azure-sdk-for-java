@@ -13,23 +13,25 @@ public final class AzureVMAppContainerProtectableContainerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureVMAppContainerProtectableContainer model = BinaryData.fromString(
-            "{\"protectableContainerType\":\"VMAppContainer\",\"friendlyName\":\"srlsmd\",\"backupManagementType\":\"DPM\",\"healthStatus\":\"lpvmjcdoewbidy\",\"containerId\":\"eowxvgpi\"}")
+            "{\"protectableContainerType\":\"VMAppContainer\",\"friendlyName\":\"izmoaeds\",\"backupManagementType\":\"MAB\",\"healthStatus\":\"ive\",\"containerId\":\"cgyee\"}")
             .toObject(AzureVMAppContainerProtectableContainer.class);
-        Assertions.assertEquals("srlsmd", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.DPM, model.backupManagementType());
-        Assertions.assertEquals("lpvmjcdoewbidy", model.healthStatus());
-        Assertions.assertEquals("eowxvgpi", model.containerId());
+        Assertions.assertEquals("izmoaeds", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());
+        Assertions.assertEquals("ive", model.healthStatus());
+        Assertions.assertEquals("cgyee", model.containerId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureVMAppContainerProtectableContainer model = new AzureVMAppContainerProtectableContainer()
-            .withFriendlyName("srlsmd").withBackupManagementType(BackupManagementType.DPM)
-            .withHealthStatus("lpvmjcdoewbidy").withContainerId("eowxvgpi");
+        AzureVMAppContainerProtectableContainer model
+            = new AzureVMAppContainerProtectableContainer().withFriendlyName("izmoaeds")
+                .withBackupManagementType(BackupManagementType.MAB)
+                .withHealthStatus("ive")
+                .withContainerId("cgyee");
         model = BinaryData.fromObject(model).toObject(AzureVMAppContainerProtectableContainer.class);
-        Assertions.assertEquals("srlsmd", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.DPM, model.backupManagementType());
-        Assertions.assertEquals("lpvmjcdoewbidy", model.healthStatus());
-        Assertions.assertEquals("eowxvgpi", model.containerId());
+        Assertions.assertEquals("izmoaeds", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());
+        Assertions.assertEquals("ive", model.healthStatus());
+        Assertions.assertEquals("cgyee", model.containerId());
     }
 }

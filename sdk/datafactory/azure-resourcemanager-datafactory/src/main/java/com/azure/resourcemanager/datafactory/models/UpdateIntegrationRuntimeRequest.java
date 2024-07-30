@@ -20,8 +20,8 @@ public final class UpdateIntegrationRuntimeRequest {
     private IntegrationRuntimeAutoUpdate autoUpdate;
 
     /*
-     * The time offset (in hours) in the day, e.g., PT03H is 3 hours. The integration runtime auto update will happen
-     * on that time.
+     * The time offset (in hours) in the day, e.g., PT03H is 3 hours. The integration runtime auto update will happen on
+     * that time.
      */
     @JsonProperty(value = "updateDelayOffset")
     private String updateDelayOffset;

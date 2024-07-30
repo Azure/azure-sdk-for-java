@@ -7,7 +7,9 @@ package com.azure.resourcemanager.maintenance.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information about an operation. */
+/**
+ * Information about an operation.
+ */
 @Fluent
 public final class OperationInfo {
     /*
@@ -34,13 +36,15 @@ public final class OperationInfo {
     @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of OperationInfo class. */
+    /**
+     * Creates an instance of OperationInfo class.
+     */
     public OperationInfo() {
     }
 
     /**
      * Get the provider property: Name of the provider.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -49,7 +53,7 @@ public final class OperationInfo {
 
     /**
      * Set the provider property: Name of the provider.
-     *
+     * 
      * @param provider the provider value to set.
      * @return the OperationInfo object itself.
      */
@@ -60,7 +64,7 @@ public final class OperationInfo {
 
     /**
      * Get the resource property: Name of the resource type.
-     *
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -69,7 +73,7 @@ public final class OperationInfo {
 
     /**
      * Set the resource property: Name of the resource type.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the OperationInfo object itself.
      */
@@ -80,7 +84,7 @@ public final class OperationInfo {
 
     /**
      * Get the operation property: Name of the operation.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -89,7 +93,7 @@ public final class OperationInfo {
 
     /**
      * Set the operation property: Name of the operation.
-     *
+     * 
      * @param operation the operation value to set.
      * @return the OperationInfo object itself.
      */
@@ -100,7 +104,7 @@ public final class OperationInfo {
 
     /**
      * Get the description property: Description of the operation.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -109,7 +113,7 @@ public final class OperationInfo {
 
     /**
      * Set the description property: Description of the operation.
-     *
+     * 
      * @param description the description value to set.
      * @return the OperationInfo object itself.
      */
@@ -120,7 +124,7 @@ public final class OperationInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

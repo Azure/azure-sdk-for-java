@@ -21,8 +21,8 @@ public final class SimGroupsImpl implements SimGroups {
 
     private final com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager;
 
-    public SimGroupsImpl(
-        SimGroupsClient innerClient, com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager) {
+    public SimGroupsImpl(SimGroupsClient innerClient,
+        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -35,15 +35,12 @@ public final class SimGroupsImpl implements SimGroups {
         this.serviceClient().delete(resourceGroupName, simGroupName, context);
     }
 
-    public Response<SimGroup> getByResourceGroupWithResponse(
-        String resourceGroupName, String simGroupName, Context context) {
-        Response<SimGroupInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, simGroupName, context);
+    public Response<SimGroup> getByResourceGroupWithResponse(String resourceGroupName, String simGroupName,
+        Context context) {
+        Response<SimGroupInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, simGroupName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SimGroupImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -61,96 +58,76 @@ public final class SimGroupsImpl implements SimGroups {
 
     public PagedIterable<SimGroup> list() {
         PagedIterable<SimGroupInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new SimGroupImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SimGroupImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SimGroup> list(Context context) {
         PagedIterable<SimGroupInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new SimGroupImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SimGroupImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SimGroup> listByResourceGroup(String resourceGroupName) {
         PagedIterable<SimGroupInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new SimGroupImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SimGroupImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SimGroup> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<SimGroupInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new SimGroupImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SimGroupImpl(inner1, this.manager()));
     }
 
     public SimGroup getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String simGroupName = Utils.getValueFromIdByName(id, "simGroups");
+        String simGroupName = ResourceManagerUtils.getValueFromIdByName(id, "simGroups");
         if (simGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'simGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'simGroups'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, simGroupName, Context.NONE).getValue();
     }
 
     public Response<SimGroup> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String simGroupName = Utils.getValueFromIdByName(id, "simGroups");
+        String simGroupName = ResourceManagerUtils.getValueFromIdByName(id, "simGroups");
         if (simGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'simGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'simGroups'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, simGroupName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String simGroupName = Utils.getValueFromIdByName(id, "simGroups");
+        String simGroupName = ResourceManagerUtils.getValueFromIdByName(id, "simGroups");
         if (simGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'simGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'simGroups'.", id)));
         }
         this.delete(resourceGroupName, simGroupName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String simGroupName = Utils.getValueFromIdByName(id, "simGroups");
+        String simGroupName = ResourceManagerUtils.getValueFromIdByName(id, "simGroups");
         if (simGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'simGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'simGroups'.", id)));
         }
         this.delete(resourceGroupName, simGroupName, context);
     }

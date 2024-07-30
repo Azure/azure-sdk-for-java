@@ -7,18 +7,53 @@ package com.azure.resourcemanager.storage.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Gets the status of the storage account at the time the operation was called. */
+/**
+ * Gets the status of the storage account at the time the operation was called.
+ */
 public enum ProvisioningState {
-    /** Enum value Creating. */
+    /**
+     * Enum value Creating.
+     */
     CREATING("Creating"),
 
-    /** Enum value ResolvingDNS. */
+    /**
+     * Enum value ResolvingDNS.
+     */
     RESOLVING_DNS("ResolvingDNS"),
 
-    /** Enum value Succeeded. */
-    SUCCEEDED("Succeeded");
+    /**
+     * Enum value Succeeded.
+     */
+    SUCCEEDED("Succeeded"),
 
-    /** The actual serialized value for a ProvisioningState instance. */
+    /**
+     * Enum value ValidateSubscriptionQuotaBegin.
+     */
+    VALIDATE_SUBSCRIPTION_QUOTA_BEGIN("ValidateSubscriptionQuotaBegin"),
+
+    /**
+     * Enum value ValidateSubscriptionQuotaEnd.
+     */
+    VALIDATE_SUBSCRIPTION_QUOTA_END("ValidateSubscriptionQuotaEnd"),
+
+    /**
+     * Enum value Deleting.
+     */
+    DELETING("Deleting"),
+
+    /**
+     * Enum value Canceled.
+     */
+    CANCELED("Canceled"),
+
+    /**
+     * Enum value Failed.
+     */
+    FAILED("Failed");
+
+    /**
+     * The actual serialized value for a ProvisioningState instance.
+     */
     private final String value;
 
     ProvisioningState(String value) {
@@ -27,7 +62,7 @@ public enum ProvisioningState {
 
     /**
      * Parses a serialized value to a ProvisioningState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ProvisioningState object, or null if unable to parse.
      */
@@ -45,7 +80,9 @@ public enum ProvisioningState {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

@@ -14,12 +14,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Packet capture session resource. */
+/**
+ * Packet capture session resource.
+ */
 @Fluent
 public final class PacketCaptureInner extends ProxyResource {
     /*
-     * Packet capture session properties. Packet capture file(s) derived from the name of this session will be uploaded
-     * to the Storage Account Container URL in the packet core control plane properties
+     * Packet capture session properties. Packet capture file(s) derived from the name of this session will be uploaded to the Storage Account Container URL in the packet core control plane properties
      */
     @JsonProperty(value = "properties", required = true)
     private PacketCapturePropertiesFormat innerProperties = new PacketCapturePropertiesFormat();
@@ -30,7 +31,9 @@ public final class PacketCaptureInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of PacketCaptureInner class. */
+    /**
+     * Creates an instance of PacketCaptureInner class.
+     */
     public PacketCaptureInner() {
     }
 
@@ -38,7 +41,7 @@ public final class PacketCaptureInner extends ProxyResource {
      * Get the innerProperties property: Packet capture session properties. Packet capture file(s) derived from the name
      * of this session will be uploaded to the Storage Account Container URL in the packet core control plane
      * properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PacketCapturePropertiesFormat innerProperties() {
@@ -47,7 +50,7 @@ public final class PacketCaptureInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -56,7 +59,7 @@ public final class PacketCaptureInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the packet capture session resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -65,7 +68,7 @@ public final class PacketCaptureInner extends ProxyResource {
 
     /**
      * Get the status property: The status of the packet capture session.
-     *
+     * 
      * @return the status value.
      */
     public PacketCaptureStatus status() {
@@ -74,7 +77,7 @@ public final class PacketCaptureInner extends ProxyResource {
 
     /**
      * Get the reason property: The reason the current packet capture session state.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -83,7 +86,7 @@ public final class PacketCaptureInner extends ProxyResource {
 
     /**
      * Get the captureStartTime property: The start time of the packet capture session.
-     *
+     * 
      * @return the captureStartTime value.
      */
     public OffsetDateTime captureStartTime() {
@@ -92,7 +95,7 @@ public final class PacketCaptureInner extends ProxyResource {
 
     /**
      * Get the networkInterfaces property: List of network interfaces to capture on.
-     *
+     * 
      * @return the networkInterfaces value.
      */
     public List<String> networkInterfaces() {
@@ -101,7 +104,7 @@ public final class PacketCaptureInner extends ProxyResource {
 
     /**
      * Set the networkInterfaces property: List of network interfaces to capture on.
-     *
+     * 
      * @param networkInterfaces the networkInterfaces value to set.
      * @return the PacketCaptureInner object itself.
      */
@@ -116,7 +119,7 @@ public final class PacketCaptureInner extends ProxyResource {
     /**
      * Get the bytesToCapturePerPacket property: Number of bytes captured per packet, the remaining bytes are truncated.
      * The default "0" means the entire packet is captured.
-     *
+     * 
      * @return the bytesToCapturePerPacket value.
      */
     public Long bytesToCapturePerPacket() {
@@ -126,7 +129,7 @@ public final class PacketCaptureInner extends ProxyResource {
     /**
      * Set the bytesToCapturePerPacket property: Number of bytes captured per packet, the remaining bytes are truncated.
      * The default "0" means the entire packet is captured.
-     *
+     * 
      * @param bytesToCapturePerPacket the bytesToCapturePerPacket value to set.
      * @return the PacketCaptureInner object itself.
      */
@@ -140,7 +143,7 @@ public final class PacketCaptureInner extends ProxyResource {
 
     /**
      * Get the totalBytesPerSession property: Maximum size of the capture output.
-     *
+     * 
      * @return the totalBytesPerSession value.
      */
     public Long totalBytesPerSession() {
@@ -149,7 +152,7 @@ public final class PacketCaptureInner extends ProxyResource {
 
     /**
      * Set the totalBytesPerSession property: Maximum size of the capture output.
-     *
+     * 
      * @param totalBytesPerSession the totalBytesPerSession value to set.
      * @return the PacketCaptureInner object itself.
      */
@@ -163,7 +166,7 @@ public final class PacketCaptureInner extends ProxyResource {
 
     /**
      * Get the timeLimitInSeconds property: Maximum duration of the capture session in seconds.
-     *
+     * 
      * @return the timeLimitInSeconds value.
      */
     public Integer timeLimitInSeconds() {
@@ -172,7 +175,7 @@ public final class PacketCaptureInner extends ProxyResource {
 
     /**
      * Set the timeLimitInSeconds property: Maximum duration of the capture session in seconds.
-     *
+     * 
      * @param timeLimitInSeconds the timeLimitInSeconds value to set.
      * @return the PacketCaptureInner object itself.
      */
@@ -186,7 +189,7 @@ public final class PacketCaptureInner extends ProxyResource {
 
     /**
      * Get the outputFiles property: The list of output files of a packet capture session.
-     *
+     * 
      * @return the outputFiles value.
      */
     public List<String> outputFiles() {
@@ -195,15 +198,14 @@ public final class PacketCaptureInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model PacketCaptureInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model PacketCaptureInner"));
         } else {
             innerProperties().validate();
         }

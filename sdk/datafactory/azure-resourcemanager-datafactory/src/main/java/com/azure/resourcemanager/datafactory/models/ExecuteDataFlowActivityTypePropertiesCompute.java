@@ -20,8 +20,8 @@ public final class ExecuteDataFlowActivityTypePropertiesCompute {
     private Object computeType;
 
     /*
-     * Core count of the cluster which will execute data flow job. Supported values are: 8, 16, 32, 48, 80, 144 and
-     * 272. Type: integer (or Expression with resultType integer)
+     * Core count of the cluster which will execute data flow job. Supported values are: 8, 16, 32, 48, 80, 144 and 272.
+     * Type: integer (or Expression with resultType integer)
      */
     @JsonProperty(value = "coreCount")
     private Object coreCount;

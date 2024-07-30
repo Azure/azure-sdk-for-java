@@ -6,72 +6,41 @@ package com.azure.resourcemanager.mysqlflexibleserver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mysqlflexibleserver.MySqlManager;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Configuration;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationSource;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ConfigurationsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"value\":\"xmwoteyowcluqo\",\"currentValue\":\"kqvgqouw\",\"description\":\"zmpjwyiv\",\"documentationLink\":\"kfxcvhrfs\",\"defaultValue\":\"uagrttikteusqc\",\"dataType\":\"vyklxuby\",\"allowedValues\":\"ff\",\"source\":\"system-default\",\"isReadOnly\":\"False\",\"isConfigPendingRestart\":\"False\",\"isDynamicConfig\":\"True\"},\"id\":\"bgq\",\"name\":\"brta\",\"type\":\"metttwgd\"}";
 
-        String responseStr =
-            "{\"properties\":{\"value\":\"crsbfovasr\",\"currentValue\":\"v\",\"description\":\"hsqfsubcgjbirxbp\",\"documentationLink\":\"srfbjfdtwss\",\"defaultValue\":\"ftpvjzbexil\",\"dataType\":\"nfqqnvwp\",\"allowedValues\":\"taruoujmkcj\",\"source\":\"user-override\",\"isReadOnly\":\"False\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"True\"},\"id\":\"wj\",\"name\":\"wgdrjervnaenqp\",\"type\":\"hin\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MySqlManager manager = MySqlManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Configuration response = manager.configurations()
+            .define("wqfbylyrfgiagt")
+            .withExistingFlexibleServer("dggxdbeesmi", "knlrariaawiuagy")
+            .withValue("ocqwogfnzjvus")
+            .withCurrentValue("ld")
+            .withSource(ConfigurationSource.USER_OVERRIDE)
+            .create();
 
-        MySqlManager manager =
-            MySqlManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Configuration response =
-            manager
-                .configurations()
-                .define("bpvjymjhx")
-                .withExistingFlexibleServer("grcfb", "nrmfqjhhk")
-                .withValue("n")
-                .withCurrentValue("divkrt")
-                .withSource(ConfigurationSource.SYSTEM_DEFAULT)
-                .create();
-
-        Assertions.assertEquals("crsbfovasr", response.value());
-        Assertions.assertEquals("v", response.currentValue());
-        Assertions.assertEquals(ConfigurationSource.USER_OVERRIDE, response.source());
+        Assertions.assertEquals("xmwoteyowcluqo", response.value());
+        Assertions.assertEquals("kqvgqouw", response.currentValue());
+        Assertions.assertEquals(ConfigurationSource.SYSTEM_DEFAULT, response.source());
     }
 }

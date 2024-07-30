@@ -59,7 +59,6 @@ import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorExce
 import com.azure.resourcemanager.appservice.models.InboundEnvironmentEndpointCollection;
 import com.azure.resourcemanager.appservice.models.OutboundEnvironmentEndpointCollection;
 import com.azure.resourcemanager.appservice.models.PrivateEndpointConnectionCollection;
-import com.azure.resourcemanager.appservice.models.PrivateLinkConnectionApprovalRequestResource;
 import com.azure.resourcemanager.appservice.models.ResourceMetricDefinitionCollection;
 import com.azure.resourcemanager.appservice.models.SkuInfoCollection;
 import com.azure.resourcemanager.appservice.models.StampCapacityCollection;
@@ -70,10 +69,11 @@ import com.azure.resourcemanager.appservice.models.WorkerPoolCollection;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import java.nio.ByteBuffer;
-import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
+import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined in AppServiceEnvironmentsClient.
@@ -92,7 +92,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Initializes an instance of AppServiceEnvironmentsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     AppServiceEnvironmentsClientImpl(WebSiteManagementClientImpl client) {
@@ -102,8 +102,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
-     * The interface defining all the services for WebSiteManagementClientAppServiceEnvironments to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for WebSiteManagementClientAppServiceEnvironments to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")
@@ -406,7 +406,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper,
+            @BodyParam("application/json") RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -737,9 +737,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all App Service Environments for a subscription.
-     * 
+     *
      * Description for Get all App Service Environments for a subscription.
-     * 
+     *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of App Service Environments along with {@link PagedResponse} on successful completion of
@@ -766,9 +766,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all App Service Environments for a subscription.
-     * 
+     *
      * Description for Get all App Service Environments for a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -797,9 +797,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all App Service Environments for a subscription.
-     * 
+     *
      * Description for Get all App Service Environments for a subscription.
-     * 
+     *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of App Service Environments as paginated response with {@link PagedFlux}.
@@ -811,9 +811,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all App Service Environments for a subscription.
-     * 
+     *
      * Description for Get all App Service Environments for a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -828,9 +828,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all App Service Environments for a subscription.
-     * 
+     *
      * Description for Get all App Service Environments for a subscription.
-     * 
+     *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of App Service Environments as paginated response with {@link PagedIterable}.
@@ -842,9 +842,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all App Service Environments for a subscription.
-     * 
+     *
      * Description for Get all App Service Environments for a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -858,9 +858,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all App Service Environments in a resource group.
-     * 
+     *
      * Description for Get all App Service Environments in a resource group.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -894,9 +894,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all App Service Environments in a resource group.
-     * 
+     *
      * Description for Get all App Service Environments in a resource group.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -931,9 +931,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all App Service Environments in a resource group.
-     * 
+     *
      * Description for Get all App Service Environments in a resource group.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -948,9 +948,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all App Service Environments in a resource group.
-     * 
+     *
      * Description for Get all App Service Environments in a resource group.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -967,9 +967,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all App Service Environments in a resource group.
-     * 
+     *
      * Description for Get all App Service Environments in a resource group.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -983,9 +983,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all App Service Environments in a resource group.
-     * 
+     *
      * Description for Get all App Service Environments in a resource group.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1001,9 +1001,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the properties of an App Service Environment.
-     * 
+     *
      * Description for Get the properties of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1039,9 +1039,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the properties of an App Service Environment.
-     * 
+     *
      * Description for Get the properties of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -1077,9 +1077,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the properties of an App Service Environment.
-     * 
+     *
      * Description for Get the properties of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1095,9 +1095,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the properties of an App Service Environment.
-     * 
+     *
      * Description for Get the properties of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -1114,9 +1114,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the properties of an App Service Environment.
-     * 
+     *
      * Description for Get the properties of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1131,9 +1131,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update an App Service Environment.
-     * 
+     *
      * Description for Create or update an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
@@ -1177,9 +1177,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update an App Service Environment.
-     * 
+     *
      * Description for Create or update an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
@@ -1222,9 +1222,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update an App Service Environment.
-     * 
+     *
      * Description for Create or update an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
@@ -1246,9 +1246,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update an App Service Environment.
-     * 
+     *
      * Description for Create or update an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
@@ -1272,9 +1272,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update an App Service Environment.
-     * 
+     *
      * Description for Create or update an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
@@ -1292,9 +1292,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update an App Service Environment.
-     * 
+     *
      * Description for Create or update an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
@@ -1314,9 +1314,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update an App Service Environment.
-     * 
+     *
      * Description for Create or update an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
@@ -1334,9 +1334,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update an App Service Environment.
-     * 
+     *
      * Description for Create or update an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
@@ -1355,9 +1355,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update an App Service Environment.
-     * 
+     *
      * Description for Create or update an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
@@ -1374,9 +1374,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update an App Service Environment.
-     * 
+     *
      * Description for Create or update an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
@@ -1394,9 +1394,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Delete an App Service Environment.
-     * 
+     *
      * Description for Delete an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service
@@ -1433,9 +1433,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Delete an App Service Environment.
-     * 
+     *
      * Description for Delete an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service
@@ -1472,9 +1472,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Delete an App Service Environment.
-     * 
+     *
      * Description for Delete an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service
@@ -1494,9 +1494,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Delete an App Service Environment.
-     * 
+     *
      * Description for Delete an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1514,9 +1514,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Delete an App Service Environment.
-     * 
+     *
      * Description for Delete an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service
@@ -1538,9 +1538,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Delete an App Service Environment.
-     * 
+     *
      * Description for Delete an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1556,9 +1556,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Delete an App Service Environment.
-     * 
+     *
      * Description for Delete an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service
@@ -1577,9 +1577,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Delete an App Service Environment.
-     * 
+     *
      * Description for Delete an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service
@@ -1597,9 +1597,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Delete an App Service Environment.
-     * 
+     *
      * Description for Delete an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1616,9 +1616,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Delete an App Service Environment.
-     * 
+     *
      * Description for Delete an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service
@@ -1637,9 +1637,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Delete an App Service Environment.
-     * 
+     *
      * Description for Delete an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1654,9 +1654,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Delete an App Service Environment.
-     * 
+     *
      * Description for Delete an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service
@@ -1673,9 +1673,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update an App Service Environment.
-     * 
+     *
      * Description for Create or update an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
@@ -1717,9 +1717,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update an App Service Environment.
-     * 
+     *
      * Description for Create or update an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
@@ -1762,9 +1762,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update an App Service Environment.
-     * 
+     *
      * Description for Create or update an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
@@ -1782,9 +1782,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update an App Service Environment.
-     * 
+     *
      * Description for Create or update an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
@@ -1802,9 +1802,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update an App Service Environment.
-     * 
+     *
      * Description for Create or update an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
@@ -1821,9 +1821,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the used, available, and total worker capacity an App Service Environment.
-     * 
+     *
      * Description for Get the used, available, and total worker capacity an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1860,9 +1860,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the used, available, and total worker capacity an App Service Environment.
-     * 
+     *
      * Description for Get the used, available, and total worker capacity an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -1900,9 +1900,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the used, available, and total worker capacity an App Service Environment.
-     * 
+     *
      * Description for Get the used, available, and total worker capacity an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1918,9 +1918,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the used, available, and total worker capacity an App Service Environment.
-     * 
+     *
      * Description for Get the used, available, and total worker capacity an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -1937,9 +1937,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the used, available, and total worker capacity an App Service Environment.
-     * 
+     *
      * Description for Get the used, available, and total worker capacity an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1954,9 +1954,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the used, available, and total worker capacity an App Service Environment.
-     * 
+     *
      * Description for Get the used, available, and total worker capacity an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -1972,9 +1972,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get IP addresses assigned to an App Service Environment.
-     * 
+     *
      * Description for Get IP addresses assigned to an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2009,9 +2009,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get IP addresses assigned to an App Service Environment.
-     * 
+     *
      * Description for Get IP addresses assigned to an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -2047,9 +2047,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get IP addresses assigned to an App Service Environment.
-     * 
+     *
      * Description for Get IP addresses assigned to an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2064,9 +2064,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get IP addresses assigned to an App Service Environment.
-     * 
+     *
      * Description for Get IP addresses assigned to an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -2083,9 +2083,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get IP addresses assigned to an App Service Environment.
-     * 
+     *
      * Description for Get IP addresses assigned to an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2100,9 +2100,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Move an App Service Environment to a different VNET.
-     * 
+     *
      * Description for Move an App Service Environment to a different VNET.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param vnetInfo Details for the new virtual network.
@@ -2136,23 +2136,29 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> {
-            Mono<Response<Flux<ByteBuffer>>> mono = service.changeVnet(this.client.getEndpoint(), resourceGroupName,
-                name, this.client.getSubscriptionId(), this.client.getApiVersion(), vnetInfo, accept, context).cache();
+            Mono<Response<Flux<ByteBuffer>>> mono
+                = service
+                    .changeVnet(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
+                        this.client.getApiVersion(), vnetInfo, accept, context)
+                    .cache();
             return Mono.zip(mono,
                 this.client
                     .<WebAppCollection, WebAppCollection>getLroResult(mono, this.client.getHttpPipeline(),
                         WebAppCollection.class, WebAppCollection.class, this.client.getContext())
-                    .last().flatMap(this.client::getLroFinalResultOrError));
-        }).<PagedResponse<SiteInner>>map(res -> new PagedResponseBase<>(res.getT1().getRequest(),
-            res.getT1().getStatusCode(), res.getT1().getHeaders(), res.getT2().value(), res.getT2().nextLink(), null))
+                    .last()
+                    .flatMap(this.client::getLroFinalResultOrError));
+        })
+            .<PagedResponse<SiteInner>>map(
+                res -> new PagedResponseBase<>(res.getT1().getRequest(), res.getT1().getStatusCode(),
+                    res.getT1().getHeaders(), res.getT2().value(), res.getT2().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Move an App Service Environment to a different VNET.
-     * 
+     *
      * Description for Move an App Service Environment to a different VNET.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param vnetInfo Details for the new virtual network.
@@ -2187,23 +2193,27 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = service.changeVnet(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), vnetInfo, accept, context).cache();
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = service
+                .changeVnet(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
+                    this.client.getApiVersion(), vnetInfo, accept, context)
+                .cache();
         return Mono
             .zip(mono,
                 this.client
                     .<WebAppCollection, WebAppCollection>getLroResult(mono, this.client.getHttpPipeline(),
                         WebAppCollection.class, WebAppCollection.class, context)
-                    .last().flatMap(this.client::getLroFinalResultOrError))
+                    .last()
+                    .flatMap(this.client::getLroFinalResultOrError))
             .map(res -> new PagedResponseBase<>(res.getT1().getRequest(), res.getT1().getStatusCode(),
                 res.getT1().getHeaders(), res.getT2().value(), res.getT2().nextLink(), null));
     }
 
     /**
      * Move an App Service Environment to a different VNET.
-     * 
+     *
      * Description for Move an App Service Environment to a different VNET.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param vnetInfo Details for the new virtual network.
@@ -2220,9 +2230,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Move an App Service Environment to a different VNET.
-     * 
+     *
      * Description for Move an App Service Environment to a different VNET.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param vnetInfo Details for the new virtual network.
@@ -2241,9 +2251,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Move an App Service Environment to a different VNET.
-     * 
+     *
      * Description for Move an App Service Environment to a different VNET.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param vnetInfo Details for the new virtual network.
@@ -2259,9 +2269,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Move an App Service Environment to a different VNET.
-     * 
+     *
      * Description for Move an App Service Environment to a different VNET.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param vnetInfo Details for the new virtual network.
@@ -2279,7 +2289,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get Custom Dns Suffix configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2315,7 +2325,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get Custom Dns Suffix configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -2351,7 +2361,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get Custom Dns Suffix configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2368,7 +2378,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get Custom Dns Suffix configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -2385,7 +2395,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get Custom Dns Suffix configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2400,7 +2410,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Update Custom Dns Suffix configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param customDnsSuffixConfiguration Full view of the custom domain suffix configuration for ASEv3.
@@ -2444,7 +2454,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Update Custom Dns Suffix configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param customDnsSuffixConfiguration Full view of the custom domain suffix configuration for ASEv3.
@@ -2489,7 +2499,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Update Custom Dns Suffix configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param customDnsSuffixConfiguration Full view of the custom domain suffix configuration for ASEv3.
@@ -2507,7 +2517,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Update Custom Dns Suffix configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param customDnsSuffixConfiguration Full view of the custom domain suffix configuration for ASEv3.
@@ -2527,7 +2537,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Update Custom Dns Suffix configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param customDnsSuffixConfiguration Full view of the custom domain suffix configuration for ASEv3.
@@ -2545,7 +2555,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Delete Custom Dns Suffix configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2580,7 +2590,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Delete Custom Dns Suffix configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -2615,7 +2625,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Delete Custom Dns Suffix configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2631,7 +2641,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Delete Custom Dns Suffix configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -2648,7 +2658,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Delete Custom Dns Suffix configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2663,9 +2673,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get networking configuration of an App Service Environment
-     * 
+     *
      * Description for Get networking configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2701,9 +2711,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get networking configuration of an App Service Environment
-     * 
+     *
      * Description for Get networking configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -2739,9 +2749,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get networking configuration of an App Service Environment
-     * 
+     *
      * Description for Get networking configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2758,9 +2768,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get networking configuration of an App Service Environment
-     * 
+     *
      * Description for Get networking configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -2777,9 +2787,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get networking configuration of an App Service Environment
-     * 
+     *
      * Description for Get networking configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2794,9 +2804,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Update networking configuration of an App Service Environment
-     * 
+     *
      * Description for Update networking configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param aseNetworkingConfiguration Full view of networking configuration for an ASE.
@@ -2840,9 +2850,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Update networking configuration of an App Service Environment
-     * 
+     *
      * Description for Update networking configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param aseNetworkingConfiguration Full view of networking configuration for an ASE.
@@ -2886,9 +2896,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Update networking configuration of an App Service Environment
-     * 
+     *
      * Description for Update networking configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param aseNetworkingConfiguration Full view of networking configuration for an ASE.
@@ -2906,9 +2916,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Update networking configuration of an App Service Environment
-     * 
+     *
      * Description for Update networking configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param aseNetworkingConfiguration Full view of networking configuration for an ASE.
@@ -2928,9 +2938,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Update networking configuration of an App Service Environment
-     * 
+     *
      * Description for Update networking configuration of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param aseNetworkingConfiguration Full view of networking configuration for an ASE.
@@ -2948,9 +2958,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get diagnostic information for an App Service Environment.
-     * 
+     *
      * Description for Get diagnostic information for an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2986,9 +2996,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get diagnostic information for an App Service Environment.
-     * 
+     *
      * Description for Get diagnostic information for an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -3024,9 +3034,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get diagnostic information for an App Service Environment.
-     * 
+     *
      * Description for Get diagnostic information for an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3042,9 +3052,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get diagnostic information for an App Service Environment.
-     * 
+     *
      * Description for Get diagnostic information for an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -3061,9 +3071,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get diagnostic information for an App Service Environment.
-     * 
+     *
      * Description for Get diagnostic information for an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3078,9 +3088,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get a diagnostics item for an App Service Environment.
-     * 
+     *
      * Description for Get a diagnostics item for an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param diagnosticsName Name of the diagnostics item.
@@ -3121,9 +3131,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get a diagnostics item for an App Service Environment.
-     * 
+     *
      * Description for Get a diagnostics item for an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param diagnosticsName Name of the diagnostics item.
@@ -3164,9 +3174,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get a diagnostics item for an App Service Environment.
-     * 
+     *
      * Description for Get a diagnostics item for an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param diagnosticsName Name of the diagnostics item.
@@ -3184,9 +3194,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get a diagnostics item for an App Service Environment.
-     * 
+     *
      * Description for Get a diagnostics item for an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param diagnosticsName Name of the diagnostics item.
@@ -3204,9 +3214,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get a diagnostics item for an App Service Environment.
-     * 
+     *
      * Description for Get a diagnostics item for an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param diagnosticsName Name of the diagnostics item.
@@ -3223,9 +3233,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the network endpoints of all inbound dependencies of an App Service Environment.
-     * 
+     *
      * Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3263,9 +3273,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the network endpoints of all inbound dependencies of an App Service Environment.
-     * 
+     *
      * Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -3304,9 +3314,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the network endpoints of all inbound dependencies of an App Service Environment.
-     * 
+     *
      * Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3323,9 +3333,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the network endpoints of all inbound dependencies of an App Service Environment.
-     * 
+     *
      * Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -3344,9 +3354,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the network endpoints of all inbound dependencies of an App Service Environment.
-     * 
+     *
      * Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3362,9 +3372,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the network endpoints of all inbound dependencies of an App Service Environment.
-     * 
+     *
      * Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -3381,9 +3391,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all multi-role pools.
-     * 
+     *
      * Description for Get all multi-role pools.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3420,9 +3430,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all multi-role pools.
-     * 
+     *
      * Description for Get all multi-role pools.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -3460,9 +3470,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all multi-role pools.
-     * 
+     *
      * Description for Get all multi-role pools.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3478,9 +3488,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all multi-role pools.
-     * 
+     *
      * Description for Get all multi-role pools.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -3498,9 +3508,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all multi-role pools.
-     * 
+     *
      * Description for Get all multi-role pools.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3515,9 +3525,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all multi-role pools.
-     * 
+     *
      * Description for Get all multi-role pools.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -3534,9 +3544,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get properties of a multi-role pool.
-     * 
+     *
      * Description for Get properties of a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3572,9 +3582,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get properties of a multi-role pool.
-     * 
+     *
      * Description for Get properties of a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -3610,9 +3620,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get properties of a multi-role pool.
-     * 
+     *
      * Description for Get properties of a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3628,9 +3638,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get properties of a multi-role pool.
-     * 
+     *
      * Description for Get properties of a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -3647,9 +3657,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get properties of a multi-role pool.
-     * 
+     *
      * Description for Get properties of a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3664,9 +3674,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update a multi-role pool.
-     * 
+     *
      * Description for Create or update a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
@@ -3710,9 +3720,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update a multi-role pool.
-     * 
+     *
      * Description for Create or update a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
@@ -3755,9 +3765,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update a multi-role pool.
-     * 
+     *
      * Description for Create or update a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
@@ -3779,9 +3789,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update a multi-role pool.
-     * 
+     *
      * Description for Create or update a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
@@ -3804,9 +3814,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update a multi-role pool.
-     * 
+     *
      * Description for Create or update a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
@@ -3824,9 +3834,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update a multi-role pool.
-     * 
+     *
      * Description for Create or update a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
@@ -3845,9 +3855,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update a multi-role pool.
-     * 
+     *
      * Description for Create or update a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
@@ -3865,9 +3875,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update a multi-role pool.
-     * 
+     *
      * Description for Create or update a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
@@ -3886,9 +3896,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update a multi-role pool.
-     * 
+     *
      * Description for Create or update a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
@@ -3905,9 +3915,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update a multi-role pool.
-     * 
+     *
      * Description for Create or update a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
@@ -3925,9 +3935,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update a multi-role pool.
-     * 
+     *
      * Description for Create or update a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
@@ -3970,9 +3980,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update a multi-role pool.
-     * 
+     *
      * Description for Create or update a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
@@ -4015,9 +4025,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update a multi-role pool.
-     * 
+     *
      * Description for Create or update a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
@@ -4035,9 +4045,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update a multi-role pool.
-     * 
+     *
      * Description for Create or update a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
@@ -4055,9 +4065,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update a multi-role pool.
-     * 
+     *
      * Description for Create or update a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param multiRolePoolEnvelope Properties of the multi-role pool.
@@ -4074,10 +4084,10 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get metric definitions for a specific instance of a multi-role pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
      * Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param instance Name of the instance in the multi-role pool.
@@ -4121,10 +4131,10 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get metric definitions for a specific instance of a multi-role pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
      * Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param instance Name of the instance in the multi-role pool.
@@ -4168,10 +4178,10 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get metric definitions for a specific instance of a multi-role pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
      * Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param instance Name of the instance in the multi-role pool.
@@ -4190,10 +4200,10 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get metric definitions for a specific instance of a multi-role pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
      * Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param instance Name of the instance in the multi-role pool.
@@ -4213,10 +4223,10 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get metric definitions for a specific instance of a multi-role pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
      * Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param instance Name of the instance in the multi-role pool.
@@ -4233,10 +4243,10 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get metric definitions for a specific instance of a multi-role pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
      * Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param instance Name of the instance in the multi-role pool.
@@ -4255,9 +4265,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get metric definitions for a multi-role pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a multi-role pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4295,9 +4305,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get metric definitions for a multi-role pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a multi-role pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -4336,9 +4346,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get metric definitions for a multi-role pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a multi-role pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4355,9 +4365,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get metric definitions for a multi-role pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a multi-role pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -4375,9 +4385,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get metric definitions for a multi-role pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a multi-role pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4393,9 +4403,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get metric definitions for a multi-role pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a multi-role pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -4412,9 +4422,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get available SKUs for scaling a multi-role pool.
-     * 
+     *
      * Description for Get available SKUs for scaling a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4451,9 +4461,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get available SKUs for scaling a multi-role pool.
-     * 
+     *
      * Description for Get available SKUs for scaling a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -4491,9 +4501,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get available SKUs for scaling a multi-role pool.
-     * 
+     *
      * Description for Get available SKUs for scaling a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4509,9 +4519,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get available SKUs for scaling a multi-role pool.
-     * 
+     *
      * Description for Get available SKUs for scaling a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -4528,9 +4538,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get available SKUs for scaling a multi-role pool.
-     * 
+     *
      * Description for Get available SKUs for scaling a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4545,9 +4555,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get available SKUs for scaling a multi-role pool.
-     * 
+     *
      * Description for Get available SKUs for scaling a multi-role pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -4563,7 +4573,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Send a test notification that an upgrade is available for this App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4598,7 +4608,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Send a test notification that an upgrade is available for this App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -4633,7 +4643,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Send a test notification that an upgrade is available for this App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4649,7 +4659,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Send a test notification that an upgrade is available for this App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -4666,7 +4676,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Send a test notification that an upgrade is available for this App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4680,9 +4690,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * Description for Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4716,9 +4726,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * Description for Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -4753,9 +4763,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * Description for Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4772,9 +4782,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * Description for Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -4794,9 +4804,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * Description for Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4811,9 +4821,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * Description for Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -4829,9 +4839,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * Description for Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4846,9 +4856,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * Description for Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -4865,9 +4875,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * Description for Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4881,9 +4891,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * Description for Initiate an upgrade of an App Service Environment if one is available.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -4898,9 +4908,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get usage metrics for a multi-role pool of an App Service Environment.
-     * 
+     *
      * Description for Get usage metrics for a multi-role pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4936,9 +4946,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get usage metrics for a multi-role pool of an App Service Environment.
-     * 
+     *
      * Description for Get usage metrics for a multi-role pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -4976,9 +4986,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get usage metrics for a multi-role pool of an App Service Environment.
-     * 
+     *
      * Description for Get usage metrics for a multi-role pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4994,9 +5004,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get usage metrics for a multi-role pool of an App Service Environment.
-     * 
+     *
      * Description for Get usage metrics for a multi-role pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -5013,9 +5023,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get usage metrics for a multi-role pool of an App Service Environment.
-     * 
+     *
      * Description for Get usage metrics for a multi-role pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5030,9 +5040,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get usage metrics for a multi-role pool of an App Service Environment.
-     * 
+     *
      * Description for Get usage metrics for a multi-role pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -5048,9 +5058,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * List all currently running operations on the App Service Environment.
-     * 
+     *
      * Description for List all currently running operations on the App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5084,9 +5094,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * List all currently running operations on the App Service Environment.
-     * 
+     *
      * Description for List all currently running operations on the App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -5121,9 +5131,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * List all currently running operations on the App Service Environment.
-     * 
+     *
      * Description for List all currently running operations on the App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5139,9 +5149,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * List all currently running operations on the App Service Environment.
-     * 
+     *
      * Description for List all currently running operations on the App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -5158,9 +5168,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * List all currently running operations on the App Service Environment.
-     * 
+     *
      * Description for List all currently running operations on the App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5175,9 +5185,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the network endpoints of all outbound dependencies of an App Service Environment.
-     * 
+     *
      * Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5215,9 +5225,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the network endpoints of all outbound dependencies of an App Service Environment.
-     * 
+     *
      * Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -5256,9 +5266,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the network endpoints of all outbound dependencies of an App Service Environment.
-     * 
+     *
      * Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5275,9 +5285,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the network endpoints of all outbound dependencies of an App Service Environment.
-     * 
+     *
      * Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -5296,9 +5306,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the network endpoints of all outbound dependencies of an App Service Environment.
-     * 
+     *
      * Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5314,9 +5324,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the network endpoints of all outbound dependencies of an App Service Environment.
-     * 
+     *
      * Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -5333,9 +5343,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Gets the list of private endpoints associated with a hosting environment
-     * 
+     *
      * Description for Gets the list of private endpoints associated with a hosting environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5373,9 +5383,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Gets the list of private endpoints associated with a hosting environment
-     * 
+     *
      * Description for Gets the list of private endpoints associated with a hosting environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -5413,9 +5423,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Gets the list of private endpoints associated with a hosting environment
-     * 
+     *
      * Description for Gets the list of private endpoints associated with a hosting environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5432,9 +5442,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Gets the list of private endpoints associated with a hosting environment
-     * 
+     *
      * Description for Gets the list of private endpoints associated with a hosting environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -5452,9 +5462,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Gets the list of private endpoints associated with a hosting environment
-     * 
+     *
      * Description for Gets the list of private endpoints associated with a hosting environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5470,9 +5480,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Gets the list of private endpoints associated with a hosting environment
-     * 
+     *
      * Description for Gets the list of private endpoints associated with a hosting environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -5489,9 +5499,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Gets a private endpoint connection
-     * 
+     *
      * Description for Gets a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -5534,9 +5544,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Gets a private endpoint connection
-     * 
+     *
      * Description for Gets a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -5579,9 +5589,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Gets a private endpoint connection
-     * 
+     *
      * Description for Gets a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -5599,9 +5609,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Gets a private endpoint connection
-     * 
+     *
      * Description for Gets a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -5620,9 +5630,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Gets a private endpoint connection
-     * 
+     *
      * Description for Gets a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -5640,13 +5650,13 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Approves or rejects a private endpoint connection
-     * 
+     *
      * Description for Approves or rejects a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5656,7 +5666,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> approveOrRejectPrivateEndpointConnectionWithResponseAsync(
         String resourceGroupName, String name, String privateEndpointConnectionName,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper) {
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -5692,13 +5702,13 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Approves or rejects a private endpoint connection
-     * 
+     *
      * Description for Approves or rejects a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -5709,7 +5719,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> approveOrRejectPrivateEndpointConnectionWithResponseAsync(
         String resourceGroupName, String name, String privateEndpointConnectionName,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper, Context context) {
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -5744,13 +5754,13 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Approves or rejects a private endpoint connection
-     * 
+     *
      * Description for Approves or rejects a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5760,7 +5770,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     public
         PollerFlux<PollResult<RemotePrivateEndpointConnectionArmResourceInner>, RemotePrivateEndpointConnectionArmResourceInner>
         beginApproveOrRejectPrivateEndpointConnectionAsync(String resourceGroupName, String name,
-            String privateEndpointConnectionName, PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper) {
+            String privateEndpointConnectionName,
+            RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper) {
         Mono<Response<Flux<ByteBuffer>>> mono = approveOrRejectPrivateEndpointConnectionWithResponseAsync(
             resourceGroupName, name, privateEndpointConnectionName, privateEndpointWrapper);
         return this.client
@@ -5771,13 +5782,13 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Approves or rejects a private endpoint connection
-     * 
+     *
      * Description for Approves or rejects a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -5788,8 +5799,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     private
         PollerFlux<PollResult<RemotePrivateEndpointConnectionArmResourceInner>, RemotePrivateEndpointConnectionArmResourceInner>
         beginApproveOrRejectPrivateEndpointConnectionAsync(String resourceGroupName, String name,
-            String privateEndpointConnectionName, PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper,
-            Context context) {
+            String privateEndpointConnectionName,
+            RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = approveOrRejectPrivateEndpointConnectionWithResponseAsync(
             resourceGroupName, name, privateEndpointConnectionName, privateEndpointWrapper, context);
@@ -5801,13 +5812,13 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Approves or rejects a private endpoint connection
-     * 
+     *
      * Description for Approves or rejects a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5817,20 +5828,23 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     public
         SyncPoller<PollResult<RemotePrivateEndpointConnectionArmResourceInner>, RemotePrivateEndpointConnectionArmResourceInner>
         beginApproveOrRejectPrivateEndpointConnection(String resourceGroupName, String name,
-            String privateEndpointConnectionName, PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper) {
-        return this.beginApproveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name,
-            privateEndpointConnectionName, privateEndpointWrapper).getSyncPoller();
+            String privateEndpointConnectionName,
+            RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper) {
+        return this
+            .beginApproveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name, privateEndpointConnectionName,
+                privateEndpointWrapper)
+            .getSyncPoller();
     }
 
     /**
      * Approves or rejects a private endpoint connection
-     * 
+     *
      * Description for Approves or rejects a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -5841,21 +5855,23 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     public
         SyncPoller<PollResult<RemotePrivateEndpointConnectionArmResourceInner>, RemotePrivateEndpointConnectionArmResourceInner>
         beginApproveOrRejectPrivateEndpointConnection(String resourceGroupName, String name,
-            String privateEndpointConnectionName, PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper,
-            Context context) {
-        return this.beginApproveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name,
-            privateEndpointConnectionName, privateEndpointWrapper, context).getSyncPoller();
+            String privateEndpointConnectionName,
+            RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper, Context context) {
+        return this
+            .beginApproveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name, privateEndpointConnectionName,
+                privateEndpointWrapper, context)
+            .getSyncPoller();
     }
 
     /**
      * Approves or rejects a private endpoint connection
-     * 
+     *
      * Description for Approves or rejects a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5864,21 +5880,21 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RemotePrivateEndpointConnectionArmResourceInner> approveOrRejectPrivateEndpointConnectionAsync(
         String resourceGroupName, String name, String privateEndpointConnectionName,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper) {
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper) {
         return beginApproveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name,
             privateEndpointConnectionName, privateEndpointWrapper).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Approves or rejects a private endpoint connection
-     * 
+     *
      * Description for Approves or rejects a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -5888,21 +5904,21 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RemotePrivateEndpointConnectionArmResourceInner> approveOrRejectPrivateEndpointConnectionAsync(
         String resourceGroupName, String name, String privateEndpointConnectionName,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper, Context context) {
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper, Context context) {
         return beginApproveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name,
             privateEndpointConnectionName, privateEndpointWrapper, context).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Approves or rejects a private endpoint connection
-     * 
+     *
      * Description for Approves or rejects a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5911,20 +5927,20 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemotePrivateEndpointConnectionArmResourceInner approveOrRejectPrivateEndpointConnection(
         String resourceGroupName, String name, String privateEndpointConnectionName,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper) {
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper) {
         return approveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name, privateEndpointConnectionName,
             privateEndpointWrapper).block();
     }
 
     /**
      * Approves or rejects a private endpoint connection
-     * 
+     *
      * Description for Approves or rejects a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -5934,16 +5950,16 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemotePrivateEndpointConnectionArmResourceInner approveOrRejectPrivateEndpointConnection(
         String resourceGroupName, String name, String privateEndpointConnectionName,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper, Context context) {
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper, Context context) {
         return approveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name, privateEndpointConnectionName,
             privateEndpointWrapper, context).block();
     }
 
     /**
      * Deletes a private endpoint connection
-     * 
+     *
      * Description for Deletes a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -5984,9 +6000,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Deletes a private endpoint connection
-     * 
+     *
      * Description for Deletes a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -6027,9 +6043,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Deletes a private endpoint connection
-     * 
+     *
      * Description for Deletes a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -6049,9 +6065,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Deletes a private endpoint connection
-     * 
+     *
      * Description for Deletes a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -6073,9 +6089,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Deletes a private endpoint connection
-     * 
+     *
      * Description for Deletes a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -6093,9 +6109,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Deletes a private endpoint connection
-     * 
+     *
      * Description for Deletes a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -6115,9 +6131,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Deletes a private endpoint connection
-     * 
+     *
      * Description for Deletes a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -6135,9 +6151,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Deletes a private endpoint connection
-     * 
+     *
      * Description for Deletes a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -6156,9 +6172,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Deletes a private endpoint connection
-     * 
+     *
      * Description for Deletes a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -6175,9 +6191,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Deletes a private endpoint connection
-     * 
+     *
      * Description for Deletes a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -6196,9 +6212,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Gets the private link resources
-     * 
+     *
      * Description for Gets the private link resources.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6234,9 +6250,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Gets the private link resources
-     * 
+     *
      * Description for Gets the private link resources.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -6272,9 +6288,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Gets the private link resources
-     * 
+     *
      * Description for Gets the private link resources.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6290,9 +6306,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Gets the private link resources
-     * 
+     *
      * Description for Gets the private link resources.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -6309,9 +6325,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Gets the private link resources
-     * 
+     *
      * Description for Gets the private link resources.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6326,9 +6342,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Reboot all machines in an App Service Environment.
-     * 
+     *
      * Description for Reboot all machines in an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6362,9 +6378,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Reboot all machines in an App Service Environment.
-     * 
+     *
      * Description for Reboot all machines in an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -6398,9 +6414,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Reboot all machines in an App Service Environment.
-     * 
+     *
      * Description for Reboot all machines in an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6415,9 +6431,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Reboot all machines in an App Service Environment.
-     * 
+     *
      * Description for Reboot all machines in an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -6433,9 +6449,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Reboot all machines in an App Service Environment.
-     * 
+     *
      * Description for Reboot all machines in an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6449,9 +6465,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Resume an App Service Environment.
-     * 
+     *
      * Description for Resume an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6478,23 +6494,29 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> {
-            Mono<Response<Flux<ByteBuffer>>> mono = service.resume(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context).cache();
+            Mono<Response<Flux<ByteBuffer>>> mono
+                = service
+                    .resume(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
+                        this.client.getApiVersion(), accept, context)
+                    .cache();
             return Mono.zip(mono,
                 this.client
                     .<WebAppCollection, WebAppCollection>getLroResult(mono, this.client.getHttpPipeline(),
                         WebAppCollection.class, WebAppCollection.class, this.client.getContext())
-                    .last().flatMap(this.client::getLroFinalResultOrError));
-        }).<PagedResponse<SiteInner>>map(res -> new PagedResponseBase<>(res.getT1().getRequest(),
-            res.getT1().getStatusCode(), res.getT1().getHeaders(), res.getT2().value(), res.getT2().nextLink(), null))
+                    .last()
+                    .flatMap(this.client::getLroFinalResultOrError));
+        })
+            .<PagedResponse<SiteInner>>map(
+                res -> new PagedResponseBase<>(res.getT1().getRequest(), res.getT1().getStatusCode(),
+                    res.getT1().getHeaders(), res.getT2().value(), res.getT2().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Resume an App Service Environment.
-     * 
+     *
      * Description for Resume an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -6523,23 +6545,27 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = service.resume(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context).cache();
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = service
+                .resume(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
+                    this.client.getApiVersion(), accept, context)
+                .cache();
         return Mono
             .zip(mono,
                 this.client
                     .<WebAppCollection, WebAppCollection>getLroResult(mono, this.client.getHttpPipeline(),
                         WebAppCollection.class, WebAppCollection.class, context)
-                    .last().flatMap(this.client::getLroFinalResultOrError))
+                    .last()
+                    .flatMap(this.client::getLroFinalResultOrError))
             .map(res -> new PagedResponseBase<>(res.getT1().getRequest(), res.getT1().getStatusCode(),
                 res.getT1().getHeaders(), res.getT2().value(), res.getT2().nextLink(), null));
     }
 
     /**
      * Resume an App Service Environment.
-     * 
+     *
      * Description for Resume an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6555,9 +6581,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Resume an App Service Environment.
-     * 
+     *
      * Description for Resume an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -6574,9 +6600,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Resume an App Service Environment.
-     * 
+     *
      * Description for Resume an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6591,9 +6617,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Resume an App Service Environment.
-     * 
+     *
      * Description for Resume an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -6609,9 +6635,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all App Service plans in an App Service Environment.
-     * 
+     *
      * Description for Get all App Service plans in an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6649,9 +6675,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all App Service plans in an App Service Environment.
-     * 
+     *
      * Description for Get all App Service plans in an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -6690,9 +6716,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all App Service plans in an App Service Environment.
-     * 
+     *
      * Description for Get all App Service plans in an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6708,9 +6734,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all App Service plans in an App Service Environment.
-     * 
+     *
      * Description for Get all App Service plans in an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -6728,9 +6754,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all App Service plans in an App Service Environment.
-     * 
+     *
      * Description for Get all App Service plans in an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6745,9 +6771,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all App Service plans in an App Service Environment.
-     * 
+     *
      * Description for Get all App Service plans in an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -6764,9 +6790,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all apps in an App Service Environment.
-     * 
+     *
      * Description for Get all apps in an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param propertiesToInclude Comma separated list of app properties to include.
@@ -6804,9 +6830,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all apps in an App Service Environment.
-     * 
+     *
      * Description for Get all apps in an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param propertiesToInclude Comma separated list of app properties to include.
@@ -6845,9 +6871,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all apps in an App Service Environment.
-     * 
+     *
      * Description for Get all apps in an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param propertiesToInclude Comma separated list of app properties to include.
@@ -6864,9 +6890,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all apps in an App Service Environment.
-     * 
+     *
      * Description for Get all apps in an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6883,9 +6909,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all apps in an App Service Environment.
-     * 
+     *
      * Description for Get all apps in an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param propertiesToInclude Comma separated list of app properties to include.
@@ -6904,9 +6930,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all apps in an App Service Environment.
-     * 
+     *
      * Description for Get all apps in an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6922,9 +6948,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all apps in an App Service Environment.
-     * 
+     *
      * Description for Get all apps in an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param propertiesToInclude Comma separated list of app properties to include.
@@ -6942,9 +6968,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Suspend an App Service Environment.
-     * 
+     *
      * Description for Suspend an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6971,23 +6997,29 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> {
-            Mono<Response<Flux<ByteBuffer>>> mono = service.suspend(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context).cache();
+            Mono<Response<Flux<ByteBuffer>>> mono
+                = service
+                    .suspend(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
+                        this.client.getApiVersion(), accept, context)
+                    .cache();
             return Mono.zip(mono,
                 this.client
                     .<WebAppCollection, WebAppCollection>getLroResult(mono, this.client.getHttpPipeline(),
                         WebAppCollection.class, WebAppCollection.class, this.client.getContext())
-                    .last().flatMap(this.client::getLroFinalResultOrError));
-        }).<PagedResponse<SiteInner>>map(res -> new PagedResponseBase<>(res.getT1().getRequest(),
-            res.getT1().getStatusCode(), res.getT1().getHeaders(), res.getT2().value(), res.getT2().nextLink(), null))
+                    .last()
+                    .flatMap(this.client::getLroFinalResultOrError));
+        })
+            .<PagedResponse<SiteInner>>map(
+                res -> new PagedResponseBase<>(res.getT1().getRequest(), res.getT1().getStatusCode(),
+                    res.getT1().getHeaders(), res.getT2().value(), res.getT2().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Suspend an App Service Environment.
-     * 
+     *
      * Description for Suspend an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -7016,23 +7048,27 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = service.suspend(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context).cache();
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = service
+                .suspend(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
+                    this.client.getApiVersion(), accept, context)
+                .cache();
         return Mono
             .zip(mono,
                 this.client
                     .<WebAppCollection, WebAppCollection>getLroResult(mono, this.client.getHttpPipeline(),
                         WebAppCollection.class, WebAppCollection.class, context)
-                    .last().flatMap(this.client::getLroFinalResultOrError))
+                    .last()
+                    .flatMap(this.client::getLroFinalResultOrError))
             .map(res -> new PagedResponseBase<>(res.getT1().getRequest(), res.getT1().getStatusCode(),
                 res.getT1().getHeaders(), res.getT2().value(), res.getT2().nextLink(), null));
     }
 
     /**
      * Suspend an App Service Environment.
-     * 
+     *
      * Description for Suspend an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -7048,9 +7084,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Suspend an App Service Environment.
-     * 
+     *
      * Description for Suspend an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -7067,9 +7103,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Suspend an App Service Environment.
-     * 
+     *
      * Description for Suspend an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -7084,9 +7120,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Suspend an App Service Environment.
-     * 
+     *
      * Description for Suspend an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -7102,9 +7138,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get global usage metrics of an App Service Environment.
-     * 
+     *
      * Description for Get global usage metrics of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example:
@@ -7144,9 +7180,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get global usage metrics of an App Service Environment.
-     * 
+     *
      * Description for Get global usage metrics of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example:
@@ -7187,9 +7223,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get global usage metrics of an App Service Environment.
-     * 
+     *
      * Description for Get global usage metrics of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example:
@@ -7208,9 +7244,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get global usage metrics of an App Service Environment.
-     * 
+     *
      * Description for Get global usage metrics of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -7227,9 +7263,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get global usage metrics of an App Service Environment.
-     * 
+     *
      * Description for Get global usage metrics of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example:
@@ -7250,9 +7286,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get global usage metrics of an App Service Environment.
-     * 
+     *
      * Description for Get global usage metrics of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -7268,9 +7304,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get global usage metrics of an App Service Environment.
-     * 
+     *
      * Description for Get global usage metrics of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example:
@@ -7290,9 +7326,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all worker pools of an App Service Environment.
-     * 
+     *
      * Description for Get all worker pools of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -7329,9 +7365,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all worker pools of an App Service Environment.
-     * 
+     *
      * Description for Get all worker pools of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -7369,9 +7405,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all worker pools of an App Service Environment.
-     * 
+     *
      * Description for Get all worker pools of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -7387,9 +7423,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all worker pools of an App Service Environment.
-     * 
+     *
      * Description for Get all worker pools of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -7407,9 +7443,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all worker pools of an App Service Environment.
-     * 
+     *
      * Description for Get all worker pools of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -7424,9 +7460,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get all worker pools of an App Service Environment.
-     * 
+     *
      * Description for Get all worker pools of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
@@ -7443,9 +7479,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get properties of a worker pool.
-     * 
+     *
      * Description for Get properties of a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -7485,9 +7521,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get properties of a worker pool.
-     * 
+     *
      * Description for Get properties of a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -7527,9 +7563,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get properties of a worker pool.
-     * 
+     *
      * Description for Get properties of a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -7547,9 +7583,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get properties of a worker pool.
-     * 
+     *
      * Description for Get properties of a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -7567,9 +7603,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get properties of a worker pool.
-     * 
+     *
      * Description for Get properties of a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -7585,9 +7621,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update a worker pool.
-     * 
+     *
      * Description for Create or update a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -7635,9 +7671,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update a worker pool.
-     * 
+     *
      * Description for Create or update a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -7684,9 +7720,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update a worker pool.
-     * 
+     *
      * Description for Create or update a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -7708,9 +7744,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update a worker pool.
-     * 
+     *
      * Description for Create or update a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -7734,9 +7770,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update a worker pool.
-     * 
+     *
      * Description for Create or update a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -7755,9 +7791,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update a worker pool.
-     * 
+     *
      * Description for Create or update a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -7779,9 +7815,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update a worker pool.
-     * 
+     *
      * Description for Create or update a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -7800,9 +7836,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update a worker pool.
-     * 
+     *
      * Description for Create or update a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -7817,14 +7853,15 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     private Mono<WorkerPoolResourceInner> createOrUpdateWorkerPoolAsync(String resourceGroupName, String name,
         String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope, Context context) {
         return beginCreateOrUpdateWorkerPoolAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update a worker pool.
-     * 
+     *
      * Description for Create or update a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -7842,9 +7879,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update a worker pool.
-     * 
+     *
      * Description for Create or update a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -7864,9 +7901,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update a worker pool.
-     * 
+     *
      * Description for Create or update a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -7914,9 +7951,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update a worker pool.
-     * 
+     *
      * Description for Create or update a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -7963,9 +8000,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update a worker pool.
-     * 
+     *
      * Description for Create or update a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -7984,9 +8021,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update a worker pool.
-     * 
+     *
      * Description for Create or update a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -8006,9 +8043,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Create or update a worker pool.
-     * 
+     *
      * Description for Create or update a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -8027,9 +8064,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get metric definitions for a specific instance of a worker pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -8076,9 +8113,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get metric definitions for a specific instance of a worker pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -8125,9 +8162,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get metric definitions for a specific instance of a worker pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -8147,9 +8184,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get metric definitions for a specific instance of a worker pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -8171,9 +8208,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get metric definitions for a specific instance of a worker pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -8192,9 +8229,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get metric definitions for a specific instance of a worker pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -8214,9 +8251,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get metric definitions for a worker pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a worker pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -8258,9 +8295,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get metric definitions for a worker pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a worker pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -8303,9 +8340,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get metric definitions for a worker pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a worker pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -8324,9 +8361,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get metric definitions for a worker pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a worker pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -8346,9 +8383,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get metric definitions for a worker pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a worker pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -8365,9 +8402,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get metric definitions for a worker pool of an App Service Environment.
-     * 
+     *
      * Description for Get metric definitions for a worker pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -8386,9 +8423,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get available SKUs for scaling a worker pool.
-     * 
+     *
      * Description for Get available SKUs for scaling a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -8429,9 +8466,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get available SKUs for scaling a worker pool.
-     * 
+     *
      * Description for Get available SKUs for scaling a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -8473,9 +8510,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get available SKUs for scaling a worker pool.
-     * 
+     *
      * Description for Get available SKUs for scaling a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -8493,9 +8530,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get available SKUs for scaling a worker pool.
-     * 
+     *
      * Description for Get available SKUs for scaling a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -8515,9 +8552,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get available SKUs for scaling a worker pool.
-     * 
+     *
      * Description for Get available SKUs for scaling a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -8534,9 +8571,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get available SKUs for scaling a worker pool.
-     * 
+     *
      * Description for Get available SKUs for scaling a worker pool.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -8554,9 +8591,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get usage metrics for a worker pool of an App Service Environment.
-     * 
+     *
      * Description for Get usage metrics for a worker pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -8597,9 +8634,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get usage metrics for a worker pool of an App Service Environment.
-     * 
+     *
      * Description for Get usage metrics for a worker pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -8641,9 +8678,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get usage metrics for a worker pool of an App Service Environment.
-     * 
+     *
      * Description for Get usage metrics for a worker pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -8661,9 +8698,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get usage metrics for a worker pool of an App Service Environment.
-     * 
+     *
      * Description for Get usage metrics for a worker pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -8683,9 +8720,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get usage metrics for a worker pool of an App Service Environment.
-     * 
+     *
      * Description for Get usage metrics for a worker pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -8701,9 +8738,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get usage metrics for a worker pool of an App Service Environment.
-     * 
+     *
      * Description for Get usage metrics for a worker pool of an App Service Environment.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param workerPoolName Name of the worker pool.
@@ -8721,9 +8758,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -8749,9 +8786,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -8779,9 +8816,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -8810,9 +8847,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -8840,9 +8877,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -8868,9 +8905,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -8897,9 +8934,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -8925,9 +8962,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -8953,9 +8990,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -8984,9 +9021,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9014,9 +9051,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -9043,9 +9080,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9072,9 +9109,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -9103,9 +9140,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9134,9 +9171,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -9164,9 +9201,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9194,9 +9231,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -9223,9 +9260,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9252,9 +9289,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -9281,9 +9318,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9309,9 +9346,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -9340,9 +9377,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9370,9 +9407,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -9401,9 +9438,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9430,9 +9467,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -9457,9 +9494,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9485,9 +9522,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -9515,9 +9552,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9545,9 +9582,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -9573,9 +9610,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9601,9 +9638,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -9629,9 +9666,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9657,9 +9694,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -9685,9 +9722,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9713,9 +9750,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -9741,9 +9778,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9770,9 +9807,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -9801,9 +9838,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9831,9 +9868,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -9861,9 +9898,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9891,9 +9928,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -9920,9 +9957,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9948,9 +9985,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -9977,9 +10014,9 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

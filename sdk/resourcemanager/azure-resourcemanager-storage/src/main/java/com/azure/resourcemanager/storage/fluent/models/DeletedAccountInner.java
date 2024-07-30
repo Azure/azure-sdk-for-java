@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Deleted storage account. */
+/**
+ * Deleted storage account.
+ */
 @Immutable
 public final class DeletedAccountInner extends ProxyResource {
     /*
@@ -17,13 +19,15 @@ public final class DeletedAccountInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private DeletedAccountProperties innerProperties;
 
-    /** Creates an instance of DeletedAccountInner class. */
+    /**
+     * Creates an instance of DeletedAccountInner class.
+     */
     public DeletedAccountInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the deleted account.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DeletedAccountProperties innerProperties() {
@@ -32,7 +36,7 @@ public final class DeletedAccountInner extends ProxyResource {
 
     /**
      * Get the storageAccountResourceId property: Full resource id of the original storage account.
-     *
+     * 
      * @return the storageAccountResourceId value.
      */
     public String storageAccountResourceId() {
@@ -41,7 +45,7 @@ public final class DeletedAccountInner extends ProxyResource {
 
     /**
      * Get the location property: Location of the deleted account.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -51,7 +55,7 @@ public final class DeletedAccountInner extends ProxyResource {
     /**
      * Get the restoreReference property: Can be used to attempt recovering this deleted account via PutStorageAccount
      * API.
-     *
+     * 
      * @return the restoreReference value.
      */
     public String restoreReference() {
@@ -60,7 +64,7 @@ public final class DeletedAccountInner extends ProxyResource {
 
     /**
      * Get the creationTime property: Creation time of the deleted account.
-     *
+     * 
      * @return the creationTime value.
      */
     public String creationTime() {
@@ -69,7 +73,7 @@ public final class DeletedAccountInner extends ProxyResource {
 
     /**
      * Get the deletionTime property: Deletion time of the deleted account.
-     *
+     * 
      * @return the deletionTime value.
      */
     public String deletionTime() {
@@ -78,7 +82,7 @@ public final class DeletedAccountInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

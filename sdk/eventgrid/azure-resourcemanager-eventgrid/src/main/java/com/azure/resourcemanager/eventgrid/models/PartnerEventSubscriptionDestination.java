@@ -7,16 +7,28 @@ package com.azure.resourcemanager.eventgrid.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.eventgrid.fluent.models.PartnerEventSubscriptionDestinationProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The PartnerEventSubscriptionDestination model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "endpointType",
+    defaultImpl = PartnerEventSubscriptionDestination.class,
+    visible = true)
 @JsonTypeName("PartnerDestination")
 @Fluent
 public final class PartnerEventSubscriptionDestination extends EventSubscriptionDestination {
+    /*
+     * Type of the endpoint for the event subscription destination.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "endpointType", required = true)
+    private EndpointType endpointType = EndpointType.PARTNER_DESTINATION;
+
     /*
      * Partner Destination Properties of the event subscription destination.
      */
@@ -27,6 +39,16 @@ public final class PartnerEventSubscriptionDestination extends EventSubscription
      * Creates an instance of PartnerEventSubscriptionDestination class.
      */
     public PartnerEventSubscriptionDestination() {
+    }
+
+    /**
+     * Get the endpointType property: Type of the endpoint for the event subscription destination.
+     * 
+     * @return the endpointType value.
+     */
+    @Override
+    public EndpointType endpointType() {
+        return this.endpointType;
     }
 
     /**

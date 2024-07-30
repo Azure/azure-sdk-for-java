@@ -15,17 +15,21 @@ public final class XmlDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         XmlDatasetTypeProperties model = BinaryData.fromString(
-            "{\"location\":{\"type\":\"DatasetLocation\",\"folderPath\":\"datamzjotprrmuh\",\"fileName\":\"datahtuzlxiwyopgar\",\"\":{\"qyvzesipiysnjq\":\"datatwrapczdo\",\"dcndazabun\":\"dataowa\"}},\"encodingName\":\"datase\",\"nullValue\":\"dataaupwhlzyckrem\",\"compression\":{\"type\":\"datalmsvdo\",\"level\":\"datairxxhyrkqako\",\"\":{\"inwteyrqsh\":\"datafreprfvm\",\"lblfs\":\"dataxbcejop\"}}}")
+            "{\"location\":{\"type\":\"DatasetLocation\",\"folderPath\":\"datagmusaictdscnkzzo\",\"fileName\":\"datarddclzeqozrehlb\",\"\":{\"nynpameudpabcre\":\"dataxbnjrqvzyuexoz\",\"xvcvasormrexz\":\"datawzosgy\"}},\"encodingName\":\"dataubewgzygba\",\"nullValue\":\"datavecovsdqhzr\",\"compression\":{\"type\":\"databakrli\",\"level\":\"datafvppkeqsifj\",\"\":{\"bcdtajdo\":\"datangygnhrko\"}}}")
             .toObject(XmlDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         XmlDatasetTypeProperties model = new XmlDatasetTypeProperties()
-            .withLocation(new DatasetLocation().withFolderPath("datamzjotprrmuh").withFileName("datahtuzlxiwyopgar")
+            .withLocation(new DatasetLocation().withFolderPath("datagmusaictdscnkzzo")
+                .withFileName("datarddclzeqozrehlb")
                 .withAdditionalProperties(mapOf("type", "DatasetLocation")))
-            .withEncodingName("datase").withNullValue("dataaupwhlzyckrem").withCompression(new DatasetCompression()
-                .withType("datalmsvdo").withLevel("datairxxhyrkqako").withAdditionalProperties(mapOf()));
+            .withEncodingName("dataubewgzygba")
+            .withNullValue("datavecovsdqhzr")
+            .withCompression(new DatasetCompression().withType("databakrli")
+                .withLevel("datafvppkeqsifj")
+                .withAdditionalProperties(mapOf()));
         model = BinaryData.fromObject(model).toObject(XmlDatasetTypeProperties.class);
     }
 

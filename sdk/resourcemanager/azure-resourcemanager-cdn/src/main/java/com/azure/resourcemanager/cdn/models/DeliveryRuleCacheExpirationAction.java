@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Defines the cache expiration action for the delivery rule. */
+/**
+ * Defines the cache expiration action for the delivery rule.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "name")
 @JsonTypeName("CacheExpiration")
 @Fluent
@@ -21,13 +23,15 @@ public final class DeliveryRuleCacheExpirationAction extends DeliveryRuleAction 
     @JsonProperty(value = "parameters", required = true)
     private CacheExpirationActionParameters parameters;
 
-    /** Creates an instance of DeliveryRuleCacheExpirationAction class. */
+    /**
+     * Creates an instance of DeliveryRuleCacheExpirationAction class.
+     */
     public DeliveryRuleCacheExpirationAction() {
     }
 
     /**
      * Get the parameters property: Defines the parameters for the action.
-     *
+     * 
      * @return the parameters value.
      */
     public CacheExpirationActionParameters parameters() {
@@ -36,7 +40,7 @@ public final class DeliveryRuleCacheExpirationAction extends DeliveryRuleAction 
 
     /**
      * Set the parameters property: Defines the parameters for the action.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DeliveryRuleCacheExpirationAction object itself.
      */
@@ -47,17 +51,15 @@ public final class DeliveryRuleCacheExpirationAction extends DeliveryRuleAction 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (parameters() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property parameters in model DeliveryRuleCacheExpirationAction"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property parameters in model DeliveryRuleCacheExpirationAction"));
         } else {
             parameters().validate();
         }

@@ -14,8 +14,8 @@ import com.azure.resourcemanager.netapp.fluent.models.BackupInner;
 import com.azure.resourcemanager.netapp.fluent.models.BackupStatusInner;
 import com.azure.resourcemanager.netapp.fluent.models.RestoreStatusInner;
 import com.azure.resourcemanager.netapp.models.Backup;
-import com.azure.resourcemanager.netapp.models.BackupStatus;
 import com.azure.resourcemanager.netapp.models.Backups;
+import com.azure.resourcemanager.netapp.models.BackupStatus;
 import com.azure.resourcemanager.netapp.models.RestoreStatus;
 
 public final class BackupsImpl implements Backups {
@@ -32,8 +32,8 @@ public final class BackupsImpl implements Backups {
 
     public Response<BackupStatus> getLatestStatusWithResponse(String resourceGroupName, String accountName,
         String poolName, String volumeName, Context context) {
-        Response<BackupStatusInner> inner = this.serviceClient().getLatestStatusWithResponse(resourceGroupName,
-            accountName, poolName, volumeName, context);
+        Response<BackupStatusInner> inner = this.serviceClient()
+            .getLatestStatusWithResponse(resourceGroupName, accountName, poolName, volumeName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new BackupStatusImpl(inner.getValue(), this.manager()));
@@ -53,10 +53,10 @@ public final class BackupsImpl implements Backups {
         }
     }
 
-    public Response<RestoreStatus> getVolumeRestoreStatusWithResponse(String resourceGroupName, String accountName,
-        String poolName, String volumeName, Context context) {
-        Response<RestoreStatusInner> inner = this.serviceClient().getVolumeRestoreStatusWithResponse(resourceGroupName,
-            accountName, poolName, volumeName, context);
+    public Response<RestoreStatus> getVolumeLatestRestoreStatusWithResponse(String resourceGroupName,
+        String accountName, String poolName, String volumeName, Context context) {
+        Response<RestoreStatusInner> inner = this.serviceClient()
+            .getVolumeLatestRestoreStatusWithResponse(resourceGroupName, accountName, poolName, volumeName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RestoreStatusImpl(inner.getValue(), this.manager()));
@@ -65,10 +65,10 @@ public final class BackupsImpl implements Backups {
         }
     }
 
-    public RestoreStatus getVolumeRestoreStatus(String resourceGroupName, String accountName, String poolName,
+    public RestoreStatus getVolumeLatestRestoreStatus(String resourceGroupName, String accountName, String poolName,
         String volumeName) {
         RestoreStatusInner inner
-            = this.serviceClient().getVolumeRestoreStatus(resourceGroupName, accountName, poolName, volumeName);
+            = this.serviceClient().getVolumeLatestRestoreStatus(resourceGroupName, accountName, poolName, volumeName);
         if (inner != null) {
             return new RestoreStatusImpl(inner, this.manager());
         } else {
@@ -79,20 +79,20 @@ public final class BackupsImpl implements Backups {
     public PagedIterable<Backup> listByVault(String resourceGroupName, String accountName, String backupVaultName) {
         PagedIterable<BackupInner> inner
             = this.serviceClient().listByVault(resourceGroupName, accountName, backupVaultName);
-        return Utils.mapPage(inner, inner1 -> new BackupImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BackupImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Backup> listByVault(String resourceGroupName, String accountName, String backupVaultName,
         String filter, Context context) {
         PagedIterable<BackupInner> inner
             = this.serviceClient().listByVault(resourceGroupName, accountName, backupVaultName, filter, context);
-        return Utils.mapPage(inner, inner1 -> new BackupImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BackupImpl(inner1, this.manager()));
     }
 
     public Response<Backup> getWithResponse(String resourceGroupName, String accountName, String backupVaultName,
         String backupName, Context context) {
-        Response<BackupInner> inner = this.serviceClient().getWithResponse(resourceGroupName, accountName,
-            backupVaultName, backupName, context);
+        Response<BackupInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, accountName, backupVaultName, backupName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new BackupImpl(inner.getValue(), this.manager()));
@@ -120,22 +120,22 @@ public final class BackupsImpl implements Backups {
     }
 
     public Backup getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
-        String backupVaultName = Utils.getValueFromIdByName(id, "backupVaults");
+        String backupVaultName = ResourceManagerUtils.getValueFromIdByName(id, "backupVaults");
         if (backupVaultName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'backupVaults'.", id)));
         }
-        String backupName = Utils.getValueFromIdByName(id, "backups");
+        String backupName = ResourceManagerUtils.getValueFromIdByName(id, "backups");
         if (backupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'backups'.", id)));
@@ -145,22 +145,22 @@ public final class BackupsImpl implements Backups {
     }
 
     public Response<Backup> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
-        String backupVaultName = Utils.getValueFromIdByName(id, "backupVaults");
+        String backupVaultName = ResourceManagerUtils.getValueFromIdByName(id, "backupVaults");
         if (backupVaultName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'backupVaults'.", id)));
         }
-        String backupName = Utils.getValueFromIdByName(id, "backups");
+        String backupName = ResourceManagerUtils.getValueFromIdByName(id, "backups");
         if (backupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'backups'.", id)));
@@ -169,22 +169,22 @@ public final class BackupsImpl implements Backups {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
-        String backupVaultName = Utils.getValueFromIdByName(id, "backupVaults");
+        String backupVaultName = ResourceManagerUtils.getValueFromIdByName(id, "backupVaults");
         if (backupVaultName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'backupVaults'.", id)));
         }
-        String backupName = Utils.getValueFromIdByName(id, "backups");
+        String backupName = ResourceManagerUtils.getValueFromIdByName(id, "backups");
         if (backupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'backups'.", id)));
@@ -193,22 +193,22 @@ public final class BackupsImpl implements Backups {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
-        String backupVaultName = Utils.getValueFromIdByName(id, "backupVaults");
+        String backupVaultName = ResourceManagerUtils.getValueFromIdByName(id, "backupVaults");
         if (backupVaultName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'backupVaults'.", id)));
         }
-        String backupName = Utils.getValueFromIdByName(id, "backups");
+        String backupName = ResourceManagerUtils.getValueFromIdByName(id, "backups");
         if (backupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'backups'.", id)));

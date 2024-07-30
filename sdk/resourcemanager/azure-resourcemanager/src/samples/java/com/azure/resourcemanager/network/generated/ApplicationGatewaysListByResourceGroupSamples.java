@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class ApplicationGatewaysListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/ApplicationGatewayList.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ApplicationGatewayList.json
      */
     /**
      * Sample code: Lists all application gateways in a resource group.
@@ -19,7 +19,10 @@ public final class ApplicationGatewaysListByResourceGroupSamples {
      */
     public static void
         listsAllApplicationGatewaysInAResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getApplicationGateways().listByResourceGroup("rg1",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getApplicationGateways()
+            .listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
     }
 }

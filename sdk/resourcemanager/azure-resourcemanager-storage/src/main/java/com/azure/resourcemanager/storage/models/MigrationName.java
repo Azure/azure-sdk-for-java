@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MigrationName. */
+/**
+ * Defines values for MigrationName.
+ */
 public final class MigrationName extends ExpandableStringEnum<MigrationName> {
-    /** Static value default for MigrationName. */
+    /**
+     * Static value default for MigrationName.
+     */
     public static final MigrationName DEFAULT = fromString("default");
 
     /**
      * Creates a new instance of MigrationName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,7 +28,7 @@ public final class MigrationName extends ExpandableStringEnum<MigrationName> {
 
     /**
      * Creates or finds a MigrationName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MigrationName.
      */
@@ -35,7 +39,7 @@ public final class MigrationName extends ExpandableStringEnum<MigrationName> {
 
     /**
      * Gets known MigrationName values.
-     *
+     * 
      * @return known MigrationName values.
      */
     public static Collection<MigrationName> values() {

@@ -10,9 +10,21 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.confluent.fluent.OrganizationsClient;
+import com.azure.resourcemanager.confluent.fluent.models.ApiKeyRecordInner;
+import com.azure.resourcemanager.confluent.fluent.models.ListRegionsSuccessResponseInner;
 import com.azure.resourcemanager.confluent.fluent.models.OrganizationResourceInner;
+import com.azure.resourcemanager.confluent.fluent.models.SCClusterRecordInner;
+import com.azure.resourcemanager.confluent.fluent.models.SCEnvironmentRecordInner;
+import com.azure.resourcemanager.confluent.fluent.models.SchemaRegistryClusterRecordInner;
+import com.azure.resourcemanager.confluent.models.ApiKeyRecord;
+import com.azure.resourcemanager.confluent.models.CreateApiKeyModel;
+import com.azure.resourcemanager.confluent.models.ListAccessRequestModel;
+import com.azure.resourcemanager.confluent.models.ListRegionsSuccessResponse;
 import com.azure.resourcemanager.confluent.models.OrganizationResource;
 import com.azure.resourcemanager.confluent.models.Organizations;
+import com.azure.resourcemanager.confluent.models.SCClusterRecord;
+import com.azure.resourcemanager.confluent.models.SCEnvironmentRecord;
+import com.azure.resourcemanager.confluent.models.SchemaRegistryClusterRecord;
 
 public final class OrganizationsImpl implements Organizations {
     private static final ClientLogger LOGGER = new ClientLogger(OrganizationsImpl.class);
@@ -29,23 +41,23 @@ public final class OrganizationsImpl implements Organizations {
 
     public PagedIterable<OrganizationResource> list() {
         PagedIterable<OrganizationResourceInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new OrganizationResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OrganizationResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<OrganizationResource> list(Context context) {
         PagedIterable<OrganizationResourceInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new OrganizationResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OrganizationResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<OrganizationResource> listByResourceGroup(String resourceGroupName) {
         PagedIterable<OrganizationResourceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new OrganizationResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OrganizationResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<OrganizationResource> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<OrganizationResourceInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new OrganizationResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OrganizationResourceImpl(inner1, this.manager()));
     }
 
     public Response<OrganizationResource> getByResourceGroupWithResponse(String resourceGroupName,
@@ -77,13 +89,203 @@ public final class OrganizationsImpl implements Organizations {
         this.serviceClient().delete(resourceGroupName, organizationName, context);
     }
 
+    public PagedIterable<SCEnvironmentRecord> listEnvironments(String resourceGroupName, String organizationName) {
+        PagedIterable<SCEnvironmentRecordInner> inner
+            = this.serviceClient().listEnvironments(resourceGroupName, organizationName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SCEnvironmentRecordImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<SCEnvironmentRecord> listEnvironments(String resourceGroupName, String organizationName,
+        Integer pageSize, String pageToken, Context context) {
+        PagedIterable<SCEnvironmentRecordInner> inner
+            = this.serviceClient().listEnvironments(resourceGroupName, organizationName, pageSize, pageToken, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SCEnvironmentRecordImpl(inner1, this.manager()));
+    }
+
+    public Response<SCEnvironmentRecord> getEnvironmentByIdWithResponse(String resourceGroupName,
+        String organizationName, String environmentId, Context context) {
+        Response<SCEnvironmentRecordInner> inner = this.serviceClient()
+            .getEnvironmentByIdWithResponse(resourceGroupName, organizationName, environmentId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SCEnvironmentRecordImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SCEnvironmentRecord getEnvironmentById(String resourceGroupName, String organizationName,
+        String environmentId) {
+        SCEnvironmentRecordInner inner
+            = this.serviceClient().getEnvironmentById(resourceGroupName, organizationName, environmentId);
+        if (inner != null) {
+            return new SCEnvironmentRecordImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public PagedIterable<SCClusterRecord> listClusters(String resourceGroupName, String organizationName,
+        String environmentId) {
+        PagedIterable<SCClusterRecordInner> inner
+            = this.serviceClient().listClusters(resourceGroupName, organizationName, environmentId);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SCClusterRecordImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<SCClusterRecord> listClusters(String resourceGroupName, String organizationName,
+        String environmentId, Integer pageSize, String pageToken, Context context) {
+        PagedIterable<SCClusterRecordInner> inner = this.serviceClient().listClusters(resourceGroupName,
+            organizationName, environmentId, pageSize, pageToken, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SCClusterRecordImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<SchemaRegistryClusterRecord> listSchemaRegistryClusters(String resourceGroupName,
+        String organizationName, String environmentId) {
+        PagedIterable<SchemaRegistryClusterRecordInner> inner
+            = this.serviceClient().listSchemaRegistryClusters(resourceGroupName, organizationName, environmentId);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new SchemaRegistryClusterRecordImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<SchemaRegistryClusterRecord> listSchemaRegistryClusters(String resourceGroupName,
+        String organizationName, String environmentId, Integer pageSize, String pageToken, Context context) {
+        PagedIterable<SchemaRegistryClusterRecordInner> inner = this.serviceClient().listSchemaRegistryClusters(
+            resourceGroupName, organizationName, environmentId, pageSize, pageToken, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new SchemaRegistryClusterRecordImpl(inner1, this.manager()));
+    }
+
+    public Response<ListRegionsSuccessResponse> listRegionsWithResponse(String resourceGroupName,
+        String organizationName, ListAccessRequestModel body, Context context) {
+        Response<ListRegionsSuccessResponseInner> inner
+            = this.serviceClient().listRegionsWithResponse(resourceGroupName, organizationName, body, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ListRegionsSuccessResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ListRegionsSuccessResponse listRegions(String resourceGroupName, String organizationName,
+        ListAccessRequestModel body) {
+        ListRegionsSuccessResponseInner inner
+            = this.serviceClient().listRegions(resourceGroupName, organizationName, body);
+        if (inner != null) {
+            return new ListRegionsSuccessResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<ApiKeyRecord> createApiKeyWithResponse(String resourceGroupName, String organizationName,
+        String environmentId, String clusterId, CreateApiKeyModel body, Context context) {
+        Response<ApiKeyRecordInner> inner = this.serviceClient().createApiKeyWithResponse(resourceGroupName,
+            organizationName, environmentId, clusterId, body, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ApiKeyRecordImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ApiKeyRecord createApiKey(String resourceGroupName, String organizationName, String environmentId,
+        String clusterId, CreateApiKeyModel body) {
+        ApiKeyRecordInner inner
+            = this.serviceClient().createApiKey(resourceGroupName, organizationName, environmentId, clusterId, body);
+        if (inner != null) {
+            return new ApiKeyRecordImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<Void> deleteClusterApiKeyWithResponse(String resourceGroupName, String organizationName,
+        String apiKeyId, Context context) {
+        return this.serviceClient().deleteClusterApiKeyWithResponse(resourceGroupName, organizationName, apiKeyId,
+            context);
+    }
+
+    public void deleteClusterApiKey(String resourceGroupName, String organizationName, String apiKeyId) {
+        this.serviceClient().deleteClusterApiKey(resourceGroupName, organizationName, apiKeyId);
+    }
+
+    public Response<ApiKeyRecord> getClusterApiKeyWithResponse(String resourceGroupName, String organizationName,
+        String apiKeyId, Context context) {
+        Response<ApiKeyRecordInner> inner
+            = this.serviceClient().getClusterApiKeyWithResponse(resourceGroupName, organizationName, apiKeyId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ApiKeyRecordImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ApiKeyRecord getClusterApiKey(String resourceGroupName, String organizationName, String apiKeyId) {
+        ApiKeyRecordInner inner = this.serviceClient().getClusterApiKey(resourceGroupName, organizationName, apiKeyId);
+        if (inner != null) {
+            return new ApiKeyRecordImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<SchemaRegistryClusterRecord> getSchemaRegistryClusterByIdWithResponse(String resourceGroupName,
+        String organizationName, String environmentId, String clusterId, Context context) {
+        Response<SchemaRegistryClusterRecordInner> inner
+            = this.serviceClient().getSchemaRegistryClusterByIdWithResponse(resourceGroupName, organizationName,
+                environmentId, clusterId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SchemaRegistryClusterRecordImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SchemaRegistryClusterRecord getSchemaRegistryClusterById(String resourceGroupName, String organizationName,
+        String environmentId, String clusterId) {
+        SchemaRegistryClusterRecordInner inner = this.serviceClient().getSchemaRegistryClusterById(resourceGroupName,
+            organizationName, environmentId, clusterId);
+        if (inner != null) {
+            return new SchemaRegistryClusterRecordImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<SCClusterRecord> getClusterByIdWithResponse(String resourceGroupName, String organizationName,
+        String environmentId, String clusterId, Context context) {
+        Response<SCClusterRecordInner> inner = this.serviceClient().getClusterByIdWithResponse(resourceGroupName,
+            organizationName, environmentId, clusterId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SCClusterRecordImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SCClusterRecord getClusterById(String resourceGroupName, String organizationName, String environmentId,
+        String clusterId) {
+        SCClusterRecordInner inner
+            = this.serviceClient().getClusterById(resourceGroupName, organizationName, environmentId, clusterId);
+        if (inner != null) {
+            return new SCClusterRecordImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public OrganizationResource getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String organizationName = Utils.getValueFromIdByName(id, "organizations");
+        String organizationName = ResourceManagerUtils.getValueFromIdByName(id, "organizations");
         if (organizationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));
@@ -92,12 +294,12 @@ public final class OrganizationsImpl implements Organizations {
     }
 
     public Response<OrganizationResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String organizationName = Utils.getValueFromIdByName(id, "organizations");
+        String organizationName = ResourceManagerUtils.getValueFromIdByName(id, "organizations");
         if (organizationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));
@@ -106,12 +308,12 @@ public final class OrganizationsImpl implements Organizations {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String organizationName = Utils.getValueFromIdByName(id, "organizations");
+        String organizationName = ResourceManagerUtils.getValueFromIdByName(id, "organizations");
         if (organizationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));
@@ -120,12 +322,12 @@ public final class OrganizationsImpl implements Organizations {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String organizationName = Utils.getValueFromIdByName(id, "organizations");
+        String organizationName = ResourceManagerUtils.getValueFromIdByName(id, "organizations");
         if (organizationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));

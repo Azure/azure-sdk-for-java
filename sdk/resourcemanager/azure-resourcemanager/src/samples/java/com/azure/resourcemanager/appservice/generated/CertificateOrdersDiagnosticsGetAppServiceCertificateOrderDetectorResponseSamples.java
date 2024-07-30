@@ -9,9 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-01-01/examples/
-     * Diagnostics_GetAppServiceCertificateOrderDetectorResponse.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-12-01/examples/Diagnostics_GetAppServiceCertificateOrderDetectorResponse.json
      */
     /**
      * Sample code: Get app service certificate order detector response.
@@ -20,7 +18,10 @@ public final class CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDete
      */
     public static void
         getAppServiceCertificateOrderDetectorResponse(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getCertificateOrdersDiagnostics()
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getCertificateOrdersDiagnostics()
             .getAppServiceCertificateOrderDetectorResponseWithResponse("Sample-WestUSResourceGroup",
                 "SampleCertificateOrderName", "AutoRenewStatus", null, null, null, com.azure.core.util.Context.NONE);
     }

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.models.SecurityGroupViewParameters;
  */
 public final class NetworkWatchersGetVMSecurityRulesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * NetworkWatcherSecurityGroupViewGet.json
      */
     /**
@@ -20,9 +20,13 @@ public final class NetworkWatchersGetVMSecurityRulesSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getSecurityGroupView(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getNetworkWatchers().getVMSecurityRules("rg1", "nw1",
-            new SecurityGroupViewParameters().withTargetResourceId(
-                "/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Compute/virtualMachines/vm1"),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getNetworkWatchers()
+            .getVMSecurityRules("rg1", "nw1",
+                new SecurityGroupViewParameters().withTargetResourceId(
+                    "/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Compute/virtualMachines/vm1"),
+                com.azure.core.util.Context.NONE);
     }
 }

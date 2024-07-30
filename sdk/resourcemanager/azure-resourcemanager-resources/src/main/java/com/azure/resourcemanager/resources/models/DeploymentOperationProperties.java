@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Deployment operation properties. */
+/**
+ * Deployment operation properties.
+ */
 @Immutable
 public final class DeploymentOperationProperties {
     /*
@@ -42,15 +44,13 @@ public final class DeploymentOperationProperties {
     private String serviceRequestId;
 
     /*
-     * Operation status code from the resource provider. This property may not be set if a response has not yet been
-     * received.
+     * Operation status code from the resource provider. This property may not be set if a response has not yet been received.
      */
     @JsonProperty(value = "statusCode", access = JsonProperty.Access.WRITE_ONLY)
     private String statusCode;
 
     /*
-     * Operation status message from the resource provider. This property is optional.  It will only be provided if an
-     * error was received from the resource provider.
+     * Operation status message from the resource provider. This property is optional.  It will only be provided if an error was received from the resource provider.
      */
     @JsonProperty(value = "statusMessage", access = JsonProperty.Access.WRITE_ONLY)
     private StatusMessage statusMessage;
@@ -73,13 +73,15 @@ public final class DeploymentOperationProperties {
     @JsonProperty(value = "response", access = JsonProperty.Access.WRITE_ONLY)
     private HttpMessage response;
 
-    /** Creates an instance of DeploymentOperationProperties class. */
+    /**
+     * Creates an instance of DeploymentOperationProperties class.
+     */
     public DeploymentOperationProperties() {
     }
 
     /**
      * Get the provisioningOperation property: The name of the current provisioning operation.
-     *
+     * 
      * @return the provisioningOperation value.
      */
     public ProvisioningOperation provisioningOperation() {
@@ -88,7 +90,7 @@ public final class DeploymentOperationProperties {
 
     /**
      * Get the provisioningState property: The state of the provisioning.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -97,7 +99,7 @@ public final class DeploymentOperationProperties {
 
     /**
      * Get the timestamp property: The date and time of the operation.
-     *
+     * 
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -106,7 +108,7 @@ public final class DeploymentOperationProperties {
 
     /**
      * Get the duration property: The duration of the operation.
-     *
+     * 
      * @return the duration value.
      */
     public String duration() {
@@ -115,7 +117,7 @@ public final class DeploymentOperationProperties {
 
     /**
      * Get the serviceRequestId property: Deployment operation service request id.
-     *
+     * 
      * @return the serviceRequestId value.
      */
     public String serviceRequestId() {
@@ -125,7 +127,7 @@ public final class DeploymentOperationProperties {
     /**
      * Get the statusCode property: Operation status code from the resource provider. This property may not be set if a
      * response has not yet been received.
-     *
+     * 
      * @return the statusCode value.
      */
     public String statusCode() {
@@ -135,7 +137,7 @@ public final class DeploymentOperationProperties {
     /**
      * Get the statusMessage property: Operation status message from the resource provider. This property is optional.
      * It will only be provided if an error was received from the resource provider.
-     *
+     * 
      * @return the statusMessage value.
      */
     public StatusMessage statusMessage() {
@@ -144,7 +146,7 @@ public final class DeploymentOperationProperties {
 
     /**
      * Get the targetResource property: The target resource.
-     *
+     * 
      * @return the targetResource value.
      */
     public TargetResource targetResource() {
@@ -153,7 +155,7 @@ public final class DeploymentOperationProperties {
 
     /**
      * Get the request property: The HTTP request message.
-     *
+     * 
      * @return the request value.
      */
     public HttpMessage request() {
@@ -162,7 +164,7 @@ public final class DeploymentOperationProperties {
 
     /**
      * Get the response property: The HTTP response message.
-     *
+     * 
      * @return the response value.
      */
     public HttpMessage response() {
@@ -171,7 +173,7 @@ public final class DeploymentOperationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

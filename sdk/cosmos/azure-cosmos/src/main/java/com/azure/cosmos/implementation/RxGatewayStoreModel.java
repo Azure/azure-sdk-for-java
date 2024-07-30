@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.RequestHelper;
@@ -79,6 +80,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
         GlobalEndpointManager globalEndpointManager,
         HttpClient httpClient,
         ApiType apiType) {
+
         this.clientContext = clientContext;
         this.defaultHeaders = new HashMap<>();
         this.defaultHeaders.put(HttpConstants.HttpHeaders.CACHE_CONTROL,
@@ -133,6 +135,10 @@ public class RxGatewayStoreModel implements RxStoreModel {
 
     public void setUseMultipleWriteLocations(boolean useMultipleWriteLocations) {
         this.useMultipleWriteLocations = useMultipleWriteLocations;
+    }
+
+    public void setSessionContainer(ISessionContainer sessionContainer) {
+        this.sessionContainer = sessionContainer;
     }
 
     boolean isUseMultipleWriteLocations() {
@@ -399,6 +405,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
                     if (request.requestContext.cosmosDiagnostics != null) {
                         BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, rsp, globalEndpointManager);
                     }
+
                     return rsp;
                 })
                 .single();
@@ -428,7 +435,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
             CosmosException dce;
             if (!(exception instanceof CosmosException)) {
                 // wrap in CosmosException
-                logger.error("Network failure", exception);
+                logger.warn("Network failure", exception);
 
                 int statusCode = 0;
                 if (WebExceptionUtility.isNetworkFailure(exception)) {
@@ -539,6 +546,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
     }
 
     private Mono<RxDocumentServiceResponse> invokeAsync(RxDocumentServiceRequest request) {
+
         Callable<Mono<RxDocumentServiceResponse>> funcDelegate = () -> invokeAsyncInternal(request).single();
 
         MetadataRequestRetryPolicy metadataRequestRetryPolicy = new MetadataRequestRetryPolicy(this.globalEndpointManager);
@@ -596,7 +604,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
     @Override
     public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider, Configs configs) {
         if (this.gatewayServerErrorInjector == null) {
-            this.gatewayServerErrorInjector = new GatewayServerErrorInjector(configs);
+            this.gatewayServerErrorInjector = new GatewayServerErrorInjector(configs, collectionCache, partitionKeyRangeCache);
         }
 
         this.gatewayServerErrorInjector.registerServerErrorInjector(injectorProvider.getServerErrorInjector());
@@ -731,10 +739,14 @@ public class RxGatewayStoreModel implements RxStoreModel {
                                 SessionTokenHelper.setPartitionLocalSessionToken(request, sessionContainer);
                             }
                         } else if (partitionKeyInternal != null) {
-                            String effectivePartitionKeyString = PartitionKeyInternalHelper
+                            String effectivePartitionKeyString = StringUtils.isNotEmpty(request.getEffectivePartitionKey()) ?
+                                request.getEffectivePartitionKey() : PartitionKeyInternalHelper
                                 .getEffectivePartitionKeyString(
                                     partitionKeyInternal,
                                     collectionValueHolder.v.getPartitionKey());
+
+                            request.setEffectivePartitionKey(effectivePartitionKeyString);
+
                             PartitionKeyRange range =
                                 collectionRoutingMapValueHolder.v.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
                             request.requestContext.resolvedPartitionKeyRange = range;

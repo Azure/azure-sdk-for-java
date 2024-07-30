@@ -364,8 +364,9 @@ public final class ExecuteSsisPackageActivityTypeProperties {
      */
     public void validate() {
         if (packageLocation() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property packageLocation in model ExecuteSsisPackageActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property packageLocation in model ExecuteSsisPackageActivityTypeProperties"));
         } else {
             packageLocation().validate();
         }
@@ -373,8 +374,9 @@ public final class ExecuteSsisPackageActivityTypeProperties {
             executionCredential().validate();
         }
         if (connectVia() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property connectVia in model ExecuteSsisPackageActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property connectVia in model ExecuteSsisPackageActivityTypeProperties"));
         } else {
             connectVia().validate();
         }

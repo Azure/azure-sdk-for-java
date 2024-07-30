@@ -35,6 +35,7 @@ import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditio
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.PathExpiryOptions;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
+import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
@@ -55,6 +56,7 @@ import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions;
+import com.azure.storage.file.datalake.options.ReadToFileOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuples;
@@ -1176,8 +1178,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         return this.dataLakeStorage.getPaths().appendDataNoCustomHeadersWithResponseAsync(
             data, fileOffset, null, length, null, appendOptions.getLeaseAction(), leaseDuration,
                 appendOptions.getProposedLeaseId(), null, appendOptions.isFlush(), headers, leaseAccessConditions,
-                getCpkInfo(), context)
-            .map(response -> new SimpleResponse<>(response, null));
+                getCpkInfo(), context);
     }
 
     /**
@@ -1468,6 +1469,32 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     /**
      * Reads the entire file into a file specified by the path.
      *
+     * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
+     * will be thrown.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileAsyncClient.readToFile#ReadToFileOptions -->
+     * <pre>
+     * client.readToFile&#40;new ReadToFileOptions&#40;file&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.println&#40;&quot;Completed download to file&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileAsyncClient.readToFile#ReadToFileOptions -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param options {@link ReadToFileOptions}
+     * @return A reactive response containing the file properties and metadata.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PathProperties> readToFile(ReadToFileOptions options) {
+        return readToFileWithResponse(options).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Reads the entire file into a file specified by the path.
+     *
      * <p>If overwrite is set to false, the file will be created and must not exist, if the file already exists a
      * {@link FileAlreadyExistsException} will be thrown.</p>
      *
@@ -1547,6 +1574,53 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         .setDownloadRetryOptions(Transforms.toBlobDownloadRetryOptions(options))
         .setRequestConditions(Transforms.toBlobRequestConditions(requestConditions))
         .setRetrieveContentRangeMd5(rangeGetContentMd5).setOpenOptions(openOptions))
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
+            .map(response -> new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), response)));
+    }
+
+    /**
+     * Reads the entire file into a file specified by the path.
+     *
+     * <p>By default the file will be created and must not exist, if the file already exists a
+     * {@link FileAlreadyExistsException} will be thrown. To override this behavior, provide appropriate
+     * {@link OpenOption OpenOptions} </p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileAsyncClient.readToFileWithResponse#ReadToFileOptions -->
+     * <pre>
+     * ReadToFileOptions options = new ReadToFileOptions&#40;file&#41;;
+     * options.setRange&#40;new FileRange&#40;1024, 2048L&#41;&#41;;
+     * options.setDownloadRetryOptions&#40;new DownloadRetryOptions&#40;&#41;.setMaxRetryRequests&#40;5&#41;&#41;;
+     * options.setOpenOptions&#40;new HashSet&lt;&gt;&#40;Arrays.asList&#40;StandardOpenOption.CREATE_NEW,
+     *     StandardOpenOption.WRITE, StandardOpenOption.READ&#41;&#41;&#41;; &#47;&#47;Default options
+     * options.setParallelTransferOptions&#40;new ParallelTransferOptions&#40;&#41;.setBlockSizeLong&#40;4L * Constants.MB&#41;&#41;;
+     * options.setDataLakeRequestConditions&#40;null&#41;;
+     * options.setRangeGetContentMd5&#40;false&#41;;
+     *
+     * client.readToFileWithResponse&#40;options&#41;
+     *     .subscribe&#40;response -&gt; System.out.println&#40;&quot;Completed download to file&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileAsyncClient.readToFileWithResponse#ReadToFileOptions -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param options {@link ReadToFileOptions}
+     * @return A reactive response containing the file properties and metadata.
+     * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB.
+     * @throws UncheckedIOException If an I/O error occurs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PathProperties>> readToFileWithResponse(ReadToFileOptions options) {
+        Context context = BuilderHelper.addUpnHeader(() -> (options == null) ? null : options.isUserPrincipalName(), null);
+
+        return blockBlobAsyncClient.downloadToFileWithResponse(new BlobDownloadToFileOptions(options.getFilePath())
+                .setRange(Transforms.toBlobRange(options.getRange())).setParallelTransferOptions(options.getParallelTransferOptions())
+                .setDownloadRetryOptions(Transforms.toBlobDownloadRetryOptions(options.getDownloadRetryOptions()))
+                .setRequestConditions(Transforms.toBlobRequestConditions(options.getDataLakeRequestConditions()))
+                .setRetrieveContentRangeMd5(options.isRangeGetContentMd5()).setOpenOptions(options.getOpenOptions()))
+            .contextWrite(FluxUtil.toReactorContext(context))
             .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
             .map(response -> new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), response)));
     }
@@ -1772,10 +1846,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         } else {
             pathExpiryOptions = PathExpiryOptions.NEVER_EXPIRE;
         }
-        return this.blobDataLakeStorage.getPaths().setExpiryWithResponseAsync(
-            pathExpiryOptions, null,
-            null, expiresOn, context)
-            .map(rb -> new SimpleResponse<>(rb, null));
+        return this.blobDataLakeStorage.getPaths()
+            .setExpiryNoCustomHeadersWithResponseAsync(pathExpiryOptions, null, null, expiresOn, context);
     }
 
 }

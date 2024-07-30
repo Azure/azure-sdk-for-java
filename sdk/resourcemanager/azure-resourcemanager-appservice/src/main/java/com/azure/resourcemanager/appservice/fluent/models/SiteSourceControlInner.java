@@ -92,8 +92,8 @@ public final class SiteSourceControlInner extends ProxyOnlyResource {
 
     /**
      * Get the isManualIntegration property: &lt;code&gt;true&lt;/code&gt; to limit to manual integration;
-     * &lt;code&gt;false&lt;/code&gt; to enable continuous integration (which configures webhooks into online repos
-     * like GitHub).
+     * &lt;code&gt;false&lt;/code&gt; to enable continuous integration (which configures webhooks into online repos like
+     * GitHub).
      * 
      * @return the isManualIntegration value.
      */
@@ -103,8 +103,8 @@ public final class SiteSourceControlInner extends ProxyOnlyResource {
 
     /**
      * Set the isManualIntegration property: &lt;code&gt;true&lt;/code&gt; to limit to manual integration;
-     * &lt;code&gt;false&lt;/code&gt; to enable continuous integration (which configures webhooks into online repos
-     * like GitHub).
+     * &lt;code&gt;false&lt;/code&gt; to enable continuous integration (which configures webhooks into online repos like
+     * GitHub).
      * 
      * @param isManualIntegration the isManualIntegration value to set.
      * @return the SiteSourceControlInner object itself.

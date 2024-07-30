@@ -65,8 +65,8 @@ public final class UntilActivityTypeProperties {
     }
 
     /**
-     * Get the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it
-     * takes the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
+     * Get the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it takes
+     * the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
      * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      * 
      * @return the timeout value.
@@ -76,8 +76,8 @@ public final class UntilActivityTypeProperties {
     }
 
     /**
-     * Set the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it
-     * takes the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
+     * Set the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it takes
+     * the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
      * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      * 
      * @param timeout the timeout value to set.
@@ -115,14 +115,16 @@ public final class UntilActivityTypeProperties {
      */
     public void validate() {
         if (expression() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property expression in model UntilActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property expression in model UntilActivityTypeProperties"));
         } else {
             expression().validate();
         }
         if (activities() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property activities in model UntilActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property activities in model UntilActivityTypeProperties"));
         } else {
             activities().forEach(e -> e.validate());
         }

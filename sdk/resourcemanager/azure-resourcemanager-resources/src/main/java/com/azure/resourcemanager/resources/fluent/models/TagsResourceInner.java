@@ -10,7 +10,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.Tags;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Wrapper resource for tags API requests and responses. */
+/**
+ * Wrapper resource for tags API requests and responses.
+ */
 @Fluent
 public final class TagsResourceInner extends ProxyResource {
     /*
@@ -19,13 +21,15 @@ public final class TagsResourceInner extends ProxyResource {
     @JsonProperty(value = "properties", required = true)
     private Tags properties;
 
-    /** Creates an instance of TagsResourceInner class. */
+    /**
+     * Creates an instance of TagsResourceInner class.
+     */
     public TagsResourceInner() {
     }
 
     /**
      * Get the properties property: The set of tags.
-     *
+     * 
      * @return the properties value.
      */
     public Tags properties() {
@@ -34,7 +38,7 @@ public final class TagsResourceInner extends ProxyResource {
 
     /**
      * Set the properties property: The set of tags.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the TagsResourceInner object itself.
      */
@@ -45,14 +49,13 @@ public final class TagsResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property properties in model TagsResourceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property properties in model TagsResourceInner"));
         } else {
             properties().validate();
         }

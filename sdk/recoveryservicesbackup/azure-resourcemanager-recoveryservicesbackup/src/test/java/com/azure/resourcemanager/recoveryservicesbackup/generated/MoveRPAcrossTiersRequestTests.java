@@ -24,7 +24,8 @@ public final class MoveRPAcrossTiersRequestTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MoveRPAcrossTiersRequest model = new MoveRPAcrossTiersRequest().withObjectType("qdpsqxqvpsvu")
-            .withSourceTierType(RecoveryPointTierType.ARCHIVED_RP).withTargetTierType(RecoveryPointTierType.INSTANT_RP);
+            .withSourceTierType(RecoveryPointTierType.ARCHIVED_RP)
+            .withTargetTierType(RecoveryPointTierType.INSTANT_RP);
         model = BinaryData.fromObject(model).toObject(MoveRPAcrossTiersRequest.class);
         Assertions.assertEquals("qdpsqxqvpsvu", model.objectType());
         Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.sourceTierType());

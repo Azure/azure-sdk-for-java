@@ -43,8 +43,7 @@ public final class FlexibleServerCapabilityInner extends CapabilityBase {
     private List<ServerVersionCapability> supportedServerVersions;
 
     /*
-     * Gets a value indicating whether fast provisioning is supported. "Enabled" means fast provisioning is supported.
-     * "Disabled" stands for fast provisioning is not supported.
+     * Gets a value indicating whether fast provisioning is supported. "Enabled" means fast provisioning is supported. "Disabled" stands for fast provisioning is not supported.
      */
     @JsonProperty(value = "fastProvisioningSupported", access = JsonProperty.Access.WRITE_ONLY)
     private FastProvisioningSupportedEnum fastProvisioningSupported;
@@ -56,44 +55,37 @@ public final class FlexibleServerCapabilityInner extends CapabilityBase {
     private List<FastProvisioningEditionCapability> supportedFastProvisioningEditions;
 
     /*
-     * Determines if geo-backup is supported in this region. "Enabled" means geo-backup is supported. "Disabled" stands
-     * for geo-back is not supported.
+     * Determines if geo-backup is supported in this region. "Enabled" means geo-backup is supported. "Disabled" stands for geo-back is not supported.
      */
     @JsonProperty(value = "geoBackupSupported", access = JsonProperty.Access.WRITE_ONLY)
     private GeoBackupSupportedEnum geoBackupSupported;
 
     /*
-     * A value indicating whether Zone Redundant HA is supported in this region. "Enabled" means zone redundant HA is
-     * supported. "Disabled" stands for zone redundant HA is not supported.
+     * A value indicating whether Zone Redundant HA is supported in this region. "Enabled" means zone redundant HA is supported. "Disabled" stands for zone redundant HA is not supported.
      */
     @JsonProperty(value = "zoneRedundantHaSupported", access = JsonProperty.Access.WRITE_ONLY)
     private ZoneRedundantHaSupportedEnum zoneRedundantHaSupported;
 
     /*
-     * A value indicating whether Zone Redundant HA and Geo-backup is supported in this region. "Enabled" means zone
-     * redundant HA and geo-backup is supported. "Disabled" stands for zone redundant HA and geo-backup is not
-     * supported.
+     * A value indicating whether Zone Redundant HA and Geo-backup is supported in this region. "Enabled" means zone redundant HA and geo-backup is supported. "Disabled" stands for zone redundant HA and geo-backup is not supported.
      */
     @JsonProperty(value = "zoneRedundantHaAndGeoBackupSupported", access = JsonProperty.Access.WRITE_ONLY)
     private ZoneRedundantHaAndGeoBackupSupportedEnum zoneRedundantHaAndGeoBackupSupported;
 
     /*
-     * A value indicating whether storage auto-grow is supported in this region. "Enabled" means storage auto-grow is
-     * supported. "Disabled" stands for storage auto-grow is not supported.
+     * A value indicating whether storage auto-grow is supported in this region. "Enabled" means storage auto-grow is supported. "Disabled" stands for storage auto-grow is not supported.
      */
     @JsonProperty(value = "storageAutoGrowthSupported", access = JsonProperty.Access.WRITE_ONLY)
     private StorageAutoGrowthSupportedEnum storageAutoGrowthSupported;
 
     /*
-     * A value indicating whether online resize is supported in this region for the given subscription. "Enabled" means
-     * storage online resize is supported. "Disabled" means storage online resize is not supported.
+     * A value indicating whether online resize is supported in this region for the given subscription. "Enabled" means storage online resize is supported. "Disabled" means storage online resize is not supported.
      */
     @JsonProperty(value = "onlineResizeSupported", access = JsonProperty.Access.WRITE_ONLY)
     private OnlineResizeSupportedEnum onlineResizeSupported;
 
     /*
-     * A value indicating whether this region is restricted. "Enabled" means region is restricted. "Disabled" stands
-     * for region is not restricted.
+     * A value indicating whether this region is restricted. "Enabled" means region is restricted. "Disabled" stands for region is not restricted.
      */
     @JsonProperty(value = "restricted", access = JsonProperty.Access.WRITE_ONLY)
     private RestrictedEnum restricted;
@@ -173,8 +165,7 @@ public final class FlexibleServerCapabilityInner extends CapabilityBase {
 
     /**
      * Get the zoneRedundantHaSupported property: A value indicating whether Zone Redundant HA is supported in this
-     * region. "Enabled" means zone redundant HA is supported. "Disabled" stands for zone redundant HA is not
-     * supported.
+     * region. "Enabled" means zone redundant HA is supported. "Disabled" stands for zone redundant HA is not supported.
      * 
      * @return the zoneRedundantHaSupported value.
      */
@@ -184,8 +175,8 @@ public final class FlexibleServerCapabilityInner extends CapabilityBase {
 
     /**
      * Get the zoneRedundantHaAndGeoBackupSupported property: A value indicating whether Zone Redundant HA and
-     * Geo-backup is supported in this region. "Enabled" means zone redundant HA and geo-backup is supported.
-     * "Disabled" stands for zone redundant HA and geo-backup is not supported.
+     * Geo-backup is supported in this region. "Enabled" means zone redundant HA and geo-backup is supported. "Disabled"
+     * stands for zone redundant HA and geo-backup is not supported.
      * 
      * @return the zoneRedundantHaAndGeoBackupSupported value.
      */
@@ -195,8 +186,7 @@ public final class FlexibleServerCapabilityInner extends CapabilityBase {
 
     /**
      * Get the storageAutoGrowthSupported property: A value indicating whether storage auto-grow is supported in this
-     * region. "Enabled" means storage auto-grow is supported. "Disabled" stands for storage auto-grow is not
-     * supported.
+     * region. "Enabled" means storage auto-grow is supported. "Disabled" stands for storage auto-grow is not supported.
      * 
      * @return the storageAutoGrowthSupported value.
      */

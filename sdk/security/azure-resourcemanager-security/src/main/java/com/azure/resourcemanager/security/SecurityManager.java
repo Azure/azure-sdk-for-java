@@ -11,8 +11,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -35,8 +35,8 @@ import com.azure.resourcemanager.security.implementation.ApplicationOperationsIm
 import com.azure.resourcemanager.security.implementation.ApplicationsImpl;
 import com.azure.resourcemanager.security.implementation.AssessmentsImpl;
 import com.azure.resourcemanager.security.implementation.AssessmentsMetadatasImpl;
-import com.azure.resourcemanager.security.implementation.AutoProvisioningSettingsImpl;
 import com.azure.resourcemanager.security.implementation.AutomationsImpl;
+import com.azure.resourcemanager.security.implementation.AutoProvisioningSettingsImpl;
 import com.azure.resourcemanager.security.implementation.AzureDevOpsOrgsImpl;
 import com.azure.resourcemanager.security.implementation.AzureDevOpsProjectsImpl;
 import com.azure.resourcemanager.security.implementation.AzureDevOpsReposImpl;
@@ -46,9 +46,9 @@ import com.azure.resourcemanager.security.implementation.ConnectorsImpl;
 import com.azure.resourcemanager.security.implementation.CustomAssessmentAutomationsImpl;
 import com.azure.resourcemanager.security.implementation.CustomEntityStoreAssignmentsImpl;
 import com.azure.resourcemanager.security.implementation.DefenderForStoragesImpl;
+import com.azure.resourcemanager.security.implementation.DeviceSecurityGroupsImpl;
 import com.azure.resourcemanager.security.implementation.DevOpsConfigurationsImpl;
 import com.azure.resourcemanager.security.implementation.DevOpsOperationResultsImpl;
-import com.azure.resourcemanager.security.implementation.DeviceSecurityGroupsImpl;
 import com.azure.resourcemanager.security.implementation.DiscoveredSecuritySolutionsImpl;
 import com.azure.resourcemanager.security.implementation.ExternalSecuritySolutionsImpl;
 import com.azure.resourcemanager.security.implementation.GitHubOwnersImpl;
@@ -72,7 +72,6 @@ import com.azure.resourcemanager.security.implementation.PricingsImpl;
 import com.azure.resourcemanager.security.implementation.RegulatoryComplianceAssessmentsImpl;
 import com.azure.resourcemanager.security.implementation.RegulatoryComplianceControlsImpl;
 import com.azure.resourcemanager.security.implementation.RegulatoryComplianceStandardsImpl;
-import com.azure.resourcemanager.security.implementation.ResourceProvidersImpl;
 import com.azure.resourcemanager.security.implementation.SecureScoreControlDefinitionsImpl;
 import com.azure.resourcemanager.security.implementation.SecureScoreControlsImpl;
 import com.azure.resourcemanager.security.implementation.SecureScoresImpl;
@@ -107,8 +106,8 @@ import com.azure.resourcemanager.security.models.ApplicationOperations;
 import com.azure.resourcemanager.security.models.Applications;
 import com.azure.resourcemanager.security.models.Assessments;
 import com.azure.resourcemanager.security.models.AssessmentsMetadatas;
-import com.azure.resourcemanager.security.models.AutoProvisioningSettings;
 import com.azure.resourcemanager.security.models.Automations;
+import com.azure.resourcemanager.security.models.AutoProvisioningSettings;
 import com.azure.resourcemanager.security.models.AzureDevOpsOrgs;
 import com.azure.resourcemanager.security.models.AzureDevOpsProjects;
 import com.azure.resourcemanager.security.models.AzureDevOpsRepos;
@@ -118,9 +117,9 @@ import com.azure.resourcemanager.security.models.Connectors;
 import com.azure.resourcemanager.security.models.CustomAssessmentAutomations;
 import com.azure.resourcemanager.security.models.CustomEntityStoreAssignments;
 import com.azure.resourcemanager.security.models.DefenderForStorages;
+import com.azure.resourcemanager.security.models.DeviceSecurityGroups;
 import com.azure.resourcemanager.security.models.DevOpsConfigurations;
 import com.azure.resourcemanager.security.models.DevOpsOperationResults;
-import com.azure.resourcemanager.security.models.DeviceSecurityGroups;
 import com.azure.resourcemanager.security.models.DiscoveredSecuritySolutions;
 import com.azure.resourcemanager.security.models.ExternalSecuritySolutions;
 import com.azure.resourcemanager.security.models.GitHubOwners;
@@ -144,7 +143,6 @@ import com.azure.resourcemanager.security.models.Pricings;
 import com.azure.resourcemanager.security.models.RegulatoryComplianceAssessments;
 import com.azure.resourcemanager.security.models.RegulatoryComplianceControls;
 import com.azure.resourcemanager.security.models.RegulatoryComplianceStandards;
-import com.azure.resourcemanager.security.models.ResourceProviders;
 import com.azure.resourcemanager.security.models.SecureScoreControlDefinitions;
 import com.azure.resourcemanager.security.models.SecureScoreControls;
 import com.azure.resourcemanager.security.models.SecureScores;
@@ -195,8 +193,6 @@ public final class SecurityManager {
 
     private AlertsSuppressionRules alertsSuppressionRules;
 
-    private Automations automations;
-
     private RegulatoryComplianceStandards regulatoryComplianceStandards;
 
     private RegulatoryComplianceControls regulatoryComplianceControls;
@@ -206,8 +202,6 @@ public final class SecurityManager {
     private SubAssessments subAssessments;
 
     private Connectors connectors;
-
-    private SecurityContacts securityContacts;
 
     private SoftwareInventories softwareInventories;
 
@@ -239,31 +233,13 @@ public final class SecurityManager {
 
     private SqlVulnerabilityAssessmentScanResults sqlVulnerabilityAssessmentScanResults;
 
-    private ResourceProviders resourceProviders;
-
     private SensitivitySettings sensitivitySettings;
 
     private HealthReports healthReports;
 
-    private AzureDevOpsOrgs azureDevOpsOrgs;
+    private Automations automations;
 
-    private AzureDevOpsProjects azureDevOpsProjects;
-
-    private AzureDevOpsRepos azureDevOpsRepos;
-
-    private DevOpsConfigurations devOpsConfigurations;
-
-    private GitHubOwners gitHubOwners;
-
-    private GitHubRepos gitHubRepos;
-
-    private GitLabGroups gitLabGroups;
-
-    private GitLabSubgroups gitLabSubgroups;
-
-    private GitLabProjects gitLabProjects;
-
-    private DevOpsOperationResults devOpsOperationResults;
+    private SecurityContacts securityContacts;
 
     private SecurityConnectors securityConnectors;
 
@@ -321,14 +297,36 @@ public final class SecurityManager {
 
     private Pricings pricings;
 
+    private AzureDevOpsOrgs azureDevOpsOrgs;
+
+    private AzureDevOpsProjects azureDevOpsProjects;
+
+    private AzureDevOpsRepos azureDevOpsRepos;
+
+    private DevOpsConfigurations devOpsConfigurations;
+
+    private GitHubOwners gitHubOwners;
+
+    private GitHubRepos gitHubRepos;
+
+    private GitLabGroups gitLabGroups;
+
+    private GitLabSubgroups gitLabSubgroups;
+
+    private GitLabProjects gitLabProjects;
+
+    private DevOpsOperationResults devOpsOperationResults;
+
     private final SecurityCenter clientObject;
 
     private SecurityManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         this.clientObject = new SecurityCenterBuilder().pipeline(httpPipeline)
-            .endpoint(profile.getEnvironment().getResourceManagerEndpoint()).subscriptionId(profile.getSubscriptionId())
-            .defaultPollInterval(defaultPollInterval).buildClient();
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
@@ -479,12 +477,19 @@ public final class SecurityManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder.append("azsdk-java").append("-").append("com.azure.resourcemanager.security").append("/")
-                .append("1.0.0-beta.6");
+            userAgentBuilder.append("azsdk-java")
+                .append("-")
+                .append("com.azure.resourcemanager.security")
+                .append("/")
+                .append("1.0.0-beta.7");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder.append(" (").append(Configuration.getGlobalConfiguration().get("java.version"))
-                    .append("; ").append(Configuration.getGlobalConfiguration().get("os.name")).append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.version")).append("; auto-generated)");
+                userAgentBuilder.append(" (")
+                    .append(Configuration.getGlobalConfiguration().get("java.version"))
+                    .append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.name"))
+                    .append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.version"))
+                    .append("; auto-generated)");
             } else {
                 userAgentBuilder.append(" (auto-generated)");
             }
@@ -503,18 +508,21 @@ public final class SecurityManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies.addAll(this.policies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
                 .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY).collect(Collectors.toList()));
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
-                .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new SecurityManager(httpPipeline, profile, defaultPollInterval);
         }
     }
@@ -619,18 +627,6 @@ public final class SecurityManager {
     }
 
     /**
-     * Gets the resource collection API of Automations. It manages Automation.
-     * 
-     * @return Resource collection API of Automations.
-     */
-    public Automations automations() {
-        if (this.automations == null) {
-            this.automations = new AutomationsImpl(clientObject.getAutomations(), this);
-        }
-        return automations;
-    }
-
-    /**
      * Gets the resource collection API of RegulatoryComplianceStandards.
      * 
      * @return Resource collection API of RegulatoryComplianceStandards.
@@ -691,18 +687,6 @@ public final class SecurityManager {
             this.connectors = new ConnectorsImpl(clientObject.getConnectors(), this);
         }
         return connectors;
-    }
-
-    /**
-     * Gets the resource collection API of SecurityContacts. It manages SecurityContact.
-     * 
-     * @return Resource collection API of SecurityContacts.
-     */
-    public SecurityContacts securityContacts() {
-        if (this.securityContacts == null) {
-            this.securityContacts = new SecurityContactsImpl(clientObject.getSecurityContacts(), this);
-        }
-        return securityContacts;
     }
 
     /**
@@ -893,18 +877,6 @@ public final class SecurityManager {
     }
 
     /**
-     * Gets the resource collection API of ResourceProviders.
-     * 
-     * @return Resource collection API of ResourceProviders.
-     */
-    public ResourceProviders resourceProviders() {
-        if (this.resourceProviders == null) {
-            this.resourceProviders = new ResourceProvidersImpl(clientObject.getResourceProviders(), this);
-        }
-        return resourceProviders;
-    }
-
-    /**
      * Gets the resource collection API of SensitivitySettings.
      * 
      * @return Resource collection API of SensitivitySettings.
@@ -929,124 +901,27 @@ public final class SecurityManager {
     }
 
     /**
-     * Gets the resource collection API of AzureDevOpsOrgs. It manages AzureDevOpsOrg.
+     * Gets the resource collection API of Automations. It manages Automation.
      * 
-     * @return Resource collection API of AzureDevOpsOrgs.
+     * @return Resource collection API of Automations.
      */
-    public AzureDevOpsOrgs azureDevOpsOrgs() {
-        if (this.azureDevOpsOrgs == null) {
-            this.azureDevOpsOrgs = new AzureDevOpsOrgsImpl(clientObject.getAzureDevOpsOrgs(), this);
+    public Automations automations() {
+        if (this.automations == null) {
+            this.automations = new AutomationsImpl(clientObject.getAutomations(), this);
         }
-        return azureDevOpsOrgs;
+        return automations;
     }
 
     /**
-     * Gets the resource collection API of AzureDevOpsProjects. It manages AzureDevOpsProject.
+     * Gets the resource collection API of SecurityContacts. It manages SecurityContact.
      * 
-     * @return Resource collection API of AzureDevOpsProjects.
+     * @return Resource collection API of SecurityContacts.
      */
-    public AzureDevOpsProjects azureDevOpsProjects() {
-        if (this.azureDevOpsProjects == null) {
-            this.azureDevOpsProjects = new AzureDevOpsProjectsImpl(clientObject.getAzureDevOpsProjects(), this);
+    public SecurityContacts securityContacts() {
+        if (this.securityContacts == null) {
+            this.securityContacts = new SecurityContactsImpl(clientObject.getSecurityContacts(), this);
         }
-        return azureDevOpsProjects;
-    }
-
-    /**
-     * Gets the resource collection API of AzureDevOpsRepos. It manages AzureDevOpsRepository.
-     * 
-     * @return Resource collection API of AzureDevOpsRepos.
-     */
-    public AzureDevOpsRepos azureDevOpsRepos() {
-        if (this.azureDevOpsRepos == null) {
-            this.azureDevOpsRepos = new AzureDevOpsReposImpl(clientObject.getAzureDevOpsRepos(), this);
-        }
-        return azureDevOpsRepos;
-    }
-
-    /**
-     * Gets the resource collection API of DevOpsConfigurations.
-     * 
-     * @return Resource collection API of DevOpsConfigurations.
-     */
-    public DevOpsConfigurations devOpsConfigurations() {
-        if (this.devOpsConfigurations == null) {
-            this.devOpsConfigurations = new DevOpsConfigurationsImpl(clientObject.getDevOpsConfigurations(), this);
-        }
-        return devOpsConfigurations;
-    }
-
-    /**
-     * Gets the resource collection API of GitHubOwners.
-     * 
-     * @return Resource collection API of GitHubOwners.
-     */
-    public GitHubOwners gitHubOwners() {
-        if (this.gitHubOwners == null) {
-            this.gitHubOwners = new GitHubOwnersImpl(clientObject.getGitHubOwners(), this);
-        }
-        return gitHubOwners;
-    }
-
-    /**
-     * Gets the resource collection API of GitHubRepos.
-     * 
-     * @return Resource collection API of GitHubRepos.
-     */
-    public GitHubRepos gitHubRepos() {
-        if (this.gitHubRepos == null) {
-            this.gitHubRepos = new GitHubReposImpl(clientObject.getGitHubRepos(), this);
-        }
-        return gitHubRepos;
-    }
-
-    /**
-     * Gets the resource collection API of GitLabGroups.
-     * 
-     * @return Resource collection API of GitLabGroups.
-     */
-    public GitLabGroups gitLabGroups() {
-        if (this.gitLabGroups == null) {
-            this.gitLabGroups = new GitLabGroupsImpl(clientObject.getGitLabGroups(), this);
-        }
-        return gitLabGroups;
-    }
-
-    /**
-     * Gets the resource collection API of GitLabSubgroups.
-     * 
-     * @return Resource collection API of GitLabSubgroups.
-     */
-    public GitLabSubgroups gitLabSubgroups() {
-        if (this.gitLabSubgroups == null) {
-            this.gitLabSubgroups = new GitLabSubgroupsImpl(clientObject.getGitLabSubgroups(), this);
-        }
-        return gitLabSubgroups;
-    }
-
-    /**
-     * Gets the resource collection API of GitLabProjects.
-     * 
-     * @return Resource collection API of GitLabProjects.
-     */
-    public GitLabProjects gitLabProjects() {
-        if (this.gitLabProjects == null) {
-            this.gitLabProjects = new GitLabProjectsImpl(clientObject.getGitLabProjects(), this);
-        }
-        return gitLabProjects;
-    }
-
-    /**
-     * Gets the resource collection API of DevOpsOperationResults.
-     * 
-     * @return Resource collection API of DevOpsOperationResults.
-     */
-    public DevOpsOperationResults devOpsOperationResults() {
-        if (this.devOpsOperationResults == null) {
-            this.devOpsOperationResults
-                = new DevOpsOperationResultsImpl(clientObject.getDevOpsOperationResults(), this);
-        }
-        return devOpsOperationResults;
+        return securityContacts;
     }
 
     /**
@@ -1396,6 +1271,127 @@ public final class SecurityManager {
             this.pricings = new PricingsImpl(clientObject.getPricings(), this);
         }
         return pricings;
+    }
+
+    /**
+     * Gets the resource collection API of AzureDevOpsOrgs. It manages AzureDevOpsOrg.
+     * 
+     * @return Resource collection API of AzureDevOpsOrgs.
+     */
+    public AzureDevOpsOrgs azureDevOpsOrgs() {
+        if (this.azureDevOpsOrgs == null) {
+            this.azureDevOpsOrgs = new AzureDevOpsOrgsImpl(clientObject.getAzureDevOpsOrgs(), this);
+        }
+        return azureDevOpsOrgs;
+    }
+
+    /**
+     * Gets the resource collection API of AzureDevOpsProjects. It manages AzureDevOpsProject.
+     * 
+     * @return Resource collection API of AzureDevOpsProjects.
+     */
+    public AzureDevOpsProjects azureDevOpsProjects() {
+        if (this.azureDevOpsProjects == null) {
+            this.azureDevOpsProjects = new AzureDevOpsProjectsImpl(clientObject.getAzureDevOpsProjects(), this);
+        }
+        return azureDevOpsProjects;
+    }
+
+    /**
+     * Gets the resource collection API of AzureDevOpsRepos. It manages AzureDevOpsRepository.
+     * 
+     * @return Resource collection API of AzureDevOpsRepos.
+     */
+    public AzureDevOpsRepos azureDevOpsRepos() {
+        if (this.azureDevOpsRepos == null) {
+            this.azureDevOpsRepos = new AzureDevOpsReposImpl(clientObject.getAzureDevOpsRepos(), this);
+        }
+        return azureDevOpsRepos;
+    }
+
+    /**
+     * Gets the resource collection API of DevOpsConfigurations.
+     * 
+     * @return Resource collection API of DevOpsConfigurations.
+     */
+    public DevOpsConfigurations devOpsConfigurations() {
+        if (this.devOpsConfigurations == null) {
+            this.devOpsConfigurations = new DevOpsConfigurationsImpl(clientObject.getDevOpsConfigurations(), this);
+        }
+        return devOpsConfigurations;
+    }
+
+    /**
+     * Gets the resource collection API of GitHubOwners.
+     * 
+     * @return Resource collection API of GitHubOwners.
+     */
+    public GitHubOwners gitHubOwners() {
+        if (this.gitHubOwners == null) {
+            this.gitHubOwners = new GitHubOwnersImpl(clientObject.getGitHubOwners(), this);
+        }
+        return gitHubOwners;
+    }
+
+    /**
+     * Gets the resource collection API of GitHubRepos.
+     * 
+     * @return Resource collection API of GitHubRepos.
+     */
+    public GitHubRepos gitHubRepos() {
+        if (this.gitHubRepos == null) {
+            this.gitHubRepos = new GitHubReposImpl(clientObject.getGitHubRepos(), this);
+        }
+        return gitHubRepos;
+    }
+
+    /**
+     * Gets the resource collection API of GitLabGroups.
+     * 
+     * @return Resource collection API of GitLabGroups.
+     */
+    public GitLabGroups gitLabGroups() {
+        if (this.gitLabGroups == null) {
+            this.gitLabGroups = new GitLabGroupsImpl(clientObject.getGitLabGroups(), this);
+        }
+        return gitLabGroups;
+    }
+
+    /**
+     * Gets the resource collection API of GitLabSubgroups.
+     * 
+     * @return Resource collection API of GitLabSubgroups.
+     */
+    public GitLabSubgroups gitLabSubgroups() {
+        if (this.gitLabSubgroups == null) {
+            this.gitLabSubgroups = new GitLabSubgroupsImpl(clientObject.getGitLabSubgroups(), this);
+        }
+        return gitLabSubgroups;
+    }
+
+    /**
+     * Gets the resource collection API of GitLabProjects.
+     * 
+     * @return Resource collection API of GitLabProjects.
+     */
+    public GitLabProjects gitLabProjects() {
+        if (this.gitLabProjects == null) {
+            this.gitLabProjects = new GitLabProjectsImpl(clientObject.getGitLabProjects(), this);
+        }
+        return gitLabProjects;
+    }
+
+    /**
+     * Gets the resource collection API of DevOpsOperationResults.
+     * 
+     * @return Resource collection API of DevOpsOperationResults.
+     */
+    public DevOpsOperationResults devOpsOperationResults() {
+        if (this.devOpsOperationResults == null) {
+            this.devOpsOperationResults
+                = new DevOpsOperationResultsImpl(clientObject.getDevOpsOperationResults(), this);
+        }
+        return devOpsOperationResults;
     }
 
     /**

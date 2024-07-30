@@ -14,22 +14,24 @@ public final class AutomationTriggeringRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutomationTriggeringRule model = BinaryData.fromString(
-            "{\"propertyJPath\":\"wwwfbkr\",\"propertyType\":\"String\",\"expectedValue\":\"vshqjohxcr\",\"operator\":\"Contains\"}")
+            "{\"propertyJPath\":\"b\",\"propertyType\":\"Integer\",\"expectedValue\":\"jrwhryvy\",\"operator\":\"EndsWith\"}")
             .toObject(AutomationTriggeringRule.class);
-        Assertions.assertEquals("wwwfbkr", model.propertyJPath());
-        Assertions.assertEquals(PropertyType.STRING, model.propertyType());
-        Assertions.assertEquals("vshqjohxcr", model.expectedValue());
-        Assertions.assertEquals(Operator.CONTAINS, model.operator());
+        Assertions.assertEquals("b", model.propertyJPath());
+        Assertions.assertEquals(PropertyType.INTEGER, model.propertyType());
+        Assertions.assertEquals("jrwhryvy", model.expectedValue());
+        Assertions.assertEquals(Operator.ENDS_WITH, model.operator());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutomationTriggeringRule model = new AutomationTriggeringRule().withPropertyJPath("wwwfbkr")
-            .withPropertyType(PropertyType.STRING).withExpectedValue("vshqjohxcr").withOperator(Operator.CONTAINS);
+        AutomationTriggeringRule model = new AutomationTriggeringRule().withPropertyJPath("b")
+            .withPropertyType(PropertyType.INTEGER)
+            .withExpectedValue("jrwhryvy")
+            .withOperator(Operator.ENDS_WITH);
         model = BinaryData.fromObject(model).toObject(AutomationTriggeringRule.class);
-        Assertions.assertEquals("wwwfbkr", model.propertyJPath());
-        Assertions.assertEquals(PropertyType.STRING, model.propertyType());
-        Assertions.assertEquals("vshqjohxcr", model.expectedValue());
-        Assertions.assertEquals(Operator.CONTAINS, model.operator());
+        Assertions.assertEquals("b", model.propertyJPath());
+        Assertions.assertEquals(PropertyType.INTEGER, model.propertyType());
+        Assertions.assertEquals("jrwhryvy", model.expectedValue());
+        Assertions.assertEquals(Operator.ENDS_WITH, model.operator());
     }
 }

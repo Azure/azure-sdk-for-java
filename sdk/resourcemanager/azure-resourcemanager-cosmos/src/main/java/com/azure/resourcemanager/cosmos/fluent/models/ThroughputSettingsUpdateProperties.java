@@ -53,8 +53,9 @@ public final class ThroughputSettingsUpdateProperties {
      */
     public void validate() {
         if (resource() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property resource in model ThroughputSettingsUpdateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property resource in model ThroughputSettingsUpdateProperties"));
         } else {
             resource().validate();
         }

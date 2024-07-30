@@ -51,8 +51,8 @@ public final class ProtectionContainersImpl implements ProtectionContainers {
 
     public Response<Void> unregisterWithResponse(String vaultName, String resourceGroupName, String fabricName,
         String containerName, Context context) {
-        return this.serviceClient().unregisterWithResponse(vaultName, resourceGroupName, fabricName, containerName,
-            context);
+        return this.serviceClient()
+            .unregisterWithResponse(vaultName, resourceGroupName, fabricName, containerName, context);
     }
 
     public void unregister(String vaultName, String resourceGroupName, String fabricName, String containerName) {
@@ -61,8 +61,8 @@ public final class ProtectionContainersImpl implements ProtectionContainers {
 
     public Response<Void> inquireWithResponse(String vaultName, String resourceGroupName, String fabricName,
         String containerName, String filter, Context context) {
-        return this.serviceClient().inquireWithResponse(vaultName, resourceGroupName, fabricName, containerName, filter,
-            context);
+        return this.serviceClient()
+            .inquireWithResponse(vaultName, resourceGroupName, fabricName, containerName, filter, context);
     }
 
     public void inquire(String vaultName, String resourceGroupName, String fabricName, String containerName) {

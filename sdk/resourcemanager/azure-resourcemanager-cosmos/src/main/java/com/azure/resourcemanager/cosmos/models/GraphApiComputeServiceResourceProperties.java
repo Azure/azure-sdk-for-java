@@ -6,17 +6,30 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import java.util.List;
 
 /**
  * Properties for GraphAPIComputeServiceResource.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "serviceType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "serviceType",
+    defaultImpl = GraphApiComputeServiceResourceProperties.class,
+    visible = true)
 @JsonTypeName("GraphAPICompute")
 @Fluent
 public final class GraphApiComputeServiceResourceProperties extends ServiceResourceProperties {
+    /*
+     * ServiceType for the service.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "serviceType", required = true)
+    private ServiceType serviceType = ServiceType.GRAPH_APICOMPUTE;
+
     /*
      * GraphAPICompute endpoint for the service.
      */
@@ -36,8 +49,18 @@ public final class GraphApiComputeServiceResourceProperties extends ServiceResou
     }
 
     /**
+     * Get the serviceType property: ServiceType for the service.
+     *
+     * @return the serviceType value.
+     */
+    @Override
+    public ServiceType serviceType() {
+        return this.serviceType;
+    }
+
+    /**
      * Get the graphApiComputeEndpoint property: GraphAPICompute endpoint for the service.
-     * 
+     *
      * @return the graphApiComputeEndpoint value.
      */
     public String graphApiComputeEndpoint() {
@@ -46,7 +69,7 @@ public final class GraphApiComputeServiceResourceProperties extends ServiceResou
 
     /**
      * Set the graphApiComputeEndpoint property: GraphAPICompute endpoint for the service.
-     * 
+     *
      * @param graphApiComputeEndpoint the graphApiComputeEndpoint value to set.
      * @return the GraphApiComputeServiceResourceProperties object itself.
      */
@@ -57,7 +80,7 @@ public final class GraphApiComputeServiceResourceProperties extends ServiceResou
 
     /**
      * Get the locations property: An array that contains all of the locations for the service.
-     * 
+     *
      * @return the locations value.
      */
     public List<GraphApiComputeRegionalServiceResource> locations() {
@@ -84,7 +107,7 @@ public final class GraphApiComputeServiceResourceProperties extends ServiceResou
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

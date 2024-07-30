@@ -6,7 +6,11 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -15,75 +19,65 @@ import java.util.List;
  * the facet is returned as an element of &#064;search.facets.
  */
 @Immutable
-public final class SearchFacetResultValue {
+public final class SearchFacetResultValue implements JsonSerializable<SearchFacetResultValue> {
     /*
      * Entity type
      */
     @Generated
-    @JsonProperty(value = "entityType")
     private List<SearchFacetItemValue> entityType;
 
     /*
      * Asset type
      */
     @Generated
-    @JsonProperty(value = "assetType")
     private List<SearchFacetItemValue> assetType;
 
     /*
      * Classification
      */
     @Generated
-    @JsonProperty(value = "classification")
     private List<SearchFacetItemValue> classification;
 
     /*
      * Term
      */
     @Generated
-    @JsonProperty(value = "term")
     private List<SearchFacetItemValue> term;
 
     /*
      * Contact id
      */
     @Generated
-    @JsonProperty(value = "contactId")
     private List<SearchFacetItemValue> contactId;
 
     /*
      * Contact type
      */
     @Generated
-    @JsonProperty(value = "contactType")
     private List<SearchFacetItemValue> contactType;
 
     /*
      * Label
      */
     @Generated
-    @JsonProperty(value = "label")
     private List<SearchFacetItemValue> label;
 
     /*
      * Glossary type
      */
     @Generated
-    @JsonProperty(value = "glossaryType")
     private List<SearchFacetItemValue> glossaryType;
 
     /*
      * Term status
      */
     @Generated
-    @JsonProperty(value = "termStatus")
     private List<SearchFacetItemValue> termStatus;
 
     /*
      * Term template
      */
     @Generated
-    @JsonProperty(value = "termTemplate")
     private List<SearchFacetItemValue> termTemplate;
 
     /**
@@ -191,5 +185,91 @@ public final class SearchFacetResultValue {
     @Generated
     public List<SearchFacetItemValue> getTermTemplate() {
         return this.termTemplate;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("entityType", this.entityType, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("assetType", this.assetType, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("classification", this.classification,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("term", this.term, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("contactId", this.contactId, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("contactType", this.contactType, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("label", this.label, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("glossaryType", this.glossaryType, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("termStatus", this.termStatus, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("termTemplate", this.termTemplate, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SearchFacetResultValue from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchFacetResultValue if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SearchFacetResultValue.
+     */
+    @Generated
+    public static SearchFacetResultValue fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SearchFacetResultValue deserializedSearchFacetResultValue = new SearchFacetResultValue();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("entityType".equals(fieldName)) {
+                    List<SearchFacetItemValue> entityType
+                        = reader.readArray(reader1 -> SearchFacetItemValue.fromJson(reader1));
+                    deserializedSearchFacetResultValue.entityType = entityType;
+                } else if ("assetType".equals(fieldName)) {
+                    List<SearchFacetItemValue> assetType
+                        = reader.readArray(reader1 -> SearchFacetItemValue.fromJson(reader1));
+                    deserializedSearchFacetResultValue.assetType = assetType;
+                } else if ("classification".equals(fieldName)) {
+                    List<SearchFacetItemValue> classification
+                        = reader.readArray(reader1 -> SearchFacetItemValue.fromJson(reader1));
+                    deserializedSearchFacetResultValue.classification = classification;
+                } else if ("term".equals(fieldName)) {
+                    List<SearchFacetItemValue> term
+                        = reader.readArray(reader1 -> SearchFacetItemValue.fromJson(reader1));
+                    deserializedSearchFacetResultValue.term = term;
+                } else if ("contactId".equals(fieldName)) {
+                    List<SearchFacetItemValue> contactId
+                        = reader.readArray(reader1 -> SearchFacetItemValue.fromJson(reader1));
+                    deserializedSearchFacetResultValue.contactId = contactId;
+                } else if ("contactType".equals(fieldName)) {
+                    List<SearchFacetItemValue> contactType
+                        = reader.readArray(reader1 -> SearchFacetItemValue.fromJson(reader1));
+                    deserializedSearchFacetResultValue.contactType = contactType;
+                } else if ("label".equals(fieldName)) {
+                    List<SearchFacetItemValue> label
+                        = reader.readArray(reader1 -> SearchFacetItemValue.fromJson(reader1));
+                    deserializedSearchFacetResultValue.label = label;
+                } else if ("glossaryType".equals(fieldName)) {
+                    List<SearchFacetItemValue> glossaryType
+                        = reader.readArray(reader1 -> SearchFacetItemValue.fromJson(reader1));
+                    deserializedSearchFacetResultValue.glossaryType = glossaryType;
+                } else if ("termStatus".equals(fieldName)) {
+                    List<SearchFacetItemValue> termStatus
+                        = reader.readArray(reader1 -> SearchFacetItemValue.fromJson(reader1));
+                    deserializedSearchFacetResultValue.termStatus = termStatus;
+                } else if ("termTemplate".equals(fieldName)) {
+                    List<SearchFacetItemValue> termTemplate
+                        = reader.readArray(reader1 -> SearchFacetItemValue.fromJson(reader1));
+                    deserializedSearchFacetResultValue.termTemplate = termTemplate;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSearchFacetResultValue;
+        });
     }
 }

@@ -13,14 +13,14 @@ public final class ExternalSecuritySolutionListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExternalSecuritySolutionList model = BinaryData.fromString(
-            "{\"value\":[{\"kind\":\"ExternalSecuritySolution\",\"location\":\"qe\",\"id\":\"hj\",\"name\":\"dvragpokddxejhh\",\"type\":\"vgua\"},{\"kind\":\"ExternalSecuritySolution\",\"location\":\"ptbkewk\",\"id\":\"yn\",\"name\":\"pgb\",\"type\":\"offbkkwvdxaexqok\"}],\"nextLink\":\"rlj\"}")
+            "{\"value\":[{\"kind\":\"ExternalSecuritySolution\",\"location\":\"desygrijwa\",\"id\":\"ufanray\",\"name\":\"fueqfrojs\",\"type\":\"dgrhydkygywezs\"}],\"nextLink\":\"ec\"}")
             .toObject(ExternalSecuritySolutionList.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExternalSecuritySolutionList model = new ExternalSecuritySolutionList()
-            .withValue(Arrays.asList(new ExternalSecuritySolutionInner(), new ExternalSecuritySolutionInner()));
+        ExternalSecuritySolutionList model
+            = new ExternalSecuritySolutionList().withValue(Arrays.asList(new ExternalSecuritySolutionInner()));
         model = BinaryData.fromObject(model).toObject(ExternalSecuritySolutionList.class);
     }
 }

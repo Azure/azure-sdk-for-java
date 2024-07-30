@@ -28,16 +28,16 @@ public final class RecoveryPointsRecommendedForMovesImpl implements RecoveryPoin
 
     public PagedIterable<RecoveryPointResource> list(String vaultName, String resourceGroupName, String fabricName,
         String containerName, String protectedItemName, ListRecoveryPointsRecommendedForMoveRequest parameters) {
-        PagedIterable<RecoveryPointResourceInner> inner = this.serviceClient().list(vaultName, resourceGroupName,
-            fabricName, containerName, protectedItemName, parameters);
+        PagedIterable<RecoveryPointResourceInner> inner = this.serviceClient()
+            .list(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new RecoveryPointResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<RecoveryPointResource> list(String vaultName, String resourceGroupName, String fabricName,
         String containerName, String protectedItemName, ListRecoveryPointsRecommendedForMoveRequest parameters,
         Context context) {
-        PagedIterable<RecoveryPointResourceInner> inner = this.serviceClient().list(vaultName, resourceGroupName,
-            fabricName, containerName, protectedItemName, parameters, context);
+        PagedIterable<RecoveryPointResourceInner> inner = this.serviceClient()
+            .list(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new RecoveryPointResourceImpl(inner1, this.manager()));
     }
 

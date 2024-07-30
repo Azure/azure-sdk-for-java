@@ -66,44 +66,44 @@
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-handler</artifactId>
-            <version>4.1.101.Final</version> <!-- {x-version-update;io.netty:netty-handler;external_dependency} -->
+            <version>4.1.110.Final</version> <!-- {x-version-update;io.netty:netty-handler;external_dependency} -->
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-handler-proxy</artifactId>
-            <version>4.1.101.Final</version> <!-- {x-version-update;io.netty:netty-handler-proxy;external_dependency} -->
+            <version>4.1.110.Final</version> <!-- {x-version-update;io.netty:netty-handler-proxy;external_dependency} -->
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-buffer</artifactId>
-            <version>4.1.101.Final</version> <!-- {x-version-update;io.netty:netty-buffer;external_dependency} -->
+            <version>4.1.110.Final</version> <!-- {x-version-update;io.netty:netty-buffer;external_dependency} -->
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-codec-http</artifactId>
-            <version>4.1.101.Final</version> <!-- {x-version-update;io.netty:netty-codec-http;external_dependency} -->
+            <version>4.1.110.Final</version> <!-- {x-version-update;io.netty:netty-codec-http;external_dependency} -->
         </dependency>
 
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-codec-http2</artifactId>
-            <version>4.1.101.Final</version> <!-- {x-version-update;io.netty:netty-codec-http2;external_dependency} -->
+            <version>4.1.110.Final</version> <!-- {x-version-update;io.netty:netty-codec-http2;external_dependency} -->
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-transport-native-unix-common</artifactId>
-            <version>4.1.101.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-unix-common;external_dependency} -->
+            <version>4.1.110.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-unix-common;external_dependency} -->
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-transport-native-epoll</artifactId>
-            <version>4.1.101.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-epoll;external_dependency} -->
+            <version>4.1.110.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-epoll;external_dependency} -->
             <classifier>linux-x86_64</classifier>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-transport-native-kqueue</artifactId>
-            <version>4.1.101.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-kqueue;external_dependency} -->
+            <version>4.1.110.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-kqueue;external_dependency} -->
             <classifier>osx-x86_64</classifier>
         </dependency>
     </dependencies>
@@ -113,19 +113,19 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+                <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
                 <configuration>
                     <rules>
                         <bannedDependencies>
                             <includes>
-                                <include>io.netty:netty-buffer:[4.1.101.Final]</include> <!-- {x-include-update;io.netty:netty-buffer;external_dependency} -->
-                                <include>io.netty:netty-codec-http:[4.1.101.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
-                                <include>io.netty:netty-codec-http2:[4.1.101.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http2;external_dependency} -->
-                                <include>io.netty:netty-handler:[4.1.101.Final]</include> <!-- {x-include-update;io.netty:netty-handler;external_dependency} -->
-                                <include>io.netty:netty-handler-proxy:[4.1.101.Final]</include> <!-- {x-include-update;io.netty:netty-handler-proxy;external_dependency} -->
-                                <include>io.netty:netty-transport-native-unix-common:[4.1.101.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-unix-common;external_dependency} -->
-                                <include>io.netty:netty-transport-native-epoll:[4.1.101.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-epoll;external_dependency} -->
-                                <include>io.netty:netty-transport-native-kqueue:[4.1.101.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-kqueue;external_dependency} -->
+                                <include>io.netty:netty-buffer:[4.1.110.Final]</include> <!-- {x-include-update;io.netty:netty-buffer;external_dependency} -->
+                                <include>io.netty:netty-codec-http:[4.1.110.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
+                                <include>io.netty:netty-codec-http2:[4.1.110.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http2;external_dependency} -->
+                                <include>io.netty:netty-handler:[4.1.110.Final]</include> <!-- {x-include-update;io.netty:netty-handler;external_dependency} -->
+                                <include>io.netty:netty-handler-proxy:[4.1.110.Final]</include> <!-- {x-include-update;io.netty:netty-handler-proxy;external_dependency} -->
+                                <include>io.netty:netty-transport-native-unix-common:[4.1.110.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-unix-common;external_dependency} -->
+                                <include>io.netty:netty-transport-native-epoll:[4.1.110.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-epoll;external_dependency} -->
+                                <include>io.netty:netty-transport-native-kqueue:[4.1.110.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-kqueue;external_dependency} -->
                             </includes>
                         </bannedDependencies>
                     </rules>
@@ -144,7 +144,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+                <version>3.6.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
@@ -160,7 +160,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+                <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
                 <executions>
                     <execution>
                         <id>empty-javadoc-jar-with-readme</id>
@@ -178,7 +178,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
-                <version>3.0.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+                <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
                 <executions>
                     <execution>
                         <id>copy-readme-to-javadocTemp</id>

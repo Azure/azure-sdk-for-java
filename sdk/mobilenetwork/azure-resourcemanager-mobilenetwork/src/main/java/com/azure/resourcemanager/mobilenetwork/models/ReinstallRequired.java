@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Whether a reinstall of the packet core is required to pick up the latest configuration changes. */
+/**
+ * Whether a reinstall of the packet core is required to pick up the latest configuration changes.
+ */
 public final class ReinstallRequired extends ExpandableStringEnum<ReinstallRequired> {
-    /** Static value Required for ReinstallRequired. */
+    /**
+     * Static value Required for ReinstallRequired.
+     */
     public static final ReinstallRequired REQUIRED = fromString("Required");
 
-    /** Static value NotRequired for ReinstallRequired. */
+    /**
+     * Static value NotRequired for ReinstallRequired.
+     */
     public static final ReinstallRequired NOT_REQUIRED = fromString("NotRequired");
 
     /**
      * Creates a new instance of ReinstallRequired value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class ReinstallRequired extends ExpandableStringEnum<ReinstallRequi
 
     /**
      * Creates or finds a ReinstallRequired from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ReinstallRequired.
      */
@@ -38,7 +44,7 @@ public final class ReinstallRequired extends ExpandableStringEnum<ReinstallRequi
 
     /**
      * Gets known ReinstallRequired values.
-     *
+     * 
      * @return known ReinstallRequired values.
      */
     public static Collection<ReinstallRequired> values() {

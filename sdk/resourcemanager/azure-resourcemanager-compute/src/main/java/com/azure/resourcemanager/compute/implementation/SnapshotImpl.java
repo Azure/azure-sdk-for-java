@@ -15,6 +15,7 @@ import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.DiskCreateOption;
 import com.azure.resourcemanager.compute.models.GrantAccessData;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
+import com.azure.resourcemanager.compute.models.PublicNetworkAccess;
 import com.azure.resourcemanager.compute.models.Snapshot;
 import com.azure.resourcemanager.compute.models.SnapshotSku;
 import com.azure.resourcemanager.compute.models.SnapshotSkuType;
@@ -122,6 +123,11 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
             .then(Mono.just(Boolean.TRUE))
             .timeout(maxWaitTime, Mono.just(Boolean.FALSE))
             .block();
+    }
+
+    @Override
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerModel().publicNetworkAccess();
     }
 
     @Override
@@ -391,5 +397,17 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
                 .logExceptionAsError(
                     new IllegalArgumentException(String.format("%s is not valid URI of a blob to import.", vhdUrl)));
         }
+    }
+
+    @Override
+    public SnapshotImpl enablePublicNetworkAccess() {
+        this.innerModel().withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
+        return this;
+    }
+
+    @Override
+    public SnapshotImpl disablePublicNetworkAccess() {
+        this.innerModel().withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
+        return this;
     }
 }

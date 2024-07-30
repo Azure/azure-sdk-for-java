@@ -10,8 +10,7 @@ package com.azure.resourcemanager.netapp.generated;
 public final class BackupPoliciesCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/BackupPolicies_Create.
-     * json
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/BackupPolicies_Create.json
      */
     /**
      * Sample code: BackupPolicies_Create.
@@ -19,8 +18,14 @@ public final class BackupPoliciesCreateSamples {
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void backupPoliciesCreate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.backupPolicies().define("backupPolicyName").withRegion("westus")
-            .withExistingNetAppAccount("myRG", "account1").withDailyBackupsToKeep(10).withWeeklyBackupsToKeep(10)
-            .withMonthlyBackupsToKeep(10).withEnabled(true).create();
+        manager.backupPolicies()
+            .define("backupPolicyName")
+            .withRegion("westus")
+            .withExistingNetAppAccount("myRG", "account1")
+            .withDailyBackupsToKeep(10)
+            .withWeeklyBackupsToKeep(10)
+            .withMonthlyBackupsToKeep(10)
+            .withEnabled(true)
+            .create();
     }
 }

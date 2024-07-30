@@ -12,18 +12,20 @@ public final class SsisChildPackageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SsisChildPackage model = BinaryData.fromString(
-            "{\"packagePath\":\"datadflckumjjpx\",\"packageName\":\"xabvx\",\"packageContent\":\"dataoagoeills\",\"packageLastModifiedDate\":\"gy\"}")
+            "{\"packagePath\":\"datayjox\",\"packageName\":\"lcyflzuztdwxr\",\"packageContent\":\"dataambzprhpwwarz\",\"packageLastModifiedDate\":\"bbwtagxhriru\"}")
             .toObject(SsisChildPackage.class);
-        Assertions.assertEquals("xabvx", model.packageName());
-        Assertions.assertEquals("gy", model.packageLastModifiedDate());
+        Assertions.assertEquals("lcyflzuztdwxr", model.packageName());
+        Assertions.assertEquals("bbwtagxhriru", model.packageLastModifiedDate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SsisChildPackage model = new SsisChildPackage().withPackagePath("datadflckumjjpx").withPackageName("xabvx")
-            .withPackageContent("dataoagoeills").withPackageLastModifiedDate("gy");
+        SsisChildPackage model = new SsisChildPackage().withPackagePath("datayjox")
+            .withPackageName("lcyflzuztdwxr")
+            .withPackageContent("dataambzprhpwwarz")
+            .withPackageLastModifiedDate("bbwtagxhriru");
         model = BinaryData.fromObject(model).toObject(SsisChildPackage.class);
-        Assertions.assertEquals("xabvx", model.packageName());
-        Assertions.assertEquals("gy", model.packageLastModifiedDate());
+        Assertions.assertEquals("lcyflzuztdwxr", model.packageName());
+        Assertions.assertEquals("bbwtagxhriru", model.packageLastModifiedDate());
     }
 }

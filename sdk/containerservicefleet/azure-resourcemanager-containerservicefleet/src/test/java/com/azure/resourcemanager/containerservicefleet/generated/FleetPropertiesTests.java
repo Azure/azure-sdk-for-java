@@ -6,17 +6,32 @@ package com.azure.resourcemanager.containerservicefleet.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.containerservicefleet.fluent.models.FleetProperties;
+import com.azure.resourcemanager.containerservicefleet.models.AgentProfile;
+import com.azure.resourcemanager.containerservicefleet.models.ApiServerAccessProfile;
+import com.azure.resourcemanager.containerservicefleet.models.FleetHubProfile;
+import org.junit.jupiter.api.Assertions;
 
 public final class FleetPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FleetProperties model =
-            BinaryData.fromString("{\"provisioningState\":\"Deleting\"}").toObject(FleetProperties.class);
+        FleetProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Deleting\",\"hubProfile\":{\"dnsPrefix\":\"ygxgispemvtz\",\"apiServerAccessProfile\":{\"enablePrivateCluster\":false},\"agentProfile\":{\"subnetId\":\"ljofxqeofjaeqjh\",\"vmSize\":\"b\"},\"fqdn\":\"v\",\"kubernetesVersion\":\"mjqulngsn\",\"portalFqdn\":\"bybkzgcwrwclxx\"}}")
+            .toObject(FleetProperties.class);
+        Assertions.assertEquals("ygxgispemvtz", model.hubProfile().dnsPrefix());
+        Assertions.assertEquals(false, model.hubProfile().apiServerAccessProfile().enablePrivateCluster());
+        Assertions.assertEquals("ljofxqeofjaeqjh", model.hubProfile().agentProfile().subnetId());
+        Assertions.assertEquals("b", model.hubProfile().agentProfile().vmSize());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FleetProperties model = new FleetProperties();
+        FleetProperties model = new FleetProperties().withHubProfile(new FleetHubProfile().withDnsPrefix("ygxgispemvtz")
+            .withApiServerAccessProfile(new ApiServerAccessProfile().withEnablePrivateCluster(false))
+            .withAgentProfile(new AgentProfile().withSubnetId("ljofxqeofjaeqjh").withVmSize("b")));
         model = BinaryData.fromObject(model).toObject(FleetProperties.class);
+        Assertions.assertEquals("ygxgispemvtz", model.hubProfile().dnsPrefix());
+        Assertions.assertEquals(false, model.hubProfile().apiServerAccessProfile().enablePrivateCluster());
+        Assertions.assertEquals("ljofxqeofjaeqjh", model.hubProfile().agentProfile().subnetId());
+        Assertions.assertEquals("b", model.hubProfile().agentProfile().vmSize());
     }
 }

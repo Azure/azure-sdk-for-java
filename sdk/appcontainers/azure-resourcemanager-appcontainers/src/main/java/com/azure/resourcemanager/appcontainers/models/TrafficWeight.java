@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Traffic weight assigned to a revision. */
+/**
+ * Traffic weight assigned to a revision.
+ */
 @Fluent
-public final class TrafficWeight {
+public final class TrafficWeight implements JsonSerializable<TrafficWeight> {
     /*
      * Name of a revision
      */
-    @JsonProperty(value = "revisionName")
     private String revisionName;
 
     /*
      * Traffic weight assigned to a revision
      */
-    @JsonProperty(value = "weight")
     private Integer weight;
 
     /*
      * Indicates that the traffic weight belongs to a latest stable revision
      */
-    @JsonProperty(value = "latestRevision")
     private Boolean latestRevision;
 
     /*
      * Associates a traffic label with a revision
      */
-    @JsonProperty(value = "label")
     private String label;
 
-    /** Creates an instance of TrafficWeight class. */
+    /**
+     * Creates an instance of TrafficWeight class.
+     */
     public TrafficWeight() {
     }
 
     /**
      * Get the revisionName property: Name of a revision.
-     *
+     * 
      * @return the revisionName value.
      */
     public String revisionName() {
@@ -49,7 +53,7 @@ public final class TrafficWeight {
 
     /**
      * Set the revisionName property: Name of a revision.
-     *
+     * 
      * @param revisionName the revisionName value to set.
      * @return the TrafficWeight object itself.
      */
@@ -60,7 +64,7 @@ public final class TrafficWeight {
 
     /**
      * Get the weight property: Traffic weight assigned to a revision.
-     *
+     * 
      * @return the weight value.
      */
     public Integer weight() {
@@ -69,7 +73,7 @@ public final class TrafficWeight {
 
     /**
      * Set the weight property: Traffic weight assigned to a revision.
-     *
+     * 
      * @param weight the weight value to set.
      * @return the TrafficWeight object itself.
      */
@@ -80,7 +84,7 @@ public final class TrafficWeight {
 
     /**
      * Get the latestRevision property: Indicates that the traffic weight belongs to a latest stable revision.
-     *
+     * 
      * @return the latestRevision value.
      */
     public Boolean latestRevision() {
@@ -89,7 +93,7 @@ public final class TrafficWeight {
 
     /**
      * Set the latestRevision property: Indicates that the traffic weight belongs to a latest stable revision.
-     *
+     * 
      * @param latestRevision the latestRevision value to set.
      * @return the TrafficWeight object itself.
      */
@@ -100,7 +104,7 @@ public final class TrafficWeight {
 
     /**
      * Get the label property: Associates a traffic label with a revision.
-     *
+     * 
      * @return the label value.
      */
     public String label() {
@@ -109,7 +113,7 @@ public final class TrafficWeight {
 
     /**
      * Set the label property: Associates a traffic label with a revision.
-     *
+     * 
      * @param label the label value to set.
      * @return the TrafficWeight object itself.
      */
@@ -120,9 +124,54 @@ public final class TrafficWeight {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("revisionName", this.revisionName);
+        jsonWriter.writeNumberField("weight", this.weight);
+        jsonWriter.writeBooleanField("latestRevision", this.latestRevision);
+        jsonWriter.writeStringField("label", this.label);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TrafficWeight from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TrafficWeight if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TrafficWeight.
+     */
+    public static TrafficWeight fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TrafficWeight deserializedTrafficWeight = new TrafficWeight();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("revisionName".equals(fieldName)) {
+                    deserializedTrafficWeight.revisionName = reader.getString();
+                } else if ("weight".equals(fieldName)) {
+                    deserializedTrafficWeight.weight = reader.getNullable(JsonReader::getInt);
+                } else if ("latestRevision".equals(fieldName)) {
+                    deserializedTrafficWeight.latestRevision = reader.getNullable(JsonReader::getBoolean);
+                } else if ("label".equals(fieldName)) {
+                    deserializedTrafficWeight.label = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTrafficWeight;
+        });
     }
 }

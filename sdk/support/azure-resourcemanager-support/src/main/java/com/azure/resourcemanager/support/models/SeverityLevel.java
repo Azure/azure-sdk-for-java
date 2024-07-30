@@ -14,21 +14,29 @@ import java.util.Collection;
  * 'Emergency - Severe impact' level in the Azure portal is reserved only for our Premium customers.
  */
 public final class SeverityLevel extends ExpandableStringEnum<SeverityLevel> {
-    /** Static value minimal for SeverityLevel. */
+    /**
+     * Static value minimal for SeverityLevel.
+     */
     public static final SeverityLevel MINIMAL = fromString("minimal");
 
-    /** Static value moderate for SeverityLevel. */
+    /**
+     * Static value moderate for SeverityLevel.
+     */
     public static final SeverityLevel MODERATE = fromString("moderate");
 
-    /** Static value critical for SeverityLevel. */
+    /**
+     * Static value critical for SeverityLevel.
+     */
     public static final SeverityLevel CRITICAL = fromString("critical");
 
-    /** Static value highestcriticalimpact for SeverityLevel. */
+    /**
+     * Static value highestcriticalimpact for SeverityLevel.
+     */
     public static final SeverityLevel HIGHESTCRITICALIMPACT = fromString("highestcriticalimpact");
 
     /**
      * Creates a new instance of SeverityLevel value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -37,7 +45,7 @@ public final class SeverityLevel extends ExpandableStringEnum<SeverityLevel> {
 
     /**
      * Creates or finds a SeverityLevel from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SeverityLevel.
      */
@@ -48,7 +56,7 @@ public final class SeverityLevel extends ExpandableStringEnum<SeverityLevel> {
 
     /**
      * Gets known SeverityLevel values.
-     *
+     * 
      * @return known SeverityLevel values.
      */
     public static Collection<SeverityLevel> values() {

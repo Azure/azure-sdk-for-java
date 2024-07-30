@@ -12,9 +12,7 @@ import java.util.Arrays;
  */
 public final class CachesSpaceAllocationSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-11-01-preview/examples/
-     * SpaceAllocation_Post.json
+     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/SpaceAllocation_Post.json
      */
     /**
      * Sample code: SpaceAllocation_Post.
@@ -22,10 +20,11 @@ public final class CachesSpaceAllocationSamples {
      * @param manager Entry point to StorageCacheManager.
      */
     public static void spaceAllocationPost(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {
-        manager.caches().spaceAllocation("scgroup", "sc1",
-            Arrays.asList(new StorageTargetSpaceAllocation().withName("st1").withAllocationPercentage(25),
-                new StorageTargetSpaceAllocation().withName("st2").withAllocationPercentage(50),
-                new StorageTargetSpaceAllocation().withName("st3").withAllocationPercentage(25)),
-            com.azure.core.util.Context.NONE);
+        manager.caches()
+            .spaceAllocation("scgroup", "sc1",
+                Arrays.asList(new StorageTargetSpaceAllocation().withName("st1").withAllocationPercentage(25),
+                    new StorageTargetSpaceAllocation().withName("st2").withAllocationPercentage(50),
+                    new StorageTargetSpaceAllocation().withName("st3").withAllocationPercentage(25)),
+                com.azure.core.util.Context.NONE);
     }
 }

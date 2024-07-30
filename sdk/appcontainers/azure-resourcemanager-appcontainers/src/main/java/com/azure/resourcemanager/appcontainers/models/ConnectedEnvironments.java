@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ConnectedEnvironments. */
+/**
+ * Resource collection API of ConnectedEnvironments.
+ */
 public interface ConnectedEnvironments {
     /**
      * Get all connectedEnvironments for a subscription.
-     *
+     * 
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all connectedEnvironments for a subscription as paginated response with {@link PagedIterable}.
      */
@@ -22,11 +24,11 @@ public interface ConnectedEnvironments {
 
     /**
      * Get all connectedEnvironments for a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all connectedEnvironments for a subscription as paginated response with {@link PagedIterable}.
      */
@@ -34,11 +36,11 @@ public interface ConnectedEnvironments {
 
     /**
      * Get all connectedEnvironments in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all connectedEnvironments in a resource group as paginated response with {@link PagedIterable}.
      */
@@ -46,12 +48,12 @@ public interface ConnectedEnvironments {
 
     /**
      * Get all connectedEnvironments in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all connectedEnvironments in a resource group as paginated response with {@link PagedIterable}.
      */
@@ -59,27 +61,27 @@ public interface ConnectedEnvironments {
 
     /**
      * Get the properties of an connectedEnvironment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the connectedEnvironment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of an connectedEnvironment along with {@link Response}.
      */
-    Response<ConnectedEnvironment> getByResourceGroupWithResponse(
-        String resourceGroupName, String connectedEnvironmentName, Context context);
+    Response<ConnectedEnvironment> getByResourceGroupWithResponse(String resourceGroupName,
+        String connectedEnvironmentName, Context context);
 
     /**
      * Get the properties of an connectedEnvironment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the connectedEnvironment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of an connectedEnvironment.
      */
@@ -87,57 +89,57 @@ public interface ConnectedEnvironments {
 
     /**
      * Delete an connectedEnvironment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the connectedEnvironment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void deleteByResourceGroup(String resourceGroupName, String connectedEnvironmentName);
 
     /**
      * Delete an connectedEnvironment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the connectedEnvironment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void delete(String resourceGroupName, String connectedEnvironmentName, Context context);
 
     /**
      * Update connected Environment's properties.
-     *
-     * <p>Patches a Managed Environment. Only patching of tags is supported currently.
-     *
+     * 
+     * Patches a Managed Environment. Only patching of tags is supported currently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the connectedEnvironment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an environment for Kubernetes cluster specialized for web workloads by Azure App Service along with
-     *     {@link Response}.
+     * {@link Response}.
      */
-    Response<ConnectedEnvironment> updateWithResponse(
-        String resourceGroupName, String connectedEnvironmentName, Context context);
+    Response<ConnectedEnvironment> updateWithResponse(String resourceGroupName, String connectedEnvironmentName,
+        Context context);
 
     /**
      * Update connected Environment's properties.
-     *
-     * <p>Patches a Managed Environment. Only patching of tags is supported currently.
-     *
+     * 
+     * Patches a Managed Environment. Only patching of tags is supported currently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the connectedEnvironment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an environment for Kubernetes cluster specialized for web workloads by Azure App Service.
      */
@@ -145,51 +147,46 @@ public interface ConnectedEnvironments {
 
     /**
      * Checks the resource connectedEnvironmentName availability.
-     *
-     * <p>Checks if resource connectedEnvironmentName is available.
-     *
+     * 
+     * Checks if resource connectedEnvironmentName is available.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Managed Environment.
      * @param checkNameAvailabilityRequest The check connectedEnvironmentName availability request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the check availability result along with {@link Response}.
      */
-    Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(
-        String resourceGroupName,
-        String connectedEnvironmentName,
-        CheckNameAvailabilityRequest checkNameAvailabilityRequest,
-        Context context);
+    Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(String resourceGroupName,
+        String connectedEnvironmentName, CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context);
 
     /**
      * Checks the resource connectedEnvironmentName availability.
-     *
-     * <p>Checks if resource connectedEnvironmentName is available.
-     *
+     * 
+     * Checks if resource connectedEnvironmentName is available.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Managed Environment.
      * @param checkNameAvailabilityRequest The check connectedEnvironmentName availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the check availability result.
      */
-    CheckNameAvailabilityResponse checkNameAvailability(
-        String resourceGroupName,
-        String connectedEnvironmentName,
+    CheckNameAvailabilityResponse checkNameAvailability(String resourceGroupName, String connectedEnvironmentName,
         CheckNameAvailabilityRequest checkNameAvailabilityRequest);
 
     /**
      * Get the properties of an connectedEnvironment.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of an connectedEnvironment along with {@link Response}.
      */
@@ -197,12 +194,12 @@ public interface ConnectedEnvironments {
 
     /**
      * Get the properties of an connectedEnvironment.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of an connectedEnvironment along with {@link Response}.
      */
@@ -210,30 +207,30 @@ public interface ConnectedEnvironments {
 
     /**
      * Delete an connectedEnvironment.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void deleteById(String id);
 
     /**
      * Delete an connectedEnvironment.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void deleteByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new ConnectedEnvironment resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ConnectedEnvironment definition.
      */

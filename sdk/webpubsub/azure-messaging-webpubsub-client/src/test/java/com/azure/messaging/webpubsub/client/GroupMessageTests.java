@@ -3,8 +3,14 @@
 
 package com.azure.messaging.webpubsub.client;
 
-import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.messaging.webpubsub.client.models.SendMessageFailedException;
 import com.azure.messaging.webpubsub.client.models.SendToGroupOptions;
 import com.azure.messaging.webpubsub.client.models.WebPubSubDataFormat;
@@ -13,23 +19,26 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 public class GroupMessageTests extends TestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(GroupMessageTests.class);
 
     private static final String HELLO = "hello";
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testSendMessageBeforeStart() {
         WebPubSubClient client = getClient();
-        Assertions.assertThrows(SendMessageFailedException.class, () -> client.sendToGroup("testSendMessageBeforeStart", HELLO));
+        Assertions.assertThrows(SendMessageFailedException.class,
+            () -> client.sendToGroup("testSendMessageBeforeStart", HELLO));
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testSendMessage() {
         String groupName = "testSendMessage";
         WebPubSubClient client = getClient();
@@ -49,7 +58,7 @@ public class GroupMessageTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testSendMessageFireAndForget() {
         String groupName = "testSendMessageFireAndForget";
         WebPubSubClient client = getClient();
@@ -66,7 +75,7 @@ public class GroupMessageTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testSendJsonMessage() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
         BinaryData[] data = new BinaryData[1];
@@ -86,7 +95,8 @@ public class GroupMessageTests extends TestBase {
             JsonModel model = new JsonModel();
             model.name = "john";
             model.description = "unknown";
-            WebPubSubResult result = client.sendToGroup(groupName, BinaryData.fromObject(model), WebPubSubDataFormat.JSON);
+            WebPubSubResult result = client.sendToGroup(groupName, BinaryData.fromObject(model),
+                WebPubSubDataFormat.JSON);
             Assertions.assertNotNull(result.getAckId());
 
             latch.await(1, TimeUnit.SECONDS);
@@ -99,7 +109,7 @@ public class GroupMessageTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testSendBinaryMessage() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
         BinaryData[] data = new BinaryData[1];
@@ -117,7 +127,8 @@ public class GroupMessageTests extends TestBase {
             client.joinGroup(groupName);
 
             byte[] bytes = new byte[] { 0x64, 0x61, 0x74, 0x61 };
-            WebPubSubResult result = client.sendToGroup(groupName, BinaryData.fromBytes(bytes), WebPubSubDataFormat.BINARY);
+            WebPubSubResult result = client.sendToGroup(groupName, BinaryData.fromBytes(bytes),
+                WebPubSubDataFormat.BINARY);
             Assertions.assertNotNull(result.getAckId());
 
             latch.await(1, TimeUnit.SECONDS);
@@ -129,7 +140,7 @@ public class GroupMessageTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testSendDuplicateMessage() {
         String groupName = "testSendDuplicateMessage";
         WebPubSubClient client = getClient();
@@ -150,7 +161,7 @@ public class GroupMessageTests extends TestBase {
 
     @Disabled("Performance test")
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testSendMessagePerformance() throws InterruptedException {
         final int count = 1000;
         CountDownLatch latch = new CountDownLatch(count);
@@ -178,16 +189,42 @@ public class GroupMessageTests extends TestBase {
             final long endNanoReceive = System.nanoTime();
 
             // about 800 ms for 1k messages
-            System.out.println("send takes milliseconds: " + (endNanoSend - beginNano) / 1E6);
+            LOGGER.log(LogLevel.VERBOSE, () -> "send takes milliseconds: " + (endNanoSend - beginNano) / 1E6);
             // about 1 second for 1k messages
-            System.out.println("send and receive takes milliseconds: " + (endNanoReceive - beginNano) / 1E6);
+            LOGGER.log(LogLevel.VERBOSE,
+                () -> "send and receive takes milliseconds: " + (endNanoReceive - beginNano) / 1E6);
         } finally {
             client.stop();
         }
     }
 
-    private static class JsonModel {
+    public static class JsonModel implements JsonSerializable<JsonModel> {
         private String name;
         private String description;
+
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            return jsonWriter.writeStartObject()
+                .writeStringField("name", name)
+                .writeStringField("description", description)
+                .writeEndObject();
+        }
+
+        public static JsonModel fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                JsonModel jsonModel = new JsonModel();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+
+                    if ("name".equals(fieldName)) {
+                        jsonModel.name = reader.getString();
+                    } else if ("description".equals(fieldName)) {
+                        jsonModel.description = reader.getString();
+                    }
+                }
+                return jsonModel;
+            });
+        }
     }
 }

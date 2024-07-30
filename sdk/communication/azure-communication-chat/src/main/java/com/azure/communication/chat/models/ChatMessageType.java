@@ -5,11 +5,10 @@
 package com.azure.communication.chat.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Defines values for ChatMessageType.
+ * The chat message type.
  */
 public final class ChatMessageType extends ExpandableStringEnum<ChatMessageType> {
     /**
@@ -38,17 +37,27 @@ public final class ChatMessageType extends ExpandableStringEnum<ChatMessageType>
     public static final ChatMessageType PARTICIPANT_REMOVED = fromString("participantRemoved");
 
     /**
+     * Creates a new instance of ChatMessageType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ChatMessageType() {
+    }
+
+    /**
      * Creates or finds a ChatMessageType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ChatMessageType.
      */
-    @JsonCreator
     public static ChatMessageType fromString(String name) {
         return fromString(name, ChatMessageType.class);
     }
 
     /**
+     * Gets known ChatMessageType values.
+     * 
      * @return known ChatMessageType values.
      */
     public static Collection<ChatMessageType> values() {

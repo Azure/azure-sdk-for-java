@@ -5,72 +5,71 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Container object under Container App Revision Replica. */
+/**
+ * Container object under Container App Revision Replica.
+ */
 @Fluent
-public final class ReplicaContainer {
+public final class ReplicaContainer implements JsonSerializable<ReplicaContainer> {
     /*
      * The Name of the Container
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The Id of the Container
      */
-    @JsonProperty(value = "containerId")
     private String containerId;
 
     /*
      * The container ready status
      */
-    @JsonProperty(value = "ready")
     private Boolean ready;
 
     /*
      * The container start status
      */
-    @JsonProperty(value = "started")
     private Boolean started;
 
     /*
      * The container restart count
      */
-    @JsonProperty(value = "restartCount")
     private Integer restartCount;
 
     /*
      * Current running state of the container
      */
-    @JsonProperty(value = "runningState", access = JsonProperty.Access.WRITE_ONLY)
     private ContainerAppContainerRunningState runningState;
 
     /*
      * The details of container current running state
      */
-    @JsonProperty(value = "runningStateDetails", access = JsonProperty.Access.WRITE_ONLY)
     private String runningStateDetails;
 
     /*
      * Log Stream endpoint
      */
-    @JsonProperty(value = "logStreamEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String logStreamEndpoint;
 
     /*
      * Container exec endpoint
      */
-    @JsonProperty(value = "execEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String execEndpoint;
 
-    /** Creates an instance of ReplicaContainer class. */
+    /**
+     * Creates an instance of ReplicaContainer class.
+     */
     public ReplicaContainer() {
     }
 
     /**
      * Get the name property: The Name of the Container.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -79,7 +78,7 @@ public final class ReplicaContainer {
 
     /**
      * Set the name property: The Name of the Container.
-     *
+     * 
      * @param name the name value to set.
      * @return the ReplicaContainer object itself.
      */
@@ -90,7 +89,7 @@ public final class ReplicaContainer {
 
     /**
      * Get the containerId property: The Id of the Container.
-     *
+     * 
      * @return the containerId value.
      */
     public String containerId() {
@@ -99,7 +98,7 @@ public final class ReplicaContainer {
 
     /**
      * Set the containerId property: The Id of the Container.
-     *
+     * 
      * @param containerId the containerId value to set.
      * @return the ReplicaContainer object itself.
      */
@@ -110,7 +109,7 @@ public final class ReplicaContainer {
 
     /**
      * Get the ready property: The container ready status.
-     *
+     * 
      * @return the ready value.
      */
     public Boolean ready() {
@@ -119,7 +118,7 @@ public final class ReplicaContainer {
 
     /**
      * Set the ready property: The container ready status.
-     *
+     * 
      * @param ready the ready value to set.
      * @return the ReplicaContainer object itself.
      */
@@ -130,7 +129,7 @@ public final class ReplicaContainer {
 
     /**
      * Get the started property: The container start status.
-     *
+     * 
      * @return the started value.
      */
     public Boolean started() {
@@ -139,7 +138,7 @@ public final class ReplicaContainer {
 
     /**
      * Set the started property: The container start status.
-     *
+     * 
      * @param started the started value to set.
      * @return the ReplicaContainer object itself.
      */
@@ -150,7 +149,7 @@ public final class ReplicaContainer {
 
     /**
      * Get the restartCount property: The container restart count.
-     *
+     * 
      * @return the restartCount value.
      */
     public Integer restartCount() {
@@ -159,7 +158,7 @@ public final class ReplicaContainer {
 
     /**
      * Set the restartCount property: The container restart count.
-     *
+     * 
      * @param restartCount the restartCount value to set.
      * @return the ReplicaContainer object itself.
      */
@@ -170,7 +169,7 @@ public final class ReplicaContainer {
 
     /**
      * Get the runningState property: Current running state of the container.
-     *
+     * 
      * @return the runningState value.
      */
     public ContainerAppContainerRunningState runningState() {
@@ -179,7 +178,7 @@ public final class ReplicaContainer {
 
     /**
      * Get the runningStateDetails property: The details of container current running state.
-     *
+     * 
      * @return the runningStateDetails value.
      */
     public String runningStateDetails() {
@@ -188,7 +187,7 @@ public final class ReplicaContainer {
 
     /**
      * Get the logStreamEndpoint property: Log Stream endpoint.
-     *
+     * 
      * @return the logStreamEndpoint value.
      */
     public String logStreamEndpoint() {
@@ -197,7 +196,7 @@ public final class ReplicaContainer {
 
     /**
      * Get the execEndpoint property: Container exec endpoint.
-     *
+     * 
      * @return the execEndpoint value.
      */
     public String execEndpoint() {
@@ -206,9 +205,66 @@ public final class ReplicaContainer {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("containerId", this.containerId);
+        jsonWriter.writeBooleanField("ready", this.ready);
+        jsonWriter.writeBooleanField("started", this.started);
+        jsonWriter.writeNumberField("restartCount", this.restartCount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReplicaContainer from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReplicaContainer if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReplicaContainer.
+     */
+    public static ReplicaContainer fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReplicaContainer deserializedReplicaContainer = new ReplicaContainer();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedReplicaContainer.name = reader.getString();
+                } else if ("containerId".equals(fieldName)) {
+                    deserializedReplicaContainer.containerId = reader.getString();
+                } else if ("ready".equals(fieldName)) {
+                    deserializedReplicaContainer.ready = reader.getNullable(JsonReader::getBoolean);
+                } else if ("started".equals(fieldName)) {
+                    deserializedReplicaContainer.started = reader.getNullable(JsonReader::getBoolean);
+                } else if ("restartCount".equals(fieldName)) {
+                    deserializedReplicaContainer.restartCount = reader.getNullable(JsonReader::getInt);
+                } else if ("runningState".equals(fieldName)) {
+                    deserializedReplicaContainer.runningState
+                        = ContainerAppContainerRunningState.fromString(reader.getString());
+                } else if ("runningStateDetails".equals(fieldName)) {
+                    deserializedReplicaContainer.runningStateDetails = reader.getString();
+                } else if ("logStreamEndpoint".equals(fieldName)) {
+                    deserializedReplicaContainer.logStreamEndpoint = reader.getString();
+                } else if ("execEndpoint".equals(fieldName)) {
+                    deserializedReplicaContainer.execEndpoint = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReplicaContainer;
+        });
     }
 }

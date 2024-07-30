@@ -26,7 +26,9 @@ public final class ManagedPrivateEndpointTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedPrivateEndpoint model = new ManagedPrivateEndpoint().withConnectionState(new ConnectionStateProperties())
-            .withFqdns(Arrays.asList("vwe")).withGroupId("xoy").withPrivateLinkResourceId("haim")
+            .withFqdns(Arrays.asList("vwe"))
+            .withGroupId("xoy")
+            .withPrivateLinkResourceId("haim")
             .withAdditionalProperties(mapOf("isReserved", false, "provisioningState", "iroqbosh"));
         model = BinaryData.fromObject(model).toObject(ManagedPrivateEndpoint.class);
         Assertions.assertEquals("vwe", model.fqdns().get(0));

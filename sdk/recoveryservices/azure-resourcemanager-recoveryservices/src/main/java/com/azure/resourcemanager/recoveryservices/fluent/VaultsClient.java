@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.recoveryservices.fluent.models.VaultInner;
 import com.azure.resourcemanager.recoveryservices.models.PatchVault;
 
-/** An instance of this class provides access to all the operations defined in VaultsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VaultsClient.
+ */
 public interface VaultsClient {
     /**
      * Fetches all the resources of the specified type in the subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for a list of Vaults as paginated response with {@link PagedIterable}.
@@ -28,7 +30,7 @@ public interface VaultsClient {
 
     /**
      * Fetches all the resources of the specified type in the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -40,7 +42,7 @@ public interface VaultsClient {
 
     /**
      * Retrieve a list of Vaults.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -52,7 +54,7 @@ public interface VaultsClient {
 
     /**
      * Retrieve a list of Vaults.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -65,7 +67,7 @@ public interface VaultsClient {
 
     /**
      * Get the Vault details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param context The context to associate with this operation.
@@ -79,7 +81,7 @@ public interface VaultsClient {
 
     /**
      * Get the Vault details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -92,7 +94,7 @@ public interface VaultsClient {
 
     /**
      * Creates or updates a Recovery Services vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
@@ -102,15 +104,16 @@ public interface VaultsClient {
      * @return the {@link SyncPoller} for polling of resource information, as returned by the resource provider.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VaultInner>, VaultInner> beginCreateOrUpdate(
-        String resourceGroupName, String vaultName, VaultInner vault);
+    SyncPoller<PollResult<VaultInner>, VaultInner> beginCreateOrUpdate(String resourceGroupName, String vaultName,
+        VaultInner vault);
 
     /**
      * Creates or updates a Recovery Services vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -118,12 +121,12 @@ public interface VaultsClient {
      * @return the {@link SyncPoller} for polling of resource information, as returned by the resource provider.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VaultInner>, VaultInner> beginCreateOrUpdate(
-        String resourceGroupName, String vaultName, VaultInner vault, Context context);
+    SyncPoller<PollResult<VaultInner>, VaultInner> beginCreateOrUpdate(String resourceGroupName, String vaultName,
+        VaultInner vault, String xMsAuthorizationAuxiliary, Context context);
 
     /**
      * Creates or updates a Recovery Services vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
@@ -137,10 +140,11 @@ public interface VaultsClient {
 
     /**
      * Creates or updates a Recovery Services vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -148,25 +152,39 @@ public interface VaultsClient {
      * @return resource information, as returned by the resource provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VaultInner createOrUpdate(String resourceGroupName, String vaultName, VaultInner vault, Context context);
+    VaultInner createOrUpdate(String resourceGroupName, String vaultName, VaultInner vault,
+        String xMsAuthorizationAuxiliary, Context context);
 
     /**
      * Deletes a vault.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the recovery services vault.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName);
+
+    /**
+     * Deletes a vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String vaultName, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName, Context context);
 
     /**
      * Deletes a vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -177,8 +195,21 @@ public interface VaultsClient {
     void delete(String resourceGroupName, String vaultName);
 
     /**
+     * Deletes a vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the recovery services vault.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String vaultName, Context context);
+
+    /**
      * Updates the vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
@@ -188,15 +219,16 @@ public interface VaultsClient {
      * @return the {@link SyncPoller} for polling of resource information, as returned by the resource provider.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VaultInner>, VaultInner> beginUpdate(
-        String resourceGroupName, String vaultName, PatchVault vault);
+    SyncPoller<PollResult<VaultInner>, VaultInner> beginUpdate(String resourceGroupName, String vaultName,
+        PatchVault vault);
 
     /**
      * Updates the vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -204,12 +236,12 @@ public interface VaultsClient {
      * @return the {@link SyncPoller} for polling of resource information, as returned by the resource provider.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VaultInner>, VaultInner> beginUpdate(
-        String resourceGroupName, String vaultName, PatchVault vault, Context context);
+    SyncPoller<PollResult<VaultInner>, VaultInner> beginUpdate(String resourceGroupName, String vaultName,
+        PatchVault vault, String xMsAuthorizationAuxiliary, Context context);
 
     /**
      * Updates the vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
@@ -223,10 +255,11 @@ public interface VaultsClient {
 
     /**
      * Updates the vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -234,5 +267,6 @@ public interface VaultsClient {
      * @return resource information, as returned by the resource provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VaultInner update(String resourceGroupName, String vaultName, PatchVault vault, Context context);
+    VaultInner update(String resourceGroupName, String vaultName, PatchVault vault, String xMsAuthorizationAuxiliary,
+        Context context);
 }

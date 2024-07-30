@@ -12,6 +12,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.eventgrid.fluent.models.DeliveryAttributeListResultInner;
+import com.azure.resourcemanager.eventgrid.fluent.models.SubscriptionFullUrlInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.SubscriptionInner;
 import com.azure.resourcemanager.eventgrid.models.SubscriptionUpdateParameters;
 
@@ -27,8 +28,7 @@ public interface NamespaceTopicEventSubscriptionsClient {
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be found.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -47,8 +47,7 @@ public interface NamespaceTopicEventSubscriptionsClient {
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be found.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -68,7 +67,7 @@ public interface NamespaceTopicEventSubscriptionsClient {
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 50 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the delivery mode, filter information, and
      * others.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -90,7 +89,7 @@ public interface NamespaceTopicEventSubscriptionsClient {
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 50 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the delivery mode, filter information, and
      * others.
      * @param context The context to associate with this operation.
@@ -114,7 +113,7 @@ public interface NamespaceTopicEventSubscriptionsClient {
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 50 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the delivery mode, filter information, and
      * others.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -136,7 +135,7 @@ public interface NamespaceTopicEventSubscriptionsClient {
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 50 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the delivery mode, filter information, and
      * others.
      * @param context The context to associate with this operation.
@@ -157,8 +156,7 @@ public interface NamespaceTopicEventSubscriptionsClient {
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -176,8 +174,7 @@ public interface NamespaceTopicEventSubscriptionsClient {
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -196,8 +193,7 @@ public interface NamespaceTopicEventSubscriptionsClient {
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -213,8 +209,7 @@ public interface NamespaceTopicEventSubscriptionsClient {
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -232,8 +227,7 @@ public interface NamespaceTopicEventSubscriptionsClient {
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -253,8 +247,7 @@ public interface NamespaceTopicEventSubscriptionsClient {
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -275,8 +268,7 @@ public interface NamespaceTopicEventSubscriptionsClient {
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -295,8 +287,7 @@ public interface NamespaceTopicEventSubscriptionsClient {
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -358,8 +349,7 @@ public interface NamespaceTopicEventSubscriptionsClient {
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -378,8 +368,7 @@ public interface NamespaceTopicEventSubscriptionsClient {
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -388,4 +377,41 @@ public interface NamespaceTopicEventSubscriptionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     DeliveryAttributeListResultInner getDeliveryAttributes(String resourceGroupName, String namespaceName,
         String topicName, String eventSubscriptionName);
+
+    /**
+     * Get full URL of an event subscription of a namespace topic.
+     * 
+     * Get the full endpoint URL for an event subscription of a namespace topic.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param namespaceName Name of the namespace.
+     * @param topicName Name of the namespace topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the full endpoint URL for an event subscription of a namespace topic along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SubscriptionFullUrlInner> getFullUrlWithResponse(String resourceGroupName, String namespaceName,
+        String topicName, String eventSubscriptionName, Context context);
+
+    /**
+     * Get full URL of an event subscription of a namespace topic.
+     * 
+     * Get the full endpoint URL for an event subscription of a namespace topic.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param namespaceName Name of the namespace.
+     * @param topicName Name of the namespace topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the full endpoint URL for an event subscription of a namespace topic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SubscriptionFullUrlInner getFullUrl(String resourceGroupName, String namespaceName, String topicName,
+        String eventSubscriptionName);
 }

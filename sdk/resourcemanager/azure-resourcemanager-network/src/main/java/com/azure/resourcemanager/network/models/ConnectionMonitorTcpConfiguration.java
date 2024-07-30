@@ -57,8 +57,7 @@ public final class ConnectionMonitorTcpConfiguration {
     }
 
     /**
-     * Get the disableTraceRoute property: Value indicating whether path evaluation with trace route should be
-     * disabled.
+     * Get the disableTraceRoute property: Value indicating whether path evaluation with trace route should be disabled.
      * 
      * @return the disableTraceRoute value.
      */
@@ -67,8 +66,7 @@ public final class ConnectionMonitorTcpConfiguration {
     }
 
     /**
-     * Set the disableTraceRoute property: Value indicating whether path evaluation with trace route should be
-     * disabled.
+     * Set the disableTraceRoute property: Value indicating whether path evaluation with trace route should be disabled.
      * 
      * @param disableTraceRoute the disableTraceRoute value to set.
      * @return the ConnectionMonitorTcpConfiguration object itself.

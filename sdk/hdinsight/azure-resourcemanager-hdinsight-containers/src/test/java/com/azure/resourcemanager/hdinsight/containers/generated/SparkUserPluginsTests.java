@@ -13,16 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class SparkUserPluginsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SparkUserPlugins model =
-            BinaryData.fromString("{\"plugins\":[{\"path\":\"lnjixisxya\"}]}").toObject(SparkUserPlugins.class);
-        Assertions.assertEquals("lnjixisxya", model.plugins().get(0).path());
+        SparkUserPlugins model
+            = BinaryData.fromString("{\"plugins\":[{\"path\":\"ojgjrwjueiotwmc\"},{\"path\":\"ytdxwit\"}]}")
+                .toObject(SparkUserPlugins.class);
+        Assertions.assertEquals("ojgjrwjueiotwmc", model.plugins().get(0).path());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SparkUserPlugins model =
-            new SparkUserPlugins().withPlugins(Arrays.asList(new SparkUserPlugin().withPath("lnjixisxya")));
+        SparkUserPlugins model = new SparkUserPlugins().withPlugins(Arrays
+            .asList(new SparkUserPlugin().withPath("ojgjrwjueiotwmc"), new SparkUserPlugin().withPath("ytdxwit")));
         model = BinaryData.fromObject(model).toObject(SparkUserPlugins.class);
-        Assertions.assertEquals("lnjixisxya", model.plugins().get(0).path());
+        Assertions.assertEquals("ojgjrwjueiotwmc", model.plugins().get(0).path());
     }
 }

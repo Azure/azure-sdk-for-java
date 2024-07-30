@@ -5,50 +5,60 @@ package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Assignment details of a job to a worker.
  */
 @Immutable
-public final class RouterJobAssignment {
+public final class RouterJobAssignment implements JsonSerializable<RouterJobAssignment> {
 
     /*
      * Id of a job assignment.
      */
     @Generated
-    @JsonProperty(value = "assignmentId", access = JsonProperty.Access.WRITE_ONLY)
     private String assignmentId;
 
     /*
      * Id of the Worker assigned to the job.
      */
     @Generated
-    @JsonProperty(value = "workerId")
     private String workerId;
 
     /*
      * Timestamp when the job was assigned to a worker in UTC.
      */
     @Generated
-    @JsonProperty(value = "assignedAt")
-    private OffsetDateTime assignedAt;
+    private final OffsetDateTime assignedAt;
 
     /*
      * Timestamp when the job was marked as completed after being assigned in UTC.
      */
     @Generated
-    @JsonProperty(value = "completedAt")
     private OffsetDateTime completedAt;
 
     /*
      * Timestamp when the job was marked as closed after being completed in UTC.
      */
     @Generated
-    @JsonProperty(value = "closedAt")
     private OffsetDateTime closedAt;
+
+    /**
+     * Creates an instance of RouterJobAssignment class.
+     *
+     * @param assignedAt the assignedAt value to set.
+     */
+    @Generated
+    private RouterJobAssignment(OffsetDateTime assignedAt) {
+        this.assignedAt = assignedAt;
+    }
 
     /**
      * Get the assignmentId property: Id of a job assignment.
@@ -101,13 +111,65 @@ public final class RouterJobAssignment {
     }
 
     /**
-     * Creates an instance of RouterJobAssignment class.
-     *
-     * @param assignedAt the assignedAt value to set.
+     * {@inheritDoc}
      */
     @Generated
-    @JsonCreator
-    private RouterJobAssignment(@JsonProperty(value = "assignedAt") OffsetDateTime assignedAt) {
-        this.assignedAt = assignedAt;
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("assignedAt",
+            this.assignedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.assignedAt));
+        jsonWriter.writeStringField("workerId", this.workerId);
+        jsonWriter.writeStringField("completedAt",
+            this.completedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.completedAt));
+        jsonWriter.writeStringField("closedAt",
+            this.closedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.closedAt));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RouterJobAssignment from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RouterJobAssignment if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RouterJobAssignment.
+     */
+    @Generated
+    public static RouterJobAssignment fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String assignmentId = null;
+            OffsetDateTime assignedAt = null;
+            String workerId = null;
+            OffsetDateTime completedAt = null;
+            OffsetDateTime closedAt = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("assignmentId".equals(fieldName)) {
+                    assignmentId = reader.getString();
+                } else if ("assignedAt".equals(fieldName)) {
+                    assignedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("workerId".equals(fieldName)) {
+                    workerId = reader.getString();
+                } else if ("completedAt".equals(fieldName)) {
+                    completedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("closedAt".equals(fieldName)) {
+                    closedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            RouterJobAssignment deserializedRouterJobAssignment = new RouterJobAssignment(assignedAt);
+            deserializedRouterJobAssignment.assignmentId = assignmentId;
+            deserializedRouterJobAssignment.workerId = workerId;
+            deserializedRouterJobAssignment.completedAt = completedAt;
+            deserializedRouterJobAssignment.closedAt = closedAt;
+            return deserializedRouterJobAssignment;
+        });
     }
 }

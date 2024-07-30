@@ -28,8 +28,8 @@ public final class DevOpsOperationResultsImpl implements DevOpsOperationResults 
 
     public Response<OperationStatusResult> getWithResponse(String resourceGroupName, String securityConnectorName,
         String operationResultId, Context context) {
-        Response<OperationStatusResultInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            securityConnectorName, operationResultId, context);
+        Response<OperationStatusResultInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, securityConnectorName, operationResultId, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new OperationStatusResultImpl(inner.getValue(), this.manager()));

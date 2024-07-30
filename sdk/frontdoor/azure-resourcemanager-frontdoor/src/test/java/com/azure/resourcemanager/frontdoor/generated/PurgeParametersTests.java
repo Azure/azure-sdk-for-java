@@ -12,15 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class PurgeParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PurgeParameters model =
-            BinaryData.fromString("{\"contentPaths\":[\"lmfmtdaay\"]}").toObject(PurgeParameters.class);
-        Assertions.assertEquals("lmfmtdaay", model.contentPaths().get(0));
+        PurgeParameters model = BinaryData.fromString("{\"contentPaths\":[\"acegfnmntf\",\"mvmemfnczd\",\"vvbalx\"]}")
+            .toObject(PurgeParameters.class);
+        Assertions.assertEquals("acegfnmntf", model.contentPaths().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PurgeParameters model = new PurgeParameters().withContentPaths(Arrays.asList("lmfmtdaay"));
+        PurgeParameters model
+            = new PurgeParameters().withContentPaths(Arrays.asList("acegfnmntf", "mvmemfnczd", "vvbalx"));
         model = BinaryData.fromObject(model).toObject(PurgeParameters.class);
-        Assertions.assertEquals("lmfmtdaay", model.contentPaths().get(0));
+        Assertions.assertEquals("acegfnmntf", model.contentPaths().get(0));
     }
 }

@@ -6,61 +6,43 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.CapacityPool;
 import com.azure.resourcemanager.netapp.models.EncryptionType;
 import com.azure.resourcemanager.netapp.models.QosType;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PoolsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"etag\":\"tjeaahhvjhh\",\"properties\":{\"poolId\":\"kzyb\",\"size\":6116689524962712443,\"serviceLevel\":\"Premium\",\"provisioningState\":\"jks\",\"totalThroughputMibps\":82.007126,\"utilizedThroughputMibps\":94.716125,\"qosType\":\"Auto\",\"coolAccess\":true,\"encryptionType\":\"Single\"},\"location\":\"jednlj\",\"tags\":{\"smjbnkppxyn\":\"euaulxu\",\"gwklnsr\":\"nlsvxeiz\"},\"id\":\"ffeycx\",\"name\":\"ktp\",\"type\":\"ymerteeammxq\"}]}";
+            = "{\"value\":[{\"etag\":\"hhzjhfj\",\"properties\":{\"poolId\":\"vvmu\",\"size\":8218407291535487840,\"serviceLevel\":\"Standard\",\"provisioningState\":\"neqsxvmh\",\"totalThroughputMibps\":95.131905,\"utilizedThroughputMibps\":85.77395,\"qosType\":\"Auto\",\"coolAccess\":false,\"encryptionType\":\"Single\"},\"location\":\"hudypohyuemsl\",\"tags\":{\"oobrlttyms\":\"qyrp\"},\"id\":\"nygq\",\"name\":\"nfwqzdzgtilaxhn\",\"type\":\"hqlyvijo\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        NetAppFilesManager manager = NetAppFilesManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        NetAppFilesManager manager = NetAppFilesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<CapacityPool> response
-            = manager.pools().list("msidxasicddyvv", "skgfmocwahpq", com.azure.core.util.Context.NONE);
+            = manager.pools().list("uzhyrmewipmvekdx", "kuqgsjjxundxgket", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jednlj", response.iterator().next().location());
-        Assertions.assertEquals("euaulxu", response.iterator().next().tags().get("smjbnkppxyn"));
-        Assertions.assertEquals(6116689524962712443L, response.iterator().next().size());
-        Assertions.assertEquals(ServiceLevel.PREMIUM, response.iterator().next().serviceLevel());
+        Assertions.assertEquals("hudypohyuemsl", response.iterator().next().location());
+        Assertions.assertEquals("qyrp", response.iterator().next().tags().get("oobrlttyms"));
+        Assertions.assertEquals(8218407291535487840L, response.iterator().next().size());
+        Assertions.assertEquals(ServiceLevel.STANDARD, response.iterator().next().serviceLevel());
         Assertions.assertEquals(QosType.AUTO, response.iterator().next().qosType());
-        Assertions.assertEquals(true, response.iterator().next().coolAccess());
+        Assertions.assertEquals(false, response.iterator().next().coolAccess());
         Assertions.assertEquals(EncryptionType.SINGLE, response.iterator().next().encryptionType());
     }
 }

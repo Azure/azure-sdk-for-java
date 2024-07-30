@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservices.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The name of usage. */
+/**
+ * The name of usage.
+ */
 @Fluent
 public final class NameInfo {
     /*
@@ -22,13 +24,15 @@ public final class NameInfo {
     @JsonProperty(value = "localizedValue")
     private String localizedValue;
 
-    /** Creates an instance of NameInfo class. */
+    /**
+     * Creates an instance of NameInfo class.
+     */
     public NameInfo() {
     }
 
     /**
      * Get the value property: Value of usage.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -37,7 +41,7 @@ public final class NameInfo {
 
     /**
      * Set the value property: Value of usage.
-     *
+     * 
      * @param value the value value to set.
      * @return the NameInfo object itself.
      */
@@ -48,7 +52,7 @@ public final class NameInfo {
 
     /**
      * Get the localizedValue property: Localized value of usage.
-     *
+     * 
      * @return the localizedValue value.
      */
     public String localizedValue() {
@@ -57,7 +61,7 @@ public final class NameInfo {
 
     /**
      * Set the localizedValue property: Localized value of usage.
-     *
+     * 
      * @param localizedValue the localizedValue value to set.
      * @return the NameInfo object itself.
      */
@@ -68,7 +72,7 @@ public final class NameInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

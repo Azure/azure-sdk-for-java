@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class SshPublicKeysListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * sshPublicKeyExamples/SshPublicKey_ListByResourceGroup_MinimumSet_Gen.json
      */
     /**
@@ -20,13 +20,16 @@ public final class SshPublicKeysListByResourceGroupSamples {
      */
     public static void
         sshPublicKeyListByResourceGroupMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getSshPublicKeys().listByResourceGroup("rgcompute",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getSshPublicKeys()
+            .listByResourceGroup("rgcompute", com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * sshPublicKeyExamples/SshPublicKey_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
@@ -36,7 +39,10 @@ public final class SshPublicKeysListByResourceGroupSamples {
      */
     public static void
         sshPublicKeyListByResourceGroupMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getSshPublicKeys().listByResourceGroup("rgcompute",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getSshPublicKeys()
+            .listByResourceGroup("rgcompute", com.azure.core.util.Context.NONE);
     }
 }

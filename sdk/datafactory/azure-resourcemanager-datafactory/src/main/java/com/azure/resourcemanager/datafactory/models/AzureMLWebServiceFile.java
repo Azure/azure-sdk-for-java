@@ -14,8 +14,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureMLWebServiceFile {
     /*
-     * The relative file path, including container name, in the Azure Blob Storage specified by the LinkedService.
-     * Type: string (or Expression with resultType string).
+     * The relative file path, including container name, in the Azure Blob Storage specified by the LinkedService. Type:
+     * string (or Expression with resultType string).
      */
     @JsonProperty(value = "filePath", required = true)
     private Object filePath;
@@ -83,12 +83,13 @@ public final class AzureMLWebServiceFile {
      */
     public void validate() {
         if (filePath() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property filePath in model AzureMLWebServiceFile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property filePath in model AzureMLWebServiceFile"));
         }
         if (linkedServiceName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property linkedServiceName in model AzureMLWebServiceFile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property linkedServiceName in model AzureMLWebServiceFile"));
         } else {
             linkedServiceName().validate();
         }

@@ -6,91 +6,79 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 /**
  * Operation info.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "kind",
-    defaultImpl = OperationDetails.class)
-@JsonTypeName("OperationDetails")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "documentModelCompose", value = DocumentModelComposeOperationDetails.class),
-    @JsonSubTypes.Type(name = "documentModelCopyTo", value = DocumentModelCopyToOperationDetails.class),
-    @JsonSubTypes.Type(name = "documentClassifierBuild", value = DocumentClassifierBuildOperationDetails.class),
-    @JsonSubTypes.Type(name = "documentModelBuild", value = DocumentModelBuildOperationDetails.class) })
 @Immutable
-public class OperationDetails {
+public class OperationDetails implements JsonSerializable<OperationDetails> {
+    /*
+     * Type of operation.
+     */
+    @Generated
+    private OperationKind kind = OperationKind.fromString("OperationDetails");
+
     /*
      * Operation ID
      */
     @Generated
-    @JsonProperty(value = "operationId", access = JsonProperty.Access.WRITE_ONLY)
     private String operationId;
 
     /*
      * Operation status. notStarted, running, completed, or failed
      */
     @Generated
-    @JsonProperty(value = "status")
-    private OperationStatus status;
+    private final OperationStatus status;
 
     /*
      * Operation progress (0-100).
      */
     @Generated
-    @JsonProperty(value = "percentCompleted")
     private Integer percentCompleted;
 
     /*
      * Date and time (UTC) when the operation was created.
      */
     @Generated
-    @JsonProperty(value = "createdDateTime")
-    private OffsetDateTime createdDateTime;
+    private final OffsetDateTime createdDateTime;
 
     /*
      * Date and time (UTC) when the status was last updated.
      */
     @Generated
-    @JsonProperty(value = "lastUpdatedDateTime")
-    private OffsetDateTime lastUpdatedDateTime;
+    private final OffsetDateTime lastUpdatedDateTime;
 
     /*
      * URL of the resource targeted by this operation.
      */
     @Generated
-    @JsonProperty(value = "resourceLocation")
-    private String resourceLocation;
+    private final String resourceLocation;
 
     /*
      * API version used to create this operation.
      */
     @Generated
-    @JsonProperty(value = "apiVersion")
     private String apiVersion;
 
     /*
      * List of key-value tag attributes associated with the document model.
      */
     @Generated
-    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /*
      * Encountered error.
      */
     @Generated
-    @JsonProperty(value = "error")
     private Error error;
 
     /**
@@ -102,15 +90,22 @@ public class OperationDetails {
      * @param resourceLocation the resourceLocation value to set.
      */
     @Generated
-    @JsonCreator
-    protected OperationDetails(@JsonProperty(value = "status") OperationStatus status,
-        @JsonProperty(value = "createdDateTime") OffsetDateTime createdDateTime,
-        @JsonProperty(value = "lastUpdatedDateTime") OffsetDateTime lastUpdatedDateTime,
-        @JsonProperty(value = "resourceLocation") String resourceLocation) {
+    protected OperationDetails(OperationStatus status, OffsetDateTime createdDateTime,
+        OffsetDateTime lastUpdatedDateTime, String resourceLocation) {
         this.status = status;
         this.createdDateTime = createdDateTime;
         this.lastUpdatedDateTime = lastUpdatedDateTime;
         this.resourceLocation = resourceLocation;
+    }
+
+    /**
+     * Get the kind property: Type of operation.
+     * 
+     * @return the kind value.
+     */
+    @Generated
+    public OperationKind getKind() {
+        return this.kind;
     }
 
     /**
@@ -121,6 +116,18 @@ public class OperationDetails {
     @Generated
     public String getOperationId() {
         return this.operationId;
+    }
+
+    /**
+     * Set the operationId property: Operation ID.
+     * 
+     * @param operationId the operationId value to set.
+     * @return the OperationDetails object itself.
+     */
+    @Generated
+    OperationDetails setOperationId(String operationId) {
+        this.operationId = operationId;
+        return this;
     }
 
     /**
@@ -141,6 +148,18 @@ public class OperationDetails {
     @Generated
     public Integer getPercentCompleted() {
         return this.percentCompleted;
+    }
+
+    /**
+     * Set the percentCompleted property: Operation progress (0-100).
+     * 
+     * @param percentCompleted the percentCompleted value to set.
+     * @return the OperationDetails object itself.
+     */
+    @Generated
+    OperationDetails setPercentCompleted(Integer percentCompleted) {
+        this.percentCompleted = percentCompleted;
+        return this;
     }
 
     /**
@@ -184,6 +203,18 @@ public class OperationDetails {
     }
 
     /**
+     * Set the apiVersion property: API version used to create this operation.
+     * 
+     * @param apiVersion the apiVersion value to set.
+     * @return the OperationDetails object itself.
+     */
+    @Generated
+    OperationDetails setApiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
+        return this;
+    }
+
+    /**
      * Get the tags property: List of key-value tag attributes associated with the document model.
      * 
      * @return the tags value.
@@ -194,6 +225,18 @@ public class OperationDetails {
     }
 
     /**
+     * Set the tags property: List of key-value tag attributes associated with the document model.
+     * 
+     * @param tags the tags value to set.
+     * @return the OperationDetails object itself.
+     */
+    @Generated
+    OperationDetails setTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
      * Get the error property: Encountered error.
      * 
      * @return the error value.
@@ -201,5 +244,137 @@ public class OperationDetails {
     @Generated
     public Error getError() {
         return this.error;
+    }
+
+    /**
+     * Set the error property: Encountered error.
+     * 
+     * @param error the error value to set.
+     * @return the OperationDetails object itself.
+     */
+    @Generated
+    OperationDetails setError(Error error) {
+        this.error = error;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("createdDateTime",
+            this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
+        jsonWriter.writeStringField("lastUpdatedDateTime",
+            this.lastUpdatedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedDateTime));
+        jsonWriter.writeStringField("resourceLocation", this.resourceLocation);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeNumberField("percentCompleted", this.percentCompleted);
+        jsonWriter.writeStringField("apiVersion", this.apiVersion);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OperationDetails.
+     */
+    @Generated
+    public static OperationDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("kind".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("documentModelCompose".equals(discriminatorValue)) {
+                    return DocumentModelComposeOperationDetails.fromJson(readerToUse.reset());
+                } else if ("documentModelCopyTo".equals(discriminatorValue)) {
+                    return DocumentModelCopyToOperationDetails.fromJson(readerToUse.reset());
+                } else if ("documentClassifierBuild".equals(discriminatorValue)) {
+                    return DocumentClassifierBuildOperationDetails.fromJson(readerToUse.reset());
+                } else if ("documentModelBuild".equals(discriminatorValue)) {
+                    return DocumentModelBuildOperationDetails.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    @Generated
+    static OperationDetails fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String operationId = null;
+            OperationStatus status = null;
+            OffsetDateTime createdDateTime = null;
+            OffsetDateTime lastUpdatedDateTime = null;
+            String resourceLocation = null;
+            OperationKind kind = null;
+            Integer percentCompleted = null;
+            String apiVersion = null;
+            Map<String, String> tags = null;
+            Error error = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("operationId".equals(fieldName)) {
+                    operationId = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    status = OperationStatus.fromString(reader.getString());
+                } else if ("createdDateTime".equals(fieldName)) {
+                    createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastUpdatedDateTime".equals(fieldName)) {
+                    lastUpdatedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("resourceLocation".equals(fieldName)) {
+                    resourceLocation = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    kind = OperationKind.fromString(reader.getString());
+                } else if ("percentCompleted".equals(fieldName)) {
+                    percentCompleted = reader.getNullable(JsonReader::getInt);
+                } else if ("apiVersion".equals(fieldName)) {
+                    apiVersion = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    tags = reader.readMap(reader1 -> reader1.getString());
+                } else if ("error".equals(fieldName)) {
+                    error = Error.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            OperationDetails deserializedOperationDetails
+                = new OperationDetails(status, createdDateTime, lastUpdatedDateTime, resourceLocation);
+            deserializedOperationDetails.operationId = operationId;
+            deserializedOperationDetails.kind = kind;
+            deserializedOperationDetails.percentCompleted = percentCompleted;
+            deserializedOperationDetails.apiVersion = apiVersion;
+            deserializedOperationDetails.tags = tags;
+            deserializedOperationDetails.error = error;
+
+            return deserializedOperationDetails;
+        });
     }
 }

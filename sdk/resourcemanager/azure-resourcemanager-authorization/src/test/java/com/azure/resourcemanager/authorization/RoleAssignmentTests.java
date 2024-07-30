@@ -19,7 +19,8 @@ public class RoleAssignmentTests extends GraphRbacManagementTest {
     public void canCRUDRoleAssignment() throws Exception {
         String roleAssignmentName = generateRandomUuid();
         String spName = generateRandomResourceName("sp", 20);
-
+        // Disable `$.appId` sanitizer for this test
+        interceptorManager.removeSanitizers("AZSDK3432");
         ServicePrincipal sp =
             authorizationManager.servicePrincipals().define(spName).withNewApplication().create();
 

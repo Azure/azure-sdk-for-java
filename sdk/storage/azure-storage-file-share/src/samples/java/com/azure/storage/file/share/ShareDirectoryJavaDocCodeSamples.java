@@ -148,6 +148,23 @@ public class ShareDirectoryJavaDocCodeSamples {
     }
 
     /**
+     * Generates a code sample for using {@link ShareDirectoryClient#createWithResponse(ShareDirectoryCreateOptions,
+     * Duration, Context)}
+     */
+    public void createWithResponseWithOptions() {
+        ShareDirectoryClient shareDirectoryClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.createWithResponse#ShareDirectoryCreateOptions-Duration-Context
+        FileSmbProperties smbProperties = new FileSmbProperties();
+        String filePermission = "filePermission";
+        ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions().setSmbProperties(smbProperties)
+            .setFilePermission(filePermission).setMetadata(Collections.singletonMap("directory", "metadata"));
+        Response<ShareDirectoryInfo> response = shareDirectoryClient.createWithResponse(options, Duration.ofSeconds(1),
+            new Context(key1, value1));
+        System.out.println("Completed creating the directory with status code: " + response.getStatusCode());
+        // END: com.azure.storage.file.share.ShareDirectoryClient.createWithResponse#ShareDirectoryCreateOptions-Duration-Context
+    }
+
+    /**
      * Generates a code sample for using {@link ShareDirectoryClient#createSubdirectory(String)}
      */
     public void createSubdirectory() {

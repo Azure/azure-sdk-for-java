@@ -22,8 +22,8 @@ public final class NetworkInterfaceDnsSettings {
 
     /*
      * If the VM that uses this NIC is part of an Availability Set, then this list will have the union of all DNS
-     * servers from all NICs that are part of the Availability Set. This property is what is configured on each of
-     * those VMs.
+     * servers from all NICs that are part of the Availability Set. This property is what is configured on each of those
+     * VMs.
      */
     @JsonProperty(value = "appliedDnsServers", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> appliedDnsServers;
@@ -54,9 +54,9 @@ public final class NetworkInterfaceDnsSettings {
     }
 
     /**
-     * Get the dnsServers property: List of DNS servers IP addresses. Use 'AzureProvidedDNS' to switch to azure
-     * provided DNS resolution. 'AzureProvidedDNS' value cannot be combined with other IPs, it must be the only value
-     * in dnsServers collection.
+     * Get the dnsServers property: List of DNS servers IP addresses. Use 'AzureProvidedDNS' to switch to azure provided
+     * DNS resolution. 'AzureProvidedDNS' value cannot be combined with other IPs, it must be the only value in
+     * dnsServers collection.
      * 
      * @return the dnsServers value.
      */
@@ -65,9 +65,9 @@ public final class NetworkInterfaceDnsSettings {
     }
 
     /**
-     * Set the dnsServers property: List of DNS servers IP addresses. Use 'AzureProvidedDNS' to switch to azure
-     * provided DNS resolution. 'AzureProvidedDNS' value cannot be combined with other IPs, it must be the only value
-     * in dnsServers collection.
+     * Set the dnsServers property: List of DNS servers IP addresses. Use 'AzureProvidedDNS' to switch to azure provided
+     * DNS resolution. 'AzureProvidedDNS' value cannot be combined with other IPs, it must be the only value in
+     * dnsServers collection.
      * 
      * @param dnsServers the dnsServers value to set.
      * @return the NetworkInterfaceDnsSettings object itself.
@@ -79,8 +79,8 @@ public final class NetworkInterfaceDnsSettings {
 
     /**
      * Get the appliedDnsServers property: If the VM that uses this NIC is part of an Availability Set, then this list
-     * will have the union of all DNS servers from all NICs that are part of the Availability Set. This property is
-     * what is configured on each of those VMs.
+     * will have the union of all DNS servers from all NICs that are part of the Availability Set. This property is what
+     * is configured on each of those VMs.
      * 
      * @return the appliedDnsServers value.
      */

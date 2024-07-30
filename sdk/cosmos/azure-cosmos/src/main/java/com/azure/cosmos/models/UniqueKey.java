@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -92,7 +93,7 @@ public final class UniqueKey {
     void populatePropertyBag() {
         this.jsonSerializable.populatePropertyBag();
         if (paths != null) {
-            this.jsonSerializable.set(Constants.Properties.PATHS, paths);
+            this.jsonSerializable.set(Constants.Properties.PATHS, paths, CosmosItemSerializer.DEFAULT_SERIALIZER);
         }
     }
 

@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class AppServiceEnvironmentsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
-     * AppServiceEnvironments_ListByResourceGroup.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/AppServiceEnvironments_ListByResourceGroup.json
      */
     /**
      * Sample code: Get all App Service Environments in a resource group.
@@ -19,7 +18,10 @@ public final class AppServiceEnvironmentsListByResourceGroupSamples {
      */
     public static void
         getAllAppServiceEnvironmentsInAResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getAppServiceEnvironments().listByResourceGroup("test-rg",
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getAppServiceEnvironments()
+            .listByResourceGroup("test-rg", com.azure.core.util.Context.NONE);
     }
 }

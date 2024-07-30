@@ -7,18 +7,31 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * A laterality mismatch occurs when there is a discrepancy between the clinical documentation and the ordered
- * procedure (orderLateralityMismatch), a contradiction within the clinical document (textLateralityContradiction), or
- * when no laterality is mentioned (textLateralityMissing).
+ * A laterality mismatch occurs when there is a discrepancy between the clinical documentation and the ordered procedure
+ * (orderLateralityMismatch), a contradiction within the clinical document (textLateralityContradiction), or when no
+ * laterality is mentioned (textLateralityMissing).
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = LateralityDiscrepancyInference.class,
+    visible = true)
 @JsonTypeName("lateralityDiscrepancy")
 @Immutable
-public final class LateralityDiscrepancyInference extends FhirR4Extendible1 {
+public final class LateralityDiscrepancyInference extends RadiologyInsightsInference {
+
+    /*
+     * Discriminator property for RadiologyInsightsInference.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.LATERALITY_DISCREPANCY;
 
     /*
      * Laterality indication : SNOMED CT code for laterality qualifier value.
@@ -32,7 +45,7 @@ public final class LateralityDiscrepancyInference extends FhirR4Extendible1 {
      */
     @Generated
     @JsonProperty(value = "discrepancyType")
-    private LateralityDiscrepancyType discrepancyType;
+    private final LateralityDiscrepancyType discrepancyType;
 
     /**
      * Creates an instance of LateralityDiscrepancyInference class.
@@ -44,6 +57,17 @@ public final class LateralityDiscrepancyInference extends FhirR4Extendible1 {
     private LateralityDiscrepancyInference(
         @JsonProperty(value = "discrepancyType") LateralityDiscrepancyType discrepancyType) {
         this.discrepancyType = discrepancyType;
+    }
+
+    /**
+     * Get the kind property: Discriminator property for RadiologyInsightsInference.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public RadiologyInsightsInferenceType getKind() {
+        return this.kind;
     }
 
     /**

@@ -40,7 +40,7 @@ public final class WebActivityTypeProperties {
      */
     @JsonProperty(value = "headers")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> headers;
+    private Map<String, Object> headers;
 
     /*
      * Represents the payload that will be sent to the endpoint. Required for POST/PUT method, not allowed for GET
@@ -71,8 +71,8 @@ public final class WebActivityTypeProperties {
 
     /*
      * Option to disable invoking HTTP GET on location given in response header of a HTTP 202 Response. If set true, it
-     * stops invoking HTTP GET on http location given in response header. If set false then continues to invoke HTTP
-     * GET call on location given in http response headers.
+     * stops invoking HTTP GET on http location given in response header. If set false then continues to invoke HTTP GET
+     * call on location given in http response headers.
      */
     @JsonProperty(value = "turnOffAsync")
     private Boolean turnOffAsync;
@@ -122,8 +122,7 @@ public final class WebActivityTypeProperties {
     }
 
     /**
-     * Get the url property: Web activity target endpoint and path. Type: string (or Expression with resultType
-     * string).
+     * Get the url property: Web activity target endpoint and path. Type: string (or Expression with resultType string).
      * 
      * @return the url value.
      */
@@ -132,8 +131,7 @@ public final class WebActivityTypeProperties {
     }
 
     /**
-     * Set the url property: Web activity target endpoint and path. Type: string (or Expression with resultType
-     * string).
+     * Set the url property: Web activity target endpoint and path. Type: string (or Expression with resultType string).
      * 
      * @param url the url value to set.
      * @return the WebActivityTypeProperties object itself.
@@ -150,7 +148,7 @@ public final class WebActivityTypeProperties {
      * 
      * @return the headers value.
      */
-    public Map<String, String> headers() {
+    public Map<String, Object> headers() {
         return this.headers;
     }
 
@@ -162,7 +160,7 @@ public final class WebActivityTypeProperties {
      * @param headers the headers value to set.
      * @return the WebActivityTypeProperties object itself.
      */
-    public WebActivityTypeProperties withHeaders(Map<String, String> headers) {
+    public WebActivityTypeProperties withHeaders(Map<String, Object> headers) {
         this.headers = headers;
         return this;
     }
@@ -254,9 +252,9 @@ public final class WebActivityTypeProperties {
     }
 
     /**
-     * Get the turnOffAsync property: Option to disable invoking HTTP GET on location given in response header of a
-     * HTTP 202 Response. If set true, it stops invoking HTTP GET on http location given in response header. If set
-     * false then continues to invoke HTTP GET call on location given in http response headers.
+     * Get the turnOffAsync property: Option to disable invoking HTTP GET on location given in response header of a HTTP
+     * 202 Response. If set true, it stops invoking HTTP GET on http location given in response header. If set false
+     * then continues to invoke HTTP GET call on location given in http response headers.
      * 
      * @return the turnOffAsync value.
      */
@@ -265,9 +263,9 @@ public final class WebActivityTypeProperties {
     }
 
     /**
-     * Set the turnOffAsync property: Option to disable invoking HTTP GET on location given in response header of a
-     * HTTP 202 Response. If set true, it stops invoking HTTP GET on http location given in response header. If set
-     * false then continues to invoke HTTP GET call on location given in http response headers.
+     * Set the turnOffAsync property: Option to disable invoking HTTP GET on location given in response header of a HTTP
+     * 202 Response. If set true, it stops invoking HTTP GET on http location given in response header. If set false
+     * then continues to invoke HTTP GET call on location given in http response headers.
      * 
      * @param turnOffAsync the turnOffAsync value to set.
      * @return the WebActivityTypeProperties object itself.
@@ -344,12 +342,13 @@ public final class WebActivityTypeProperties {
      */
     public void validate() {
         if (method() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property method in model WebActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property method in model WebActivityTypeProperties"));
         }
         if (url() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property url in model WebActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property url in model WebActivityTypeProperties"));
         }
         if (authentication() != null) {
             authentication().validate();

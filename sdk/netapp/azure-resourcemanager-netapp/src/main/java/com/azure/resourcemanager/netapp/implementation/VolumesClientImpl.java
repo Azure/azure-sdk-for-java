@@ -126,7 +126,7 @@ public final class VolumesClientImpl implements VolumesClient {
             @QueryParam("api-version") String apiVersion, @BodyParam("application/json") VolumePatch body,
             @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -135,7 +135,7 @@ public final class VolumesClientImpl implements VolumesClient {
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
             @QueryParam("forceDelete") Boolean forceDelete, @QueryParam("api-version") String apiVersion,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/populateAvailabilityZone")
@@ -147,7 +147,7 @@ public final class VolumesClientImpl implements VolumesClient {
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/revert")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -156,9 +156,9 @@ public final class VolumesClientImpl implements VolumesClient {
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
             @QueryParam("api-version") String apiVersion, @BodyParam("application/json") VolumeRevert body,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/resetCifsPassword")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -166,19 +166,9 @@ public final class VolumesClientImpl implements VolumesClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
-            @QueryParam("api-version") String apiVersion, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/splitCloneFromParent")
-        @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> splitCloneFromParent(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
-            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/breakFileLocks")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -187,7 +177,7 @@ public final class VolumesClientImpl implements VolumesClient {
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
             @QueryParam("api-version") String apiVersion, @BodyParam("application/json") BreakFileLocksRequest body,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/getGroupIdListForLdapUser")
@@ -201,7 +191,7 @@ public final class VolumesClientImpl implements VolumesClient {
             @BodyParam("application/json") GetGroupIdListForLdapUserRequest body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/breakReplication")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -210,9 +200,9 @@ public final class VolumesClientImpl implements VolumesClient {
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
             @QueryParam("api-version") String apiVersion, @BodyParam("application/json") BreakReplicationRequest body,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/reestablishReplication")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -221,7 +211,8 @@ public final class VolumesClientImpl implements VolumesClient {
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ReestablishReplicationRequest body, Context context);
+            @BodyParam("application/json") ReestablishReplicationRequest body, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/replicationStatus")
@@ -243,7 +234,7 @@ public final class VolumesClientImpl implements VolumesClient {
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/resyncReplication")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -251,9 +242,9 @@ public final class VolumesClientImpl implements VolumesClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
-            @QueryParam("api-version") String apiVersion, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/deleteReplication")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -261,9 +252,9 @@ public final class VolumesClientImpl implements VolumesClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
-            @QueryParam("api-version") String apiVersion, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/authorizeReplication")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -272,9 +263,9 @@ public final class VolumesClientImpl implements VolumesClient {
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
             @QueryParam("api-version") String apiVersion, @BodyParam("application/json") AuthorizeRequest body,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/reinitializeReplication")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -282,9 +273,9 @@ public final class VolumesClientImpl implements VolumesClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
-            @QueryParam("api-version") String apiVersion, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/poolChange")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -293,9 +284,9 @@ public final class VolumesClientImpl implements VolumesClient {
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
             @QueryParam("api-version") String apiVersion, @BodyParam("application/json") PoolChangeRequest body,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/relocate")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -304,9 +295,9 @@ public final class VolumesClientImpl implements VolumesClient {
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
             @QueryParam("api-version") String apiVersion, @BodyParam("application/json") RelocateVolumeRequest body,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/finalizeRelocation")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -314,9 +305,9 @@ public final class VolumesClientImpl implements VolumesClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
-            @QueryParam("api-version") String apiVersion, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/revertRelocation")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -324,7 +315,7 @@ public final class VolumesClientImpl implements VolumesClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
-            @QueryParam("api-version") String apiVersion, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -1261,10 +1252,11 @@ public final class VolumesClientImpl implements VolumesClient {
         if (volumeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                    accountName, poolName, volumeName, forceDelete, this.client.getApiVersion(), context))
+                    accountName, poolName, volumeName, forceDelete, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1309,9 +1301,10 @@ public final class VolumesClientImpl implements VolumesClient {
         if (volumeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, poolName, volumeName, forceDelete, this.client.getApiVersion(), context);
+            accountName, poolName, volumeName, forceDelete, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1854,9 +1847,11 @@ public final class VolumesClientImpl implements VolumesClient {
         } else {
             body.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.revert(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), body, context))
+            .withContext(
+                context -> service.revert(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    accountName, poolName, volumeName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1905,9 +1900,10 @@ public final class VolumesClientImpl implements VolumesClient {
         } else {
             body.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.revert(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, poolName, volumeName, this.client.getApiVersion(), body, context);
+            accountName, poolName, volumeName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -2128,10 +2124,11 @@ public final class VolumesClientImpl implements VolumesClient {
         if (volumeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.resetCifsPassword(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                    resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), context))
+                    resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2174,9 +2171,10 @@ public final class VolumesClientImpl implements VolumesClient {
         if (volumeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.resetCifsPassword(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, poolName, volumeName, this.client.getApiVersion(), context);
+            accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -2351,269 +2349,6 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * Split clone from parent volume
-     * 
-     * Split operation to convert clone volume to an independent volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> splitCloneFromParentWithResponseAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.splitCloneFromParent(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                    resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Split clone from parent volume
-     * 
-     * Split operation to convert clone volume to an independent volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> splitCloneFromParentWithResponseAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        if (volumeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.splitCloneFromParent(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Split clone from parent volume
-     * 
-     * Split operation to convert clone volume to an independent volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginSplitCloneFromParentAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = splitCloneFromParentWithResponseAsync(resourceGroupName, accountName, poolName, volumeName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
-    }
-
-    /**
-     * Split clone from parent volume
-     * 
-     * Split operation to convert clone volume to an independent volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginSplitCloneFromParentAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = splitCloneFromParentWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Split clone from parent volume
-     * 
-     * Split operation to convert clone volume to an independent volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginSplitCloneFromParent(String resourceGroupName, String accountName,
-        String poolName, String volumeName) {
-        return this.beginSplitCloneFromParentAsync(resourceGroupName, accountName, poolName, volumeName)
-            .getSyncPoller();
-    }
-
-    /**
-     * Split clone from parent volume
-     * 
-     * Split operation to convert clone volume to an independent volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginSplitCloneFromParent(String resourceGroupName, String accountName,
-        String poolName, String volumeName, Context context) {
-        return this.beginSplitCloneFromParentAsync(resourceGroupName, accountName, poolName, volumeName, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Split clone from parent volume
-     * 
-     * Split operation to convert clone volume to an independent volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> splitCloneFromParentAsync(String resourceGroupName, String accountName, String poolName,
-        String volumeName) {
-        return beginSplitCloneFromParentAsync(resourceGroupName, accountName, poolName, volumeName).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Split clone from parent volume
-     * 
-     * Split operation to convert clone volume to an independent volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> splitCloneFromParentAsync(String resourceGroupName, String accountName, String poolName,
-        String volumeName, Context context) {
-        return beginSplitCloneFromParentAsync(resourceGroupName, accountName, poolName, volumeName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Split clone from parent volume
-     * 
-     * Split operation to convert clone volume to an independent volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void splitCloneFromParent(String resourceGroupName, String accountName, String poolName, String volumeName) {
-        splitCloneFromParentAsync(resourceGroupName, accountName, poolName, volumeName).block();
-    }
-
-    /**
-     * Split clone from parent volume
-     * 
-     * Split operation to convert clone volume to an independent volume.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void splitCloneFromParent(String resourceGroupName, String accountName, String poolName, String volumeName,
-        Context context) {
-        splitCloneFromParentAsync(resourceGroupName, accountName, poolName, volumeName, context).block();
-    }
-
-    /**
      * Break file locks
      * 
      * Break all the file locks on a volume.
@@ -2655,9 +2390,11 @@ public final class VolumesClientImpl implements VolumesClient {
         if (body != null) {
             body.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.breakFileLocks(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), body, context))
+                resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), body, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2704,9 +2441,10 @@ public final class VolumesClientImpl implements VolumesClient {
         if (body != null) {
             body.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.breakFileLocks(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, poolName, volumeName, this.client.getApiVersion(), body, context);
+            accountName, poolName, volumeName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -3136,8 +2874,10 @@ public final class VolumesClientImpl implements VolumesClient {
     public SyncPoller<PollResult<GetGroupIdListForLdapUserResponseInner>, GetGroupIdListForLdapUserResponseInner>
         beginListGetGroupIdListForLdapUser(String resourceGroupName, String accountName, String poolName,
             String volumeName, GetGroupIdListForLdapUserRequest body, Context context) {
-        return this.beginListGetGroupIdListForLdapUserAsync(resourceGroupName, accountName, poolName, volumeName, body,
-            context).getSyncPoller();
+        return this
+            .beginListGetGroupIdListForLdapUserAsync(resourceGroupName, accountName, poolName, volumeName, body,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -3159,7 +2899,8 @@ public final class VolumesClientImpl implements VolumesClient {
     private Mono<GetGroupIdListForLdapUserResponseInner> listGetGroupIdListForLdapUserAsync(String resourceGroupName,
         String accountName, String poolName, String volumeName, GetGroupIdListForLdapUserRequest body) {
         return beginListGetGroupIdListForLdapUserAsync(resourceGroupName, accountName, poolName, volumeName, body)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -3273,9 +3014,11 @@ public final class VolumesClientImpl implements VolumesClient {
         if (body != null) {
             body.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.breakReplication(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), body, context))
+                resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), body, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3322,9 +3065,10 @@ public final class VolumesClientImpl implements VolumesClient {
         if (body != null) {
             body.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.breakReplication(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, poolName, volumeName, this.client.getApiVersion(), body, context);
+            accountName, poolName, volumeName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -3598,10 +3342,11 @@ public final class VolumesClientImpl implements VolumesClient {
         } else {
             body.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.reestablishReplication(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                    resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), body, context))
+            .withContext(context -> service.reestablishReplication(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, volumeName,
+                this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3651,9 +3396,10 @@ public final class VolumesClientImpl implements VolumesClient {
         } else {
             body.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.reestablishReplication(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), body, context);
+            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -3800,7 +3546,8 @@ public final class VolumesClientImpl implements VolumesClient {
     private Mono<Void> reestablishReplicationAsync(String resourceGroupName, String accountName, String poolName,
         String volumeName, ReestablishReplicationRequest body, Context context) {
         return beginReestablishReplicationAsync(resourceGroupName, accountName, poolName, volumeName, body, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -4220,10 +3967,11 @@ public final class VolumesClientImpl implements VolumesClient {
         if (volumeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.resyncReplication(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                    resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), context))
+                    resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -4267,9 +4015,10 @@ public final class VolumesClientImpl implements VolumesClient {
         if (volumeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.resyncReplication(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, poolName, volumeName, this.client.getApiVersion(), context);
+            accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -4489,10 +4238,11 @@ public final class VolumesClientImpl implements VolumesClient {
         if (volumeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.deleteReplication(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                    resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), context))
+                    resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -4535,9 +4285,10 @@ public final class VolumesClientImpl implements VolumesClient {
         if (volumeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.deleteReplication(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, poolName, volumeName, this.client.getApiVersion(), context);
+            accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -4755,10 +4506,11 @@ public final class VolumesClientImpl implements VolumesClient {
         } else {
             body.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.authorizeReplication(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                    resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), body, context))
+            .withContext(context -> service.authorizeReplication(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, volumeName,
+                this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -4807,9 +4559,10 @@ public final class VolumesClientImpl implements VolumesClient {
         } else {
             body.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.authorizeReplication(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), body, context);
+            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -4949,7 +4702,8 @@ public final class VolumesClientImpl implements VolumesClient {
     private Mono<Void> authorizeReplicationAsync(String resourceGroupName, String accountName, String poolName,
         String volumeName, AuthorizeRequest body, Context context) {
         return beginAuthorizeReplicationAsync(resourceGroupName, accountName, poolName, volumeName, body, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -5031,10 +4785,11 @@ public final class VolumesClientImpl implements VolumesClient {
         if (volumeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.reInitializeReplication(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                    resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), context))
+                    resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -5077,9 +4832,10 @@ public final class VolumesClientImpl implements VolumesClient {
         if (volumeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.reInitializeReplication(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), context);
+            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -5299,9 +5055,11 @@ public final class VolumesClientImpl implements VolumesClient {
         } else {
             body.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.poolChange(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), body, context))
+                resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), body, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -5350,9 +5108,10 @@ public final class VolumesClientImpl implements VolumesClient {
         } else {
             body.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.poolChange(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, poolName, volumeName, this.client.getApiVersion(), body, context);
+            accountName, poolName, volumeName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -5577,9 +5336,11 @@ public final class VolumesClientImpl implements VolumesClient {
         if (body != null) {
             body.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.relocate(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), body, context))
+                resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), body, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -5626,9 +5387,10 @@ public final class VolumesClientImpl implements VolumesClient {
         if (body != null) {
             body.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.relocate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, poolName, volumeName, this.client.getApiVersion(), body, context);
+            accountName, poolName, volumeName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -5893,10 +5655,11 @@ public final class VolumesClientImpl implements VolumesClient {
         if (volumeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.finalizeRelocation(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                    resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), context))
+                    resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -5939,9 +5702,10 @@ public final class VolumesClientImpl implements VolumesClient {
         if (volumeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.finalizeRelocation(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, poolName, volumeName, this.client.getApiVersion(), context);
+            accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -6153,9 +5917,10 @@ public final class VolumesClientImpl implements VolumesClient {
         if (volumeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.revertRelocation(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), context))
+                resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -6198,9 +5963,10 @@ public final class VolumesClientImpl implements VolumesClient {
         if (volumeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.revertRelocation(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, poolName, volumeName, this.client.getApiVersion(), context);
+            accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -6377,9 +6143,7 @@ public final class VolumesClientImpl implements VolumesClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6404,9 +6168,7 @@ public final class VolumesClientImpl implements VolumesClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

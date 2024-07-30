@@ -7,6 +7,7 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,9 +17,9 @@ import java.util.List;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "authenticationType",
-    defaultImpl = AuthenticationDetailsProperties.class)
+    defaultImpl = AuthenticationDetailsProperties.class,
+    visible = true)
 @JsonTypeName("AuthenticationDetailsProperties")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "awsCreds", value = AwsCredsAuthenticationDetailsProperties.class),
@@ -26,6 +27,13 @@ import java.util.List;
     @JsonSubTypes.Type(name = "gcpCredentials", value = GcpCredentialsDetailsProperties.class) })
 @Immutable
 public class AuthenticationDetailsProperties {
+    /*
+     * Connect to your cloud account, for AWS use either account credentials or role-based authentication. For GCP use account organization credentials.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "authenticationType", required = true)
+    private AuthenticationType authenticationType;
+
     /*
      * State of the multi-cloud connector
      */
@@ -42,6 +50,17 @@ public class AuthenticationDetailsProperties {
      * Creates an instance of AuthenticationDetailsProperties class.
      */
     public AuthenticationDetailsProperties() {
+        this.authenticationType = AuthenticationType.fromString("AuthenticationDetailsProperties");
+    }
+
+    /**
+     * Get the authenticationType property: Connect to your cloud account, for AWS use either account credentials or
+     * role-based authentication. For GCP use account organization credentials.
+     * 
+     * @return the authenticationType value.
+     */
+    public AuthenticationType authenticationType() {
+        return this.authenticationType;
     }
 
     /**

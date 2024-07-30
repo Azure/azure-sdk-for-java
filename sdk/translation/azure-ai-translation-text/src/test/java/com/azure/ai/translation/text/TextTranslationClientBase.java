@@ -7,11 +7,22 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.EnvironmentCredentialBuilder;
+import com.azure.identity.AzureDeveloperCliCredentialBuilder;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
+import com.azure.identity.AzureCliCredentialBuilder;
+import com.azure.identity.ChainedTokenCredentialBuilder;
 
+
+import java.util.Arrays;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -26,7 +37,7 @@ public class TextTranslationClientBase extends TestProxyTestBase {
     public void beforeTest() {
         if (getTestMode() != TestMode.LIVE) {
             interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher()
-                .setHeadersKeyOnlyMatch(Collections.singletonList("Ocp-Apim-Subscription-Region"))));
+                .setHeadersKeyOnlyMatch(Arrays.asList("Ocp-Apim-Subscription-Region", "Ocp-Apim-ResourceId"))));
         }
     }
 
@@ -77,6 +88,18 @@ public class TextTranslationClientBase extends TestProxyTestBase {
             : Configuration.getGlobalConfiguration().get("TEXT_TRANSLATION_REGION");
     }
 
+    private String getAadRegion() {
+        return interceptorManager.isPlaybackMode()
+            ? "fakeRegion"
+            : Configuration.getGlobalConfiguration().get("TEXT_TRANSLATION_AAD_REGION");
+    }
+
+    private String getResourceId() {
+        return interceptorManager.isPlaybackMode()
+            ? "fakeResourceId"
+            : Configuration.getGlobalConfiguration().get("TEXT_TRANSLATION_AAD_RESOURCE_ID");
+    }
+
     private String getTokenURL() {
         return interceptorManager.isPlaybackMode()
             ? "https://fakeTokenEndpoint.api.cognitive.microsoft.com"
@@ -86,8 +109,22 @@ public class TextTranslationClientBase extends TestProxyTestBase {
     TextTranslationClient getTranslationClientWithToken() throws IOException {
         TextTranslationClientBuilder textTranslationClientbuilder = new TextTranslationClientBuilder()
             .credential(getTokenCredential())
-            .region(getRegion())
             .endpoint(getEndpoint())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+
+        if (getTestMode() == TestMode.PLAYBACK) {
+            textTranslationClientbuilder.httpClient(interceptorManager.getPlaybackClient());
+        } else if (getTestMode() == TestMode.RECORD) {
+            textTranslationClientbuilder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+        return textTranslationClientbuilder.buildClient();
+    }
+
+    TextTranslationClient getTranslationClientWithAadAuth() {
+        TextTranslationClientBuilder textTranslationClientbuilder = new TextTranslationClientBuilder()
+            .credential(getAadUserToken())
+            .region(getAadRegion())
+            .resourceId(getResourceId())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -117,5 +154,45 @@ public class TextTranslationClientBase extends TestProxyTestBase {
             in.close();
         }
         return new StaticTokenForTest(tokenResponse);
+    }
+
+    private TokenCredential getAadUserToken() {
+        TokenCredential credential = getIdentityTestCredential(interceptorManager);
+        return credential;
+    }
+
+    public static TokenCredential getIdentityTestCredential(InterceptorManager interceptorManager) {
+        if (interceptorManager.isPlaybackMode()) {
+            return  new MockTokenCredential();
+        }
+
+        Configuration config = Configuration.getGlobalConfiguration();
+
+        ChainedTokenCredentialBuilder builder = new ChainedTokenCredentialBuilder()
+            .addLast(new EnvironmentCredentialBuilder().build())
+            .addLast(new AzureCliCredentialBuilder().build())
+            .addLast(new AzureDeveloperCliCredentialBuilder().build());
+
+
+        String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+        String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
+        String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
+        String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
+
+        if (!CoreUtils.isNullOrEmpty(serviceConnectionId)
+            && !CoreUtils.isNullOrEmpty(clientId)
+            && !CoreUtils.isNullOrEmpty(tenantId)
+            && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
+
+            builder.addLast(new AzurePipelinesCredentialBuilder()
+                .systemAccessToken(systemAccessToken)
+                .clientId(clientId)
+                .tenantId(tenantId)
+                .serviceConnectionId(serviceConnectionId)
+                .build());
+        }
+
+        builder.addLast(new AzurePowerShellCredentialBuilder().build());
+        return builder.build();
     }
 }

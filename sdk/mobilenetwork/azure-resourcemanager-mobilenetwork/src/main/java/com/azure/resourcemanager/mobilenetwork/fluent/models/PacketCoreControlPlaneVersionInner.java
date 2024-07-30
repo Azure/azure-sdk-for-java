@@ -13,15 +13,17 @@ import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Packet core control plane version resource. */
+/**
+ * Packet core control plane version resource.
+ */
 @Fluent
 public final class PacketCoreControlPlaneVersionInner extends ProxyResource {
     /*
      * Packet core control plane version properties.
      */
     @JsonProperty(value = "properties", required = true)
-    private PacketCoreControlPlaneVersionPropertiesFormat innerProperties =
-        new PacketCoreControlPlaneVersionPropertiesFormat();
+    private PacketCoreControlPlaneVersionPropertiesFormat innerProperties
+        = new PacketCoreControlPlaneVersionPropertiesFormat();
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -29,13 +31,15 @@ public final class PacketCoreControlPlaneVersionInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of PacketCoreControlPlaneVersionInner class. */
+    /**
+     * Creates an instance of PacketCoreControlPlaneVersionInner class.
+     */
     public PacketCoreControlPlaneVersionInner() {
     }
 
     /**
      * Get the innerProperties property: Packet core control plane version properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PacketCoreControlPlaneVersionPropertiesFormat innerProperties() {
@@ -44,7 +48,7 @@ public final class PacketCoreControlPlaneVersionInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -53,7 +57,7 @@ public final class PacketCoreControlPlaneVersionInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the packet core control plane version resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -62,7 +66,7 @@ public final class PacketCoreControlPlaneVersionInner extends ProxyResource {
 
     /**
      * Get the platforms property: Platform specific packet core control plane version properties.
-     *
+     * 
      * @return the platforms value.
      */
     public List<Platform> platforms() {
@@ -71,7 +75,7 @@ public final class PacketCoreControlPlaneVersionInner extends ProxyResource {
 
     /**
      * Set the platforms property: Platform specific packet core control plane version properties.
-     *
+     * 
      * @param platforms the platforms value to set.
      * @return the PacketCoreControlPlaneVersionInner object itself.
      */
@@ -85,15 +89,14 @@ public final class PacketCoreControlPlaneVersionInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model PacketCoreControlPlaneVersionInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model PacketCoreControlPlaneVersionInner"));
         } else {
             innerProperties().validate();
         }

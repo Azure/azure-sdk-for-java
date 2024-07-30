@@ -44,8 +44,7 @@ public final class VpnClientConnectionHealth {
     }
 
     /**
-     * Get the totalIngressBytesTransferred property: Total of the Ingress Bytes Transferred in this P2S Vpn
-     * connection.
+     * Get the totalIngressBytesTransferred property: Total of the Ingress Bytes Transferred in this P2S Vpn connection.
      * 
      * @return the totalIngressBytesTransferred value.
      */

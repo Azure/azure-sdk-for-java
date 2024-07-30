@@ -19,7 +19,7 @@ public final class GovernanceEmailNotification {
     private Boolean disableManagerEmailNotification;
 
     /*
-     * Exclude owner from weekly email notification.
+     * Exclude  owner from weekly email notification.
      */
     @JsonProperty(value = "disableOwnerEmailNotification")
     private Boolean disableOwnerEmailNotification;

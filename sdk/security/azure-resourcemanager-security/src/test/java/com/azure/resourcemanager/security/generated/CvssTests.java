@@ -10,7 +10,7 @@ import com.azure.resourcemanager.security.models.Cvss;
 public final class CvssTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Cvss model = BinaryData.fromString("{\"base\":5.561173}").toObject(Cvss.class);
+        Cvss model = BinaryData.fromString("{\"base\":8.370739}").toObject(Cvss.class);
     }
 
     @org.junit.jupiter.api.Test

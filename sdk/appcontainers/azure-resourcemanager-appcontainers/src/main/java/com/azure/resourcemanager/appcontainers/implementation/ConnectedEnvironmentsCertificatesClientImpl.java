@@ -39,24 +39,24 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in ConnectedEnvironmentsCertificatesClient.
  */
 public final class ConnectedEnvironmentsCertificatesClientImpl implements ConnectedEnvironmentsCertificatesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ConnectedEnvironmentsCertificatesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ContainerAppsApiClientImpl client;
 
     /**
      * Initializes an instance of ConnectedEnvironmentsCertificatesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ConnectedEnvironmentsCertificatesClientImpl(ContainerAppsApiClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    ConnectedEnvironmentsCertificatesService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(ConnectedEnvironmentsCertificatesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -67,156 +67,112 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
     @Host("{$host}")
     @ServiceInterface(name = "ContainerAppsApiClie")
     public interface ConnectedEnvironmentsCertificatesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<CertificateCollection>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<CertificateCollection>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("connectedEnvironmentName") String connectedEnvironmentName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates/{certificateName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates/{certificateName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<CertificateInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<CertificateInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("connectedEnvironmentName") String connectedEnvironmentName,
-            @PathParam("certificateName") String certificateName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("certificateName") String certificateName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates/{certificateName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates/{certificateName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<CertificateInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<CertificateInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("connectedEnvironmentName") String connectedEnvironmentName,
-            @PathParam("certificateName") String certificateName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") CertificateInner certificateEnvelope,
-            @HeaderParam("Accept") String accept,
+            @PathParam("certificateName") String certificateName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CertificateInner certificateEnvelope, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates/{certificateName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates/{certificateName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("connectedEnvironmentName") String connectedEnvironmentName,
-            @PathParam("certificateName") String certificateName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("certificateName") String certificateName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates/{certificateName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates/{certificateName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<CertificateInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<CertificateInner>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("connectedEnvironmentName") String connectedEnvironmentName,
-            @PathParam("certificateName") String certificateName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") CertificatePatch certificateEnvelope,
-            @HeaderParam("Accept") String accept,
+            @PathParam("certificateName") String certificateName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CertificatePatch certificateEnvelope, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<CertificateCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<CertificateCollection>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get the Certificates in a given connected environment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Certificates in a given connected environment along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CertificateInner>> listSinglePageAsync(
-        String resourceGroupName, String connectedEnvironmentName) {
+    private Mono<PagedResponse<CertificateInner>> listSinglePageAsync(String resourceGroupName,
+        String connectedEnvironmentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (connectedEnvironmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            connectedEnvironmentName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<CertificateInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, connectedEnvironmentName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<CertificateInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the Certificates in a given connected environment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param context The context to associate with this operation.
@@ -224,57 +180,39 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Certificates in a given connected environment along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CertificateInner>> listSinglePageAsync(
-        String resourceGroupName, String connectedEnvironmentName, Context context) {
+    private Mono<PagedResponse<CertificateInner>> listSinglePageAsync(String resourceGroupName,
+        String connectedEnvironmentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (connectedEnvironmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                connectedEnvironmentName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                connectedEnvironmentName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the Certificates in a given connected environment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -284,14 +222,13 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CertificateInner> listAsync(String resourceGroupName, String connectedEnvironmentName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, connectedEnvironmentName),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, connectedEnvironmentName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get the Certificates in a given connected environment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param context The context to associate with this operation.
@@ -301,16 +238,15 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * @return the Certificates in a given connected environment as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CertificateInner> listAsync(
-        String resourceGroupName, String connectedEnvironmentName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, connectedEnvironmentName, context),
+    private PagedFlux<CertificateInner> listAsync(String resourceGroupName, String connectedEnvironmentName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, connectedEnvironmentName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get the Certificates in a given connected environment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -325,7 +261,7 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
 
     /**
      * Get the Certificates in a given connected environment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param context The context to associate with this operation.
@@ -335,14 +271,14 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * @return the Certificates in a given connected environment as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateInner> list(
-        String resourceGroupName, String connectedEnvironmentName, Context context) {
+    public PagedIterable<CertificateInner> list(String resourceGroupName, String connectedEnvironmentName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, connectedEnvironmentName, context));
     }
 
     /**
      * Get the specified Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
@@ -352,28 +288,23 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * @return the specified Certificate along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CertificateInner>> getWithResponseAsync(
-        String resourceGroupName, String connectedEnvironmentName, String certificateName) {
+    private Mono<Response<CertificateInner>> getWithResponseAsync(String resourceGroupName,
+        String connectedEnvironmentName, String certificateName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (connectedEnvironmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
         }
         if (certificateName == null) {
             return Mono
@@ -382,23 +313,14 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            connectedEnvironmentName,
-                            certificateName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    connectedEnvironmentName, certificateName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the specified Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
@@ -409,28 +331,23 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * @return the specified Certificate along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CertificateInner>> getWithResponseAsync(
-        String resourceGroupName, String connectedEnvironmentName, String certificateName, Context context) {
+    private Mono<Response<CertificateInner>> getWithResponseAsync(String resourceGroupName,
+        String connectedEnvironmentName, String certificateName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (connectedEnvironmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
         }
         if (certificateName == null) {
             return Mono
@@ -438,21 +355,13 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                connectedEnvironmentName,
-                certificateName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            connectedEnvironmentName, certificateName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get the specified Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
@@ -462,15 +371,15 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * @return the specified Certificate on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CertificateInner> getAsync(
-        String resourceGroupName, String connectedEnvironmentName, String certificateName) {
+    private Mono<CertificateInner> getAsync(String resourceGroupName, String connectedEnvironmentName,
+        String certificateName) {
         return getWithResponseAsync(resourceGroupName, connectedEnvironmentName, certificateName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the specified Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
@@ -481,14 +390,14 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * @return the specified Certificate along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateInner> getWithResponse(
-        String resourceGroupName, String connectedEnvironmentName, String certificateName, Context context) {
+    public Response<CertificateInner> getWithResponse(String resourceGroupName, String connectedEnvironmentName,
+        String certificateName, Context context) {
         return getWithResponseAsync(resourceGroupName, connectedEnvironmentName, certificateName, context).block();
     }
 
     /**
      * Get the specified Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
@@ -504,7 +413,7 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
 
     /**
      * Create or Update a Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
@@ -512,35 +421,27 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CertificateInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String connectedEnvironmentName,
-        String certificateName,
-        CertificateInner certificateEnvelope) {
+    private Mono<Response<CertificateInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String connectedEnvironmentName, String certificateName, CertificateInner certificateEnvelope) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (connectedEnvironmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
         }
         if (certificateName == null) {
             return Mono
@@ -551,25 +452,15 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            connectedEnvironmentName,
-                            certificateName,
-                            this.client.getApiVersion(),
-                            certificateEnvelope,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, connectedEnvironmentName, certificateName, this.client.getApiVersion(),
+                certificateEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or Update a Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
@@ -578,36 +469,28 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CertificateInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String connectedEnvironmentName,
-        String certificateName,
-        CertificateInner certificateEnvelope,
+    private Mono<Response<CertificateInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String connectedEnvironmentName, String certificateName, CertificateInner certificateEnvelope,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (connectedEnvironmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
         }
         if (certificateName == null) {
             return Mono
@@ -618,22 +501,14 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                connectedEnvironmentName,
-                certificateName,
-                this.client.getApiVersion(),
-                certificateEnvelope,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            connectedEnvironmentName, certificateName, this.client.getApiVersion(), certificateEnvelope, accept,
+            context);
     }
 
     /**
      * Create or Update a Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
@@ -641,20 +516,19 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CertificateInner> createOrUpdateAsync(
-        String resourceGroupName, String connectedEnvironmentName, String certificateName) {
+    private Mono<CertificateInner> createOrUpdateAsync(String resourceGroupName, String connectedEnvironmentName,
+        String certificateName) {
         final CertificateInner certificateEnvelope = null;
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, connectedEnvironmentName, certificateName, certificateEnvelope)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return createOrUpdateWithResponseAsync(resourceGroupName, connectedEnvironmentName, certificateName,
+            certificateEnvelope).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create or Update a Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
@@ -663,24 +537,20 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment along with {@link
-     *     Response}.
+     * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String connectedEnvironmentName,
-        String certificateName,
-        CertificateInner certificateEnvelope,
+    public Response<CertificateInner> createOrUpdateWithResponse(String resourceGroupName,
+        String connectedEnvironmentName, String certificateName, CertificateInner certificateEnvelope,
         Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, connectedEnvironmentName, certificateName, certificateEnvelope, context)
-            .block();
+        return createOrUpdateWithResponseAsync(resourceGroupName, connectedEnvironmentName, certificateName,
+            certificateEnvelope, context).block();
     }
 
     /**
      * Create or Update a Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
@@ -690,17 +560,16 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateInner createOrUpdate(
-        String resourceGroupName, String connectedEnvironmentName, String certificateName) {
+    public CertificateInner createOrUpdate(String resourceGroupName, String connectedEnvironmentName,
+        String certificateName) {
         final CertificateInner certificateEnvelope = null;
-        return createOrUpdateWithResponse(
-                resourceGroupName, connectedEnvironmentName, certificateName, certificateEnvelope, Context.NONE)
-            .getValue();
+        return createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName, certificateName,
+            certificateEnvelope, Context.NONE).getValue();
     }
 
     /**
      * Deletes the specified Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
@@ -710,28 +579,23 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String connectedEnvironmentName, String certificateName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String connectedEnvironmentName,
+        String certificateName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (connectedEnvironmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
         }
         if (certificateName == null) {
             return Mono
@@ -740,23 +604,14 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            connectedEnvironmentName,
-                            certificateName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    connectedEnvironmentName, certificateName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the specified Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
@@ -767,28 +622,23 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String connectedEnvironmentName, String certificateName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String connectedEnvironmentName,
+        String certificateName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (connectedEnvironmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
         }
         if (certificateName == null) {
             return Mono
@@ -796,21 +646,13 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                connectedEnvironmentName,
-                certificateName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            connectedEnvironmentName, certificateName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes the specified Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
@@ -827,7 +669,7 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
 
     /**
      * Deletes the specified Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
@@ -838,14 +680,14 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String connectedEnvironmentName, String certificateName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String connectedEnvironmentName,
+        String certificateName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, connectedEnvironmentName, certificateName, context).block();
     }
 
     /**
      * Deletes the specified Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
@@ -860,9 +702,9 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
 
     /**
      * Update properties of a certificate
-     *
-     * <p>Patches a certificate. Currently only patching of tags is supported.
-     *
+     * 
+     * Patches a certificate. Currently only patching of tags is supported.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
@@ -870,35 +712,27 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CertificateInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String connectedEnvironmentName,
-        String certificateName,
-        CertificatePatch certificateEnvelope) {
+    private Mono<Response<CertificateInner>> updateWithResponseAsync(String resourceGroupName,
+        String connectedEnvironmentName, String certificateName, CertificatePatch certificateEnvelope) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (connectedEnvironmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
         }
         if (certificateName == null) {
             return Mono
@@ -912,27 +746,17 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            connectedEnvironmentName,
-                            certificateName,
-                            this.client.getApiVersion(),
-                            certificateEnvelope,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, connectedEnvironmentName, certificateName, this.client.getApiVersion(),
+                certificateEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update properties of a certificate
-     *
-     * <p>Patches a certificate. Currently only patching of tags is supported.
-     *
+     * 
+     * Patches a certificate. Currently only patching of tags is supported.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
@@ -941,36 +765,28 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CertificateInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String connectedEnvironmentName,
-        String certificateName,
-        CertificatePatch certificateEnvelope,
+    private Mono<Response<CertificateInner>> updateWithResponseAsync(String resourceGroupName,
+        String connectedEnvironmentName, String certificateName, CertificatePatch certificateEnvelope,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (connectedEnvironmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
         }
         if (certificateName == null) {
             return Mono
@@ -984,24 +800,16 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                connectedEnvironmentName,
-                certificateName,
-                this.client.getApiVersion(),
-                certificateEnvelope,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            connectedEnvironmentName, certificateName, this.client.getApiVersion(), certificateEnvelope, accept,
+            context);
     }
 
     /**
      * Update properties of a certificate
-     *
-     * <p>Patches a certificate. Currently only patching of tags is supported.
-     *
+     * 
+     * Patches a certificate. Currently only patching of tags is supported.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
@@ -1010,24 +818,20 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CertificateInner> updateAsync(
-        String resourceGroupName,
-        String connectedEnvironmentName,
-        String certificateName,
-        CertificatePatch certificateEnvelope) {
-        return updateWithResponseAsync(
-                resourceGroupName, connectedEnvironmentName, certificateName, certificateEnvelope)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<CertificateInner> updateAsync(String resourceGroupName, String connectedEnvironmentName,
+        String certificateName, CertificatePatch certificateEnvelope) {
+        return updateWithResponseAsync(resourceGroupName, connectedEnvironmentName, certificateName,
+            certificateEnvelope).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Update properties of a certificate
-     *
-     * <p>Patches a certificate. Currently only patching of tags is supported.
-     *
+     * 
+     * Patches a certificate. Currently only patching of tags is supported.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
@@ -1036,26 +840,21 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment along with {@link
-     *     Response}.
+     * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateInner> updateWithResponse(
-        String resourceGroupName,
-        String connectedEnvironmentName,
-        String certificateName,
-        CertificatePatch certificateEnvelope,
-        Context context) {
-        return updateWithResponseAsync(
-                resourceGroupName, connectedEnvironmentName, certificateName, certificateEnvelope, context)
-            .block();
+    public Response<CertificateInner> updateWithResponse(String resourceGroupName, String connectedEnvironmentName,
+        String certificateName, CertificatePatch certificateEnvelope, Context context) {
+        return updateWithResponseAsync(resourceGroupName, connectedEnvironmentName, certificateName,
+            certificateEnvelope, context).block();
     }
 
     /**
      * Update properties of a certificate
-     *
-     * <p>Patches a certificate. Currently only patching of tags is supported.
-     *
+     * 
+     * Patches a certificate. Currently only patching of tags is supported.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
@@ -1066,21 +865,16 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateInner update(
-        String resourceGroupName,
-        String connectedEnvironmentName,
-        String certificateName,
+    public CertificateInner update(String resourceGroupName, String connectedEnvironmentName, String certificateName,
         CertificatePatch certificateEnvelope) {
-        return updateWithResponse(
-                resourceGroupName, connectedEnvironmentName, certificateName, certificateEnvelope, Context.NONE)
-            .getValue();
+        return updateWithResponse(resourceGroupName, connectedEnvironmentName, certificateName, certificateEnvelope,
+            Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1092,31 +886,20 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<CertificateInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<CertificateInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1129,23 +912,13 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

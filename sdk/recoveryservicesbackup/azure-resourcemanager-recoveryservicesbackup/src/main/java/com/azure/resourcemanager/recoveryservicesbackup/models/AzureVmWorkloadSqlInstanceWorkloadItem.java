@@ -6,6 +6,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -13,10 +14,21 @@ import java.util.List;
 /**
  * Azure VM workload-specific workload item representing SQL Instance.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "workloadItemType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "workloadItemType",
+    defaultImpl = AzureVmWorkloadSqlInstanceWorkloadItem.class,
+    visible = true)
 @JsonTypeName("SQLInstance")
 @Fluent
 public final class AzureVmWorkloadSqlInstanceWorkloadItem extends AzureVmWorkloadItem {
+    /*
+     * Type of the backup item.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "workloadItemType", required = true)
+    private String workloadItemType = "SQLInstance";
+
     /*
      * Data Directory Paths for default directories
      */
@@ -27,6 +39,16 @@ public final class AzureVmWorkloadSqlInstanceWorkloadItem extends AzureVmWorkloa
      * Creates an instance of AzureVmWorkloadSqlInstanceWorkloadItem class.
      */
     public AzureVmWorkloadSqlInstanceWorkloadItem() {
+    }
+
+    /**
+     * Get the workloadItemType property: Type of the backup item.
+     * 
+     * @return the workloadItemType value.
+     */
+    @Override
+    public String workloadItemType() {
+        return this.workloadItemType;
     }
 
     /**

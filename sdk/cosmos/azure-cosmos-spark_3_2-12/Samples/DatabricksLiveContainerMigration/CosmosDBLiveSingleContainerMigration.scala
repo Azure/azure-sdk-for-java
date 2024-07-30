@@ -72,7 +72,7 @@ spark.sql(createTargetResources)
     "spark.cosmos.accountKey" -> cosmosSourceMasterKey,
     "spark.cosmos.database" -> cosmosSourceDatabaseName,
     "spark.cosmos.container" -> cosmosSourceContainerName,
-    "spark.cosmos.read.partitioning.strategy" -> "Default",
+    "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
     "spark.cosmos.read.inferSchema.enabled" -> "false",   
     "spark.cosmos.changeFeed.startFrom" -> "Beginning",
     "spark.cosmos.changeFeed.mode" -> "Incremental",

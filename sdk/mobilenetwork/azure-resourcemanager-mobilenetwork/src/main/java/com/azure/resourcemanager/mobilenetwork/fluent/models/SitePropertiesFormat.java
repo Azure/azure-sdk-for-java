@@ -10,7 +10,9 @@ import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Site properties. */
+/**
+ * Site properties.
+ */
 @Immutable
 public final class SitePropertiesFormat {
     /*
@@ -20,19 +22,20 @@ public final class SitePropertiesFormat {
     private ProvisioningState provisioningState;
 
     /*
-     * An array of IDs of the network functions deployed in the site. Deleting the site will delete any network
-     * functions that are deployed in the site.
+     * An array of IDs of the network functions deployed in the site. Deleting the site will delete any network functions that are deployed in the site.
      */
     @JsonProperty(value = "networkFunctions", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> networkFunctions;
 
-    /** Creates an instance of SitePropertiesFormat class. */
+    /**
+     * Creates an instance of SitePropertiesFormat class.
+     */
     public SitePropertiesFormat() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the site resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -42,7 +45,7 @@ public final class SitePropertiesFormat {
     /**
      * Get the networkFunctions property: An array of IDs of the network functions deployed in the site. Deleting the
      * site will delete any network functions that are deployed in the site.
-     *
+     * 
      * @return the networkFunctions value.
      */
     public List<SubResource> networkFunctions() {
@@ -51,7 +54,7 @@ public final class SitePropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -34,8 +34,8 @@ public final class BackupWorkloadItemsImpl implements BackupWorkloadItems {
 
     public PagedIterable<WorkloadItemResource> list(String vaultName, String resourceGroupName, String fabricName,
         String containerName, String filter, String skipToken, Context context) {
-        PagedIterable<WorkloadItemResourceInner> inner = this.serviceClient().list(vaultName, resourceGroupName,
-            fabricName, containerName, filter, skipToken, context);
+        PagedIterable<WorkloadItemResourceInner> inner = this.serviceClient()
+            .list(vaultName, resourceGroupName, fabricName, containerName, filter, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkloadItemResourceImpl(inner1, this.manager()));
     }
 

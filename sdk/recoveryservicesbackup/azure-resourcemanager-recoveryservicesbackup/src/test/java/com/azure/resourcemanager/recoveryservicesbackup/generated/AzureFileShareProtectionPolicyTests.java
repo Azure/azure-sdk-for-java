@@ -17,28 +17,30 @@ public final class AzureFileShareProtectionPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureFileShareProtectionPolicy model = BinaryData.fromString(
-            "{\"backupManagementType\":\"AzureStorage\",\"workLoadType\":\"SAPAseDatabase\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"vaultRetentionPolicy\":{\"vaultRetention\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"snapshotRetentionInDays\":1861002535},\"timeZone\":\"tstvdxeclzedq\",\"protectedItemsCount\":368021737,\"resourceGuardOperationRequests\":[\"lhpl\"]}")
+            "{\"backupManagementType\":\"AzureStorage\",\"workLoadType\":\"Client\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"vaultRetentionPolicy\":{\"vaultRetention\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"snapshotRetentionInDays\":211422779},\"timeZone\":\"tiewdj\",\"protectedItemsCount\":231543850,\"resourceGuardOperationRequests\":[\"wr\",\"ehwagoh\",\"uffkmrqemvvh\"]}")
             .toObject(AzureFileShareProtectionPolicy.class);
-        Assertions.assertEquals(368021737, model.protectedItemsCount());
-        Assertions.assertEquals("lhpl", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(WorkloadType.SAPASE_DATABASE, model.workLoadType());
-        Assertions.assertEquals(1861002535, model.vaultRetentionPolicy().snapshotRetentionInDays());
-        Assertions.assertEquals("tstvdxeclzedq", model.timeZone());
+        Assertions.assertEquals(231543850, model.protectedItemsCount());
+        Assertions.assertEquals("wr", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(WorkloadType.CLIENT, model.workLoadType());
+        Assertions.assertEquals(211422779, model.vaultRetentionPolicy().snapshotRetentionInDays());
+        Assertions.assertEquals("tiewdj", model.timeZone());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureFileShareProtectionPolicy model = new AzureFileShareProtectionPolicy()
-            .withProtectedItemsCount(368021737).withResourceGuardOperationRequests(Arrays.asList("lhpl"))
-            .withWorkLoadType(WorkloadType.SAPASE_DATABASE).withSchedulePolicy(new SchedulePolicy())
-            .withRetentionPolicy(new RetentionPolicy()).withVaultRetentionPolicy(new VaultRetentionPolicy()
-                .withVaultRetention(new RetentionPolicy()).withSnapshotRetentionInDays(1861002535))
-            .withTimeZone("tstvdxeclzedq");
+        AzureFileShareProtectionPolicy model = new AzureFileShareProtectionPolicy().withProtectedItemsCount(231543850)
+            .withResourceGuardOperationRequests(Arrays.asList("wr", "ehwagoh", "uffkmrqemvvh"))
+            .withWorkLoadType(WorkloadType.CLIENT)
+            .withSchedulePolicy(new SchedulePolicy())
+            .withRetentionPolicy(new RetentionPolicy())
+            .withVaultRetentionPolicy(new VaultRetentionPolicy().withVaultRetention(new RetentionPolicy())
+                .withSnapshotRetentionInDays(211422779))
+            .withTimeZone("tiewdj");
         model = BinaryData.fromObject(model).toObject(AzureFileShareProtectionPolicy.class);
-        Assertions.assertEquals(368021737, model.protectedItemsCount());
-        Assertions.assertEquals("lhpl", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(WorkloadType.SAPASE_DATABASE, model.workLoadType());
-        Assertions.assertEquals(1861002535, model.vaultRetentionPolicy().snapshotRetentionInDays());
-        Assertions.assertEquals("tstvdxeclzedq", model.timeZone());
+        Assertions.assertEquals(231543850, model.protectedItemsCount());
+        Assertions.assertEquals("wr", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(WorkloadType.CLIENT, model.workLoadType());
+        Assertions.assertEquals(211422779, model.vaultRetentionPolicy().snapshotRetentionInDays());
+        Assertions.assertEquals("tiewdj", model.timeZone());
     }
 }

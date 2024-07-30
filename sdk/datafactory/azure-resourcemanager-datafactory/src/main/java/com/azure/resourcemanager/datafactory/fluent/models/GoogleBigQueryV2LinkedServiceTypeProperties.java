@@ -196,8 +196,8 @@ public final class GoogleBigQueryV2LinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -206,8 +206,8 @@ public final class GoogleBigQueryV2LinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the GoogleBigQueryV2LinkedServiceTypeProperties object itself.
@@ -224,12 +224,14 @@ public final class GoogleBigQueryV2LinkedServiceTypeProperties {
      */
     public void validate() {
         if (projectId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property projectId in model GoogleBigQueryV2LinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property projectId in model GoogleBigQueryV2LinkedServiceTypeProperties"));
         }
         if (authenticationType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property authenticationType in model GoogleBigQueryV2LinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property authenticationType in model GoogleBigQueryV2LinkedServiceTypeProperties"));
         }
         if (clientSecret() != null) {
             clientSecret().validate();

@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class ApplicationOperationGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2022-07-01-preview/examples/Applications/
-     * GetApplication_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-07-01-preview/examples/Applications/GetApplication_example.json
      */
     /**
      * Sample code: Get security application by specific applicationId.
@@ -20,7 +18,7 @@ public final class ApplicationOperationGetSamples {
      */
     public static void
         getSecurityApplicationBySpecificApplicationId(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.applicationOperations().getWithResponse("ad9a8e26-29d9-4829-bb30-e597a58cdbb8",
-            com.azure.core.util.Context.NONE);
+        manager.applicationOperations()
+            .getWithResponse("ad9a8e26-29d9-4829-bb30-e597a58cdbb8", com.azure.core.util.Context.NONE);
     }
 }

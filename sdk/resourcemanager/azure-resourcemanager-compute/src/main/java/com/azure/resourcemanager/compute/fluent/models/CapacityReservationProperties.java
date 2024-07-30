@@ -8,6 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.compute.models.CapacityReservationInstanceView;
 import com.azure.resourcemanager.compute.models.SubResourceReadOnly;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -24,9 +25,9 @@ public final class CapacityReservationProperties {
     private String reservationId;
 
     /*
-     * Specifies the value of fault domain count that Capacity Reservation supports for requested VM size. **Note:**
-     * The fault domain count specified for a resource (like virtual machines scale set) must be less than or equal to
-     * this value if it deploys using capacity reservation. Minimum api-version: 2022-08-01.
+     * Specifies the value of fault domain count that Capacity Reservation supports for requested VM size. **Note:** The
+     * fault domain count specified for a resource (like virtual machines scale set) must be less than or equal to this
+     * value if it deploys using capacity reservation. Minimum api-version: 2022-08-01.
      */
     @JsonProperty(value = "platformFaultDomainCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer platformFaultDomainCount;
@@ -70,7 +71,7 @@ public final class CapacityReservationProperties {
     /**
      * Get the reservationId property: A unique id generated and assigned to the capacity reservation by the platform
      * which does not change throughout the lifetime of the resource.
-     * 
+     *
      * @return the reservationId value.
      */
     public String reservationId() {
@@ -82,7 +83,7 @@ public final class CapacityReservationProperties {
      * supports for requested VM size. **Note:** The fault domain count specified for a resource (like virtual machines
      * scale set) must be less than or equal to this value if it deploys using capacity reservation. Minimum
      * api-version: 2022-08-01.
-     * 
+     *
      * @return the platformFaultDomainCount value.
      */
     public Integer platformFaultDomainCount() {
@@ -92,7 +93,7 @@ public final class CapacityReservationProperties {
     /**
      * Get the virtualMachinesAssociated property: A list of all virtual machine resource ids that are associated with
      * the capacity reservation.
-     * 
+     *
      * @return the virtualMachinesAssociated value.
      */
     public List<SubResourceReadOnly> virtualMachinesAssociated() {
@@ -101,7 +102,7 @@ public final class CapacityReservationProperties {
 
     /**
      * Get the provisioningTime property: The date time when the capacity reservation was last updated.
-     * 
+     *
      * @return the provisioningTime value.
      */
     public OffsetDateTime provisioningTime() {
@@ -110,7 +111,7 @@ public final class CapacityReservationProperties {
 
     /**
      * Get the provisioningState property: The provisioning state, which only appears in the response.
-     * 
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -119,7 +120,7 @@ public final class CapacityReservationProperties {
 
     /**
      * Get the instanceView property: The Capacity reservation instance view.
-     * 
+     *
      * @return the instanceView value.
      */
     public CapacityReservationInstanceView instanceView() {
@@ -129,7 +130,7 @@ public final class CapacityReservationProperties {
     /**
      * Get the timeCreated property: Specifies the time at which the Capacity Reservation resource was created. Minimum
      * api-version: 2021-11-01.
-     * 
+     *
      * @return the timeCreated value.
      */
     public OffsetDateTime timeCreated() {
@@ -138,7 +139,7 @@ public final class CapacityReservationProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

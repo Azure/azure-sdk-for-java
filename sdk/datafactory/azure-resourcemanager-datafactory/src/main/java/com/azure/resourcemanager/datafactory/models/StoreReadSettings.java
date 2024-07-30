@@ -10,19 +10,16 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * Connector read setting.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = StoreReadSettings.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = StoreReadSettings.class, visible = true)
 @JsonTypeName("StoreReadSettings")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AzureBlobStorageReadSettings", value = AzureBlobStorageReadSettings.class),
@@ -41,6 +38,13 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "LakeHouseReadSettings", value = LakeHouseReadSettings.class) })
 @Fluent
 public class StoreReadSettings {
+    /*
+     * The read setting type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "StoreReadSettings";
+
     /*
      * The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType
      * integer).
@@ -65,6 +69,15 @@ public class StoreReadSettings {
      * Creates an instance of StoreReadSettings class.
      */
     public StoreReadSettings() {
+    }
+
+    /**
+     * Get the type property: The read setting type.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -135,7 +148,7 @@ public class StoreReadSettings {
     @JsonAnySetter
     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }

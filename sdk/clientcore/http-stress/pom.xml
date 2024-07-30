@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>io.clientcore</groupId>
+    <artifactId>clientcore-parent</artifactId>
+    <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:clientcore-parent;current} -->
+    <relativePath>../../parents/clientcore-parent</relativePath>
+  </parent>
+
+  <groupId>io.clientcore</groupId>
+  <artifactId>http-stress</artifactId>
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:http-stress;current} -->
+  <packaging>jar</packaging>
+
+  <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <doclint>all,-missing</doclint>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.3.14</version> <!-- {x-version-update;ch.qos.logback:logback-classic;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.clientcore</groupId>
+      <artifactId>core</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:core;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.clientcore</groupId>
+      <artifactId>http-jdk-httpclient</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:http-jdk-httpclient;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.clientcore</groupId>
+      <artifactId>http-okhttp3</artifactId>
+      <version>1.0.0-beta.1</version>  <!-- {x-version-update;io.clientcore:http-okhttp3;dependency} -->
+    </dependency>
+    <!-- logging, tracing, metrics -->
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-api</artifactId>
+      <version>1.38.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>perf-test-core</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:perf-test-core;current} -->
+    </dependency>
+    <!-- logging, tracing, metrics -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
+      <version>1.0.0-beta.25</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry.instrumentation</groupId>
+      <artifactId>opentelemetry-runtime-telemetry-java8</artifactId>
+      <version>2.6.0-alpha</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry.instrumentation</groupId>
+      <artifactId>opentelemetry-logback-appender-1.0</artifactId>
+      <version>2.6.0-alpha</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;external_dependency} -->
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>com.azure:perf-test-core:[1.0.0-beta.1]</include> <!-- {x-include-update;com.azure:perf-test-core;dependency} -->
+                <include>com.azure:azure-monitor-opentelemetry-exporter:[1.0.0-beta.25]</include> <!-- {x-include-update;com.azure:azure-monitor-opentelemetry-exporter;dependency} -->
+                <include>io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8:[2.6.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;external_dependency} -->
+                <include>io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0:[2.6.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;external_dependency} -->
+                <include>ch.qos.logback:logback-classic:[1.3.14]</include> <!-- {x-include-update;ch.qos.logback:logback-classic;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-api:[1.38.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
+      </plugin>
+      <plugin>
+        <!-- we need shade plugin to merge MANIFEST-INF properly into the uber jar-->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
+        <!-- we need shade plugin to merge MANIFEST-INF properly into the uber jar-->
+        <executions>
+        <execution>
+        <phase>package</phase>
+        <goals>
+          <goal>shade</goal>
+        </goals>
+        <configuration>
+          <transformers>
+            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+              <mainClass>io.clientcore.http.stress.App</mainClass>
+            </transformer>
+            <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+          </transformers>
+          <finalName>${project.artifactId}-${project.version}-jar-with-dependencies</finalName>
+          <filters>
+            <filter>
+              <artifact>*:*</artifact>
+              <excludes>
+                <exclude>META-INF/maven/**</exclude>
+                <exclude>META-INF/*.SF</exclude>
+                <exclude>META-INF/*.DSA</exclude>
+                <exclude>META-INF/*.RSA</exclude>
+              </excludes>
+            </filter>
+          </filters>
+        </configuration>
+        </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>java12plus</id>
+      <activation>
+        <jdk>[12,)</jdk>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>io.clientcore</groupId>
+          <artifactId>http-jdk-httpclient</artifactId>
+          <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:http-jdk-httpclient;dependency} -->
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
+</project>

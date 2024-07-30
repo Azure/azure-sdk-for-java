@@ -7,9 +7,11 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,9 +19,9 @@ import java.util.Map;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "objectType",
-    defaultImpl = AzureWorkloadSapHanaPointInTimeRestoreRequest.class)
+    defaultImpl = AzureWorkloadSapHanaPointInTimeRestoreRequest.class,
+    visible = true)
 @JsonTypeName("AzureWorkloadSAPHanaPointInTimeRestoreRequest")
 @JsonSubTypes({
     @JsonSubTypes.Type(
@@ -27,6 +29,13 @@ import java.util.Map;
         value = AzureWorkloadSapHanaPointInTimeRestoreWithRehydrateRequest.class) })
 @Fluent
 public class AzureWorkloadSapHanaPointInTimeRestoreRequest extends AzureWorkloadSapHanaRestoreRequest {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "objectType", required = true)
+    private String objectType = "AzureWorkloadSAPHanaPointInTimeRestoreRequest";
+
     /*
      * PointInTime value
      */
@@ -37,6 +46,17 @@ public class AzureWorkloadSapHanaPointInTimeRestoreRequest extends AzureWorkload
      * Creates an instance of AzureWorkloadSapHanaPointInTimeRestoreRequest class.
      */
     public AzureWorkloadSapHanaPointInTimeRestoreRequest() {
+    }
+
+    /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
     }
 
     /**
@@ -139,6 +159,16 @@ public class AzureWorkloadSapHanaPointInTimeRestoreRequest extends AzureWorkload
     @Override
     public AzureWorkloadSapHanaPointInTimeRestoreRequest withTargetVirtualMachineId(String targetVirtualMachineId) {
         super.withTargetVirtualMachineId(targetVirtualMachineId);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadSapHanaPointInTimeRestoreRequest
+        withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
+        super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
         return this;
     }
 

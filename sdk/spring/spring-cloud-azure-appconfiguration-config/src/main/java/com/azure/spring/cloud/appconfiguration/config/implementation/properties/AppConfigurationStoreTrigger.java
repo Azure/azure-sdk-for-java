@@ -4,10 +4,10 @@ package com.azure.spring.cloud.appconfiguration.config.implementation.properties
 
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.EMPTY_LABEL;
 
-import javax.annotation.PostConstruct;
-import javax.validation.constraints.NotNull;
-
 import org.springframework.util.Assert;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * Properties on what Triggers are checked before a refresh is triggered.

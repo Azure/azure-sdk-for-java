@@ -13,6 +13,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Represents a field in an index definition, which describes the name, data type, and search behavior of a field.
@@ -63,18 +64,18 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * split into the individual tokens "sunny" and "day". This enables full-text searches for these terms. Fields of
      * type Edm.String or Collection(Edm.String) are searchable by default. This property must be false for simple
      * fields of other non-string data types, and it must be null for complex fields. Note: searchable fields consume
-     * extra space in your index to accommodate additional tokenized versions of the field value for full-text
-     * searches. If you want to save space in your index and you don't need a field to be included in searches, set
-     * searchable to false.
+     * extra space in your index to accommodate additional tokenized versions of the field value for full-text searches.
+     * If you want to save space in your index and you don't need a field to be included in searches, set searchable to
+     * false.
      */
     private Boolean searchable;
 
     /*
      * A value indicating whether to enable the field to be referenced in $filter queries. filterable differs from
-     * searchable in how strings are handled. Fields of type Edm.String or Collection(Edm.String) that are filterable
-     * do not undergo word-breaking, so comparisons are for exact matches only. For example, if you set such a field f
-     * to "sunny day", $filter=f eq 'sunny' will find no matches, but $filter=f eq 'sunny day' will. This property must
-     * be null for complex fields. Default is true for simple fields and null for complex fields.
+     * searchable in how strings are handled. Fields of type Edm.String or Collection(Edm.String) that are filterable do
+     * not undergo word-breaking, so comparisons are for exact matches only. For example, if you set such a field f to
+     * "sunny day", $filter=f eq 'sunny' will find no matches, but $filter=f eq 'sunny day' will. This property must be
+     * null for complex fields. Default is true for simple fields and null for complex fields.
      */
     private Boolean filterable;
 
@@ -82,11 +83,11 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * A value indicating whether to enable the field to be referenced in $orderby expressions. By default, the search
      * engine sorts results by score, but in many experiences users will want to sort by fields in the documents. A
      * simple field can be sortable only if it is single-valued (it has a single value in the scope of the parent
-     * document). Simple collection fields cannot be sortable, since they are multi-valued. Simple sub-fields of
-     * complex collections are also multi-valued, and therefore cannot be sortable. This is true whether it's an
-     * immediate parent field, or an ancestor field, that's the complex collection. Complex fields cannot be sortable
-     * and the sortable property must be null for such fields. The default for sortable is true for single-valued
-     * simple fields, false for multi-valued simple fields, and null for complex fields.
+     * document). Simple collection fields cannot be sortable, since they are multi-valued. Simple sub-fields of complex
+     * collections are also multi-valued, and therefore cannot be sortable. This is true whether it's an immediate
+     * parent field, or an ancestor field, that's the complex collection. Complex fields cannot be sortable and the
+     * sortable property must be null for such fields. The default for sortable is true for single-valued simple fields,
+     * false for multi-valued simple fields, and null for complex fields.
      */
     private Boolean sortable;
 
@@ -116,19 +117,12 @@ public final class SearchField implements JsonSerializable<SearchField> {
 
     /*
      * The name of the analyzer used at indexing time for the field. This option can be used only with searchable
-     * fields. It must be set together with searchAnalyzer and it cannot be set together with the analyzer option.
-     * This property cannot be set to the name of a language analyzer; use the analyzer property instead if you need a
+     * fields. It must be set together with searchAnalyzer and it cannot be set together with the analyzer option. This
+     * property cannot be set to the name of a language analyzer; use the analyzer property instead if you need a
      * language analyzer. Once the analyzer is chosen, it cannot be changed for the field. Must be null for complex
      * fields.
      */
     private LexicalAnalyzerName indexAnalyzerName;
-
-    /*
-     * The name of the normalizer to use for the field. This option can be used only with fields with filterable,
-     * sortable, or facetable enabled. Once the normalizer is chosen, it cannot be changed for the field. Must be null
-     * for complex fields.
-     */
-    private LexicalNormalizerName normalizerName;
 
     /*
      * The dimensionality of the vector field.
@@ -140,6 +134,11 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * vector field.
      */
     private String vectorSearchProfileName;
+
+    /*
+     * The encoding format to interpret the field contents.
+     */
+    private VectorEncodingFormat vectorEncodingFormat;
 
     /*
      * A list of the names of synonym maps to associate with this field. This option can be used only with searchable
@@ -339,10 +338,9 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * sort by fields in the documents. A simple field can be sortable only if it is single-valued (it has a single
      * value in the scope of the parent document). Simple collection fields cannot be sortable, since they are
      * multi-valued. Simple sub-fields of complex collections are also multi-valued, and therefore cannot be sortable.
-     * This is true whether it's an immediate parent field, or an ancestor field, that's the complex collection.
-     * Complex fields cannot be sortable and the sortable property must be null for such fields. The default for
-     * sortable is true for single-valued simple fields, false for multi-valued simple fields, and null for complex
-     * fields.
+     * This is true whether it's an immediate parent field, or an ancestor field, that's the complex collection. Complex
+     * fields cannot be sortable and the sortable property must be null for such fields. The default for sortable is
+     * true for single-valued simple fields, false for multi-valued simple fields, and null for complex fields.
      *
      * @return the sortable value.
      */
@@ -356,10 +354,9 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * sort by fields in the documents. A simple field can be sortable only if it is single-valued (it has a single
      * value in the scope of the parent document). Simple collection fields cannot be sortable, since they are
      * multi-valued. Simple sub-fields of complex collections are also multi-valued, and therefore cannot be sortable.
-     * This is true whether it's an immediate parent field, or an ancestor field, that's the complex collection.
-     * Complex fields cannot be sortable and the sortable property must be null for such fields. The default for
-     * sortable is true for single-valued simple fields, false for multi-valued simple fields, and null for complex
-     * fields.
+     * This is true whether it's an immediate parent field, or an ancestor field, that's the complex collection. Complex
+     * fields cannot be sortable and the sortable property must be null for such fields. The default for sortable is
+     * true for single-valued simple fields, false for multi-valued simple fields, and null for complex fields.
      *
      * @param sortable the sortable value to set.
      * @return the SearchField object itself.
@@ -425,8 +422,8 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * Get the searchAnalyzerName property: The name of the analyzer used at search time for the field. This option can
      * be used only with searchable fields. It must be set together with indexAnalyzer and it cannot be set together
      * with the analyzer option. This property cannot be set to the name of a language analyzer; use the analyzer
-     * property instead if you need a language analyzer. This analyzer can be updated on an existing field. Must be
-     * null for complex fields.
+     * property instead if you need a language analyzer. This analyzer can be updated on an existing field. Must be null
+     * for complex fields.
      *
      * @return the searchAnalyzerName value.
      */
@@ -438,8 +435,8 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * Set the searchAnalyzerName property: The name of the analyzer used at search time for the field. This option can
      * be used only with searchable fields. It must be set together with indexAnalyzer and it cannot be set together
      * with the analyzer option. This property cannot be set to the name of a language analyzer; use the analyzer
-     * property instead if you need a language analyzer. This analyzer can be updated on an existing field. Must be
-     * null for complex fields.
+     * property instead if you need a language analyzer. This analyzer can be updated on an existing field. Must be null
+     * for complex fields.
      *
      * @param searchAnalyzerName the searchAnalyzerName value to set.
      * @return the SearchField object itself.
@@ -450,11 +447,11 @@ public final class SearchField implements JsonSerializable<SearchField> {
     }
 
     /**
-     * Get the indexAnalyzerName property: The name of the analyzer used at indexing time for the field. This option
-     * can be used only with searchable fields. It must be set together with searchAnalyzer and it cannot be set
-     * together with the analyzer option. This property cannot be set to the name of a language analyzer; use the
-     * analyzer property instead if you need a language analyzer. Once the analyzer is chosen, it cannot be changed for
-     * the field. Must be null for complex fields.
+     * Get the indexAnalyzerName property: The name of the analyzer used at indexing time for the field. This option can
+     * be used only with searchable fields. It must be set together with searchAnalyzer and it cannot be set together
+     * with the analyzer option. This property cannot be set to the name of a language analyzer; use the analyzer
+     * property instead if you need a language analyzer. Once the analyzer is chosen, it cannot be changed for the
+     * field. Must be null for complex fields.
      *
      * @return the indexAnalyzerName value.
      */
@@ -463,41 +460,17 @@ public final class SearchField implements JsonSerializable<SearchField> {
     }
 
     /**
-     * Set the indexAnalyzerName property: The name of the analyzer used at indexing time for the field. This option
-     * can be used only with searchable fields. It must be set together with searchAnalyzer and it cannot be set
-     * together with the analyzer option. This property cannot be set to the name of a language analyzer; use the
-     * analyzer property instead if you need a language analyzer. Once the analyzer is chosen, it cannot be changed for
-     * the field. Must be null for complex fields.
+     * Set the indexAnalyzerName property: The name of the analyzer used at indexing time for the field. This option can
+     * be used only with searchable fields. It must be set together with searchAnalyzer and it cannot be set together
+     * with the analyzer option. This property cannot be set to the name of a language analyzer; use the analyzer
+     * property instead if you need a language analyzer. Once the analyzer is chosen, it cannot be changed for the
+     * field. Must be null for complex fields.
      *
      * @param indexAnalyzerName the indexAnalyzerName value to set.
      * @return the SearchField object itself.
      */
     public SearchField setIndexAnalyzerName(LexicalAnalyzerName indexAnalyzerName) {
         this.indexAnalyzerName = indexAnalyzerName;
-        return this;
-    }
-
-    /**
-     * Get the normalizerName property: The name of the normalizer to use for the field. This option can be used only
-     * with fields with filterable, sortable, or facetable enabled. Once the normalizer is chosen, it cannot be changed
-     * for the field. Must be null for complex fields.
-     *
-     * @return the normalizerName value.
-     */
-    public LexicalNormalizerName getNormalizerName() {
-        return this.normalizerName;
-    }
-
-    /**
-     * Set the normalizerName property: The name of the normalizer to use for the field. This option can be used only
-     * with fields with filterable, sortable, or facetable enabled. Once the normalizer is chosen, it cannot be changed
-     * for the field. Must be null for complex fields.
-     *
-     * @param normalizerName the normalizerName value to set.
-     * @return the SearchField object itself.
-     */
-    public SearchField setNormalizerName(LexicalNormalizerName normalizerName) {
-        this.normalizerName = normalizerName;
         return this;
     }
 
@@ -540,6 +513,26 @@ public final class SearchField implements JsonSerializable<SearchField> {
      */
     public SearchField setVectorSearchProfileName(String vectorSearchProfileName) {
         this.vectorSearchProfileName = vectorSearchProfileName;
+        return this;
+    }
+
+    /**
+     * Get the vectorEncodingFormat property: The encoding format to interpret the field contents.
+     *
+     * @return the vectorEncodingFormat value.
+     */
+    public VectorEncodingFormat getVectorEncodingFormat() {
+        return this.vectorEncodingFormat;
+    }
+
+    /**
+     * Set the vectorEncodingFormat property: The encoding format to interpret the field contents.
+     *
+     * @param vectorEncodingFormat the vectorEncodingFormat value to set.
+     * @return the SearchField object itself.
+     */
+    public SearchField setVectorEncodingFormat(VectorEncodingFormat vectorEncodingFormat) {
+        this.vectorEncodingFormat = vectorEncodingFormat;
         return this;
     }
 
@@ -593,6 +586,9 @@ public final class SearchField implements JsonSerializable<SearchField> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -610,9 +606,10 @@ public final class SearchField implements JsonSerializable<SearchField> {
             this.searchAnalyzerName == null ? null : this.searchAnalyzerName.toString());
         jsonWriter.writeStringField("indexAnalyzer",
             this.indexAnalyzerName == null ? null : this.indexAnalyzerName.toString());
-        jsonWriter.writeStringField("normalizer", this.normalizerName == null ? null : this.normalizerName.toString());
         jsonWriter.writeNumberField("dimensions", this.vectorSearchDimensions);
         jsonWriter.writeStringField("vectorSearchProfile", this.vectorSearchProfileName);
+        jsonWriter.writeStringField("vectorEncoding",
+            this.vectorEncodingFormat == null ? null : this.vectorEncodingFormat.toString());
         jsonWriter.writeArrayField("synonymMaps", this.synonymMapNames,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("fields", this.fields, (writer, element) -> writer.writeJson(element));
@@ -644,9 +641,9 @@ public final class SearchField implements JsonSerializable<SearchField> {
             LexicalAnalyzerName analyzerName = null;
             LexicalAnalyzerName searchAnalyzerName = null;
             LexicalAnalyzerName indexAnalyzerName = null;
-            LexicalNormalizerName normalizerName = null;
             Integer vectorSearchDimensions = null;
             String vectorSearchProfileName = null;
+            VectorEncodingFormat vectorEncodingFormat = null;
             List<String> synonymMapNames = null;
             List<SearchField> fields = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -678,12 +675,12 @@ public final class SearchField implements JsonSerializable<SearchField> {
                     searchAnalyzerName = LexicalAnalyzerName.fromString(reader.getString());
                 } else if ("indexAnalyzer".equals(fieldName)) {
                     indexAnalyzerName = LexicalAnalyzerName.fromString(reader.getString());
-                } else if ("normalizer".equals(fieldName)) {
-                    normalizerName = LexicalNormalizerName.fromString(reader.getString());
                 } else if ("dimensions".equals(fieldName)) {
                     vectorSearchDimensions = reader.getNullable(JsonReader::getInt);
                 } else if ("vectorSearchProfile".equals(fieldName)) {
                     vectorSearchProfileName = reader.getString();
+                } else if ("vectorEncoding".equals(fieldName)) {
+                    vectorEncodingFormat = VectorEncodingFormat.fromString(reader.getString());
                 } else if ("synonymMaps".equals(fieldName)) {
                     synonymMapNames = reader.readArray(reader1 -> reader1.getString());
                 } else if ("fields".equals(fieldName)) {
@@ -704,9 +701,9 @@ public final class SearchField implements JsonSerializable<SearchField> {
                 deserializedSearchField.analyzerName = analyzerName;
                 deserializedSearchField.searchAnalyzerName = searchAnalyzerName;
                 deserializedSearchField.indexAnalyzerName = indexAnalyzerName;
-                deserializedSearchField.normalizerName = normalizerName;
                 deserializedSearchField.vectorSearchDimensions = vectorSearchDimensions;
                 deserializedSearchField.vectorSearchProfileName = vectorSearchProfileName;
+                deserializedSearchField.vectorEncodingFormat = vectorEncodingFormat;
                 deserializedSearchField.synonymMapNames = synonymMapNames;
                 deserializedSearchField.fields = fields;
                 return deserializedSearchField;
@@ -731,7 +728,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * @return the SearchField object itself.
      */
     public SearchField setFields(SearchField... fields) {
-        this.fields = (fields == null) ? null : java.util.Arrays.asList(fields);
+        this.fields = (fields == null) ? null : Arrays.asList(fields);
         return this;
     }
 
@@ -746,7 +743,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * @return the SearchField object itself.
      */
     public SearchField setSynonymMapNames(String... synonymMapNames) {
-        this.synonymMapNames = (synonymMapNames == null) ? null : java.util.Arrays.asList(synonymMapNames);
+        this.synonymMapNames = (synonymMapNames == null) ? null : Arrays.asList(synonymMapNames);
         return this;
     }
 }

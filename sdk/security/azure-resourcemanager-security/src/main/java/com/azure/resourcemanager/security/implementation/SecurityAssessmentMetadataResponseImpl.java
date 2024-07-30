@@ -139,14 +139,18 @@ public final class SecurityAssessmentMetadataResponseImpl
     private String assessmentMetadataName;
 
     public SecurityAssessmentMetadataResponse create() {
-        this.innerObject = serviceManager.serviceClient().getAssessmentsMetadatas()
-            .createInSubscriptionWithResponse(assessmentMetadataName, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAssessmentsMetadatas()
+            .createInSubscriptionWithResponse(assessmentMetadataName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public SecurityAssessmentMetadataResponse create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAssessmentsMetadatas()
-            .createInSubscriptionWithResponse(assessmentMetadataName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAssessmentsMetadatas()
+            .createInSubscriptionWithResponse(assessmentMetadataName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -158,14 +162,18 @@ public final class SecurityAssessmentMetadataResponseImpl
     }
 
     public SecurityAssessmentMetadataResponse refresh() {
-        this.innerObject = serviceManager.serviceClient().getAssessmentsMetadatas()
-            .getInSubscriptionWithResponse(assessmentMetadataName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAssessmentsMetadatas()
+            .getInSubscriptionWithResponse(assessmentMetadataName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SecurityAssessmentMetadataResponse refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAssessmentsMetadatas()
-            .getInSubscriptionWithResponse(assessmentMetadataName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAssessmentsMetadatas()
+            .getInSubscriptionWithResponse(assessmentMetadataName, context)
+            .getValue();
         return this;
     }
 

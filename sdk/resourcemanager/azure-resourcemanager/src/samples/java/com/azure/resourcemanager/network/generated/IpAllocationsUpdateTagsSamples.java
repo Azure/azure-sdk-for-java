@@ -14,7 +14,7 @@ import java.util.Map;
 public final class IpAllocationsUpdateTagsSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/IpAllocationUpdateTags.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/IpAllocationUpdateTags.json
      */
     /**
      * Sample code: Update virtual network tags.
@@ -22,8 +22,12 @@ public final class IpAllocationsUpdateTagsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateVirtualNetworkTags(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getIpAllocations().updateTagsWithResponse("rg1", "test-ipallocation",
-            new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")), com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getIpAllocations()
+            .updateTagsWithResponse("rg1", "test-ipallocation",
+                new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

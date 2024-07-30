@@ -164,8 +164,9 @@ public class SecurityAssessmentPropertiesBase {
      */
     public void validate() {
         if (resourceDetails() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property resourceDetails in model SecurityAssessmentPropertiesBase"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property resourceDetails in model SecurityAssessmentPropertiesBase"));
         } else {
             resourceDetails().validate();
         }

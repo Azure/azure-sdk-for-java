@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sphere.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Request of the action to list device groups for a catalog. */
+/**
+ * Request of the action to list device groups for a catalog.
+ */
 @Fluent
 public final class ListDeviceGroupsRequest {
     /*
@@ -16,13 +18,15 @@ public final class ListDeviceGroupsRequest {
     @JsonProperty(value = "deviceGroupName")
     private String deviceGroupName;
 
-    /** Creates an instance of ListDeviceGroupsRequest class. */
+    /**
+     * Creates an instance of ListDeviceGroupsRequest class.
+     */
     public ListDeviceGroupsRequest() {
     }
 
     /**
      * Get the deviceGroupName property: Device Group name.
-     *
+     * 
      * @return the deviceGroupName value.
      */
     public String deviceGroupName() {
@@ -31,7 +35,7 @@ public final class ListDeviceGroupsRequest {
 
     /**
      * Set the deviceGroupName property: Device Group name.
-     *
+     * 
      * @param deviceGroupName the deviceGroupName value to set.
      * @return the ListDeviceGroupsRequest object itself.
      */
@@ -42,7 +46,7 @@ public final class ListDeviceGroupsRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

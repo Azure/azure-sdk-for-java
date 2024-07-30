@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class ConfigurationPolicyGroupsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/ConfigurationPolicyGroupGet.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ConfigurationPolicyGroupGet.
      * json
      */
     /**
@@ -19,7 +19,10 @@ public final class ConfigurationPolicyGroupsGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void configurationPolicyGroupGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getConfigurationPolicyGroups().getWithResponse("rg1",
-            "vpnServerConfiguration1", "policyGroup1", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getConfigurationPolicyGroups()
+            .getWithResponse("rg1", "vpnServerConfiguration1", "policyGroup1", com.azure.core.util.Context.NONE);
     }
 }

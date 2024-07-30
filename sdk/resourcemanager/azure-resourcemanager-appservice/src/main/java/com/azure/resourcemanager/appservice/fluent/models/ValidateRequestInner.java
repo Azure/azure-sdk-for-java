@@ -448,20 +448,21 @@ public final class ValidateRequestInner {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model ValidateRequestInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model ValidateRequestInner"));
         }
         if (type() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property type in model ValidateRequestInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model ValidateRequestInner"));
         }
         if (location() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property location in model ValidateRequestInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property location in model ValidateRequestInner"));
         }
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model ValidateRequestInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model ValidateRequestInner"));
         } else {
             innerProperties().validate();
         }

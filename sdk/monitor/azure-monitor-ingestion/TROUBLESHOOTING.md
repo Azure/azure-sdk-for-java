@@ -62,6 +62,12 @@ clientBuilder.httpLogOptions(new HttpLogOptions().addAllowedHeaderName("safe-to-
 
 The Azure Monitor Ingestion library supports Azure Active Directory authentication. The `LogsIngestionClientBuilder` can be configured to set the `credential`. To provide a valid credential, you can use `azure-identity` dependency. For more information on getting started, see the [README](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-ingestion#create-the-client) of the Azure Monitor Ingestion library. For more information on the credential types supported in `azure-identity`, see the [Azure Identity library documentation](https://learn.microsoft.com/azure/developer/java/sdk/identity).
 
+#### Setting audience for Non-public clouds
+
+When not using the default Azure public cloud, you may need to set the audience for the credential. The audience is the resource identifier of the Azure Monitor service. You can set the audience of you `LogIngestionClient` and `LogIngestionAsyncClient` by using the `audience` method on the `LogIngestionClientBuilder` object.
+See the [UploadLogsSample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-ingestion/src/samples/java/com/azure/monitor/ingestion/UploadLogsSample.java) for an example of setting the audience.
+
+
 ### Dependency conflicts
 
 If you see `NoSuchMethodError` or `NoClassDefFoundError` during your application runtime, this is due to a dependency version conflict. For more information on why this happens and [ways to mitigate this issue](https://learn.microsoft.com/azure/developer/java/sdk/troubleshooting-dependency-version-conflict#mitigate-version-mismatch-issues), see [troubleshooting dependency version conflicts](https://learn.microsoft.com/azure/developer/java/sdk/troubleshooting-dependency-version-conflict).

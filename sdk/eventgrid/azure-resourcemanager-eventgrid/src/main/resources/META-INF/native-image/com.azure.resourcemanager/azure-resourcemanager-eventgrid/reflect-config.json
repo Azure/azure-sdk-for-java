@@ -344,6 +344,16 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.eventgrid.models.CustomDomainConfiguration",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.eventgrid.models.CustomDomainIdentity",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.eventgrid.models.TopicSpacesConfiguration",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -369,6 +379,21 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.eventgrid.models.CustomJwtAuthenticationSettings",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.eventgrid.models.IssuerCertificateInfo",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.eventgrid.models.CustomJwtAuthenticationManagedIdentity",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.eventgrid.models.RoutingIdentityInfo",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -390,6 +415,11 @@
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.eventgrid.models.UpdateTopicSpacesConfigurationInfo",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.eventgrid.models.UpdateTopicsConfigurationInfo",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -634,6 +664,11 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.eventgrid.models.NetworkSecurityPerimeterSubscription",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.eventgrid.models.NetworkSecurityPerimeterConfigurationList",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -800,6 +835,16 @@
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.eventgrid.models.VerifiedPartnersListResult",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.eventgrid.fluent.models.CustomDomainOwnershipValidationResultInner",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.eventgrid.fluent.models.SubscriptionFullUrlInner",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -1349,6 +1394,16 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.eventgrid.models.CustomDomainValidationState",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.eventgrid.models.CustomDomainIdentityType",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.eventgrid.models.TopicSpacesConfigurationState",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -1360,6 +1415,11 @@
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.eventgrid.models.AlternativeAuthenticationNameSource",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.eventgrid.models.CustomJwtAuthenticationManagedIdentityType",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true

@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.HDInsightSparkActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,17 @@ import java.util.Map;
 /**
  * HDInsight Spark activity.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = HDInsightSparkActivity.class, visible = true)
 @JsonTypeName("HDInsightSpark")
 @Fluent
 public final class HDInsightSparkActivity extends ExecutionActivity {
+    /*
+     * Type of activity.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "HDInsightSpark";
+
     /*
      * HDInsight spark activity properties.
      */
@@ -30,6 +38,16 @@ public final class HDInsightSparkActivity extends ExecutionActivity {
      * Creates an instance of HDInsightSparkActivity class.
      */
     public HDInsightSparkActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -210,8 +228,8 @@ public final class HDInsightSparkActivity extends ExecutionActivity {
     }
 
     /**
-     * Get the sparkJobLinkedService property: The storage linked service for uploading the entry file and
-     * dependencies, and for receiving logs.
+     * Get the sparkJobLinkedService property: The storage linked service for uploading the entry file and dependencies,
+     * and for receiving logs.
      * 
      * @return the sparkJobLinkedService value.
      */
@@ -220,8 +238,8 @@ public final class HDInsightSparkActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the sparkJobLinkedService property: The storage linked service for uploading the entry file and
-     * dependencies, and for receiving logs.
+     * Set the sparkJobLinkedService property: The storage linked service for uploading the entry file and dependencies,
+     * and for receiving logs.
      * 
      * @param sparkJobLinkedService the sparkJobLinkedService value to set.
      * @return the HDInsightSparkActivity object itself.
@@ -314,8 +332,9 @@ public final class HDInsightSparkActivity extends ExecutionActivity {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model HDInsightSparkActivity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model HDInsightSparkActivity"));
         } else {
             innerTypeProperties().validate();
         }

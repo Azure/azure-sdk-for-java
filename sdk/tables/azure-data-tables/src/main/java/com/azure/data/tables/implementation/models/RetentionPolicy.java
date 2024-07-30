@@ -24,8 +24,7 @@ public final class RetentionPolicy implements XmlSerializable<RetentionPolicy> {
     private boolean enabled;
 
     /*
-     * Indicates the number of days that metrics or logging or soft-deleted data should be retained. All data older
-     * than this value will be deleted.
+     * Indicates the number of days that metrics or logging or soft-deleted data should be retained. All data older than this value will be deleted.
      */
     private Integer days;
 

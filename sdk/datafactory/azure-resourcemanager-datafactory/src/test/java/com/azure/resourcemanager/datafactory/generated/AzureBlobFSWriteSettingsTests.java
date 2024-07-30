@@ -13,19 +13,19 @@ public final class AzureBlobFSWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBlobFSWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"AzureBlobFSWriteSettings\",\"blockSizeInMB\":\"datatfozysfjdcokbp\",\"maxConcurrentConnections\":\"dataqelms\",\"disableMetricsCollection\":\"databtneltnbyvbg\",\"copyBehavior\":\"datarumududwecdsybi\",\"metadata\":[{\"name\":\"dataxdkwvceqlyxbyqqo\",\"value\":\"datarekiojusmdodku\"},{\"name\":\"datacn\",\"value\":\"dataovlyykxyfpkdsld\"},{\"name\":\"datarwvswlhjlbk\",\"value\":\"datags\"}],\"\":{\"jekqz\":\"datanatl\",\"zfayyuq\":\"datawlkyrnmgsbu\",\"derzsnfgmohhcgh\":\"datacwrtr\",\"rulboawzplwghfgq\":\"datasmvvfpkymqnvvwfa\"}}")
+            "{\"type\":\"AzureBlobFSWriteSettings\",\"blockSizeInMB\":\"dataibnoebffkgfi\",\"maxConcurrentConnections\":\"datalr\",\"disableMetricsCollection\":\"datawaapzrkhpty\",\"copyBehavior\":\"dataiqeoajnaotavwmr\",\"metadata\":[{\"name\":\"datagdfecju\",\"value\":\"datayrwvo\"},{\"name\":\"datamcwxbac\",\"value\":\"datapslfqgfwonbtgp\"},{\"name\":\"datazuzxoeouf\",\"value\":\"datajwgfhd\"}],\"\":{\"jg\":\"datascwlcfcpz\",\"osewfbllegezvwu\":\"databbfgmeqhtngrxfq\"}}")
             .toObject(AzureBlobFSWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureBlobFSWriteSettings model = new AzureBlobFSWriteSettings().withMaxConcurrentConnections("dataqelms")
-            .withDisableMetricsCollection("databtneltnbyvbg").withCopyBehavior("datarumududwecdsybi")
-            .withMetadata(
-                Arrays.asList(new MetadataItem().withName("dataxdkwvceqlyxbyqqo").withValue("datarekiojusmdodku"),
-                    new MetadataItem().withName("datacn").withValue("dataovlyykxyfpkdsld"),
-                    new MetadataItem().withName("datarwvswlhjlbk").withValue("datags")))
-            .withBlockSizeInMB("datatfozysfjdcokbp");
+        AzureBlobFSWriteSettings model = new AzureBlobFSWriteSettings().withMaxConcurrentConnections("datalr")
+            .withDisableMetricsCollection("datawaapzrkhpty")
+            .withCopyBehavior("dataiqeoajnaotavwmr")
+            .withMetadata(Arrays.asList(new MetadataItem().withName("datagdfecju").withValue("datayrwvo"),
+                new MetadataItem().withName("datamcwxbac").withValue("datapslfqgfwonbtgp"),
+                new MetadataItem().withName("datazuzxoeouf").withValue("datajwgfhd")))
+            .withBlockSizeInMB("dataibnoebffkgfi");
         model = BinaryData.fromObject(model).toObject(AzureBlobFSWriteSettings.class);
     }
 }

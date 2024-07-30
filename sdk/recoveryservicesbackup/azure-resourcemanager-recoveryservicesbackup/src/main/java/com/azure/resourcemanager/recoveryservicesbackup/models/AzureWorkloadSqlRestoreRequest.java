@@ -7,6 +7,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -17,9 +18,9 @@ import java.util.Map;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "objectType",
-    defaultImpl = AzureWorkloadSqlRestoreRequest.class)
+    defaultImpl = AzureWorkloadSqlRestoreRequest.class,
+    visible = true)
 @JsonTypeName("AzureWorkloadSQLRestoreRequest")
 @JsonSubTypes({
     @JsonSubTypes.Type(
@@ -30,6 +31,13 @@ import java.util.Map;
         value = AzureWorkloadSqlRestoreWithRehydrateRequest.class) })
 @Fluent
 public class AzureWorkloadSqlRestoreRequest extends AzureWorkloadRestoreRequest {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "objectType", required = true)
+    private String objectType = "AzureWorkloadSQLRestoreRequest";
+
     /*
      * Default option set to true. If this is set to false, alternate data directory must be provided
      */
@@ -55,8 +63,19 @@ public class AzureWorkloadSqlRestoreRequest extends AzureWorkloadRestoreRequest 
     }
 
     /**
-     * Get the shouldUseAlternateTargetLocation property: Default option set to true. If this is set to false,
-     * alternate data directory must be provided.
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
+     * Get the shouldUseAlternateTargetLocation property: Default option set to true. If this is set to false, alternate
+     * data directory must be provided.
      * 
      * @return the shouldUseAlternateTargetLocation value.
      */
@@ -65,8 +84,8 @@ public class AzureWorkloadSqlRestoreRequest extends AzureWorkloadRestoreRequest 
     }
 
     /**
-     * Set the shouldUseAlternateTargetLocation property: Default option set to true. If this is set to false,
-     * alternate data directory must be provided.
+     * Set the shouldUseAlternateTargetLocation property: Default option set to true. If this is set to false, alternate
+     * data directory must be provided.
      * 
      * @param shouldUseAlternateTargetLocation the shouldUseAlternateTargetLocation value to set.
      * @return the AzureWorkloadSqlRestoreRequest object itself.
@@ -200,6 +219,16 @@ public class AzureWorkloadSqlRestoreRequest extends AzureWorkloadRestoreRequest 
     @Override
     public AzureWorkloadSqlRestoreRequest withTargetVirtualMachineId(String targetVirtualMachineId) {
         super.withTargetVirtualMachineId(targetVirtualMachineId);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadSqlRestoreRequest
+        withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
+        super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
         return this;
     }
 

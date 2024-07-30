@@ -104,8 +104,8 @@ public final class GitHubActionConfiguration {
     }
 
     /**
-     * Get the generateWorkflowFile property: Workflow option to determine whether the workflow file should be
-     * generated and written to the repository.
+     * Get the generateWorkflowFile property: Workflow option to determine whether the workflow file should be generated
+     * and written to the repository.
      * 
      * @return the generateWorkflowFile value.
      */
@@ -114,8 +114,8 @@ public final class GitHubActionConfiguration {
     }
 
     /**
-     * Set the generateWorkflowFile property: Workflow option to determine whether the workflow file should be
-     * generated and written to the repository.
+     * Set the generateWorkflowFile property: Workflow option to determine whether the workflow file should be generated
+     * and written to the repository.
      * 
      * @param generateWorkflowFile the generateWorkflowFile value to set.
      * @return the GitHubActionConfiguration object itself.

@@ -25,7 +25,7 @@ import java.util.Arrays;
  */
 public final class FirewallPolicyRuleCollectionGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * FirewallPolicyRuleCollectionGroupPut.json
      */
     /**
@@ -34,22 +34,27 @@ public final class FirewallPolicyRuleCollectionGroupsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createFirewallPolicyRuleCollectionGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getFirewallPolicyRuleCollectionGroups().createOrUpdate("rg1",
-            "firewallPolicy", "ruleCollectionGroup1",
-            new FirewallPolicyRuleCollectionGroupInner().withPriority(100)
-                .withRuleCollections(Arrays.asList(new FirewallPolicyFilterRuleCollection()
-                    .withName("Example-Filter-Rule-Collection").withPriority(100)
-                    .withAction(new FirewallPolicyFilterRuleCollectionAction()
-                        .withType(FirewallPolicyFilterRuleCollectionActionType.DENY))
-                    .withRules(Arrays.asList(new NetworkRule().withName("network-rule1")
-                        .withIpProtocols(Arrays.asList(FirewallPolicyRuleNetworkProtocol.TCP))
-                        .withSourceAddresses(Arrays.asList("10.1.25.0/24")).withDestinationAddresses(Arrays.asList("*"))
-                        .withDestinationPorts(Arrays.asList("*")))))),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getFirewallPolicyRuleCollectionGroups()
+            .createOrUpdate("rg1", "firewallPolicy", "ruleCollectionGroup1",
+                new FirewallPolicyRuleCollectionGroupInner().withPriority(100)
+                    .withRuleCollections(Arrays
+                        .asList(new FirewallPolicyFilterRuleCollection().withName("Example-Filter-Rule-Collection")
+                            .withPriority(100)
+                            .withAction(new FirewallPolicyFilterRuleCollectionAction()
+                                .withType(FirewallPolicyFilterRuleCollectionActionType.DENY))
+                            .withRules(Arrays.asList(new NetworkRule().withName("network-rule1")
+                                .withIpProtocols(Arrays.asList(FirewallPolicyRuleNetworkProtocol.TCP))
+                                .withSourceAddresses(Arrays.asList("10.1.25.0/24"))
+                                .withDestinationAddresses(Arrays.asList("*"))
+                                .withDestinationPorts(Arrays.asList("*")))))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * FirewallPolicyRuleCollectionGroupWithWebCategoriesPut.json
      */
     /**
@@ -59,24 +64,28 @@ public final class FirewallPolicyRuleCollectionGroupsCreateOrUpdateSamples {
      */
     public static void
         createFirewallPolicyRuleCollectionGroupWithWebCategories(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getFirewallPolicyRuleCollectionGroups().createOrUpdate("rg1",
-            "firewallPolicy", "ruleCollectionGroup1",
-            new FirewallPolicyRuleCollectionGroupInner().withPriority(110)
-                .withRuleCollections(Arrays.asList(new FirewallPolicyFilterRuleCollection()
-                    .withName("Example-Filter-Rule-Collection")
-                    .withAction(new FirewallPolicyFilterRuleCollectionAction()
-                        .withType(FirewallPolicyFilterRuleCollectionActionType.DENY))
-                    .withRules(
-                        Arrays.asList(new ApplicationRule().withName("rule1").withDescription("Deny inbound rule")
-                            .withSourceAddresses(Arrays.asList("216.58.216.164", "10.0.0.0/24"))
-                            .withProtocols(Arrays.asList(new FirewallPolicyRuleApplicationProtocol()
-                                .withProtocolType(FirewallPolicyRuleApplicationProtocolType.HTTPS).withPort(443)))
-                            .withWebCategories(Arrays.asList("Hacking")))))),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getFirewallPolicyRuleCollectionGroups()
+            .createOrUpdate("rg1", "firewallPolicy", "ruleCollectionGroup1",
+                new FirewallPolicyRuleCollectionGroupInner().withPriority(110)
+                    .withRuleCollections(Arrays
+                        .asList(new FirewallPolicyFilterRuleCollection().withName("Example-Filter-Rule-Collection")
+                            .withAction(new FirewallPolicyFilterRuleCollectionAction()
+                                .withType(FirewallPolicyFilterRuleCollectionActionType.DENY))
+                            .withRules(Arrays.asList(new ApplicationRule().withName("rule1")
+                                .withDescription("Deny inbound rule")
+                                .withSourceAddresses(Arrays.asList("216.58.216.164", "10.0.0.0/24"))
+                                .withProtocols(Arrays.asList(new FirewallPolicyRuleApplicationProtocol()
+                                    .withProtocolType(FirewallPolicyRuleApplicationProtocolType.HTTPS)
+                                    .withPort(443)))
+                                .withWebCategories(Arrays.asList("Hacking")))))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * FirewallPolicyNatRuleCollectionGroupPut.json
      */
     /**
@@ -86,25 +95,31 @@ public final class FirewallPolicyRuleCollectionGroupsCreateOrUpdateSamples {
      */
     public static void
         createFirewallPolicyNatRuleCollectionGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getFirewallPolicyRuleCollectionGroups().createOrUpdate("rg1",
-            "firewallPolicy", "ruleCollectionGroup1",
-            new FirewallPolicyRuleCollectionGroupInner().withPriority(100)
-                .withRuleCollections(Arrays.asList(new FirewallPolicyNatRuleCollection()
-                    .withName("Example-Nat-Rule-Collection").withPriority(100)
-                    .withAction(new FirewallPolicyNatRuleCollectionAction()
-                        .withType(FirewallPolicyNatRuleCollectionActionType.DNAT))
-                    .withRules(Arrays.asList(new NatRule().withName("nat-rule1")
-                        .withIpProtocols(
-                            Arrays.asList(FirewallPolicyRuleNetworkProtocol.TCP, FirewallPolicyRuleNetworkProtocol.UDP))
-                        .withSourceAddresses(Arrays.asList("2.2.2.2"))
-                        .withDestinationAddresses(Arrays.asList("152.23.32.23"))
-                        .withDestinationPorts(Arrays.asList("8080")).withTranslatedPort("8080")
-                        .withSourceIpGroups(Arrays.asList()).withTranslatedFqdn("internalhttp.server.net"))))),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getFirewallPolicyRuleCollectionGroups()
+            .createOrUpdate("rg1", "firewallPolicy", "ruleCollectionGroup1",
+                new FirewallPolicyRuleCollectionGroupInner().withPriority(100)
+                    .withRuleCollections(
+                        Arrays.asList(new FirewallPolicyNatRuleCollection().withName("Example-Nat-Rule-Collection")
+                            .withPriority(100)
+                            .withAction(new FirewallPolicyNatRuleCollectionAction()
+                                .withType(FirewallPolicyNatRuleCollectionActionType.DNAT))
+                            .withRules(Arrays.asList(new NatRule().withName("nat-rule1")
+                                .withIpProtocols(Arrays.asList(FirewallPolicyRuleNetworkProtocol.TCP,
+                                    FirewallPolicyRuleNetworkProtocol.UDP))
+                                .withSourceAddresses(Arrays.asList("2.2.2.2"))
+                                .withDestinationAddresses(Arrays.asList("152.23.32.23"))
+                                .withDestinationPorts(Arrays.asList("8080"))
+                                .withTranslatedPort("8080")
+                                .withSourceIpGroups(Arrays.asList())
+                                .withTranslatedFqdn("internalhttp.server.net"))))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * FirewallPolicyRuleCollectionGroupWithIpGroupsPut.json
      */
     /**
@@ -114,25 +129,28 @@ public final class FirewallPolicyRuleCollectionGroupsCreateOrUpdateSamples {
      */
     public static void
         createFirewallPolicyRuleCollectionGroupWithIPGroups(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getFirewallPolicyRuleCollectionGroups().createOrUpdate("rg1",
-            "firewallPolicy", "ruleCollectionGroup1",
-            new FirewallPolicyRuleCollectionGroupInner().withPriority(110)
-                .withRuleCollections(Arrays.asList(new FirewallPolicyFilterRuleCollection()
-                    .withName("Example-Filter-Rule-Collection")
-                    .withAction(new FirewallPolicyFilterRuleCollectionAction()
-                        .withType(FirewallPolicyFilterRuleCollectionActionType.DENY))
-                    .withRules(Arrays.asList(new NetworkRule().withName("network-1")
-                        .withIpProtocols(Arrays.asList(FirewallPolicyRuleNetworkProtocol.TCP))
-                        .withDestinationPorts(Arrays.asList("*"))
-                        .withSourceIpGroups(Arrays.asList(
-                            "/subscriptions/subid/providers/Microsoft.Network/resourceGroup/rg1/ipGroups/ipGroups1"))
-                        .withDestinationIpGroups(Arrays.asList(
-                            "/subscriptions/subid/providers/Microsoft.Network/resourceGroup/rg1/ipGroups/ipGroups2")))))),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getFirewallPolicyRuleCollectionGroups()
+            .createOrUpdate("rg1", "firewallPolicy", "ruleCollectionGroup1",
+                new FirewallPolicyRuleCollectionGroupInner().withPriority(110)
+                    .withRuleCollections(Arrays.asList(new FirewallPolicyFilterRuleCollection()
+                        .withName("Example-Filter-Rule-Collection")
+                        .withAction(new FirewallPolicyFilterRuleCollectionAction()
+                            .withType(FirewallPolicyFilterRuleCollectionActionType.DENY))
+                        .withRules(Arrays.asList(new NetworkRule().withName("network-1")
+                            .withIpProtocols(Arrays.asList(FirewallPolicyRuleNetworkProtocol.TCP))
+                            .withDestinationPorts(Arrays.asList("*"))
+                            .withSourceIpGroups(Arrays.asList(
+                                "/subscriptions/subid/providers/Microsoft.Network/resourceGroup/rg1/ipGroups/ipGroups1"))
+                            .withDestinationIpGroups(Arrays.asList(
+                                "/subscriptions/subid/providers/Microsoft.Network/resourceGroup/rg1/ipGroups/ipGroups2")))))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * FirewallPolicyRuleCollectionGroupWithHttpHeadersToInsert.json
      */
     /**
@@ -142,18 +160,23 @@ public final class FirewallPolicyRuleCollectionGroupsCreateOrUpdateSamples {
      */
     public static void createFirewallPolicyRuleCollectionGroupWithHttpHeaderToInsert(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getFirewallPolicyRuleCollectionGroups()
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getFirewallPolicyRuleCollectionGroups()
             .createOrUpdate("rg1", "firewallPolicy", "ruleCollectionGroup1",
                 new FirewallPolicyRuleCollectionGroupInner().withPriority(110)
-                    .withRuleCollections(Arrays
-                        .asList(new FirewallPolicyFilterRuleCollection().withName("Example-Filter-Rule-Collection")
-                            .withAction(new FirewallPolicyFilterRuleCollectionAction()
-                                .withType(FirewallPolicyFilterRuleCollectionActionType.ALLOW))
-                            .withRules(Arrays.asList(
-                                new ApplicationRule().withName("rule1").withDescription("Insert trusted tenants header")
+                    .withRuleCollections(
+                        Arrays
+                            .asList(new FirewallPolicyFilterRuleCollection().withName("Example-Filter-Rule-Collection")
+                                .withAction(new FirewallPolicyFilterRuleCollectionAction()
+                                    .withType(FirewallPolicyFilterRuleCollectionActionType.ALLOW))
+                                .withRules(Arrays.asList(new ApplicationRule().withName("rule1")
+                                    .withDescription("Insert trusted tenants header")
                                     .withSourceAddresses(Arrays.asList("216.58.216.164", "10.0.0.0/24"))
                                     .withProtocols(Arrays.asList(new FirewallPolicyRuleApplicationProtocol()
-                                        .withProtocolType(FirewallPolicyRuleApplicationProtocolType.HTTP).withPort(80)))
+                                        .withProtocolType(FirewallPolicyRuleApplicationProtocolType.HTTP)
+                                        .withPort(80)))
                                     .withFqdnTags(Arrays.asList("WindowsVirtualDesktop"))
                                     .withHttpHeadersToInsert(Arrays.asList(new FirewallPolicyHttpHeaderToInsert()
                                         .withHeaderName("Restrict-Access-To-Tenants")

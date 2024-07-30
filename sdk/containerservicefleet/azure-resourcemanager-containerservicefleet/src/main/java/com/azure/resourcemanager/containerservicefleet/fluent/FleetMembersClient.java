@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.containerservicefleet.fluent.models.FleetMemberInner;
 import com.azure.resourcemanager.containerservicefleet.models.FleetMemberUpdate;
 
-/** An instance of this class provides access to all the operations defined in FleetMembersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FleetMembersClient.
+ */
 public interface FleetMembersClient {
     /**
      * List FleetMember resources by Fleet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,7 +33,7 @@ public interface FleetMembersClient {
 
     /**
      * List FleetMember resources by Fleet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param context The context to associate with this operation.
@@ -45,7 +47,7 @@ public interface FleetMembersClient {
 
     /**
      * Get a FleetMember.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param fleetMemberName The name of the Fleet member resource.
@@ -56,12 +58,12 @@ public interface FleetMembersClient {
      * @return a FleetMember along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FleetMemberInner> getWithResponse(
-        String resourceGroupName, String fleetName, String fleetMemberName, Context context);
+    Response<FleetMemberInner> getWithResponse(String resourceGroupName, String fleetName, String fleetMemberName,
+        Context context);
 
     /**
      * Get a FleetMember.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param fleetMemberName The name of the Fleet member resource.
@@ -75,7 +77,7 @@ public interface FleetMembersClient {
 
     /**
      * Create a FleetMember.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param fleetMemberName The name of the Fleet member resource.
@@ -86,12 +88,12 @@ public interface FleetMembersClient {
      * @return the {@link SyncPoller} for polling of a member of the Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FleetMemberInner>, FleetMemberInner> beginCreate(
-        String resourceGroupName, String fleetName, String fleetMemberName, FleetMemberInner resource);
+    SyncPoller<PollResult<FleetMemberInner>, FleetMemberInner> beginCreate(String resourceGroupName, String fleetName,
+        String fleetMemberName, FleetMemberInner resource);
 
     /**
      * Create a FleetMember.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param fleetMemberName The name of the Fleet member resource.
@@ -105,18 +107,12 @@ public interface FleetMembersClient {
      * @return the {@link SyncPoller} for polling of a member of the Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FleetMemberInner>, FleetMemberInner> beginCreate(
-        String resourceGroupName,
-        String fleetName,
-        String fleetMemberName,
-        FleetMemberInner resource,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context);
+    SyncPoller<PollResult<FleetMemberInner>, FleetMemberInner> beginCreate(String resourceGroupName, String fleetName,
+        String fleetMemberName, FleetMemberInner resource, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Create a FleetMember.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param fleetMemberName The name of the Fleet member resource.
@@ -127,12 +123,12 @@ public interface FleetMembersClient {
      * @return a member of the Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FleetMemberInner create(
-        String resourceGroupName, String fleetName, String fleetMemberName, FleetMemberInner resource);
+    FleetMemberInner create(String resourceGroupName, String fleetName, String fleetMemberName,
+        FleetMemberInner resource);
 
     /**
      * Create a FleetMember.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param fleetMemberName The name of the Fleet member resource.
@@ -146,18 +142,12 @@ public interface FleetMembersClient {
      * @return a member of the Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FleetMemberInner create(
-        String resourceGroupName,
-        String fleetName,
-        String fleetMemberName,
-        FleetMemberInner resource,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context);
+    FleetMemberInner create(String resourceGroupName, String fleetName, String fleetMemberName,
+        FleetMemberInner resource, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Update a FleetMember.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param fleetMemberName The name of the Fleet member resource.
@@ -168,12 +158,12 @@ public interface FleetMembersClient {
      * @return the {@link SyncPoller} for polling of a member of the Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FleetMemberInner>, FleetMemberInner> beginUpdate(
-        String resourceGroupName, String fleetName, String fleetMemberName, FleetMemberUpdate properties);
+    SyncPoller<PollResult<FleetMemberInner>, FleetMemberInner> beginUpdate(String resourceGroupName, String fleetName,
+        String fleetMemberName, FleetMemberUpdate properties);
 
     /**
      * Update a FleetMember.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param fleetMemberName The name of the Fleet member resource.
@@ -186,17 +176,12 @@ public interface FleetMembersClient {
      * @return the {@link SyncPoller} for polling of a member of the Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FleetMemberInner>, FleetMemberInner> beginUpdate(
-        String resourceGroupName,
-        String fleetName,
-        String fleetMemberName,
-        FleetMemberUpdate properties,
-        String ifMatch,
-        Context context);
+    SyncPoller<PollResult<FleetMemberInner>, FleetMemberInner> beginUpdate(String resourceGroupName, String fleetName,
+        String fleetMemberName, FleetMemberUpdate properties, String ifMatch, Context context);
 
     /**
      * Update a FleetMember.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param fleetMemberName The name of the Fleet member resource.
@@ -207,12 +192,12 @@ public interface FleetMembersClient {
      * @return a member of the Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FleetMemberInner update(
-        String resourceGroupName, String fleetName, String fleetMemberName, FleetMemberUpdate properties);
+    FleetMemberInner update(String resourceGroupName, String fleetName, String fleetMemberName,
+        FleetMemberUpdate properties);
 
     /**
      * Update a FleetMember.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param fleetMemberName The name of the Fleet member resource.
@@ -225,17 +210,12 @@ public interface FleetMembersClient {
      * @return a member of the Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FleetMemberInner update(
-        String resourceGroupName,
-        String fleetName,
-        String fleetMemberName,
-        FleetMemberUpdate properties,
-        String ifMatch,
-        Context context);
+    FleetMemberInner update(String resourceGroupName, String fleetName, String fleetMemberName,
+        FleetMemberUpdate properties, String ifMatch, Context context);
 
     /**
      * Delete a FleetMember.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param fleetMemberName The name of the Fleet member resource.
@@ -249,7 +229,7 @@ public interface FleetMembersClient {
 
     /**
      * Delete a FleetMember.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param fleetMemberName The name of the Fleet member resource.
@@ -261,12 +241,12 @@ public interface FleetMembersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String fleetName, String fleetMemberName, String ifMatch, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName, String fleetMemberName,
+        String ifMatch, Context context);
 
     /**
      * Delete a FleetMember.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param fleetMemberName The name of the Fleet member resource.
@@ -279,7 +259,7 @@ public interface FleetMembersClient {
 
     /**
      * Delete a FleetMember.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param fleetMemberName The name of the Fleet member resource.

@@ -8,7 +8,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
-import com.azure.core.http.policy.FixedDelay;
+import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
@@ -21,6 +21,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Header;
 import com.azure.data.appconfiguration.implementation.ClientConstants;
+import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -37,12 +38,12 @@ import java.util.Objects;
 
 import static com.azure.data.appconfiguration.ConfigurationClientTestBase.FAKE_CONNECTION_STRING;
 import static com.azure.data.appconfiguration.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
+import static com.azure.data.appconfiguration.TestHelper.getTokenCredential;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ConfigurationClientBuilderTest extends TestProxyTestBase {
-    private static final String AZURE_APPCONFIG_CONNECTION_STRING = "AZURE_APPCONFIG_CONNECTION_STRING";
     private static final String DEFAULT_DOMAIN_NAME = ".azconfig.io";
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
     private final String key = "newKey";
@@ -158,6 +159,7 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
     public void timeoutPolicy() {
         final ConfigurationClient client = new ConfigurationClientBuilder()
             .connectionString(FAKE_CONNECTION_STRING)
+            .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ofMillis(1))))
             .addPolicy(new TimeoutPolicy(Duration.ofMillis(1))).buildClient();
 
         assertThrows(RuntimeException.class, () -> client.setConfigurationSetting(key, null, value));
@@ -178,14 +180,18 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void nullServiceVersion(HttpClient httpClient) {
-        String connectionString = interceptorManager.isPlaybackMode()
-            ? FAKE_CONNECTION_STRING
-            : Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
+        TokenCredential tokenCredential = getTokenCredential(interceptorManager);
 
-        Objects.requireNonNull(connectionString, "`AZURE_APPCONFIG_CONNECTION_STRING` expected to be set.");
+        String endpoint = interceptorManager.isPlaybackMode()
+            ? new ConfigurationClientCredentials(FAKE_CONNECTION_STRING).getBaseUri()
+            : Configuration.getGlobalConfiguration().get("AZ_CONFIG_ENDPOINT");
+
+        Objects.requireNonNull(tokenCredential, "tokenCredential expected to be set.");
+        Objects.requireNonNull(endpoint, "endpoint expected to be set.");
 
         final ConfigurationClientBuilder clientBuilder = new ConfigurationClientBuilder()
-            .connectionString(connectionString)
+            .credential(tokenCredential)
+            .endpoint(endpoint)
             .retryPolicy(new RetryPolicy())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(null);
@@ -198,6 +204,10 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
                 .httpClient(httpClient)
                 .addPolicy(interceptorManager.getRecordPolicy());
         }
+        // Disable `("$.key")` sanitizer
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.removeSanitizers("AZSDK3447");
+        }
 
         ConfigurationSetting addedSetting = clientBuilder.buildClient().setConfigurationSetting(key, null, value);
         assertEquals(addedSetting.getKey(), key);
@@ -206,14 +216,18 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
 
     @Test
     public void defaultPipeline() {
-        String connectionString = interceptorManager.isPlaybackMode()
-            ? FAKE_CONNECTION_STRING
-            : Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
+        TokenCredential tokenCredential = TestHelper.getTokenCredential(interceptorManager);
 
-        Objects.requireNonNull(connectionString, "`AZURE_APPCONFIG_CONNECTION_STRING` expected to be set.");
+        String endpoint = interceptorManager.isPlaybackMode()
+            ? new ConfigurationClientCredentials(FAKE_CONNECTION_STRING).getBaseUri()
+            : Configuration.getGlobalConfiguration().get("AZ_CONFIG_ENDPOINT");
+
+        Objects.requireNonNull(tokenCredential, "tokenCredential expected to be set.");
+        Objects.requireNonNull(endpoint, "endpoint expected to be set.");
 
         final ConfigurationClientBuilder clientBuilder = new ConfigurationClientBuilder()
-            .connectionString(connectionString)
+            .credential(tokenCredential)
+            .endpoint(endpoint)
             .retryPolicy(new RetryPolicy())
             .configuration(Configuration.getGlobalConfiguration())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
@@ -228,6 +242,11 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
             clientBuilder.httpClient(interceptorManager.getPlaybackClient());
         }
 
+        // Disable `("$.key")` sanitizer
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.removeSanitizers("AZSDK3447");
+        }
+
         ConfigurationSetting addedSetting = clientBuilder
             .buildClient()
             .setConfigurationSetting(key, null, value);
@@ -239,33 +258,31 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
     @Test
     @DoNotRecord
     public void clientOptionsIsPreferredOverLogOptions() {
-        ConfigurationClient configurationClient =
-            new ConfigurationClientBuilder()
-                .connectionString(FAKE_CONNECTION_STRING)
-                .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
-                .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
-                .httpClient(httpRequest -> {
-                    assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("aNewApplication"));
-                    return Mono.just(new MockHttpResponse(httpRequest, 400));
-                })
-                .buildClient();
+        ConfigurationClient configurationClient = new ConfigurationClientBuilder()
+            .connectionString(FAKE_CONNECTION_STRING)
+            .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ofMillis(1))))
+            .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
+            .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
+            .httpClient(httpRequest -> {
+                assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("aNewApplication"));
+                return Mono.just(new MockHttpResponse(httpRequest, 400));
+            })
+            .buildClient();
         assertThrows(HttpResponseException.class, () -> configurationClient.setConfigurationSetting(key, null, value));
     }
 
     @Test
     @DoNotRecord
     public void clientOptionHeadersAreAddedLast() {
-        ConfigurationClient configurationClient =
-            new ConfigurationClientBuilder()
-                .connectionString(FAKE_CONNECTION_STRING)
-                .clientOptions(new ClientOptions()
-                                   .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
-                .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
-                .httpClient(httpRequest -> {
-                    assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
-                    return Mono.just(new MockHttpResponse(httpRequest, 400));
-                })
-                .buildClient();
+        ConfigurationClient configurationClient = new ConfigurationClientBuilder()
+            .connectionString(FAKE_CONNECTION_STRING)
+            .clientOptions(new ClientOptions().setHeaders(Collections.singleton(new Header("User-Agent", "custom"))))
+            .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ofMillis(1))))
+            .httpClient(httpRequest -> {
+                assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
+                return Mono.just(new MockHttpResponse(httpRequest, 400));
+            })
+            .buildClient();
         assertThrows(HttpResponseException.class, () -> configurationClient.setConfigurationSetting(key, null, value));
     }
 

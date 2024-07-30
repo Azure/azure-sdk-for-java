@@ -25,11 +25,14 @@ public final class ClientDiscoveryForServiceSpecificationTests {
     public void testSerialize() throws Exception {
         ClientDiscoveryForServiceSpecification model
             = new ClientDiscoveryForServiceSpecification().withLogSpecifications(Arrays.asList(
-                new ClientDiscoveryForLogSpecification().withName("rzafbljjgpbtoqcj").withDisplayName("ljavbqid")
+                new ClientDiscoveryForLogSpecification().withName("rzafbljjgpbtoqcj")
+                    .withDisplayName("ljavbqid")
                     .withBlobDuration("ajzyul"),
-                new ClientDiscoveryForLogSpecification().withName("u").withDisplayName("krlkhbzhfepg")
+                new ClientDiscoveryForLogSpecification().withName("u")
+                    .withDisplayName("krlkhbzhfepg")
                     .withBlobDuration("qex"),
-                new ClientDiscoveryForLogSpecification().withName("ocxscpaierhhbcs").withDisplayName("ummajtjaod")
+                new ClientDiscoveryForLogSpecification().withName("ocxscpaierhhbcs")
+                    .withDisplayName("ummajtjaod")
                     .withBlobDuration("bnbdxkqpxokajion")));
         model = BinaryData.fromObject(model).toObject(ClientDiscoveryForServiceSpecification.class);
         Assertions.assertEquals("rzafbljjgpbtoqcj", model.logSpecifications().get(0).name());

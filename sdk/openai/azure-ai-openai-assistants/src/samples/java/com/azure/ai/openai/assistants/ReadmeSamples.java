@@ -8,9 +8,14 @@ import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
 import com.azure.ai.openai.assistants.models.CreateAndRunThreadOptions;
+import com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceOptions;
+import com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceVectorStoreOptions;
+import com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceVectorStoreOptionsList;
 import com.azure.ai.openai.assistants.models.CreateRunOptions;
+import com.azure.ai.openai.assistants.models.CreateToolResourcesOptions;
 import com.azure.ai.openai.assistants.models.FileDetails;
 import com.azure.ai.openai.assistants.models.FilePurpose;
+import com.azure.ai.openai.assistants.models.FileSearchToolDefinition;
 import com.azure.ai.openai.assistants.models.FunctionDefinition;
 import com.azure.ai.openai.assistants.models.FunctionToolDefinition;
 import com.azure.ai.openai.assistants.models.MessageContent;
@@ -18,15 +23,15 @@ import com.azure.ai.openai.assistants.models.MessageImageFileContent;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.MessageTextContent;
 import com.azure.ai.openai.assistants.models.MessageTextDetails;
+import com.azure.ai.openai.assistants.models.MessageTextFileCitationAnnotation;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
 import com.azure.ai.openai.assistants.models.PageableList;
 import com.azure.ai.openai.assistants.models.RequiredFunctionToolCall;
 import com.azure.ai.openai.assistants.models.RequiredFunctionToolCallDetails;
 import com.azure.ai.openai.assistants.models.RequiredToolCall;
-import com.azure.ai.openai.assistants.models.RetrievalToolDefinition;
 import com.azure.ai.openai.assistants.models.RunStatus;
 import com.azure.ai.openai.assistants.models.SubmitToolOutputsAction;
-import com.azure.ai.openai.assistants.models.ThreadInitializationMessage;
+import com.azure.ai.openai.assistants.models.ThreadMessageOptions;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.ai.openai.assistants.models.ToolOutput;
@@ -35,9 +40,11 @@ import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.TypeReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -117,7 +124,7 @@ public final class ReadmeSamples {
 
         // BEGIN: readme-sample-createMessage
         String userMessage = "I need to solve the equation `3x + 11 = 14`. Can you help me?";
-        ThreadMessage threadMessage = client.createMessage(threadId, MessageRole.USER, userMessage);
+        ThreadMessage threadMessage = client.createMessage(threadId, new ThreadMessageOptions(MessageRole.USER, userMessage));
         // END: readme-sample-createMessage
 
         // BEGIN: readme-sample-createRun
@@ -127,7 +134,7 @@ public final class ReadmeSamples {
         // BEGIN: readme-sample-createThreadAndRun
         CreateAndRunThreadOptions createAndRunThreadOptions = new CreateAndRunThreadOptions(assistantId)
                 .setThread(new AssistantThreadCreationOptions()
-                        .setMessages(Arrays.asList(new ThreadInitializationMessage(MessageRole.USER,
+                        .setMessages(Arrays.asList(new ThreadMessageOptions(MessageRole.USER,
                                 "I need to solve the equation `3x + 11 = 14`. Can you help me?"))));
         run = client.createThreadAndRun(createAndRunThreadOptions);
         // END: readme-sample-createThreadAndRun
@@ -165,18 +172,25 @@ public final class ReadmeSamples {
         // BEGIN: readme-sample-uploadFile
         Path filePath = Paths.get("src", "samples", "resources", fileName);
         BinaryData fileData = BinaryData.fromFile(filePath);
-        FileDetails fileDetails = new FileDetails(fileData).setFilename(fileName);
+        FileDetails fileDetails = new FileDetails(fileData, fileName);
 
         OpenAIFile openAIFile = client.uploadFile(fileDetails, FilePurpose.ASSISTANTS);
         // END: readme-sample-uploadFile
 
         // BEGIN: readme-sample-createRetrievalAssistant
+        // Create Tool Resources. This is how we pass files to the Assistant.
+        CreateToolResourcesOptions createToolResourcesOptions = new CreateToolResourcesOptions();
+        createToolResourcesOptions.setFileSearch(
+            new CreateFileSearchToolResourceOptions(
+                new CreateFileSearchToolResourceVectorStoreOptionsList(
+                    Arrays.asList(new CreateFileSearchToolResourceVectorStoreOptions(Arrays.asList(openAIFile.getId()))))));
+
         Assistant assistant = client.createAssistant(
             new AssistantCreationOptions(deploymentOrModelId)
                 .setName("Java SDK Retrieval Sample")
                 .setInstructions("You are a helpful assistant that can help fetch data from files you know about.")
-                .setTools(Arrays.asList(new RetrievalToolDefinition()))
-                .setFileIds(Arrays.asList(openAIFile.getId()))
+                .setTools(Arrays.asList(new FileSearchToolDefinition()))
+                .setToolResources(createToolResourcesOptions)
         );
         // END: readme-sample-createRetrievalAssistant
 
@@ -185,14 +199,15 @@ public final class ReadmeSamples {
         // Assign message to thread
         client.createMessage(
             thread.getId(),
-            MessageRole.USER,
-            "Can you give me the documented codes for 'banana' and 'orange'?");
+            new ThreadMessageOptions(
+                MessageRole.USER,
+                "Can you give me the documented codes for 'banana' and 'orange'?"));
 
         // Pass the message to the assistant and start the run
         ThreadRun run = client.createRun(thread, assistant);
 
         do {
-            Thread.sleep(500);
+            Thread.sleep(1000);
             run = client.getRun(thread.getId(), run.getId());
         } while (run.getStatus() == RunStatus.IN_PROGRESS
             || run.getStatus() == RunStatus.QUEUED);
@@ -203,9 +218,13 @@ public final class ReadmeSamples {
                 if (content instanceof MessageTextContent) {
                     MessageTextDetails messageTextDetails = ((MessageTextContent) content).getText();
                     System.out.println(messageTextDetails.getValue());
-                    messageTextDetails.getAnnotations().forEach(annotation ->
-                        System.out.println("\tAnnotation start: " + annotation.getStartIndex()
-                            + " ,end: " + annotation.getEndIndex() + " ,text: \"" + annotation.getText() + "\""));
+                    messageTextDetails.getAnnotations().forEach(annotation -> {
+                        if (annotation instanceof MessageTextFileCitationAnnotation) {
+                            MessageTextFileCitationAnnotation textAnnotation = (MessageTextFileCitationAnnotation) annotation;
+                            System.out.println("\tAnnotation start: " + textAnnotation.getStartIndex()
+                                + " ,end: " + textAnnotation.getEndIndex() + " ,text: \"" + textAnnotation.getText() + "\"");
+                        }
+                    });
                 } else if (content instanceof MessageImageFileContent) {
                     System.out.print("Image file ID: ");
                     System.out.println(((MessageImageFileContent) content).getImageFile().getFileId());
@@ -240,14 +259,14 @@ public final class ReadmeSamples {
         AssistantThread thread = client.createThread(new AssistantThreadCreationOptions());
 
         // capture user input
-        client.createMessage(thread.getId(), MessageRole.USER, "What is the weather like in my favorite city?");
+        client.createMessage(thread.getId(), new ThreadMessageOptions(MessageRole.USER, "What is the weather like in my favorite city?"));
 
         // Create a run
         ThreadRun run = client.createRun(thread, assistant);
 
         // BEGIN: readme-sample-functionHandlingRunPolling
         do {
-            Thread.sleep(500);
+            Thread.sleep(1000);
             run = client.getRun(thread.getId(), run.getId());
 
             if (run.getStatus() == RunStatus.REQUIRES_ACTION
@@ -284,13 +303,24 @@ public final class ReadmeSamples {
     // BEGIN: readme-sample-functionDefinition
     private FunctionToolDefinition getUserFavoriteCityToolDefinition() {
 
-        class UserFavoriteCityParameters {
+        class UserFavoriteCityParameters implements JsonSerializable<UserFavoriteCityParameters> {
 
-            @JsonProperty("type")
             private String type = "object";
 
-            @JsonProperty("properties")
-            private Map<String, Object> properties = new HashMap<>();
+            private Map<String, JsonSerializable<?>> properties = new HashMap<>();
+
+            @Override
+            public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+                jsonWriter.writeStartObject();
+                jsonWriter.writeStringField("type", this.type);
+                jsonWriter.writeStartObject("properties");
+                for (Map.Entry<String, JsonSerializable<?>> entry : this.properties.entrySet()) {
+                    jsonWriter.writeFieldName(entry.getKey());
+                    entry.getValue().toJson(jsonWriter);
+                }
+                jsonWriter.writeEndObject();
+                return jsonWriter.writeEndObject();
+            }
         }
 
         return new FunctionToolDefinition(

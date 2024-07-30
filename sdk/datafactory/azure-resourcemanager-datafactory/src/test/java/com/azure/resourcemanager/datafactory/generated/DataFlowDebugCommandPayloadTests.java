@@ -24,7 +24,9 @@ public final class DataFlowDebugCommandPayloadTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataFlowDebugCommandPayload model = new DataFlowDebugCommandPayload().withStreamName("uartvti")
-            .withRowLimits(1848545940).withColumns(Arrays.asList("chnmna", "mnxhkxjqirwrweo")).withExpression("ffifhx");
+            .withRowLimits(1848545940)
+            .withColumns(Arrays.asList("chnmna", "mnxhkxjqirwrweo"))
+            .withExpression("ffifhx");
         model = BinaryData.fromObject(model).toObject(DataFlowDebugCommandPayload.class);
         Assertions.assertEquals("uartvti", model.streamName());
         Assertions.assertEquals(1848545940, model.rowLimits());

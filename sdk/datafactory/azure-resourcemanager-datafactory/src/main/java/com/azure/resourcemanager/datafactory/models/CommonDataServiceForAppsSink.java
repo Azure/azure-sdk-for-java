@@ -7,16 +7,28 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity Common Data Service for Apps sink.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = CommonDataServiceForAppsSink.class,
+    visible = true)
 @JsonTypeName("CommonDataServiceForAppsSink")
 @Fluent
 public final class CommonDataServiceForAppsSink extends CopySink {
+    /*
+     * Copy sink type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "CommonDataServiceForAppsSink";
+
     /*
      * The write behavior for the operation.
      */
@@ -31,8 +43,8 @@ public final class CommonDataServiceForAppsSink extends CopySink {
     private Object ignoreNullValues;
 
     /*
-     * The logical name of the alternate key which will be used when upserting records. Type: string (or Expression
-     * with resultType string).
+     * The logical name of the alternate key which will be used when upserting records. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "alternateKeyName")
     private Object alternateKeyName;
@@ -41,6 +53,16 @@ public final class CommonDataServiceForAppsSink extends CopySink {
      * Creates an instance of CommonDataServiceForAppsSink class.
      */
     public CommonDataServiceForAppsSink() {
+    }
+
+    /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -170,8 +192,9 @@ public final class CommonDataServiceForAppsSink extends CopySink {
     public void validate() {
         super.validate();
         if (writeBehavior() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property writeBehavior in model CommonDataServiceForAppsSink"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property writeBehavior in model CommonDataServiceForAppsSink"));
         }
     }
 

@@ -5,68 +5,63 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.core.util.CoreUtils;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
-/** An enumeration of handles. */
-@JacksonXmlRootElement(localName = "EnumerationResults")
+/**
+ * An enumeration of handles.
+ */
 @Fluent
-public final class ListHandlesResponse {
-    private static final class EntriesWrapper {
-        @JacksonXmlProperty(localName = "Handle")
-        private final List<HandleItem> items;
-
-        @JsonCreator
-        private EntriesWrapper(@JacksonXmlProperty(localName = "Handle") List<HandleItem> items) {
-            this.items = items;
-        }
-    }
-
+public final class ListHandlesResponse implements XmlSerializable<ListHandlesResponse> {
     /*
      * The HandleList property.
      */
-    @JsonProperty(value = "Entries")
-    private EntriesWrapper handleList;
+    private List<HandleItem> handleList;
 
     /*
      * The NextMarker property.
      */
-    @JsonProperty(value = "NextMarker", required = true)
     private String nextMarker;
 
-    /** Creates an instance of ListHandlesResponse class. */
-    public ListHandlesResponse() {}
+    /**
+     * Creates an instance of ListHandlesResponse class.
+     */
+    public ListHandlesResponse() {
+    }
 
     /**
      * Get the handleList property: The HandleList property.
-     *
+     * 
      * @return the handleList value.
      */
     public List<HandleItem> getHandleList() {
         if (this.handleList == null) {
-            this.handleList = new EntriesWrapper(new ArrayList<HandleItem>());
+            this.handleList = new ArrayList<>();
         }
-        return this.handleList.items;
+        return this.handleList;
     }
 
     /**
      * Set the handleList property: The HandleList property.
-     *
+     * 
      * @param handleList the handleList value to set.
      * @return the ListHandlesResponse object itself.
      */
     public ListHandlesResponse setHandleList(List<HandleItem> handleList) {
-        this.handleList = new EntriesWrapper(handleList);
+        this.handleList = handleList;
         return this;
     }
 
     /**
      * Get the nextMarker property: The NextMarker property.
-     *
+     * 
      * @return the nextMarker value.
      */
     public String getNextMarker() {
@@ -75,12 +70,86 @@ public final class ListHandlesResponse {
 
     /**
      * Set the nextMarker property: The NextMarker property.
-     *
+     * 
      * @param nextMarker the nextMarker value to set.
      * @return the ListHandlesResponse object itself.
      */
     public ListHandlesResponse setNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "EnumerationResults" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        if (this.handleList != null) {
+            xmlWriter.writeStartElement("Entries");
+            for (HandleItem element : this.handleList) {
+                xmlWriter.writeXml(element, "Handle");
+            }
+            xmlWriter.writeEndElement();
+        }
+        xmlWriter.writeStringElement("NextMarker", this.nextMarker);
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of ListHandlesResponse from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of ListHandlesResponse if the XmlReader was pointing to an instance of it, or null if it was
+     * pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the ListHandlesResponse.
+     */
+    public static ListHandlesResponse fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of ListHandlesResponse from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     * cases where the model can deserialize from different root element names.
+     * @return An instance of ListHandlesResponse if the XmlReader was pointing to an instance of it, or null if it was
+     * pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the ListHandlesResponse.
+     */
+    public static ListHandlesResponse fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "EnumerationResults" : rootElementName;
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            ListHandlesResponse deserializedListHandlesResponse = new ListHandlesResponse();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
+
+                if ("Entries".equals(elementName.getLocalPart())) {
+                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                        elementName = reader.getElementName();
+                        if ("Handle".equals(elementName.getLocalPart())) {
+                            if (deserializedListHandlesResponse.handleList == null) {
+                                deserializedListHandlesResponse.handleList = new ArrayList<>();
+                            }
+                            deserializedListHandlesResponse.handleList.add(HandleItem.fromXml(reader, "Handle"));
+                        } else {
+                            reader.skipElement();
+                        }
+                    }
+                } else if ("NextMarker".equals(elementName.getLocalPart())) {
+                    deserializedListHandlesResponse.nextMarker = reader.getStringElement();
+                } else {
+                    reader.skipElement();
+                }
+            }
+
+            return deserializedListHandlesResponse;
+        });
     }
 }

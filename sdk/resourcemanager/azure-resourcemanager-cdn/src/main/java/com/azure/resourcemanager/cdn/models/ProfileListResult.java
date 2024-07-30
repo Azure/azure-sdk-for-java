@@ -27,13 +27,15 @@ public final class ProfileListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ProfileListResult class. */
+    /**
+     * Creates an instance of ProfileListResult class.
+     */
     public ProfileListResult() {
     }
 
     /**
      * Get the value property: List of CDN profiles within a resource group.
-     *
+     * 
      * @return the value value.
      */
     public List<ProfileInner> value() {
@@ -42,7 +44,7 @@ public final class ProfileListResult {
 
     /**
      * Get the nextLink property: URL to get the next set of profile objects if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -51,7 +53,7 @@ public final class ProfileListResult {
 
     /**
      * Set the nextLink property: URL to get the next set of profile objects if there are any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ProfileListResult object itself.
      */
@@ -62,7 +64,7 @@ public final class ProfileListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

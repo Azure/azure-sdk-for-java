@@ -5,14 +5,14 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The input definition information for a code interpreter tool as used to configure an assistant.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("code_interpreter")
 @Immutable
 public final class CodeInterpreterToolDefinition extends ToolDefinition {
 
@@ -21,5 +21,55 @@ public final class CodeInterpreterToolDefinition extends ToolDefinition {
      */
     @Generated
     public CodeInterpreterToolDefinition() {
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", "code_interpreter");
+        return jsonWriter.writeEndObject();
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type = "code_interpreter";
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * Reads an instance of CodeInterpreterToolDefinition from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CodeInterpreterToolDefinition if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CodeInterpreterToolDefinition.
+     */
+    @Generated
+    public static CodeInterpreterToolDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CodeInterpreterToolDefinition deserializedCodeInterpreterToolDefinition
+                = new CodeInterpreterToolDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("type".equals(fieldName)) {
+                    deserializedCodeInterpreterToolDefinition.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedCodeInterpreterToolDefinition;
+        });
     }
 }

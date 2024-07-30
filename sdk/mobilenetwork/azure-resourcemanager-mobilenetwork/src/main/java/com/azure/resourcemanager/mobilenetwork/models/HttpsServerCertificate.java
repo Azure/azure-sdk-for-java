@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** HTTPS server certificate configuration. */
+/**
+ * HTTPS server certificate configuration.
+ */
 @Fluent
 public final class HttpsServerCertificate {
     /*
@@ -23,14 +25,16 @@ public final class HttpsServerCertificate {
     @JsonProperty(value = "provisioning", access = JsonProperty.Access.WRITE_ONLY)
     private CertificateProvisioning provisioning;
 
-    /** Creates an instance of HttpsServerCertificate class. */
+    /**
+     * Creates an instance of HttpsServerCertificate class.
+     */
     public HttpsServerCertificate() {
     }
 
     /**
      * Get the certificateUrl property: The certificate URL, unversioned. For example:
      * https://contosovault.vault.azure.net/certificates/ingress.
-     *
+     * 
      * @return the certificateUrl value.
      */
     public String certificateUrl() {
@@ -40,7 +44,7 @@ public final class HttpsServerCertificate {
     /**
      * Set the certificateUrl property: The certificate URL, unversioned. For example:
      * https://contosovault.vault.azure.net/certificates/ingress.
-     *
+     * 
      * @param certificateUrl the certificateUrl value to set.
      * @return the HttpsServerCertificate object itself.
      */
@@ -51,7 +55,7 @@ public final class HttpsServerCertificate {
 
     /**
      * Get the provisioning property: The provisioning state of the certificate.
-     *
+     * 
      * @return the provisioning value.
      */
     public CertificateProvisioning provisioning() {
@@ -60,15 +64,14 @@ public final class HttpsServerCertificate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (certificateUrl() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property certificateUrl in model HttpsServerCertificate"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property certificateUrl in model HttpsServerCertificate"));
         }
         if (provisioning() != null) {
             provisioning().validate();

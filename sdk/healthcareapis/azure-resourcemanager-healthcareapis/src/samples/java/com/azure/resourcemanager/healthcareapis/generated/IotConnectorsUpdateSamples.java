@@ -15,9 +15,7 @@ import java.util.Map;
  */
 public final class IotConnectorsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/iotconnectors/
-     * iotconnector_Patch.json
+     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/iotconnectors/iotconnector_Patch.json
      */
     /**
      * Sample code: Patch an IoT Connector.
@@ -26,7 +24,8 @@ public final class IotConnectorsUpdateSamples {
      */
     public static void patchAnIoTConnector(com.azure.resourcemanager.healthcareapis.HealthcareApisManager manager) {
         IotConnector resource = manager.iotConnectors()
-            .getWithResponse("testRG", "workspace1", "blue", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("testRG", "workspace1", "blue", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update()
             .withTags(mapOf("additionalProp1", "string", "additionalProp2", "string", "additionalProp3", "string"))
             .withIdentity(new ServiceManagedIdentityIdentity().withType(ServiceManagedIdentityType.SYSTEM_ASSIGNED))

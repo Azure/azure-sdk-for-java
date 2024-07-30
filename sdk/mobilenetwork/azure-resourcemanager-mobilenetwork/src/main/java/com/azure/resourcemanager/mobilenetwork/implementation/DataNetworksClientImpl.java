@@ -40,22 +40,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DataNetworksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DataNetworksClient.
+ */
 public final class DataNetworksClientImpl implements DataNetworksClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DataNetworksService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MobileNetworkManagementClientImpl client;
 
     /**
      * Initializes an instance of DataNetworksClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DataNetworksClientImpl(MobileNetworkManagementClientImpl client) {
-        this.service =
-            RestProxy.create(DataNetworksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(DataNetworksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,96 +72,73 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
     @Host("{$host}")
     @ServiceInterface(name = "MobileNetworkManagem")
     public interface DataNetworksService {
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/dataNetworks/{dataNetworkName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/dataNetworks/{dataNetworkName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("mobileNetworkName") String mobileNetworkName,
+            @PathParam("dataNetworkName") String dataNetworkName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/dataNetworks/{dataNetworkName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<DataNetworkInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("mobileNetworkName") String mobileNetworkName,
+            @PathParam("dataNetworkName") String dataNetworkName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/dataNetworks/{dataNetworkName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("mobileNetworkName") String mobileNetworkName,
             @PathParam("dataNetworkName") String dataNetworkName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") DataNetworkInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/dataNetworks/{dataNetworkName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/dataNetworks/{dataNetworkName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DataNetworkInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DataNetworkInner>> updateTags(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("mobileNetworkName") String mobileNetworkName,
-            @PathParam("dataNetworkName") String dataNetworkName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("dataNetworkName") String dataNetworkName, @BodyParam("application/json") TagsObject parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/dataNetworks/{dataNetworkName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/dataNetworks")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<DataNetworkListResult>> listByMobileNetwork(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("mobileNetworkName") String mobileNetworkName,
-            @PathParam("dataNetworkName") String dataNetworkName,
-            @BodyParam("application/json") DataNetworkInner parameters,
-            @HeaderParam("Accept") String accept,
+            @PathParam("mobileNetworkName") String mobileNetworkName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/dataNetworks/{dataNetworkName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DataNetworkInner>> updateTags(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("mobileNetworkName") String mobileNetworkName,
-            @PathParam("dataNetworkName") String dataNetworkName,
-            @BodyParam("application/json") TagsObject parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/dataNetworks")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DataNetworkListResult>> listByMobileNetwork(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("mobileNetworkName") String mobileNetworkName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DataNetworkListResult>> listByMobileNetworkNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Deletes the specified data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -165,19 +148,15 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String mobileNetworkName, String dataNetworkName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String mobileNetworkName,
+        String dataNetworkName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -193,24 +172,14 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            mobileNetworkName,
-                            dataNetworkName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), mobileNetworkName, dataNetworkName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the specified data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -221,19 +190,15 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String mobileNetworkName, String dataNetworkName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String mobileNetworkName,
+        String dataNetworkName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -249,21 +214,13 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                mobileNetworkName,
-                dataNetworkName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), mobileNetworkName, dataNetworkName, accept, context);
     }
 
     /**
      * Deletes the specified data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -273,19 +230,17 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String mobileNetworkName, String dataNetworkName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, mobileNetworkName, dataNetworkName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String mobileNetworkName,
+        String dataNetworkName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, mobileNetworkName, dataNetworkName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes the specified data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -296,19 +251,18 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String mobileNetworkName, String dataNetworkName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String mobileNetworkName,
+        String dataNetworkName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, mobileNetworkName, dataNetworkName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, mobileNetworkName, dataNetworkName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes the specified data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -318,14 +272,14 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String mobileNetworkName, String dataNetworkName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mobileNetworkName,
+        String dataNetworkName) {
         return this.beginDeleteAsync(resourceGroupName, mobileNetworkName, dataNetworkName).getSyncPoller();
     }
 
     /**
      * Deletes the specified data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -336,14 +290,14 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String mobileNetworkName, String dataNetworkName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mobileNetworkName,
+        String dataNetworkName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, mobileNetworkName, dataNetworkName, context).getSyncPoller();
     }
 
     /**
      * Deletes the specified data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -354,14 +308,13 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String mobileNetworkName, String dataNetworkName) {
-        return beginDeleteAsync(resourceGroupName, mobileNetworkName, dataNetworkName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, mobileNetworkName, dataNetworkName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the specified data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -372,16 +325,15 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String mobileNetworkName, String dataNetworkName, Context context) {
-        return beginDeleteAsync(resourceGroupName, mobileNetworkName, dataNetworkName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String mobileNetworkName, String dataNetworkName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, mobileNetworkName, dataNetworkName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the specified data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -396,7 +348,7 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
 
     /**
      * Deletes the specified data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -412,7 +364,7 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
 
     /**
      * Gets information about the specified data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -420,22 +372,18 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified data network along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataNetworkInner>> getWithResponseAsync(
-        String resourceGroupName, String mobileNetworkName, String dataNetworkName) {
+    private Mono<Response<DataNetworkInner>> getWithResponseAsync(String resourceGroupName, String mobileNetworkName,
+        String dataNetworkName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -451,24 +399,14 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            mobileNetworkName,
-                            dataNetworkName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), mobileNetworkName, dataNetworkName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets information about the specified data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -477,22 +415,18 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified data network along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataNetworkInner>> getWithResponseAsync(
-        String resourceGroupName, String mobileNetworkName, String dataNetworkName, Context context) {
+    private Mono<Response<DataNetworkInner>> getWithResponseAsync(String resourceGroupName, String mobileNetworkName,
+        String dataNetworkName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -508,21 +442,13 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                mobileNetworkName,
-                dataNetworkName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), mobileNetworkName, dataNetworkName, accept, context);
     }
 
     /**
      * Gets information about the specified data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -532,15 +458,15 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
      * @return information about the specified data network on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DataNetworkInner> getAsync(
-        String resourceGroupName, String mobileNetworkName, String dataNetworkName) {
+    private Mono<DataNetworkInner> getAsync(String resourceGroupName, String mobileNetworkName,
+        String dataNetworkName) {
         return getWithResponseAsync(resourceGroupName, mobileNetworkName, dataNetworkName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets information about the specified data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -551,14 +477,14 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
      * @return information about the specified data network along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataNetworkInner> getWithResponse(
-        String resourceGroupName, String mobileNetworkName, String dataNetworkName, Context context) {
+    public Response<DataNetworkInner> getWithResponse(String resourceGroupName, String mobileNetworkName,
+        String dataNetworkName, Context context) {
         return getWithResponseAsync(resourceGroupName, mobileNetworkName, dataNetworkName, context).block();
     }
 
     /**
      * Gets information about the specified data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -574,7 +500,7 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
 
     /**
      * Creates or updates a data network. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -585,19 +511,15 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
      * @return data network resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String mobileNetworkName, String dataNetworkName, DataNetworkInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String mobileNetworkName, String dataNetworkName, DataNetworkInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -618,25 +540,15 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            mobileNetworkName,
-                            dataNetworkName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), mobileNetworkName, dataNetworkName, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a data network. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -648,23 +560,15 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
      * @return data network resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String mobileNetworkName,
-        String dataNetworkName,
-        DataNetworkInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String mobileNetworkName, String dataNetworkName, DataNetworkInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -685,22 +589,13 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                mobileNetworkName,
-                dataNetworkName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), mobileNetworkName, dataNetworkName, parameters, accept, context);
     }
 
     /**
      * Creates or updates a data network. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -713,21 +608,15 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DataNetworkInner>, DataNetworkInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String mobileNetworkName, String dataNetworkName, DataNetworkInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, mobileNetworkName, dataNetworkName, parameters);
-        return this
-            .client
-            .<DataNetworkInner, DataNetworkInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DataNetworkInner.class,
-                DataNetworkInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, mobileNetworkName, dataNetworkName, parameters);
+        return this.client.<DataNetworkInner, DataNetworkInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DataNetworkInner.class, DataNetworkInner.class, this.client.getContext());
     }
 
     /**
      * Creates or updates a data network. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -740,23 +629,18 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DataNetworkInner>, DataNetworkInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String mobileNetworkName,
-        String dataNetworkName,
-        DataNetworkInner parameters,
+        String resourceGroupName, String mobileNetworkName, String dataNetworkName, DataNetworkInner parameters,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, mobileNetworkName, dataNetworkName, parameters, context);
-        return this
-            .client
-            .<DataNetworkInner, DataNetworkInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DataNetworkInner.class, DataNetworkInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, mobileNetworkName,
+            dataNetworkName, parameters, context);
+        return this.client.<DataNetworkInner, DataNetworkInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DataNetworkInner.class, DataNetworkInner.class, context);
     }
 
     /**
      * Creates or updates a data network. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -767,16 +651,15 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
      * @return the {@link SyncPoller} for polling of data network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DataNetworkInner>, DataNetworkInner> beginCreateOrUpdate(
-        String resourceGroupName, String mobileNetworkName, String dataNetworkName, DataNetworkInner parameters) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, dataNetworkName, parameters)
+    public SyncPoller<PollResult<DataNetworkInner>, DataNetworkInner> beginCreateOrUpdate(String resourceGroupName,
+        String mobileNetworkName, String dataNetworkName, DataNetworkInner parameters) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, dataNetworkName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a data network. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -788,20 +671,15 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
      * @return the {@link SyncPoller} for polling of data network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DataNetworkInner>, DataNetworkInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String mobileNetworkName,
-        String dataNetworkName,
-        DataNetworkInner parameters,
-        Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, dataNetworkName, parameters, context)
+    public SyncPoller<PollResult<DataNetworkInner>, DataNetworkInner> beginCreateOrUpdate(String resourceGroupName,
+        String mobileNetworkName, String dataNetworkName, DataNetworkInner parameters, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, dataNetworkName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a data network. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -812,16 +690,15 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
      * @return data network resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DataNetworkInner> createOrUpdateAsync(
-        String resourceGroupName, String mobileNetworkName, String dataNetworkName, DataNetworkInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, dataNetworkName, parameters)
-            .last()
+    private Mono<DataNetworkInner> createOrUpdateAsync(String resourceGroupName, String mobileNetworkName,
+        String dataNetworkName, DataNetworkInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, dataNetworkName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a data network. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -833,12 +710,8 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
      * @return data network resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DataNetworkInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String mobileNetworkName,
-        String dataNetworkName,
-        DataNetworkInner parameters,
-        Context context) {
+    private Mono<DataNetworkInner> createOrUpdateAsync(String resourceGroupName, String mobileNetworkName,
+        String dataNetworkName, DataNetworkInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, dataNetworkName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -846,7 +719,7 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
 
     /**
      * Creates or updates a data network. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -857,14 +730,14 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
      * @return data network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataNetworkInner createOrUpdate(
-        String resourceGroupName, String mobileNetworkName, String dataNetworkName, DataNetworkInner parameters) {
+    public DataNetworkInner createOrUpdate(String resourceGroupName, String mobileNetworkName, String dataNetworkName,
+        DataNetworkInner parameters) {
         return createOrUpdateAsync(resourceGroupName, mobileNetworkName, dataNetworkName, parameters).block();
     }
 
     /**
      * Creates or updates a data network. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -876,18 +749,14 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
      * @return data network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataNetworkInner createOrUpdate(
-        String resourceGroupName,
-        String mobileNetworkName,
-        String dataNetworkName,
-        DataNetworkInner parameters,
-        Context context) {
+    public DataNetworkInner createOrUpdate(String resourceGroupName, String mobileNetworkName, String dataNetworkName,
+        DataNetworkInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, mobileNetworkName, dataNetworkName, parameters, context).block();
     }
 
     /**
      * Updates data network tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -898,19 +767,15 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
      * @return data network resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataNetworkInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String mobileNetworkName, String dataNetworkName, TagsObject parameters) {
+    private Mono<Response<DataNetworkInner>> updateTagsWithResponseAsync(String resourceGroupName,
+        String mobileNetworkName, String dataNetworkName, TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -931,25 +796,15 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateTags(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            mobileNetworkName,
-                            dataNetworkName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), mobileNetworkName, dataNetworkName, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates data network tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -961,23 +816,15 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
      * @return data network resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataNetworkInner>> updateTagsWithResponseAsync(
-        String resourceGroupName,
-        String mobileNetworkName,
-        String dataNetworkName,
-        TagsObject parameters,
-        Context context) {
+    private Mono<Response<DataNetworkInner>> updateTagsWithResponseAsync(String resourceGroupName,
+        String mobileNetworkName, String dataNetworkName, TagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -998,22 +845,13 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .updateTags(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                mobileNetworkName,
-                dataNetworkName,
-                parameters,
-                accept,
-                context);
+        return service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), mobileNetworkName, dataNetworkName, parameters, accept, context);
     }
 
     /**
      * Updates data network tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -1024,15 +862,15 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
      * @return data network resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DataNetworkInner> updateTagsAsync(
-        String resourceGroupName, String mobileNetworkName, String dataNetworkName, TagsObject parameters) {
+    private Mono<DataNetworkInner> updateTagsAsync(String resourceGroupName, String mobileNetworkName,
+        String dataNetworkName, TagsObject parameters) {
         return updateTagsWithResponseAsync(resourceGroupName, mobileNetworkName, dataNetworkName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Updates data network tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -1044,19 +882,15 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
      * @return data network resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataNetworkInner> updateTagsWithResponse(
-        String resourceGroupName,
-        String mobileNetworkName,
-        String dataNetworkName,
-        TagsObject parameters,
-        Context context) {
+    public Response<DataNetworkInner> updateTagsWithResponse(String resourceGroupName, String mobileNetworkName,
+        String dataNetworkName, TagsObject parameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, mobileNetworkName, dataNetworkName, parameters, context)
             .block();
     }
 
     /**
      * Updates data network tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -1067,37 +901,33 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
      * @return data network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataNetworkInner updateTags(
-        String resourceGroupName, String mobileNetworkName, String dataNetworkName, TagsObject parameters) {
+    public DataNetworkInner updateTags(String resourceGroupName, String mobileNetworkName, String dataNetworkName,
+        TagsObject parameters) {
         return updateTagsWithResponse(resourceGroupName, mobileNetworkName, dataNetworkName, parameters, Context.NONE)
             .getValue();
     }
 
     /**
      * Lists all data networks in the mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for data network API service call along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataNetworkInner>> listByMobileNetworkSinglePageAsync(
-        String resourceGroupName, String mobileNetworkName) {
+    private Mono<PagedResponse<DataNetworkInner>> listByMobileNetworkSinglePageAsync(String resourceGroupName,
+        String mobileNetworkName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1109,32 +939,16 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByMobileNetwork(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            mobileNetworkName,
-                            accept,
-                            context))
-            .<PagedResponse<DataNetworkInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByMobileNetwork(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, mobileNetworkName, accept, context))
+            .<PagedResponse<DataNetworkInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all data networks in the mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param context The context to associate with this operation.
@@ -1142,22 +956,18 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for data network API service call along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataNetworkInner>> listByMobileNetworkSinglePageAsync(
-        String resourceGroupName, String mobileNetworkName, Context context) {
+    private Mono<PagedResponse<DataNetworkInner>> listByMobileNetworkSinglePageAsync(String resourceGroupName,
+        String mobileNetworkName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1170,28 +980,15 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByMobileNetwork(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                mobileNetworkName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByMobileNetwork(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, mobileNetworkName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all data networks in the mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1201,14 +998,13 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataNetworkInner> listByMobileNetworkAsync(String resourceGroupName, String mobileNetworkName) {
-        return new PagedFlux<>(
-            () -> listByMobileNetworkSinglePageAsync(resourceGroupName, mobileNetworkName),
+        return new PagedFlux<>(() -> listByMobileNetworkSinglePageAsync(resourceGroupName, mobileNetworkName),
             nextLink -> listByMobileNetworkNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all data networks in the mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param context The context to associate with this operation.
@@ -1218,16 +1014,15 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
      * @return response for data network API service call as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DataNetworkInner> listByMobileNetworkAsync(
-        String resourceGroupName, String mobileNetworkName, Context context) {
-        return new PagedFlux<>(
-            () -> listByMobileNetworkSinglePageAsync(resourceGroupName, mobileNetworkName, context),
+    private PagedFlux<DataNetworkInner> listByMobileNetworkAsync(String resourceGroupName, String mobileNetworkName,
+        Context context) {
+        return new PagedFlux<>(() -> listByMobileNetworkSinglePageAsync(resourceGroupName, mobileNetworkName, context),
             nextLink -> listByMobileNetworkNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all data networks in the mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1242,7 +1037,7 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
 
     /**
      * Lists all data networks in the mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param context The context to associate with this operation.
@@ -1252,21 +1047,22 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
      * @return response for data network API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataNetworkInner> listByMobileNetwork(
-        String resourceGroupName, String mobileNetworkName, Context context) {
+    public PagedIterable<DataNetworkInner> listByMobileNetwork(String resourceGroupName, String mobileNetworkName,
+        Context context) {
         return new PagedIterable<>(listByMobileNetworkAsync(resourceGroupName, mobileNetworkName, context));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for data network API service call along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataNetworkInner>> listByMobileNetworkNextSinglePageAsync(String nextLink) {
@@ -1274,63 +1070,45 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByMobileNetworkNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DataNetworkInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DataNetworkInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for data network API service call along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataNetworkInner>> listByMobileNetworkNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DataNetworkInner>> listByMobileNetworkNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByMobileNetworkNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByMobileNetworkNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -5,61 +5,53 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * Dataset location.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = DatasetLocation.class)
-@JsonTypeName("DatasetLocation")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AzureBlobStorageLocation", value = AzureBlobStorageLocation.class),
-    @JsonSubTypes.Type(name = "AzureBlobFSLocation", value = AzureBlobFSLocation.class),
-    @JsonSubTypes.Type(name = "AzureDataLakeStoreLocation", value = AzureDataLakeStoreLocation.class),
-    @JsonSubTypes.Type(name = "AmazonS3Location", value = AmazonS3Location.class),
-    @JsonSubTypes.Type(name = "FileServerLocation", value = FileServerLocation.class),
-    @JsonSubTypes.Type(name = "AzureFileStorageLocation", value = AzureFileStorageLocation.class),
-    @JsonSubTypes.Type(name = "GoogleCloudStorageLocation", value = GoogleCloudStorageLocation.class),
-    @JsonSubTypes.Type(name = "FtpServerLocation", value = FtpServerLocation.class),
-    @JsonSubTypes.Type(name = "SftpLocation", value = SftpLocation.class),
-    @JsonSubTypes.Type(name = "HttpServerLocation", value = HttpServerLocation.class),
-    @JsonSubTypes.Type(name = "HdfsLocation", value = HdfsLocation.class) })
 @Fluent
-public class DatasetLocation {
+public class DatasetLocation implements JsonSerializable<DatasetLocation> {
+    /*
+     * Type of dataset storage location.
+     */
+    private String type;
+
     /*
      * Specify the folder path of dataset. Type: string (or Expression with resultType string)
      */
-    @JsonProperty(value = "folderPath")
     private Object folderPath;
 
     /*
      * Specify the file name of dataset. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "fileName")
     private Object fileName;
 
     /*
      * Dataset location.
      */
-    @JsonIgnore
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of DatasetLocation class.
      */
     public DatasetLocation() {
+        this.type = "DatasetLocation";
+    }
+
+    /**
+     * Get the type property: Type of dataset storage location.
+     * 
+     * @return the type value.
+     */
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -85,8 +77,7 @@ public class DatasetLocation {
     }
 
     /**
-     * Get the fileName property: Specify the file name of dataset. Type: string (or Expression with resultType
-     * string).
+     * Get the fileName property: Specify the file name of dataset. Type: string (or Expression with resultType string).
      * 
      * @return the fileName value.
      */
@@ -95,8 +86,7 @@ public class DatasetLocation {
     }
 
     /**
-     * Set the fileName property: Specify the file name of dataset. Type: string (or Expression with resultType
-     * string).
+     * Set the fileName property: Specify the file name of dataset. Type: string (or Expression with resultType string).
      * 
      * @param fileName the fileName value to set.
      * @return the DatasetLocation object itself.
@@ -111,7 +101,6 @@ public class DatasetLocation {
      * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -127,11 +116,103 @@ public class DatasetLocation {
         return this;
     }
 
-    @JsonAnySetter
-    void setAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("folderPath", this.folderPath);
+        jsonWriter.writeUntypedField("fileName", this.fileName);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
         }
-        additionalProperties.put(key, value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatasetLocation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatasetLocation if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatasetLocation.
+     */
+    public static DatasetLocation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzureBlobStorageLocation".equals(discriminatorValue)) {
+                    return AzureBlobStorageLocation.fromJson(readerToUse.reset());
+                } else if ("AzureBlobFSLocation".equals(discriminatorValue)) {
+                    return AzureBlobFSLocation.fromJson(readerToUse.reset());
+                } else if ("AzureDataLakeStoreLocation".equals(discriminatorValue)) {
+                    return AzureDataLakeStoreLocation.fromJson(readerToUse.reset());
+                } else if ("AmazonS3Location".equals(discriminatorValue)) {
+                    return AmazonS3Location.fromJson(readerToUse.reset());
+                } else if ("FileServerLocation".equals(discriminatorValue)) {
+                    return FileServerLocation.fromJson(readerToUse.reset());
+                } else if ("AzureFileStorageLocation".equals(discriminatorValue)) {
+                    return AzureFileStorageLocation.fromJson(readerToUse.reset());
+                } else if ("GoogleCloudStorageLocation".equals(discriminatorValue)) {
+                    return GoogleCloudStorageLocation.fromJson(readerToUse.reset());
+                } else if ("FtpServerLocation".equals(discriminatorValue)) {
+                    return FtpServerLocation.fromJson(readerToUse.reset());
+                } else if ("SftpLocation".equals(discriminatorValue)) {
+                    return SftpLocation.fromJson(readerToUse.reset());
+                } else if ("HttpServerLocation".equals(discriminatorValue)) {
+                    return HttpServerLocation.fromJson(readerToUse.reset());
+                } else if ("HdfsLocation".equals(discriminatorValue)) {
+                    return HdfsLocation.fromJson(readerToUse.reset());
+                } else if ("LakeHouseLocation".equals(discriminatorValue)) {
+                    return LakeHouseLocation.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static DatasetLocation fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatasetLocation deserializedDatasetLocation = new DatasetLocation();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedDatasetLocation.type = reader.getString();
+                } else if ("folderPath".equals(fieldName)) {
+                    deserializedDatasetLocation.folderPath = reader.readUntyped();
+                } else if ("fileName".equals(fieldName)) {
+                    deserializedDatasetLocation.fileName = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedDatasetLocation.additionalProperties = additionalProperties;
+
+            return deserializedDatasetLocation;
+        });
     }
 }

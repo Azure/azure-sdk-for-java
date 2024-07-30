@@ -35,7 +35,7 @@ import java.util.Arrays;
  */
 public final class LoadBalancersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * LoadBalancerCreateWithSyncModePropertyOnPool.json
      */
     /**
@@ -45,8 +45,11 @@ public final class LoadBalancersCreateOrUpdateSamples {
      */
     public static void
         createLoadBalancerWithSyncModePropertyOnPool(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getLoadBalancers().createOrUpdate("rg1", "lb",
-            new LoadBalancerInner().withLocation("eastus")
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getLoadBalancers()
+            .createOrUpdate("rg1", "lb", new LoadBalancerInner().withLocation("eastus")
                 .withSku(new LoadBalancerSku().withName(LoadBalancerSkuName.STANDARD))
                 .withFrontendIpConfigurations(Arrays.asList(new FrontendIpConfigurationInner().withName("fe-lb")
                     .withSubnet(new SubnetInner().withId(
@@ -62,22 +65,33 @@ public final class LoadBalancersCreateOrUpdateSamples {
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/backendAddressPools/be-lb"))
                     .withProbe(new SubResource().withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/probes/probe-lb"))
-                    .withProtocol(TransportProtocol.TCP).withLoadDistribution(LoadDistribution.DEFAULT)
-                    .withFrontendPort(80).withBackendPort(80).withIdleTimeoutInMinutes(15).withEnableFloatingIp(true)))
-                .withProbes(Arrays.asList(new ProbeInner().withName("probe-lb").withProtocol(ProbeProtocol.HTTP)
-                    .withPort(80).withIntervalInSeconds(15).withNumberOfProbes(2).withProbeThreshold(1)
+                    .withProtocol(TransportProtocol.TCP)
+                    .withLoadDistribution(LoadDistribution.DEFAULT)
+                    .withFrontendPort(80)
+                    .withBackendPort(80)
+                    .withIdleTimeoutInMinutes(15)
+                    .withEnableFloatingIp(true)))
+                .withProbes(Arrays.asList(new ProbeInner().withName("probe-lb")
+                    .withProtocol(ProbeProtocol.HTTP)
+                    .withPort(80)
+                    .withIntervalInSeconds(15)
+                    .withNumberOfProbes(2)
+                    .withProbeThreshold(1)
                     .withRequestPath("healthcheck.aspx")))
                 .withInboundNatRules(Arrays.asList(new InboundNatRuleInner().withName("in-nat-rule")
                     .withFrontendIpConfiguration(new SubResource().withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fe-lb"))
-                    .withProtocol(TransportProtocol.TCP).withFrontendPort(3389).withBackendPort(3389)
-                    .withIdleTimeoutInMinutes(15).withEnableFloatingIp(true)))
-                .withInboundNatPools(Arrays.asList()).withOutboundRules(Arrays.asList()),
-            com.azure.core.util.Context.NONE);
+                    .withProtocol(TransportProtocol.TCP)
+                    .withFrontendPort(3389)
+                    .withBackendPort(3389)
+                    .withIdleTimeoutInMinutes(15)
+                    .withEnableFloatingIp(true)))
+                .withInboundNatPools(Arrays.asList())
+                .withOutboundRules(Arrays.asList()), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * LoadBalancerCreateGatewayLoadBalancerProviderWithTwoBackendPool.json
      */
     /**
@@ -87,8 +101,11 @@ public final class LoadBalancersCreateOrUpdateSamples {
      */
     public static void createLoadBalancerWithGatewayLoadBalancerProviderConfiguredWithTwoBackendPool(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getLoadBalancers().createOrUpdate("rg1", "lb",
-            new LoadBalancerInner().withLocation("eastus")
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getLoadBalancers()
+            .createOrUpdate("rg1", "lb", new LoadBalancerInner().withLocation("eastus")
                 .withSku(new LoadBalancerSku().withName(LoadBalancerSkuName.GATEWAY))
                 .withFrontendIpConfigurations(Arrays.asList(new FrontendIpConfigurationInner().withName("fe-lb")
                     .withSubnet(new SubnetInner().withId(
@@ -105,17 +122,25 @@ public final class LoadBalancersCreateOrUpdateSamples {
                             "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/backendAddressPools/be-lb2")))
                     .withProbe(new SubResource().withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/probes/probe-lb"))
-                    .withProtocol(TransportProtocol.ALL).withLoadDistribution(LoadDistribution.DEFAULT)
-                    .withFrontendPort(0).withBackendPort(0).withIdleTimeoutInMinutes(15).withEnableFloatingIp(true)))
-                .withProbes(Arrays.asList(new ProbeInner().withName("probe-lb").withProtocol(ProbeProtocol.HTTP)
-                    .withPort(80).withIntervalInSeconds(15).withNumberOfProbes(2).withProbeThreshold(1)
+                    .withProtocol(TransportProtocol.ALL)
+                    .withLoadDistribution(LoadDistribution.DEFAULT)
+                    .withFrontendPort(0)
+                    .withBackendPort(0)
+                    .withIdleTimeoutInMinutes(15)
+                    .withEnableFloatingIp(true)))
+                .withProbes(Arrays.asList(new ProbeInner().withName("probe-lb")
+                    .withProtocol(ProbeProtocol.HTTP)
+                    .withPort(80)
+                    .withIntervalInSeconds(15)
+                    .withNumberOfProbes(2)
+                    .withProbeThreshold(1)
                     .withRequestPath("healthcheck.aspx")))
-                .withInboundNatPools(Arrays.asList()).withOutboundRules(Arrays.asList()),
-            com.azure.core.util.Context.NONE);
+                .withInboundNatPools(Arrays.asList())
+                .withOutboundRules(Arrays.asList()), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * LoadBalancerCreateWithInboundNatPool.json
      */
     /**
@@ -124,32 +149,41 @@ public final class LoadBalancersCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createLoadBalancerWithInboundNatPool(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getLoadBalancers().createOrUpdate("rg1", "lb",
-            new LoadBalancerInner().withLocation("eastus")
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getLoadBalancers()
+            .createOrUpdate("rg1", "lb", new LoadBalancerInner().withLocation("eastus")
                 .withSku(new LoadBalancerSku().withName(LoadBalancerSkuName.STANDARD))
                 .withFrontendIpConfigurations(Arrays.asList(new FrontendIpConfigurationInner().withId(
                     "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/test")
-                    .withName("test").withZones(Arrays.asList())
+                    .withName("test")
+                    .withZones(Arrays.asList())
                     .withPrivateIpAllocationMethod(IpAllocationMethod.DYNAMIC)
                     .withSubnet(new SubnetInner().withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/lbvnet/subnets/lbsubnet"))))
-                .withBackendAddressPools(Arrays.asList()).withLoadBalancingRules(Arrays.asList())
-                .withProbes(Arrays.asList()).withInboundNatRules(Arrays.asList())
+                .withBackendAddressPools(Arrays.asList())
+                .withLoadBalancingRules(Arrays.asList())
+                .withProbes(Arrays.asList())
+                .withInboundNatRules(Arrays.asList())
                 .withInboundNatPools(Arrays.asList(new InboundNatPool().withId(
                     "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/inboundNatPools/test")
                     .withName("test")
                     .withFrontendIpConfiguration(new SubResource().withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/test"))
-                    .withProtocol(TransportProtocol.TCP).withFrontendPortRangeStart(8080).withFrontendPortRangeEnd(8085)
-                    .withBackendPort(8888).withIdleTimeoutInMinutes(10).withEnableFloatingIp(true)
+                    .withProtocol(TransportProtocol.TCP)
+                    .withFrontendPortRangeStart(8080)
+                    .withFrontendPortRangeEnd(8085)
+                    .withBackendPort(8888)
+                    .withIdleTimeoutInMinutes(10)
+                    .withEnableFloatingIp(true)
                     .withEnableTcpReset(true)))
-                .withOutboundRules(Arrays.asList()),
-            com.azure.core.util.Context.NONE);
+                .withOutboundRules(Arrays.asList()), com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/LoadBalancerCreateWithZones.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/LoadBalancerCreateWithZones.
      * json
      */
     /**
@@ -158,8 +192,11 @@ public final class LoadBalancersCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createLoadBalancerWithFrontendIPInZone1(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getLoadBalancers().createOrUpdate("rg1", "lb",
-            new LoadBalancerInner().withLocation("eastus")
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getLoadBalancers()
+            .createOrUpdate("rg1", "lb", new LoadBalancerInner().withLocation("eastus")
                 .withSku(new LoadBalancerSku().withName(LoadBalancerSkuName.STANDARD))
                 .withFrontendIpConfigurations(Arrays.asList(new FrontendIpConfigurationInner().withName("fe-lb")
                     .withZones(Arrays.asList("1"))
@@ -173,22 +210,33 @@ public final class LoadBalancersCreateOrUpdateSamples {
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/backendAddressPools/be-lb"))
                     .withProbe(new SubResource().withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/probes/probe-lb"))
-                    .withProtocol(TransportProtocol.TCP).withLoadDistribution(LoadDistribution.DEFAULT)
-                    .withFrontendPort(80).withBackendPort(80).withIdleTimeoutInMinutes(15).withEnableFloatingIp(true)))
-                .withProbes(Arrays.asList(new ProbeInner().withName("probe-lb").withProtocol(ProbeProtocol.HTTP)
-                    .withPort(80).withIntervalInSeconds(15).withNumberOfProbes(2).withProbeThreshold(1)
+                    .withProtocol(TransportProtocol.TCP)
+                    .withLoadDistribution(LoadDistribution.DEFAULT)
+                    .withFrontendPort(80)
+                    .withBackendPort(80)
+                    .withIdleTimeoutInMinutes(15)
+                    .withEnableFloatingIp(true)))
+                .withProbes(Arrays.asList(new ProbeInner().withName("probe-lb")
+                    .withProtocol(ProbeProtocol.HTTP)
+                    .withPort(80)
+                    .withIntervalInSeconds(15)
+                    .withNumberOfProbes(2)
+                    .withProbeThreshold(1)
                     .withRequestPath("healthcheck.aspx")))
                 .withInboundNatRules(Arrays.asList(new InboundNatRuleInner().withName("in-nat-rule")
                     .withFrontendIpConfiguration(new SubResource().withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fe-lb"))
-                    .withProtocol(TransportProtocol.TCP).withFrontendPort(3389).withBackendPort(3389)
-                    .withIdleTimeoutInMinutes(15).withEnableFloatingIp(true)))
-                .withInboundNatPools(Arrays.asList()).withOutboundRules(Arrays.asList()),
-            com.azure.core.util.Context.NONE);
+                    .withProtocol(TransportProtocol.TCP)
+                    .withFrontendPort(3389)
+                    .withBackendPort(3389)
+                    .withIdleTimeoutInMinutes(15)
+                    .withEnableFloatingIp(true)))
+                .withInboundNatPools(Arrays.asList())
+                .withOutboundRules(Arrays.asList()), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * LoadBalancerCreateWithOutboundRules.json
      */
     /**
@@ -197,8 +245,11 @@ public final class LoadBalancersCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createLoadBalancerWithOutboundRules(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getLoadBalancers().createOrUpdate("rg1", "lb",
-            new LoadBalancerInner().withLocation("eastus")
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getLoadBalancers()
+            .createOrUpdate("rg1", "lb", new LoadBalancerInner().withLocation("eastus")
                 .withSku(new LoadBalancerSku().withName(LoadBalancerSkuName.STANDARD))
                 .withFrontendIpConfigurations(Arrays.asList(new FrontendIpConfigurationInner().withName("fe-lb")
                     .withPublicIpAddress(new PublicIpAddressInner().withId(
@@ -211,17 +262,28 @@ public final class LoadBalancersCreateOrUpdateSamples {
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/backendAddressPools/be-lb"))
                     .withProbe(new SubResource().withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/probes/probe-lb"))
-                    .withProtocol(TransportProtocol.TCP).withLoadDistribution(LoadDistribution.DEFAULT)
-                    .withFrontendPort(80).withBackendPort(80).withIdleTimeoutInMinutes(15).withEnableFloatingIp(true)
+                    .withProtocol(TransportProtocol.TCP)
+                    .withLoadDistribution(LoadDistribution.DEFAULT)
+                    .withFrontendPort(80)
+                    .withBackendPort(80)
+                    .withIdleTimeoutInMinutes(15)
+                    .withEnableFloatingIp(true)
                     .withDisableOutboundSnat(true)))
-                .withProbes(Arrays.asList(new ProbeInner().withName("probe-lb").withProtocol(ProbeProtocol.HTTP)
-                    .withPort(80).withIntervalInSeconds(15).withNumberOfProbes(2).withProbeThreshold(1)
+                .withProbes(Arrays.asList(new ProbeInner().withName("probe-lb")
+                    .withProtocol(ProbeProtocol.HTTP)
+                    .withPort(80)
+                    .withIntervalInSeconds(15)
+                    .withNumberOfProbes(2)
+                    .withProbeThreshold(1)
                     .withRequestPath("healthcheck.aspx")))
                 .withInboundNatRules(Arrays.asList(new InboundNatRuleInner().withName("in-nat-rule")
                     .withFrontendIpConfiguration(new SubResource().withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fe-lb"))
-                    .withProtocol(TransportProtocol.TCP).withFrontendPort(3389).withBackendPort(3389)
-                    .withIdleTimeoutInMinutes(15).withEnableFloatingIp(true)))
+                    .withProtocol(TransportProtocol.TCP)
+                    .withFrontendPort(3389)
+                    .withBackendPort(3389)
+                    .withIdleTimeoutInMinutes(15)
+                    .withEnableFloatingIp(true)))
                 .withInboundNatPools(Arrays.asList())
                 .withOutboundRules(Arrays.asList(new OutboundRuleInner().withName("rule1")
                     .withFrontendIpConfigurations(Arrays.asList(new SubResource().withId(
@@ -229,11 +291,11 @@ public final class LoadBalancersCreateOrUpdateSamples {
                     .withBackendAddressPool(new SubResource().withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/backendAddressPools/be-lb"))
                     .withProtocol(LoadBalancerOutboundRuleProtocol.ALL))),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * LoadBalancerCreateGatewayLoadBalancerProviderWithOneBackendPool.json
      */
     /**
@@ -243,18 +305,23 @@ public final class LoadBalancersCreateOrUpdateSamples {
      */
     public static void createLoadBalancerWithGatewayLoadBalancerProviderConfiguredWithOneBackendPool(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getLoadBalancers().createOrUpdate("rg1", "lb",
-            new LoadBalancerInner().withLocation("eastus")
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getLoadBalancers()
+            .createOrUpdate("rg1", "lb", new LoadBalancerInner().withLocation("eastus")
                 .withSku(new LoadBalancerSku().withName(LoadBalancerSkuName.GATEWAY))
                 .withFrontendIpConfigurations(Arrays.asList(new FrontendIpConfigurationInner().withName("fe-lb")
                     .withSubnet(new SubnetInner().withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnetlb/subnets/subnetlb"))))
                 .withBackendAddressPools(Arrays.asList(new BackendAddressPoolInner().withName("be-lb")
                     .withTunnelInterfaces(Arrays.asList(
-                        new GatewayLoadBalancerTunnelInterface().withPort(15000).withIdentifier(900)
+                        new GatewayLoadBalancerTunnelInterface().withPort(15000)
+                            .withIdentifier(900)
                             .withProtocol(GatewayLoadBalancerTunnelProtocol.VXLAN)
                             .withType(GatewayLoadBalancerTunnelInterfaceType.INTERNAL),
-                        new GatewayLoadBalancerTunnelInterface().withPort(15001).withIdentifier(901)
+                        new GatewayLoadBalancerTunnelInterface().withPort(15001)
+                            .withIdentifier(901)
                             .withProtocol(GatewayLoadBalancerTunnelProtocol.VXLAN)
                             .withType(GatewayLoadBalancerTunnelInterfaceType.INTERNAL)))))
                 .withLoadBalancingRules(Arrays.asList(new LoadBalancingRuleInner().withName("rulelb")
@@ -264,18 +331,26 @@ public final class LoadBalancersCreateOrUpdateSamples {
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/backendAddressPools/be-lb")))
                     .withProbe(new SubResource().withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/probes/probe-lb"))
-                    .withProtocol(TransportProtocol.ALL).withLoadDistribution(LoadDistribution.DEFAULT)
-                    .withFrontendPort(0).withBackendPort(0).withIdleTimeoutInMinutes(15).withEnableFloatingIp(true)))
-                .withProbes(Arrays.asList(new ProbeInner().withName("probe-lb").withProtocol(ProbeProtocol.HTTP)
-                    .withPort(80).withIntervalInSeconds(15).withNumberOfProbes(2).withProbeThreshold(1)
+                    .withProtocol(TransportProtocol.ALL)
+                    .withLoadDistribution(LoadDistribution.DEFAULT)
+                    .withFrontendPort(0)
+                    .withBackendPort(0)
+                    .withIdleTimeoutInMinutes(15)
+                    .withEnableFloatingIp(true)))
+                .withProbes(Arrays.asList(new ProbeInner().withName("probe-lb")
+                    .withProtocol(ProbeProtocol.HTTP)
+                    .withPort(80)
+                    .withIntervalInSeconds(15)
+                    .withNumberOfProbes(2)
+                    .withProbeThreshold(1)
                     .withRequestPath("healthcheck.aspx")))
-                .withInboundNatPools(Arrays.asList()).withOutboundRules(Arrays.asList()),
-            com.azure.core.util.Context.NONE);
+                .withInboundNatPools(Arrays.asList())
+                .withOutboundRules(Arrays.asList()), com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/LoadBalancerCreate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/LoadBalancerCreate.json
      */
     /**
      * Sample code: Create load balancer.
@@ -283,10 +358,14 @@ public final class LoadBalancersCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createLoadBalancer(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getLoadBalancers().createOrUpdate("rg1", "lb",
-            new LoadBalancerInner().withLocation("eastus").withFrontendIpConfigurations(
-                Arrays.asList(new FrontendIpConfigurationInner().withName("fe-lb").withSubnet(new SubnetInner().withId(
-                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnetlb/subnets/subnetlb"))))
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getLoadBalancers()
+            .createOrUpdate("rg1", "lb", new LoadBalancerInner().withLocation("eastus")
+                .withFrontendIpConfigurations(Arrays.asList(new FrontendIpConfigurationInner().withName("fe-lb")
+                    .withSubnet(new SubnetInner().withId(
+                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnetlb/subnets/subnetlb"))))
                 .withBackendAddressPools(Arrays.asList(new BackendAddressPoolInner().withName("be-lb")))
                 .withLoadBalancingRules(Arrays.asList(new LoadBalancingRuleInner().withName("rulelb")
                     .withFrontendIpConfiguration(new SubResource().withId(
@@ -295,24 +374,35 @@ public final class LoadBalancersCreateOrUpdateSamples {
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/backendAddressPools/be-lb"))
                     .withProbe(new SubResource().withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/probes/probe-lb"))
-                    .withProtocol(TransportProtocol.TCP).withLoadDistribution(LoadDistribution.DEFAULT)
-                    .withFrontendPort(80).withBackendPort(80).withIdleTimeoutInMinutes(15).withEnableFloatingIp(true)
+                    .withProtocol(TransportProtocol.TCP)
+                    .withLoadDistribution(LoadDistribution.DEFAULT)
+                    .withFrontendPort(80)
+                    .withBackendPort(80)
+                    .withIdleTimeoutInMinutes(15)
+                    .withEnableFloatingIp(true)
                     .withEnableTcpReset(false)))
-                .withProbes(Arrays.asList(new ProbeInner().withName("probe-lb").withProtocol(ProbeProtocol.HTTP)
-                    .withPort(80).withIntervalInSeconds(15).withNumberOfProbes(2).withProbeThreshold(1)
+                .withProbes(Arrays.asList(new ProbeInner().withName("probe-lb")
+                    .withProtocol(ProbeProtocol.HTTP)
+                    .withPort(80)
+                    .withIntervalInSeconds(15)
+                    .withNumberOfProbes(2)
+                    .withProbeThreshold(1)
                     .withRequestPath("healthcheck.aspx")))
                 .withInboundNatRules(Arrays.asList(new InboundNatRuleInner().withName("in-nat-rule")
                     .withFrontendIpConfiguration(new SubResource().withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fe-lb"))
-                    .withProtocol(TransportProtocol.TCP).withFrontendPort(3389).withBackendPort(3389)
-                    .withIdleTimeoutInMinutes(15).withEnableFloatingIp(true).withEnableTcpReset(false)))
-                .withInboundNatPools(Arrays.asList()),
-            com.azure.core.util.Context.NONE);
+                    .withProtocol(TransportProtocol.TCP)
+                    .withFrontendPort(3389)
+                    .withBackendPort(3389)
+                    .withIdleTimeoutInMinutes(15)
+                    .withEnableFloatingIp(true)
+                    .withEnableTcpReset(false)))
+                .withInboundNatPools(Arrays.asList()), com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/LoadBalancerCreateGlobalTier.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/LoadBalancerCreateGlobalTier.
      * json
      */
     /**
@@ -322,8 +412,11 @@ public final class LoadBalancersCreateOrUpdateSamples {
      */
     public static void createLoadBalancerWithGlobalTierAndOneRegionalLoadBalancerInItsBackendPool(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getLoadBalancers().createOrUpdate("rg1", "lb",
-            new LoadBalancerInner().withLocation("eastus")
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getLoadBalancers()
+            .createOrUpdate("rg1", "lb", new LoadBalancerInner().withLocation("eastus")
                 .withSku(
                     new LoadBalancerSku().withName(LoadBalancerSkuName.STANDARD).withTier(LoadBalancerSkuTier.GLOBAL))
                 .withFrontendIpConfigurations(Arrays.asList(new FrontendIpConfigurationInner().withName("fe-lb")
@@ -341,16 +434,24 @@ public final class LoadBalancersCreateOrUpdateSamples {
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/backendAddressPools/be-lb"))
                     .withProbe(new SubResource().withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/probes/probe-lb"))
-                    .withProtocol(TransportProtocol.TCP).withLoadDistribution(LoadDistribution.DEFAULT)
-                    .withFrontendPort(80).withBackendPort(80).withIdleTimeoutInMinutes(15).withEnableFloatingIp(false)))
-                .withProbes(Arrays.asList(new ProbeInner().withName("probe-lb").withProtocol(ProbeProtocol.HTTP)
-                    .withPort(80).withIntervalInSeconds(15).withNumberOfProbes(2).withProbeThreshold(1)
+                    .withProtocol(TransportProtocol.TCP)
+                    .withLoadDistribution(LoadDistribution.DEFAULT)
+                    .withFrontendPort(80)
+                    .withBackendPort(80)
+                    .withIdleTimeoutInMinutes(15)
+                    .withEnableFloatingIp(false)))
+                .withProbes(Arrays.asList(new ProbeInner().withName("probe-lb")
+                    .withProtocol(ProbeProtocol.HTTP)
+                    .withPort(80)
+                    .withIntervalInSeconds(15)
+                    .withNumberOfProbes(2)
+                    .withProbeThreshold(1)
                     .withRequestPath("healthcheck.aspx"))),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * LoadBalancerCreateGatewayLoadBalancerConsumer.json
      */
     /**
@@ -360,8 +461,11 @@ public final class LoadBalancersCreateOrUpdateSamples {
      */
     public static void createLoadBalancerWithGatewayLoadBalancerConsumerConfigured(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getLoadBalancers().createOrUpdate("rg1", "lb",
-            new LoadBalancerInner().withLocation("eastus")
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getLoadBalancers()
+            .createOrUpdate("rg1", "lb", new LoadBalancerInner().withLocation("eastus")
                 .withSku(new LoadBalancerSku().withName(LoadBalancerSkuName.STANDARD))
                 .withFrontendIpConfigurations(Arrays.asList(new FrontendIpConfigurationInner().withName("fe-lb")
                     .withSubnet(new SubnetInner().withId(
@@ -376,23 +480,34 @@ public final class LoadBalancersCreateOrUpdateSamples {
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/backendAddressPools/be-lb"))
                     .withProbe(new SubResource().withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/probes/probe-lb"))
-                    .withProtocol(TransportProtocol.TCP).withLoadDistribution(LoadDistribution.DEFAULT)
-                    .withFrontendPort(80).withBackendPort(80).withIdleTimeoutInMinutes(15).withEnableFloatingIp(true)))
-                .withProbes(Arrays.asList(new ProbeInner().withName("probe-lb").withProtocol(ProbeProtocol.HTTP)
-                    .withPort(80).withIntervalInSeconds(15).withNumberOfProbes(2).withProbeThreshold(1)
+                    .withProtocol(TransportProtocol.TCP)
+                    .withLoadDistribution(LoadDistribution.DEFAULT)
+                    .withFrontendPort(80)
+                    .withBackendPort(80)
+                    .withIdleTimeoutInMinutes(15)
+                    .withEnableFloatingIp(true)))
+                .withProbes(Arrays.asList(new ProbeInner().withName("probe-lb")
+                    .withProtocol(ProbeProtocol.HTTP)
+                    .withPort(80)
+                    .withIntervalInSeconds(15)
+                    .withNumberOfProbes(2)
+                    .withProbeThreshold(1)
                     .withRequestPath("healthcheck.aspx")))
                 .withInboundNatRules(Arrays.asList(new InboundNatRuleInner().withName("in-nat-rule")
                     .withFrontendIpConfiguration(new SubResource().withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fe-lb"))
-                    .withProtocol(TransportProtocol.TCP).withFrontendPort(3389).withBackendPort(3389)
-                    .withIdleTimeoutInMinutes(15).withEnableFloatingIp(true)))
-                .withInboundNatPools(Arrays.asList()).withOutboundRules(Arrays.asList()),
-            com.azure.core.util.Context.NONE);
+                    .withProtocol(TransportProtocol.TCP)
+                    .withFrontendPort(3389)
+                    .withBackendPort(3389)
+                    .withIdleTimeoutInMinutes(15)
+                    .withEnableFloatingIp(true)))
+                .withInboundNatPools(Arrays.asList())
+                .withOutboundRules(Arrays.asList()), com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/LoadBalancerCreateStandardSku
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/LoadBalancerCreateStandardSku
      * .json
      */
     /**
@@ -401,8 +516,11 @@ public final class LoadBalancersCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createLoadBalancerWithStandardSKU(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getLoadBalancers().createOrUpdate("rg1", "lb",
-            new LoadBalancerInner().withLocation("eastus")
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getLoadBalancers()
+            .createOrUpdate("rg1", "lb", new LoadBalancerInner().withLocation("eastus")
                 .withSku(new LoadBalancerSku().withName(LoadBalancerSkuName.STANDARD))
                 .withFrontendIpConfigurations(Arrays.asList(new FrontendIpConfigurationInner().withName("fe-lb")
                     .withSubnet(new SubnetInner().withId(
@@ -415,17 +533,28 @@ public final class LoadBalancersCreateOrUpdateSamples {
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/backendAddressPools/be-lb"))
                     .withProbe(new SubResource().withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/probes/probe-lb"))
-                    .withProtocol(TransportProtocol.TCP).withLoadDistribution(LoadDistribution.DEFAULT)
-                    .withFrontendPort(80).withBackendPort(80).withIdleTimeoutInMinutes(15).withEnableFloatingIp(true)))
-                .withProbes(Arrays.asList(new ProbeInner().withName("probe-lb").withProtocol(ProbeProtocol.HTTP)
-                    .withPort(80).withIntervalInSeconds(15).withNumberOfProbes(2).withProbeThreshold(1)
+                    .withProtocol(TransportProtocol.TCP)
+                    .withLoadDistribution(LoadDistribution.DEFAULT)
+                    .withFrontendPort(80)
+                    .withBackendPort(80)
+                    .withIdleTimeoutInMinutes(15)
+                    .withEnableFloatingIp(true)))
+                .withProbes(Arrays.asList(new ProbeInner().withName("probe-lb")
+                    .withProtocol(ProbeProtocol.HTTP)
+                    .withPort(80)
+                    .withIntervalInSeconds(15)
+                    .withNumberOfProbes(2)
+                    .withProbeThreshold(1)
                     .withRequestPath("healthcheck.aspx")))
                 .withInboundNatRules(Arrays.asList(new InboundNatRuleInner().withName("in-nat-rule")
                     .withFrontendIpConfiguration(new SubResource().withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fe-lb"))
-                    .withProtocol(TransportProtocol.TCP).withFrontendPort(3389).withBackendPort(3389)
-                    .withIdleTimeoutInMinutes(15).withEnableFloatingIp(true)))
-                .withInboundNatPools(Arrays.asList()).withOutboundRules(Arrays.asList()),
-            com.azure.core.util.Context.NONE);
+                    .withProtocol(TransportProtocol.TCP)
+                    .withFrontendPort(3389)
+                    .withBackendPort(3389)
+                    .withIdleTimeoutInMinutes(15)
+                    .withEnableFloatingIp(true)))
+                .withInboundNatPools(Arrays.asList())
+                .withOutboundRules(Arrays.asList()), com.azure.core.util.Context.NONE);
     }
 }

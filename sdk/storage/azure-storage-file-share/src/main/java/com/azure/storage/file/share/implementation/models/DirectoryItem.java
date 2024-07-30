@@ -5,49 +5,53 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.core.util.CoreUtils;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
-/** A listed directory item. */
-@JacksonXmlRootElement(localName = "Directory")
+/**
+ * A listed directory item.
+ */
 @Fluent
-public final class DirectoryItem {
+public final class DirectoryItem implements XmlSerializable<DirectoryItem> {
     /*
      * The Name property.
      */
-    @JsonProperty(value = "Name", required = true)
     private StringEncoded name;
 
     /*
      * The FileId property.
      */
-    @JsonProperty(value = "FileId")
     private String fileId;
 
     /*
      * File properties.
      */
-    @JsonProperty(value = "Properties")
     private FileProperty properties;
 
     /*
      * The Attributes property.
      */
-    @JsonProperty(value = "Attributes")
     private String attributes;
 
     /*
      * The PermissionKey property.
      */
-    @JsonProperty(value = "PermissionKey")
     private String permissionKey;
 
-    /** Creates an instance of DirectoryItem class. */
-    public DirectoryItem() {}
+    /**
+     * Creates an instance of DirectoryItem class.
+     */
+    public DirectoryItem() {
+    }
 
     /**
      * Get the name property: The Name property.
-     *
+     * 
      * @return the name value.
      */
     public StringEncoded getName() {
@@ -56,7 +60,7 @@ public final class DirectoryItem {
 
     /**
      * Set the name property: The Name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the DirectoryItem object itself.
      */
@@ -67,7 +71,7 @@ public final class DirectoryItem {
 
     /**
      * Get the fileId property: The FileId property.
-     *
+     * 
      * @return the fileId value.
      */
     public String getFileId() {
@@ -76,7 +80,7 @@ public final class DirectoryItem {
 
     /**
      * Set the fileId property: The FileId property.
-     *
+     * 
      * @param fileId the fileId value to set.
      * @return the DirectoryItem object itself.
      */
@@ -87,7 +91,7 @@ public final class DirectoryItem {
 
     /**
      * Get the properties property: File properties.
-     *
+     * 
      * @return the properties value.
      */
     public FileProperty getProperties() {
@@ -96,7 +100,7 @@ public final class DirectoryItem {
 
     /**
      * Set the properties property: File properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the DirectoryItem object itself.
      */
@@ -107,7 +111,7 @@ public final class DirectoryItem {
 
     /**
      * Get the attributes property: The Attributes property.
-     *
+     * 
      * @return the attributes value.
      */
     public String getAttributes() {
@@ -116,7 +120,7 @@ public final class DirectoryItem {
 
     /**
      * Set the attributes property: The Attributes property.
-     *
+     * 
      * @param attributes the attributes value to set.
      * @return the DirectoryItem object itself.
      */
@@ -127,7 +131,7 @@ public final class DirectoryItem {
 
     /**
      * Get the permissionKey property: The PermissionKey property.
-     *
+     * 
      * @return the permissionKey value.
      */
     public String getPermissionKey() {
@@ -136,12 +140,79 @@ public final class DirectoryItem {
 
     /**
      * Set the permissionKey property: The PermissionKey property.
-     *
+     * 
      * @param permissionKey the permissionKey value to set.
      * @return the DirectoryItem object itself.
      */
     public DirectoryItem setPermissionKey(String permissionKey) {
         this.permissionKey = permissionKey;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Directory" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        xmlWriter.writeXml(this.name, "Name");
+        xmlWriter.writeStringElement("FileId", this.fileId);
+        xmlWriter.writeXml(this.properties, "Properties");
+        xmlWriter.writeStringElement("Attributes", this.attributes);
+        xmlWriter.writeStringElement("PermissionKey", this.permissionKey);
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of DirectoryItem from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of DirectoryItem if the XmlReader was pointing to an instance of it, or null if it was
+     * pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the DirectoryItem.
+     */
+    public static DirectoryItem fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of DirectoryItem from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     * cases where the model can deserialize from different root element names.
+     * @return An instance of DirectoryItem if the XmlReader was pointing to an instance of it, or null if it was
+     * pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the DirectoryItem.
+     */
+    public static DirectoryItem fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Directory" : rootElementName;
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            DirectoryItem deserializedDirectoryItem = new DirectoryItem();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
+
+                if ("Name".equals(elementName.getLocalPart())) {
+                    deserializedDirectoryItem.name = StringEncoded.fromXml(reader, "Name");
+                } else if ("FileId".equals(elementName.getLocalPart())) {
+                    deserializedDirectoryItem.fileId = reader.getStringElement();
+                } else if ("Properties".equals(elementName.getLocalPart())) {
+                    deserializedDirectoryItem.properties = FileProperty.fromXml(reader, "Properties");
+                } else if ("Attributes".equals(elementName.getLocalPart())) {
+                    deserializedDirectoryItem.attributes = reader.getStringElement();
+                } else if ("PermissionKey".equals(elementName.getLocalPart())) {
+                    deserializedDirectoryItem.permissionKey = reader.getStringElement();
+                } else {
+                    reader.skipElement();
+                }
+            }
+
+            return deserializedDirectoryItem;
+        });
     }
 }

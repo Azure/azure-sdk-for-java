@@ -5,6 +5,8 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.Duration;
@@ -12,14 +14,35 @@ import java.time.Duration;
 /**
  * Number of direct method invokes is not in allowed range.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "ruleType",
+    defaultImpl = DirectMethodInvokesNotInAllowedRange.class,
+    visible = true)
 @JsonTypeName("DirectMethodInvokesNotInAllowedRange")
 @Fluent
 public final class DirectMethodInvokesNotInAllowedRange extends TimeWindowCustomAlertRule {
+    /*
+     * The type of the custom alert rule.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "ruleType", required = true)
+    private String ruleType = "DirectMethodInvokesNotInAllowedRange";
+
     /**
      * Creates an instance of DirectMethodInvokesNotInAllowedRange class.
      */
     public DirectMethodInvokesNotInAllowedRange() {
+    }
+
+    /**
+     * Get the ruleType property: The type of the custom alert rule.
+     * 
+     * @return the ruleType value.
+     */
+    @Override
+    public String ruleType() {
+        return this.ruleType;
     }
 
     /**

@@ -6,75 +6,42 @@ package com.azure.resourcemanager.mobilenetwork.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mobilenetwork.MobileNetworkManager;
 import com.azure.resourcemanager.mobilenetwork.models.AsyncOperationStatus;
 import com.azure.resourcemanager.mobilenetwork.models.PacketCoreControlPlaneCollectDiagnosticsPackage;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PacketCoreControlPlanesCollectDiagnosticsPackageMockTests {
     @Test
     public void testCollectDiagnosticsPackage() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"id\":\"d\",\"name\":\"qvwzkjopwbeonrl\",\"status\":\"wzdqybxceakxcpts\",\"resourceId\":\"fyiaseqch\",\"startTime\":\"2021-11-05T11:59:35Z\",\"endTime\":\"2021-08-04T17:40:23Z\",\"percentComplete\":38.799577761276595,\"properties\":\"datasg\"}";
 
-        String responseStr =
-            "{\"id\":\"kujrllfojui\",\"name\":\"puuyjucejik\",\"status\":\"oeo\",\"resourceId\":\"tzejetjklnt\",\"startTime\":\"2021-05-29T06:35:10Z\",\"endTime\":\"2021-10-12T06:41:45Z\",\"percentComplete\":4.448023219350572,\"properties\":\"dataqzolxrzvhqjw\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MobileNetworkManager manager = MobileNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        AsyncOperationStatus response = manager.packetCoreControlPlanes()
+            .collectDiagnosticsPackage("xubmdnafcbqw", "e",
+                new PacketCoreControlPlaneCollectDiagnosticsPackage().withStorageAccountBlobUrl("jelaqacigele"),
+                com.azure.core.util.Context.NONE);
 
-        MobileNetworkManager manager =
-            MobileNetworkManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        AsyncOperationStatus response =
-            manager
-                .packetCoreControlPlanes()
-                .collectDiagnosticsPackage(
-                    "w",
-                    "dqlvhukoveof",
-                    new PacketCoreControlPlaneCollectDiagnosticsPackage().withStorageAccountBlobUrl("zrvjfnmjmvlwyzgi"),
-                    com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("kujrllfojui", response.id());
-        Assertions.assertEquals("puuyjucejik", response.name());
-        Assertions.assertEquals("oeo", response.status());
-        Assertions.assertEquals("tzejetjklnt", response.resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-29T06:35:10Z"), response.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-12T06:41:45Z"), response.endTime());
-        Assertions.assertEquals(4.448023219350572D, response.percentComplete());
+        Assertions.assertEquals("d", response.id());
+        Assertions.assertEquals("qvwzkjopwbeonrl", response.name());
+        Assertions.assertEquals("wzdqybxceakxcpts", response.status());
+        Assertions.assertEquals("fyiaseqch", response.resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-05T11:59:35Z"), response.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-04T17:40:23Z"), response.endTime());
+        Assertions.assertEquals(38.799577761276595D, response.percentComplete());
     }
 }

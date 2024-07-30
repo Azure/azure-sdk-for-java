@@ -7,6 +7,7 @@ package com.azure.resourcemanager.eventgrid.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -15,15 +16,22 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "type",
-    defaultImpl = DeliveryAttributeMapping.class)
+    defaultImpl = DeliveryAttributeMapping.class,
+    visible = true)
 @JsonTypeName("DeliveryAttributeMapping")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Static", value = StaticDeliveryAttributeMapping.class),
     @JsonSubTypes.Type(name = "Dynamic", value = DynamicDeliveryAttributeMapping.class) })
 @Fluent
 public class DeliveryAttributeMapping {
+    /*
+     * Type of the delivery attribute or header name.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private DeliveryAttributeMappingType type;
+
     /*
      * Name of the delivery attribute or header.
      */
@@ -34,6 +42,16 @@ public class DeliveryAttributeMapping {
      * Creates an instance of DeliveryAttributeMapping class.
      */
     public DeliveryAttributeMapping() {
+        this.type = DeliveryAttributeMappingType.fromString("DeliveryAttributeMapping");
+    }
+
+    /**
+     * Get the type property: Type of the delivery attribute or header name.
+     * 
+     * @return the type value.
+     */
+    public DeliveryAttributeMappingType type() {
+        return this.type;
     }
 
     /**

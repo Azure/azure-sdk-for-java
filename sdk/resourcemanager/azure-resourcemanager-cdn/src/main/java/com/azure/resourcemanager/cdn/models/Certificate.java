@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cdn.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Certificate used for https. */
+/**
+ * Certificate used for https.
+ */
 @Fluent
 public class Certificate {
     /*
@@ -28,13 +30,15 @@ public class Certificate {
     @JsonProperty(value = "expirationDate", access = JsonProperty.Access.WRITE_ONLY)
     private String expirationDate;
 
-    /** Creates an instance of Certificate class. */
+    /**
+     * Creates an instance of Certificate class.
+     */
     public Certificate() {
     }
 
     /**
      * Get the type property: The type of the secret resource.
-     *
+     * 
      * @return the type value.
      */
     public SecretType type() {
@@ -43,7 +47,7 @@ public class Certificate {
 
     /**
      * Set the type property: The type of the secret resource.
-     *
+     * 
      * @param type the type value to set.
      * @return the Certificate object itself.
      */
@@ -54,7 +58,7 @@ public class Certificate {
 
     /**
      * Get the subject property: Subject name in the certificate.
-     *
+     * 
      * @return the subject value.
      */
     public String subject() {
@@ -63,7 +67,7 @@ public class Certificate {
 
     /**
      * Get the expirationDate property: Certificate expiration date.
-     *
+     * 
      * @return the expirationDate value.
      */
     public String expirationDate() {
@@ -72,7 +76,7 @@ public class Certificate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -28,13 +28,15 @@ public final class DeepCreatedOriginGroup {
     @JsonProperty(value = "properties")
     private DeepCreatedOriginGroupProperties innerProperties;
 
-    /** Creates an instance of DeepCreatedOriginGroup class. */
+    /**
+     * Creates an instance of DeepCreatedOriginGroup class.
+     */
     public DeepCreatedOriginGroup() {
     }
 
     /**
      * Get the name property: Origin group name which must be unique within the endpoint.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -43,7 +45,7 @@ public final class DeepCreatedOriginGroup {
 
     /**
      * Set the name property: Origin group name which must be unique within the endpoint.
-     *
+     * 
      * @param name the name value to set.
      * @return the DeepCreatedOriginGroup object itself.
      */
@@ -54,7 +56,7 @@ public final class DeepCreatedOriginGroup {
 
     /**
      * Get the innerProperties property: Properties of the origin group created on the CDN endpoint.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DeepCreatedOriginGroupProperties innerProperties() {
@@ -62,9 +64,9 @@ public final class DeepCreatedOriginGroup {
     }
 
     /**
-     * Get the healthProbeSettings property: Health probe settings to the origin that is used to determine the health of
-     * the origin.
-     *
+     * Get the healthProbeSettings property: Health probe settings to the origin that is used to determine the health
+     * of the origin.
+     * 
      * @return the healthProbeSettings value.
      */
     public HealthProbeParameters healthProbeSettings() {
@@ -72,9 +74,9 @@ public final class DeepCreatedOriginGroup {
     }
 
     /**
-     * Set the healthProbeSettings property: Health probe settings to the origin that is used to determine the health of
-     * the origin.
-     *
+     * Set the healthProbeSettings property: Health probe settings to the origin that is used to determine the health
+     * of the origin.
+     * 
      * @param healthProbeSettings the healthProbeSettings value to set.
      * @return the DeepCreatedOriginGroup object itself.
      */
@@ -88,7 +90,7 @@ public final class DeepCreatedOriginGroup {
 
     /**
      * Get the origins property: The source of the content being delivered via CDN within given origin group.
-     *
+     * 
      * @return the origins value.
      */
     public List<ResourceReference> origins() {
@@ -97,7 +99,7 @@ public final class DeepCreatedOriginGroup {
 
     /**
      * Set the origins property: The source of the content being delivered via CDN within given origin group.
-     *
+     * 
      * @param origins the origins value to set.
      * @return the DeepCreatedOriginGroup object itself.
      */
@@ -113,12 +115,11 @@ public final class DeepCreatedOriginGroup {
      * Get the trafficRestorationTimeToHealedOrNewEndpointsInMinutes property: Time in minutes to shift the traffic to
      * the endpoint gradually when an unhealthy endpoint comes healthy or a new endpoint is added. Default is 10 mins.
      * This property is currently not supported.
-     *
+     * 
      * @return the trafficRestorationTimeToHealedOrNewEndpointsInMinutes value.
      */
     public Integer trafficRestorationTimeToHealedOrNewEndpointsInMinutes() {
-        return this.innerProperties() == null
-            ? null
+        return this.innerProperties() == null ? null
             : this.innerProperties().trafficRestorationTimeToHealedOrNewEndpointsInMinutes();
     }
 
@@ -126,9 +127,9 @@ public final class DeepCreatedOriginGroup {
      * Set the trafficRestorationTimeToHealedOrNewEndpointsInMinutes property: Time in minutes to shift the traffic to
      * the endpoint gradually when an unhealthy endpoint comes healthy or a new endpoint is added. Default is 10 mins.
      * This property is currently not supported.
-     *
+     * 
      * @param trafficRestorationTimeToHealedOrNewEndpointsInMinutes the
-     *     trafficRestorationTimeToHealedOrNewEndpointsInMinutes value to set.
+     * trafficRestorationTimeToHealedOrNewEndpointsInMinutes value to set.
      * @return the DeepCreatedOriginGroup object itself.
      */
     public DeepCreatedOriginGroup withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
@@ -136,29 +137,26 @@ public final class DeepCreatedOriginGroup {
         if (this.innerProperties() == null) {
             this.innerProperties = new DeepCreatedOriginGroupProperties();
         }
-        this
-            .innerProperties()
-            .withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
-                trafficRestorationTimeToHealedOrNewEndpointsInMinutes);
+        this.innerProperties().withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
+            trafficRestorationTimeToHealedOrNewEndpointsInMinutes);
         return this;
     }
 
     /**
      * Get the responseBasedOriginErrorDetectionSettings property: The JSON object that contains the properties to
      * determine origin health using real requests/responses.This property is currently not supported.
-     *
+     * 
      * @return the responseBasedOriginErrorDetectionSettings value.
      */
     public ResponseBasedOriginErrorDetectionParameters responseBasedOriginErrorDetectionSettings() {
-        return this.innerProperties() == null
-            ? null
+        return this.innerProperties() == null ? null
             : this.innerProperties().responseBasedOriginErrorDetectionSettings();
     }
 
     /**
      * Set the responseBasedOriginErrorDetectionSettings property: The JSON object that contains the properties to
      * determine origin health using real requests/responses.This property is currently not supported.
-     *
+     * 
      * @param responseBasedOriginErrorDetectionSettings the responseBasedOriginErrorDetectionSettings value to set.
      * @return the DeepCreatedOriginGroup object itself.
      */
@@ -173,14 +171,13 @@ public final class DeepCreatedOriginGroup {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model DeepCreatedOriginGroup"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model DeepCreatedOriginGroup"));
         }
         if (innerProperties() != null) {
             innerProperties().validate();

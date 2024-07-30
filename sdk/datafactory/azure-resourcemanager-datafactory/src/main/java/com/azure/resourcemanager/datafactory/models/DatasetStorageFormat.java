@@ -10,19 +10,16 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * The format definition of a storage.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = DatasetStorageFormat.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = DatasetStorageFormat.class, visible = true)
 @JsonTypeName("DatasetStorageFormat")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "TextFormat", value = TextFormat.class),
@@ -32,6 +29,13 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "ParquetFormat", value = ParquetFormat.class) })
 @Fluent
 public class DatasetStorageFormat {
+    /*
+     * Type of dataset storage format.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "DatasetStorageFormat";
+
     /*
      * Serializer. Type: string (or Expression with resultType string).
      */
@@ -54,6 +58,15 @@ public class DatasetStorageFormat {
      * Creates an instance of DatasetStorageFormat class.
      */
     public DatasetStorageFormat() {
+    }
+
+    /**
+     * Get the type property: Type of dataset storage format.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -120,7 +133,7 @@ public class DatasetStorageFormat {
     @JsonAnySetter
     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }

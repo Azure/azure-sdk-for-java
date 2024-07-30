@@ -32,8 +32,7 @@ public final class AzureFileshareProtectedItemExtendedInfo {
     private String policyState;
 
     /*
-     * Indicates the state of this resource. Possible values are from enum ResourceState {Invalid, Active, SoftDeleted,
-     * Deleted}
+     * Indicates the state of this resource. Possible values are from enum ResourceState {Invalid, Active, SoftDeleted, Deleted}
      */
     @JsonProperty(value = "resourceState", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceState;
@@ -111,8 +110,8 @@ public final class AzureFileshareProtectedItemExtendedInfo {
     }
 
     /**
-     * Get the resourceState property: Indicates the state of this resource. Possible values are from enum
-     * ResourceState {Invalid, Active, SoftDeleted, Deleted}.
+     * Get the resourceState property: Indicates the state of this resource. Possible values are from enum ResourceState
+     * {Invalid, Active, SoftDeleted, Deleted}.
      * 
      * @return the resourceState value.
      */

@@ -10,9 +10,8 @@ import com.azure.resourcemanager.mysqlflexibleserver.models.DelegatedSubnetUsage
 public final class DelegatedSubnetUsageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DelegatedSubnetUsage model =
-            BinaryData
-                .fromString("{\"subnetName\":\"tko\",\"usage\":3980056682158656120}")
+        DelegatedSubnetUsage model
+            = BinaryData.fromString("{\"subnetName\":\"lkdmtncvokotllxd\",\"usage\":8614672168967170032}")
                 .toObject(DelegatedSubnetUsage.class);
     }
 

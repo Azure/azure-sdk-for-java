@@ -29,11 +29,16 @@ public final class DataFlowDebugSessionInfoInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataFlowDebugSessionInfoInner model
-            = new DataFlowDebugSessionInfoInner().withDataFlowName("bwefqsfapaqtfer").withComputeType("wexjkmfxapjwogq")
-                .withCoreCount(211935178).withNodeCount(775989398).withIntegrationRuntimeName("dcdab")
-                .withSessionId("wpwyawbz").withStartTime("qbucljgkyexaoguy").withTimeToLiveInMinutes(166467616)
-                .withLastActivityTime("dsdaultxijjumf").withAdditionalProperties(mapOf());
+        DataFlowDebugSessionInfoInner model = new DataFlowDebugSessionInfoInner().withDataFlowName("bwefqsfapaqtfer")
+            .withComputeType("wexjkmfxapjwogq")
+            .withCoreCount(211935178)
+            .withNodeCount(775989398)
+            .withIntegrationRuntimeName("dcdab")
+            .withSessionId("wpwyawbz")
+            .withStartTime("qbucljgkyexaoguy")
+            .withTimeToLiveInMinutes(166467616)
+            .withLastActivityTime("dsdaultxijjumf")
+            .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(DataFlowDebugSessionInfoInner.class);
         Assertions.assertEquals("bwefqsfapaqtfer", model.dataFlowName());
         Assertions.assertEquals("wexjkmfxapjwogq", model.computeType());

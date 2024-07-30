@@ -7,6 +7,7 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -14,11 +15,7 @@ import java.util.List;
 /**
  * Base class for all execution activities.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = ExecutionActivity.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = ExecutionActivity.class, visible = true)
 @JsonTypeName("Execution")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Copy", value = CopyActivity.class),
@@ -50,6 +47,13 @@ import java.util.List;
 @Fluent
 public class ExecutionActivity extends Activity {
     /*
+     * Type of activity.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "Execution";
+
+    /*
      * Linked service reference.
      */
     @JsonProperty(value = "linkedServiceName")
@@ -65,6 +69,16 @@ public class ExecutionActivity extends Activity {
      * Creates an instance of ExecutionActivity class.
      */
     public ExecutionActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

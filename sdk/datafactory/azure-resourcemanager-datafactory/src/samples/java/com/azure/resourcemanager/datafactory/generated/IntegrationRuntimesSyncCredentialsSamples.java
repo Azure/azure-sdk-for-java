@@ -19,7 +19,8 @@ public final class IntegrationRuntimesSyncCredentialsSamples {
      */
     public static void
         integrationRuntimesSyncCredentials(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimes().syncCredentialsWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleIntegrationRuntime", com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes()
+            .syncCredentialsWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }

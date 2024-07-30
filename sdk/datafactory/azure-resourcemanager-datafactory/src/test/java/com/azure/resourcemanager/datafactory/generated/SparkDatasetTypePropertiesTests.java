@@ -10,16 +10,16 @@ import com.azure.resourcemanager.datafactory.fluent.models.SparkDatasetTypePrope
 public final class SparkDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SparkDatasetTypeProperties model = BinaryData
-            .fromString(
-                "{\"tableName\":\"datau\",\"table\":\"dataodincfbaoboiahk\",\"schema\":\"datasvaxmksaxyeedvp\"}")
+        SparkDatasetTypeProperties model = BinaryData.fromString(
+            "{\"tableName\":\"datakscecmbaajdfwrd\",\"table\":\"datalvzkfekde\",\"schema\":\"datapjqtllbhjjpduibs\"}")
             .toObject(SparkDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SparkDatasetTypeProperties model = new SparkDatasetTypeProperties().withTableName("datau")
-            .withTable("dataodincfbaoboiahk").withSchema("datasvaxmksaxyeedvp");
+        SparkDatasetTypeProperties model = new SparkDatasetTypeProperties().withTableName("datakscecmbaajdfwrd")
+            .withTable("datalvzkfekde")
+            .withSchema("datapjqtllbhjjpduibs");
         model = BinaryData.fromObject(model).toObject(SparkDatasetTypeProperties.class);
     }
 }

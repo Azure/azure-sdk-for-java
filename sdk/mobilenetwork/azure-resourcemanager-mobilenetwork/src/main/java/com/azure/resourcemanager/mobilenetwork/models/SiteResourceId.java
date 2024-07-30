@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Reference to a site resource. */
+/**
+ * Reference to a site resource.
+ */
 @Fluent
 public final class SiteResourceId {
     /*
@@ -17,13 +19,15 @@ public final class SiteResourceId {
     @JsonProperty(value = "id", required = true)
     private String id;
 
-    /** Creates an instance of SiteResourceId class. */
+    /**
+     * Creates an instance of SiteResourceId class.
+     */
     public SiteResourceId() {
     }
 
     /**
      * Get the id property: Site resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -32,7 +36,7 @@ public final class SiteResourceId {
 
     /**
      * Set the id property: Site resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the SiteResourceId object itself.
      */
@@ -43,14 +47,13 @@ public final class SiteResourceId {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model SiteResourceId"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model SiteResourceId"));
         }
     }
 

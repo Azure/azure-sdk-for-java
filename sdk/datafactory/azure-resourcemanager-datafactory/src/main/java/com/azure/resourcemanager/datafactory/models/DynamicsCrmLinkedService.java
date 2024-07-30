@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.DynamicsCrmLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,21 @@ import java.util.Map;
 /**
  * Dynamics CRM linked service.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = DynamicsCrmLinkedService.class,
+    visible = true)
 @JsonTypeName("DynamicsCrm")
 @Fluent
 public final class DynamicsCrmLinkedService extends LinkedService {
+    /*
+     * Type of linked service.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "DynamicsCrm";
+
     /*
      * Dynamics CRM linked service properties.
      */
@@ -30,6 +42,16 @@ public final class DynamicsCrmLinkedService extends LinkedService {
      * Creates an instance of DynamicsCrmLinkedService class.
      */
     public DynamicsCrmLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -79,8 +101,8 @@ public final class DynamicsCrmLinkedService extends LinkedService {
 
     /**
      * Get the deploymentType property: The deployment type of the Dynamics CRM instance. 'Online' for Dynamics CRM
-     * Online and 'OnPremisesWithIfd' for Dynamics CRM on-premises with Ifd. Type: string (or Expression with
-     * resultType string).
+     * Online and 'OnPremisesWithIfd' for Dynamics CRM on-premises with Ifd. Type: string (or Expression with resultType
+     * string).
      * 
      * @return the deploymentType value.
      */
@@ -90,8 +112,8 @@ public final class DynamicsCrmLinkedService extends LinkedService {
 
     /**
      * Set the deploymentType property: The deployment type of the Dynamics CRM instance. 'Online' for Dynamics CRM
-     * Online and 'OnPremisesWithIfd' for Dynamics CRM on-premises with Ifd. Type: string (or Expression with
-     * resultType string).
+     * Online and 'OnPremisesWithIfd' for Dynamics CRM on-premises with Ifd. Type: string (or Expression with resultType
+     * string).
      * 
      * @param deploymentType the deploymentType value to set.
      * @return the DynamicsCrmLinkedService object itself.
@@ -181,8 +203,8 @@ public final class DynamicsCrmLinkedService extends LinkedService {
 
     /**
      * Get the organizationName property: The organization name of the Dynamics CRM instance. The property is required
-     * for on-prem and required for online when there are more than one Dynamics CRM instances associated with the
-     * user. Type: string (or Expression with resultType string).
+     * for on-prem and required for online when there are more than one Dynamics CRM instances associated with the user.
+     * Type: string (or Expression with resultType string).
      * 
      * @return the organizationName value.
      */
@@ -192,8 +214,8 @@ public final class DynamicsCrmLinkedService extends LinkedService {
 
     /**
      * Set the organizationName property: The organization name of the Dynamics CRM instance. The property is required
-     * for on-prem and required for online when there are more than one Dynamics CRM instances associated with the
-     * user. Type: string (or Expression with resultType string).
+     * for on-prem and required for online when there are more than one Dynamics CRM instances associated with the user.
+     * Type: string (or Expression with resultType string).
      * 
      * @param organizationName the organizationName value to set.
      * @return the DynamicsCrmLinkedService object itself.
@@ -307,9 +329,9 @@ public final class DynamicsCrmLinkedService extends LinkedService {
     }
 
     /**
-     * Get the servicePrincipalCredentialType property: The service principal credential type to use in
-     * Server-To-Server authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate.
-     * Type: string (or Expression with resultType string).
+     * Get the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
+     * Expression with resultType string).
      * 
      * @return the servicePrincipalCredentialType value.
      */
@@ -318,9 +340,9 @@ public final class DynamicsCrmLinkedService extends LinkedService {
     }
 
     /**
-     * Set the servicePrincipalCredentialType property: The service principal credential type to use in
-     * Server-To-Server authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate.
-     * Type: string (or Expression with resultType string).
+     * Set the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
+     * Expression with resultType string).
      * 
      * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
      * @return the DynamicsCrmLinkedService object itself.
@@ -363,8 +385,31 @@ public final class DynamicsCrmLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the credential property: The credential reference containing authentication information.
+     * 
+     * @return the credential value.
+     */
+    public CredentialReference credential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().credential();
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     * 
+     * @param credential the credential value to set.
+     * @return the DynamicsCrmLinkedService object itself.
+     */
+    public DynamicsCrmLinkedService withCredential(CredentialReference credential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new DynamicsCrmLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withCredential(credential);
+        return this;
+    }
+
+    /**
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -373,8 +418,8 @@ public final class DynamicsCrmLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the DynamicsCrmLinkedService object itself.
@@ -396,8 +441,9 @@ public final class DynamicsCrmLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model DynamicsCrmLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model DynamicsCrmLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

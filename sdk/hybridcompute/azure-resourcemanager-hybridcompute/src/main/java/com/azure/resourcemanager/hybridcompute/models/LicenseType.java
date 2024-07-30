@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of the license resource. */
+/**
+ * The type of the license resource.
+ */
 public final class LicenseType extends ExpandableStringEnum<LicenseType> {
-    /** Static value ESU for LicenseType. */
+    /**
+     * Static value ESU for LicenseType.
+     */
     public static final LicenseType ESU = fromString("ESU");
 
     /**
      * Creates a new instance of LicenseType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class LicenseType extends ExpandableStringEnum<LicenseType> {
 
     /**
      * Creates or finds a LicenseType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LicenseType.
      */
-    @JsonCreator
     public static LicenseType fromString(String name) {
         return fromString(name, LicenseType.class);
     }
 
     /**
      * Gets known LicenseType values.
-     *
+     * 
      * @return known LicenseType values.
      */
     public static Collection<LicenseType> values() {

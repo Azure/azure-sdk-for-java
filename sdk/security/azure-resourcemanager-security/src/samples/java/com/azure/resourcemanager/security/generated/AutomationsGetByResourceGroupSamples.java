@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class AutomationsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/
-     * GetAutomationResourceGroup_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/GetAutomationResourceGroup_example.json
      */
     /**
      * Sample code: Retrieve a security automation.
@@ -19,7 +17,8 @@ public final class AutomationsGetByResourceGroupSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void retrieveASecurityAutomation(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.automations().getByResourceGroupWithResponse("exampleResourceGroup", "exampleAutomation",
-            com.azure.core.util.Context.NONE);
+        manager.automations()
+            .getByResourceGroupWithResponse("exampleResourceGroup", "exampleAutomation",
+                com.azure.core.util.Context.NONE);
     }
 }

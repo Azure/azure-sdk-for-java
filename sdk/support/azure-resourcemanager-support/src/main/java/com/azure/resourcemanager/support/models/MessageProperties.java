@@ -5,11 +5,12 @@
 package com.azure.resourcemanager.support.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Describes the properties of a Message Details resource. */
+/**
+ * Describes the properties of a Message Details resource.
+ */
 @Fluent
 public final class MessageProperties {
     /*
@@ -33,7 +34,7 @@ public final class MessageProperties {
     /*
      * Body of the communication.
      */
-    @JsonProperty(value = "body", required = true)
+    @JsonProperty(value = "body")
     private String body;
 
     /*
@@ -42,13 +43,15 @@ public final class MessageProperties {
     @JsonProperty(value = "createdDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdDate;
 
-    /** Creates an instance of MessageProperties class. */
+    /**
+     * Creates an instance of MessageProperties class.
+     */
     public MessageProperties() {
     }
 
     /**
      * Get the contentType property: Content type.
-     *
+     * 
      * @return the contentType value.
      */
     public TranscriptContentType contentType() {
@@ -57,7 +60,7 @@ public final class MessageProperties {
 
     /**
      * Get the communicationDirection property: Direction of communication.
-     *
+     * 
      * @return the communicationDirection value.
      */
     public CommunicationDirection communicationDirection() {
@@ -66,7 +69,7 @@ public final class MessageProperties {
 
     /**
      * Get the sender property: Name of the sender.
-     *
+     * 
      * @return the sender value.
      */
     public String sender() {
@@ -75,7 +78,7 @@ public final class MessageProperties {
 
     /**
      * Set the sender property: Name of the sender.
-     *
+     * 
      * @param sender the sender value to set.
      * @return the MessageProperties object itself.
      */
@@ -86,7 +89,7 @@ public final class MessageProperties {
 
     /**
      * Get the body property: Body of the communication.
-     *
+     * 
      * @return the body value.
      */
     public String body() {
@@ -95,7 +98,7 @@ public final class MessageProperties {
 
     /**
      * Set the body property: Body of the communication.
-     *
+     * 
      * @param body the body value to set.
      * @return the MessageProperties object itself.
      */
@@ -106,7 +109,7 @@ public final class MessageProperties {
 
     /**
      * Get the createdDate property: Time in UTC (ISO 8601 format) when the communication was created.
-     *
+     * 
      * @return the createdDate value.
      */
     public OffsetDateTime createdDate() {
@@ -115,16 +118,9 @@ public final class MessageProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (body() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property body in model MessageProperties"));
-        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(MessageProperties.class);
 }

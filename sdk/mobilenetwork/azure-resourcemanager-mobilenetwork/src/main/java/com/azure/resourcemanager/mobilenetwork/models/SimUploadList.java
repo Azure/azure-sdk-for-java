@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SIMs to upload. */
+/**
+ * The SIMs to upload.
+ */
 @Fluent
 public final class SimUploadList {
     /*
@@ -18,13 +20,15 @@ public final class SimUploadList {
     @JsonProperty(value = "sims", required = true)
     private List<SimNameAndProperties> sims;
 
-    /** Creates an instance of SimUploadList class. */
+    /**
+     * Creates an instance of SimUploadList class.
+     */
     public SimUploadList() {
     }
 
     /**
      * Get the sims property: A list of SIMs to upload.
-     *
+     * 
      * @return the sims value.
      */
     public List<SimNameAndProperties> sims() {
@@ -33,7 +37,7 @@ public final class SimUploadList {
 
     /**
      * Set the sims property: A list of SIMs to upload.
-     *
+     * 
      * @param sims the sims value to set.
      * @return the SimUploadList object itself.
      */
@@ -44,14 +48,13 @@ public final class SimUploadList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sims() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sims in model SimUploadList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sims in model SimUploadList"));
         } else {
             sims().forEach(e -> e.validate());
         }

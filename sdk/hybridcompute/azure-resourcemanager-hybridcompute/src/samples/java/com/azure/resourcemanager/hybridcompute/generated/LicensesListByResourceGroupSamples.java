@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.hybridcompute.generated;
 
-/** Samples for Licenses ListByResourceGroup. */
+/**
+ * Samples for Licenses ListByResourceGroup.
+ */
 public final class LicensesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-06-20-preview/examples/license/License_ListByResourceGroup.json
+     * x-ms-original-file:
+     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-05-20-preview/examples/license/
+     * License_ListByResourceGroup.json
      */
     /**
      * Sample code: GET all Machine Extensions.
-     *
+     * 
      * @param manager Entry point to HybridComputeManager.
      */
     public static void gETAllMachineExtensions(com.azure.resourcemanager.hybridcompute.HybridComputeManager manager) {

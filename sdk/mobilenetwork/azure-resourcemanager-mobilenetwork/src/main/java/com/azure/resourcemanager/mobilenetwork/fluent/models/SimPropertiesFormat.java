@@ -11,7 +11,9 @@ import com.azure.resourcemanager.mobilenetwork.models.SimStaticIpProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** SIM properties. */
+/**
+ * SIM properties.
+ */
 @Fluent
 public final class SimPropertiesFormat extends CommonSimPropertiesFormat {
     /*
@@ -26,13 +28,15 @@ public final class SimPropertiesFormat extends CommonSimPropertiesFormat {
     @JsonProperty(value = "operatorKeyCode")
     private String operatorKeyCode;
 
-    /** Creates an instance of SimPropertiesFormat class. */
+    /**
+     * Creates an instance of SimPropertiesFormat class.
+     */
     public SimPropertiesFormat() {
     }
 
     /**
      * Get the authenticationKey property: The Ki value for the SIM.
-     *
+     * 
      * @return the authenticationKey value.
      */
     public String authenticationKey() {
@@ -41,7 +45,7 @@ public final class SimPropertiesFormat extends CommonSimPropertiesFormat {
 
     /**
      * Set the authenticationKey property: The Ki value for the SIM.
-     *
+     * 
      * @param authenticationKey the authenticationKey value to set.
      * @return the SimPropertiesFormat object itself.
      */
@@ -52,7 +56,7 @@ public final class SimPropertiesFormat extends CommonSimPropertiesFormat {
 
     /**
      * Get the operatorKeyCode property: The Opc value for the SIM.
-     *
+     * 
      * @return the operatorKeyCode value.
      */
     public String operatorKeyCode() {
@@ -61,7 +65,7 @@ public final class SimPropertiesFormat extends CommonSimPropertiesFormat {
 
     /**
      * Set the operatorKeyCode property: The Opc value for the SIM.
-     *
+     * 
      * @param operatorKeyCode the operatorKeyCode value to set.
      * @return the SimPropertiesFormat object itself.
      */
@@ -70,35 +74,45 @@ public final class SimPropertiesFormat extends CommonSimPropertiesFormat {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SimPropertiesFormat withInternationalMobileSubscriberIdentity(String internationalMobileSubscriberIdentity) {
         super.withInternationalMobileSubscriberIdentity(internationalMobileSubscriberIdentity);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SimPropertiesFormat withIntegratedCircuitCardIdentifier(String integratedCircuitCardIdentifier) {
         super.withIntegratedCircuitCardIdentifier(integratedCircuitCardIdentifier);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SimPropertiesFormat withDeviceType(String deviceType) {
         super.withDeviceType(deviceType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SimPropertiesFormat withSimPolicy(SimPolicyResourceId simPolicy) {
         super.withSimPolicy(simPolicy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SimPropertiesFormat withStaticIpConfiguration(List<SimStaticIpProperties> staticIpConfiguration) {
         super.withStaticIpConfiguration(staticIpConfiguration);
@@ -107,7 +121,7 @@ public final class SimPropertiesFormat extends CommonSimPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

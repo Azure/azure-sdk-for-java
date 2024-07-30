@@ -7,11 +7,13 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.exception.ManagementException;
 
-/** Exception thrown for an invalid response with DefaultErrorResponseError information. */
+/**
+ * Exception thrown for an invalid response with DefaultErrorResponseError information.
+ */
 public final class DefaultErrorResponseErrorException extends ManagementException {
     /**
      * Initializes a new instance of the DefaultErrorResponseErrorException class.
-     *
+     * 
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      */
@@ -21,7 +23,7 @@ public final class DefaultErrorResponseErrorException extends ManagementExceptio
 
     /**
      * Initializes a new instance of the DefaultErrorResponseErrorException class.
-     *
+     * 
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      * @param value the deserialized response value.
@@ -30,7 +32,9 @@ public final class DefaultErrorResponseErrorException extends ManagementExceptio
         super(message, response, value);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DefaultErrorResponseError getValue() {
         return (DefaultErrorResponseError) super.getValue();

@@ -3,10 +3,6 @@
 
 package com.azure.analytics.purview.sharing;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 import com.azure.analytics.purview.sharing.models.BlobStorageArtifact;
 import com.azure.analytics.purview.sharing.models.InPlaceSentShare;
 import com.azure.analytics.purview.sharing.models.ReferenceNameType;
@@ -27,6 +23,10 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 class PurviewShareTestBase extends TestProxyTestBase {
 
     protected ReceivedSharesClient receivedSharesClient;
@@ -46,6 +46,9 @@ class PurviewShareTestBase extends TestProxyTestBase {
     protected String consumerStorageAccountResourceId;
 
     protected String consumerEmail;
+    private boolean sanitizersRemoved = false;
+    // Removes the OperationLocation, Location, id and name sanitizers from the list of common sanitizers
+    private static final String[] REMOVE_SANITIZER_ID = {"AZSDK2003", "AZSDK2030", "AZSDK3493", "AZSDK3430"};
 
     @Override
     protected void beforeTest() {
@@ -88,8 +91,9 @@ class PurviewShareTestBase extends TestProxyTestBase {
         sentShare.setArtifact(artifact);
 
         RequestOptions requestOptions = new RequestOptions();
-        SyncPoller<BinaryData, BinaryData> response = sentSharesClient.beginCreateOrReplaceSentShare(sentShareId,
-                BinaryData.fromObject(sentShare), requestOptions);
+        SyncPoller<BinaryData, BinaryData> response = setPlaybackSyncPollerPollInterval(
+            sentSharesClient.beginCreateOrReplaceSentShare(sentShareId, BinaryData.fromObject(sentShare),
+                requestOptions));
 
         response.waitForCompletion();
 
@@ -128,6 +132,10 @@ class PurviewShareTestBase extends TestProxyTestBase {
         } else if (getTestMode() == TestMode.LIVE) {
             receivedSharesClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
+        if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
+            interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
+            sanitizersRemoved = true;
+        }
 
         receivedSharesClient = receivedSharesClientbuilder.buildClient();
     }
@@ -147,6 +155,10 @@ class PurviewShareTestBase extends TestProxyTestBase {
         } else if (getTestMode() == TestMode.LIVE) {
             sentSharesClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
+        if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
+            interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
+            sanitizersRemoved = true;
+        }
 
         sentSharesClient = sentSharesClientbuilder.buildClient();
     }
@@ -165,6 +177,11 @@ class PurviewShareTestBase extends TestProxyTestBase {
                     .credential(new DefaultAzureCredentialBuilder().build());
         } else if (getTestMode() == TestMode.LIVE) {
             shareResourcesClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+        }
+
+        if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
+            interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
+            sanitizersRemoved = true;
         }
 
         shareResourcesClient = shareResourcesClientbuilder.buildClient();

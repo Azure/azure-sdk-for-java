@@ -6,16 +6,28 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity Document Database Collection source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = DocumentDbCollectionSource.class,
+    visible = true)
 @JsonTypeName("DocumentDbCollectionSource")
 @Fluent
 public final class DocumentDbCollectionSource extends CopySource {
+    /*
+     * Copy source type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "DocumentDbCollectionSource";
+
     /*
      * Documents query. Type: string (or Expression with resultType string).
      */
@@ -46,6 +58,16 @@ public final class DocumentDbCollectionSource extends CopySource {
      * Creates an instance of DocumentDbCollectionSource class.
      */
     public DocumentDbCollectionSource() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

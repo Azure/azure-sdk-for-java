@@ -12,7 +12,9 @@ import com.azure.resourcemanager.devcenter.models.EnvironmentDefinitionParameter
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Represents an environment definition catalog item. */
+/**
+ * Represents an environment definition catalog item.
+ */
 @Immutable
 public final class EnvironmentDefinitionInner extends ProxyResource {
     /*
@@ -27,13 +29,15 @@ public final class EnvironmentDefinitionInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of EnvironmentDefinitionInner class. */
+    /**
+     * Creates an instance of EnvironmentDefinitionInner class.
+     */
     public EnvironmentDefinitionInner() {
     }
 
     /**
      * Get the innerProperties property: Environment definition properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private EnvironmentDefinitionProperties innerProperties() {
@@ -42,7 +46,7 @@ public final class EnvironmentDefinitionInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -51,7 +55,7 @@ public final class EnvironmentDefinitionInner extends ProxyResource {
 
     /**
      * Get the description property: A short description of the environment definition.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -60,7 +64,7 @@ public final class EnvironmentDefinitionInner extends ProxyResource {
 
     /**
      * Get the parameters property: Input parameters passed to an environment.
-     *
+     * 
      * @return the parameters value.
      */
     public List<EnvironmentDefinitionParameter> parameters() {
@@ -69,7 +73,7 @@ public final class EnvironmentDefinitionInner extends ProxyResource {
 
     /**
      * Get the templatePath property: Path to the Environment Definition entrypoint file.
-     *
+     * 
      * @return the templatePath value.
      */
     public String templatePath() {
@@ -78,7 +82,7 @@ public final class EnvironmentDefinitionInner extends ProxyResource {
 
     /**
      * Get the validationStatus property: Validation status for the environment definition.
-     *
+     * 
      * @return the validationStatus value.
      */
     public CatalogResourceValidationStatus validationStatus() {
@@ -87,7 +91,7 @@ public final class EnvironmentDefinitionInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

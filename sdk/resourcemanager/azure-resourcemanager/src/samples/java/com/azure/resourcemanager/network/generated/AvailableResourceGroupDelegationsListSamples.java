@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class AvailableResourceGroupDelegationsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * AvailableDelegationsResourceGroupGet.json
      */
     /**
@@ -18,7 +18,10 @@ public final class AvailableResourceGroupDelegationsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAvailableDelegationsInTheResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getAvailableResourceGroupDelegations().list("westcentralus", "rg1",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getAvailableResourceGroupDelegations()
+            .list("westcentralus", "rg1", com.azure.core.util.Context.NONE);
     }
 }

@@ -29,15 +29,15 @@ public final class SoftwareInventoriesImpl implements SoftwareInventories {
 
     public PagedIterable<Software> listByExtendedResource(String resourceGroupName, String resourceNamespace,
         String resourceType, String resourceName) {
-        PagedIterable<SoftwareInner> inner = this.serviceClient().listByExtendedResource(resourceGroupName,
-            resourceNamespace, resourceType, resourceName);
+        PagedIterable<SoftwareInner> inner = this.serviceClient()
+            .listByExtendedResource(resourceGroupName, resourceNamespace, resourceType, resourceName);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new SoftwareImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Software> listByExtendedResource(String resourceGroupName, String resourceNamespace,
         String resourceType, String resourceName, Context context) {
-        PagedIterable<SoftwareInner> inner = this.serviceClient().listByExtendedResource(resourceGroupName,
-            resourceNamespace, resourceType, resourceName, context);
+        PagedIterable<SoftwareInner> inner = this.serviceClient()
+            .listByExtendedResource(resourceGroupName, resourceNamespace, resourceType, resourceName, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new SoftwareImpl(inner1, this.manager()));
     }
 
@@ -53,8 +53,8 @@ public final class SoftwareInventoriesImpl implements SoftwareInventories {
 
     public Response<Software> getWithResponse(String resourceGroupName, String resourceNamespace, String resourceType,
         String resourceName, String softwareName, Context context) {
-        Response<SoftwareInner> inner = this.serviceClient().getWithResponse(resourceGroupName, resourceNamespace,
-            resourceType, resourceName, softwareName, context);
+        Response<SoftwareInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, resourceNamespace, resourceType, resourceName, softwareName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SoftwareImpl(inner.getValue(), this.manager()));

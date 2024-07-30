@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cdn.fluent.models.SecurityPolicyUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The JSON object containing security policy update parameters. */
+/**
+ * The JSON object containing security policy update parameters.
+ */
 @Fluent
 public final class SecurityPolicyUpdateParameters {
     /*
@@ -17,13 +19,15 @@ public final class SecurityPolicyUpdateParameters {
     @JsonProperty(value = "properties")
     private SecurityPolicyUpdateProperties innerProperties;
 
-    /** Creates an instance of SecurityPolicyUpdateParameters class. */
+    /**
+     * Creates an instance of SecurityPolicyUpdateParameters class.
+     */
     public SecurityPolicyUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: The json object that contains properties required to update a security policy.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SecurityPolicyUpdateProperties innerProperties() {
@@ -32,7 +36,7 @@ public final class SecurityPolicyUpdateParameters {
 
     /**
      * Get the parameters property: object which contains security policy parameters.
-     *
+     * 
      * @return the parameters value.
      */
     public SecurityPolicyPropertiesParameters parameters() {
@@ -41,7 +45,7 @@ public final class SecurityPolicyUpdateParameters {
 
     /**
      * Set the parameters property: object which contains security policy parameters.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the SecurityPolicyUpdateParameters object itself.
      */
@@ -55,7 +59,7 @@ public final class SecurityPolicyUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

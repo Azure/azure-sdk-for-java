@@ -9,9 +9,7 @@ package com.azure.resourcemanager.healthcareapis.generated;
  */
 public final class PrivateLinkResourcesListByServiceSamples {
     /*
-     * x-ms-original-file:
-     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/legacy/
-     * PrivateLinkResourcesListByService.json
+     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/legacy/PrivateLinkResourcesListByService.json
      */
     /**
      * Sample code: PrivateLinkResources_ListGroupIds.
@@ -20,7 +18,7 @@ public final class PrivateLinkResourcesListByServiceSamples {
      */
     public static void
         privateLinkResourcesListGroupIds(com.azure.resourcemanager.healthcareapis.HealthcareApisManager manager) {
-        manager.privateLinkResources().listByServiceWithResponse("rgname", "service1",
-            com.azure.core.util.Context.NONE);
+        manager.privateLinkResources()
+            .listByServiceWithResponse("rgname", "service1", com.azure.core.util.Context.NONE);
     }
 }

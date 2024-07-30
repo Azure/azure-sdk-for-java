@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,15 +17,22 @@ import java.util.List;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "kind",
-    defaultImpl = EffectiveBaseSecurityAdminRule.class)
+    defaultImpl = EffectiveBaseSecurityAdminRule.class,
+    visible = true)
 @JsonTypeName("EffectiveBaseSecurityAdminRule")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Custom", value = EffectiveSecurityAdminRule.class),
     @JsonSubTypes.Type(name = "Default", value = EffectiveDefaultSecurityAdminRule.class) })
 @Fluent
 public class EffectiveBaseSecurityAdminRule {
+    /*
+     * Whether the rule is custom or default.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "kind", required = true)
+    private EffectiveAdminRuleKind kind = EffectiveAdminRuleKind.fromString("EffectiveBaseSecurityAdminRule");
+
     /*
      * Resource ID.
      */
@@ -59,6 +67,15 @@ public class EffectiveBaseSecurityAdminRule {
      * Creates an instance of EffectiveBaseSecurityAdminRule class.
      */
     public EffectiveBaseSecurityAdminRule() {
+    }
+
+    /**
+     * Get the kind property: Whether the rule is custom or default.
+     * 
+     * @return the kind value.
+     */
+    public EffectiveAdminRuleKind kind() {
+        return this.kind;
     }
 
     /**

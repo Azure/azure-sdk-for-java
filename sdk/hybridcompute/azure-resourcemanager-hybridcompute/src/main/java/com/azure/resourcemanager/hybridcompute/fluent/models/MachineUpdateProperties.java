@@ -5,58 +5,60 @@
 package com.azure.resourcemanager.hybridcompute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridcompute.models.AgentUpgrade;
 import com.azure.resourcemanager.hybridcompute.models.CloudMetadata;
 import com.azure.resourcemanager.hybridcompute.models.LocationData;
 import com.azure.resourcemanager.hybridcompute.models.OSProfile;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Describes the ARM updatable properties of a hybrid machine. */
+/**
+ * Describes the ARM updatable properties of a hybrid machine.
+ */
 @Fluent
-public final class MachineUpdateProperties {
+public final class MachineUpdateProperties implements JsonSerializable<MachineUpdateProperties> {
     /*
      * Metadata pertaining to the geographic location of the resource.
      */
-    @JsonProperty(value = "locationData")
     private LocationData locationData;
 
     /*
      * Specifies the operating system settings for the hybrid machine.
      */
-    @JsonProperty(value = "osProfile")
     private OSProfile osProfile;
 
     /*
      * The metadata of the cloud environment (Azure/GCP/AWS/OCI...).
      */
-    @JsonProperty(value = "cloudMetadata")
     private CloudMetadata cloudMetadata;
 
     /*
      * The info of the machine w.r.t Agent Upgrade
      */
-    @JsonProperty(value = "agentUpgrade")
     private AgentUpgrade agentUpgrade;
 
     /*
      * The resource id of the parent cluster (Azure HCI) this machine is assigned to, if any.
      */
-    @JsonProperty(value = "parentClusterResourceId")
     private String parentClusterResourceId;
 
     /*
      * The resource id of the private link scope this machine is assigned to, if any.
      */
-    @JsonProperty(value = "privateLinkScopeResourceId")
     private String privateLinkScopeResourceId;
 
-    /** Creates an instance of MachineUpdateProperties class. */
+    /**
+     * Creates an instance of MachineUpdateProperties class.
+     */
     public MachineUpdateProperties() {
     }
 
     /**
      * Get the locationData property: Metadata pertaining to the geographic location of the resource.
-     *
+     * 
      * @return the locationData value.
      */
     public LocationData locationData() {
@@ -65,7 +67,7 @@ public final class MachineUpdateProperties {
 
     /**
      * Set the locationData property: Metadata pertaining to the geographic location of the resource.
-     *
+     * 
      * @param locationData the locationData value to set.
      * @return the MachineUpdateProperties object itself.
      */
@@ -76,7 +78,7 @@ public final class MachineUpdateProperties {
 
     /**
      * Get the osProfile property: Specifies the operating system settings for the hybrid machine.
-     *
+     * 
      * @return the osProfile value.
      */
     public OSProfile osProfile() {
@@ -85,7 +87,7 @@ public final class MachineUpdateProperties {
 
     /**
      * Set the osProfile property: Specifies the operating system settings for the hybrid machine.
-     *
+     * 
      * @param osProfile the osProfile value to set.
      * @return the MachineUpdateProperties object itself.
      */
@@ -96,7 +98,7 @@ public final class MachineUpdateProperties {
 
     /**
      * Get the cloudMetadata property: The metadata of the cloud environment (Azure/GCP/AWS/OCI...).
-     *
+     * 
      * @return the cloudMetadata value.
      */
     public CloudMetadata cloudMetadata() {
@@ -105,7 +107,7 @@ public final class MachineUpdateProperties {
 
     /**
      * Set the cloudMetadata property: The metadata of the cloud environment (Azure/GCP/AWS/OCI...).
-     *
+     * 
      * @param cloudMetadata the cloudMetadata value to set.
      * @return the MachineUpdateProperties object itself.
      */
@@ -116,7 +118,7 @@ public final class MachineUpdateProperties {
 
     /**
      * Get the agentUpgrade property: The info of the machine w.r.t Agent Upgrade.
-     *
+     * 
      * @return the agentUpgrade value.
      */
     public AgentUpgrade agentUpgrade() {
@@ -125,7 +127,7 @@ public final class MachineUpdateProperties {
 
     /**
      * Set the agentUpgrade property: The info of the machine w.r.t Agent Upgrade.
-     *
+     * 
      * @param agentUpgrade the agentUpgrade value to set.
      * @return the MachineUpdateProperties object itself.
      */
@@ -137,7 +139,7 @@ public final class MachineUpdateProperties {
     /**
      * Get the parentClusterResourceId property: The resource id of the parent cluster (Azure HCI) this machine is
      * assigned to, if any.
-     *
+     * 
      * @return the parentClusterResourceId value.
      */
     public String parentClusterResourceId() {
@@ -147,7 +149,7 @@ public final class MachineUpdateProperties {
     /**
      * Set the parentClusterResourceId property: The resource id of the parent cluster (Azure HCI) this machine is
      * assigned to, if any.
-     *
+     * 
      * @param parentClusterResourceId the parentClusterResourceId value to set.
      * @return the MachineUpdateProperties object itself.
      */
@@ -159,7 +161,7 @@ public final class MachineUpdateProperties {
     /**
      * Get the privateLinkScopeResourceId property: The resource id of the private link scope this machine is assigned
      * to, if any.
-     *
+     * 
      * @return the privateLinkScopeResourceId value.
      */
     public String privateLinkScopeResourceId() {
@@ -169,7 +171,7 @@ public final class MachineUpdateProperties {
     /**
      * Set the privateLinkScopeResourceId property: The resource id of the private link scope this machine is assigned
      * to, if any.
-     *
+     * 
      * @param privateLinkScopeResourceId the privateLinkScopeResourceId value to set.
      * @return the MachineUpdateProperties object itself.
      */
@@ -180,7 +182,7 @@ public final class MachineUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -196,5 +198,56 @@ public final class MachineUpdateProperties {
         if (agentUpgrade() != null) {
             agentUpgrade().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("locationData", this.locationData);
+        jsonWriter.writeJsonField("osProfile", this.osProfile);
+        jsonWriter.writeJsonField("cloudMetadata", this.cloudMetadata);
+        jsonWriter.writeJsonField("agentUpgrade", this.agentUpgrade);
+        jsonWriter.writeStringField("parentClusterResourceId", this.parentClusterResourceId);
+        jsonWriter.writeStringField("privateLinkScopeResourceId", this.privateLinkScopeResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MachineUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MachineUpdateProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MachineUpdateProperties.
+     */
+    public static MachineUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MachineUpdateProperties deserializedMachineUpdateProperties = new MachineUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("locationData".equals(fieldName)) {
+                    deserializedMachineUpdateProperties.locationData = LocationData.fromJson(reader);
+                } else if ("osProfile".equals(fieldName)) {
+                    deserializedMachineUpdateProperties.osProfile = OSProfile.fromJson(reader);
+                } else if ("cloudMetadata".equals(fieldName)) {
+                    deserializedMachineUpdateProperties.cloudMetadata = CloudMetadata.fromJson(reader);
+                } else if ("agentUpgrade".equals(fieldName)) {
+                    deserializedMachineUpdateProperties.agentUpgrade = AgentUpgrade.fromJson(reader);
+                } else if ("parentClusterResourceId".equals(fieldName)) {
+                    deserializedMachineUpdateProperties.parentClusterResourceId = reader.getString();
+                } else if ("privateLinkScopeResourceId".equals(fieldName)) {
+                    deserializedMachineUpdateProperties.privateLinkScopeResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMachineUpdateProperties;
+        });
     }
 }

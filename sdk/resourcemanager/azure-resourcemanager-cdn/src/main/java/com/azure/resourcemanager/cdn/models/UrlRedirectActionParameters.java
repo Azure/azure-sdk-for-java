@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines the parameters for the url redirect action. */
+/**
+ * Defines the parameters for the url redirect action.
+ */
 @Fluent
 public final class UrlRedirectActionParameters {
     /*
@@ -56,14 +58,15 @@ public final class UrlRedirectActionParameters {
     @JsonProperty(value = "customFragment")
     private String customFragment;
 
-    /** Creates an instance of UrlRedirectActionParameters class. */
+    /**
+     * Creates an instance of UrlRedirectActionParameters class.
+     */
     public UrlRedirectActionParameters() {
-        typeName = "DeliveryRuleUrlRedirectActionParameters";
     }
 
     /**
      * Get the typeName property: The typeName property.
-     *
+     * 
      * @return the typeName value.
      */
     public String typeName() {
@@ -72,7 +75,7 @@ public final class UrlRedirectActionParameters {
 
     /**
      * Set the typeName property: The typeName property.
-     *
+     * 
      * @param typeName the typeName value to set.
      * @return the UrlRedirectActionParameters object itself.
      */
@@ -83,7 +86,7 @@ public final class UrlRedirectActionParameters {
 
     /**
      * Get the redirectType property: The redirect type the rule will use when redirecting traffic.
-     *
+     * 
      * @return the redirectType value.
      */
     public RedirectType redirectType() {
@@ -92,7 +95,7 @@ public final class UrlRedirectActionParameters {
 
     /**
      * Set the redirectType property: The redirect type the rule will use when redirecting traffic.
-     *
+     * 
      * @param redirectType the redirectType value to set.
      * @return the UrlRedirectActionParameters object itself.
      */
@@ -103,7 +106,7 @@ public final class UrlRedirectActionParameters {
 
     /**
      * Get the destinationProtocol property: Protocol to use for the redirect. The default value is MatchRequest.
-     *
+     * 
      * @return the destinationProtocol value.
      */
     public DestinationProtocol destinationProtocol() {
@@ -112,7 +115,7 @@ public final class UrlRedirectActionParameters {
 
     /**
      * Set the destinationProtocol property: Protocol to use for the redirect. The default value is MatchRequest.
-     *
+     * 
      * @param destinationProtocol the destinationProtocol value to set.
      * @return the UrlRedirectActionParameters object itself.
      */
@@ -124,7 +127,7 @@ public final class UrlRedirectActionParameters {
     /**
      * Get the customPath property: The full path to redirect. Path cannot be empty and must start with /. Leave empty
      * to use the incoming path as destination path.
-     *
+     * 
      * @return the customPath value.
      */
     public String customPath() {
@@ -134,7 +137,7 @@ public final class UrlRedirectActionParameters {
     /**
      * Set the customPath property: The full path to redirect. Path cannot be empty and must start with /. Leave empty
      * to use the incoming path as destination path.
-     *
+     * 
      * @param customPath the customPath value to set.
      * @return the UrlRedirectActionParameters object itself.
      */
@@ -145,7 +148,7 @@ public final class UrlRedirectActionParameters {
 
     /**
      * Get the customHostname property: Host to redirect. Leave empty to use the incoming host as the destination host.
-     *
+     * 
      * @return the customHostname value.
      */
     public String customHostname() {
@@ -154,7 +157,7 @@ public final class UrlRedirectActionParameters {
 
     /**
      * Set the customHostname property: Host to redirect. Leave empty to use the incoming host as the destination host.
-     *
+     * 
      * @param customHostname the customHostname value to set.
      * @return the UrlRedirectActionParameters object itself.
      */
@@ -164,10 +167,10 @@ public final class UrlRedirectActionParameters {
     }
 
     /**
-     * Get the customQueryString property: The set of query strings to be placed in the redirect URL. Setting this value
-     * would replace any existing query string; leave empty to preserve the incoming query string. Query string must be
-     * in &lt;key&gt;=&lt;value&gt; format. ? and &amp; will be added automatically so do not include them.
-     *
+     * Get the customQueryString property: The set of query strings to be placed in the redirect URL. Setting this
+     * value would replace any existing query string; leave empty to preserve the incoming query string. Query string
+     * must be in &lt;key&gt;=&lt;value&gt; format. ? and &amp; will be added automatically so do not include them.
+     * 
      * @return the customQueryString value.
      */
     public String customQueryString() {
@@ -175,10 +178,10 @@ public final class UrlRedirectActionParameters {
     }
 
     /**
-     * Set the customQueryString property: The set of query strings to be placed in the redirect URL. Setting this value
-     * would replace any existing query string; leave empty to preserve the incoming query string. Query string must be
-     * in &lt;key&gt;=&lt;value&gt; format. ? and &amp; will be added automatically so do not include them.
-     *
+     * Set the customQueryString property: The set of query strings to be placed in the redirect URL. Setting this
+     * value would replace any existing query string; leave empty to preserve the incoming query string. Query string
+     * must be in &lt;key&gt;=&lt;value&gt; format. ? and &amp; will be added automatically so do not include them.
+     * 
      * @param customQueryString the customQueryString value to set.
      * @return the UrlRedirectActionParameters object itself.
      */
@@ -190,7 +193,7 @@ public final class UrlRedirectActionParameters {
     /**
      * Get the customFragment property: Fragment to add to the redirect URL. Fragment is the part of the URL that comes
      * after #. Do not include the #.
-     *
+     * 
      * @return the customFragment value.
      */
     public String customFragment() {
@@ -200,7 +203,7 @@ public final class UrlRedirectActionParameters {
     /**
      * Set the customFragment property: Fragment to add to the redirect URL. Fragment is the part of the URL that comes
      * after #. Do not include the #.
-     *
+     * 
      * @param customFragment the customFragment value to set.
      * @return the UrlRedirectActionParameters object itself.
      */
@@ -211,15 +214,13 @@ public final class UrlRedirectActionParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (redirectType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property redirectType in model UrlRedirectActionParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property redirectType in model UrlRedirectActionParameters"));
         }
     }
 

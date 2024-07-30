@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-/** Samples for DevCenters Delete. */
+/**
+ * Samples for DevCenters Delete.
+ */
 public final class DevCentersDeleteSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2023-10-01-preview/examples/DevCenters_Delete.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/DevCenters_Delete.json
      */
     /**
      * Sample code: DevCenters_Delete.
-     *
+     * 
      * @param manager Entry point to DevCenterManager.
      */
     public static void devCentersDelete(com.azure.resourcemanager.devcenter.DevCenterManager manager) {

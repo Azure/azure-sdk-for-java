@@ -19,7 +19,7 @@ import java.util.Arrays;
  */
 public final class ConnectivityConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * NetworkManagerConnectivityConfigurationPut.json
      */
     /**
@@ -28,19 +28,23 @@ public final class ConnectivityConfigurationsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void connectivityConfigurationsPut(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getConnectivityConfigurations().createOrUpdateWithResponse(
-            "myResourceGroup", "testNetworkManager", "myTestConnectivityConfig",
-            new ConnectivityConfigurationInner().withDescription("Sample Configuration")
-                .withConnectivityTopology(ConnectivityTopology.HUB_AND_SPOKE)
-                .withHubs(Arrays.asList(new Hub().withResourceId(
-                    "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myTestConnectivityConfig")
-                    .withResourceType("Microsoft.Network/virtualNetworks")))
-                .withIsGlobal(IsGlobal.TRUE)
-                .withAppliesToGroups(Arrays.asList(new ConnectivityGroupItem().withNetworkGroupId(
-                    "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkManagers/testNetworkManager/networkGroups/group1")
-                    .withUseHubGateway(UseHubGateway.TRUE).withIsGlobal(IsGlobal.FALSE)
-                    .withGroupConnectivity(GroupConnectivity.NONE)))
-                .withDeleteExistingPeering(DeleteExistingPeering.TRUE),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getConnectivityConfigurations()
+            .createOrUpdateWithResponse("myResourceGroup", "testNetworkManager", "myTestConnectivityConfig",
+                new ConnectivityConfigurationInner().withDescription("Sample Configuration")
+                    .withConnectivityTopology(ConnectivityTopology.HUB_AND_SPOKE)
+                    .withHubs(Arrays.asList(new Hub().withResourceId(
+                        "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myTestConnectivityConfig")
+                        .withResourceType("Microsoft.Network/virtualNetworks")))
+                    .withIsGlobal(IsGlobal.TRUE)
+                    .withAppliesToGroups(Arrays.asList(new ConnectivityGroupItem().withNetworkGroupId(
+                        "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkManagers/testNetworkManager/networkGroups/group1")
+                        .withUseHubGateway(UseHubGateway.TRUE)
+                        .withIsGlobal(IsGlobal.FALSE)
+                        .withGroupConnectivity(GroupConnectivity.NONE)))
+                    .withDeleteExistingPeering(DeleteExistingPeering.TRUE),
+                com.azure.core.util.Context.NONE);
     }
 }

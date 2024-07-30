@@ -5,119 +5,144 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.DaprComponentInner;
 import java.util.List;
 
-/** An immutable client-side representation of DaprComponent. */
+/**
+ * An immutable client-side representation of DaprComponent.
+ */
 public interface DaprComponent {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the componentType property: Component type.
-     *
+     * 
      * @return the componentType value.
      */
     String componentType();
 
     /**
      * Gets the version property: Component version.
-     *
+     * 
      * @return the version value.
      */
     String version();
 
     /**
      * Gets the ignoreErrors property: Boolean describing if the component errors are ignores.
-     *
+     * 
      * @return the ignoreErrors value.
      */
     Boolean ignoreErrors();
 
     /**
      * Gets the initTimeout property: Initialization timeout.
-     *
+     * 
      * @return the initTimeout value.
      */
     String initTimeout();
 
     /**
      * Gets the secrets property: Collection of secrets used by a Dapr component.
-     *
+     * 
      * @return the secrets value.
      */
     List<Secret> secrets();
 
     /**
      * Gets the secretStoreComponent property: Name of a Dapr component to retrieve component secrets from.
-     *
+     * 
      * @return the secretStoreComponent value.
      */
     String secretStoreComponent();
 
     /**
      * Gets the metadata property: Component metadata.
-     *
+     * 
      * @return the metadata value.
      */
     List<DaprMetadata> metadata();
 
     /**
      * Gets the scopes property: Names of container apps that can use this Dapr component.
-     *
+     * 
      * @return the scopes value.
      */
     List<String> scopes();
 
     /**
+     * Gets the serviceComponentBind property: List of container app services that are bound to the Dapr component.
+     * 
+     * @return the serviceComponentBind value.
+     */
+    List<DaprComponentServiceBinding> serviceComponentBind();
+
+    /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.appcontainers.fluent.models.DaprComponentInner object.
-     *
+     * 
      * @return the inner object.
      */
     DaprComponentInner innerModel();
 
-    /** The entirety of the DaprComponent definition. */
+    /**
+     * The entirety of the DaprComponent definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The DaprComponent definition stages. */
+    /**
+     * The DaprComponent definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the DaprComponent definition. */
+        /**
+         * The first stage of the DaprComponent definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the DaprComponent definition allowing to specify parent resource. */
+        /**
+         * The stage of the DaprComponent definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, connectedEnvironmentName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param connectedEnvironmentName Name of the connected environment.
              * @return the next definition stage.
@@ -130,253 +155,306 @@ public interface DaprComponent {
          * to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithComponentType,
-                DefinitionStages.WithVersion,
-                DefinitionStages.WithIgnoreErrors,
-                DefinitionStages.WithInitTimeout,
-                DefinitionStages.WithSecrets,
-                DefinitionStages.WithSecretStoreComponent,
-                DefinitionStages.WithMetadata,
-                DefinitionStages.WithScopes {
+            extends DefinitionStages.WithComponentType, DefinitionStages.WithVersion, DefinitionStages.WithIgnoreErrors,
+            DefinitionStages.WithInitTimeout, DefinitionStages.WithSecrets, DefinitionStages.WithSecretStoreComponent,
+            DefinitionStages.WithMetadata, DefinitionStages.WithScopes, DefinitionStages.WithServiceComponentBind {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             DaprComponent create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             DaprComponent create(Context context);
         }
 
-        /** The stage of the DaprComponent definition allowing to specify componentType. */
+        /**
+         * The stage of the DaprComponent definition allowing to specify componentType.
+         */
         interface WithComponentType {
             /**
              * Specifies the componentType property: Component type.
-             *
+             * 
              * @param componentType Component type.
              * @return the next definition stage.
              */
             WithCreate withComponentType(String componentType);
         }
 
-        /** The stage of the DaprComponent definition allowing to specify version. */
+        /**
+         * The stage of the DaprComponent definition allowing to specify version.
+         */
         interface WithVersion {
             /**
              * Specifies the version property: Component version.
-             *
+             * 
              * @param version Component version.
              * @return the next definition stage.
              */
             WithCreate withVersion(String version);
         }
 
-        /** The stage of the DaprComponent definition allowing to specify ignoreErrors. */
+        /**
+         * The stage of the DaprComponent definition allowing to specify ignoreErrors.
+         */
         interface WithIgnoreErrors {
             /**
              * Specifies the ignoreErrors property: Boolean describing if the component errors are ignores.
-             *
+             * 
              * @param ignoreErrors Boolean describing if the component errors are ignores.
              * @return the next definition stage.
              */
             WithCreate withIgnoreErrors(Boolean ignoreErrors);
         }
 
-        /** The stage of the DaprComponent definition allowing to specify initTimeout. */
+        /**
+         * The stage of the DaprComponent definition allowing to specify initTimeout.
+         */
         interface WithInitTimeout {
             /**
              * Specifies the initTimeout property: Initialization timeout.
-             *
+             * 
              * @param initTimeout Initialization timeout.
              * @return the next definition stage.
              */
             WithCreate withInitTimeout(String initTimeout);
         }
 
-        /** The stage of the DaprComponent definition allowing to specify secrets. */
+        /**
+         * The stage of the DaprComponent definition allowing to specify secrets.
+         */
         interface WithSecrets {
             /**
              * Specifies the secrets property: Collection of secrets used by a Dapr component.
-             *
+             * 
              * @param secrets Collection of secrets used by a Dapr component.
              * @return the next definition stage.
              */
             WithCreate withSecrets(List<Secret> secrets);
         }
 
-        /** The stage of the DaprComponent definition allowing to specify secretStoreComponent. */
+        /**
+         * The stage of the DaprComponent definition allowing to specify secretStoreComponent.
+         */
         interface WithSecretStoreComponent {
             /**
              * Specifies the secretStoreComponent property: Name of a Dapr component to retrieve component secrets from.
-             *
+             * 
              * @param secretStoreComponent Name of a Dapr component to retrieve component secrets from.
              * @return the next definition stage.
              */
             WithCreate withSecretStoreComponent(String secretStoreComponent);
         }
 
-        /** The stage of the DaprComponent definition allowing to specify metadata. */
+        /**
+         * The stage of the DaprComponent definition allowing to specify metadata.
+         */
         interface WithMetadata {
             /**
              * Specifies the metadata property: Component metadata.
-             *
+             * 
              * @param metadata Component metadata.
              * @return the next definition stage.
              */
             WithCreate withMetadata(List<DaprMetadata> metadata);
         }
 
-        /** The stage of the DaprComponent definition allowing to specify scopes. */
+        /**
+         * The stage of the DaprComponent definition allowing to specify scopes.
+         */
         interface WithScopes {
             /**
              * Specifies the scopes property: Names of container apps that can use this Dapr component.
-             *
+             * 
              * @param scopes Names of container apps that can use this Dapr component.
              * @return the next definition stage.
              */
             WithCreate withScopes(List<String> scopes);
         }
+
+        /**
+         * The stage of the DaprComponent definition allowing to specify serviceComponentBind.
+         */
+        interface WithServiceComponentBind {
+            /**
+             * Specifies the serviceComponentBind property: List of container app services that are bound to the Dapr
+             * component.
+             * 
+             * @param serviceComponentBind List of container app services that are bound to the Dapr component.
+             * @return the next definition stage.
+             */
+            WithCreate withServiceComponentBind(List<DaprComponentServiceBinding> serviceComponentBind);
+        }
     }
 
     /**
      * Begins update for the DaprComponent resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     DaprComponent.Update update();
 
-    /** The template for DaprComponent update. */
-    interface Update
-        extends UpdateStages.WithComponentType,
-            UpdateStages.WithVersion,
-            UpdateStages.WithIgnoreErrors,
-            UpdateStages.WithInitTimeout,
-            UpdateStages.WithSecrets,
-            UpdateStages.WithSecretStoreComponent,
-            UpdateStages.WithMetadata,
-            UpdateStages.WithScopes {
+    /**
+     * The template for DaprComponent update.
+     */
+    interface Update extends UpdateStages.WithComponentType, UpdateStages.WithVersion, UpdateStages.WithIgnoreErrors,
+        UpdateStages.WithInitTimeout, UpdateStages.WithSecrets, UpdateStages.WithSecretStoreComponent,
+        UpdateStages.WithMetadata, UpdateStages.WithScopes, UpdateStages.WithServiceComponentBind {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         DaprComponent apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         DaprComponent apply(Context context);
     }
 
-    /** The DaprComponent update stages. */
+    /**
+     * The DaprComponent update stages.
+     */
     interface UpdateStages {
-        /** The stage of the DaprComponent update allowing to specify componentType. */
+        /**
+         * The stage of the DaprComponent update allowing to specify componentType.
+         */
         interface WithComponentType {
             /**
              * Specifies the componentType property: Component type.
-             *
+             * 
              * @param componentType Component type.
              * @return the next definition stage.
              */
             Update withComponentType(String componentType);
         }
 
-        /** The stage of the DaprComponent update allowing to specify version. */
+        /**
+         * The stage of the DaprComponent update allowing to specify version.
+         */
         interface WithVersion {
             /**
              * Specifies the version property: Component version.
-             *
+             * 
              * @param version Component version.
              * @return the next definition stage.
              */
             Update withVersion(String version);
         }
 
-        /** The stage of the DaprComponent update allowing to specify ignoreErrors. */
+        /**
+         * The stage of the DaprComponent update allowing to specify ignoreErrors.
+         */
         interface WithIgnoreErrors {
             /**
              * Specifies the ignoreErrors property: Boolean describing if the component errors are ignores.
-             *
+             * 
              * @param ignoreErrors Boolean describing if the component errors are ignores.
              * @return the next definition stage.
              */
             Update withIgnoreErrors(Boolean ignoreErrors);
         }
 
-        /** The stage of the DaprComponent update allowing to specify initTimeout. */
+        /**
+         * The stage of the DaprComponent update allowing to specify initTimeout.
+         */
         interface WithInitTimeout {
             /**
              * Specifies the initTimeout property: Initialization timeout.
-             *
+             * 
              * @param initTimeout Initialization timeout.
              * @return the next definition stage.
              */
             Update withInitTimeout(String initTimeout);
         }
 
-        /** The stage of the DaprComponent update allowing to specify secrets. */
+        /**
+         * The stage of the DaprComponent update allowing to specify secrets.
+         */
         interface WithSecrets {
             /**
              * Specifies the secrets property: Collection of secrets used by a Dapr component.
-             *
+             * 
              * @param secrets Collection of secrets used by a Dapr component.
              * @return the next definition stage.
              */
             Update withSecrets(List<Secret> secrets);
         }
 
-        /** The stage of the DaprComponent update allowing to specify secretStoreComponent. */
+        /**
+         * The stage of the DaprComponent update allowing to specify secretStoreComponent.
+         */
         interface WithSecretStoreComponent {
             /**
              * Specifies the secretStoreComponent property: Name of a Dapr component to retrieve component secrets from.
-             *
+             * 
              * @param secretStoreComponent Name of a Dapr component to retrieve component secrets from.
              * @return the next definition stage.
              */
             Update withSecretStoreComponent(String secretStoreComponent);
         }
 
-        /** The stage of the DaprComponent update allowing to specify metadata. */
+        /**
+         * The stage of the DaprComponent update allowing to specify metadata.
+         */
         interface WithMetadata {
             /**
              * Specifies the metadata property: Component metadata.
-             *
+             * 
              * @param metadata Component metadata.
              * @return the next definition stage.
              */
             Update withMetadata(List<DaprMetadata> metadata);
         }
 
-        /** The stage of the DaprComponent update allowing to specify scopes. */
+        /**
+         * The stage of the DaprComponent update allowing to specify scopes.
+         */
         interface WithScopes {
             /**
              * Specifies the scopes property: Names of container apps that can use this Dapr component.
-             *
+             * 
              * @param scopes Names of container apps that can use this Dapr component.
              * @return the next definition stage.
              */
             Update withScopes(List<String> scopes);
         }
+
+        /**
+         * The stage of the DaprComponent update allowing to specify serviceComponentBind.
+         */
+        interface WithServiceComponentBind {
+            /**
+             * Specifies the serviceComponentBind property: List of container app services that are bound to the Dapr
+             * component.
+             * 
+             * @param serviceComponentBind List of container app services that are bound to the Dapr component.
+             * @return the next definition stage.
+             */
+            Update withServiceComponentBind(List<DaprComponentServiceBinding> serviceComponentBind);
+        }
     }
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     DaprComponent refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
@@ -384,11 +462,11 @@ public interface DaprComponent {
 
     /**
      * List secrets for a dapr component.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return dapr component Secrets Collection for ListSecrets Action along with {@link Response}.
      */
@@ -396,9 +474,9 @@ public interface DaprComponent {
 
     /**
      * List secrets for a dapr component.
-     *
+     * 
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return dapr component Secrets Collection for ListSecrets Action.
      */

@@ -290,8 +290,8 @@ public final class SnowflakeLinkedV2ServiceTypeProperties {
     }
 
     /**
-     * Get the scope property: The scope of the application registered in Azure Active Directory for
-     * AADServicePrincipal authentication.
+     * Get the scope property: The scope of the application registered in Azure Active Directory for AADServicePrincipal
+     * authentication.
      * 
      * @return the scope value.
      */
@@ -300,8 +300,8 @@ public final class SnowflakeLinkedV2ServiceTypeProperties {
     }
 
     /**
-     * Set the scope property: The scope of the application registered in Azure Active Directory for
-     * AADServicePrincipal authentication.
+     * Set the scope property: The scope of the application registered in Azure Active Directory for AADServicePrincipal
+     * authentication.
      * 
      * @param scope the scope value to set.
      * @return the SnowflakeLinkedV2ServiceTypeProperties object itself.
@@ -354,8 +354,8 @@ public final class SnowflakeLinkedV2ServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -364,8 +364,8 @@ public final class SnowflakeLinkedV2ServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SnowflakeLinkedV2ServiceTypeProperties object itself.
@@ -382,19 +382,22 @@ public final class SnowflakeLinkedV2ServiceTypeProperties {
      */
     public void validate() {
         if (accountIdentifier() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property accountIdentifier in model SnowflakeLinkedV2ServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property accountIdentifier in model SnowflakeLinkedV2ServiceTypeProperties"));
         }
         if (password() != null) {
             password().validate();
         }
         if (database() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property database in model SnowflakeLinkedV2ServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property database in model SnowflakeLinkedV2ServiceTypeProperties"));
         }
         if (warehouse() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property warehouse in model SnowflakeLinkedV2ServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property warehouse in model SnowflakeLinkedV2ServiceTypeProperties"));
         }
         if (clientSecret() != null) {
             clientSecret().validate();

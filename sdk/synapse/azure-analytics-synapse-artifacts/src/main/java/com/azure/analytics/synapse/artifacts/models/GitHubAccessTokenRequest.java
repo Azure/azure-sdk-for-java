@@ -5,29 +5,30 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The GitHubAccessTokenRequest model.
  */
 @Fluent
-public final class GitHubAccessTokenRequest {
+public final class GitHubAccessTokenRequest implements JsonSerializable<GitHubAccessTokenRequest> {
     /*
      * The GitHub Client Id.
      */
-    @JsonProperty(value = "gitHubClientId", required = true)
     private String gitHubClientId;
 
     /*
      * The GitHub Access code.
      */
-    @JsonProperty(value = "gitHubAccessCode", required = true)
     private String gitHubAccessCode;
 
     /*
      * The GitHub access token base URL.
      */
-    @JsonProperty(value = "gitHubAccessTokenBaseUrl", required = true)
     private String gitHubAccessTokenBaseUrl;
 
     /**
@@ -94,5 +95,48 @@ public final class GitHubAccessTokenRequest {
     public GitHubAccessTokenRequest setGitHubAccessTokenBaseUrl(String gitHubAccessTokenBaseUrl) {
         this.gitHubAccessTokenBaseUrl = gitHubAccessTokenBaseUrl;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("gitHubClientId", this.gitHubClientId);
+        jsonWriter.writeStringField("gitHubAccessCode", this.gitHubAccessCode);
+        jsonWriter.writeStringField("gitHubAccessTokenBaseUrl", this.gitHubAccessTokenBaseUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GitHubAccessTokenRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GitHubAccessTokenRequest if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GitHubAccessTokenRequest.
+     */
+    public static GitHubAccessTokenRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GitHubAccessTokenRequest deserializedGitHubAccessTokenRequest = new GitHubAccessTokenRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("gitHubClientId".equals(fieldName)) {
+                    deserializedGitHubAccessTokenRequest.gitHubClientId = reader.getString();
+                } else if ("gitHubAccessCode".equals(fieldName)) {
+                    deserializedGitHubAccessTokenRequest.gitHubAccessCode = reader.getString();
+                } else if ("gitHubAccessTokenBaseUrl".equals(fieldName)) {
+                    deserializedGitHubAccessTokenRequest.gitHubAccessTokenBaseUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGitHubAccessTokenRequest;
+        });
     }
 }

@@ -7,6 +7,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.models.GeoPoint;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Context;
 import com.azure.search.documents.implementation.util.SearchPagedResponseAccessHelper;
 import com.azure.search.documents.indexes.SearchIndexClient;
@@ -731,7 +732,10 @@ public class SearchTests extends SearchTestBase {
     }
 
     @Test
+    @LiveOnly
     public void canSearchWithRangeFacetsSync() {
+        // Disable sanitizer `$.to` for this test
+        // interceptorManager.removeSanitizers("AZSDK3424"));
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         List<Map<String, Object>> hotels = readJsonFileToList(HOTELS_DATA_JSON);
@@ -751,7 +755,10 @@ public class SearchTests extends SearchTestBase {
     }
 
     @Test
+    @LiveOnly
     public void canSearchWithRangeFacetsAsync() {
+        // Disable sanitizer `$.to` for this test
+        // interceptorManager.removeSanitizers("AZSDK3424");
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         List<Map<String, Object>> hotels = readJsonFileToList(HOTELS_DATA_JSON);

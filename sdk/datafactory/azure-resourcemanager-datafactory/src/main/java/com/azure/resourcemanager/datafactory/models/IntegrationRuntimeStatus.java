@@ -10,9 +10,10 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -20,15 +21,22 @@ import java.util.Map;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "type",
-    defaultImpl = IntegrationRuntimeStatus.class)
+    defaultImpl = IntegrationRuntimeStatus.class,
+    visible = true)
 @JsonTypeName("IntegrationRuntimeStatus")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Managed", value = ManagedIntegrationRuntimeStatus.class),
     @JsonSubTypes.Type(name = "SelfHosted", value = SelfHostedIntegrationRuntimeStatus.class) })
 @Fluent
 public class IntegrationRuntimeStatus {
+    /*
+     * Type of integration runtime.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private IntegrationRuntimeType type = IntegrationRuntimeType.fromString("IntegrationRuntimeStatus");
+
     /*
      * The data factory name which the integration runtime belong to.
      */
@@ -51,6 +59,15 @@ public class IntegrationRuntimeStatus {
      * Creates an instance of IntegrationRuntimeStatus class.
      */
     public IntegrationRuntimeStatus() {
+    }
+
+    /**
+     * Get the type property: Type of integration runtime.
+     * 
+     * @return the type value.
+     */
+    public IntegrationRuntimeType type() {
+        return this.type;
     }
 
     /**
@@ -95,7 +112,7 @@ public class IntegrationRuntimeStatus {
     @JsonAnySetter
     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }

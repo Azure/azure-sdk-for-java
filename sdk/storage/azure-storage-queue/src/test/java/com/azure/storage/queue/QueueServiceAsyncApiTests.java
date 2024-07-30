@@ -5,6 +5,8 @@ package com.azure.storage.queue;
 
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.queue.models.QueueAnalyticsLogging;
 import com.azure.storage.queue.models.QueueAudience;
 import com.azure.storage.queue.models.QueueErrorCode;
@@ -12,7 +14,6 @@ import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueueMetrics;
 import com.azure.storage.queue.models.QueueRetentionPolicy;
 import com.azure.storage.queue.models.QueueServiceProperties;
-import com.azure.storage.queue.models.QueueStorageException;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -130,7 +131,7 @@ public class QueueServiceAsyncApiTests extends QueueTestBase {
         QueuesSegmentOptions options = new QueuesSegmentOptions().setPrefix(prefix);
         String queueName = getRandomName(60);
         for (int i = 0; i < 3; i++) {
-            primaryQueueServiceAsyncClient.createQueueWithResponse(queueName + i, null, null).block();
+            primaryQueueServiceAsyncClient.createQueueWithResponse(queueName + i, null).block();
         }
 
         Flux<PagedResponse<QueueItem>> listQueuesResult = primaryQueueServiceAsyncClient.listQueues(options).byPage(2);
@@ -206,7 +207,7 @@ public class QueueServiceAsyncApiTests extends QueueTestBase {
 
     @Test
     public void defaultAudience() {
-        QueueServiceAsyncClient aadService = getOAuthServiceClientBuilder(primaryQueueServiceAsyncClient.getQueueServiceUrl())
+        QueueServiceAsyncClient aadService = getOAuthServiceClientBuilder()
             .audience(null) // should default to "https://storage.azure.com/"
             .buildAsyncClient();
 
@@ -217,7 +218,7 @@ public class QueueServiceAsyncApiTests extends QueueTestBase {
 
     @Test
     public void storageAccountAudience() {
-        QueueServiceAsyncClient aadService = getOAuthServiceClientBuilder(primaryQueueServiceAsyncClient.getQueueServiceUrl())
+        QueueServiceAsyncClient aadService = getOAuthServiceClientBuilder()
             .audience(QueueAudience.createQueueServiceAccountAudience(primaryQueueServiceAsyncClient.getAccountName()))
             .buildAsyncClient();
 
@@ -226,17 +227,20 @@ public class QueueServiceAsyncApiTests extends QueueTestBase {
             .verifyComplete();
     }
 
+    @RequiredServiceVersion(clazz = QueueServiceVersion.class, min = "2024-08-04")
+    @LiveOnly
     @Test
-    public void audienceError() {
-        QueueServiceAsyncClient aadService = getOAuthServiceClientBuilder(primaryQueueServiceAsyncClient.getQueueServiceUrl())
+    /* This test tests if the bearer challenge is working properly. A bad audience is passed in, the service returns
+    the default audience, and the request gets retried with this default audience, making the call function as expected.
+     */
+    public void audienceErrorBearerChallengeRetry() {
+        QueueServiceAsyncClient aadService = getOAuthServiceClientBuilder()
             .audience(QueueAudience.createQueueServiceAccountAudience("badaudience"))
             .buildAsyncClient();
 
         StepVerifier.create(aadService.getProperties())
-            .verifyErrorSatisfies(r -> {
-                QueueStorageException e = assertInstanceOf(QueueStorageException.class, r);
-                assertEquals(QueueErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
-            });
+                .assertNext(r -> assertNotNull(r))
+                .verifyComplete();
     }
 
     @Test
@@ -244,7 +248,7 @@ public class QueueServiceAsyncApiTests extends QueueTestBase {
         String url = String.format("https://%s.queue.core.windows.net/", primaryQueueServiceAsyncClient.getAccountName());
         QueueAudience audience = QueueAudience.fromString(url);
 
-        QueueServiceAsyncClient aadService = getOAuthServiceClientBuilder(primaryQueueServiceAsyncClient.getQueueServiceUrl())
+        QueueServiceAsyncClient aadService = getOAuthServiceClientBuilder()
             .audience(audience)
             .buildAsyncClient();
 

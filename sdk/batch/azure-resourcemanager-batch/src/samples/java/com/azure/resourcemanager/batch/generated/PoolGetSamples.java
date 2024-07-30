@@ -10,7 +10,7 @@ package com.azure.resourcemanager.batch.generated;
 public final class PoolGetSamples {
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolGet_SecurityProfile.json
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolGet_SecurityProfile.json
      */
     /**
      * Sample code: GetPool - SecurityProfile.
@@ -23,7 +23,7 @@ public final class PoolGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/
      * PoolGet_VirtualMachineConfiguration_Extensions.json
      */
     /**
@@ -38,7 +38,7 @@ public final class PoolGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/
      * PoolGet_VirtualMachineConfiguration_MangedOSDisk.json
      */
     /**
@@ -52,7 +52,21 @@ public final class PoolGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/
+     * x-ms-original-file:
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolGet_UpgradePolicy.json
+     */
+    /**
+     * Sample code: GetPool - UpgradePolicy.
+     * 
+     * @param manager Entry point to BatchManager.
+     */
+    public static void getPoolUpgradePolicy(com.azure.resourcemanager.batch.BatchManager manager) {
+        manager.pools().getWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool",
+            com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/
      * PoolGet_VirtualMachineConfiguration_ServiceArtifactReference.json
      */
     /**
@@ -68,7 +82,7 @@ public final class PoolGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolGet_AcceleratedNetworking.
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolGet_AcceleratedNetworking.
      * json
      */
     /**
@@ -82,7 +96,7 @@ public final class PoolGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolGet.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolGet.json
      */
     /**
      * Sample code: GetPool.

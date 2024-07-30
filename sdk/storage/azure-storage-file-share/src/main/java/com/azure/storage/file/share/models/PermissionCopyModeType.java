@@ -4,18 +4,23 @@
 
 package com.azure.storage.file.share.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for PermissionCopyModeType. */
+/**
+ * Defines values for PermissionCopyModeType.
+ */
 public enum PermissionCopyModeType {
-    /** Enum value source. */
+    /**
+     * Enum value source.
+     */
     SOURCE("source"),
 
-    /** Enum value override. */
+    /**
+     * Enum value override.
+     */
     OVERRIDE("override");
 
-    /** The actual serialized value for a PermissionCopyModeType instance. */
+    /**
+     * The actual serialized value for a PermissionCopyModeType instance.
+     */
     private final String value;
 
     PermissionCopyModeType(String value) {
@@ -24,11 +29,10 @@ public enum PermissionCopyModeType {
 
     /**
      * Parses a serialized value to a PermissionCopyModeType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed PermissionCopyModeType object, or null if unable to parse.
      */
-    @JsonCreator
     public static PermissionCopyModeType fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum PermissionCopyModeType {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

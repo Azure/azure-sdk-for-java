@@ -19,7 +19,7 @@ public final class ChangeDataCaptureListByFactorySamples {
      */
     public static void
         changeDataCaptureListByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.changeDataCaptures().listByFactory("exampleResourceGroup", "exampleFactoryName",
-            com.azure.core.util.Context.NONE);
+        manager.changeDataCaptures()
+            .listByFactory("exampleResourceGroup", "exampleFactoryName", com.azure.core.util.Context.NONE);
     }
 }

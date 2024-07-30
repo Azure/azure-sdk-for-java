@@ -6,11 +6,13 @@ package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.util.Context;
 
-/** Resource collection API of ResourceProviders. */
+/**
+ * Resource collection API of ResourceProviders.
+ */
 public interface ResourceProviders {
     /**
      * The operation to Upgrade Machine Extensions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
@@ -18,12 +20,12 @@ public interface ResourceProviders {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void upgradeExtensions(
-        String resourceGroupName, String machineName, MachineExtensionUpgrade extensionUpgradeParameters);
+    void upgradeExtensions(String resourceGroupName, String machineName,
+        MachineExtensionUpgrade extensionUpgradeParameters);
 
     /**
      * The operation to Upgrade Machine Extensions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
@@ -32,9 +34,6 @@ public interface ResourceProviders {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void upgradeExtensions(
-        String resourceGroupName,
-        String machineName,
-        MachineExtensionUpgrade extensionUpgradeParameters,
-        Context context);
+    void upgradeExtensions(String resourceGroupName, String machineName,
+        MachineExtensionUpgrade extensionUpgradeParameters, Context context);
 }

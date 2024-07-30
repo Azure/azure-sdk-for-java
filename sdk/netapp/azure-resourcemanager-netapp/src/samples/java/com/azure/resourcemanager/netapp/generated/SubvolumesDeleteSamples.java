@@ -10,7 +10,7 @@ package com.azure.resourcemanager.netapp.generated;
 public final class SubvolumesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/Subvolumes_Delete.json
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/Subvolumes_Delete.json
      */
     /**
      * Sample code: Subvolumes_Delete.
@@ -18,7 +18,7 @@ public final class SubvolumesDeleteSamples {
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void subvolumesDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.subvolumes().delete("myRG", "account1", "pool1", "volume1", "subvolume1",
-            com.azure.core.util.Context.NONE);
+        manager.subvolumes()
+            .delete("myRG", "account1", "pool1", "volume1", "subvolume1", com.azure.core.util.Context.NONE);
     }
 }

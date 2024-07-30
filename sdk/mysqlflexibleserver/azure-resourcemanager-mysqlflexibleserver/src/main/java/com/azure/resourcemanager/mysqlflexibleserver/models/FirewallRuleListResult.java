@@ -9,7 +9,9 @@ import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.FirewallRuleI
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of firewall rules. */
+/**
+ * A list of firewall rules.
+ */
 @Fluent
 public final class FirewallRuleListResult {
     /*
@@ -24,13 +26,15 @@ public final class FirewallRuleListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of FirewallRuleListResult class. */
+    /**
+     * Creates an instance of FirewallRuleListResult class.
+     */
     public FirewallRuleListResult() {
     }
 
     /**
      * Get the value property: The list of firewall rules in a server.
-     *
+     * 
      * @return the value value.
      */
     public List<FirewallRuleInner> value() {
@@ -39,7 +43,7 @@ public final class FirewallRuleListResult {
 
     /**
      * Set the value property: The list of firewall rules in a server.
-     *
+     * 
      * @param value the value value to set.
      * @return the FirewallRuleListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class FirewallRuleListResult {
 
     /**
      * Get the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class FirewallRuleListResult {
 
     /**
      * Set the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the FirewallRuleListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class FirewallRuleListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The json object containing secret parameters. */
+/**
+ * The json object containing secret parameters.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -22,17 +24,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "CustomerCertificate", value = CustomerCertificateParameters.class),
     @JsonSubTypes.Type(
         name = "AzureFirstPartyManagedCertificate",
-        value = AzureFirstPartyManagedCertificateParameters.class)
-})
+        value = AzureFirstPartyManagedCertificateParameters.class) })
 @Immutable
 public class SecretParameters {
-    /** Creates an instance of SecretParameters class. */
+    /**
+     * Creates an instance of SecretParameters class.
+     */
     public SecretParameters() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

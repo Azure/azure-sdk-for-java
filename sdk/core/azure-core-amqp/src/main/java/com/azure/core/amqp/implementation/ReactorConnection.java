@@ -24,7 +24,6 @@ import org.apache.qpid.proton.message.Message;
 import org.apache.qpid.proton.reactor.Reactor;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
@@ -176,7 +175,8 @@ public class ReactorConnection implements AmqpConnection {
                 }
             }).cache(1);
 
-        this.subscriptions = Disposables.composite(this.endpointStates.subscribe());
+        this.subscriptions = Disposables.composite(this.endpointStates.subscribe(null,
+            e -> logger.warning("Error occurred while processing connection state.", e)));
     }
 
     /**
@@ -222,8 +222,8 @@ public class ReactorConnection implements AmqpConnection {
     public Mono<AmqpManagementNode> getManagementNode(String entityPath) {
         return Mono.defer(() -> {
             if (isDisposed()) {
-                return monoError(logger.atError().addKeyValue(ENTITY_PATH_KEY, entityPath), Exceptions
-                    .propagate(new IllegalStateException("Connection is disposed. Cannot get management instance.")));
+                return monoError(logger.atWarning().addKeyValue(ENTITY_PATH_KEY, entityPath),
+                    new IllegalStateException("Connection is disposed. Cannot get management instance."));
             }
 
             final AmqpManagementNode existing = managementNodes.get(entityPath);
@@ -489,7 +489,7 @@ public class ReactorConnection implements AmqpConnection {
      * @param shutdownSignal Shutdown signal to emit.
      * @return A mono that completes when the connection is disposed.
      */
-    public Mono<Void> closeAsync(AmqpShutdownSignal shutdownSignal) {
+    private Mono<Void> closeAsync(AmqpShutdownSignal shutdownSignal) {
         addShutdownSignal(logger.atInfo(), shutdownSignal).log("Disposing of ReactorConnection.");
         final Sinks.EmitResult result = shutdownSignalSink.tryEmitValue(shutdownSignal);
 

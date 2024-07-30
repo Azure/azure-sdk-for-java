@@ -9,7 +9,7 @@
     "dir": "azure-resourcemanager-appservice",
     "source": "specification/web/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.appservice",
-    "args": "--tag=package-2023-01 --add-inner=AppServiceCertificate --remove-inner=CsmDeploymentStatus --name-for-ungrouped-operations=ResourceProvider"
+    "args": "--tag=package-2023-12 --add-inner=AppServiceCertificate --remove-inner=CsmDeploymentStatus --name-for-ungrouped-operations=ResourceProvider"
   },
   "appservice-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-appservice",
@@ -34,13 +34,13 @@
     "dir": "azure-resourcemanager-cdn",
     "source": "specification/cdn/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.cdn",
-    "args": "--tag=package-2023-05 --rename-model=CdnEndpoint:EndpointResource"
+    "args": "--tag=package-2024-02 --rename-model=CdnEndpoint:EndpointResource"
   },
   "compute": {
     "dir": "azure-resourcemanager-compute",
     "source": "specification/compute/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.compute",
-    "args": "--tag=package-2023-07-03 --modelerfour.lenient-model-deduplication=true --rename-model=UserAssignedIdentitiesValue:VirtualMachineIdentityUserAssignedIdentities,VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue:VirtualMachineScaleSetIdentityUserAssignedIdentities --preserve-model=AvailabilitySetSkuTypes --remove-inner=StorageProfile"
+    "args": "--tag=package-2024-03-01 --modelerfour.lenient-model-deduplication=true --rename-model=UserAssignedIdentitiesValue:VirtualMachineIdentityUserAssignedIdentities,VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue:VirtualMachineScaleSetIdentityUserAssignedIdentities --preserve-model=AvailabilitySetSkuTypes --remove-inner=StorageProfile"
   },
   "compute-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-compute",
@@ -70,7 +70,7 @@
     "dir": "azure-resourcemanager-containerservice",
     "source": "specification/containerservice/resource-manager/Microsoft.ContainerService/aks/readme.md",
     "package": "com.azure.resourcemanager.containerservice",
-    "args": "--tag=package-2024-01 --modelerfour.lenient-model-deduplication --preserve-model=ContainerServiceVMSizeTypes --rename-model=Ossku:OSSku"
+    "args": "--tag=package-2024-05 --modelerfour.lenient-model-deduplication --preserve-model=ContainerServiceVMSizeTypes --rename-model=Ossku:OSSku"
   },
   "containerservice-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-containerservice",
@@ -82,7 +82,13 @@
     "dir": "azure-resourcemanager-cosmos",
     "source": "specification/cosmos-db/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.cosmos",
-    "args": "--tag=package-2023-11"
+    "args": "--tag=package-2024-05"
+  },
+  "deploymentstacks": {
+    "dir": "azure-resourcemanager-resources",
+    "source": "specification/resources/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.resources",
+    "args": "--tag=package-deploymentstacks-2024-03 --graalvm-config-suffix=deploymentstacks"
   },
   "dns": {
     "dir": "azure-resourcemanager-dns",
@@ -100,7 +106,7 @@
     "dir": "azure-resourcemanager-eventhubs",
     "source": "specification/eventhub/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.eventhubs",
-    "args": "--tag=package-2021-11"
+    "args": "--tag=package-2024-01"
   },
   "eventhubs-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-eventhubs",
@@ -175,7 +181,7 @@
     "dir": "azure-resourcemanager-network",
     "source": "specification/network/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.network",
-    "args": "--tag=package-2023-09 --add-inner=ApplicationGatewayIpConfiguration,ApplicationGatewayPathRule,ApplicationGatewayProbe,ApplicationGatewayRedirectConfiguration,ApplicationGatewayRequestRoutingRule,ApplicationGatewaySslCertificate,ApplicationGatewayUrlPathMap,ApplicationGatewayAuthenticationCertificate,VirtualNetworkGatewayIpConfiguration,ConnectionMonitor,PacketCapture,ApplicationGateway,ApplicationGatewayListener",
+    "args": "--tag=package-2024-01 --add-inner=ApplicationGatewayIpConfiguration,ApplicationGatewayPathRule,ApplicationGatewayProbe,ApplicationGatewayRedirectConfiguration,ApplicationGatewayRequestRoutingRule,ApplicationGatewaySslCertificate,ApplicationGatewayUrlPathMap,ApplicationGatewayAuthenticationCertificate,VirtualNetworkGatewayIpConfiguration,ConnectionMonitor,PacketCapture,ApplicationGateway,ApplicationGatewayListener",
     "note": "Run DeprecateApplicationGatewaySku to deprecate v1 sku/tier in ApplicationGatewaySku."
   },
   "network-hybrid": {
@@ -207,7 +213,7 @@
     "dir": "azure-resourcemanager-redis",
     "source": "specification/redis/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.redis",
-    "args": "--tag=package-2023-08 --rename-model=ErrorDetailAutoGenerated:ErrorDetail,RedisCommonPropertiesRedisConfiguration:RedisConfiguration --remove-inner=OperationStatusResult",
+    "args": "--tag=package-2024-03 --rename-model=ErrorDetailAutoGenerated:ErrorDetail,RedisCommonPropertiesRedisConfiguration:RedisConfiguration --remove-inner=OperationStatusResult",
     "note": "run RedisConfigurationTests.generateConfigurationUtils and copy output code snippet to ConfigurationUtils"
   },
   "relay": {
@@ -220,7 +226,7 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-resources-2022-09 --add-inner=Deployment"
+    "args": "--tag=package-resources-2024-03 --add-inner=Deployment"
   },
   "resources-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-resources",
@@ -252,7 +258,7 @@
     "dir": "azure-resourcemanager-storage",
     "source": "specification/storage/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.storage",
-    "args": "--tag=package-2023-01 --modelerfour.lenient-model-deduplication --rename-model=AllowedMethods:CorsRuleAllowedMethodsItem,AccountType:ActiveDirectoryPropertiesAccountType --property-include-always=EncryptionIdentity.encryptionUserAssignedIdentity"
+    "args": "--tag=package-2023-05 --modelerfour.lenient-model-deduplication --rename-model=AllowedMethods:CorsRuleAllowedMethodsItem,AccountType:ActiveDirectoryPropertiesAccountType --property-include-always=EncryptionIdentity.encryptionUserAssignedIdentity"
   },
   "storage-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-storage",

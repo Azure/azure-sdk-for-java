@@ -9,7 +9,9 @@ import com.azure.resourcemanager.support.fluent.models.ChatTranscriptDetailsInne
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of Chat Transcripts resources. */
+/**
+ * Collection of Chat Transcripts resources.
+ */
 @Fluent
 public final class ChatTranscriptsListResult {
     /*
@@ -24,13 +26,15 @@ public final class ChatTranscriptsListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ChatTranscriptsListResult class. */
+    /**
+     * Creates an instance of ChatTranscriptsListResult class.
+     */
     public ChatTranscriptsListResult() {
     }
 
     /**
      * Get the value property: List of Chat Transcripts resources.
-     *
+     * 
      * @return the value value.
      */
     public List<ChatTranscriptDetailsInner> value() {
@@ -39,7 +43,7 @@ public final class ChatTranscriptsListResult {
 
     /**
      * Set the value property: List of Chat Transcripts resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the ChatTranscriptsListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class ChatTranscriptsListResult {
 
     /**
      * Get the nextLink property: The URI to fetch the next page of Chat Transcripts resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ChatTranscriptsListResult {
 
     /**
      * Set the nextLink property: The URI to fetch the next page of Chat Transcripts resources.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ChatTranscriptsListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class ChatTranscriptsListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

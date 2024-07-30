@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Role definition properties. */
+/**
+ * Role definition properties.
+ */
 @Fluent
 public final class RoleDefinition {
     /*
@@ -41,13 +43,15 @@ public final class RoleDefinition {
     @JsonProperty(value = "scopes")
     private List<String> scopes;
 
-    /** Creates an instance of RoleDefinition class. */
+    /**
+     * Creates an instance of RoleDefinition class.
+     */
     public RoleDefinition() {
     }
 
     /**
      * Get the id property: The role definition ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -56,7 +60,7 @@ public final class RoleDefinition {
 
     /**
      * Set the id property: The role definition ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the RoleDefinition object itself.
      */
@@ -67,7 +71,7 @@ public final class RoleDefinition {
 
     /**
      * Get the name property: The role definition name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -76,7 +80,7 @@ public final class RoleDefinition {
 
     /**
      * Set the name property: The role definition name.
-     *
+     * 
      * @param name the name value to set.
      * @return the RoleDefinition object itself.
      */
@@ -87,7 +91,7 @@ public final class RoleDefinition {
 
     /**
      * Get the isServiceRole property: If this is a service role.
-     *
+     * 
      * @return the isServiceRole value.
      */
     public Boolean isServiceRole() {
@@ -96,7 +100,7 @@ public final class RoleDefinition {
 
     /**
      * Set the isServiceRole property: If this is a service role.
-     *
+     * 
      * @param isServiceRole the isServiceRole value to set.
      * @return the RoleDefinition object itself.
      */
@@ -107,7 +111,7 @@ public final class RoleDefinition {
 
     /**
      * Get the permissions property: Role definition permissions.
-     *
+     * 
      * @return the permissions value.
      */
     public List<Permission> permissions() {
@@ -116,7 +120,7 @@ public final class RoleDefinition {
 
     /**
      * Set the permissions property: Role definition permissions.
-     *
+     * 
      * @param permissions the permissions value to set.
      * @return the RoleDefinition object itself.
      */
@@ -127,7 +131,7 @@ public final class RoleDefinition {
 
     /**
      * Get the scopes property: Role definition assignable scopes.
-     *
+     * 
      * @return the scopes value.
      */
     public List<String> scopes() {
@@ -136,7 +140,7 @@ public final class RoleDefinition {
 
     /**
      * Set the scopes property: Role definition assignable scopes.
-     *
+     * 
      * @param scopes the scopes value to set.
      * @return the RoleDefinition object itself.
      */
@@ -147,7 +151,7 @@ public final class RoleDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

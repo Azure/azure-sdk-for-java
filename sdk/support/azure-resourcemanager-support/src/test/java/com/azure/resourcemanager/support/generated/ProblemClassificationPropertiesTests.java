@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ProblemClassificationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProblemClassificationProperties model =
-            BinaryData
-                .fromString(
-                    "{\"displayName\":\"b\",\"secondaryConsentEnabled\":[{\"description\":\"utduqktapspwgcu\",\"type\":\"tumkdosvqwhbm\"}]}")
-                .toObject(ProblemClassificationProperties.class);
+        ProblemClassificationProperties model = BinaryData.fromString(
+            "{\"displayName\":\"b\",\"secondaryConsentEnabled\":[{\"description\":\"utduqktapspwgcu\",\"type\":\"tumkdosvqwhbm\"}]}")
+            .toObject(ProblemClassificationProperties.class);
         Assertions.assertEquals("b", model.displayName());
         Assertions.assertEquals("utduqktapspwgcu", model.secondaryConsentEnabled().get(0).description());
         Assertions.assertEquals("tumkdosvqwhbm", model.secondaryConsentEnabled().get(0).type());
@@ -25,15 +23,9 @@ public final class ProblemClassificationPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProblemClassificationProperties model =
-            new ProblemClassificationProperties()
-                .withDisplayName("b")
-                .withSecondaryConsentEnabled(
-                    Arrays
-                        .asList(
-                            new SecondaryConsentEnabled()
-                                .withDescription("utduqktapspwgcu")
-                                .withType("tumkdosvqwhbm")));
+        ProblemClassificationProperties model = new ProblemClassificationProperties().withDisplayName("b")
+            .withSecondaryConsentEnabled(Arrays
+                .asList(new SecondaryConsentEnabled().withDescription("utduqktapspwgcu").withType("tumkdosvqwhbm")));
         model = BinaryData.fromObject(model).toObject(ProblemClassificationProperties.class);
         Assertions.assertEquals("b", model.displayName());
         Assertions.assertEquals("utduqktapspwgcu", model.secondaryConsentEnabled().get(0).description());

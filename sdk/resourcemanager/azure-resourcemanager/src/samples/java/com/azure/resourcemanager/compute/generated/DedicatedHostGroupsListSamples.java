@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class DedicatedHostGroupsListSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * dedicatedHostExamples/DedicatedHostGroup_ListBySubscription_MaximumSet_Gen.json
      */
     /**
@@ -20,13 +20,16 @@ public final class DedicatedHostGroupsListSamples {
      */
     public static void
         dedicatedHostGroupListBySubscriptionMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDedicatedHostGroups()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHostGroups()
             .list(com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * dedicatedHostExamples/DedicatedHostGroup_ListBySubscription_MinimumSet_Gen.json
      */
     /**
@@ -36,7 +39,10 @@ public final class DedicatedHostGroupsListSamples {
      */
     public static void
         dedicatedHostGroupListBySubscriptionMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDedicatedHostGroups()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHostGroups()
             .list(com.azure.core.util.Context.NONE);
     }
 }

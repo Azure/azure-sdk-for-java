@@ -18,70 +18,51 @@ import org.junit.jupiter.api.Assertions;
 public final class ListConfigurationAssignmentsResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ListConfigurationAssignmentsResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"location\":\"enhwlrs\",\"properties\":{\"maintenanceConfigurationId\":\"zpwv\",\"resourceId\":\"dqgbiqylihkaetc\",\"filter\":{\"resourceTypes\":[\"civfsnkymuctq\",\"jf\",\"ebrjcxe\"],\"resourceGroups\":[\"wutttxfvjrbi\",\"phxepcyvahf\",\"ljkyqxjvuuj\",\"gidokgjljyoxgvcl\"],\"osTypes\":[\"sncghkjeszz\",\"bijhtxfvgxbf\",\"mxnehmp\"],\"locations\":[\"xgodebfqkkrbmp\",\"kgriwflzlfbx\"],\"tagSettings\":{\"tags\":{\"ycispnqzahmgkb\":[],\"pyydhi\":[]},\"filterOperator\":\"All\"}}},\"id\":\"qkpikadrgvtqagnb\",\"name\":\"ynhijggme\",\"type\":\"fsiarbutr\"},{\"location\":\"pnazzm\",\"properties\":{\"maintenanceConfigurationId\":\"unmpxttd\",\"resourceId\":\"rbnlankxmyskp\",\"filter\":{\"resourceTypes\":[\"btkcxywnytnrsyn\",\"qidybyx\",\"zfcl\",\"aaxdbabphlwrq\"],\"resourceGroups\":[\"tsthsucocm\",\"yyazttbt\",\"wrqpue\",\"ckzywbiexzfeyue\"],\"osTypes\":[\"bxu\"],\"locations\":[\"hqwa\",\"muzyoxaepdk\",\"jancu\",\"rhdwbavxbniw\"],\"tagSettings\":{\"tags\":{\"zt\":[]},\"filterOperator\":\"All\"}}},\"id\":\"gnxytxhpzxbz\",\"name\":\"fzab\",\"type\":\"lcuhxwtctyqiklb\"}]}")
-                .toObject(ListConfigurationAssignmentsResult.class);
-        Assertions.assertEquals("enhwlrs", model.value().get(0).location());
-        Assertions.assertEquals("zpwv", model.value().get(0).maintenanceConfigurationId());
-        Assertions.assertEquals("dqgbiqylihkaetc", model.value().get(0).resourceId());
-        Assertions.assertEquals("civfsnkymuctq", model.value().get(0).filter().resourceTypes().get(0));
-        Assertions.assertEquals("wutttxfvjrbi", model.value().get(0).filter().resourceGroups().get(0));
-        Assertions.assertEquals("sncghkjeszz", model.value().get(0).filter().osTypes().get(0));
-        Assertions.assertEquals("xgodebfqkkrbmp", model.value().get(0).filter().locations().get(0));
+        ListConfigurationAssignmentsResult model = BinaryData.fromString(
+            "{\"value\":[{\"location\":\"xpkd\",\"properties\":{\"maintenanceConfigurationId\":\"aiuebbaumnyqu\",\"resourceId\":\"deoj\",\"filter\":{\"resourceTypes\":[\"khsmtxpsiebt\",\"hvpesapskrdqm\",\"jjdhtld\"],\"resourceGroups\":[\"zxuutkncwscwsvl\",\"otogtwrupqs\",\"vnm\"],\"osTypes\":[\"kvceoveilovnotyf\",\"fcnj\",\"k\"],\"locations\":[\"dhbt\"],\"tagSettings\":{\"tags\":{\"ywpnvjt\":[]},\"filterOperator\":\"All\"}}},\"id\":\"rmclfplphoxu\",\"name\":\"crpab\",\"type\":\"ye\"},{\"location\":\"bjtazqugxywpmu\",\"properties\":{\"maintenanceConfigurationId\":\"jzwf\",\"resourceId\":\"q\",\"filter\":{\"resourceTypes\":[\"suyonobglaocq\",\"tcc\",\"g\"],\"resourceGroups\":[\"xy\"],\"osTypes\":[\"oyrxvwfudwpzntxh\",\"zhlrqjb\",\"ck\",\"rlhrxs\"],\"locations\":[\"vpycanuzbp\",\"kafkuwbcrnwbm\",\"hhseyv\",\"us\"],\"tagSettings\":{\"tags\":{\"hspkdeemao\":[],\"mx\":[]},\"filterOperator\":\"All\"}}},\"id\":\"t\",\"name\":\"elmqk\",\"type\":\"hahvljuahaq\"}]}")
+            .toObject(ListConfigurationAssignmentsResult.class);
+        Assertions.assertEquals("xpkd", model.value().get(0).location());
+        Assertions.assertEquals("aiuebbaumnyqu", model.value().get(0).maintenanceConfigurationId());
+        Assertions.assertEquals("deoj", model.value().get(0).resourceId());
+        Assertions.assertEquals("khsmtxpsiebt", model.value().get(0).filter().resourceTypes().get(0));
+        Assertions.assertEquals("zxuutkncwscwsvl", model.value().get(0).filter().resourceGroups().get(0));
+        Assertions.assertEquals("kvceoveilovnotyf", model.value().get(0).filter().osTypes().get(0));
+        Assertions.assertEquals("dhbt", model.value().get(0).filter().locations().get(0));
         Assertions.assertEquals(TagOperators.ALL, model.value().get(0).filter().tagSettings().filterOperator());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ListConfigurationAssignmentsResult model =
-            new ListConfigurationAssignmentsResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ConfigurationAssignmentInner()
-                                .withLocation("enhwlrs")
-                                .withMaintenanceConfigurationId("zpwv")
-                                .withResourceId("dqgbiqylihkaetc")
-                                .withFilter(
-                                    new ConfigurationAssignmentFilterProperties()
-                                        .withResourceTypes(Arrays.asList("civfsnkymuctq", "jf", "ebrjcxe"))
-                                        .withResourceGroups(
-                                            Arrays
-                                                .asList(
-                                                    "wutttxfvjrbi", "phxepcyvahf", "ljkyqxjvuuj", "gidokgjljyoxgvcl"))
-                                        .withOsTypes(Arrays.asList("sncghkjeszz", "bijhtxfvgxbf", "mxnehmp"))
-                                        .withLocations(Arrays.asList("xgodebfqkkrbmp", "kgriwflzlfbx"))
-                                        .withTagSettings(
-                                            new TagSettingsProperties()
-                                                .withTags(
-                                                    mapOf("ycispnqzahmgkb", Arrays.asList(), "pyydhi", Arrays.asList()))
-                                                .withFilterOperator(TagOperators.ALL))),
-                            new ConfigurationAssignmentInner()
-                                .withLocation("pnazzm")
-                                .withMaintenanceConfigurationId("unmpxttd")
-                                .withResourceId("rbnlankxmyskp")
-                                .withFilter(
-                                    new ConfigurationAssignmentFilterProperties()
-                                        .withResourceTypes(
-                                            Arrays.asList("btkcxywnytnrsyn", "qidybyx", "zfcl", "aaxdbabphlwrq"))
-                                        .withResourceGroups(
-                                            Arrays.asList("tsthsucocm", "yyazttbt", "wrqpue", "ckzywbiexzfeyue"))
-                                        .withOsTypes(Arrays.asList("bxu"))
-                                        .withLocations(Arrays.asList("hqwa", "muzyoxaepdk", "jancu", "rhdwbavxbniw"))
-                                        .withTagSettings(
-                                            new TagSettingsProperties()
-                                                .withTags(mapOf("zt", Arrays.asList()))
-                                                .withFilterOperator(TagOperators.ALL)))));
+        ListConfigurationAssignmentsResult model = new ListConfigurationAssignmentsResult().withValue(Arrays.asList(
+            new ConfigurationAssignmentInner().withLocation("xpkd")
+                .withMaintenanceConfigurationId("aiuebbaumnyqu")
+                .withResourceId("deoj")
+                .withFilter(new ConfigurationAssignmentFilterProperties()
+                    .withResourceTypes(Arrays.asList("khsmtxpsiebt", "hvpesapskrdqm", "jjdhtld"))
+                    .withResourceGroups(Arrays.asList("zxuutkncwscwsvl", "otogtwrupqs", "vnm"))
+                    .withOsTypes(Arrays.asList("kvceoveilovnotyf", "fcnj", "k"))
+                    .withLocations(Arrays.asList("dhbt"))
+                    .withTagSettings(new TagSettingsProperties().withTags(mapOf("ywpnvjt", Arrays.asList()))
+                        .withFilterOperator(TagOperators.ALL))),
+            new ConfigurationAssignmentInner().withLocation("bjtazqugxywpmu")
+                .withMaintenanceConfigurationId("jzwf")
+                .withResourceId("q")
+                .withFilter(new ConfigurationAssignmentFilterProperties()
+                    .withResourceTypes(Arrays.asList("suyonobglaocq", "tcc", "g"))
+                    .withResourceGroups(Arrays.asList("xy"))
+                    .withOsTypes(Arrays.asList("oyrxvwfudwpzntxh", "zhlrqjb", "ck", "rlhrxs"))
+                    .withLocations(Arrays.asList("vpycanuzbp", "kafkuwbcrnwbm", "hhseyv", "us"))
+                    .withTagSettings(new TagSettingsProperties()
+                        .withTags(mapOf("hspkdeemao", Arrays.asList(), "mx", Arrays.asList()))
+                        .withFilterOperator(TagOperators.ALL)))));
         model = BinaryData.fromObject(model).toObject(ListConfigurationAssignmentsResult.class);
-        Assertions.assertEquals("enhwlrs", model.value().get(0).location());
-        Assertions.assertEquals("zpwv", model.value().get(0).maintenanceConfigurationId());
-        Assertions.assertEquals("dqgbiqylihkaetc", model.value().get(0).resourceId());
-        Assertions.assertEquals("civfsnkymuctq", model.value().get(0).filter().resourceTypes().get(0));
-        Assertions.assertEquals("wutttxfvjrbi", model.value().get(0).filter().resourceGroups().get(0));
-        Assertions.assertEquals("sncghkjeszz", model.value().get(0).filter().osTypes().get(0));
-        Assertions.assertEquals("xgodebfqkkrbmp", model.value().get(0).filter().locations().get(0));
+        Assertions.assertEquals("xpkd", model.value().get(0).location());
+        Assertions.assertEquals("aiuebbaumnyqu", model.value().get(0).maintenanceConfigurationId());
+        Assertions.assertEquals("deoj", model.value().get(0).resourceId());
+        Assertions.assertEquals("khsmtxpsiebt", model.value().get(0).filter().resourceTypes().get(0));
+        Assertions.assertEquals("zxuutkncwscwsvl", model.value().get(0).filter().resourceGroups().get(0));
+        Assertions.assertEquals("kvceoveilovnotyf", model.value().get(0).filter().osTypes().get(0));
+        Assertions.assertEquals("dhbt", model.value().get(0).filter().locations().get(0));
         Assertions.assertEquals(TagOperators.ALL, model.value().get(0).filter().tagSettings().filterOperator());
     }
 

@@ -53,8 +53,9 @@ public final class ClientEncryptionKeyCreateUpdateProperties {
      */
     public void validate() {
         if (resource() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property resource in model ClientEncryptionKeyCreateUpdateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property resource in model ClientEncryptionKeyCreateUpdateProperties"));
         } else {
             resource().validate();
         }

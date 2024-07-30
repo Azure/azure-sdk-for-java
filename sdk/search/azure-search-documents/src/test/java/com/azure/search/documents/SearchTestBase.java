@@ -72,7 +72,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 public abstract class SearchTestBase extends TestProxyTestBase {
     protected static final String HOTELS_TESTS_INDEX_DATA_JSON = "HotelsTestsIndexData.json";
-
+    private boolean sanitizersRemoved = false;
 
     protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
         .get("SEARCH_SERVICE_ENDPOINT", "https://playback.search.windows.net");
@@ -93,7 +93,7 @@ public abstract class SearchTestBase extends TestProxyTestBase {
     // This has to be used in all test modes as this is more retry counts than the standard policy.
     // Change the delay based on the mode.
     static final RetryPolicy SERVICE_THROTTLE_SAFE_RETRY_POLICY = new RetryPolicy(new FixedDelay(4,
-            TEST_MODE == TestMode.PLAYBACK ? Duration.ofMillis(1) : Duration.ofSeconds(15)));
+            TEST_MODE == TestMode.PLAYBACK ? Duration.ofMillis(1) : Duration.ofSeconds(30)));
 
     protected String createHotelIndex() {
         return setupIndexFromJsonFile(HOTELS_TESTS_INDEX_DATA_JSON);
@@ -123,12 +123,18 @@ public abstract class SearchTestBase extends TestProxyTestBase {
             .httpClient(getHttpClient(true, interceptorManager, isSync))
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
+        // Disable `("$..token")` and `name` sanitizer
+        if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
+            interceptorManager.removeSanitizers("AZSDK3431", "AZSDK3493", "AZSDK3430");
+            sanitizersRemoved = true;
+        }
+
         if (interceptorManager.isPlaybackMode()) {
             addPolicies(builder);
             return builder;
         }
 
-        if (!interceptorManager.isLiveMode()) {
+        if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
@@ -144,12 +150,17 @@ public abstract class SearchTestBase extends TestProxyTestBase {
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
         addPolicies(builder, policies);
+        // Disable `("$..token")` and `name` sanitizer
+        if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
+            interceptorManager.removeSanitizers("AZSDK3431", "AZSDK3493", "AZSDK3430");
+            sanitizersRemoved = true;
+        }
 
         if (interceptorManager.isPlaybackMode()) {
             return builder;
         }
 
-        if (!interceptorManager.isLiveMode()) {
+        if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
@@ -185,11 +196,17 @@ public abstract class SearchTestBase extends TestProxyTestBase {
             .httpClient(getHttpClient(wrapWithAssertingClient, interceptorManager, isSync))
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
+        // Disable `("$..token")` and `name` sanitizer
+        if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
+            interceptorManager.removeSanitizers("AZSDK3431", "AZSDK3493", "AZSDK3430");
+            sanitizersRemoved = true;
+        }
+
         if (interceptorManager.isPlaybackMode()) {
             return builder;
         }
 
-        if (!interceptorManager.isLiveMode()) {
+        if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
@@ -445,7 +462,14 @@ public abstract class SearchTestBase extends TestProxyTestBase {
 
     protected <T> void compareMaps(Map<String, T> expectedMap, Map<String, T> actualMap,
         BiConsumer<T, T> comparisonFunction) {
-        assertEquals(expectedMap.size(), actualMap.size());
+        compareMaps(expectedMap, actualMap, comparisonFunction, true);
+    }
+
+    protected <T> void compareMaps(Map<String, T> expectedMap, Map<String, T> actualMap,
+        BiConsumer<T, T> comparisonFunction, boolean checkSize) {
+        if (checkSize) {
+            assertEquals(expectedMap.size(), actualMap.size());
+        }
 
         actualMap.forEach((key, actual) -> {
             T expected = expectedMap.get(key);

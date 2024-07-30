@@ -31,45 +31,31 @@ public final class DeploymentsGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"deploymentId\":\"doamciodhkha\",\"deployedImages\":[{\"properties\":{\"image\":\"zbonlwnt\",\"imageId\":\"gokdwbwhks\",\"imageName\":\"cmrvexzt\",\"regionalDataBoundary\":\"None\",\"uri\":\"gsfraoyzkoow\",\"description\":\"mnguxawqaldsyu\",\"componentId\":\"imerqfobwyznk\",\"imageType\":\"InvalidImageType\",\"provisioningState\":\"Updating\"},\"id\":\"wpfhpagmhrskd\",\"name\":\"nfd\",\"type\":\"doakgtdlmkkzevdl\"},{\"properties\":{\"image\":\"pusdstt\",\"imageId\":\"ogvbbejdcngq\",\"imageName\":\"oakufgm\",\"regionalDataBoundary\":\"None\",\"uri\":\"rdgrtw\",\"description\":\"nuuzkopbm\",\"componentId\":\"rfdwoyu\",\"imageType\":\"Nwfs\",\"provisioningState\":\"Failed\"},\"id\":\"iefozbhdmsml\",\"name\":\"zqhof\",\"type\":\"rmaequ\"},{\"properties\":{\"image\":\"xicslfao\",\"imageId\":\"piyylhalnswhccsp\",\"imageName\":\"aivwitqscywu\",\"regionalDataBoundary\":\"EU\",\"uri\":\"luhczbw\",\"description\":\"hairsbrgzdwms\",\"componentId\":\"ypqwdxggiccc\",\"imageType\":\"RecoveryManifest\",\"provisioningState\":\"Succeeded\"},\"id\":\"exmk\",\"name\":\"tlstvlzywem\",\"type\":\"zrncsdt\"}],\"deploymentDateUtc\":\"2021-07-01T02:09:13Z\",\"provisioningState\":\"Deleting\"},\"id\":\"ypbsfgytguslfead\",\"name\":\"ygqukyhejh\",\"type\":\"isxgfp\"}";
+        String responseStr
+            = "{\"properties\":{\"deploymentId\":\"qdpfuvglsbjjca\",\"deployedImages\":[{\"properties\":{\"image\":\"t\",\"imageId\":\"dut\",\"imageName\":\"ormrlxqtvcofudfl\",\"regionalDataBoundary\":\"None\",\"uri\":\"u\",\"description\":\"dknnqvsazn\",\"componentId\":\"tor\",\"imageType\":\"Policy\",\"provisioningState\":\"Succeeded\"},\"id\":\"hmk\",\"name\":\"c\",\"type\":\"rauwjuetaebu\"},{\"properties\":{\"image\":\"dmovsm\",\"imageId\":\"xwabmqoe\",\"imageName\":\"ifrvtpu\",\"regionalDataBoundary\":\"None\",\"uri\":\"qlgkfbtn\",\"description\":\"aongbj\",\"componentId\":\"tujitcjedft\",\"imageType\":\"BaseSystemUpdateManifest\",\"provisioningState\":\"Updating\"},\"id\":\"ojvdcpzfoqo\",\"name\":\"i\",\"type\":\"ybxarzgszu\"}],\"deploymentDateUtc\":\"2021-07-26T12:22:12Z\",\"provisioningState\":\"Canceled\"},\"id\":\"opidoamciodh\",\"name\":\"haz\",\"type\":\"khnzbonlw\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        AzureSphereManager manager =
-            AzureSphereManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureSphereManager manager = AzureSphereManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Deployment response =
-            manager
-                .deployments()
-                .getWithResponse(
-                    "bjcntujitc", "ed", "twwaezkojvdcpzf", "qouicybxarzgsz", "foxciq", com.azure.core.util.Context.NONE)
-                .getValue();
+        Deployment response = manager.deployments().getWithResponse("cckwyfzqwhxxbu", "qa", "zfeqztppri",
+            "lxorjaltolmncws", "bqwcsdbnwdcf", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("doamciodhkha", response.deploymentId());
-        Assertions.assertEquals("zbonlwnt", response.deployedImages().get(0).image());
-        Assertions.assertEquals("gokdwbwhks", response.deployedImages().get(0).imageId());
-        Assertions.assertEquals(RegionalDataBoundary.NONE, response.deployedImages().get(0).regionalDataBoundary());
+        Assertions.assertEquals("qdpfuvglsbjjca", response.properties().deploymentId());
+        Assertions.assertEquals("t", response.properties().deployedImages().get(0).properties().image());
+        Assertions.assertEquals("dut", response.properties().deployedImages().get(0).properties().imageId());
+        Assertions.assertEquals(RegionalDataBoundary.NONE,
+            response.properties().deployedImages().get(0).properties().regionalDataBoundary());
     }
 }

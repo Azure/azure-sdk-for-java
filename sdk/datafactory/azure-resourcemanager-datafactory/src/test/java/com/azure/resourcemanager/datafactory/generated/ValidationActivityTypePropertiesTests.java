@@ -15,19 +15,21 @@ public final class ValidationActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidationActivityTypeProperties model = BinaryData.fromString(
-            "{\"timeout\":\"dataxlc\",\"sleep\":\"dataqhtgtadtootkgxx\",\"minimumSize\":\"dataenlqwxskltzzp\",\"childItems\":\"datawgtmpytomftubh\",\"dataset\":{\"referenceName\":\"bwgbvpyjpai\",\"parameters\":{\"llihwpsrdaoixgqt\":\"datadazxfz\",\"ix\":\"datasjnlekotqhd\"}}}")
+            "{\"timeout\":\"datavcfmtm\",\"sleep\":\"datav\",\"minimumSize\":\"datazgtlxgtuswjgts\",\"childItems\":\"datalbjy\",\"dataset\":{\"referenceName\":\"ostrcbqocerbwaiq\",\"parameters\":{\"ean\":\"datazigelphauldals\"}}}")
             .toObject(ValidationActivityTypeProperties.class);
-        Assertions.assertEquals("bwgbvpyjpai", model.dataset().referenceName());
+        Assertions.assertEquals("ostrcbqocerbwaiq", model.dataset().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ValidationActivityTypeProperties model = new ValidationActivityTypeProperties().withTimeout("dataxlc")
-            .withSleep("dataqhtgtadtootkgxx").withMinimumSize("dataenlqwxskltzzp").withChildItems("datawgtmpytomftubh")
-            .withDataset(new DatasetReference().withReferenceName("bwgbvpyjpai")
-                .withParameters(mapOf("llihwpsrdaoixgqt", "datadazxfz", "ix", "datasjnlekotqhd")));
+        ValidationActivityTypeProperties model = new ValidationActivityTypeProperties().withTimeout("datavcfmtm")
+            .withSleep("datav")
+            .withMinimumSize("datazgtlxgtuswjgts")
+            .withChildItems("datalbjy")
+            .withDataset(new DatasetReference().withReferenceName("ostrcbqocerbwaiq")
+                .withParameters(mapOf("ean", "datazigelphauldals")));
         model = BinaryData.fromObject(model).toObject(ValidationActivityTypeProperties.class);
-        Assertions.assertEquals("bwgbvpyjpai", model.dataset().referenceName());
+        Assertions.assertEquals("ostrcbqocerbwaiq", model.dataset().referenceName());
     }
 
     // Use "Map.of" if available

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.DayOfWeek;
-import com.azure.resourcemanager.recoveryservicesbackup.models.WeekOfMonth;
 import com.azure.resourcemanager.recoveryservicesbackup.models.WeeklyRetentionFormat;
+import com.azure.resourcemanager.recoveryservicesbackup.models.WeekOfMonth;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -15,19 +15,20 @@ public final class WeeklyRetentionFormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WeeklyRetentionFormat model = BinaryData.fromString(
-            "{\"daysOfTheWeek\":[\"Thursday\",\"Thursday\",\"Saturday\"],\"weeksOfTheMonth\":[\"Second\",\"Second\",\"Third\"]}")
+            "{\"daysOfTheWeek\":[\"Saturday\",\"Tuesday\",\"Sunday\"],\"weeksOfTheMonth\":[\"Second\",\"Last\",\"Last\",\"Third\"]}")
             .toObject(WeeklyRetentionFormat.class);
-        Assertions.assertEquals(DayOfWeek.THURSDAY, model.daysOfTheWeek().get(0));
+        Assertions.assertEquals(DayOfWeek.SATURDAY, model.daysOfTheWeek().get(0));
         Assertions.assertEquals(WeekOfMonth.SECOND, model.weeksOfTheMonth().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WeeklyRetentionFormat model = new WeeklyRetentionFormat()
-            .withDaysOfTheWeek(Arrays.asList(DayOfWeek.THURSDAY, DayOfWeek.THURSDAY, DayOfWeek.SATURDAY))
-            .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.SECOND, WeekOfMonth.SECOND, WeekOfMonth.THIRD));
+            .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SATURDAY, DayOfWeek.TUESDAY, DayOfWeek.SUNDAY))
+            .withWeeksOfTheMonth(
+                Arrays.asList(WeekOfMonth.SECOND, WeekOfMonth.LAST, WeekOfMonth.LAST, WeekOfMonth.THIRD));
         model = BinaryData.fromObject(model).toObject(WeeklyRetentionFormat.class);
-        Assertions.assertEquals(DayOfWeek.THURSDAY, model.daysOfTheWeek().get(0));
+        Assertions.assertEquals(DayOfWeek.SATURDAY, model.daysOfTheWeek().get(0));
         Assertions.assertEquals(WeekOfMonth.SECOND, model.weeksOfTheMonth().get(0));
     }
 }

@@ -78,8 +78,9 @@ public final class ScriptActivityTypePropertiesLogSettings {
      */
     public void validate() {
         if (logDestination() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property logDestination in model ScriptActivityTypePropertiesLogSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property logDestination in model ScriptActivityTypePropertiesLogSettings"));
         }
         if (logLocationSettings() != null) {
             logLocationSettings().validate();

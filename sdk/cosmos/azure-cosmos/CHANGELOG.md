@@ -1,16 +1,98 @@
 ## Release History
 
-### 4.57.0-beta.1 (Unreleased)
+### 4.63.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added optional id validation to prevent documents with invalid char '/' in id property to be created. - See [PR 41108](https://github.com/Azure/azure-sdk-for-java/pull/41108)
+* Added support for specifying a set of custom diagnostic correlation ids in the request options. - See [PR 40835](https://github.com/Azure/azure-sdk-for-java/pull/40835)
+* Added support for client-driven partition-level failover for multi-write CosmosDB accounts. - See[PR 39265](https://github.com/Azure/azure-sdk-for-java/pull/39265)
 
 #### Breaking Changes
+* Fixed an issue where customer provided session token is not honored for the `readMany` operation. - See[PR 39265](https://github.com/Azure/azure-sdk-for-java/pull/39265)
 
 #### Bugs Fixed
-* Suppress exceptions when calling diagnostics handlers. - See [PR 39077](https://github.com/Azure/azure-sdk-for-java/pull/39077)
+* Fixed an issue where `contactedRegions` shows the wrong region in a multi region account if no preferred regions are specified. - See [PR 41045](https://github.com/Azure/azure-sdk-for-java/pull/41045)
 
 #### Other Changes
-* Only call System.exit in `DiagnosticsProvider` for `Error` scenario. Also add `System.err` for `Error` cases. - See [PR 39077](https://github.com/Azure/azure-sdk-for-java/pull/39077)
+* Added metrics and tracing for ReadMany operations. - See [PR 41042](https://github.com/Azure/azure-sdk-for-java/pull/41042)
+
+### 4.62.0 (2024-07-02)
+
+#### Features Added
+* Added support for changing some request options dynamically without the need of restarting the application. - See [PR 40061](https://github.com/Azure/azure-sdk-for-java/pull/40061)
+
+#### Bugs Fixed
+* Fixed a possible `NullPointerException` in the ctor of `FeedOperationState`. - See [PR 40714](https://github.com/Azure/azure-sdk-for-java/pull/40714)
+* Changed to only disable `PartitionKeyRangeGoneRetryPolicy` when enable `disableSplitHandling` in `ChangeFeedRequestOptions`. - See [PR 40738](https://github.com/Azure/azure-sdk-for-java/pull/40738)
+
+#### Other Changes
+* Added diagnostic fields for `quorumAckedLSN` and `currentReplicaSetSize`. Changed `replicaStatusList` to include all replicas and more information. - See [PR 39844](https://github.com/Azure/azure-sdk-for-java/pull/39844)
+* Ensured that exceptions thrown in custom serializers are being wrapped as a CosmosException with StatusCode 400. - See [PR 40797](https://github.com/Azure/azure-sdk-for-java/pull/40797) and [PR 40913](https://github.com/Azure/azure-sdk-for-java/pull/40913)
+* Reduced number of logs emitted in the success case for cross partition queries. - See [PR 40932](https://github.com/Azure/azure-sdk-for-java/pull/40932)
+* Reduced noisy logs about the value of the ` AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY` environment variable. - See [PR 40714](https://github.com/Azure/azure-sdk-for-java/pull/40714)
+
+### 4.61.1 (2024-05-31)
+
+#### Bugs Fixed
+* Fixed an issue causing `IllegalArgumentException` when using `handleChanges` on change feed processor startup - See [PR 40420](https://github.com/Azure/azure-sdk-for-java/pull/40420)
+
+### 4.61.0 (2024-05-24)
+
+#### Features Added
+* Added query statement conditionally in diagnostics and tracing. - See [PR 39990](https://github.com/Azure/azure-sdk-for-java/pull/39990)
+
+#### Bugs Fixed
+* Fixed a rare issue causing `StackOverflowError` when `RntbdRequestRecord` expires and tries to serialize `CosmosException` using default Jackson Object Mapper - See [PR 40272](https://github.com/Azure/azure-sdk-for-java/pull/40272)
+* Fixed UserAgent encoding when the suffix contains non-ASCII characters. - See [PR 40293](https://github.com/Azure/azure-sdk-for-java/pull/40293)
+
+#### Other Changes
+* Added robustness improvement to avoid client-side parsing errors `java.lang.IllegalArgumentException: Unable to parse JSON` when Gateway returns duplicate `unqiueKeyPolicy` in IndexPolicy (invalid json) - See[PR 40306](https://github.com/Azure/azure-sdk-for-java/pull/40306)
+
+### 4.60.0 (2024-05-19)
+
+#### Features Added
+* Added `cosmosVectorEmbeddingPolicy` in `cosmosContainerProperties` and `vectorIndexes` in `indexPolicy` to support vector search in CosmosDB - See[PR 39379](https://github.com/Azure/azure-sdk-for-java/pull/39379)
+* Added support for non-streaming OrderBy query and a query feature `NonStreamingOrderBy` to support Vector Search queries. - See [PR 39897](https://github.com/Azure/azure-sdk-for-java/pull/39897/) 
+* Added the capability to regionally scope session tokens used for operations scoped to a logical partition. - See [PR 38003](https://github.com/Azure/azure-sdk-for-java/pull/38003)
+
+#### Bugs Fixed
+* Ensured that `excludedRegions` is getting honored change feed operations. - See [PR 38003](https://github.com/Azure/azure-sdk-for-java/pull/38003) 
+
+#### Other Changes
+* Added change to throw `IllegalStateException` when change feed mode is switched from `AllVersionsAndDeletes` to `Incremental` and vice-versa for the same deployment unit for EPK-Range based leases. See [PR 38740](https://github.com/Azure/azure-sdk-for-java/pull/38740)
+
+### 4.59.0 (2024-04-27)
+#### Features Added
+* Added public APIs `getCustomItemSerializer` and `setCustomItemSerializer` to allow customers to specify custom payload transformations or serialization settings. - See [PR 38997](https://github.com/Azure/azure-sdk-for-java/pull/38997) and [PR 39933](https://github.com/Azure/azure-sdk-for-java/pull/39933) 
+
+#### Other Changes
+* Load Blackbird or Afterburner into the ObjectMapper depending upon Java version and presence of modules in classpath. Make Afterburner and Blackbird optional maven dependencies. See - [PR 39689](https://github.com/Azure/azure-sdk-for-java/pull/39689)
+
+### 4.53.5-hotfix (2024-04-25)
+
+#### Bugs Fixed
+* Fixed an issue in QuorumReader when quorum could not be selected even though 1 secondary and Primary are reachable and in sync. - See [PR 38832](https://github.com/Azure/azure-sdk-for-java/pull/38832)
+
+### 4.58.0 (2024-04-16)
+#### Other Changes
+* Changed initial `targetBatchSize` to be capped by both `initialBatchSize` and `maxBatchSize` configured in `CosmosBulkExecutionOptions` - See[39500](https://github.com/Azure/azure-sdk-for-java/pull/39500)
+* Ensured that `exceptionMessage` is populated even for non-cosmos Exceptions in `GatewayStatistics` - See [PR 39507](https://github.com/Azure/azure-sdk-for-java/pull/39507)
+* Added partition key helper functions to `PartitionKeyBuilder` that are needed for `azure-spring-data-cosmos`. - See [PR 39213](https://github.com/Azure/azure-sdk-for-java/pull/39213)
+* Added `cosmos.client.req.rntbd.actualItemCount` and `cosmos.client.req.gw.actualItemCount` metrics. - See [PR 39682](https://github.com/Azure/azure-sdk-for-java/pull/39682)
+
+### 4.57.0 (2024-03-25)
+
+#### Features Added
+* Added public APIs `setMaxMicroBatchSize` and `getMaxMicroBatchSize` in `CosmosBulkExecutionOptions` - See [PR 39335](https://github.com/Azure/azure-sdk-for-java/pull/39335)
+
+#### Bugs Fixed
+* Suppressed exceptions when calling diagnostics handlers. - See [PR 39077](https://github.com/Azure/azure-sdk-for-java/pull/39077)
+* Fixed an issue where no cross region retry for write operations due to channel acquisition timeout. - See [PR 39255](https://github.com/Azure/azure-sdk-for-java/pull/39255)
+* Fixed incorrect container tag value in metrics. - See [PR 39322](https://github.com/Azure/azure-sdk-for-java/pull/39322)
+* Fixed issue where CosmosDiagnosticsContext is null when diagnostics are sampled out. - See [PR 39352](https://github.com/Azure/azure-sdk-for-java/pull/39352)
+#### Other Changes
+* Changed logic to only call `System.exit()` in `DiagnosticsProvider` for `Error` scenario. Also added `System.err` for `Error` cases. - See [PR 39077](https://github.com/Azure/azure-sdk-for-java/pull/39077)
+* Removed `System.exit()` calls from `ImplementationBridgeHelpers`. - See [PR 39387](https://github.com/Azure/azure-sdk-for-java/pull/39387)
 
 ### 4.53.4-hotfix (2024-03-15)
 
@@ -21,29 +103,29 @@
 
 #### Bugs Fixed
 * Fixed an issue where `sampleDiagnostics` is not being honored for `query. See [PR 37015](https://github.com/Azure/azure-sdk-for-java/pull/37015)
-* Suppress exceptions when calling diagnostics handlers. - See [PR 39077](https://github.com/Azure/azure-sdk-for-java/pull/39077)
+* Suppressed exceptions when calling diagnostics handlers. - See [PR 39077](https://github.com/Azure/azure-sdk-for-java/pull/39077)
 
 ### Other Changes
-* Only call `System.exit()` in `DiagnosticsProvider` for `Error` scenario. Also add `System.err` for `Error` cases. - See [PR 39077](https://github.com/Azure/azure-sdk-for-java/pull/39077)
+* Changed logic to only call `System.exit()` in `DiagnosticsProvider` for `Error` scenario. Also added `System.err` for `Error` cases. - See [PR 39077](https://github.com/Azure/azure-sdk-for-java/pull/39077)
 * Removed `System.exit()` calls from `ImplementationBridgeHelpers`. - See [PR 39182](https://github.com/Azure/azure-sdk-for-java/pull/39182)
 
 ### 4.45.3-hotfix (2024-03-15)
 
 #### Bugs Fixed
 * Fixed an issue where `sampleDiagnostics` is not being honored for `query. See [PR 37015](https://github.com/Azure/azure-sdk-for-java/pull/37015)
-* Suppress exceptions when calling diagnostics handlers. - See [PR 39077](https://github.com/Azure/azure-sdk-for-java/pull/39077)
+* Suppressed exceptions when calling diagnostics handlers. - See [PR 39077](https://github.com/Azure/azure-sdk-for-java/pull/39077)
 
 ### Other Changes
-* Only call `System.exit()` in `DiagnosticsProvider` for `Error` scenario. Also add `System.err` for `Error` cases. - See [PR 39077](https://github.com/Azure/azure-sdk-for-java/pull/39077)
+* Changed logic to only call `System.exit()` in `DiagnosticsProvider` for `Error` scenario. Also added `System.err` for `Error` cases. - See [PR 39077](https://github.com/Azure/azure-sdk-for-java/pull/39077)
 * Removed `System.exit()` calls from `ImplementationBridgeHelpers`. - See [PR 39184](https://github.com/Azure/azure-sdk-for-java/pull/39184)
 
 ### 4.53.3-hotfix (2024-03-07)
 
 #### Bugs Fixed
-* Suppress exceptions when calling diagnostics handlers. - See [PR 39121](https://github.com/Azure/azure-sdk-for-java/pull/39121)
+* Suppressed exceptions when calling diagnostics handlers. - See [PR 39121](https://github.com/Azure/azure-sdk-for-java/pull/39121)
 
 #### Other Changes
-* Only call System.exit in DiagnosticsProvider for Error scenario. Also add System.err for Error cases. - - See [PR 39121](https://github.com/Azure/azure-sdk-for-java/pull/39121)
+* Changed logic to only call `System.exit()` in `DiagnosticsProvider` for `Error` scenario. Also added `System.err` for `Error` cases. - See [PR 39121](https://github.com/Azure/azure-sdk-for-java/pull/39121)
 
 ### 4.56.0 (2024-02-20)
 
@@ -72,6 +154,13 @@
 * Using customized `subStatusCodes` for client generated `InternalServerErrorException`. - See [PR 38518](https://github.com/Azure/azure-sdk-for-java/pull/38518)
 * Added an option to opt-out of E2E timeout defined in CosmosClientBuilder for non-point operations via system property or environment variable. - See [PR 38388](https://github.com/Azure/azure-sdk-for-java/pull/38388)
 * Using `ConnectionTimeout` as the `RNTBD` connection `acquisitionTimeout`. - See [PR 38695](https://github.com/Azure/azure-sdk-for-java/pull/38695)
+
+### 4.53.2-hotfix (2024-02-04)
+
+#### Other Changes
+* Reduced CPU overhead slightly for workloads with high throughput of point operations - especially when diagnostics like traces or metrics are enabled. - See [PR 38232](https://github.com/Azure/azure-sdk-for-java/pull/38232)
+* Changed to add `transportRequestChannelAcquisitionContext` in CosmosDiagnostics based on duration in `channelAcquisitionStarted` stage. By default, if `channelAcquisitionStarted` took more than 1s, `transportRequestChannelAcquisitionContext` will be added. - See [PR 38416](https://github.com/Azure/azure-sdk-for-java/pull/38416)
+* Added an option to opt-out of E2E timeout defined in CosmosClientBuilder for non-point operations via system property or environment variable. - See [PR 38388](https://github.com/Azure/azure-sdk-for-java/pull/38388)
 
 ### 4.54.0 (2024-01-03)
 

@@ -305,6 +305,13 @@ public interface Pool {
     NodeCommunicationMode currentNodeCommunicationMode();
 
     /**
+     * Gets the upgradePolicy property: Describes an upgrade policy - automatic, manual, or rolling.
+     * 
+     * @return the upgradePolicy value.
+     */
+    UpgradePolicy upgradePolicy();
+
+    /**
      * Gets the resourceTags property: The user-defined tags to be associated with the Azure Batch Pool. When specified,
      * these tags are propagated to the backing Azure resources associated with the pool. This property can only be
      * specified when the Batch account was created with the poolAllocationMode property set to 'UserSubscription'.
@@ -369,8 +376,8 @@ public interface Pool {
             DefinitionStages.WithTaskSchedulingPolicy, DefinitionStages.WithUserAccounts, DefinitionStages.WithMetadata,
             DefinitionStages.WithStartTask, DefinitionStages.WithCertificates, DefinitionStages.WithApplicationPackages,
             DefinitionStages.WithApplicationLicenses, DefinitionStages.WithMountConfiguration,
-            DefinitionStages.WithTargetNodeCommunicationMode, DefinitionStages.WithResourceTags,
-            DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
+            DefinitionStages.WithTargetNodeCommunicationMode, DefinitionStages.WithUpgradePolicy,
+            DefinitionStages.WithResourceTags, DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
             /**
              * Executes the create request.
              * 
@@ -734,6 +741,19 @@ public interface Pool {
         }
 
         /**
+         * The stage of the Pool definition allowing to specify upgradePolicy.
+         */
+        interface WithUpgradePolicy {
+            /**
+             * Specifies the upgradePolicy property: Describes an upgrade policy - automatic, manual, or rolling..
+             * 
+             * @param upgradePolicy Describes an upgrade policy - automatic, manual, or rolling.
+             * @return the next definition stage.
+             */
+            WithCreate withUpgradePolicy(UpgradePolicy upgradePolicy);
+        }
+
+        /**
          * The stage of the Pool definition allowing to specify resourceTags.
          */
         interface WithResourceTags {
@@ -800,7 +820,8 @@ public interface Pool {
         UpdateStages.WithTaskSlotsPerNode, UpdateStages.WithTaskSchedulingPolicy, UpdateStages.WithUserAccounts,
         UpdateStages.WithMetadata, UpdateStages.WithStartTask, UpdateStages.WithCertificates,
         UpdateStages.WithApplicationPackages, UpdateStages.WithApplicationLicenses, UpdateStages.WithMountConfiguration,
-        UpdateStages.WithTargetNodeCommunicationMode, UpdateStages.WithResourceTags, UpdateStages.WithIfMatch {
+        UpdateStages.WithTargetNodeCommunicationMode, UpdateStages.WithUpgradePolicy, UpdateStages.WithResourceTags,
+        UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          * 
@@ -1165,6 +1186,19 @@ public interface Pool {
              * @return the next definition stage.
              */
             Update withTargetNodeCommunicationMode(NodeCommunicationMode targetNodeCommunicationMode);
+        }
+
+        /**
+         * The stage of the Pool update allowing to specify upgradePolicy.
+         */
+        interface WithUpgradePolicy {
+            /**
+             * Specifies the upgradePolicy property: Describes an upgrade policy - automatic, manual, or rolling..
+             * 
+             * @param upgradePolicy Describes an upgrade policy - automatic, manual, or rolling.
+             * @return the next definition stage.
+             */
+            Update withUpgradePolicy(UpgradePolicy upgradePolicy);
         }
 
         /**

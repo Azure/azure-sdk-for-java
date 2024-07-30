@@ -10,11 +10,9 @@ import com.azure.resourcemanager.mysqlflexibleserver.models.ServerEditionCapabil
 public final class ServerEditionCapabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerEditionCapability model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"udxorrqn\",\"supportedStorageEditions\":[{\"name\":\"zvyifqrvkdvj\",\"minStorageSize\":3602114313463571295,\"maxStorageSize\":5675151701558960603,\"minBackupRetentionDays\":628578749185712506,\"maxBackupRetentionDays\":524078729547921435},{\"name\":\"n\",\"minStorageSize\":2611651142530368234,\"maxStorageSize\":3827252947498209847,\"minBackupRetentionDays\":9207665581714486982,\"maxBackupRetentionDays\":5624751011195276042}],\"supportedServerVersions\":[{\"name\":\"zb\",\"supportedSkus\":[]},{\"name\":\"ovm\",\"supportedSkus\":[]}]}")
-                .toObject(ServerEditionCapability.class);
+        ServerEditionCapability model = BinaryData.fromString(
+            "{\"name\":\"baliourqhakauha\",\"supportedStorageEditions\":[{\"name\":\"wxosowzxcug\",\"minStorageSize\":985999643464514171,\"maxStorageSize\":3565067205793933255,\"minBackupRetentionDays\":2379655259774159781,\"maxBackupRetentionDays\":4998574770628766131,\"minBackupIntervalHours\":6142570419205418148,\"maxBackupIntervalHours\":1461614765638521990},{\"name\":\"bvmeuecivy\",\"minStorageSize\":1476770674117610313,\"maxStorageSize\":6992830987626410961,\"minBackupRetentionDays\":3201956032854301074,\"maxBackupRetentionDays\":5062126351477079238,\"minBackupIntervalHours\":6905862249105518012,\"maxBackupIntervalHours\":1711684439873490205},{\"name\":\"dytdxwitx\",\"minStorageSize\":7412584900785787675,\"maxStorageSize\":7022663417329031305,\"minBackupRetentionDays\":6962157826226813076,\"maxBackupRetentionDays\":1588366635739120038,\"minBackupIntervalHours\":7904939230383834932,\"maxBackupIntervalHours\":5666526648393096058}],\"supportedServerVersions\":[{\"name\":\"gklwn\",\"supportedSkus\":[{\"name\":\"dauwhvylwzbtd\",\"vCores\":4861537181982868149,\"supportedIops\":3747533921605268466,\"supportedMemoryPerVCoreMB\":3229287439431688526},{\"name\":\"uwprzql\",\"vCores\":420888328132627784,\"supportedIops\":4537087271165106173,\"supportedMemoryPerVCoreMB\":3450822474060366088},{\"name\":\"fxobbcsws\",\"vCores\":6987699562222584934,\"supportedIops\":4063358469478582470,\"supportedMemoryPerVCoreMB\":3299137544149658502}]}]}")
+            .toObject(ServerEditionCapability.class);
     }
 
     @org.junit.jupiter.api.Test

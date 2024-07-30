@@ -11,7 +11,9 @@ import com.azure.resourcemanager.mobilenetwork.models.SimStaticIpProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Encrypted SIM properties. */
+/**
+ * Encrypted SIM properties.
+ */
 @Fluent
 public final class EncryptedSimPropertiesFormat extends CommonSimPropertiesFormat {
     /*
@@ -20,13 +22,15 @@ public final class EncryptedSimPropertiesFormat extends CommonSimPropertiesForma
     @JsonProperty(value = "encryptedCredentials")
     private String encryptedCredentials;
 
-    /** Creates an instance of EncryptedSimPropertiesFormat class. */
+    /**
+     * Creates an instance of EncryptedSimPropertiesFormat class.
+     */
     public EncryptedSimPropertiesFormat() {
     }
 
     /**
      * Get the encryptedCredentials property: The encrypted SIM credentials.
-     *
+     * 
      * @return the encryptedCredentials value.
      */
     public String encryptedCredentials() {
@@ -35,7 +39,7 @@ public final class EncryptedSimPropertiesFormat extends CommonSimPropertiesForma
 
     /**
      * Set the encryptedCredentials property: The encrypted SIM credentials.
-     *
+     * 
      * @param encryptedCredentials the encryptedCredentials value to set.
      * @return the EncryptedSimPropertiesFormat object itself.
      */
@@ -44,36 +48,46 @@ public final class EncryptedSimPropertiesFormat extends CommonSimPropertiesForma
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public EncryptedSimPropertiesFormat withInternationalMobileSubscriberIdentity(
-        String internationalMobileSubscriberIdentity) {
+    public EncryptedSimPropertiesFormat
+        withInternationalMobileSubscriberIdentity(String internationalMobileSubscriberIdentity) {
         super.withInternationalMobileSubscriberIdentity(internationalMobileSubscriberIdentity);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EncryptedSimPropertiesFormat withIntegratedCircuitCardIdentifier(String integratedCircuitCardIdentifier) {
         super.withIntegratedCircuitCardIdentifier(integratedCircuitCardIdentifier);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EncryptedSimPropertiesFormat withDeviceType(String deviceType) {
         super.withDeviceType(deviceType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EncryptedSimPropertiesFormat withSimPolicy(SimPolicyResourceId simPolicy) {
         super.withSimPolicy(simPolicy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EncryptedSimPropertiesFormat withStaticIpConfiguration(List<SimStaticIpProperties> staticIpConfiguration) {
         super.withStaticIpConfiguration(staticIpConfiguration);
@@ -82,7 +96,7 @@ public final class EncryptedSimPropertiesFormat extends CommonSimPropertiesForma
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

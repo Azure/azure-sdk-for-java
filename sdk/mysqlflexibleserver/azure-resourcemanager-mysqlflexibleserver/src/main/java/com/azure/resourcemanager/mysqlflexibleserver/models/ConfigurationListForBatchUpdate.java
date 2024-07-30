@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of server configurations to update. */
+/**
+ * A list of server configurations to update.
+ */
 @Fluent
 public final class ConfigurationListForBatchUpdate {
     /*
@@ -23,13 +25,15 @@ public final class ConfigurationListForBatchUpdate {
     @JsonProperty(value = "resetAllToDefault")
     private ResetAllToDefault resetAllToDefault;
 
-    /** Creates an instance of ConfigurationListForBatchUpdate class. */
+    /**
+     * Creates an instance of ConfigurationListForBatchUpdate class.
+     */
     public ConfigurationListForBatchUpdate() {
     }
 
     /**
      * Get the value property: The list of server configurations.
-     *
+     * 
      * @return the value value.
      */
     public List<ConfigurationForBatchUpdate> value() {
@@ -38,7 +42,7 @@ public final class ConfigurationListForBatchUpdate {
 
     /**
      * Set the value property: The list of server configurations.
-     *
+     * 
      * @param value the value value to set.
      * @return the ConfigurationListForBatchUpdate object itself.
      */
@@ -49,7 +53,7 @@ public final class ConfigurationListForBatchUpdate {
 
     /**
      * Get the resetAllToDefault property: Whether to reset all server parameters to default.
-     *
+     * 
      * @return the resetAllToDefault value.
      */
     public ResetAllToDefault resetAllToDefault() {
@@ -58,7 +62,7 @@ public final class ConfigurationListForBatchUpdate {
 
     /**
      * Set the resetAllToDefault property: Whether to reset all server parameters to default.
-     *
+     * 
      * @param resetAllToDefault the resetAllToDefault value to set.
      * @return the ConfigurationListForBatchUpdate object itself.
      */
@@ -69,7 +73,7 @@ public final class ConfigurationListForBatchUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

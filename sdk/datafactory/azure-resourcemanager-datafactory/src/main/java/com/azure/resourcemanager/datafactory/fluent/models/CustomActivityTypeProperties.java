@@ -224,8 +224,9 @@ public final class CustomActivityTypeProperties {
      */
     public void validate() {
         if (command() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property command in model CustomActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property command in model CustomActivityTypeProperties"));
         }
         if (resourceLinkedService() != null) {
             resourceLinkedService().validate();

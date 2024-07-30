@@ -11,15 +11,17 @@ public final class AzureDataLakeStoreSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureDataLakeStoreSource model = BinaryData.fromString(
-            "{\"type\":\"AzureDataLakeStoreSource\",\"recursive\":\"dataf\",\"sourceRetryCount\":\"datal\",\"sourceRetryWait\":\"dataxoudjcttavbc\",\"maxConcurrentConnections\":\"datazvqzmlferjw\",\"disableMetricsCollection\":\"datannqudexnicqu\",\"\":{\"hhsvsnedh\":\"datattfqgdoowgqooi\",\"flrrtju\":\"datajiwfvetwfreq\",\"wqal\":\"dataikqzd\",\"cisolkwipvls\":\"datapmiytpji\"}}")
+            "{\"type\":\"AzureDataLakeStoreSource\",\"recursive\":\"datamtuxw\",\"sourceRetryCount\":\"dataazebifktnxu\",\"sourceRetryWait\":\"dataorbwyeyrn\",\"maxConcurrentConnections\":\"databyabtowbuuhlw\",\"disableMetricsCollection\":\"datavzuxfsmfpd\",\"\":{\"pljzrqwjtswemot\":\"dataqpzwfvnoylmfjylh\",\"jvctqaqczrwpae\":\"datakejyavk\",\"dsng\":\"dataklxsvcbrszltvm\"}}")
             .toObject(AzureDataLakeStoreSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureDataLakeStoreSource model = new AzureDataLakeStoreSource().withSourceRetryCount("datal")
-            .withSourceRetryWait("dataxoudjcttavbc").withMaxConcurrentConnections("datazvqzmlferjw")
-            .withDisableMetricsCollection("datannqudexnicqu").withRecursive("dataf");
+        AzureDataLakeStoreSource model = new AzureDataLakeStoreSource().withSourceRetryCount("dataazebifktnxu")
+            .withSourceRetryWait("dataorbwyeyrn")
+            .withMaxConcurrentConnections("databyabtowbuuhlw")
+            .withDisableMetricsCollection("datavzuxfsmfpd")
+            .withRecursive("datamtuxw");
         model = BinaryData.fromObject(model).toObject(AzureDataLakeStoreSource.class);
     }
 }

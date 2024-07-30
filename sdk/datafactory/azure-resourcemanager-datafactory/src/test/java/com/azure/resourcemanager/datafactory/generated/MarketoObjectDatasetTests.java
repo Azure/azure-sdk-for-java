@@ -19,29 +19,32 @@ public final class MarketoObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MarketoObjectDataset model = BinaryData.fromString(
-            "{\"type\":\"MarketoObject\",\"typeProperties\":{\"tableName\":\"dataewltono\"},\"description\":\"femiwfhhawbabhz\",\"structure\":\"datacdikqnxydgzfoiqz\",\"schema\":\"dataspa\",\"linkedServiceName\":{\"referenceName\":\"w\",\"parameters\":{\"eafkxfmuwdbvyt\":\"dataqeron\",\"u\":\"dataavouymkd\"}},\"parameters\":{\"tth\":{\"type\":\"Float\",\"defaultValue\":\"datapfdkaxgbiwpgopql\"}},\"annotations\":[\"datarmt\",\"datax\",\"datajmpdvrjzwaw\",\"dataewajccsdjuz\"],\"folder\":{\"name\":\"jtickzovguzpr\"},\"\":{\"qlrzhtocjzfp\":\"datahboigzxko\",\"jwgiitvjcmimbmsw\":\"dataexuvatzwn\"}}")
+            "{\"type\":\"MarketoObject\",\"typeProperties\":{\"tableName\":\"datatnpkbvzpk\"},\"description\":\"ngvnqdj\",\"structure\":\"databtwgn\",\"schema\":\"dataxuczlhvbqycznrir\",\"linkedServiceName\":{\"referenceName\":\"iiuv\",\"parameters\":{\"cwtvmijccp\":\"dataqkqwucqsdgb\"}},\"parameters\":{\"jmaih\":{\"type\":\"Array\",\"defaultValue\":\"datamyvwp\"},\"vo\":{\"type\":\"Bool\",\"defaultValue\":\"datalbhxjppcbqetfzfp\"}},\"annotations\":[\"datayjwdunjhmprk\"],\"folder\":{\"name\":\"wiuujxsujk\"},\"\":{\"epdp\":\"dataxeegxbnjnc\",\"uyyaescjxna\":\"dataymgbfmd\",\"inzkefkzlxvc\":\"datapyxqbkxdtbfkih\",\"eozlibcbn\":\"datazcg\"}}")
             .toObject(MarketoObjectDataset.class);
-        Assertions.assertEquals("femiwfhhawbabhz", model.description());
-        Assertions.assertEquals("w", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("tth").type());
-        Assertions.assertEquals("jtickzovguzpr", model.folder().name());
+        Assertions.assertEquals("ngvnqdj", model.description());
+        Assertions.assertEquals("iiuv", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("jmaih").type());
+        Assertions.assertEquals("wiuujxsujk", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MarketoObjectDataset model = new MarketoObjectDataset().withDescription("femiwfhhawbabhz")
-            .withStructure("datacdikqnxydgzfoiqz").withSchema("dataspa")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("w")
-                .withParameters(mapOf("eafkxfmuwdbvyt", "dataqeron", "u", "dataavouymkd")))
-            .withParameters(mapOf("tth",
-                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datapfdkaxgbiwpgopql")))
-            .withAnnotations(Arrays.asList("datarmt", "datax", "datajmpdvrjzwaw", "dataewajccsdjuz"))
-            .withFolder(new DatasetFolder().withName("jtickzovguzpr")).withTableName("dataewltono");
+        MarketoObjectDataset model = new MarketoObjectDataset().withDescription("ngvnqdj")
+            .withStructure("databtwgn")
+            .withSchema("dataxuczlhvbqycznrir")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("iiuv")
+                .withParameters(mapOf("cwtvmijccp", "dataqkqwucqsdgb")))
+            .withParameters(mapOf("jmaih",
+                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datamyvwp"), "vo",
+                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datalbhxjppcbqetfzfp")))
+            .withAnnotations(Arrays.asList("datayjwdunjhmprk"))
+            .withFolder(new DatasetFolder().withName("wiuujxsujk"))
+            .withTableName("datatnpkbvzpk");
         model = BinaryData.fromObject(model).toObject(MarketoObjectDataset.class);
-        Assertions.assertEquals("femiwfhhawbabhz", model.description());
-        Assertions.assertEquals("w", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("tth").type());
-        Assertions.assertEquals("jtickzovguzpr", model.folder().name());
+        Assertions.assertEquals("ngvnqdj", model.description());
+        Assertions.assertEquals("iiuv", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("jmaih").type());
+        Assertions.assertEquals("wiuujxsujk", model.folder().name());
     }
 
     // Use "Map.of" if available

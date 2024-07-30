@@ -17,6 +17,8 @@ import java.util.Objects;
 
 public class PurviewAccountClientTestBase extends TestProxyTestBase {
     private static final String ZERO_UUID = "00000000-0000-0000-0000-000000000000";
+    private static final String[] REMOVE_SANITIZER_ID = {"AZSDK3430", "AZSDK3493"};
+
     protected String getEndpoint() {
         String endpoint = interceptorManager.isPlaybackMode()
             ? "https://localhost:8080"
@@ -63,6 +65,8 @@ public class PurviewAccountClientTestBase extends TestProxyTestBase {
                 TestProxySanitizerType.BODY_REGEX));
 
             interceptorManager.addSanitizers(customSanitizer);
+            // Remove `id` sanitizer from the list of common sanitizers.
+            interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
         }
 
         builder.endpoint(getEndpoint());
@@ -96,6 +100,8 @@ public class PurviewAccountClientTestBase extends TestProxyTestBase {
             customSanitizer.add(new TestProxySanitizer("$..lastModifiedBy", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
             customSanitizer.add(new TestProxySanitizer("$..name", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
             interceptorManager.addSanitizers(customSanitizer);
+            // Remove `id` sanitizer from the list of common sanitizers.
+            interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
         }
 
         return Objects.requireNonNull(builder);
@@ -131,6 +137,8 @@ public class PurviewAccountClientTestBase extends TestProxyTestBase {
             customSanitizer.add(new TestProxySanitizer("$..name", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
             customSanitizer.add(new TestProxySanitizer("$...attributeRules..id", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
             interceptorManager.addSanitizers(customSanitizer);
+            // Remove `id` sanitizer from the list of common sanitizers.
+            interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
         }
 
         return Objects.requireNonNull(builder);

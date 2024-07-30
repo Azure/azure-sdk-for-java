@@ -5,53 +5,50 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Run notebook snapshot result.
  */
 @Fluent
-public final class RunNotebookSnapshotResult {
+public final class RunNotebookSnapshotResult implements JsonSerializable<RunNotebookSnapshotResult> {
     /*
      * Run notebook snapshot.
      */
-    @JsonProperty(value = "snapshot", required = true)
     private RunNotebookSnapshot snapshot;
 
     /*
      * Run notebook error.
      */
-    @JsonProperty(value = "error")
     private RunNotebookError error;
 
     /*
      * Run id.
      */
-    @JsonProperty(value = "runId", required = true)
     private String runId;
 
     /*
      * Status of the run notebook.
      */
-    @JsonProperty(value = "runStatus", required = true)
     private String runStatus;
 
     /*
      * Timestamp of last update.
      */
-    @JsonProperty(value = "lastCheckedOn")
     private String lastCheckedOn;
 
     /*
      * Livy session id.
      */
-    @JsonProperty(value = "sessionId")
     private String sessionId;
 
     /*
      * SparkPool name.
      */
-    @JsonProperty(value = "sparkPool")
     private String sparkPool;
 
     /**
@@ -198,5 +195,60 @@ public final class RunNotebookSnapshotResult {
     public RunNotebookSnapshotResult setSparkPool(String sparkPool) {
         this.sparkPool = sparkPool;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("snapshot", this.snapshot);
+        jsonWriter.writeStringField("runId", this.runId);
+        jsonWriter.writeStringField("runStatus", this.runStatus);
+        jsonWriter.writeJsonField("error", this.error);
+        jsonWriter.writeStringField("lastCheckedOn", this.lastCheckedOn);
+        jsonWriter.writeStringField("sessionId", this.sessionId);
+        jsonWriter.writeStringField("sparkPool", this.sparkPool);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunNotebookSnapshotResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunNotebookSnapshotResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RunNotebookSnapshotResult.
+     */
+    public static RunNotebookSnapshotResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RunNotebookSnapshotResult deserializedRunNotebookSnapshotResult = new RunNotebookSnapshotResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("snapshot".equals(fieldName)) {
+                    deserializedRunNotebookSnapshotResult.snapshot = RunNotebookSnapshot.fromJson(reader);
+                } else if ("runId".equals(fieldName)) {
+                    deserializedRunNotebookSnapshotResult.runId = reader.getString();
+                } else if ("runStatus".equals(fieldName)) {
+                    deserializedRunNotebookSnapshotResult.runStatus = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedRunNotebookSnapshotResult.error = RunNotebookError.fromJson(reader);
+                } else if ("lastCheckedOn".equals(fieldName)) {
+                    deserializedRunNotebookSnapshotResult.lastCheckedOn = reader.getString();
+                } else if ("sessionId".equals(fieldName)) {
+                    deserializedRunNotebookSnapshotResult.sessionId = reader.getString();
+                } else if ("sparkPool".equals(fieldName)) {
+                    deserializedRunNotebookSnapshotResult.sparkPool = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRunNotebookSnapshotResult;
+        });
     }
 }

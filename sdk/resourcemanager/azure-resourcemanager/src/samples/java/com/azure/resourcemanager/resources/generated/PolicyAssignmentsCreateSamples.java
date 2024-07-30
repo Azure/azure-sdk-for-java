@@ -23,46 +23,34 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for PolicyAssignments Create. */
+/**
+ * Samples for PolicyAssignments Create.
+ */
 public final class PolicyAssignmentsCreateSamples {
     /*
      * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/createPolicyAssignmentWithResourceSelectors.json
      */
     /**
      * Sample code: Create or update a policy assignment with resource selectors.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateAPolicyAssignmentWithResourceSelectors(
         com.azure.resourcemanager.AzureResourceManager azure) throws IOException {
-        azure
-            .genericResources()
+        azure.genericResources()
             .manager()
             .policyClient()
             .getPolicyAssignments()
-            .createWithResponse(
-                "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2",
-                "CostManagement",
-                new PolicyAssignmentInner()
-                    .withDisplayName("Limit the resource location and resource SKU")
+            .createWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement",
+                new PolicyAssignmentInner().withDisplayName("Limit the resource location and resource SKU")
                     .withPolicyDefinitionId(
                         "/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policySetDefinitions/CostManagement")
                     .withDescription("Limit the resource location and resource SKU")
-                    .withMetadata(
-                        SerializerFactory
-                            .createDefaultManagementSerializerAdapter()
-                            .deserialize("{\"assignedBy\":\"Special Someone\"}", Object.class, SerializerEncoding.JSON))
-                    .withResourceSelectors(
-                        Arrays
-                            .asList(
-                                new ResourceSelector()
-                                    .withName("SDPRegions")
-                                    .withSelectors(
-                                        Arrays
-                                            .asList(
-                                                new Selector()
-                                                    .withKind(SelectorKind.RESOURCE_LOCATION)
-                                                    .withIn(Arrays.asList("eastus2euap", "centraluseuap")))))),
+                    .withMetadata(SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize("{\"assignedBy\":\"Special Someone\"}", Object.class, SerializerEncoding.JSON))
+                    .withResourceSelectors(Arrays.asList(new ResourceSelector().withName("SDPRegions")
+                        .withSelectors(Arrays.asList(new Selector().withKind(SelectorKind.RESOURCE_LOCATION)
+                            .withIn(Arrays.asList("eastus2euap", "centraluseuap")))))),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -71,39 +59,26 @@ public final class PolicyAssignmentsCreateSamples {
      */
     /**
      * Sample code: Create or update a policy assignment.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateAPolicyAssignment(com.azure.resourcemanager.AzureResourceManager azure)
         throws IOException {
-        azure
-            .genericResources()
+        azure.genericResources()
             .manager()
             .policyClient()
             .getPolicyAssignments()
-            .createWithResponse(
-                "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2",
-                "EnforceNaming",
-                new PolicyAssignmentInner()
-                    .withDisplayName("Enforce resource naming rules")
+            .createWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNaming",
+                new PolicyAssignmentInner().withDisplayName("Enforce resource naming rules")
                     .withPolicyDefinitionId(
                         "/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming")
-                    .withParameters(
-                        mapOf(
-                            "prefix",
-                            new ParameterValuesValue().withValue("DeptA"),
-                            "suffix",
-                            new ParameterValuesValue().withValue("-LC")))
+                    .withParameters(mapOf("prefix", new ParameterValuesValue().withValue("DeptA"), "suffix",
+                        new ParameterValuesValue().withValue("-LC")))
                     .withDescription("Force resource names to begin with given DeptA and end with -LC")
-                    .withMetadata(
-                        SerializerFactory
-                            .createDefaultManagementSerializerAdapter()
-                            .deserialize("{\"assignedBy\":\"Special Someone\"}", Object.class, SerializerEncoding.JSON))
-                    .withNonComplianceMessages(
-                        Arrays
-                            .asList(
-                                new NonComplianceMessage()
-                                    .withMessage("Resource names must start with 'DeptA' and end with '-LC'."))),
+                    .withMetadata(SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize("{\"assignedBy\":\"Special Someone\"}", Object.class, SerializerEncoding.JSON))
+                    .withNonComplianceMessages(Arrays.asList(new NonComplianceMessage()
+                        .withMessage("Resource names must start with 'DeptA' and end with '-LC'."))),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -112,36 +87,26 @@ public final class PolicyAssignmentsCreateSamples {
      */
     /**
      * Sample code: Create or update a policy assignment with a system assigned identity.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateAPolicyAssignmentWithASystemAssignedIdentity(
         com.azure.resourcemanager.AzureResourceManager azure) throws IOException {
-        azure
-            .genericResources()
+        azure.genericResources()
             .manager()
             .policyClient()
             .getPolicyAssignments()
-            .createWithResponse(
-                "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2",
-                "EnforceNaming",
-                new PolicyAssignmentInner()
-                    .withLocation("eastus")
+            .createWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNaming",
+                new PolicyAssignmentInner().withLocation("eastus")
                     .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
                     .withDisplayName("Enforce resource naming rules")
                     .withPolicyDefinitionId(
                         "/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming")
-                    .withParameters(
-                        mapOf(
-                            "prefix",
-                            new ParameterValuesValue().withValue("DeptA"),
-                            "suffix",
-                            new ParameterValuesValue().withValue("-LC")))
+                    .withParameters(mapOf("prefix", new ParameterValuesValue().withValue("DeptA"), "suffix",
+                        new ParameterValuesValue().withValue("-LC")))
                     .withDescription("Force resource names to begin with given DeptA and end with -LC")
-                    .withMetadata(
-                        SerializerFactory
-                            .createDefaultManagementSerializerAdapter()
-                            .deserialize("{\"assignedBy\":\"Foo Bar\"}", Object.class, SerializerEncoding.JSON))
+                    .withMetadata(SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize("{\"assignedBy\":\"Foo Bar\"}", Object.class, SerializerEncoding.JSON))
                     .withEnforcementMode(EnforcementMode.DEFAULT),
                 com.azure.core.util.Context.NONE);
     }
@@ -151,36 +116,26 @@ public final class PolicyAssignmentsCreateSamples {
      */
     /**
      * Sample code: Create or update a policy assignment with multiple non-compliance messages.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateAPolicyAssignmentWithMultipleNonComplianceMessages(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .genericResources()
+        azure.genericResources()
             .manager()
             .policyClient()
             .getPolicyAssignments()
-            .createWithResponse(
-                "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2",
-                "securityInitAssignment",
-                new PolicyAssignmentInner()
-                    .withDisplayName("Enforce security policies")
+            .createWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "securityInitAssignment",
+                new PolicyAssignmentInner().withDisplayName("Enforce security policies")
                     .withPolicyDefinitionId(
                         "/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policySetDefinitions/securityInitiative")
-                    .withNonComplianceMessages(
-                        Arrays
-                            .asList(
-                                new NonComplianceMessage()
-                                    .withMessage(
-                                        "Resources must comply with all internal security policies. See <internal site"
-                                            + " URL> for more info."),
-                                new NonComplianceMessage()
-                                    .withMessage("Resource names must start with 'DeptA' and end with '-LC'.")
-                                    .withPolicyDefinitionReferenceId("10420126870854049575"),
-                                new NonComplianceMessage()
-                                    .withMessage("Storage accounts must have firewall rules configured.")
-                                    .withPolicyDefinitionReferenceId("8572513655450389710"))),
+                    .withNonComplianceMessages(Arrays.asList(new NonComplianceMessage().withMessage(
+                        "Resources must comply with all internal security policies. See <internal site URL> for more info."),
+                        new NonComplianceMessage()
+                            .withMessage("Resource names must start with 'DeptA' and end with '-LC'.")
+                            .withPolicyDefinitionReferenceId("10420126870854049575"),
+                        new NonComplianceMessage().withMessage("Storage accounts must have firewall rules configured.")
+                            .withPolicyDefinitionReferenceId("8572513655450389710"))),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -189,42 +144,29 @@ public final class PolicyAssignmentsCreateSamples {
      */
     /**
      * Sample code: Create or update a policy assignment with a user assigned identity.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateAPolicyAssignmentWithAUserAssignedIdentity(
         com.azure.resourcemanager.AzureResourceManager azure) throws IOException {
-        azure
-            .genericResources()
+        azure.genericResources()
             .manager()
             .policyClient()
             .getPolicyAssignments()
-            .createWithResponse(
-                "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2",
-                "EnforceNaming",
-                new PolicyAssignmentInner()
-                    .withLocation("eastus")
-                    .withIdentity(
-                        new Identity()
-                            .withType(ResourceIdentityType.USER_ASSIGNED)
-                            .withUserAssignedIdentities(
-                                mapOf(
-                                    "/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/testResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-identity",
-                                    new IdentityUserAssignedIdentitiesValue())))
+            .createWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNaming",
+                new PolicyAssignmentInner().withLocation("eastus")
+                    .withIdentity(new Identity().withType(ResourceIdentityType.USER_ASSIGNED)
+                        .withUserAssignedIdentities(mapOf(
+                            "/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/testResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-identity",
+                            new IdentityUserAssignedIdentitiesValue())))
                     .withDisplayName("Enforce resource naming rules")
                     .withPolicyDefinitionId(
                         "/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming")
-                    .withParameters(
-                        mapOf(
-                            "prefix",
-                            new ParameterValuesValue().withValue("DeptA"),
-                            "suffix",
-                            new ParameterValuesValue().withValue("-LC")))
+                    .withParameters(mapOf("prefix", new ParameterValuesValue().withValue("DeptA"), "suffix",
+                        new ParameterValuesValue().withValue("-LC")))
                     .withDescription("Force resource names to begin with given DeptA and end with -LC")
-                    .withMetadata(
-                        SerializerFactory
-                            .createDefaultManagementSerializerAdapter()
-                            .deserialize("{\"assignedBy\":\"Foo Bar\"}", Object.class, SerializerEncoding.JSON))
+                    .withMetadata(SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize("{\"assignedBy\":\"Foo Bar\"}", Object.class, SerializerEncoding.JSON))
                     .withEnforcementMode(EnforcementMode.DEFAULT),
                 com.azure.core.util.Context.NONE);
     }
@@ -234,40 +176,27 @@ public final class PolicyAssignmentsCreateSamples {
      */
     /**
      * Sample code: Create or update a policy assignment with overrides.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateAPolicyAssignmentWithOverrides(
         com.azure.resourcemanager.AzureResourceManager azure) throws IOException {
-        azure
-            .genericResources()
+        azure.genericResources()
             .manager()
             .policyClient()
             .getPolicyAssignments()
-            .createWithResponse(
-                "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2",
-                "CostManagement",
-                new PolicyAssignmentInner()
-                    .withDisplayName("Limit the resource location and resource SKU")
+            .createWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement",
+                new PolicyAssignmentInner().withDisplayName("Limit the resource location and resource SKU")
                     .withPolicyDefinitionId(
                         "/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policySetDefinitions/CostManagement")
                     .withDescription("Limit the resource location and resource SKU")
-                    .withMetadata(
-                        SerializerFactory
-                            .createDefaultManagementSerializerAdapter()
-                            .deserialize("{\"assignedBy\":\"Special Someone\"}", Object.class, SerializerEncoding.JSON))
-                    .withOverrides(
-                        Arrays
-                            .asList(
-                                new OverrideModel()
-                                    .withKind(OverrideKind.POLICY_EFFECT)
-                                    .withValue("Audit")
-                                    .withSelectors(
-                                        Arrays
-                                            .asList(
-                                                new Selector()
-                                                    .withKind(SelectorKind.POLICY_DEFINITION_REFERENCE_ID)
-                                                    .withIn(Arrays.asList("Limit_Skus", "Limit_Locations")))))),
+                    .withMetadata(SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize("{\"assignedBy\":\"Special Someone\"}", Object.class, SerializerEncoding.JSON))
+                    .withOverrides(Arrays.asList(new OverrideModel().withKind(OverrideKind.POLICY_EFFECT)
+                        .withValue("Audit")
+                        .withSelectors(
+                            Arrays.asList(new Selector().withKind(SelectorKind.POLICY_DEFINITION_REFERENCE_ID)
+                                .withIn(Arrays.asList("Limit_Skus", "Limit_Locations")))))),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -277,34 +206,24 @@ public final class PolicyAssignmentsCreateSamples {
     /**
      * Sample code: Create or update a policy assignment without enforcing policy effect during resource creation or
      * update.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateAPolicyAssignmentWithoutEnforcingPolicyEffectDuringResourceCreationOrUpdate(
         com.azure.resourcemanager.AzureResourceManager azure) throws IOException {
-        azure
-            .genericResources()
+        azure.genericResources()
             .manager()
             .policyClient()
             .getPolicyAssignments()
-            .createWithResponse(
-                "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2",
-                "EnforceNaming",
-                new PolicyAssignmentInner()
-                    .withDisplayName("Enforce resource naming rules")
+            .createWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNaming",
+                new PolicyAssignmentInner().withDisplayName("Enforce resource naming rules")
                     .withPolicyDefinitionId(
                         "/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming")
-                    .withParameters(
-                        mapOf(
-                            "prefix",
-                            new ParameterValuesValue().withValue("DeptA"),
-                            "suffix",
-                            new ParameterValuesValue().withValue("-LC")))
+                    .withParameters(mapOf("prefix", new ParameterValuesValue().withValue("DeptA"), "suffix",
+                        new ParameterValuesValue().withValue("-LC")))
                     .withDescription("Force resource names to begin with given DeptA and end with -LC")
-                    .withMetadata(
-                        SerializerFactory
-                            .createDefaultManagementSerializerAdapter()
-                            .deserialize("{\"assignedBy\":\"Special Someone\"}", Object.class, SerializerEncoding.JSON))
+                    .withMetadata(SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize("{\"assignedBy\":\"Special Someone\"}", Object.class, SerializerEncoding.JSON))
                     .withEnforcementMode(EnforcementMode.DO_NOT_ENFORCE),
                 com.azure.core.util.Context.NONE);
     }

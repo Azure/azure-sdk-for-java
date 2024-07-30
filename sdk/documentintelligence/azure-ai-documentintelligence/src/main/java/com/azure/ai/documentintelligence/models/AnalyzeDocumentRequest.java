@@ -7,18 +7,21 @@ package com.azure.ai.documentintelligence.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Document analysis parameters.
  */
 @Fluent
-public final class AnalyzeDocumentRequest {
+public final class AnalyzeDocumentRequest implements JsonSerializable<AnalyzeDocumentRequest> {
     /*
      * Document URL to analyze. Either urlSource or base64Source must be specified.
      */
     @Generated
-    @JsonProperty(value = "urlSource")
     private String urlSource;
 
     /*
@@ -26,7 +29,6 @@ public final class AnalyzeDocumentRequest {
      * must be specified.
      */
     @Generated
-    @JsonProperty(value = "base64Source")
     private byte[] base64Source;
 
     /**
@@ -80,5 +82,46 @@ public final class AnalyzeDocumentRequest {
     public AnalyzeDocumentRequest setBase64Source(byte[] base64Source) {
         this.base64Source = CoreUtils.clone(base64Source);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("urlSource", this.urlSource);
+        jsonWriter.writeBinaryField("base64Source", this.base64Source);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AnalyzeDocumentRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AnalyzeDocumentRequest if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AnalyzeDocumentRequest.
+     */
+    @Generated
+    public static AnalyzeDocumentRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AnalyzeDocumentRequest deserializedAnalyzeDocumentRequest = new AnalyzeDocumentRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("urlSource".equals(fieldName)) {
+                    deserializedAnalyzeDocumentRequest.urlSource = reader.getString();
+                } else if ("base64Source".equals(fieldName)) {
+                    deserializedAnalyzeDocumentRequest.base64Source = reader.getBinary();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAnalyzeDocumentRequest;
+        });
     }
 }

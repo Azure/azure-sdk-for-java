@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cdn.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The MetricsResponseSeriesPropertiesItemsItem model. */
+/**
+ * The MetricsResponseSeriesPropertiesItemsItem model.
+ */
 @Fluent
 public final class MetricsResponseSeriesPropertiesItemsItem {
     /*
@@ -22,13 +24,15 @@ public final class MetricsResponseSeriesPropertiesItemsItem {
     @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of MetricsResponseSeriesPropertiesItemsItem class. */
+    /**
+     * Creates an instance of MetricsResponseSeriesPropertiesItemsItem class.
+     */
     public MetricsResponseSeriesPropertiesItemsItem() {
     }
 
     /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class MetricsResponseSeriesPropertiesItemsItem {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the MetricsResponseSeriesPropertiesItemsItem object itself.
      */
@@ -48,7 +52,7 @@ public final class MetricsResponseSeriesPropertiesItemsItem {
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -57,7 +61,7 @@ public final class MetricsResponseSeriesPropertiesItemsItem {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the MetricsResponseSeriesPropertiesItemsItem object itself.
      */
@@ -68,7 +72,7 @@ public final class MetricsResponseSeriesPropertiesItemsItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

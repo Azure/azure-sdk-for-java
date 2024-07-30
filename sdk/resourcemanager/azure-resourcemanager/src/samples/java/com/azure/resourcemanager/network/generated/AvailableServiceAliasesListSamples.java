@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class AvailableServiceAliasesListSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/AvailableServiceAliasesList.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/AvailableServiceAliasesList.
      * json
      */
     /**
@@ -19,7 +19,10 @@ public final class AvailableServiceAliasesListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAvailableServiceAliases(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getAvailableServiceAliases().list("westcentralus",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getAvailableServiceAliases()
+            .list("westcentralus", com.azure.core.util.Context.NONE);
     }
 }

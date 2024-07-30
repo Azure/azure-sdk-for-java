@@ -10,7 +10,9 @@ import com.azure.resourcemanager.resources.models.DeploymentPropertiesExtended;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Deployment information. */
+/**
+ * Deployment information.
+ */
 @Fluent
 public final class DeploymentExtendedInner extends Resource {
     /*
@@ -19,13 +21,15 @@ public final class DeploymentExtendedInner extends Resource {
     @JsonProperty(value = "properties")
     private DeploymentPropertiesExtended properties;
 
-    /** Creates an instance of DeploymentExtendedInner class. */
+    /**
+     * Creates an instance of DeploymentExtendedInner class.
+     */
     public DeploymentExtendedInner() {
     }
 
     /**
      * Get the properties property: Deployment properties.
-     *
+     * 
      * @return the properties value.
      */
     public DeploymentPropertiesExtended properties() {
@@ -34,7 +38,7 @@ public final class DeploymentExtendedInner extends Resource {
 
     /**
      * Set the properties property: Deployment properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the DeploymentExtendedInner object itself.
      */
@@ -43,14 +47,18 @@ public final class DeploymentExtendedInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeploymentExtendedInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeploymentExtendedInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -59,7 +67,7 @@ public final class DeploymentExtendedInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

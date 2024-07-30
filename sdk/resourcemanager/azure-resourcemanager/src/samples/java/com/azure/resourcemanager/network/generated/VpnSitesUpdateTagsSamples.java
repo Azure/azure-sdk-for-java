@@ -14,7 +14,7 @@ import java.util.Map;
 public final class VpnSitesUpdateTagsSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VpnSiteUpdateTags.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VpnSiteUpdateTags.json
      */
     /**
      * Sample code: VpnSiteUpdate.
@@ -22,9 +22,13 @@ public final class VpnSitesUpdateTagsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void vpnSiteUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVpnSites().updateTagsWithResponse("rg1", "vpnSite1",
-            new TagsObject().withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder")),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVpnSites()
+            .updateTagsWithResponse("rg1", "vpnSite1",
+                new TagsObject().withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder")),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

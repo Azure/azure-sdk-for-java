@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.ScheduleTriggerTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,10 +16,17 @@ import java.util.List;
 /**
  * Trigger that creates pipeline runs periodically, on schedule.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = ScheduleTrigger.class, visible = true)
 @JsonTypeName("ScheduleTrigger")
 @Fluent
 public final class ScheduleTrigger extends MultiplePipelineTrigger {
+    /*
+     * Trigger type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "ScheduleTrigger";
+
     /*
      * Schedule Trigger properties.
      */
@@ -29,6 +37,16 @@ public final class ScheduleTrigger extends MultiplePipelineTrigger {
      * Creates an instance of ScheduleTrigger class.
      */
     public ScheduleTrigger() {
+    }
+
+    /**
+     * Get the type property: Trigger type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -99,8 +117,9 @@ public final class ScheduleTrigger extends MultiplePipelineTrigger {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property innerTypeProperties in model ScheduleTrigger"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model ScheduleTrigger"));
         } else {
             innerTypeProperties().validate();
         }

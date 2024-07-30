@@ -749,6 +749,11 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.postgresqlflexibleserver.models.MigrateRolesEnum",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.postgresqlflexibleserver.models.StartDataMigrationEnum",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,

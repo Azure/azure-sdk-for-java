@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.fluent.models.AdminPropertiesFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -14,10 +15,21 @@ import java.util.List;
 /**
  * Network admin rule.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = EffectiveSecurityAdminRule.class,
+    visible = true)
 @JsonTypeName("Custom")
 @Fluent
 public final class EffectiveSecurityAdminRule extends EffectiveBaseSecurityAdminRule {
+    /*
+     * Whether the rule is custom or default.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "kind", required = true)
+    private EffectiveAdminRuleKind kind = EffectiveAdminRuleKind.CUSTOM;
+
     /*
      * Indicates the properties of the security admin rule
      */
@@ -28,6 +40,16 @@ public final class EffectiveSecurityAdminRule extends EffectiveBaseSecurityAdmin
      * Creates an instance of EffectiveSecurityAdminRule class.
      */
     public EffectiveSecurityAdminRule() {
+    }
+
+    /**
+     * Get the kind property: Whether the rule is custom or default.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public EffectiveAdminRuleKind kind() {
+        return this.kind;
     }
 
     /**

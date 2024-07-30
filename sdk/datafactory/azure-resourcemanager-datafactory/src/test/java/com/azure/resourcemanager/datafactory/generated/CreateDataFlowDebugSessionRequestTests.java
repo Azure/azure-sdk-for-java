@@ -28,9 +28,11 @@ public final class CreateDataFlowDebugSessionRequestTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CreateDataFlowDebugSessionRequest model = new CreateDataFlowDebugSessionRequest().withComputeType("foudor")
-            .withCoreCount(199814192).withTimeToLive(1885072328).withIntegrationRuntime(
-                new IntegrationRuntimeDebugResource().withName("sufco").withProperties(new IntegrationRuntime()
-                    .withDescription("otwypundmb").withAdditionalProperties(mapOf("type", "IntegrationRuntime"))));
+            .withCoreCount(199814192)
+            .withTimeToLive(1885072328)
+            .withIntegrationRuntime(new IntegrationRuntimeDebugResource().withName("sufco")
+                .withProperties(new IntegrationRuntime().withDescription("otwypundmb")
+                    .withAdditionalProperties(mapOf("type", "IntegrationRuntime"))));
         model = BinaryData.fromObject(model).toObject(CreateDataFlowDebugSessionRequest.class);
         Assertions.assertEquals("foudor", model.computeType());
         Assertions.assertEquals(199814192, model.coreCount());

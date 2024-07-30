@@ -11,6 +11,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -23,9 +25,13 @@ import org.springframework.data.mapping.context.MappingContext;
 import org.springframework.data.mapping.model.ConvertingPropertyAccessor;
 import org.springframework.util.Assert;
 
+import java.lang.reflect.Field;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static com.azure.spring.data.cosmos.Constants.ISO_8601_COMPATIBLE_DATE_PATTERN;
@@ -49,6 +55,8 @@ public class MappingCosmosConverter
     protected GenericConversionService conversionService;
     private ApplicationContext applicationContext;
     private final ObjectMapper objectMapper;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MappingCosmosConverter.class);
 
     /**
      * Initialization
@@ -113,7 +121,23 @@ public class MappingCosmosConverter
      * @throws MappingException no mapping metadata for entity type
      * @throws CosmosAccessException fail to map document value
      */
+
     public JsonNode writeJsonNode(Object sourceEntity) {
+        return writeJsonNode(sourceEntity, null);
+    }
+
+    /**
+     * To write source entity as a cosmos item
+     *
+     * @param sourceEntity must not be {@literal null}
+     * @param transientFields transient fields
+     * @param <T> type of source entity
+     * @return CosmosItemProperties
+     * @throws MappingException no mapping metadata for entity type
+     * @throws CosmosAccessException fail to map document value
+     */
+    public <T> JsonNode writeJsonNode(Object sourceEntity, List<String> transientFields) {
+
         if (sourceEntity == null) {
             return null;
         }
@@ -128,7 +152,7 @@ public class MappingCosmosConverter
 
         final ConvertingPropertyAccessor<?> accessor = getPropertyAccessor(sourceEntity);
         final CosmosPersistentProperty idProperty = persistentEntity.getIdProperty();
-        final ObjectNode cosmosObjectNode;
+        ObjectNode cosmosObjectNode;
 
         try {
             final String valueAsString = objectMapper.writeValueAsString(sourceEntity);
@@ -142,10 +166,80 @@ public class MappingCosmosConverter
             final String id = value == null ? null : value.toString();
             cosmosObjectNode.put("id", id);
         }
+        if (transientFields != null && !transientFields.isEmpty()) {
+            // Strip fields with @Transient annotation from the JsonNode so they are not persisted.
+            cosmosObjectNode = stripTransientFields(cosmosObjectNode, transientFields);
+        }
 
         mapVersionFieldToEtag(sourceEntity, cosmosObjectNode);
 
         return cosmosObjectNode;
+    }
+
+    /**
+     * To repopulate any transient fields that were stripped from the original object
+     * @param <T> type of source entity
+     * @param transientValues transient fields and their values
+     * @param responseItem must not be {@literal null}
+     * @return CosmosItemProperties
+     * @throws MappingException no mapping metadata for entity type
+     * @throws CosmosAccessException fail to map document value
+     */
+    public <T> JsonNode repopulateTransientFields(JsonNode responseItem, Map<Field, Object> transientValues) {
+        ObjectNode updatedItem = (ObjectNode) responseItem;
+        transientValues.forEach((field, value) -> {
+            if (value != null) {
+                updatedItem.set(field.getName(), objectMapper.valueToTree(value));
+            }
+        });
+        return updatedItem;
+    }
+
+    /**
+     * To get transient fields and their values
+     * @param <T> type of source entity
+     * @param object must not be {@literal null}
+     * @param transientFields transient fields
+     * @throws MappingException no such field found
+     * @return HashMap
+     */
+    public <T> Map<Field, Object> getTransientFieldsMap(T object, List<String> transientFields) {
+        Map<Field, Object> transientValuesMap = new HashMap<>();
+        transientFields.forEach(fieldName -> {
+            try {
+                Field field = object.getClass().getDeclaredField(fieldName);
+                field.setAccessible(true);
+                transientValuesMap.put(field, field.get(object));
+            } catch (NoSuchFieldException e) {
+                throw new MappingException("No such field found: " + fieldName, e);
+            } catch (IllegalAccessException e) {
+                throw new MappingException("Illegal access to field: " + fieldName, e);
+            }
+        });
+        return transientValuesMap;
+    }
+
+    /**
+     * To get transient fields
+     * @param <T> type of source entity
+     * @param objectToSave must not be {@literal null}
+     * @param entityInfo entity information
+     * @return List
+     */
+    public <T> List<String> getTransientFields(T objectToSave, CosmosEntityInformation<T, ?> entityInfo) {
+        @SuppressWarnings("unchecked")
+        Class<T> domainType = (Class<T>) objectToSave.getClass();
+        if (entityInfo == null) {
+            @SuppressWarnings("unchecked")
+            CosmosEntityInformation<T, ?> entityInformation = (CosmosEntityInformation<T, Object>) CosmosEntityInformation.getInstance(domainType);
+            entityInfo = entityInformation;
+        }
+        return entityInfo.getTransientFields();
+    }
+
+    private ObjectNode stripTransientFields(ObjectNode objectNode, List<String> transientFields) {
+        objectNode.remove(transientFields);
+        return objectNode;
     }
 
     //the field on the underlying cosmos document will always be _etag, so we map the field that the

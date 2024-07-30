@@ -22,7 +22,8 @@ public final class RecoveryPointPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RecoveryPointProperties model = new RecoveryPointProperties().withExpiryTime("dlwggytsbwtovv")
-            .withRuleName("seinqfiuf").withIsSoftDeleted(true);
+            .withRuleName("seinqfiuf")
+            .withIsSoftDeleted(true);
         model = BinaryData.fromObject(model).toObject(RecoveryPointProperties.class);
         Assertions.assertEquals("dlwggytsbwtovv", model.expiryTime());
         Assertions.assertEquals("seinqfiuf", model.ruleName());

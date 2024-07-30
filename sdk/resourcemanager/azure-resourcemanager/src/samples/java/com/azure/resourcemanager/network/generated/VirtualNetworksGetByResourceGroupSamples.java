@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * VirtualNetworkGetWithSubnetDelegation.json
      */
     /**
@@ -18,12 +18,15 @@ public final class VirtualNetworksGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getVirtualNetworkWithADelegatedSubnet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualNetworks().getByResourceGroupWithResponse("rg1",
-            "test-vnet", null, com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworks()
+            .getByResourceGroupWithResponse("rg1", "test-vnet", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * VirtualNetworkGetWithServiceAssociationLink.json
      */
     /**
@@ -33,13 +36,16 @@ public final class VirtualNetworksGetByResourceGroupSamples {
      */
     public static void
         getVirtualNetworkWithServiceAssociationLinks(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualNetworks().getByResourceGroupWithResponse("rg1",
-            "test-vnet", null, com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworks()
+            .getByResourceGroupWithResponse("rg1", "test-vnet", null, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkGet.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualNetworkGet.json
      */
     /**
      * Sample code: Get virtual network.
@@ -47,7 +53,10 @@ public final class VirtualNetworksGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getVirtualNetwork(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualNetworks().getByResourceGroupWithResponse("rg1",
-            "test-vnet", null, com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworks()
+            .getByResourceGroupWithResponse("rg1", "test-vnet", null, com.azure.core.util.Context.NONE);
     }
 }

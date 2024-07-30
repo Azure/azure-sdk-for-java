@@ -5,35 +5,41 @@
 package com.azure.resourcemanager.hybridcompute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridcompute.models.LicenseCoreType;
 import com.azure.resourcemanager.hybridcompute.models.LicenseEdition;
 import com.azure.resourcemanager.hybridcompute.models.LicenseState;
 import com.azure.resourcemanager.hybridcompute.models.LicenseTarget;
 import com.azure.resourcemanager.hybridcompute.models.LicenseType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Describes the Update properties of a License Profile. */
+/**
+ * Describes the Update properties of a License Profile.
+ */
 @Fluent
-public final class LicenseUpdateProperties {
+public final class LicenseUpdateProperties implements JsonSerializable<LicenseUpdateProperties> {
     /*
      * The type of the license resource.
      */
-    @JsonProperty(value = "licenseType")
     private LicenseType licenseType;
 
     /*
      * The licenseDetails property.
      */
-    @JsonProperty(value = "licenseDetails")
     private LicenseUpdatePropertiesLicenseDetails innerLicenseDetails;
 
-    /** Creates an instance of LicenseUpdateProperties class. */
+    /**
+     * Creates an instance of LicenseUpdateProperties class.
+     */
     public LicenseUpdateProperties() {
     }
 
     /**
      * Get the licenseType property: The type of the license resource.
-     *
+     * 
      * @return the licenseType value.
      */
     public LicenseType licenseType() {
@@ -42,7 +48,7 @@ public final class LicenseUpdateProperties {
 
     /**
      * Set the licenseType property: The type of the license resource.
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the LicenseUpdateProperties object itself.
      */
@@ -53,7 +59,7 @@ public final class LicenseUpdateProperties {
 
     /**
      * Get the innerLicenseDetails property: The licenseDetails property.
-     *
+     * 
      * @return the innerLicenseDetails value.
      */
     private LicenseUpdatePropertiesLicenseDetails innerLicenseDetails() {
@@ -62,7 +68,7 @@ public final class LicenseUpdateProperties {
 
     /**
      * Get the state property: Describes the state of the license.
-     *
+     * 
      * @return the state value.
      */
     public LicenseState state() {
@@ -71,7 +77,7 @@ public final class LicenseUpdateProperties {
 
     /**
      * Set the state property: Describes the state of the license.
-     *
+     * 
      * @param state the state value to set.
      * @return the LicenseUpdateProperties object itself.
      */
@@ -85,7 +91,7 @@ public final class LicenseUpdateProperties {
 
     /**
      * Get the target property: Describes the license target server.
-     *
+     * 
      * @return the target value.
      */
     public LicenseTarget target() {
@@ -94,7 +100,7 @@ public final class LicenseUpdateProperties {
 
     /**
      * Set the target property: Describes the license target server.
-     *
+     * 
      * @param target the target value to set.
      * @return the LicenseUpdateProperties object itself.
      */
@@ -108,7 +114,7 @@ public final class LicenseUpdateProperties {
 
     /**
      * Get the edition property: Describes the edition of the license. The values are either Standard or Datacenter.
-     *
+     * 
      * @return the edition value.
      */
     public LicenseEdition edition() {
@@ -117,7 +123,7 @@ public final class LicenseUpdateProperties {
 
     /**
      * Set the edition property: Describes the edition of the license. The values are either Standard or Datacenter.
-     *
+     * 
      * @param edition the edition value to set.
      * @return the LicenseUpdateProperties object itself.
      */
@@ -131,7 +137,7 @@ public final class LicenseUpdateProperties {
 
     /**
      * Get the type property: Describes the license core type (pCore or vCore).
-     *
+     * 
      * @return the type value.
      */
     public LicenseCoreType type() {
@@ -140,7 +146,7 @@ public final class LicenseUpdateProperties {
 
     /**
      * Set the type property: Describes the license core type (pCore or vCore).
-     *
+     * 
      * @param type the type value to set.
      * @return the LicenseUpdateProperties object itself.
      */
@@ -154,7 +160,7 @@ public final class LicenseUpdateProperties {
 
     /**
      * Get the processors property: Describes the number of processors.
-     *
+     * 
      * @return the processors value.
      */
     public Integer processors() {
@@ -163,7 +169,7 @@ public final class LicenseUpdateProperties {
 
     /**
      * Set the processors property: Describes the number of processors.
-     *
+     * 
      * @param processors the processors value to set.
      * @return the LicenseUpdateProperties object itself.
      */
@@ -177,12 +183,52 @@ public final class LicenseUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerLicenseDetails() != null) {
             innerLicenseDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("licenseType", this.licenseType == null ? null : this.licenseType.toString());
+        jsonWriter.writeJsonField("licenseDetails", this.innerLicenseDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LicenseUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LicenseUpdateProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LicenseUpdateProperties.
+     */
+    public static LicenseUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LicenseUpdateProperties deserializedLicenseUpdateProperties = new LicenseUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("licenseType".equals(fieldName)) {
+                    deserializedLicenseUpdateProperties.licenseType = LicenseType.fromString(reader.getString());
+                } else if ("licenseDetails".equals(fieldName)) {
+                    deserializedLicenseUpdateProperties.innerLicenseDetails
+                        = LicenseUpdatePropertiesLicenseDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLicenseUpdateProperties;
+        });
     }
 }

@@ -5,30 +5,100 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * An abstract representation of an input tool definition that an assistant can use.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = ToolDefinition.class)
-@JsonTypeName("ToolDefinition")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "code_interpreter", value = CodeInterpreterToolDefinition.class),
-    @JsonSubTypes.Type(name = "retrieval", value = RetrievalToolDefinition.class),
-    @JsonSubTypes.Type(name = "function", value = FunctionToolDefinition.class) })
 @Immutable
-public class ToolDefinition {
+public class ToolDefinition implements JsonSerializable<ToolDefinition> {
 
     /**
      * Creates an instance of ToolDefinition class.
      */
     @Generated
     public ToolDefinition() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ToolDefinition from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ToolDefinition if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ToolDefinition.
+     */
+    @Generated
+    public static ToolDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                // Prepare for reading
+                readerToUse.nextToken();
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("code_interpreter".equals(discriminatorValue)) {
+                    return CodeInterpreterToolDefinition.fromJson(readerToUse.reset());
+                } else if ("file_search".equals(discriminatorValue)) {
+                    return FileSearchToolDefinition.fromJson(readerToUse.reset());
+                } else if ("function".equals(discriminatorValue)) {
+                    return FunctionToolDefinition.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ToolDefinition fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ToolDefinition deserializedToolDefinition = new ToolDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                reader.skipChildren();
+            }
+            return deserializedToolDefinition;
+        });
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type = "ToolDefinition";
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    public String getType() {
+        return this.type;
     }
 }

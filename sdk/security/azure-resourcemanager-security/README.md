@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-security</artifactId>
-    <version>1.0.0-beta.6</version>
+    <version>1.0.0-beta.7</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

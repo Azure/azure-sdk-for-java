@@ -45,8 +45,8 @@ public final class AzureFunctionEventSubscriptionDestinationProperties {
     }
 
     /**
-     * Get the resourceId property: The Azure Resource Id that represents the endpoint of the Azure Function
-     * destination of an event subscription.
+     * Get the resourceId property: The Azure Resource Id that represents the endpoint of the Azure Function destination
+     * of an event subscription.
      * 
      * @return the resourceId value.
      */
@@ -55,8 +55,8 @@ public final class AzureFunctionEventSubscriptionDestinationProperties {
     }
 
     /**
-     * Set the resourceId property: The Azure Resource Id that represents the endpoint of the Azure Function
-     * destination of an event subscription.
+     * Set the resourceId property: The Azure Resource Id that represents the endpoint of the Azure Function destination
+     * of an event subscription.
      * 
      * @param resourceId the resourceId value to set.
      * @return the AzureFunctionEventSubscriptionDestinationProperties object itself.

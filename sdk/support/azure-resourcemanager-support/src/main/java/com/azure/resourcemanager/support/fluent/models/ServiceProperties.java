@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Details about an Azure service available for support ticket creation. */
+/**
+ * Details about an Azure service available for support ticket creation.
+ */
 @Fluent
 public final class ServiceProperties {
     /*
@@ -23,13 +25,15 @@ public final class ServiceProperties {
     @JsonProperty(value = "resourceTypes")
     private List<String> resourceTypes;
 
-    /** Creates an instance of ServiceProperties class. */
+    /**
+     * Creates an instance of ServiceProperties class.
+     */
     public ServiceProperties() {
     }
 
     /**
      * Get the displayName property: Localized name of the Azure service.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -38,7 +42,7 @@ public final class ServiceProperties {
 
     /**
      * Set the displayName property: Localized name of the Azure service.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ServiceProperties object itself.
      */
@@ -49,7 +53,7 @@ public final class ServiceProperties {
 
     /**
      * Get the resourceTypes property: ARM Resource types.
-     *
+     * 
      * @return the resourceTypes value.
      */
     public List<String> resourceTypes() {
@@ -58,7 +62,7 @@ public final class ServiceProperties {
 
     /**
      * Set the resourceTypes property: ARM Resource types.
-     *
+     * 
      * @param resourceTypes the resourceTypes value to set.
      * @return the ServiceProperties object itself.
      */
@@ -69,7 +73,7 @@ public final class ServiceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

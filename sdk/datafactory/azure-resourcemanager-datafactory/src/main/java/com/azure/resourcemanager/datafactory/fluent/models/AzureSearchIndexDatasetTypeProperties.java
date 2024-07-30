@@ -54,8 +54,9 @@ public final class AzureSearchIndexDatasetTypeProperties {
      */
     public void validate() {
         if (indexName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property indexName in model AzureSearchIndexDatasetTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property indexName in model AzureSearchIndexDatasetTypeProperties"));
         }
     }
 

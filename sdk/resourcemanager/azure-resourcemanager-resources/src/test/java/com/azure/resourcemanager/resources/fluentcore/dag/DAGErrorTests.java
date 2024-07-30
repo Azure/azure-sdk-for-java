@@ -3,6 +3,8 @@
 
 package com.azure.resourcemanager.resources.fluentcore.dag;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -14,6 +16,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class DAGErrorTests {
+    private static final ClientLogger LOGGER = new ClientLogger(DAGErrorTests.class);
+
     @Test
     public void testTerminateOnInProgressTaskCompletion() {
         // Terminate on error strategy used in this task group is
@@ -107,20 +111,19 @@ public class DAGErrorTests {
                 .withTerminateOnErrorStrategy(TaskGroupTerminateOnErrorStrategy.TERMINATE_ON_IN_PROGRESS_TASKS_COMPLETION);
         IPancake rootPancake = pancakeFtg.invokeAsync(context).map(indexable -> {
             IPancake pancake = (IPancake) indexable;
-            System.out.println("map.onNext: " + pancake.name());
+            LOGGER.log(LogLevel.VERBOSE, () -> "map.onNext: " + pancake.name());
             seen.add(pancake.name());
             return pancake;
-        })
-                .onErrorResume(throwable -> {
-                    System.out.println("map.onErrorResumeNext: " + throwable);
-                    exceptions.add(throwable);
-                    return Mono.empty();
-                }).blockLast();
+        }).onErrorResume(throwable -> {
+            LOGGER.log(LogLevel.VERBOSE, () -> "map.onErrorResumeNext: ", throwable);
+            exceptions.add(throwable);
+            return Mono.empty();
+        }).blockLast();
 
         expectedToSee.removeAll(seen);
         Assertions.assertTrue(expectedToSee.isEmpty());
         Assertions.assertEquals(exceptions.size(), 1);
-        Assertions.assertTrue(exceptions.get(0) instanceof RuntimeException);
+        Assertions.assertInstanceOf(RuntimeException.class, exceptions.get(0));
         RuntimeException runtimeException = (RuntimeException) exceptions.get(0);
         Assertions.assertTrue(runtimeException.getMessage().equalsIgnoreCase("B"));
     }
@@ -227,20 +230,19 @@ public class DAGErrorTests {
 
         IPasta rootPasta = pastaFtg.invokeAsync(context).map(indexable -> {
             IPasta pasta = (IPasta) indexable;
-            System.out.println("map.onNext: " + pasta.name());
+            LOGGER.log(LogLevel.VERBOSE, () -> "map.onNext: " + pasta.name());
             seen.add(pasta.name());
             return pasta;
-        })
-                .onErrorResume(throwable -> {
-                    System.out.println("map.onErrorResumeNext: " + throwable);
-                    exceptions.add(throwable);
-                    return Mono.empty();
-                }).blockLast();
+        }).onErrorResume(throwable -> {
+            LOGGER.log(LogLevel.VERBOSE, () -> "map.onErrorResumeNext: ", throwable);
+            exceptions.add(throwable);
+            return Mono.empty();
+        }).blockLast();
 
         expectedToSee.removeAll(seen);
         Assertions.assertTrue(expectedToSee.isEmpty());
         Assertions.assertEquals(exceptions.size(), 1);
-        Assertions.assertTrue(exceptions.get(0) instanceof RuntimeException);
+        Assertions.assertInstanceOf(RuntimeException.class, exceptions.get(0));
         RuntimeException runtimeException = (RuntimeException) exceptions.get(0);
         Assertions.assertTrue(runtimeException.getMessage().equalsIgnoreCase("B"));
     }
@@ -344,11 +346,11 @@ public class DAGErrorTests {
         IPancake rootPancake = pancakeFtg.invokeAsync(context).map(indexable -> {
             IPancake pancake = (IPancake) indexable;
             String name = pancake.name();
-            System.out.println("map.onNext:" + name);
+            LOGGER.log(LogLevel.VERBOSE, () -> "map.onNext:" + name);
             seen.add(name);
             return pancake;
         }).onErrorResume(throwable -> {
-            System.out.println("map.onErrorResumeNext:" + throwable);
+            LOGGER.log(LogLevel.VERBOSE, () -> "map.onErrorResumeNext:", throwable);
             exceptions.add(throwable);
             return Mono.empty();
         }).blockLast();
@@ -356,7 +358,7 @@ public class DAGErrorTests {
         expectedToSee.removeAll(seen);
         Assertions.assertTrue(expectedToSee.isEmpty());
         Assertions.assertEquals(exceptions.size(), 1);
-        Assertions.assertTrue(exceptions.get(0) instanceof RuntimeException);
+        Assertions.assertInstanceOf(RuntimeException.class, exceptions.get(0));
         RuntimeException compositeException = (RuntimeException) exceptions.get(0);
         Assertions.assertEquals(compositeException.getSuppressed().length, 2);
         for (Throwable throwable : compositeException.getSuppressed()) {
@@ -462,10 +464,10 @@ public class DAGErrorTests {
         IPancake rootPancake = pancakeFtg.invokeAsync(context).map(indexable -> {
             IPancake pancake = (IPancake) indexable;
             seen.add(pancake.name());
-            System.out.println("map.onNext:" + pancake.name());
+            LOGGER.log(LogLevel.VERBOSE, () -> "map.onNext:" + pancake.name());
             return pancake;
         }).onErrorResume(throwable -> {
-            System.out.println("map.onErrorResumeNext:" + throwable);
+            LOGGER.log(LogLevel.VERBOSE, () -> "map.onErrorResumeNext:", throwable);
             exceptions.add(throwable);
             return Mono.empty();
         }).blockLast();
@@ -473,7 +475,7 @@ public class DAGErrorTests {
         expectedToSee.removeAll(seen);
         Assertions.assertTrue(expectedToSee.isEmpty());
         Assertions.assertEquals(exceptions.size(), 1);
-        Assertions.assertTrue(exceptions.get(0) instanceof RuntimeException);
+        Assertions.assertInstanceOf(RuntimeException.class, exceptions.get(0));
         RuntimeException runtimeException = (RuntimeException) exceptions.get(0);
         Assertions.assertTrue(runtimeException.getMessage().equalsIgnoreCase("F"));
     }

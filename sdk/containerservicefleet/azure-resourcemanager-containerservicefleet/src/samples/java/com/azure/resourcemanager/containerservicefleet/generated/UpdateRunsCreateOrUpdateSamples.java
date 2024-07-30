@@ -14,40 +14,32 @@ import com.azure.resourcemanager.containerservicefleet.models.UpdateRunStrategy;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateStage;
 import java.util.Arrays;
 
-/** Samples for UpdateRuns CreateOrUpdate. */
+/**
+ * Samples for UpdateRuns CreateOrUpdate.
+ */
 public final class UpdateRunsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/stable/2023-10-15/examples/UpdateRuns_CreateOrUpdate.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/stable/2024-04-01/examples/UpdateRuns_CreateOrUpdate.json
      */
     /**
      * Sample code: Create an UpdateRun.
-     *
+     * 
      * @param manager Entry point to ContainerServiceFleetManager.
      */
-    public static void createAnUpdateRun(
-        com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager
-            .updateRuns()
+    public static void
+        createAnUpdateRun(com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
+        manager.updateRuns()
             .define("run1")
             .withExistingFleet("rg1", "fleet1")
             .withUpdateStrategyId(
                 "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/updateStrategies/strategy1")
-            .withStrategy(
-                new UpdateRunStrategy()
-                    .withStages(
-                        Arrays
-                            .asList(
-                                new UpdateStage()
-                                    .withName("stage1")
-                                    .withGroups(Arrays.asList(new UpdateGroup().withName("group-a")))
-                                    .withAfterStageWaitInSeconds(3600))))
-            .withManagedClusterUpdate(
-                new ManagedClusterUpdate()
-                    .withUpgrade(
-                        new ManagedClusterUpgradeSpec()
-                            .withType(ManagedClusterUpgradeType.FULL)
-                            .withKubernetesVersion("1.26.1"))
-                    .withNodeImageSelection(new NodeImageSelection().withType(NodeImageSelectionType.LATEST)))
+            .withStrategy(new UpdateRunStrategy().withStages(Arrays.asList(new UpdateStage().withName("stage1")
+                .withGroups(Arrays.asList(new UpdateGroup().withName("group-a")))
+                .withAfterStageWaitInSeconds(3600))))
+            .withManagedClusterUpdate(new ManagedClusterUpdate()
+                .withUpgrade(new ManagedClusterUpgradeSpec().withType(ManagedClusterUpgradeType.FULL)
+                    .withKubernetesVersion("1.26.1"))
+                .withNodeImageSelection(new NodeImageSelection().withType(NodeImageSelectionType.LATEST)))
             .create();
     }
 }

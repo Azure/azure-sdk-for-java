@@ -31,7 +31,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.polling.PollOperationDetails;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingStrategyOptions;
 import com.azure.core.util.polling.SyncPoller;
@@ -40,6 +39,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.health.insights.radiologyinsights.RadiologyInsightsServiceVersion;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsResult;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -190,34 +190,17 @@ public final class RadiologyInsightsClientImpl {
      * Create Radiology Insights job
      * 
      * Creates a Radiology Insights job with the given request body.
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>repeatability-request-id</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Repeatability request ID header</td>
-     * </tr>
-     * <tr>
-     * <td>repeatability-first-sent</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Repeatability first sent header as HTTP-date</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>repeatability-request-id</td><td>String</td><td>No</td><td>Repeatability request ID header</td></tr>
+     * <tr><td>repeatability-first-sent</td><td>String</td><td>No</td><td>Repeatability first sent header as
+     * HTTP-date</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     patients (Required): [
@@ -415,13 +398,16 @@ public final class RadiologyInsightsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
-     *     status: String (Required)
+     *     status: String(notStarted/running/succeeded/failed/canceled) (Required)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     expirationDateTime: OffsetDateTime (Optional)
+     *     lastUpdateDateTime: OffsetDateTime (Optional)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -429,6 +415,125 @@ public final class RadiologyInsightsClientImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     *     result (Optional): {
+     *         patientResults (Required): [
+     *              (Required){
+     *                 patientId: String (Required)
+     *                 inferences (Required): [
+     *                      (Required){
+     *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Required)
+     *                         extension (Optional): [
+     *                              (Optional){
+     *                                 id: String (Optional)
+     *                                 extension (Optional): [
+     *                                     (recursive schema, see above)
+     *                                 ]
+     *                                 url: String (Required)
+     *                                 valueQuantity (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     value: Double (Optional)
+     *                                     comparator: String (Optional)
+     *                                     unit: String (Optional)
+     *                                     system: String (Optional)
+     *                                     code: String (Optional)
+     *                                 }
+     *                                 valueCodeableConcept (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     coding (Optional): [
+     *                                          (Optional){
+     *                                             id: String (Optional)
+     *                                             extension (Optional): [
+     *                                                 (recursive schema, see above)
+     *                                             ]
+     *                                             system: String (Optional)
+     *                                             version: String (Optional)
+     *                                             code: String (Optional)
+     *                                             display: String (Optional)
+     *                                         }
+     *                                     ]
+     *                                     text: String (Optional)
+     *                                 }
+     *                                 valueString: String (Optional)
+     *                                 valueBoolean: Boolean (Optional)
+     *                                 valueInteger: Integer (Optional)
+     *                                 valueRange (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     low (Optional): (recursive schema, see low above)
+     *                                     high (Optional): (recursive schema, see high above)
+     *                                 }
+     *                                 valueRatio (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     numerator (Optional): (recursive schema, see numerator above)
+     *                                     denominator (Optional): (recursive schema, see denominator above)
+     *                                 }
+     *                                 valueSampledData (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     origin (Required): (recursive schema, see origin above)
+     *                                     period: double (Required)
+     *                                     factor: Double (Optional)
+     *                                     lowerLimit: Double (Optional)
+     *                                     upperLimit: Double (Optional)
+     *                                     dimensions: int (Required)
+     *                                     data: String (Optional)
+     *                                 }
+     *                                 valueTime: String (Optional)
+     *                                 valueDateTime: String (Optional)
+     *                                 valuePeriod (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     start: String (Optional)
+     *                                     end: String (Optional)
+     *                                 }
+     *                                 valueReference (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     reference: String (Optional)
+     *                                     type: String (Optional)
+     *                                     identifier (Optional): {
+     *                                         id: String (Optional)
+     *                                         extension (Optional): [
+     *                                             (recursive schema, see above)
+     *                                         ]
+     *                                         use: String (Optional)
+     *                                         type (Optional): (recursive schema, see type above)
+     *                                         system: String (Optional)
+     *                                         value: String (Optional)
+     *                                         period (Optional): (recursive schema, see period above)
+     *                                         assigner (Optional): (recursive schema, see assigner above)
+     *                                     }
+     *                                     display: String (Optional)
+     *                                 }
+     *                             }
+     *                         ]
+     *                     }
+     *                 ]
+     *             }
+     *         ]
+     *         modelVersion: String (Required)
      *     }
      * }
      * }</pre>
@@ -439,8 +544,8 @@ public final class RadiologyInsightsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return status details for long running operations along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return provides status details for long running operations along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BinaryData>> inferRadiologyInsightsWithResponseAsync(BinaryData radiologyInsightsData,
@@ -451,14 +556,14 @@ public final class RadiologyInsightsClientImpl {
         String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getHeaders().get(HttpHeaderName.fromString("repeatability-request-id")) == null) {
-                requestLocal.getHeaders().set(HttpHeaderName.fromString("repeatability-request-id"),
-                    repeatabilityRequestId);
+                requestLocal.getHeaders()
+                    .set(HttpHeaderName.fromString("repeatability-request-id"), repeatabilityRequestId);
             }
         });
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getHeaders().get(HttpHeaderName.fromString("repeatability-first-sent")) == null) {
-                requestLocal.getHeaders().set(HttpHeaderName.fromString("repeatability-first-sent"),
-                    repeatabilityFirstSent);
+                requestLocal.getHeaders()
+                    .set(HttpHeaderName.fromString("repeatability-first-sent"), repeatabilityFirstSent);
             }
         });
         return FluxUtil.withContext(context -> service.inferRadiologyInsights(this.getEndpoint(),
@@ -469,34 +574,17 @@ public final class RadiologyInsightsClientImpl {
      * Create Radiology Insights job
      * 
      * Creates a Radiology Insights job with the given request body.
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>repeatability-request-id</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Repeatability request ID header</td>
-     * </tr>
-     * <tr>
-     * <td>repeatability-first-sent</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Repeatability first sent header as HTTP-date</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>repeatability-request-id</td><td>String</td><td>No</td><td>Repeatability request ID header</td></tr>
+     * <tr><td>repeatability-first-sent</td><td>String</td><td>No</td><td>Repeatability first sent header as
+     * HTTP-date</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     patients (Required): [
@@ -694,13 +782,16 @@ public final class RadiologyInsightsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
-     *     status: String (Required)
+     *     status: String(notStarted/running/succeeded/failed/canceled) (Required)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     expirationDateTime: OffsetDateTime (Optional)
+     *     lastUpdateDateTime: OffsetDateTime (Optional)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -708,6 +799,125 @@ public final class RadiologyInsightsClientImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     *     result (Optional): {
+     *         patientResults (Required): [
+     *              (Required){
+     *                 patientId: String (Required)
+     *                 inferences (Required): [
+     *                      (Required){
+     *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Required)
+     *                         extension (Optional): [
+     *                              (Optional){
+     *                                 id: String (Optional)
+     *                                 extension (Optional): [
+     *                                     (recursive schema, see above)
+     *                                 ]
+     *                                 url: String (Required)
+     *                                 valueQuantity (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     value: Double (Optional)
+     *                                     comparator: String (Optional)
+     *                                     unit: String (Optional)
+     *                                     system: String (Optional)
+     *                                     code: String (Optional)
+     *                                 }
+     *                                 valueCodeableConcept (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     coding (Optional): [
+     *                                          (Optional){
+     *                                             id: String (Optional)
+     *                                             extension (Optional): [
+     *                                                 (recursive schema, see above)
+     *                                             ]
+     *                                             system: String (Optional)
+     *                                             version: String (Optional)
+     *                                             code: String (Optional)
+     *                                             display: String (Optional)
+     *                                         }
+     *                                     ]
+     *                                     text: String (Optional)
+     *                                 }
+     *                                 valueString: String (Optional)
+     *                                 valueBoolean: Boolean (Optional)
+     *                                 valueInteger: Integer (Optional)
+     *                                 valueRange (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     low (Optional): (recursive schema, see low above)
+     *                                     high (Optional): (recursive schema, see high above)
+     *                                 }
+     *                                 valueRatio (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     numerator (Optional): (recursive schema, see numerator above)
+     *                                     denominator (Optional): (recursive schema, see denominator above)
+     *                                 }
+     *                                 valueSampledData (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     origin (Required): (recursive schema, see origin above)
+     *                                     period: double (Required)
+     *                                     factor: Double (Optional)
+     *                                     lowerLimit: Double (Optional)
+     *                                     upperLimit: Double (Optional)
+     *                                     dimensions: int (Required)
+     *                                     data: String (Optional)
+     *                                 }
+     *                                 valueTime: String (Optional)
+     *                                 valueDateTime: String (Optional)
+     *                                 valuePeriod (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     start: String (Optional)
+     *                                     end: String (Optional)
+     *                                 }
+     *                                 valueReference (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     reference: String (Optional)
+     *                                     type: String (Optional)
+     *                                     identifier (Optional): {
+     *                                         id: String (Optional)
+     *                                         extension (Optional): [
+     *                                             (recursive schema, see above)
+     *                                         ]
+     *                                         use: String (Optional)
+     *                                         type (Optional): (recursive schema, see type above)
+     *                                         system: String (Optional)
+     *                                         value: String (Optional)
+     *                                         period (Optional): (recursive schema, see period above)
+     *                                         assigner (Optional): (recursive schema, see assigner above)
+     *                                     }
+     *                                     display: String (Optional)
+     *                                 }
+     *                             }
+     *                         ]
+     *                     }
+     *                 ]
+     *             }
+     *         ]
+     *         modelVersion: String (Required)
      *     }
      * }
      * }</pre>
@@ -718,7 +928,7 @@ public final class RadiologyInsightsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return status details for long running operations along with {@link Response}.
+     * @return provides status details for long running operations along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> inferRadiologyInsightsWithResponse(BinaryData radiologyInsightsData,
@@ -729,14 +939,14 @@ public final class RadiologyInsightsClientImpl {
         String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getHeaders().get(HttpHeaderName.fromString("repeatability-request-id")) == null) {
-                requestLocal.getHeaders().set(HttpHeaderName.fromString("repeatability-request-id"),
-                    repeatabilityRequestId);
+                requestLocal.getHeaders()
+                    .set(HttpHeaderName.fromString("repeatability-request-id"), repeatabilityRequestId);
             }
         });
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getHeaders().get(HttpHeaderName.fromString("repeatability-first-sent")) == null) {
-                requestLocal.getHeaders().set(HttpHeaderName.fromString("repeatability-first-sent"),
-                    repeatabilityFirstSent);
+                requestLocal.getHeaders()
+                    .set(HttpHeaderName.fromString("repeatability-first-sent"), repeatabilityFirstSent);
             }
         });
         return service.inferRadiologyInsightsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
@@ -747,34 +957,17 @@ public final class RadiologyInsightsClientImpl {
      * Create Radiology Insights job
      * 
      * Creates a Radiology Insights job with the given request body.
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>repeatability-request-id</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Repeatability request ID header</td>
-     * </tr>
-     * <tr>
-     * <td>repeatability-first-sent</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Repeatability first sent header as HTTP-date</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>repeatability-request-id</td><td>String</td><td>No</td><td>Repeatability request ID header</td></tr>
+     * <tr><td>repeatability-first-sent</td><td>String</td><td>No</td><td>Repeatability first sent header as
+     * HTTP-date</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     patients (Required): [
@@ -972,13 +1165,16 @@ public final class RadiologyInsightsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
-     *     status: String (Required)
+     *     status: String(notStarted/running/succeeded/failed/canceled) (Required)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     expirationDateTime: OffsetDateTime (Optional)
+     *     lastUpdateDateTime: OffsetDateTime (Optional)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -986,6 +1182,125 @@ public final class RadiologyInsightsClientImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     *     result (Optional): {
+     *         patientResults (Required): [
+     *              (Required){
+     *                 patientId: String (Required)
+     *                 inferences (Required): [
+     *                      (Required){
+     *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Required)
+     *                         extension (Optional): [
+     *                              (Optional){
+     *                                 id: String (Optional)
+     *                                 extension (Optional): [
+     *                                     (recursive schema, see above)
+     *                                 ]
+     *                                 url: String (Required)
+     *                                 valueQuantity (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     value: Double (Optional)
+     *                                     comparator: String (Optional)
+     *                                     unit: String (Optional)
+     *                                     system: String (Optional)
+     *                                     code: String (Optional)
+     *                                 }
+     *                                 valueCodeableConcept (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     coding (Optional): [
+     *                                          (Optional){
+     *                                             id: String (Optional)
+     *                                             extension (Optional): [
+     *                                                 (recursive schema, see above)
+     *                                             ]
+     *                                             system: String (Optional)
+     *                                             version: String (Optional)
+     *                                             code: String (Optional)
+     *                                             display: String (Optional)
+     *                                         }
+     *                                     ]
+     *                                     text: String (Optional)
+     *                                 }
+     *                                 valueString: String (Optional)
+     *                                 valueBoolean: Boolean (Optional)
+     *                                 valueInteger: Integer (Optional)
+     *                                 valueRange (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     low (Optional): (recursive schema, see low above)
+     *                                     high (Optional): (recursive schema, see high above)
+     *                                 }
+     *                                 valueRatio (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     numerator (Optional): (recursive schema, see numerator above)
+     *                                     denominator (Optional): (recursive schema, see denominator above)
+     *                                 }
+     *                                 valueSampledData (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     origin (Required): (recursive schema, see origin above)
+     *                                     period: double (Required)
+     *                                     factor: Double (Optional)
+     *                                     lowerLimit: Double (Optional)
+     *                                     upperLimit: Double (Optional)
+     *                                     dimensions: int (Required)
+     *                                     data: String (Optional)
+     *                                 }
+     *                                 valueTime: String (Optional)
+     *                                 valueDateTime: String (Optional)
+     *                                 valuePeriod (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     start: String (Optional)
+     *                                     end: String (Optional)
+     *                                 }
+     *                                 valueReference (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     reference: String (Optional)
+     *                                     type: String (Optional)
+     *                                     identifier (Optional): {
+     *                                         id: String (Optional)
+     *                                         extension (Optional): [
+     *                                             (recursive schema, see above)
+     *                                         ]
+     *                                         use: String (Optional)
+     *                                         type (Optional): (recursive schema, see type above)
+     *                                         system: String (Optional)
+     *                                         value: String (Optional)
+     *                                         period (Optional): (recursive schema, see period above)
+     *                                         assigner (Optional): (recursive schema, see assigner above)
+     *                                     }
+     *                                     display: String (Optional)
+     *                                 }
+     *                             }
+     *                         ]
+     *                     }
+     *                 ]
+     *             }
+     *         ]
+     *         modelVersion: String (Required)
      *     }
      * }
      * }</pre>
@@ -996,19 +1311,21 @@ public final class RadiologyInsightsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of status details for long running operations.
+     * @return the {@link PollerFlux} for polling of provides status details for long running operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginInferRadiologyInsightsAsync(BinaryData radiologyInsightsData,
         RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.inferRadiologyInsightsWithResponseAsync(radiologyInsightsData, requestOptions),
-            new com.azure.core.experimental.util.polling.OperationLocationPollingStrategy<>(
+            new com.azure.health.insights.radiologyinsights.implementation.OperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.getHttpPipeline())
                     .setEndpoint("{endpoint}/health-insights".replace("{endpoint}", this.getEndpoint()))
                     .setContext(requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext() : Context.NONE)
-                    .setServiceVersion(this.getServiceVersion().getVersion())),
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "result"),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
@@ -1016,34 +1333,17 @@ public final class RadiologyInsightsClientImpl {
      * Create Radiology Insights job
      * 
      * Creates a Radiology Insights job with the given request body.
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>repeatability-request-id</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Repeatability request ID header</td>
-     * </tr>
-     * <tr>
-     * <td>repeatability-first-sent</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Repeatability first sent header as HTTP-date</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>repeatability-request-id</td><td>String</td><td>No</td><td>Repeatability request ID header</td></tr>
+     * <tr><td>repeatability-first-sent</td><td>String</td><td>No</td><td>Repeatability first sent header as
+     * HTTP-date</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     patients (Required): [
@@ -1241,13 +1541,16 @@ public final class RadiologyInsightsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
-     *     status: String (Required)
+     *     status: String(notStarted/running/succeeded/failed/canceled) (Required)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     expirationDateTime: OffsetDateTime (Optional)
+     *     lastUpdateDateTime: OffsetDateTime (Optional)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -1255,6 +1558,125 @@ public final class RadiologyInsightsClientImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     *     result (Optional): {
+     *         patientResults (Required): [
+     *              (Required){
+     *                 patientId: String (Required)
+     *                 inferences (Required): [
+     *                      (Required){
+     *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Required)
+     *                         extension (Optional): [
+     *                              (Optional){
+     *                                 id: String (Optional)
+     *                                 extension (Optional): [
+     *                                     (recursive schema, see above)
+     *                                 ]
+     *                                 url: String (Required)
+     *                                 valueQuantity (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     value: Double (Optional)
+     *                                     comparator: String (Optional)
+     *                                     unit: String (Optional)
+     *                                     system: String (Optional)
+     *                                     code: String (Optional)
+     *                                 }
+     *                                 valueCodeableConcept (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     coding (Optional): [
+     *                                          (Optional){
+     *                                             id: String (Optional)
+     *                                             extension (Optional): [
+     *                                                 (recursive schema, see above)
+     *                                             ]
+     *                                             system: String (Optional)
+     *                                             version: String (Optional)
+     *                                             code: String (Optional)
+     *                                             display: String (Optional)
+     *                                         }
+     *                                     ]
+     *                                     text: String (Optional)
+     *                                 }
+     *                                 valueString: String (Optional)
+     *                                 valueBoolean: Boolean (Optional)
+     *                                 valueInteger: Integer (Optional)
+     *                                 valueRange (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     low (Optional): (recursive schema, see low above)
+     *                                     high (Optional): (recursive schema, see high above)
+     *                                 }
+     *                                 valueRatio (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     numerator (Optional): (recursive schema, see numerator above)
+     *                                     denominator (Optional): (recursive schema, see denominator above)
+     *                                 }
+     *                                 valueSampledData (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     origin (Required): (recursive schema, see origin above)
+     *                                     period: double (Required)
+     *                                     factor: Double (Optional)
+     *                                     lowerLimit: Double (Optional)
+     *                                     upperLimit: Double (Optional)
+     *                                     dimensions: int (Required)
+     *                                     data: String (Optional)
+     *                                 }
+     *                                 valueTime: String (Optional)
+     *                                 valueDateTime: String (Optional)
+     *                                 valuePeriod (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     start: String (Optional)
+     *                                     end: String (Optional)
+     *                                 }
+     *                                 valueReference (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     reference: String (Optional)
+     *                                     type: String (Optional)
+     *                                     identifier (Optional): {
+     *                                         id: String (Optional)
+     *                                         extension (Optional): [
+     *                                             (recursive schema, see above)
+     *                                         ]
+     *                                         use: String (Optional)
+     *                                         type (Optional): (recursive schema, see type above)
+     *                                         system: String (Optional)
+     *                                         value: String (Optional)
+     *                                         period (Optional): (recursive schema, see period above)
+     *                                         assigner (Optional): (recursive schema, see assigner above)
+     *                                     }
+     *                                     display: String (Optional)
+     *                                 }
+     *                             }
+     *                         ]
+     *                     }
+     *                 ]
+     *             }
+     *         ]
+     *         modelVersion: String (Required)
      *     }
      * }
      * }</pre>
@@ -1265,19 +1687,21 @@ public final class RadiologyInsightsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of status details for long running operations.
+     * @return the {@link SyncPoller} for polling of provides status details for long running operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginInferRadiologyInsights(BinaryData radiologyInsightsData,
         RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.inferRadiologyInsightsWithResponse(radiologyInsightsData, requestOptions),
-            new com.azure.core.experimental.util.polling.SyncOperationLocationPollingStrategy<>(
+            new com.azure.health.insights.radiologyinsights.implementation.SyncOperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.getHttpPipeline())
                     .setEndpoint("{endpoint}/health-insights".replace("{endpoint}", this.getEndpoint()))
                     .setContext(requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext() : Context.NONE)
-                    .setServiceVersion(this.getServiceVersion().getVersion())),
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "result"),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
@@ -1285,34 +1709,17 @@ public final class RadiologyInsightsClientImpl {
      * Create Radiology Insights job
      * 
      * Creates a Radiology Insights job with the given request body.
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>repeatability-request-id</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Repeatability request ID header</td>
-     * </tr>
-     * <tr>
-     * <td>repeatability-first-sent</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Repeatability first sent header as HTTP-date</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>repeatability-request-id</td><td>String</td><td>No</td><td>Repeatability request ID header</td></tr>
+     * <tr><td>repeatability-first-sent</td><td>String</td><td>No</td><td>Repeatability first sent header as
+     * HTTP-date</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     patients (Required): [
@@ -1510,13 +1917,16 @@ public final class RadiologyInsightsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
-     *     status: String (Required)
+     *     status: String(notStarted/running/succeeded/failed/canceled) (Required)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     expirationDateTime: OffsetDateTime (Optional)
+     *     lastUpdateDateTime: OffsetDateTime (Optional)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -1524,6 +1934,125 @@ public final class RadiologyInsightsClientImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     *     result (Optional): {
+     *         patientResults (Required): [
+     *              (Required){
+     *                 patientId: String (Required)
+     *                 inferences (Required): [
+     *                      (Required){
+     *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Required)
+     *                         extension (Optional): [
+     *                              (Optional){
+     *                                 id: String (Optional)
+     *                                 extension (Optional): [
+     *                                     (recursive schema, see above)
+     *                                 ]
+     *                                 url: String (Required)
+     *                                 valueQuantity (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     value: Double (Optional)
+     *                                     comparator: String (Optional)
+     *                                     unit: String (Optional)
+     *                                     system: String (Optional)
+     *                                     code: String (Optional)
+     *                                 }
+     *                                 valueCodeableConcept (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     coding (Optional): [
+     *                                          (Optional){
+     *                                             id: String (Optional)
+     *                                             extension (Optional): [
+     *                                                 (recursive schema, see above)
+     *                                             ]
+     *                                             system: String (Optional)
+     *                                             version: String (Optional)
+     *                                             code: String (Optional)
+     *                                             display: String (Optional)
+     *                                         }
+     *                                     ]
+     *                                     text: String (Optional)
+     *                                 }
+     *                                 valueString: String (Optional)
+     *                                 valueBoolean: Boolean (Optional)
+     *                                 valueInteger: Integer (Optional)
+     *                                 valueRange (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     low (Optional): (recursive schema, see low above)
+     *                                     high (Optional): (recursive schema, see high above)
+     *                                 }
+     *                                 valueRatio (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     numerator (Optional): (recursive schema, see numerator above)
+     *                                     denominator (Optional): (recursive schema, see denominator above)
+     *                                 }
+     *                                 valueSampledData (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     origin (Required): (recursive schema, see origin above)
+     *                                     period: double (Required)
+     *                                     factor: Double (Optional)
+     *                                     lowerLimit: Double (Optional)
+     *                                     upperLimit: Double (Optional)
+     *                                     dimensions: int (Required)
+     *                                     data: String (Optional)
+     *                                 }
+     *                                 valueTime: String (Optional)
+     *                                 valueDateTime: String (Optional)
+     *                                 valuePeriod (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     start: String (Optional)
+     *                                     end: String (Optional)
+     *                                 }
+     *                                 valueReference (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     reference: String (Optional)
+     *                                     type: String (Optional)
+     *                                     identifier (Optional): {
+     *                                         id: String (Optional)
+     *                                         extension (Optional): [
+     *                                             (recursive schema, see above)
+     *                                         ]
+     *                                         use: String (Optional)
+     *                                         type (Optional): (recursive schema, see type above)
+     *                                         system: String (Optional)
+     *                                         value: String (Optional)
+     *                                         period (Optional): (recursive schema, see period above)
+     *                                         assigner (Optional): (recursive schema, see assigner above)
+     *                                     }
+     *                                     display: String (Optional)
+     *                                 }
+     *                             }
+     *                         ]
+     *                     }
+     *                 ]
+     *             }
+     *         ]
+     *         modelVersion: String (Required)
      *     }
      * }
      * }</pre>
@@ -1534,20 +2063,22 @@ public final class RadiologyInsightsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of status details for long running operations.
+     * @return the {@link PollerFlux} for polling of provides status details for long running operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollOperationDetails, RadiologyInsightsInferenceResult>
+    public PollerFlux<RadiologyInsightsResult, RadiologyInsightsInferenceResult>
         beginInferRadiologyInsightsWithModelAsync(BinaryData radiologyInsightsData, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.inferRadiologyInsightsWithResponseAsync(radiologyInsightsData, requestOptions),
-            new com.azure.core.experimental.util.polling.OperationLocationPollingStrategy<>(
+            new com.azure.health.insights.radiologyinsights.implementation.OperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.getHttpPipeline())
                     .setEndpoint("{endpoint}/health-insights".replace("{endpoint}", this.getEndpoint()))
                     .setContext(requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext() : Context.NONE)
-                    .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(PollOperationDetails.class),
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "result"),
+            TypeReference.createInstance(RadiologyInsightsResult.class),
             TypeReference.createInstance(RadiologyInsightsInferenceResult.class));
     }
 
@@ -1555,34 +2086,17 @@ public final class RadiologyInsightsClientImpl {
      * Create Radiology Insights job
      * 
      * Creates a Radiology Insights job with the given request body.
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>repeatability-request-id</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Repeatability request ID header</td>
-     * </tr>
-     * <tr>
-     * <td>repeatability-first-sent</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Repeatability first sent header as HTTP-date</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>repeatability-request-id</td><td>String</td><td>No</td><td>Repeatability request ID header</td></tr>
+     * <tr><td>repeatability-first-sent</td><td>String</td><td>No</td><td>Repeatability first sent header as
+     * HTTP-date</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     patients (Required): [
@@ -1780,13 +2294,16 @@ public final class RadiologyInsightsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
-     *     status: String (Required)
+     *     status: String(notStarted/running/succeeded/failed/canceled) (Required)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     expirationDateTime: OffsetDateTime (Optional)
+     *     lastUpdateDateTime: OffsetDateTime (Optional)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -1794,6 +2311,125 @@ public final class RadiologyInsightsClientImpl {
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     *     result (Optional): {
+     *         patientResults (Required): [
+     *              (Required){
+     *                 patientId: String (Required)
+     *                 inferences (Required): [
+     *                      (Required){
+     *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Required)
+     *                         extension (Optional): [
+     *                              (Optional){
+     *                                 id: String (Optional)
+     *                                 extension (Optional): [
+     *                                     (recursive schema, see above)
+     *                                 ]
+     *                                 url: String (Required)
+     *                                 valueQuantity (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     value: Double (Optional)
+     *                                     comparator: String (Optional)
+     *                                     unit: String (Optional)
+     *                                     system: String (Optional)
+     *                                     code: String (Optional)
+     *                                 }
+     *                                 valueCodeableConcept (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     coding (Optional): [
+     *                                          (Optional){
+     *                                             id: String (Optional)
+     *                                             extension (Optional): [
+     *                                                 (recursive schema, see above)
+     *                                             ]
+     *                                             system: String (Optional)
+     *                                             version: String (Optional)
+     *                                             code: String (Optional)
+     *                                             display: String (Optional)
+     *                                         }
+     *                                     ]
+     *                                     text: String (Optional)
+     *                                 }
+     *                                 valueString: String (Optional)
+     *                                 valueBoolean: Boolean (Optional)
+     *                                 valueInteger: Integer (Optional)
+     *                                 valueRange (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     low (Optional): (recursive schema, see low above)
+     *                                     high (Optional): (recursive schema, see high above)
+     *                                 }
+     *                                 valueRatio (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     numerator (Optional): (recursive schema, see numerator above)
+     *                                     denominator (Optional): (recursive schema, see denominator above)
+     *                                 }
+     *                                 valueSampledData (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     origin (Required): (recursive schema, see origin above)
+     *                                     period: double (Required)
+     *                                     factor: Double (Optional)
+     *                                     lowerLimit: Double (Optional)
+     *                                     upperLimit: Double (Optional)
+     *                                     dimensions: int (Required)
+     *                                     data: String (Optional)
+     *                                 }
+     *                                 valueTime: String (Optional)
+     *                                 valueDateTime: String (Optional)
+     *                                 valuePeriod (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     start: String (Optional)
+     *                                     end: String (Optional)
+     *                                 }
+     *                                 valueReference (Optional): {
+     *                                     id: String (Optional)
+     *                                     extension (Optional): [
+     *                                         (recursive schema, see above)
+     *                                     ]
+     *                                     reference: String (Optional)
+     *                                     type: String (Optional)
+     *                                     identifier (Optional): {
+     *                                         id: String (Optional)
+     *                                         extension (Optional): [
+     *                                             (recursive schema, see above)
+     *                                         ]
+     *                                         use: String (Optional)
+     *                                         type (Optional): (recursive schema, see type above)
+     *                                         system: String (Optional)
+     *                                         value: String (Optional)
+     *                                         period (Optional): (recursive schema, see period above)
+     *                                         assigner (Optional): (recursive schema, see assigner above)
+     *                                     }
+     *                                     display: String (Optional)
+     *                                 }
+     *                             }
+     *                         ]
+     *                     }
+     *                 ]
+     *             }
+     *         ]
+     *         modelVersion: String (Required)
      *     }
      * }
      * }</pre>
@@ -1804,20 +2440,22 @@ public final class RadiologyInsightsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of status details for long running operations.
+     * @return the {@link SyncPoller} for polling of provides status details for long running operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollOperationDetails, RadiologyInsightsInferenceResult>
+    public SyncPoller<RadiologyInsightsResult, RadiologyInsightsInferenceResult>
         beginInferRadiologyInsightsWithModel(BinaryData radiologyInsightsData, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.inferRadiologyInsightsWithResponse(radiologyInsightsData, requestOptions),
-            new com.azure.core.experimental.util.polling.SyncOperationLocationPollingStrategy<>(
+            new com.azure.health.insights.radiologyinsights.implementation.SyncOperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.getHttpPipeline())
                     .setEndpoint("{endpoint}/health-insights".replace("{endpoint}", this.getEndpoint()))
                     .setContext(requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext() : Context.NONE)
-                    .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(PollOperationDetails.class),
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "result"),
+            TypeReference.createInstance(RadiologyInsightsResult.class),
             TypeReference.createInstance(RadiologyInsightsInferenceResult.class));
     }
 }

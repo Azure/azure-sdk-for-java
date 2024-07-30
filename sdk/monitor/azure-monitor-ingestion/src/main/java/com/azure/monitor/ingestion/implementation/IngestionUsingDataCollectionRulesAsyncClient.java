@@ -17,14 +17,17 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous IngestionUsingDataCollectionRulesClient type. */
+/**
+ * Initializes a new instance of the asynchronous IngestionUsingDataCollectionRulesClient type.
+ */
 @ServiceClient(builder = IngestionUsingDataCollectionRulesClientBuilder.class, isAsync = true)
 public final class IngestionUsingDataCollectionRulesAsyncClient {
-    @Generated private final IngestionUsingDataCollectionRulesClientImpl serviceClient;
+    @Generated
+    private final IngestionUsingDataCollectionRulesClientImpl serviceClient;
 
     /**
      * Initializes an instance of IngestionUsingDataCollectionRulesAsyncClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -34,28 +37,42 @@ public final class IngestionUsingDataCollectionRulesAsyncClient {
 
     /**
      * Ingestion API used to directly ingest data using Data Collection Rules
-     *
-     * <p>See error response code and error response message for more detail.
-     *
-     * <p><strong>Header Parameters</strong>
-     *
+     * 
+     * See error response code and error response message for more detail.
+     * <p>
+     * <strong>Header Parameters</strong>
+     * </p>
      * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Encoding</td><td>String</td><td>No</td><td>gzip</td></tr>
-     *     <tr><td>x-ms-client-request-id</td><td>String</td><td>No</td><td>Client request Id</td></tr>
+     * <caption>Header Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>Content-Encoding</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>gzip</td>
+     * </tr>
+     * <tr>
+     * <td>x-ms-client-request-id</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Client request Id</td>
+     * </tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addHeader}
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * [
      *     Object (Required)
      * ]
      * }</pre>
-     *
+     * 
      * @param ruleId The immutable Id of the Data Collection Rule resource.
      * @param stream The streamDeclaration name as defined in the Data Collection Rule.
      * @param body An array of objects matching the schema defined by the provided stream.
@@ -68,8 +85,8 @@ public final class IngestionUsingDataCollectionRulesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> uploadWithResponse(
-            String ruleId, String stream, BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<Void>> uploadWithResponse(String ruleId, String stream, BinaryData body,
+        RequestOptions requestOptions) {
         return this.serviceClient.uploadWithResponseAsync(ruleId, stream, body, requestOptions);
     }
 }

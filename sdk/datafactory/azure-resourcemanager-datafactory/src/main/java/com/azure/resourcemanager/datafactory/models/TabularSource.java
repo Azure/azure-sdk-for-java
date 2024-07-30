@@ -7,17 +7,14 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Copy activity sources of tabular type.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = TabularSource.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = TabularSource.class, visible = true)
 @JsonTypeName("TabularSource")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AzureTableSource", value = AzureTableSource.class),
@@ -87,6 +84,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class TabularSource extends CopySource {
     /*
+     * Copy source type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "TabularSource";
+
+    /*
      * Query timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
@@ -104,6 +108,16 @@ public class TabularSource extends CopySource {
      * Creates an instance of TabularSource class.
      */
     public TabularSource() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

@@ -45,14 +45,21 @@ public final class ProtectedItemResourceInnerTests {
     public void testSerialize() throws Exception {
         ProtectedItemResourceInner model = new ProtectedItemResourceInner().withLocation("vkd")
             .withTags(mapOf("vvdfwatkpnpul", "llr"))
-            .withProperties(new ProtectedItem().withContainerName("pjhvmdajvnys").withSourceResourceId("nqecanoaeup")
-                .withPolicyId("yhltrpmopjmcm").withLastRecoveryPoint(OffsetDateTime.parse("2020-12-22T02:02:43Z"))
-                .withBackupSetName("kthfui").withCreateMode(CreateMode.RECOVER)
+            .withProperties(new ProtectedItem().withContainerName("pjhvmdajvnys")
+                .withSourceResourceId("nqecanoaeup")
+                .withPolicyId("yhltrpmopjmcm")
+                .withLastRecoveryPoint(OffsetDateTime.parse("2020-12-22T02:02:43Z"))
+                .withBackupSetName("kthfui")
+                .withCreateMode(CreateMode.RECOVER)
                 .withDeferredDeleteTimeInUtc(OffsetDateTime.parse("2021-10-17T19:18:45Z"))
-                .withIsScheduledForDeferredDelete(false).withDeferredDeleteTimeRemaining("kvxod")
-                .withIsDeferredDeleteScheduleUpcoming(true).withIsRehydrate(true)
+                .withIsScheduledForDeferredDelete(false)
+                .withDeferredDeleteTimeRemaining("kvxod")
+                .withIsDeferredDeleteScheduleUpcoming(true)
+                .withIsRehydrate(true)
                 .withResourceGuardOperationRequests(Arrays.asList("ydagfuaxbe", "yiuokktwh", "dxwzywqsmbsurexi", "o"))
-                .withIsArchiveEnabled(false).withPolicyName("fsfksymddyst").withSoftDeleteRetentionPeriod(980316888))
+                .withIsArchiveEnabled(false)
+                .withPolicyName("fsfksymddyst")
+                .withSoftDeleteRetentionPeriod(980316888))
             .withEtag("czvyifq");
         model = BinaryData.fromObject(model).toObject(ProtectedItemResourceInner.class);
         Assertions.assertEquals("vkd", model.location());

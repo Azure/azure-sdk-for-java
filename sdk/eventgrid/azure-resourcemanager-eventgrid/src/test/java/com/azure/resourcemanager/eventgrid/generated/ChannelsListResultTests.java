@@ -7,8 +7,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.eventgrid.fluent.models.ChannelInner;
 import com.azure.resourcemanager.eventgrid.models.ChannelProvisioningState;
-import com.azure.resourcemanager.eventgrid.models.ChannelType;
 import com.azure.resourcemanager.eventgrid.models.ChannelsListResult;
+import com.azure.resourcemanager.eventgrid.models.ChannelType;
 import com.azure.resourcemanager.eventgrid.models.EventDefinitionKind;
 import com.azure.resourcemanager.eventgrid.models.EventTypeInfo;
 import com.azure.resourcemanager.eventgrid.models.InlineEventProperties;
@@ -54,13 +54,16 @@ public final class ChannelsListResultTests {
         ChannelsListResult model = new ChannelsListResult()
             .withValue(Arrays.asList(new ChannelInner().withChannelType(ChannelType.PARTNER_DESTINATION)
                 .withPartnerTopicInfo(new PartnerTopicInfo().withAzureSubscriptionId("ljavbqid")
-                    .withResourceGroupName("ajzyul").withName("u")
+                    .withResourceGroupName("ajzyul")
+                    .withName("u")
                     .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
                         .withInlineEventTypes(mapOf("hbzhfepg", new InlineEventProperties(), "gqexzlocxs",
                             new InlineEventProperties(), "paierh", new InlineEventProperties())))
                     .withSource("csglum"))
                 .withPartnerDestinationInfo(new PartnerDestinationInfo().withAzureSubscriptionId("tjaodxobnb")
-                    .withResourceGroupName("k").withName("xo").withEndpointServiceContext("jionpimexgstxgc")
+                    .withResourceGroupName("k")
+                    .withName("xo")
+                    .withEndpointServiceContext("jionpimexgstxgc")
                     .withResourceMoveChangeHistory(Arrays.asList(new ResourceMoveChangeHistory())))
                 .withMessageForActivation("maajrmvdjwzrlo")
                 .withProvisioningState(ChannelProvisioningState.IDLE_DUE_TO_MIRRORED_PARTNER_TOPIC_DELETION)

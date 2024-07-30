@@ -231,7 +231,8 @@ public class FaultInjectionRuleProcessor {
                         result.getServerErrorType(),
                         result.getTimes(),
                         result.getDelay(),
-                        result.getSuppressServiceRequests()
+                        result.getSuppressServiceRequests(),
+                        result.getInjectionRate()
                     )
                 );
             });

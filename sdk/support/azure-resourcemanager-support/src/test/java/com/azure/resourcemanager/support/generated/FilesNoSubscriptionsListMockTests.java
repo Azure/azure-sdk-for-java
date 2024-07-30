@@ -6,65 +6,36 @@ package com.azure.resourcemanager.support.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.support.SupportManager;
 import com.azure.resourcemanager.support.models.FileDetails;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class FilesNoSubscriptionsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"createdOn\":\"2021-05-20T11:54:02Z\",\"chunkSize\":732133593,\"fileSize\":1032283606,\"numberOfChunks\":2115158777},\"id\":\"xjjs\",\"name\":\"oqbeitpkxzt\",\"type\":\"oobklftidgfcwq\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"createdOn\":\"2021-03-19T15:15:46Z\",\"chunkSize\":0.89277625,\"fileSize\":75.17896,\"numberOfChunks\":26.893425},\"id\":\"qxihhrmooi\",\"name\":\"qseypxiutcxa\",\"type\":\"zhyrpeto\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SupportManager manager = SupportManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<FileDetails> response
+            = manager.filesNoSubscriptions().list("jb", com.azure.core.util.Context.NONE);
 
-        SupportManager manager =
-            SupportManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<FileDetails> response =
-            manager.filesNoSubscriptions().list("brta", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals(0.89277625F, response.iterator().next().chunkSize());
-        Assertions.assertEquals(75.17896F, response.iterator().next().fileSize());
-        Assertions.assertEquals(26.893425F, response.iterator().next().numberOfChunks());
+        Assertions.assertEquals(732133593, response.iterator().next().chunkSize());
+        Assertions.assertEquals(1032283606, response.iterator().next().fileSize());
+        Assertions.assertEquals(2115158777, response.iterator().next().numberOfChunks());
     }
 }

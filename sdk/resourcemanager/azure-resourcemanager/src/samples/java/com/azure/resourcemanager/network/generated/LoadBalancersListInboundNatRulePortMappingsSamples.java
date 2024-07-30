@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.models.QueryInboundNatRulePortMappingRe
  */
 public final class LoadBalancersListInboundNatRulePortMappingsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * QueryInboundNatRulePortMapping.json
      */
     /**
@@ -20,8 +20,12 @@ public final class LoadBalancersListInboundNatRulePortMappingsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void queryInboundNATRulePortMapping(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getLoadBalancers().listInboundNatRulePortMappings("rg1", "lb1",
-            "bp1", new QueryInboundNatRulePortMappingRequest().withIpAddress("10.0.0.4"),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getLoadBalancers()
+            .listInboundNatRulePortMappings("rg1", "lb1", "bp1",
+                new QueryInboundNatRulePortMappingRequest().withIpAddress("10.0.0.4"),
+                com.azure.core.util.Context.NONE);
     }
 }

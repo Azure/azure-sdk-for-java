@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class WebAppsStopNetworkTraceSlotSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/StopWebSiteNetworkTrace.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/StopWebSiteNetworkTrace.json
      */
     /**
      * Sample code: Stop a currently running network trace operation for a site.
@@ -19,7 +18,10 @@ public final class WebAppsStopNetworkTraceSlotSamples {
      */
     public static void
         stopACurrentlyRunningNetworkTraceOperationForASite(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getWebApps().stopNetworkTraceSlotWithResponse("testrg123",
-            "SampleApp", "Production", com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getWebApps()
+            .stopNetworkTraceSlotWithResponse("testrg123", "SampleApp", "Production", com.azure.core.util.Context.NONE);
     }
 }

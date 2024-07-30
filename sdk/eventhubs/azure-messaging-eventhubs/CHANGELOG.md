@@ -1,6 +1,6 @@
 # Release History
 
-## 5.19.0-beta.1 (Unreleased)
+## 5.19.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -8,7 +8,75 @@
 
 ### Bugs Fixed
 
+- Copy connection string properties when cloning the EventHubClientBuilder in EventProcessorClientBuilder, fixes ([#40938](https://github.com/Azure/azure-sdk-for-java/issues/40938))
+
 ### Other Changes
+
+## 5.18.5 (2024-06-24)
+
+### Features Added
+
+- Add support for local emulator - [Event Hubs emulator overview](https://learn.microsoft.com/azure/event-hubs/overview-emulator).
+
+### Bugs Fixed
+
+- Use endpoint address's port when specified in connection string. ([#40415](https://github.com/Azure/azure-sdk-for-java/pull/40415))
+- Fix parsing of `customEndpointAddress` to match one used in connection string. ([#40415](https://github.com/Azure/azure-sdk-for-java/pull/40415))
+- Fixed issue where creating EventProcessorClient instances using the same EventProcessorClientBuilder instance could result in incorrect properties. ([#29875](https://github.com/Azure/azure-sdk-for-java/issues/29875))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to version `1.49.1`.
+- Upgraded `azure-core-amqp` from `2.9.2` to version `2.9.3`.
+
+## 5.18.4 (2024-05-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
+- Upgraded `azure-core-amqp` from `2.9.3` to version `2.9.4`.
+
+## 5.19.0-beta.1 (2024-05-21)
+
+### Features Added
+
+### Breaking Changes
+
+- `EventData.getOffset()`, `CheckpointStore.getOffset()`, `EventData.getOffset()`, and `LastEnqueuedEventProperties.getOffset()` are changed from `Long` to `String`.
+
+### Bugs Fixed
+
+- Fixed issue where creating EventProcessorClient instances using the same EventProcessorClientBuilder instance could result in incorrect properties. ([#29875](https://github.com/Azure/azure-sdk-for-java/issues/29875))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
+- Upgraded `azure-core-amqp` from `2.9.3` to version `2.9.4`.
+
+## 5.18.3 (2024-04-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-core-amqp` from `2.9.2` to version `2.9.3`.
+
+## 5.18.2 (2024-03-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
+- Upgraded `azure-core-amqp` from `2.9.1` to version `2.9.2`.
+
 
 ## 5.18.1 (2024-02-16)
 
@@ -610,7 +678,7 @@ by calling `EventHubPublisher.close()` or `EventHubConsumer.close()`.
 Version 5.0.0-preview.1 is a preview of our efforts in creating a client library that is developer-friendly, idiomatic
 to the Java ecosystem, and as consistent across different languages and platforms as possible. The principles that guide
 our efforts can be found in the [Azure SDK Design Guidelines for
-.Java](https://azuresdkspecs.z5.web.core.windows.net/JavaSpec.html).
+.Java](https://aka.ms/azsdk/guide/java).
 
 For release notes and more information please visit https://aka.ms/azure-sdk-preview1-java
 

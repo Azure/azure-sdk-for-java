@@ -7,7 +7,9 @@ package com.azure.resourcemanager.mysqlflexibleserver.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of a database. */
+/**
+ * The properties of a database.
+ */
 @Fluent
 public final class DatabaseProperties {
     /*
@@ -22,13 +24,15 @@ public final class DatabaseProperties {
     @JsonProperty(value = "collation")
     private String collation;
 
-    /** Creates an instance of DatabaseProperties class. */
+    /**
+     * Creates an instance of DatabaseProperties class.
+     */
     public DatabaseProperties() {
     }
 
     /**
      * Get the charset property: The charset of the database.
-     *
+     * 
      * @return the charset value.
      */
     public String charset() {
@@ -37,7 +41,7 @@ public final class DatabaseProperties {
 
     /**
      * Set the charset property: The charset of the database.
-     *
+     * 
      * @param charset the charset value to set.
      * @return the DatabaseProperties object itself.
      */
@@ -48,7 +52,7 @@ public final class DatabaseProperties {
 
     /**
      * Get the collation property: The collation of the database.
-     *
+     * 
      * @return the collation value.
      */
     public String collation() {
@@ -57,7 +61,7 @@ public final class DatabaseProperties {
 
     /**
      * Set the collation property: The collation of the database.
-     *
+     * 
      * @param collation the collation value to set.
      * @return the DatabaseProperties object itself.
      */
@@ -68,7 +72,7 @@ public final class DatabaseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

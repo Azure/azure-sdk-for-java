@@ -10,21 +10,10 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.AppServiceManager;
-import com.azure.resourcemanager.appservice.models.AppServicePlan;
-import com.azure.resourcemanager.appservice.models.CsmPublishingProfileOptions;
-import com.azure.resourcemanager.appservice.models.CsmSlotEntity;
-import com.azure.resourcemanager.appservice.models.HostnameBinding;
-import com.azure.resourcemanager.appservice.models.MSDeploy;
-import com.azure.resourcemanager.appservice.models.OperatingSystem;
-import com.azure.resourcemanager.appservice.models.PricingTier;
-import com.azure.resourcemanager.appservice.models.PrivateLinkConnectionApprovalRequestResource;
-import com.azure.resourcemanager.appservice.models.PrivateLinkConnectionState;
-import com.azure.resourcemanager.appservice.models.PublishingProfile;
-import com.azure.resourcemanager.appservice.models.WebAppBase;
-import com.azure.resourcemanager.appservice.models.WebAppSourceControl;
 import com.azure.resourcemanager.appservice.fluent.models.ConnectionStringDictionaryInner;
 import com.azure.resourcemanager.appservice.fluent.models.IdentifierInner;
 import com.azure.resourcemanager.appservice.fluent.models.MSDeployStatusInner;
+import com.azure.resourcemanager.appservice.fluent.models.RemotePrivateEndpointConnectionArmResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteAuthSettingsInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteConfigResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
@@ -33,6 +22,17 @@ import com.azure.resourcemanager.appservice.fluent.models.SitePatchResourceInner
 import com.azure.resourcemanager.appservice.fluent.models.SiteSourceControlInner;
 import com.azure.resourcemanager.appservice.fluent.models.SlotConfigNamesResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StringDictionaryInner;
+import com.azure.resourcemanager.appservice.models.AppServicePlan;
+import com.azure.resourcemanager.appservice.models.CsmPublishingProfileOptions;
+import com.azure.resourcemanager.appservice.models.CsmSlotEntity;
+import com.azure.resourcemanager.appservice.models.HostnameBinding;
+import com.azure.resourcemanager.appservice.models.MSDeploy;
+import com.azure.resourcemanager.appservice.models.OperatingSystem;
+import com.azure.resourcemanager.appservice.models.PricingTier;
+import com.azure.resourcemanager.appservice.models.PrivateLinkConnectionState;
+import com.azure.resourcemanager.appservice.models.PublishingProfile;
+import com.azure.resourcemanager.appservice.models.WebAppBase;
+import com.azure.resourcemanager.appservice.models.WebAppSourceControl;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointServiceConnectionStatus;
@@ -41,14 +41,14 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateLinkResource;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsUpdatingPrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
+import reactor.core.publisher.Mono;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import reactor.core.publisher.Mono;
-import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /**
  * The base implementation for web apps and function apps.
@@ -537,7 +537,7 @@ abstract class AppServiceBaseImpl<
         return this.manager().serviceClient().getWebApps()
             .approveOrRejectPrivateEndpointConnectionAsync(this.resourceGroupName(), this.name(),
                 privateEndpointConnectionName,
-                new PrivateLinkConnectionApprovalRequestResource().withPrivateLinkServiceConnectionState(
+                new RemotePrivateEndpointConnectionArmResourceInner().withPrivateLinkServiceConnectionState(
                     new PrivateLinkConnectionState()
                         .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED.toString())
                 ))
@@ -554,7 +554,7 @@ abstract class AppServiceBaseImpl<
         return this.manager().serviceClient().getWebApps()
             .approveOrRejectPrivateEndpointConnectionAsync(this.resourceGroupName(), this.name(),
                 privateEndpointConnectionName,
-                new PrivateLinkConnectionApprovalRequestResource().withPrivateLinkServiceConnectionState(
+                new RemotePrivateEndpointConnectionArmResourceInner().withPrivateLinkServiceConnectionState(
                     new PrivateLinkConnectionState()
                         .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED.toString())
                 ))

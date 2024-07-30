@@ -18,12 +18,12 @@ import com.azure.resourcemanager.appcontainers.models.CertificatePatch;
 public interface ConnectedEnvironmentsCertificatesClient {
     /**
      * Get the Certificates in a given connected environment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Certificates in a given connected environment as paginated response with {@link PagedIterable}.
      */
@@ -32,13 +32,13 @@ public interface ConnectedEnvironmentsCertificatesClient {
 
     /**
      * Get the Certificates in a given connected environment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Certificates in a given connected environment as paginated response with {@link PagedIterable}.
      */
@@ -47,30 +47,30 @@ public interface ConnectedEnvironmentsCertificatesClient {
 
     /**
      * Get the specified Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Certificate along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CertificateInner> getWithResponse(
-        String resourceGroupName, String connectedEnvironmentName, String certificateName, Context context);
+    Response<CertificateInner> getWithResponse(String resourceGroupName, String connectedEnvironmentName,
+        String certificateName, Context context);
 
     /**
      * Get the specified Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Certificate.
      */
@@ -79,7 +79,7 @@ public interface ConnectedEnvironmentsCertificatesClient {
 
     /**
      * Create or Update a Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
@@ -87,28 +87,24 @@ public interface ConnectedEnvironmentsCertificatesClient {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment along with {@link
-     *     Response}.
+     * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CertificateInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String connectedEnvironmentName,
-        String certificateName,
-        CertificateInner certificateEnvelope,
-        Context context);
+    Response<CertificateInner> createOrUpdateWithResponse(String resourceGroupName, String connectedEnvironmentName,
+        String certificateName, CertificateInner certificateEnvelope, Context context);
 
     /**
      * Create or Update a Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment.
      */
@@ -117,30 +113,30 @@ public interface ConnectedEnvironmentsCertificatesClient {
 
     /**
      * Deletes the specified Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String connectedEnvironmentName, String certificateName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String connectedEnvironmentName, String certificateName,
+        Context context);
 
     /**
      * Deletes the specified Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -148,9 +144,9 @@ public interface ConnectedEnvironmentsCertificatesClient {
 
     /**
      * Update properties of a certificate
-     *
-     * <p>Patches a certificate. Currently only patching of tags is supported.
-     *
+     * 
+     * Patches a certificate. Currently only patching of tags is supported.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
@@ -158,38 +154,31 @@ public interface ConnectedEnvironmentsCertificatesClient {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment along with {@link
-     *     Response}.
+     * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CertificateInner> updateWithResponse(
-        String resourceGroupName,
-        String connectedEnvironmentName,
-        String certificateName,
-        CertificatePatch certificateEnvelope,
-        Context context);
+    Response<CertificateInner> updateWithResponse(String resourceGroupName, String connectedEnvironmentName,
+        String certificateName, CertificatePatch certificateEnvelope, Context context);
 
     /**
      * Update properties of a certificate
-     *
-     * <p>Patches a certificate. Currently only patching of tags is supported.
-     *
+     * 
+     * Patches a certificate. Currently only patching of tags is supported.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
      * @param certificateEnvelope Properties of a certificate that need to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return certificate used for Custom Domain bindings of Container Apps in a Managed Environment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CertificateInner update(
-        String resourceGroupName,
-        String connectedEnvironmentName,
-        String certificateName,
+    CertificateInner update(String resourceGroupName, String connectedEnvironmentName, String certificateName,
         CertificatePatch certificateEnvelope);
 }

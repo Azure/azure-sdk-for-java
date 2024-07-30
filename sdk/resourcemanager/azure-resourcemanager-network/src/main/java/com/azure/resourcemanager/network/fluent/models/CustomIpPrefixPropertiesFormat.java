@@ -135,8 +135,7 @@ public final class CustomIpPrefixPropertiesFormat {
     }
 
     /**
-     * Get the cidr property: The prefix range in CIDR notation. Should include the start address and the prefix
-     * length.
+     * Get the cidr property: The prefix range in CIDR notation. Should include the start address and the prefix length.
      * 
      * @return the cidr value.
      */
@@ -145,8 +144,7 @@ public final class CustomIpPrefixPropertiesFormat {
     }
 
     /**
-     * Set the cidr property: The prefix range in CIDR notation. Should include the start address and the prefix
-     * length.
+     * Set the cidr property: The prefix range in CIDR notation. Should include the start address and the prefix length.
      * 
      * @param cidr the cidr value to set.
      * @return the CustomIpPrefixPropertiesFormat object itself.

@@ -29,22 +29,28 @@ import com.azure.resourcemanager.storage.fluent.models.ManagementPolicyInner;
 import com.azure.resourcemanager.storage.models.ManagementPolicyName;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ManagementPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ManagementPoliciesClient.
+ */
 public final class ManagementPoliciesClientImpl implements ManagementPoliciesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ManagementPoliciesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final StorageManagementClientImpl client;
 
     /**
      * Initializes an instance of ManagementPoliciesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ManagementPoliciesClientImpl(StorageManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ManagementPoliciesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ManagementPoliciesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -55,74 +61,57 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
     @Host("{$host}")
     @ServiceInterface(name = "StorageManagementCli")
     public interface ManagementPoliciesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/managementPolicies/{managementPolicyName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/managementPolicies/{managementPolicyName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagementPolicyInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<ManagementPolicyInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("managementPolicyName") ManagementPolicyName managementPolicyName,
-            @HeaderParam("Accept") String accept,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/managementPolicies/{managementPolicyName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ManagementPolicyInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("managementPolicyName") ManagementPolicyName managementPolicyName,
+            @BodyParam("application/json") ManagementPolicyInner properties, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/managementPolicies/{managementPolicyName}")
-        @ExpectedResponses({200})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/managementPolicies/{managementPolicyName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagementPolicyInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("managementPolicyName") ManagementPolicyName managementPolicyName,
-            @BodyParam("application/json") ManagementPolicyInner properties,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/managementPolicies/{managementPolicyName}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("managementPolicyName") ManagementPolicyName managementPolicyName,
-            Context context);
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("managementPolicyName") ManagementPolicyName managementPolicyName, Context context);
     }
 
     /**
      * Gets the managementpolicy associated with the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the managementpolicy associated with the specified storage account along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ManagementPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, ManagementPolicyName managementPolicyName) {
+    public Mono<Response<ManagementPolicyInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        ManagementPolicyName managementPolicyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -132,10 +121,8 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (managementPolicyName == null) {
             return Mono
@@ -143,44 +130,32 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            managementPolicyName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, accountName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), managementPolicyName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the managementpolicy associated with the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the managementpolicy associated with the specified storage account along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagementPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, ManagementPolicyName managementPolicyName, Context context) {
+    private Mono<Response<ManagementPolicyInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        ManagementPolicyName managementPolicyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -190,10 +165,8 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (managementPolicyName == null) {
             return Mono
@@ -201,46 +174,38 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                managementPolicyName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), managementPolicyName, accept, context);
     }
 
     /**
      * Gets the managementpolicy associated with the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managementpolicy associated with the specified storage account on successful completion of {@link
-     *     Mono}.
+     * @return the managementpolicy associated with the specified storage account on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagementPolicyInner> getAsync(
-        String resourceGroupName, String accountName, ManagementPolicyName managementPolicyName) {
+    public Mono<ManagementPolicyInner> getAsync(String resourceGroupName, String accountName,
+        ManagementPolicyName managementPolicyName) {
         return getWithResponseAsync(resourceGroupName, accountName, managementPolicyName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the managementpolicy associated with the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -249,18 +214,18 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
      * @return the managementpolicy associated with the specified storage account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagementPolicyInner> getWithResponse(
-        String resourceGroupName, String accountName, ManagementPolicyName managementPolicyName, Context context) {
+    public Response<ManagementPolicyInner> getWithResponse(String resourceGroupName, String accountName,
+        ManagementPolicyName managementPolicyName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, managementPolicyName, context).block();
     }
 
     /**
      * Gets the managementpolicy associated with the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -268,37 +233,32 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
      * @return the managementpolicy associated with the specified storage account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagementPolicyInner get(
-        String resourceGroupName, String accountName, ManagementPolicyName managementPolicyName) {
+    public ManagementPolicyInner get(String resourceGroupName, String accountName,
+        ManagementPolicyName managementPolicyName) {
         return getWithResponse(resourceGroupName, accountName, managementPolicyName, Context.NONE).getValue();
     }
 
     /**
      * Sets the managementpolicy to the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
      * @param properties The ManagementPolicy set to a storage account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Get Storage Account ManagementPolicies operation response along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ManagementPolicyInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        ManagementPolicyName managementPolicyName,
-        ManagementPolicyInner properties) {
+    public Mono<Response<ManagementPolicyInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String accountName, ManagementPolicyName managementPolicyName, ManagementPolicyInner properties) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -308,10 +268,8 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (managementPolicyName == null) {
             return Mono
@@ -324,29 +282,19 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            managementPolicyName,
-                            properties,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, accountName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), managementPolicyName, properties, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Sets the managementpolicy to the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
      * @param properties The ManagementPolicy set to a storage account.
      * @param context The context to associate with this operation.
@@ -354,20 +302,15 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Get Storage Account ManagementPolicies operation response along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagementPolicyInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        ManagementPolicyName managementPolicyName,
-        ManagementPolicyInner properties,
+    private Mono<Response<ManagementPolicyInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String accountName, ManagementPolicyName managementPolicyName, ManagementPolicyInner properties,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -377,10 +320,8 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (managementPolicyName == null) {
             return Mono
@@ -393,26 +334,18 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                managementPolicyName,
-                properties,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, accountName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), managementPolicyName, properties, accept,
+            context);
     }
 
     /**
      * Sets the managementpolicy to the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
      * @param properties The ManagementPolicy set to a storage account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -421,22 +354,19 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
      * @return the Get Storage Account ManagementPolicies operation response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagementPolicyInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String accountName,
-        ManagementPolicyName managementPolicyName,
-        ManagementPolicyInner properties) {
+    public Mono<ManagementPolicyInner> createOrUpdateAsync(String resourceGroupName, String accountName,
+        ManagementPolicyName managementPolicyName, ManagementPolicyInner properties) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, managementPolicyName, properties)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Sets the managementpolicy to the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
      * @param properties The ManagementPolicy set to a storage account.
      * @param context The context to associate with this operation.
@@ -446,24 +376,19 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
      * @return the Get Storage Account ManagementPolicies operation response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagementPolicyInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        ManagementPolicyName managementPolicyName,
-        ManagementPolicyInner properties,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, accountName, managementPolicyName, properties, context)
-            .block();
+    public Response<ManagementPolicyInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
+        ManagementPolicyName managementPolicyName, ManagementPolicyInner properties, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, managementPolicyName, properties,
+            context).block();
     }
 
     /**
      * Sets the managementpolicy to the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
      * @param properties The ManagementPolicy set to a storage account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -472,23 +397,19 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
      * @return the Get Storage Account ManagementPolicies operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagementPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String accountName,
-        ManagementPolicyName managementPolicyName,
-        ManagementPolicyInner properties) {
-        return createOrUpdateWithResponse(
-                resourceGroupName, accountName, managementPolicyName, properties, Context.NONE)
-            .getValue();
+    public ManagementPolicyInner createOrUpdate(String resourceGroupName, String accountName,
+        ManagementPolicyName managementPolicyName, ManagementPolicyInner properties) {
+        return createOrUpdateWithResponse(resourceGroupName, accountName, managementPolicyName, properties,
+            Context.NONE).getValue();
     }
 
     /**
      * Deletes the managementpolicy associated with the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -496,13 +417,11 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, ManagementPolicyName managementPolicyName) {
+    public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        ManagementPolicyName managementPolicyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -512,37 +431,26 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (managementPolicyName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter managementPolicyName is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            managementPolicyName,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, accountName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), managementPolicyName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the managementpolicy associated with the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -551,13 +459,11 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, ManagementPolicyName managementPolicyName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        ManagementPolicyName managementPolicyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -567,34 +473,25 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (managementPolicyName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter managementPolicyName is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                managementPolicyName,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), managementPolicyName, context);
     }
 
     /**
      * Deletes the managementpolicy associated with the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -602,19 +499,19 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String resourceGroupName, String accountName, ManagementPolicyName managementPolicyName) {
+    public Mono<Void> deleteAsync(String resourceGroupName, String accountName,
+        ManagementPolicyName managementPolicyName) {
         return deleteWithResponseAsync(resourceGroupName, accountName, managementPolicyName)
             .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes the managementpolicy associated with the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -623,18 +520,18 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, ManagementPolicyName managementPolicyName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String accountName,
+        ManagementPolicyName managementPolicyName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, accountName, managementPolicyName, context).block();
     }
 
     /**
      * Deletes the managementpolicy associated with the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

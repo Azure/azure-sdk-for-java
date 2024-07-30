@@ -32,7 +32,7 @@ public final class ApplicationsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"r\",\"allowUpdates\":true,\"defaultVersion\":\"ijnkrxfrdd\"},\"etag\":\"ratiz\",\"id\":\"ronasxift\",\"name\":\"zq\",\"type\":\"zh\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"pwjxezn\",\"allowUpdates\":false,\"defaultVersion\":\"rnjwmw\"},\"etag\":\"nbsazejjoqkag\",\"id\":\"hsxttaugzxnf\",\"name\":\"azpxdtnkdmkqjjl\",\"type\":\"uenvrkp\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -50,10 +50,10 @@ public final class ApplicationsListMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Application> response
-            = manager.applications().list("knpirgnepttwq", "sniffc", 1105957042, com.azure.core.util.Context.NONE);
+            = manager.applications().list("uzlm", "felfktg", 1170728394, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("r", response.iterator().next().displayName());
-        Assertions.assertEquals(true, response.iterator().next().allowUpdates());
-        Assertions.assertEquals("ijnkrxfrdd", response.iterator().next().defaultVersion());
+        Assertions.assertEquals("pwjxezn", response.iterator().next().displayName());
+        Assertions.assertEquals(false, response.iterator().next().allowUpdates());
+        Assertions.assertEquals("rnjwmw", response.iterator().next().defaultVersion());
     }
 }

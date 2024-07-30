@@ -6,6 +6,7 @@ package com.azure.resourcemanager.containerservice.generated;
 
 import com.azure.resourcemanager.containerservice.fluent.models.SnapshotInner;
 import com.azure.resourcemanager.containerservice.models.CreationData;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,16 +16,19 @@ import java.util.Map;
 public final class SnapshotsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-01-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
      * SnapshotsCreate.json
      */
     /**
      * Sample code: Create/Update Snapshot.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createUpdateSnapshot(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.kubernetesClusters().manager().serviceClient().getSnapshots()
+        azure.kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getSnapshots()
             .createOrUpdateWithResponse("rg1", "snapshot1", new SnapshotInner().withLocation("westus")
                 .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
                 .withCreationData(new CreationData().withSourceResourceId(

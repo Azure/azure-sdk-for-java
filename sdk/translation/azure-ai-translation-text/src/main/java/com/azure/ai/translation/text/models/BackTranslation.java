@@ -5,30 +5,31 @@ package com.azure.ai.translation.text.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Back Translation.
  */
 @Immutable
-public final class BackTranslation {
+public final class BackTranslation implements JsonSerializable<BackTranslation> {
 
     /*
      * A string giving the normalized form of the source term that is a back-translation of the target.
      * This value should be used as input to lookup examples.
      */
     @Generated
-    @JsonProperty(value = "normalizedText")
-    private String normalizedText;
+    private final String normalizedText;
 
     /*
      * A string giving the source term that is a back-translation of the target in a form best
      * suited for end-user display.
      */
     @Generated
-    @JsonProperty(value = "displayText")
-    private String displayText;
+    private final String displayText;
 
     /*
      * An integer representing the number of examples that are available for this translation pair.
@@ -40,34 +41,28 @@ public final class BackTranslation {
      * applied on the fly to remove "bad" examples.
      */
     @Generated
-    @JsonProperty(value = "numExamples")
-    private int numExamples;
+    private final int examplesCount;
 
     /*
      * An integer representing the frequency of this translation pair in the data. The main purpose of this
-     * field is to provide a user interface with a means to sort back-translations so the most frequent terms are
-     * first.
+     * field is to provide a user interface with a means to sort back-translations so the most frequent terms are first.
      */
     @Generated
-    @JsonProperty(value = "frequencyCount")
-    private int frequencyCount;
+    private final int frequencyCount;
 
     /**
      * Creates an instance of BackTranslation class.
      *
      * @param normalizedText the normalizedText value to set.
      * @param displayText the displayText value to set.
-     * @param numExamples the numExamples value to set.
+     * @param examplesCount the examplesCount value to set.
      * @param frequencyCount the frequencyCount value to set.
      */
     @Generated
-    @JsonCreator
-    private BackTranslation(@JsonProperty(value = "normalizedText") String normalizedText,
-        @JsonProperty(value = "displayText") String displayText, @JsonProperty(value = "numExamples") int numExamples,
-        @JsonProperty(value = "frequencyCount") int frequencyCount) {
+    private BackTranslation(String normalizedText, String displayText, int examplesCount, int frequencyCount) {
         this.normalizedText = normalizedText;
         this.displayText = displayText;
-        this.numExamples = numExamples;
+        this.examplesCount = examplesCount;
         this.frequencyCount = frequencyCount;
     }
 
@@ -96,7 +91,7 @@ public final class BackTranslation {
     }
 
     /**
-     * Get the numExamples property: An integer representing the number of examples that are available for this
+     * Get the examplesCount property: An integer representing the number of examples that are available for this
      * translation pair.
      * Actual examples must be retrieved with a separate call to lookup examples. The number is mostly
      * intended to facilitate display in a UX. For example, a user interface may add a hyperlink
@@ -105,23 +100,71 @@ public final class BackTranslation {
      * by a call to lookup examples may be less than numExamples, because additional filtering may be
      * applied on the fly to remove "bad" examples.
      *
-     * @return the numExamples value.
+     * @return the examplesCount value.
      */
     @Generated
-    public int getNumExamples() {
-        return this.numExamples;
+    public int getExamplesCount() {
+        return this.examplesCount;
     }
 
     /**
      * Get the frequencyCount property: An integer representing the frequency of this translation pair in the data. The
      * main purpose of this
-     * field is to provide a user interface with a means to sort back-translations so the most frequent terms are
-     * first.
+     * field is to provide a user interface with a means to sort back-translations so the most frequent terms are first.
      *
      * @return the frequencyCount value.
      */
     @Generated
     public int getFrequencyCount() {
         return this.frequencyCount;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("normalizedText", this.normalizedText);
+        jsonWriter.writeStringField("displayText", this.displayText);
+        jsonWriter.writeIntField("numExamples", this.examplesCount);
+        jsonWriter.writeIntField("frequencyCount", this.frequencyCount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackTranslation from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackTranslation if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BackTranslation.
+     */
+    @Generated
+    public static BackTranslation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String normalizedText = null;
+            String displayText = null;
+            int examplesCount = 0;
+            int frequencyCount = 0;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("normalizedText".equals(fieldName)) {
+                    normalizedText = reader.getString();
+                } else if ("displayText".equals(fieldName)) {
+                    displayText = reader.getString();
+                } else if ("numExamples".equals(fieldName)) {
+                    examplesCount = reader.getInt();
+                } else if ("frequencyCount".equals(fieldName)) {
+                    frequencyCount = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new BackTranslation(normalizedText, displayText, examplesCount, frequencyCount);
+        });
     }
 }

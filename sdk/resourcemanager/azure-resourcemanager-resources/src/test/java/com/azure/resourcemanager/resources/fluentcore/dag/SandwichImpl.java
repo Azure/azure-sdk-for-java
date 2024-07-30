@@ -3,6 +3,8 @@
 
 package com.azure.resourcemanager.resources.fluentcore.dag;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.resources.fluentcore.model.Executable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import reactor.core.publisher.Mono;
@@ -15,6 +17,8 @@ import java.time.Duration;
 public class SandwichImpl
         extends CreatableUpdatableImpl<ISandwich, SandwichInner, SandwichImpl>
         implements ISandwich {
+    private static final ClientLogger LOGGER = new ClientLogger(SandwichImpl.class);
+
     /**
      * Creates SandwichImpl.
      *
@@ -34,7 +38,7 @@ public class SandwichImpl
 
     @Override
     public Mono<ISandwich> createResourceAsync() {
-        System.out.println("Sandwich(" + this.name() + ")::createResourceAsync() [Creating sandwich]");
+        LOGGER.log(LogLevel.VERBOSE, () -> "Sandwich(" + this.name() + ")::createResourceAsync() [Creating sandwich]");
         return Mono.just(this)
                 .delayElement(Duration.ofMillis(250))
                 .map(sandwich -> sandwich);

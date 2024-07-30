@@ -12,8 +12,8 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.RuntimeStack;
 import com.azure.resourcemanager.appservice.models.WebApp;
@@ -50,17 +50,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkTests.class);
 
     private AzureResourceManager azureResourceManager;
     private String rgName;
@@ -122,7 +119,7 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
 //        String pecName2 = generateRandomResourceName("pec", 10);
 
         String saDomainName = saName + ".blob.core.windows.net";
-        System.out.println("storage account domain name: " + saDomainName);
+        LOGGER.log(LogLevel.VERBOSE, () -> "storage account domain name: " + saDomainName);
 
         StorageAccount storageAccount = azureResourceManager.storageAccounts().define(saName)
             .withRegion(region)
@@ -219,7 +216,7 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
         Assertions.assertEquals(network.subnets().get(subnetName).id(), privateEndpoint.subnet().id());
         Assertions.assertEquals(1, privateEndpoint.networkInterfaces().size());
         Assertions.assertEquals(1, privateEndpoint.privateLinkServiceConnections().size());
-        Assertions.assertEquals(storageAccount.id(), privateEndpoint.privateLinkServiceConnections().get(pecName).privateLinkResourceId());
+        assertResourceIdEquals(storageAccount.id(), privateEndpoint.privateLinkServiceConnections().get(pecName).privateLinkResourceId());
         Assertions.assertEquals(Collections.singletonList(PrivateLinkSubResourceName.STORAGE_BLOB), privateEndpoint.privateLinkServiceConnections().get(pecName).subResourceNames());
         Assertions.assertNotNull(privateEndpoint.customDnsConfigurations());
         Assertions.assertFalse(privateEndpoint.customDnsConfigurations().isEmpty());
@@ -228,7 +225,7 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
         Assertions.assertEquals("Approved", privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
 
         String saPrivateIp = privateEndpoint.customDnsConfigurations().get(0).ipAddresses().get(0);
-        System.out.println("storage account private ip: " + saPrivateIp);
+        LOGGER.log(LogLevel.VERBOSE, () -> "storage account private ip: " + saPrivateIp);
 
         // verify list
         List<PrivateEndpoint> privateEndpoints = azureResourceManager.privateEndpoints().listByResourceGroup(rgName).stream().collect(Collectors.toList());
@@ -248,7 +245,7 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
         String vmName = generateRandomResourceName("vm", 10);
 
         String saDomainName = saName + ".blob.core.windows.net";
-        System.out.println("storage account domain name: " + saDomainName);
+        LOGGER.log(LogLevel.VERBOSE, () -> "storage account domain name: " + saDomainName);
 
         StorageAccount storageAccount = azureResourceManager.storageAccounts().define(saName)
             .withRegion(region)
@@ -280,7 +277,7 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
         Assertions.assertEquals(network.subnets().get(subnetName).id(), privateEndpoint.subnet().id());
         Assertions.assertEquals(1, privateEndpoint.networkInterfaces().size());
         Assertions.assertEquals(1, privateEndpoint.privateLinkServiceConnections().size());
-        Assertions.assertEquals(storageAccount.id(), privateEndpoint.privateLinkServiceConnections().get(pecName).privateLinkResourceId());
+        assertResourceIdEquals(storageAccount.id(), privateEndpoint.privateLinkServiceConnections().get(pecName).privateLinkResourceId());
         Assertions.assertEquals(Collections.singletonList(PrivateLinkSubResourceName.STORAGE_BLOB), privateEndpoint.privateLinkServiceConnections().get(pecName).subResourceNames());
         Assertions.assertNotNull(privateEndpoint.customDnsConfigurations());
         Assertions.assertFalse(privateEndpoint.customDnsConfigurations().isEmpty());
@@ -289,7 +286,7 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
         Assertions.assertEquals("Approved", privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
 
         String saPrivateIp = privateEndpoint.customDnsConfigurations().get(0).ipAddresses().get(0);
-        System.out.println("storage account private ip: " + saPrivateIp);
+        LOGGER.log(LogLevel.VERBOSE, () -> "storage account private ip: " + saPrivateIp);
 
         VirtualMachine virtualMachine = null;
         if (validateOnVirtualMachine) {
@@ -310,7 +307,7 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
             // verify private endpoint not yet works
             RunCommandResult commandResult = virtualMachine.runShellScript(Collections.singletonList("nslookup " + saDomainName), null);
             for (InstanceViewStatus status : commandResult.value()) {
-                System.out.println(status.message());
+                LOGGER.log(LogLevel.VERBOSE, () -> status.message());
             }
             Assertions.assertFalse(commandResult.value().stream().anyMatch(status -> status.message().contains(saPrivateIp)));
         }
@@ -335,7 +332,7 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
             // verify private endpoint works
             RunCommandResult commandResult = virtualMachine.runShellScript(Collections.singletonList("nslookup " + saDomainName), null);
             for (InstanceViewStatus status : commandResult.value()) {
-                System.out.println(status.message());
+                LOGGER.log(LogLevel.VERBOSE, () -> status.message());
             }
             Assertions.assertTrue(commandResult.value().stream().anyMatch(status -> status.message().contains(saPrivateIp)));
         }
@@ -377,6 +374,7 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .withEmptyAccessPolicy()
+            .disablePublicNetworkAccess()
             .create();
 
         validatePrivateLinkResource(vault, subResourceName.toString());
@@ -558,12 +556,5 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
             retry--;
         }
         Assertions.assertEquals("Approved", privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
-    }
-
-    private static HashMap<String, String> parseAuthFile(String authFilename) throws Exception {
-        String content = new String(Files.readAllBytes(new File(authFilename).toPath()), StandardCharsets.UTF_8).trim();
-        HashMap<String, String> auth = new HashMap<>();
-        auth = new JacksonAdapter().deserialize(content, auth.getClass(), SerializerEncoding.JSON);
-        return auth;
     }
 }

@@ -82,6 +82,7 @@ public class BlobName implements XmlSerializable<BlobName> {
     }
 
     public static BlobName fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        // BEGIN: com.azure.xml.XmlReader.readObject#String-ReadValueCallback
         return xmlReader.readObject(getRootElementName(rootElementName, "Name"), reader -> {
             BlobName result = new BlobName();
             result.encoded = reader.getNullableAttribute(null, "Encoded", Boolean::parseBoolean);
@@ -89,5 +90,6 @@ public class BlobName implements XmlSerializable<BlobName> {
 
             return result;
         });
+        // END: com.azure.xml.XmlReader.readObject#String-ReadValueCallback
     }
 }

@@ -54,8 +54,7 @@ public final class AzureDevOpsProjectProperties {
     /*
      * Details about resource onboarding status across all connectors.
      * 
-     * OnboardedByOtherConnector - this resource has already been onboarded to another connector. This is only
-     * applicable to top-level resources.
+     * OnboardedByOtherConnector - this resource has already been onboarded to another connector. This is only applicable to top-level resources.
      * Onboarded - this resource has already been onboarded by the specified connector.
      * NotOnboarded - this resource has not been onboarded to any connector.
      * NotApplicable - the onboarding state is not applicable to the current endpoint.

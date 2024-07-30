@@ -265,20 +265,20 @@ public final class Contact {
             addressMailing().validate();
         }
         if (email() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property email in model Contact"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property email in model Contact"));
         }
         if (nameFirst() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property nameFirst in model Contact"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property nameFirst in model Contact"));
         }
         if (nameLast() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property nameLast in model Contact"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property nameLast in model Contact"));
         }
         if (phone() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property phone in model Contact"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property phone in model Contact"));
         }
     }
 

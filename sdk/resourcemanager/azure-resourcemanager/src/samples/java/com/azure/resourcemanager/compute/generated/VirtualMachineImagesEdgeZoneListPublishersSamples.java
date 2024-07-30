@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class VirtualMachineImagesEdgeZoneListPublishersSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineImageExamples/VirtualMachineImagesEdgeZone_ListPublishers_MinimumSet_Gen.json
      */
     /**
@@ -20,13 +20,16 @@ public final class VirtualMachineImagesEdgeZoneListPublishersSamples {
      */
     public static void
         virtualMachineImagesEdgeZoneListPublishersMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineImagesEdgeZones()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineImagesEdgeZones()
             .listPublishersWithResponse("aaaa", "aaaaaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineImageExamples/VirtualMachineImagesEdgeZone_ListPublishers_MaximumSet_Gen.json
      */
     /**
@@ -36,7 +39,10 @@ public final class VirtualMachineImagesEdgeZoneListPublishersSamples {
      */
     public static void
         virtualMachineImagesEdgeZoneListPublishersMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineImagesEdgeZones()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineImagesEdgeZones()
             .listPublishersWithResponse("aaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

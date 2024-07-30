@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservices.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Summary of the replication job data for this vault. */
+/**
+ * Summary of the replication job data for this vault.
+ */
 @Fluent
 public final class JobsSummary {
     /*
@@ -28,13 +30,15 @@ public final class JobsSummary {
     @JsonProperty(value = "inProgressJobs")
     private Integer inProgressJobs;
 
-    /** Creates an instance of JobsSummary class. */
+    /**
+     * Creates an instance of JobsSummary class.
+     */
     public JobsSummary() {
     }
 
     /**
      * Get the failedJobs property: Count of failed jobs.
-     *
+     * 
      * @return the failedJobs value.
      */
     public Integer failedJobs() {
@@ -43,7 +47,7 @@ public final class JobsSummary {
 
     /**
      * Set the failedJobs property: Count of failed jobs.
-     *
+     * 
      * @param failedJobs the failedJobs value to set.
      * @return the JobsSummary object itself.
      */
@@ -54,7 +58,7 @@ public final class JobsSummary {
 
     /**
      * Get the suspendedJobs property: Count of suspended jobs.
-     *
+     * 
      * @return the suspendedJobs value.
      */
     public Integer suspendedJobs() {
@@ -63,7 +67,7 @@ public final class JobsSummary {
 
     /**
      * Set the suspendedJobs property: Count of suspended jobs.
-     *
+     * 
      * @param suspendedJobs the suspendedJobs value to set.
      * @return the JobsSummary object itself.
      */
@@ -74,7 +78,7 @@ public final class JobsSummary {
 
     /**
      * Get the inProgressJobs property: Count of in-progress jobs.
-     *
+     * 
      * @return the inProgressJobs value.
      */
     public Integer inProgressJobs() {
@@ -83,7 +87,7 @@ public final class JobsSummary {
 
     /**
      * Set the inProgressJobs property: Count of in-progress jobs.
-     *
+     * 
      * @param inProgressJobs the inProgressJobs value to set.
      * @return the JobsSummary object itself.
      */
@@ -94,7 +98,7 @@ public final class JobsSummary {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

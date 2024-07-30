@@ -318,8 +318,8 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="ConstantName" files="com.azure.spring.cloud.config.AppConfigurationPropertySourceLocator"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
             files="[/\\]azure-cosmos-kafka-connect[/\\]"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.cosmos.kafka.connect.CosmosDBSourceConnector"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.cosmos.kafka.connect.CosmosDBSinkConnector"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.cosmos.kafka.connect.CosmosSourceConnector"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.cosmos.kafka.connect.CosmosSinkConnector"/>
 
   <!-- Checkstyle suppressions for resource manager package -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.resourcemanager.*"/>
@@ -332,6 +332,8 @@ the main ServiceBusClientBuilder. -->
 
   <!-- Checkstyle suppression for OpenAI client APIs that use Flux instead of PagedFlux for methods that return a collection -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.openai.(OpenAIClient|OpenAIAsyncClient).java"/>
+  <!-- Checkstyle suppression for OpenAI Assistants client APIs that use Flux instead of PagedFlux for methods that return a collection -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.openai.assistants.(AssistantsClient|AssistantsAsyncClient).java"/>
 
   <!-- jdbc sdk suppression -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
@@ -340,6 +342,12 @@ the main ServiceBusClientBuilder. -->
             files="com.azure.identity.extensions.jdbc.postgresql.AzurePostgresqlAuthenticationPlugin"/>
 
   <!-- ### begin: Spring related suppression -->
+  <!-- Checkstyle suppressions for azure.spring.data.cosmos package -->
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-spring-data-cosmos[/\\]src[/\\]test[/\\]"/>
+  <suppress checks="MethodName|MemberName|ParameterName" files="src[/\\]test[/\\]java[/\\]com[/\\]azure[/\\]spring[/\\]data[/\\]cosmos[/\\]domain|repository.*.java"/>
+  <suppress checks="EnforceFinalFields" files="com.azure.spring.data.cosmos.core.query.CosmosPageRequest"/>
+  <suppress checks="MethodName" files="com.azure.spring.data.cosmos.config.CosmosConfig.java"/>
+  <suppress checks="MemberName" files="com.azure.spring.data.cosmos.MyItem.java"/>
 
   <!-- The constant name is public static. -->
   <suppress checks="ConstantName" files="com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties"/>
@@ -358,47 +366,22 @@ the main ServiceBusClientBuilder. -->
   <!-- ExternalDependencyExposedCheck: Spring will directly use classes from spring dependencies in methods-->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
 
-  <suppress files="com.azure.spring[\\/].*Properties\.java" checks="MissingJavadocMethod" />
-  <suppress files="com.azure.spring[\\/].*AutoConfiguration\.java" checks="MissingJavadocMethod|JavadocThrowsChecks" />
-  <suppress files="com.azure.spring[\\/].*Configuration\.java" checks="MissingJavadocMethod" />
-  <suppress files="com.azure.spring[\\/].*Metadata\.java" checks="MissingJavadocMethod" />
-
   <!-- Suppress package name warning: b2c is the product name. -->
-  <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.aadb2c.*" />
-  <!-- Suppress package name warning: oauth2 is the protocol name. -->
-  <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2" />
-  <suppress checks="EnforceFinalFields" files="com.azure.spring.cloud.autoconfigure.aad.AadResourceServerWebSecurityConfigurerAdapter"/>
+  <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.implementation.aadb2c.*" />
   <!-- The package name length limit -->
   <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.implementation.keyvault.certificates.properties.AzureKeyVaultCertificateProperties"/>
-  <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.implementation.keyvault.certificates.properties.package-info.java"/>
   <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.implementation.properties.core.authentication.TokenCredentialConfigurationProperties"/>
-  <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.implementation.properties.core.authentication.package-info.java"/>
 
   <!--DenyListedWordsCheck: URL is the name -->
   <suppress checks="com.azure.tools.checkstyle.checks.DenyListedWordsCheck" files="com.azure.spring.cloud.core.resource.StorageBlobResource.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.DenyListedWordsCheck" files="com.azure.spring.cloud.core.resource.StorageFileResource.java"/>
 
-  <!-- EnforceFinalFieldsCheck: The property will be filled by Spring framework -->
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.messaging.container.AbstractListenerContainer.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.autoconfigure.keyvault.environment.KeyVaultOperation.java"/>
-
   <suppress checks="MethodName" files="com.azure.resourcemanager.appplatform.models.BuildProperties.java"/>
-  <suppress checks="EnforceFinalFields" files="com.azure.spring.data.cosmos.core.query.CosmosPageRequest"/>
-
-  <!-- Checkstyle suppressions for azure.spring.data.cosmos package -->
-  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-spring-data-cosmos[/\\]src[/\\]test[/\\]"/>
-  <suppress checks="MethodName|MemberName|ParameterName" files="src[/\\]test[/\\]java[/\\]com[/\\]azure[/\\]spring[/\\]data[/\\]cosmos[/\\]domain|repository.*.java"/>
-  <suppress checks="MethodName" files="com.azure.spring.data.cosmos.config.CosmosConfig.java"/>
-  <suppress checks="MemberName" files="com.azure.spring.data.cosmos.MyItem.java"/>
-
-  <!-- Checkstyle suppressions for com.azure.spring.cloud.service.implementation.redis package -->
-  <suppress checks="MethodName" files="com.azure.spring.cloud.service.implementation.redis.AzureJedisClientConfig"/>
-
-  <!-- ### end: Spring related suppression -->
 
   <!-- Checkstyle suppressions for azure.spring.cloud.autoconfigure.compatibility package -->
   <suppress checks="MethodName" files="com.azure.spring.cloud.autoconfigure.implementation.compatibility.AzureSpringBootVersionVerifier.java"/>
+  <!-- ### end: Spring related suppression -->
+
 
   <!-- TODO: (https://github.com/Azure/azure-sdk-for-java/issues/18279) -->
   <!-- Suppress DigitalTwins for now -->
@@ -485,6 +468,16 @@ the main ServiceBusClientBuilder. -->
 
   <!-- Suppress checks for defender Easm -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.analytics.defender.easm.models.CountPagedResponse"/>
+
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="io.clientcore.core.json.*" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="io.clientcore.core.http.pipeline.HttpLoggingPolicy" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="io.clientcore.core.http.client.DefaultHttpClientBuilder" />
+  <suppress checks="com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck" files="io.clientcore.core.http.pipeline.HttpRetryPolicy" />
+
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="io.clientcore.http.okhttp3.OkHttpHttpClientBuilder" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="io.clientcore.http.okhttp3.OkHttpHttpClientBuilder" />
+  <suppress checks="ExternalDependencyExposed" files=".*[/\\]http-stress[/\\].*\.java"/>
+  <suppress checks="IllegalImport" files="io.clientcore.http.*.stress"/>
 
   <!-- Exceptions thrown here are caught in the calling method. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"

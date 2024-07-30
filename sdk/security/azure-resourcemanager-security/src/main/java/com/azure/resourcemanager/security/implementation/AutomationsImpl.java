@@ -13,8 +13,8 @@ import com.azure.resourcemanager.security.fluent.AutomationsClient;
 import com.azure.resourcemanager.security.fluent.models.AutomationInner;
 import com.azure.resourcemanager.security.fluent.models.AutomationValidationStatusInner;
 import com.azure.resourcemanager.security.models.Automation;
-import com.azure.resourcemanager.security.models.AutomationValidationStatus;
 import com.azure.resourcemanager.security.models.Automations;
+import com.azure.resourcemanager.security.models.AutomationValidationStatus;
 
 public final class AutomationsImpl implements Automations {
     private static final ClientLogger LOGGER = new ClientLogger(AutomationsImpl.class);

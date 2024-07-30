@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
+  <Match>
+    <Bug pattern="CT_CONSTRUCTOR_THROW" />
+    <Or>
+      <Class name="com.azure.storage.blob.implementation.util.BlobSasImplUtil" />
+      <Class name="com.azure.storage.blob.models.CustomerProvidedKey" />
+      <Class name="com.azure.storage.blob.specialized.BlobAsyncClientBase" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE" />
+    <Class name="com.azure.storage.blob.models.Block" />
+  </Match>
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP" />
+    <Or>
+      <Class name="com.azure.storage.blob.BlobAsyncClient" />
+      <Class name="com.azure.storage.blob.BlobClient" />
+      <Class name="com.azure.storage.blob.BlobUrlParts" />
+      <Class name="com.azure.storage.blob.implementation.AzureBlobStorageImpl" />
+      <Class name="com.azure.storage.blob.implementation.models.ArrowConfiguration" />
+      <Class name="com.azure.storage.blob.implementation.models.BlobContainersSegment" />
+      <Class name="com.azure.storage.blob.implementation.models.BlobFlatListSegment" />
+      <Class name="com.azure.storage.blob.implementation.models.BlobHierarchyListSegment" />
+      <Class name="com.azure.storage.blob.implementation.models.BlobItemInternal" />
+      <Class name="com.azure.storage.blob.implementation.models.BlobPropertiesInternalConstructorProperties" />
+      <Class name="com.azure.storage.blob.implementation.models.BlobSignedIdentifierWrapper" />
+      <Class name="com.azure.storage.blob.implementation.models.BlobTags" />
+      <Class name="com.azure.storage.blob.implementation.models.BlobsDownloadHeaders" />
+      <Class name="com.azure.storage.blob.implementation.models.BlobsGetPropertiesHeaders" />
+      <Class name="com.azure.storage.blob.implementation.models.BlobsQueryHeaders" />
+      <Class name="com.azure.storage.blob.implementation.models.ContainersGetPropertiesHeaders" />
+      <Class name="com.azure.storage.blob.implementation.models.FilterBlobSegment" />
+      <Class name="com.azure.storage.blob.implementation.models.PageListCollection" />
+      <Class name="com.azure.storage.blob.implementation.models.PageListSegment" />
+      <Class name="com.azure.storage.blob.models.BlobContainerAccessPolicies" />
+      <Class name="com.azure.storage.blob.models.BlobContainerItem" />
+      <Class name="com.azure.storage.blob.models.BlobContainerProperties" />
+      <Class name="com.azure.storage.blob.models.BlobItem" />
+      <Class name="com.azure.storage.blob.models.BlobSeekableByteChannelReadResult" />
+      <Class name="com.azure.storage.blob.models.BlobServiceProperties" />
+      <Class name="com.azure.storage.blob.models.BlockList" />
+      <Class name="com.azure.storage.blob.models.BlockLookupList" />
+      <Class name="com.azure.storage.blob.models.PageList" />
+      <Class name="com.azure.storage.blob.models.TaggedBlobItem" />
+      <Class name="com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions" />
+      <Class name="com.azure.storage.blob.options.AppendBlobCreateOptions" />
+      <Class name="com.azure.storage.blob.options.AppendBlobSealOptions" />
+      <Class name="com.azure.storage.blob.options.BlobAcquireLeaseOptions" />
+      <Class name="com.azure.storage.blob.options.BlobBeginCopyOptions" />
+      <Class name="com.azure.storage.blob.options.BlobBreakLeaseOptions" />
+      <Class name="com.azure.storage.blob.options.BlobChangeLeaseOptions" />
+      <Class name="com.azure.storage.blob.options.BlobContainerCreateOptions" />
+      <Class name="com.azure.storage.blob.options.BlobCopyFromUrlOptions" />
+      <Class name="com.azure.storage.blob.options.BlobDownloadToFileOptions" />
+      <Class name="com.azure.storage.blob.options.BlobGetTagsOptions" />
+      <Class name="com.azure.storage.blob.options.BlobInputStreamOptions" />
+      <Class name="com.azure.storage.blob.options.BlobParallelUploadOptions" />
+      <Class name="com.azure.storage.blob.options.BlobQueryOptions" />
+      <Class name="com.azure.storage.blob.options.BlobReleaseLeaseOptions" />
+      <Class name="com.azure.storage.blob.options.BlobRenewLeaseOptions" />
+      <Class name="com.azure.storage.blob.options.BlobSeekableByteChannelReadOptions" />
+      <Class name="com.azure.storage.blob.options.BlobSetTagsOptions" />
+      <Class name="com.azure.storage.blob.options.BlobUploadFromFileOptions" />
+      <Class name="com.azure.storage.blob.options.BlobUploadFromUrlOptions" />
+      <Class name="com.azure.storage.blob.options.BlockBlobCommitBlockListOptions" />
+      <Class name="com.azure.storage.blob.options.BlockBlobOutputStreamOptions" />
+      <Class name="com.azure.storage.blob.options.BlockBlobSeekableByteChannelWriteOptions" />
+      <Class name="com.azure.storage.blob.options.BlockBlobSimpleUploadOptions" />
+      <Class name="com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions" />
+      <Class name="com.azure.storage.blob.options.BlockBlobStageBlockOptions" />
+      <Class name="com.azure.storage.blob.options.ListPageRangesDiffOptions" />
+      <Class name="com.azure.storage.blob.options.ListPageRangesOptions" />
+      <Class name="com.azure.storage.blob.options.PageBlobCopyIncrementalOptions" />
+      <Class name="com.azure.storage.blob.options.PageBlobCreateOptions" />
+      <Class name="com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP2" />
+    <Or>
+      <Class name="com.azure.storage.blob.BlobClientBuilder" />
+      <Class name="com.azure.storage.blob.BlobContainerClientBuilder" />
+      <Class name="com.azure.storage.blob.BlobServiceClientBuilder" />
+      <Class name="com.azure.storage.blob.BlobUrlParts" />
+      <Class name="com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder" />
+      <Class name="com.azure.storage.blob.implementation.models.ArrowConfiguration" />
+      <Class name="com.azure.storage.blob.implementation.models.BlobContainersSegment" />
+      <Class name="com.azure.storage.blob.implementation.models.BlobFlatListSegment" />
+      <Class name="com.azure.storage.blob.implementation.models.BlobHierarchyListSegment" />
+      <Class name="com.azure.storage.blob.implementation.models.BlobItemInternal" />
+      <Class name="com.azure.storage.blob.implementation.models.BlobPropertiesInternalConstructorProperties" />
+      <Class name="com.azure.storage.blob.implementation.models.BlobSignedIdentifierWrapper" />
+      <Class name="com.azure.storage.blob.implementation.models.BlobTags" />
+      <Class name="com.azure.storage.blob.implementation.models.BlobsDownloadHeaders" />
+      <Class name="com.azure.storage.blob.implementation.models.BlobsGetPropertiesHeaders" />
+      <Class name="com.azure.storage.blob.implementation.models.BlobsQueryHeaders" />
+      <Class name="com.azure.storage.blob.implementation.models.ContainersGetPropertiesHeaders" />
+      <Class name="com.azure.storage.blob.implementation.models.FilterBlobSegment" />
+      <Class name="com.azure.storage.blob.implementation.models.PageListCollection" />
+      <Class name="com.azure.storage.blob.implementation.models.PageListSegment" />
+      <Class name="com.azure.storage.blob.implementation.util.ByteBufferBackedOutputStreamUtil" />
+      <Class name="com.azure.storage.blob.models.BlobContainerAccessPolicies" />
+      <Class name="com.azure.storage.blob.models.BlobContainerItem" />
+      <Class name="com.azure.storage.blob.models.BlobContainerProperties" />
+      <Class name="com.azure.storage.blob.models.BlobItem" />
+      <Class name="com.azure.storage.blob.models.BlobSeekableByteChannelReadResult" />
+      <Class name="com.azure.storage.blob.models.BlobServiceProperties" />
+      <Class name="com.azure.storage.blob.models.BlockList" />
+      <Class name="com.azure.storage.blob.models.BlockLookupList" />
+      <Class name="com.azure.storage.blob.models.PageList" />
+      <Class name="com.azure.storage.blob.models.TaggedBlobItem" />
+      <Class name="com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions" />
+      <Class name="com.azure.storage.blob.options.AppendBlobCreateOptions" />
+      <Class name="com.azure.storage.blob.options.AppendBlobSealOptions" />
+      <Class name="com.azure.storage.blob.options.BlobAcquireLeaseOptions" />
+      <Class name="com.azure.storage.blob.options.BlobBeginCopyOptions" />
+      <Class name="com.azure.storage.blob.options.BlobBreakLeaseOptions" />
+      <Class name="com.azure.storage.blob.options.BlobChangeLeaseOptions" />
+      <Class name="com.azure.storage.blob.options.BlobContainerCreateOptions" />
+      <Class name="com.azure.storage.blob.options.BlobCopyFromUrlOptions" />
+      <Class name="com.azure.storage.blob.options.BlobDownloadToFileOptions" />
+      <Class name="com.azure.storage.blob.options.BlobGetTagsOptions" />
+      <Class name="com.azure.storage.blob.options.BlobInputStreamOptions" />
+      <Class name="com.azure.storage.blob.options.BlobParallelUploadOptions" />
+      <Class name="com.azure.storage.blob.options.BlobQueryOptions" />
+      <Class name="com.azure.storage.blob.options.BlobReleaseLeaseOptions" />
+      <Class name="com.azure.storage.blob.options.BlobRenewLeaseOptions" />
+      <Class name="com.azure.storage.blob.options.BlobSeekableByteChannelReadOptions" />
+      <Class name="com.azure.storage.blob.options.BlobSetTagsOptions" />
+      <Class name="com.azure.storage.blob.options.BlobUploadFromFileOptions" />
+      <Class name="com.azure.storage.blob.options.BlobUploadFromUrlOptions" />
+      <Class name="com.azure.storage.blob.options.BlockBlobCommitBlockListOptions" />
+      <Class name="com.azure.storage.blob.options.BlockBlobOutputStreamOptions" />
+      <Class name="com.azure.storage.blob.options.BlockBlobSeekableByteChannelWriteOptions" />
+      <Class name="com.azure.storage.blob.options.BlockBlobSimpleUploadOptions" />
+      <Class name="com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions" />
+      <Class name="com.azure.storage.blob.options.BlockBlobStageBlockOptions" />
+      <Class name="com.azure.storage.blob.options.ListPageRangesDiffOptions" />
+      <Class name="com.azure.storage.blob.options.ListPageRangesOptions" />
+      <Class name="com.azure.storage.blob.options.PageBlobCopyIncrementalOptions" />
+      <Class name="com.azure.storage.blob.options.PageBlobCreateOptions" />
+      <Class name="com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions" />
+      <Class name="com.azure.storage.blob.specialized.SpecializedBlobClientBuilder" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="EI_EXPOSE_STATIC_REP2" />
+    <Class name="com.azure.storage.blob.implementation.models.PageListHelper" />
+  </Match>
+  <Match>
+    <Bug pattern="MC_OVERRIDABLE_METHOD_CALL_IN_CONSTRUCTOR" />
+    <Class name="com.azure.storage.blob.specialized.BlobAsyncClientBase" />
+  </Match>
+  <Match>
+    <Bug pattern="MS_EXPOSE_REP" />
+    <Class name="com.azure.storage.blob.implementation.util.BlobHeadersAndQueryParameters" />
+  </Match>
+  <Match>
+    <Bug pattern="NM_CONFUSING" />
+    <Or>
+      <Class name="com.azure.storage.blob.implementation.models.AppendBlobsAppendBlockFromUrlHeaders" />
+      <Class name="com.azure.storage.blob.models.BlobDownloadHeaders" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="NP_BOOLEAN_RETURN_NULL" />
+    <Class name="com.azure.storage.blob.implementation.models.BlobPropertiesInternalDownload" />
+  </Match>
+  <Match>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE" />
+    <Class name="com.azure.storage.blob.specialized.BlobOutputStream$AppendBlobOutputStream" />
+  </Match>
+  <Match>
+    <Bug pattern="UUF_UNUSED_FIELD" />
+    <Class name="com.azure.storage.blob.sas.BlobServiceSasSignatureValues" />
+  </Match>
+  <Match>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" />
+    <Or>
+      <Class name="com.azure.storage.blob.BlobUrlParts" />
+      <Class name="com.azure.storage.blob.sas.BlobServiceSasSignatureValues" />
+    </Or>
+  </Match>
+</FindBugsFilter>

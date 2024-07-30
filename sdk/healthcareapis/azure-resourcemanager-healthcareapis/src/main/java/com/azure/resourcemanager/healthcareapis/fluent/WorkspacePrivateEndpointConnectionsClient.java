@@ -14,8 +14,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.healthcareapis.fluent.models.PrivateEndpointConnectionDescriptionInner;
 
 /**
- * An instance of this class provides access to all the operations defined in
- * WorkspacePrivateEndpointConnectionsClient.
+ * An instance of this class provides access to all the operations defined in WorkspacePrivateEndpointConnectionsClient.
  */
 public interface WorkspacePrivateEndpointConnectionsClient {
     /**

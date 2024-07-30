@@ -19,7 +19,7 @@ public final class IntegrationRuntimeObjectMetadataRefreshSamples {
      */
     public static void
         integrationRuntimeObjectMetadataRefresh(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimeObjectMetadatas().refresh("exampleResourceGroup", "exampleFactoryName",
-            "testactivityv2", com.azure.core.util.Context.NONE);
+        manager.integrationRuntimeObjectMetadatas()
+            .refresh("exampleResourceGroup", "exampleFactoryName", "testactivityv2", com.azure.core.util.Context.NONE);
     }
 }

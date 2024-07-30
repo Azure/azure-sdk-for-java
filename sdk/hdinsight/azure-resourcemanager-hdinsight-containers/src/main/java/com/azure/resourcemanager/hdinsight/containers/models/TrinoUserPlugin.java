@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Trino user plugin. */
+/**
+ * Trino user plugin.
+ */
 @Fluent
 public final class TrinoUserPlugin {
     /*
@@ -28,13 +30,15 @@ public final class TrinoUserPlugin {
     @JsonProperty(value = "path")
     private String path;
 
-    /** Creates an instance of TrinoUserPlugin class. */
+    /**
+     * Creates an instance of TrinoUserPlugin class.
+     */
     public TrinoUserPlugin() {
     }
 
     /**
      * Get the enabled property: Denotes whether the plugin is active or not.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -43,7 +47,7 @@ public final class TrinoUserPlugin {
 
     /**
      * Set the enabled property: Denotes whether the plugin is active or not.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the TrinoUserPlugin object itself.
      */
@@ -55,7 +59,7 @@ public final class TrinoUserPlugin {
     /**
      * Get the name property: This field maps to the sub-directory in trino plugins location, that will contain all the
      * plugins under path.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -65,7 +69,7 @@ public final class TrinoUserPlugin {
     /**
      * Set the name property: This field maps to the sub-directory in trino plugins location, that will contain all the
      * plugins under path.
-     *
+     * 
      * @param name the name value to set.
      * @return the TrinoUserPlugin object itself.
      */
@@ -76,7 +80,7 @@ public final class TrinoUserPlugin {
 
     /**
      * Get the path property: Fully qualified path to the folder containing the plugins.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -85,7 +89,7 @@ public final class TrinoUserPlugin {
 
     /**
      * Set the path property: Fully qualified path to the folder containing the plugins.
-     *
+     * 
      * @param path the path value to set.
      * @return the TrinoUserPlugin object itself.
      */
@@ -96,7 +100,7 @@ public final class TrinoUserPlugin {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

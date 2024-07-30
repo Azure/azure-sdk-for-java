@@ -17,6 +17,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
@@ -46,6 +47,8 @@ import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
 import com.microsoft.aad.msal4j.IBroker;
 import com.microsoft.aad.msal4j.IClientCredential;
 import com.microsoft.aad.msal4j.InteractiveRequestParameters;
+import com.microsoft.aad.msal4j.ManagedIdentityId;
+import com.microsoft.aad.msal4j.ManagedIdentityApplication;
 import com.microsoft.aad.msal4j.OnBehalfOfParameters;
 import com.microsoft.aad.msal4j.Prompt;
 import com.microsoft.aad.msal4j.PublicClientApplication;
@@ -97,6 +100,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
+import static com.azure.identity.implementation.util.IdentityUtil.isWindowsPlatform;
+
 public abstract class IdentityClientBase {
     static final SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
     static final String WINDOWS_STARTER = "cmd.exe";
@@ -125,7 +130,7 @@ public abstract class IdentityClientBase {
     private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
 
 
-    private final Map<String, String> properties;
+    private final Map<String, String> properties = CoreUtils.getProperties(AZURE_IDENTITY_PROPERTIES);
 
 
     final IdentityClientOptions options;
@@ -137,11 +142,13 @@ public abstract class IdentityClientBase {
     final byte[] certificate;
     final String certificatePath;
     final Supplier<String> clientAssertionSupplier;
+    final Function<HttpPipeline, String> clientAssertionSupplierWithHttpPipeline;
     final String certificatePassword;
     HttpPipelineAdapter httpPipelineAdapter;
     String userAgent = UserAgentUtil.DEFAULT_USER_AGENT_HEADER;
     private Class<?> interactiveBrowserBroker;
     private Method getMsalRuntimeBroker;
+    HttpPipeline httpPipeline;
 
     /**
      * Creates an IdentityClient with the given options.
@@ -158,10 +165,19 @@ public abstract class IdentityClientBase {
      * @param clientAssertionTimeout the timeout to use for the client assertion.
      * @param options the options configuring the client.
      */
-    IdentityClientBase(String tenantId, String clientId, String clientSecret, String certificatePath,
-                   String clientAssertionFilePath, String resourceId, Supplier<String> clientAssertionSupplier,
-                   byte[] certificate, String certificatePassword, boolean isSharedTokenCacheCredential,
-                   Duration clientAssertionTimeout, IdentityClientOptions options) {
+    IdentityClientBase(String tenantId,
+                       String clientId,
+                       String clientSecret,
+                       String certificatePath,
+                       String clientAssertionFilePath,
+                       String resourceId,
+                       Supplier<String> clientAssertionSupplier,
+                       Function<HttpPipeline, String> clientAssertionSupplierWithHttpPipeline,
+                       byte[] certificate,
+                       String certificatePassword,
+                       boolean isSharedTokenCacheCredential,
+                       Duration clientAssertionTimeout,
+                       IdentityClientOptions options) {
         if (tenantId == null) {
             tenantId = IdentityUtil.DEFAULT_TENANT;
             options.setAdditionallyAllowedTenants(Collections.singletonList(IdentityUtil.ALL_TENANTS));
@@ -178,8 +194,8 @@ public abstract class IdentityClientBase {
         this.certificate = certificate;
         this.certificatePassword = certificatePassword;
         this.clientAssertionSupplier = clientAssertionSupplier;
+        this.clientAssertionSupplierWithHttpPipeline = clientAssertionSupplierWithHttpPipeline;
         this.options = options;
-        properties = CoreUtils.getProperties(AZURE_IDENTITY_PROPERTIES);
 
     }
 
@@ -191,15 +207,17 @@ public abstract class IdentityClientBase {
         String authorityUrl = TRAILING_FORWARD_SLASHES.matcher(options.getAuthorityHost()).replaceAll("") + "/"
             + tenantId;
         IClientCredential credential;
+
         if (clientSecret != null) {
             credential = ClientCredentialFactory.createFromSecret(clientSecret);
         } else if (certificate != null || certificatePath != null) {
             try {
-                if (certificatePassword == null) {
-                    byte[] pemCertificateBytes = getCertificateBytes();
 
-                    List<X509Certificate> x509CertificateList = CertificateUtil.publicKeyFromPem(pemCertificateBytes);
-                    PrivateKey privateKey = CertificateUtil.privateKeyFromPem(pemCertificateBytes);
+                byte[] certificateBytes = getCertificateBytes();
+                if (CertificateUtil.isPem(certificateBytes)) {
+
+                    List<X509Certificate> x509CertificateList = CertificateUtil.publicKeyFromPem(certificateBytes);
+                    PrivateKey privateKey = CertificateUtil.privateKeyFromPem(certificateBytes);
                     if (x509CertificateList.size() == 1) {
                         credential = ClientCredentialFactory.createFromCertificate(
                             privateKey, x509CertificateList.get(0));
@@ -219,6 +237,8 @@ public abstract class IdentityClientBase {
             }
         } else if (clientAssertionSupplier != null) {
             credential = ClientCredentialFactory.createFromClientAssertion(clientAssertionSupplier.get());
+        } else if (clientAssertionSupplierWithHttpPipeline != null) {
+            credential = ClientCredentialFactory.createFromClientAssertion(clientAssertionSupplierWithHttpPipeline.apply(getPipeline()));
         } else {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("Must provide client secret or client certificate path."
@@ -250,8 +270,8 @@ public abstract class IdentityClientBase {
         }
 
         applicationBuilder.sendX5c(options.isIncludeX5c());
-
         initializeHttpPipelineAdapter();
+
         if (httpPipelineAdapter != null) {
             applicationBuilder.httpClient(httpPipelineAdapter);
         } else {
@@ -420,6 +440,9 @@ public abstract class IdentityClientBase {
                 result.setAccessToken(accessToken.getToken());
                 result.setTenantId(trc.getTenantId());
                 result.setExpiresInSeconds(accessToken.getExpiresAt().toEpochSecond());
+                if (accessToken.getRefreshAt() != null) {
+                    result.setRefreshInSeconds(accessToken.getRefreshAt().toEpochSecond());
+                }
                 return result;
             }).toFuture();
         });
@@ -437,6 +460,35 @@ public abstract class IdentityClientBase {
         }
 
         return applicationBuilder.build();
+    }
+
+    ManagedIdentityApplication getManagedIdentityMsalApplication() {
+
+        ManagedIdentityId managedIdentityId = CoreUtils.isNullOrEmpty(clientId)
+            ? (CoreUtils.isNullOrEmpty(resourceId)
+            ? ManagedIdentityId.systemAssigned() : ManagedIdentityId.userAssignedResourceId(resourceId))
+            : ManagedIdentityId.userAssignedClientId(clientId);
+
+        ManagedIdentityApplication.Builder miBuilder = ManagedIdentityApplication
+            .builder(managedIdentityId)
+            .logPii(options.isUnsafeSupportLoggingEnabled());
+
+        if ("DEFAULT_TO_IMDS".equals(String.valueOf(ManagedIdentityApplication.getManagedIdentitySource()))) {
+            options.setUseImdsRetryStrategy();
+        }
+
+        initializeHttpPipelineAdapter();
+        if (httpPipelineAdapter != null) {
+            miBuilder.httpClient(httpPipelineAdapter);
+        } else {
+            miBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
+        }
+
+        if (options.getExecutorService() != null) {
+            miBuilder.executorService(options.getExecutorService());
+        }
+
+        return miBuilder.build();
     }
 
     ConfidentialClientApplication getWorkloadIdentityConfidentialClient() {
@@ -811,10 +863,6 @@ public abstract class IdentityClientBase {
         }
     }
 
-    boolean isWindowsPlatform() {
-        return System.getProperty("os.name").contains("Windows");
-    }
-
     String redactInfo(String input) {
         return ACCESS_TOKEN_PATTERN.matcher(input).replaceAll("****");
     }
@@ -847,7 +895,11 @@ public abstract class IdentityClientBase {
         policies.addAll(options.getPerCallPolicies());
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         // Add retry policy.
-        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(options.getRetryPolicy(), options.getRetryOptions()));
+        RetryPolicy retryPolicy = options.getRetryPolicy();
+        if (retryPolicy == null && options.getUseImdsRetryStrategy()) {
+            retryPolicy = new RetryPolicy(new ImdsRetryStrategy());
+        }
+        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, options.getRetryOptions()));
         policies.addAll(options.getPerRetryPolicies());
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
@@ -858,21 +910,29 @@ public abstract class IdentityClientBase {
 
 
     void initializeHttpPipelineAdapter() {
-        // If user supplies the pipeline, then it should override all other properties
-        // as they should directly be set on the pipeline.
+        if (options.getProxyOptions() == null) {
+            httpPipelineAdapter = new HttpPipelineAdapter(getPipeline(), options);
+        }
+    }
+
+    HttpPipeline getPipeline() {
+
+        // if we've already initialized, return the pipeline
+        if (this.httpPipeline != null) {
+            return httpPipeline;
+        }
+
+        // if the user has supplied a pipeline, use it
         HttpPipeline httpPipeline = options.getHttpPipeline();
         if (httpPipeline != null) {
-            httpPipelineAdapter = new HttpPipelineAdapter(httpPipeline, options);
-        } else {
-            // If http client is set on the credential, then it should override the proxy options if any configured.
-            HttpClient httpClient = options.getHttpClient();
-            if (httpClient != null) {
-                httpPipelineAdapter = new HttpPipelineAdapter(setupPipeline(httpClient), options);
-            } else if (options.getProxyOptions() == null) {
-                //Http Client is null, proxy options are not set, use the default client and build the pipeline.
-                httpPipelineAdapter = new HttpPipelineAdapter(setupPipeline(HttpClient.createDefault()), options);
-            }
+            this.httpPipeline = httpPipeline;
+            return this.httpPipeline;
         }
+
+        // if the user has supplied an HttpClient, use it
+        HttpClient httpClient = options.getHttpClient();
+        this.httpPipeline = setupPipeline(httpClient != null ? httpClient : HttpClient.createDefault());
+        return this.httpPipeline;
     }
 
     private byte[] getCertificateBytes() throws IOException {

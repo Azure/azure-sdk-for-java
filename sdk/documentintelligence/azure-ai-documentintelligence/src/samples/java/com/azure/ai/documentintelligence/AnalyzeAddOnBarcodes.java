@@ -40,7 +40,7 @@ public class AnalyzeAddOnBarcodes {
         File barcodesDocument = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
             + "sample-forms/addOns/barcodes.jpg");
 
-        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutResultPoller =
+        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeLayoutResultPoller =
             client.beginAnalyzeDocument("prebuilt-layout", null,
                 null,
                 null,
@@ -49,7 +49,7 @@ public class AnalyzeAddOnBarcodes {
                 null,
                 new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(barcodesDocument.toPath())));
 
-        AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult().getAnalyzeResult();
+        AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 
         // pages
         List<DocumentPage> pages = analyzeLayoutResult.getPages();

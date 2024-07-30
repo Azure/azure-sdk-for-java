@@ -26,8 +26,8 @@ public final class SapHanaPartitionSettings {
     }
 
     /**
-     * Get the partitionColumnName property: The name of the column that will be used for proceeding range
-     * partitioning. Type: string (or Expression with resultType string).
+     * Get the partitionColumnName property: The name of the column that will be used for proceeding range partitioning.
+     * Type: string (or Expression with resultType string).
      * 
      * @return the partitionColumnName value.
      */
@@ -36,8 +36,8 @@ public final class SapHanaPartitionSettings {
     }
 
     /**
-     * Set the partitionColumnName property: The name of the column that will be used for proceeding range
-     * partitioning. Type: string (or Expression with resultType string).
+     * Set the partitionColumnName property: The name of the column that will be used for proceeding range partitioning.
+     * Type: string (or Expression with resultType string).
      * 
      * @param partitionColumnName the partitionColumnName value to set.
      * @return the SapHanaPartitionSettings object itself.

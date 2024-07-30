@@ -12,8 +12,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.AlertsClient;
 import com.azure.resourcemanager.security.fluent.models.AlertInner;
 import com.azure.resourcemanager.security.models.Alert;
-import com.azure.resourcemanager.security.models.AlertSimulatorRequestBody;
 import com.azure.resourcemanager.security.models.Alerts;
+import com.azure.resourcemanager.security.models.AlertSimulatorRequestBody;
 
 public final class AlertsImpl implements Alerts {
     private static final ClientLogger LOGGER = new ClientLogger(AlertsImpl.class);
@@ -92,8 +92,8 @@ public final class AlertsImpl implements Alerts {
 
     public Response<Alert> getResourceGroupLevelWithResponse(String resourceGroupName, String ascLocation,
         String alertName, Context context) {
-        Response<AlertInner> inner = this.serviceClient().getResourceGroupLevelWithResponse(resourceGroupName,
-            ascLocation, alertName, context);
+        Response<AlertInner> inner = this.serviceClient()
+            .getResourceGroupLevelWithResponse(resourceGroupName, ascLocation, alertName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AlertImpl(inner.getValue(), this.manager()));
@@ -140,8 +140,8 @@ public final class AlertsImpl implements Alerts {
 
     public Response<Void> updateSubscriptionLevelStateToInProgressWithResponse(String ascLocation, String alertName,
         Context context) {
-        return this.serviceClient().updateSubscriptionLevelStateToInProgressWithResponse(ascLocation, alertName,
-            context);
+        return this.serviceClient()
+            .updateSubscriptionLevelStateToInProgressWithResponse(ascLocation, alertName, context);
     }
 
     public void updateSubscriptionLevelStateToInProgress(String ascLocation, String alertName) {
@@ -150,8 +150,8 @@ public final class AlertsImpl implements Alerts {
 
     public Response<Void> updateResourceGroupLevelStateToResolveWithResponse(String resourceGroupName,
         String ascLocation, String alertName, Context context) {
-        return this.serviceClient().updateResourceGroupLevelStateToResolveWithResponse(resourceGroupName, ascLocation,
-            alertName, context);
+        return this.serviceClient()
+            .updateResourceGroupLevelStateToResolveWithResponse(resourceGroupName, ascLocation, alertName, context);
     }
 
     public void updateResourceGroupLevelStateToResolve(String resourceGroupName, String ascLocation, String alertName) {
@@ -160,8 +160,8 @@ public final class AlertsImpl implements Alerts {
 
     public Response<Void> updateResourceGroupLevelStateToDismissWithResponse(String resourceGroupName,
         String ascLocation, String alertName, Context context) {
-        return this.serviceClient().updateResourceGroupLevelStateToDismissWithResponse(resourceGroupName, ascLocation,
-            alertName, context);
+        return this.serviceClient()
+            .updateResourceGroupLevelStateToDismissWithResponse(resourceGroupName, ascLocation, alertName, context);
     }
 
     public void updateResourceGroupLevelStateToDismiss(String resourceGroupName, String ascLocation, String alertName) {
@@ -170,8 +170,8 @@ public final class AlertsImpl implements Alerts {
 
     public Response<Void> updateResourceGroupLevelStateToActivateWithResponse(String resourceGroupName,
         String ascLocation, String alertName, Context context) {
-        return this.serviceClient().updateResourceGroupLevelStateToActivateWithResponse(resourceGroupName, ascLocation,
-            alertName, context);
+        return this.serviceClient()
+            .updateResourceGroupLevelStateToActivateWithResponse(resourceGroupName, ascLocation, alertName, context);
     }
 
     public void updateResourceGroupLevelStateToActivate(String resourceGroupName, String ascLocation,
@@ -181,8 +181,8 @@ public final class AlertsImpl implements Alerts {
 
     public Response<Void> updateResourceGroupLevelStateToInProgressWithResponse(String resourceGroupName,
         String ascLocation, String alertName, Context context) {
-        return this.serviceClient().updateResourceGroupLevelStateToInProgressWithResponse(resourceGroupName,
-            ascLocation, alertName, context);
+        return this.serviceClient()
+            .updateResourceGroupLevelStateToInProgressWithResponse(resourceGroupName, ascLocation, alertName, context);
     }
 
     public void updateResourceGroupLevelStateToInProgress(String resourceGroupName, String ascLocation,

@@ -27,13 +27,15 @@ public final class EdgenodeResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of EdgenodeResult class. */
+    /**
+     * Creates an instance of EdgenodeResult class.
+     */
     public EdgenodeResult() {
     }
 
     /**
      * Get the value property: Edge node of CDN service.
-     *
+     * 
      * @return the value value.
      */
     public List<EdgeNodeInner> value() {
@@ -42,7 +44,7 @@ public final class EdgenodeResult {
 
     /**
      * Get the nextLink property: URL to get the next set of edgenode list results if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -51,7 +53,7 @@ public final class EdgenodeResult {
 
     /**
      * Set the nextLink property: URL to get the next set of edgenode list results if there are any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the EdgenodeResult object itself.
      */
@@ -62,7 +64,7 @@ public final class EdgenodeResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

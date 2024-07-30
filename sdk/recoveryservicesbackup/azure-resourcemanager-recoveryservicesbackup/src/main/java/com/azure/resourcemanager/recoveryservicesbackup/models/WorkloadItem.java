@@ -7,6 +7,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -15,13 +16,20 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "workloadItemType",
-    defaultImpl = WorkloadItem.class)
+    defaultImpl = WorkloadItem.class,
+    visible = true)
 @JsonTypeName("WorkloadItem")
 @JsonSubTypes({ @JsonSubTypes.Type(name = "AzureVmWorkloadItem", value = AzureVmWorkloadItem.class) })
 @Fluent
 public class WorkloadItem {
+    /*
+     * Type of the backup item.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "workloadItemType", required = true)
+    private String workloadItemType;
+
     /*
      * Type of backup management to backup an item.
      */
@@ -50,6 +58,16 @@ public class WorkloadItem {
      * Creates an instance of WorkloadItem class.
      */
     public WorkloadItem() {
+        this.workloadItemType = "WorkloadItem";
+    }
+
+    /**
+     * Get the workloadItemType property: Type of the backup item.
+     * 
+     * @return the workloadItemType value.
+     */
+    public String workloadItemType() {
+        return this.workloadItemType;
     }
 
     /**

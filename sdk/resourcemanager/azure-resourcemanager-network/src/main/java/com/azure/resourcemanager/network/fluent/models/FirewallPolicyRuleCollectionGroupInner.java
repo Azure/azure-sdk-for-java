@@ -162,8 +162,7 @@ public final class FirewallPolicyRuleCollectionGroupInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the firewall policy rule collection group
-     * resource.
+     * Get the provisioningState property: The provisioning state of the firewall policy rule collection group resource.
      * 
      * @return the provisioningState value.
      */

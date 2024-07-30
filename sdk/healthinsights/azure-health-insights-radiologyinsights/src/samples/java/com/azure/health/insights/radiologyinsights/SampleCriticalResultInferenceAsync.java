@@ -19,20 +19,21 @@ import com.azure.health.insights.radiologyinsights.models.Encounter;
 import com.azure.health.insights.radiologyinsights.models.EncounterClass;
 import com.azure.health.insights.radiologyinsights.models.FhirR4CodeableConcept;
 import com.azure.health.insights.radiologyinsights.models.FhirR4Coding;
-import com.azure.health.insights.radiologyinsights.models.FhirR4Extendible;
-import com.azure.health.insights.radiologyinsights.models.FhirR4Extendible1;
 import com.azure.health.insights.radiologyinsights.models.FindingOptions;
 import com.azure.health.insights.radiologyinsights.models.FollowupRecommendationOptions;
+import com.azure.health.insights.radiologyinsights.models.OrderedProcedure;
 import com.azure.health.insights.radiologyinsights.models.PatientDetails;
 import com.azure.health.insights.radiologyinsights.models.PatientDocument;
 import com.azure.health.insights.radiologyinsights.models.PatientRecord;
 import com.azure.health.insights.radiologyinsights.models.PatientSex;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsData;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInference;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceOptions;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceType;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsModelConfiguration;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsPatientResult;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsResult;
 import com.azure.health.insights.radiologyinsights.models.SpecialtyType;
 import com.azure.health.insights.radiologyinsights.models.TimePeriod;
 
@@ -47,11 +48,11 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * The SampleCriticalResultInferenceAsync class processes a sample radiology document 
- * with the Radiology Insights service. It will initialize an asynchronous 
- * RadiologyInsightsAsyncClient, build a Radiology Insights request with the sample document, poll the 
- * results and display the Critical Results extracted by the Radiology Insights service.  
- * 
+ * The SampleCriticalResultInferenceAsync class processes a sample radiology document
+ * with the Radiology Insights service. It will initialize an asynchronous
+ * RadiologyInsightsAsyncClient, build a Radiology Insights request with the sample document, poll the
+ * results and display the Critical Results extracted by the Radiology Insights service.
+ *
  */
 public class SampleCriticalResultInferenceAsync {
 
@@ -87,17 +88,17 @@ public class SampleCriticalResultInferenceAsync {
         // BEGIN: com.azure.health.insights.radiologyinsights.buildasyncclient
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
         String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_API_KEY");
-        
+
         RadiologyInsightsAsyncClient radiologyInsightsAsyncClient = new RadiologyInsightsClientBuilder()
                 .endpoint(endpoint).serviceVersion(RadiologyInsightsServiceVersion.getLatest())
                 .credential(new AzureKeyCredential(apiKey)).buildAsyncClient();
         // END: com.azure.health.insights.radiologyinsights.buildasyncclient
 
         // BEGIN: com.azure.health.insights.radiologyinsights.inferradiologyinsights
-        PollerFlux<PollOperationDetails, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
+        PollerFlux<RadiologyInsightsResult, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
                 .beginInferRadiologyInsights(createRadiologyInsightsRequest());
         // END: com.azure.health.insights.radiologyinsights.inferradiologyinsights
-        
+
         Mono<RadiologyInsightsInferenceResult> finalResult = asyncPoller.last().flatMap(pollResult -> {
             if (pollResult.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
                 return pollResult.getFinalResult();
@@ -109,7 +110,7 @@ public class SampleCriticalResultInferenceAsync {
         });
 
         CountDownLatch latch = new CountDownLatch(1);
-        
+
         finalResult.doFinally(signal -> {
             latch.countDown();
         }).subscribe(result -> {
@@ -129,8 +130,8 @@ public class SampleCriticalResultInferenceAsync {
         // BEGIN: com.azure.health.insights.radiologyinsights.displayresults
         List<RadiologyInsightsPatientResult> patientResults = radiologyInsightsResult.getPatientResults();
         for (RadiologyInsightsPatientResult patientResult : patientResults) {
-            List<FhirR4Extendible1> inferences = patientResult.getInferences();
-            for (FhirR4Extendible1 inference : inferences) {
+            List<RadiologyInsightsInference> inferences = patientResult.getInferences();
+            for (RadiologyInsightsInference inference : inferences) {
                 if (inference instanceof CriticalResultInference) {
                     CriticalResultInference criticalResultInference = (CriticalResultInference) inference;
                     String description = criticalResultInference.getResult().getDescription();
@@ -172,7 +173,7 @@ public class SampleCriticalResultInferenceAsync {
 
         // Use LocalDate to set Date
         patientDetails.setBirthDate(LocalDate.of(1959, 11, 11));
-        
+
         patientRecord.setInfo(patientDetails);
 
         Encounter encounter = new Encounter("encounterid1");
@@ -202,7 +203,7 @@ public class SampleCriticalResultInferenceAsync {
         patientDocument.setSpecialtyType(SpecialtyType.RADIOLOGY);
 
         DocumentAdministrativeMetadata adminMetadata = new DocumentAdministrativeMetadata();
-        FhirR4Extendible orderedProcedure = new FhirR4Extendible();
+        OrderedProcedure orderedProcedure = new OrderedProcedure();
 
         FhirR4CodeableConcept procedureCode = new FhirR4CodeableConcept();
         FhirR4Coding procedureCoding = new FhirR4Coding();

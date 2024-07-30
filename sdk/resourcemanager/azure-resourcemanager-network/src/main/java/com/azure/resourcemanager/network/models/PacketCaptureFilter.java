@@ -125,9 +125,9 @@ public final class PacketCaptureFilter {
     }
 
     /**
-     * Get the localPort property: Local port to be filtered on. Notation: "80" for single port entry."80-85" for
-     * range. "80;443;" for multiple entries. Multiple ranges not currently supported. Mixing ranges with multiple
-     * entries not currently supported. Default = null.
+     * Get the localPort property: Local port to be filtered on. Notation: "80" for single port entry."80-85" for range.
+     * "80;443;" for multiple entries. Multiple ranges not currently supported. Mixing ranges with multiple entries not
+     * currently supported. Default = null.
      * 
      * @return the localPort value.
      */
@@ -136,9 +136,9 @@ public final class PacketCaptureFilter {
     }
 
     /**
-     * Set the localPort property: Local port to be filtered on. Notation: "80" for single port entry."80-85" for
-     * range. "80;443;" for multiple entries. Multiple ranges not currently supported. Mixing ranges with multiple
-     * entries not currently supported. Default = null.
+     * Set the localPort property: Local port to be filtered on. Notation: "80" for single port entry."80-85" for range.
+     * "80;443;" for multiple entries. Multiple ranges not currently supported. Mixing ranges with multiple entries not
+     * currently supported. Default = null.
      * 
      * @param localPort the localPort value to set.
      * @return the PacketCaptureFilter object itself.

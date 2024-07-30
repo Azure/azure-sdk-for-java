@@ -11,17 +11,20 @@ public final class DocumentDbCollectionSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DocumentDbCollectionSink model = BinaryData.fromString(
-            "{\"type\":\"DocumentDbCollectionSink\",\"nestingSeparator\":\"datapxftyhfc\",\"writeBehavior\":\"dataqsd\",\"writeBatchSize\":\"datafqaawr\",\"writeBatchTimeout\":\"datatzslfrztpnry\",\"sinkRetryCount\":\"dataxajr\",\"sinkRetryWait\":\"dataighlhddvno\",\"maxConcurrentConnections\":\"datasowbtnfqlwc\",\"disableMetricsCollection\":\"datajphtehoucmeuuua\",\"\":{\"kqtiuve\":\"datatlcxofqjninrskq\"}}")
+            "{\"type\":\"DocumentDbCollectionSink\",\"nestingSeparator\":\"dataylvrofhhitjhh\",\"writeBehavior\":\"datavwrc\",\"writeBatchSize\":\"datahllmblls\",\"writeBatchTimeout\":\"datafdrimoopfr\",\"sinkRetryCount\":\"datajjrhxornuoqpob\",\"sinkRetryWait\":\"datarsdx\",\"maxConcurrentConnections\":\"datamq\",\"disableMetricsCollection\":\"dataxbqyavcxjols\",\"\":{\"pnms\":\"datax\"}}")
             .toObject(DocumentDbCollectionSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DocumentDbCollectionSink model
-            = new DocumentDbCollectionSink().withWriteBatchSize("datafqaawr").withWriteBatchTimeout("datatzslfrztpnry")
-                .withSinkRetryCount("dataxajr").withSinkRetryWait("dataighlhddvno")
-                .withMaxConcurrentConnections("datasowbtnfqlwc").withDisableMetricsCollection("datajphtehoucmeuuua")
-                .withNestingSeparator("datapxftyhfc").withWriteBehavior("dataqsd");
+        DocumentDbCollectionSink model = new DocumentDbCollectionSink().withWriteBatchSize("datahllmblls")
+            .withWriteBatchTimeout("datafdrimoopfr")
+            .withSinkRetryCount("datajjrhxornuoqpob")
+            .withSinkRetryWait("datarsdx")
+            .withMaxConcurrentConnections("datamq")
+            .withDisableMetricsCollection("dataxbqyavcxjols")
+            .withNestingSeparator("dataylvrofhhitjhh")
+            .withWriteBehavior("datavwrc");
         model = BinaryData.fromObject(model).toObject(DocumentDbCollectionSink.class);
     }
 }

@@ -132,20 +132,24 @@ public final class SecuritySolutionProperties {
      */
     public void validate() {
         if (securityFamily() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property securityFamily in model SecuritySolutionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property securityFamily in model SecuritySolutionProperties"));
         }
         if (provisioningState() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property provisioningState in model SecuritySolutionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property provisioningState in model SecuritySolutionProperties"));
         }
         if (template() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property template in model SecuritySolutionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property template in model SecuritySolutionProperties"));
         }
         if (protectionStatus() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property protectionStatus in model SecuritySolutionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property protectionStatus in model SecuritySolutionProperties"));
         }
     }
 

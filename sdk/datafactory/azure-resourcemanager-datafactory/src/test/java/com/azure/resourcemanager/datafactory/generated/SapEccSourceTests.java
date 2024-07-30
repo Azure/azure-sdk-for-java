@@ -11,16 +11,20 @@ public final class SapEccSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapEccSource model = BinaryData.fromString(
-            "{\"type\":\"SapEccSource\",\"query\":\"datap\",\"httpRequestTimeout\":\"dataegkrjolbaeghak\",\"queryTimeout\":\"datacismrnneklfibn\",\"additionalColumns\":\"datafcl\",\"sourceRetryCount\":\"datafu\",\"sourceRetryWait\":\"datawqzbiukzmfy\",\"maxConcurrentConnections\":\"datayz\",\"disableMetricsCollection\":\"dataf\",\"\":{\"seyxpgkmlnj\":\"datalnfvexiuuqafo\",\"glnfwjslwvexblu\":\"datauaywgcjqnfafp\"}}")
+            "{\"type\":\"SapEccSource\",\"query\":\"datakd\",\"httpRequestTimeout\":\"datakdpn\",\"queryTimeout\":\"datadwcxjv\",\"additionalColumns\":\"datal\",\"sourceRetryCount\":\"dataxcmcccotqocnryyp\",\"sourceRetryWait\":\"dataduldsolbz\",\"maxConcurrentConnections\":\"datarufkeylkpvaagrd\",\"disableMetricsCollection\":\"datavglqdsphvo\",\"\":{\"thzfotfrfhrjka\":\"dataryhuo\",\"nitrmzvnrfkzn\":\"datadofshgmqxwop\",\"rnxrjmilogcn\":\"dataaittbmobrxhwpg\",\"plrtxhzt\":\"datafgqibb\"}}")
             .toObject(SapEccSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapEccSource model = new SapEccSource().withSourceRetryCount("datafu").withSourceRetryWait("datawqzbiukzmfy")
-            .withMaxConcurrentConnections("datayz").withDisableMetricsCollection("dataf")
-            .withQueryTimeout("datacismrnneklfibn").withAdditionalColumns("datafcl").withQuery("datap")
-            .withHttpRequestTimeout("dataegkrjolbaeghak");
+        SapEccSource model = new SapEccSource().withSourceRetryCount("dataxcmcccotqocnryyp")
+            .withSourceRetryWait("dataduldsolbz")
+            .withMaxConcurrentConnections("datarufkeylkpvaagrd")
+            .withDisableMetricsCollection("datavglqdsphvo")
+            .withQueryTimeout("datadwcxjv")
+            .withAdditionalColumns("datal")
+            .withQuery("datakd")
+            .withHttpRequestTimeout("datakdpn");
         model = BinaryData.fromObject(model).toObject(SapEccSource.class);
     }
 }

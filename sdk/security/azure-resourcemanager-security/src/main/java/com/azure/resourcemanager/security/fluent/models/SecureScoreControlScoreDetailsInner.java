@@ -43,8 +43,7 @@ public final class SecureScoreControlScoreDetailsInner {
     private Integer notApplicableResourceCount;
 
     /*
-     * The relative weight for this specific control in each of your subscriptions. Used when calculating an aggregated
-     * score for this control across all of your subscriptions.
+     * The relative weight for this specific control in each of your subscriptions. Used when calculating an aggregated score for this control across all of your subscriptions.
      */
     @JsonProperty(value = "weight", access = JsonProperty.Access.WRITE_ONLY)
     private Long weight;

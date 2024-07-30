@@ -18,34 +18,36 @@ public final class TransformationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Transformation model = BinaryData.fromString(
-            "{\"name\":\"xxtclhuulri\",\"description\":\"yokvjgbzsxebr\",\"dataset\":{\"referenceName\":\"ttfyhcdjwsuoard\",\"parameters\":{\"bfwxiplkys\":\"datattpufpbpgnrholhu\",\"yjprxslw\":\"datal\",\"hfvhuwzbxpcqz\":\"datadmcvhtbbz\",\"lrrskap\":\"dataihotjecohmxv\"}},\"linkedService\":{\"referenceName\":\"wie\",\"parameters\":{\"imyc\":\"datayaderltfokyks\",\"rsejegprkj\":\"datagrvkcxzznnuif\"}},\"flowlet\":{\"type\":\"DataFlowReference\",\"referenceName\":\"rjmwvvbtuqkxxi\",\"datasetParameters\":\"datagxql\",\"parameters\":{\"vjaqu\":\"dataotjgxieqfkyfhi\"},\"\":{\"mj\":\"dataynvskpajbmgeume\",\"apeqiscrpil\":\"dataxcbccwkqmt\"}}}")
+            "{\"name\":\"a\",\"description\":\"mhudfjecehokwcp\",\"dataset\":{\"referenceName\":\"wloesqrggvrbn\",\"parameters\":{\"uwj\":\"datakoilaci\",\"pjlh\":\"datae\"}},\"linkedService\":{\"referenceName\":\"xpzruzythqkk\",\"parameters\":{\"lnx\":\"datagxvellv\"}},\"flowlet\":{\"type\":\"DataFlowReference\",\"referenceName\":\"itmujdtvm\",\"datasetParameters\":\"datayymffhmjp\",\"parameters\":{\"zuvrzmzqmz\":\"datayx\"},\"\":{\"vnmdyfoeboj\":\"databr\"}}}")
             .toObject(Transformation.class);
-        Assertions.assertEquals("xxtclhuulri", model.name());
-        Assertions.assertEquals("yokvjgbzsxebr", model.description());
-        Assertions.assertEquals("ttfyhcdjwsuoard", model.dataset().referenceName());
-        Assertions.assertEquals("wie", model.linkedService().referenceName());
+        Assertions.assertEquals("a", model.name());
+        Assertions.assertEquals("mhudfjecehokwcp", model.description());
+        Assertions.assertEquals("wloesqrggvrbn", model.dataset().referenceName());
+        Assertions.assertEquals("xpzruzythqkk", model.linkedService().referenceName());
         Assertions.assertEquals(DataFlowReferenceType.DATA_FLOW_REFERENCE, model.flowlet().type());
-        Assertions.assertEquals("rjmwvvbtuqkxxi", model.flowlet().referenceName());
+        Assertions.assertEquals("itmujdtvm", model.flowlet().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Transformation model = new Transformation().withName("xxtclhuulri").withDescription("yokvjgbzsxebr")
-            .withDataset(new DatasetReference().withReferenceName("ttfyhcdjwsuoard")
-                .withParameters(mapOf("bfwxiplkys", "datattpufpbpgnrholhu", "yjprxslw", "datal", "hfvhuwzbxpcqz",
-                    "datadmcvhtbbz", "lrrskap", "dataihotjecohmxv")))
-            .withLinkedService(new LinkedServiceReference().withReferenceName("wie")
-                .withParameters(mapOf("imyc", "datayaderltfokyks", "rsejegprkj", "datagrvkcxzznnuif")))
+        Transformation model = new Transformation().withName("a")
+            .withDescription("mhudfjecehokwcp")
+            .withDataset(new DatasetReference().withReferenceName("wloesqrggvrbn")
+                .withParameters(mapOf("uwj", "datakoilaci", "pjlh", "datae")))
+            .withLinkedService(new LinkedServiceReference().withReferenceName("xpzruzythqkk")
+                .withParameters(mapOf("lnx", "datagxvellv")))
             .withFlowlet(new DataFlowReference().withType(DataFlowReferenceType.DATA_FLOW_REFERENCE)
-                .withReferenceName("rjmwvvbtuqkxxi").withDatasetParameters("datagxql")
-                .withParameters(mapOf("vjaqu", "dataotjgxieqfkyfhi")).withAdditionalProperties(mapOf()));
+                .withReferenceName("itmujdtvm")
+                .withDatasetParameters("datayymffhmjp")
+                .withParameters(mapOf("zuvrzmzqmz", "datayx"))
+                .withAdditionalProperties(mapOf()));
         model = BinaryData.fromObject(model).toObject(Transformation.class);
-        Assertions.assertEquals("xxtclhuulri", model.name());
-        Assertions.assertEquals("yokvjgbzsxebr", model.description());
-        Assertions.assertEquals("ttfyhcdjwsuoard", model.dataset().referenceName());
-        Assertions.assertEquals("wie", model.linkedService().referenceName());
+        Assertions.assertEquals("a", model.name());
+        Assertions.assertEquals("mhudfjecehokwcp", model.description());
+        Assertions.assertEquals("wloesqrggvrbn", model.dataset().referenceName());
+        Assertions.assertEquals("xpzruzythqkk", model.linkedService().referenceName());
         Assertions.assertEquals(DataFlowReferenceType.DATA_FLOW_REFERENCE, model.flowlet().type());
-        Assertions.assertEquals("rjmwvvbtuqkxxi", model.flowlet().referenceName());
+        Assertions.assertEquals("itmujdtvm", model.flowlet().referenceName());
     }
 
     // Use "Map.of" if available

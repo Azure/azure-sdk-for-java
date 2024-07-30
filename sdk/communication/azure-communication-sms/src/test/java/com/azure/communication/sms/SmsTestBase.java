@@ -15,11 +15,15 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 
 public class SmsTestBase extends TestProxyTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(SmsTestBase.class);
+
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
 
@@ -80,7 +84,7 @@ public class SmsTestBase extends TestProxyTestBase {
     private void addTestProxyMatcher() {
         if (interceptorManager.isPlaybackMode()) {
             interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
-                .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))
+                .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64", "Accept"))
                 .setComparingBodies(false)));
         }
     }
@@ -95,8 +99,8 @@ public class SmsTestBase extends TestProxyTestBase {
                 final HttpResponse bufferedResponse = httpResponse.buffer();
 
                 // Should sanitize printed reponse url
-                System.out.println("MS-CV header for " + testName + " request "
-                    + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
+                LOGGER.log(LogLevel.VERBOSE, () -> ("MS-CV header for " + testName + " request "
+                    + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV")));
                 return Mono.just(bufferedResponse);
             });
     }

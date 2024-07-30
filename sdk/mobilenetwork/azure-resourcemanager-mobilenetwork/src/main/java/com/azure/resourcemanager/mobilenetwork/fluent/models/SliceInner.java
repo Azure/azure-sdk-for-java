@@ -13,7 +13,9 @@ import com.azure.resourcemanager.mobilenetwork.models.Snssai;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Network slice resource. Must be created in the same location as its parent mobile network. */
+/**
+ * Network slice resource. Must be created in the same location as its parent mobile network.
+ */
 @Fluent
 public final class SliceInner extends Resource {
     /*
@@ -28,13 +30,15 @@ public final class SliceInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of SliceInner class. */
+    /**
+     * Creates an instance of SliceInner class.
+     */
     public SliceInner() {
     }
 
     /**
      * Get the innerProperties property: Slice properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SlicePropertiesFormat innerProperties() {
@@ -43,21 +47,25 @@ public final class SliceInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SliceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SliceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -66,7 +74,7 @@ public final class SliceInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the network slice resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -76,7 +84,7 @@ public final class SliceInner extends Resource {
     /**
      * Get the snssai property: Single-network slice selection assistance information (S-NSSAI). Unique at the scope of
      * a mobile network.
-     *
+     * 
      * @return the snssai value.
      */
     public Snssai snssai() {
@@ -86,7 +94,7 @@ public final class SliceInner extends Resource {
     /**
      * Set the snssai property: Single-network slice selection assistance information (S-NSSAI). Unique at the scope of
      * a mobile network.
-     *
+     * 
      * @param snssai the snssai value to set.
      * @return the SliceInner object itself.
      */
@@ -100,7 +108,7 @@ public final class SliceInner extends Resource {
 
     /**
      * Get the description property: An optional description for this network slice.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -109,7 +117,7 @@ public final class SliceInner extends Resource {
 
     /**
      * Set the description property: An optional description for this network slice.
-     *
+     * 
      * @param description the description value to set.
      * @return the SliceInner object itself.
      */
@@ -123,14 +131,13 @@ public final class SliceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model SliceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property innerProperties in model SliceInner"));
         } else {
             innerProperties().validate();
         }

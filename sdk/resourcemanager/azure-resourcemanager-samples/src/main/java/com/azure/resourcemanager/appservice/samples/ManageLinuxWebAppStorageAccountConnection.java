@@ -8,7 +8,9 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.resourcemanager.appservice.fluent.models.CsmPublishingCredentialsPoliciesEntityProperties;
 import com.azure.resourcemanager.appservice.models.ConnectionStringType;
+import com.azure.resourcemanager.appservice.models.FtpsState;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.RuntimeStack;
 import com.azure.resourcemanager.appservice.models.WebApp;
@@ -101,10 +103,22 @@ public final class ManageLinuxWebAppStorageAccountConnection {
                     .withBuiltInImage(RuntimeStack.TOMCAT_8_5_JRE8)
                     .withConnectionString("storage.connectionString", connectionString, ConnectionStringType.CUSTOM)
                     .withAppSetting("storage.containerName", containerName)
+                    .withFtpsState(FtpsState.ALL_ALLOWED)
                     .create();
 
             System.out.println("Created web app " + app1.name());
             Utils.print(app1);
+
+            app1.manager().resourceManager().genericResources().define("ftp")
+                .withRegion(app1.regionName())
+                .withExistingResourceGroup(app1.resourceGroupName())
+                .withResourceType("basicPublishingCredentialsPolicies")
+                .withProviderNamespace("Microsoft.Web")
+                .withoutPlan()
+                .withParentResourcePath("sites/" + app1.name())
+                .withApiVersion("2023-01-01")
+                .withProperties(new CsmPublishingCredentialsPoliciesEntityProperties().withAllow(true))
+                .create();
 
             //============================================================
             // Deploy a web app that connects to the storage account

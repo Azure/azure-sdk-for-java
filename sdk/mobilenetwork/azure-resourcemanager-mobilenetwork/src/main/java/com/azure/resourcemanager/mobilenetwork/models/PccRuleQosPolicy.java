@@ -7,18 +7,20 @@ package com.azure.resourcemanager.mobilenetwork.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Data flow policy rule QoS policy. */
+/**
+ * Data flow policy rule QoS policy.
+ */
 @Fluent
 public final class PccRuleQosPolicy extends QosPolicy {
     /*
-     * The guaranteed bit rate (GBR) for all service data flows that use this data flow policy rule. This is an
-     * optional setting. If you do not provide a value, there will be no GBR set for the data flow policy rule that
-     * uses this QoS definition.
+     * The guaranteed bit rate (GBR) for all service data flows that use this data flow policy rule. This is an optional setting. If you do not provide a value, there will be no GBR set for the data flow policy rule that uses this QoS definition.
      */
     @JsonProperty(value = "guaranteedBitRate")
     private Ambr guaranteedBitRate;
 
-    /** Creates an instance of PccRuleQosPolicy class. */
+    /**
+     * Creates an instance of PccRuleQosPolicy class.
+     */
     public PccRuleQosPolicy() {
     }
 
@@ -26,7 +28,7 @@ public final class PccRuleQosPolicy extends QosPolicy {
      * Get the guaranteedBitRate property: The guaranteed bit rate (GBR) for all service data flows that use this data
      * flow policy rule. This is an optional setting. If you do not provide a value, there will be no GBR set for the
      * data flow policy rule that uses this QoS definition.
-     *
+     * 
      * @return the guaranteedBitRate value.
      */
     public Ambr guaranteedBitRate() {
@@ -37,7 +39,7 @@ public final class PccRuleQosPolicy extends QosPolicy {
      * Set the guaranteedBitRate property: The guaranteed bit rate (GBR) for all service data flows that use this data
      * flow policy rule. This is an optional setting. If you do not provide a value, there will be no GBR set for the
      * data flow policy rule that uses this QoS definition.
-     *
+     * 
      * @param guaranteedBitRate the guaranteedBitRate value to set.
      * @return the PccRuleQosPolicy object itself.
      */
@@ -46,35 +48,45 @@ public final class PccRuleQosPolicy extends QosPolicy {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PccRuleQosPolicy withFiveQi(Integer fiveQi) {
         super.withFiveQi(fiveQi);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PccRuleQosPolicy withAllocationAndRetentionPriorityLevel(Integer allocationAndRetentionPriorityLevel) {
         super.withAllocationAndRetentionPriorityLevel(allocationAndRetentionPriorityLevel);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PccRuleQosPolicy withPreemptionCapability(PreemptionCapability preemptionCapability) {
         super.withPreemptionCapability(preemptionCapability);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PccRuleQosPolicy withPreemptionVulnerability(PreemptionVulnerability preemptionVulnerability) {
         super.withPreemptionVulnerability(preemptionVulnerability);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PccRuleQosPolicy withMaximumBitRate(Ambr maximumBitRate) {
         super.withMaximumBitRate(maximumBitRate);
@@ -83,7 +95,7 @@ public final class PccRuleQosPolicy extends QosPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

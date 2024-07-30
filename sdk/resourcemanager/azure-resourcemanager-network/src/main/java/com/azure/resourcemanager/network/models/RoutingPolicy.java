@@ -107,16 +107,16 @@ public final class RoutingPolicy {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model RoutingPolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model RoutingPolicy"));
         }
         if (destinations() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property destinations in model RoutingPolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property destinations in model RoutingPolicy"));
         }
         if (nextHop() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property nextHop in model RoutingPolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property nextHop in model RoutingPolicy"));
         }
     }
 

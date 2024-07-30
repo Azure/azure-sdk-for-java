@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Provisioning status of the origin. */
+/**
+ * Provisioning status of the origin.
+ */
 public final class OriginProvisioningState extends ExpandableStringEnum<OriginProvisioningState> {
-    /** Static value Succeeded for OriginProvisioningState. */
+    /**
+     * Static value Succeeded for OriginProvisioningState.
+     */
     public static final OriginProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for OriginProvisioningState. */
+    /**
+     * Static value Failed for OriginProvisioningState.
+     */
     public static final OriginProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Updating for OriginProvisioningState. */
+    /**
+     * Static value Updating for OriginProvisioningState.
+     */
     public static final OriginProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Deleting for OriginProvisioningState. */
+    /**
+     * Static value Deleting for OriginProvisioningState.
+     */
     public static final OriginProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Creating for OriginProvisioningState. */
+    /**
+     * Static value Creating for OriginProvisioningState.
+     */
     public static final OriginProvisioningState CREATING = fromString("Creating");
 
     /**
      * Creates a new instance of OriginProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class OriginProvisioningState extends ExpandableStringEnum<OriginPr
 
     /**
      * Creates or finds a OriginProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OriginProvisioningState.
      */
@@ -47,7 +59,7 @@ public final class OriginProvisioningState extends ExpandableStringEnum<OriginPr
 
     /**
      * Gets known OriginProvisioningState values.
-     *
+     * 
      * @return known OriginProvisioningState values.
      */
     public static Collection<OriginProvisioningState> values() {

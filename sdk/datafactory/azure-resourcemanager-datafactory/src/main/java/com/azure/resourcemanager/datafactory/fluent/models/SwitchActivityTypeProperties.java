@@ -117,8 +117,9 @@ public final class SwitchActivityTypeProperties {
      */
     public void validate() {
         if (on() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property on in model SwitchActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property on in model SwitchActivityTypeProperties"));
         } else {
             on().validate();
         }

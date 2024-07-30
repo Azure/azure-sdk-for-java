@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PublisherInfo {
     /*
-     * The Subject field of the x.509 certificate used to sign the code, using the following fields - O =
-     * Organization, L = Locality, S = State or Province, and C = Country
+     * The Subject field of the x.509 certificate used to sign the code, using the following fields -  O = Organization, L = Locality, S = State or Province, and C = Country
      */
     @JsonProperty(value = "publisherName")
     private String publisherName;

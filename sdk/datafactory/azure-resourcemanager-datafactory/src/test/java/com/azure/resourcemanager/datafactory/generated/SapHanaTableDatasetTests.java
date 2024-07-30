@@ -19,32 +19,34 @@ public final class SapHanaTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapHanaTableDataset model = BinaryData.fromString(
-            "{\"type\":\"SapHanaTable\",\"typeProperties\":{\"schema\":\"datai\",\"table\":\"datazcyniapy\"},\"description\":\"mrxirqwipzesstu\",\"structure\":\"dataytkmlfupj\",\"schema\":\"datax\",\"linkedServiceName\":{\"referenceName\":\"vzjoyxjgahxue\",\"parameters\":{\"erfcv\":\"dataaktnytkb\",\"hnhhcikh\":\"datapvfqjckmpwyv\",\"lsac\":\"dataebgjg\",\"ygotoh\":\"datagiflr\"}},\"parameters\":{\"tjsjzelsriemvu\":{\"type\":\"String\",\"defaultValue\":\"datadhbxitrapwzhl\"},\"cb\":{\"type\":\"Int\",\"defaultValue\":\"dataakosysycvldee\"}},\"annotations\":[\"datapus\",\"dataofkegbvbbdledffl\",\"datavsluazzxfjv\",\"dataugpxzeempup\"],\"folder\":{\"name\":\"boxraqdczmr\"},\"\":{\"drzzbskiwrjsb\":\"databekxeheowseca\",\"qsuivmrfaptndrmm\":\"databmseesacuicnvq\"}}")
+            "{\"type\":\"SapHanaTable\",\"typeProperties\":{\"schema\":\"dataikjhorlxkpypkenn\",\"table\":\"datantrqxxwtdmb\"},\"description\":\"tsuhqhtoxtd\",\"structure\":\"dataavfxbqmzxsya\",\"schema\":\"datainpaamihwbgh\",\"linkedServiceName\":{\"referenceName\":\"wt\",\"parameters\":{\"gsf\":\"datagch\",\"sqbjsdj\":\"datahbjki\",\"sgw\":\"datagxe\",\"ivoveomkhfeqcoop\":\"datacfferznzc\"}},\"parameters\":{\"xsuloutnpb\":{\"type\":\"String\",\"defaultValue\":\"dataimgckycjpeebznbz\"},\"cdmwk\":{\"type\":\"Int\",\"defaultValue\":\"dataoqohgp\"}},\"annotations\":[\"datafhsl\",\"dataqd\",\"dataa\"],\"folder\":{\"name\":\"nyevdyzdsytciks\"},\"\":{\"mvhadrpbatvy\":\"dataamwuynfxkcgsf\",\"qwsyjtvjkowggxaw\":\"datakljq\",\"ov\":\"datadmbypnkteiidl\",\"cnerekyjul\":\"databclprgeganihk\"}}")
             .toObject(SapHanaTableDataset.class);
-        Assertions.assertEquals("mrxirqwipzesstu", model.description());
-        Assertions.assertEquals("vzjoyxjgahxue", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("tjsjzelsriemvu").type());
-        Assertions.assertEquals("boxraqdczmr", model.folder().name());
+        Assertions.assertEquals("tsuhqhtoxtd", model.description());
+        Assertions.assertEquals("wt", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("xsuloutnpb").type());
+        Assertions.assertEquals("nyevdyzdsytciks", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapHanaTableDataset model = new SapHanaTableDataset().withDescription("mrxirqwipzesstu")
-            .withStructure("dataytkmlfupj").withSchema("datax")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("vzjoyxjgahxue")
-                .withParameters(mapOf("erfcv", "dataaktnytkb", "hnhhcikh", "datapvfqjckmpwyv", "lsac", "dataebgjg",
-                    "ygotoh", "datagiflr")))
-            .withParameters(mapOf("tjsjzelsriemvu",
-                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datadhbxitrapwzhl"), "cb",
-                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("dataakosysycvldee")))
-            .withAnnotations(Arrays.asList("datapus", "dataofkegbvbbdledffl", "datavsluazzxfjv", "dataugpxzeempup"))
-            .withFolder(new DatasetFolder().withName("boxraqdczmr")).withSchemaTypePropertiesSchema("datai")
-            .withTable("datazcyniapy");
+        SapHanaTableDataset model = new SapHanaTableDataset().withDescription("tsuhqhtoxtd")
+            .withStructure("dataavfxbqmzxsya")
+            .withSchema("datainpaamihwbgh")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("wt")
+                .withParameters(mapOf("gsf", "datagch", "sqbjsdj", "datahbjki", "sgw", "datagxe", "ivoveomkhfeqcoop",
+                    "datacfferznzc")))
+            .withParameters(mapOf("xsuloutnpb",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataimgckycjpeebznbz"),
+                "cdmwk", new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("dataoqohgp")))
+            .withAnnotations(Arrays.asList("datafhsl", "dataqd", "dataa"))
+            .withFolder(new DatasetFolder().withName("nyevdyzdsytciks"))
+            .withSchemaTypePropertiesSchema("dataikjhorlxkpypkenn")
+            .withTable("datantrqxxwtdmb");
         model = BinaryData.fromObject(model).toObject(SapHanaTableDataset.class);
-        Assertions.assertEquals("mrxirqwipzesstu", model.description());
-        Assertions.assertEquals("vzjoyxjgahxue", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("tjsjzelsriemvu").type());
-        Assertions.assertEquals("boxraqdczmr", model.folder().name());
+        Assertions.assertEquals("tsuhqhtoxtd", model.description());
+        Assertions.assertEquals("wt", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("xsuloutnpb").type());
+        Assertions.assertEquals("nyevdyzdsytciks", model.folder().name());
     }
 
     // Use "Map.of" if available

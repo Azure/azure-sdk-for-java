@@ -17,9 +17,7 @@ import java.util.Map;
  */
 public final class TopicsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/Topics_Update.
-     * json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/Topics_Update.json
      */
     /**
      * Sample code: Topics_Update.
@@ -28,8 +26,10 @@ public final class TopicsUpdateSamples {
      */
     public static void topicsUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
         Topic resource = manager.topics()
-            .getByResourceGroupWithResponse("examplerg", "exampletopic1", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2"))
+            .getByResourceGroupWithResponse("examplerg", "exampletopic1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("tag1", "value1", "tag2", "value2"))
             .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
             .withInboundIpRules(
                 Arrays.asList(new InboundIpRule().withIpMask("12.18.30.15").withAction(IpActionType.ALLOW),

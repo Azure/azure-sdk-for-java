@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class VipSwapGetSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/CloudServiceSwapGet.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/CloudServiceSwapGet.json
      */
     /**
      * Sample code: Get swap resource.
@@ -18,7 +18,10 @@ public final class VipSwapGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getSwapResource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVipSwaps().getWithResponse("rg1", "testCloudService",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVipSwaps()
+            .getWithResponse("rg1", "testCloudService", com.azure.core.util.Context.NONE);
     }
 }

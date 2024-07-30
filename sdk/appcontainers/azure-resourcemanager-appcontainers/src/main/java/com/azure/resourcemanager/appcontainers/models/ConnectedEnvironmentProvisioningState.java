@@ -5,42 +5,59 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Provisioning state of the Kubernetes Environment. */
+/**
+ * Provisioning state of the Kubernetes Environment.
+ */
 public final class ConnectedEnvironmentProvisioningState
     extends ExpandableStringEnum<ConnectedEnvironmentProvisioningState> {
-    /** Static value Succeeded for ConnectedEnvironmentProvisioningState. */
+    /**
+     * Static value Succeeded for ConnectedEnvironmentProvisioningState.
+     */
     public static final ConnectedEnvironmentProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for ConnectedEnvironmentProvisioningState. */
+    /**
+     * Static value Failed for ConnectedEnvironmentProvisioningState.
+     */
     public static final ConnectedEnvironmentProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Canceled for ConnectedEnvironmentProvisioningState. */
+    /**
+     * Static value Canceled for ConnectedEnvironmentProvisioningState.
+     */
     public static final ConnectedEnvironmentProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value Waiting for ConnectedEnvironmentProvisioningState. */
+    /**
+     * Static value Waiting for ConnectedEnvironmentProvisioningState.
+     */
     public static final ConnectedEnvironmentProvisioningState WAITING = fromString("Waiting");
 
-    /** Static value InitializationInProgress for ConnectedEnvironmentProvisioningState. */
-    public static final ConnectedEnvironmentProvisioningState INITIALIZATION_IN_PROGRESS =
-        fromString("InitializationInProgress");
+    /**
+     * Static value InitializationInProgress for ConnectedEnvironmentProvisioningState.
+     */
+    public static final ConnectedEnvironmentProvisioningState INITIALIZATION_IN_PROGRESS
+        = fromString("InitializationInProgress");
 
-    /** Static value InfrastructureSetupInProgress for ConnectedEnvironmentProvisioningState. */
-    public static final ConnectedEnvironmentProvisioningState INFRASTRUCTURE_SETUP_IN_PROGRESS =
-        fromString("InfrastructureSetupInProgress");
+    /**
+     * Static value InfrastructureSetupInProgress for ConnectedEnvironmentProvisioningState.
+     */
+    public static final ConnectedEnvironmentProvisioningState INFRASTRUCTURE_SETUP_IN_PROGRESS
+        = fromString("InfrastructureSetupInProgress");
 
-    /** Static value InfrastructureSetupComplete for ConnectedEnvironmentProvisioningState. */
-    public static final ConnectedEnvironmentProvisioningState INFRASTRUCTURE_SETUP_COMPLETE =
-        fromString("InfrastructureSetupComplete");
+    /**
+     * Static value InfrastructureSetupComplete for ConnectedEnvironmentProvisioningState.
+     */
+    public static final ConnectedEnvironmentProvisioningState INFRASTRUCTURE_SETUP_COMPLETE
+        = fromString("InfrastructureSetupComplete");
 
-    /** Static value ScheduledForDelete for ConnectedEnvironmentProvisioningState. */
+    /**
+     * Static value ScheduledForDelete for ConnectedEnvironmentProvisioningState.
+     */
     public static final ConnectedEnvironmentProvisioningState SCHEDULED_FOR_DELETE = fromString("ScheduledForDelete");
 
     /**
      * Creates a new instance of ConnectedEnvironmentProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -49,18 +66,17 @@ public final class ConnectedEnvironmentProvisioningState
 
     /**
      * Creates or finds a ConnectedEnvironmentProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ConnectedEnvironmentProvisioningState.
      */
-    @JsonCreator
     public static ConnectedEnvironmentProvisioningState fromString(String name) {
         return fromString(name, ConnectedEnvironmentProvisioningState.class);
     }
 
     /**
      * Gets known ConnectedEnvironmentProvisioningState values.
-     *
+     * 
      * @return known ConnectedEnvironmentProvisioningState values.
      */
     public static Collection<ConnectedEnvironmentProvisioningState> values() {

@@ -45,8 +45,8 @@ public final class FileShareDatasetTypeProperties {
     private DatasetStorageFormat format;
 
     /*
-     * Specify a filter to be used to select a subset of files in the folderPath rather than all files. Type: string
-     * (or Expression with resultType string).
+     * Specify a filter to be used to select a subset of files in the folderPath rather than all files. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "fileFilter")
     private Object fileFilter;
@@ -64,8 +64,8 @@ public final class FileShareDatasetTypeProperties {
     }
 
     /**
-     * Get the folderPath property: The path of the on-premises file system. Type: string (or Expression with
-     * resultType string).
+     * Get the folderPath property: The path of the on-premises file system. Type: string (or Expression with resultType
+     * string).
      * 
      * @return the folderPath value.
      */
@@ -74,8 +74,8 @@ public final class FileShareDatasetTypeProperties {
     }
 
     /**
-     * Set the folderPath property: The path of the on-premises file system. Type: string (or Expression with
-     * resultType string).
+     * Set the folderPath property: The path of the on-premises file system. Type: string (or Expression with resultType
+     * string).
      * 
      * @param folderPath the folderPath value to set.
      * @return the FileShareDatasetTypeProperties object itself.

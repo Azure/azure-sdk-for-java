@@ -7,7 +7,9 @@ package com.azure.resourcemanager.mobilenetwork.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Single-network slice selection assistance information (S-NSSAI). */
+/**
+ * Single-network slice selection assistance information (S-NSSAI).
+ */
 @Fluent
 public final class Snssai {
     /*
@@ -22,13 +24,15 @@ public final class Snssai {
     @JsonProperty(value = "sd")
     private String sd;
 
-    /** Creates an instance of Snssai class. */
+    /**
+     * Creates an instance of Snssai class.
+     */
     public Snssai() {
     }
 
     /**
      * Get the sst property: Slice/service type (SST).
-     *
+     * 
      * @return the sst value.
      */
     public int sst() {
@@ -37,7 +41,7 @@ public final class Snssai {
 
     /**
      * Set the sst property: Slice/service type (SST).
-     *
+     * 
      * @param sst the sst value to set.
      * @return the Snssai object itself.
      */
@@ -48,7 +52,7 @@ public final class Snssai {
 
     /**
      * Get the sd property: Slice differentiator (SD).
-     *
+     * 
      * @return the sd value.
      */
     public String sd() {
@@ -57,7 +61,7 @@ public final class Snssai {
 
     /**
      * Set the sd property: Slice differentiator (SD).
-     *
+     * 
      * @param sd the sd value to set.
      * @return the Snssai object itself.
      */
@@ -68,7 +72,7 @@ public final class Snssai {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

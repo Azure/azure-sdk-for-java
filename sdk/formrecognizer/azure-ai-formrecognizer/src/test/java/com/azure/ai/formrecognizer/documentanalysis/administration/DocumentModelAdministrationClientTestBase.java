@@ -12,7 +12,6 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.Docume
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.Constants;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisAudience;
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -20,8 +19,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.test.utils.MockTokenCredential;
-import com.azure.identity.AzureAuthorityHosts;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.io.File;
@@ -33,11 +31,7 @@ import java.util.Collections;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_CLIENT_ID;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_FORM_RECOGNIZER_CLIENT_SECRET;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_TENANT_ID;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVALID_KEY;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.getTestProxySanitizers;
+import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.REMOVE_SANITIZER_ID;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public abstract class DocumentModelAdministrationClientTestBase extends TestProxyTestBase {
@@ -54,8 +48,7 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestProx
     }
 
     DocumentModelAdministrationClientBuilder getDocumentModelAdminClientBuilder(HttpClient httpClient,
-                                                                                DocumentAnalysisServiceVersion serviceVersion,
-                                                                                boolean useKeyCredential) {
+                                                                                DocumentAnalysisServiceVersion serviceVersion) {
         String endpoint = getEndpoint();
         DocumentAnalysisAudience audience = TestUtils.getAudience(endpoint);
         DocumentModelAdministrationClientBuilder builder = new DocumentModelAdministrationClientBuilder()
@@ -65,49 +58,29 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestProx
             .serviceVersion(serviceVersion)
             .audience(audience);
 
-        if (useKeyCredential) {
-            if (interceptorManager.isPlaybackMode()) {
-                builder.credential(new AzureKeyCredential(INVALID_KEY));
-                setMatchers();
-            } else if (interceptorManager.isRecordMode()) {
-                builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
-                builder.addPolicy(interceptorManager.getRecordPolicy());
-            } else if (interceptorManager.isLiveMode()) {
-                builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
-            }
-        } else {
-            if (interceptorManager.isPlaybackMode()) {
-                builder.credential(new MockTokenCredential());
-                setMatchers();
-            } else if (interceptorManager.isRecordMode()) {
-                builder.credential(getCredentialByAuthority(endpoint));
-                builder.addPolicy(interceptorManager.getRecordPolicy());
-            } else if (interceptorManager.isLiveMode()) {
-                builder.credential(getCredentialByAuthority(endpoint));
-            }
+
+        if (interceptorManager.isPlaybackMode()) {
+            builder.credential(new MockTokenCredential());
+            setMatchers();
+        } else if (interceptorManager.isRecordMode()) {
+            builder.credential(getCredentialByAuthority(endpoint));
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        } else if (interceptorManager.isLiveMode()) {
+            builder.credential(new AzurePowerShellCredentialBuilder().build());
         }
         if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(getTestProxySanitizers());
+            interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
         }
         return builder;
     }
+
     private void setMatchers() {
         interceptorManager.addMatchers(Collections.singletonList(new BodilessMatcher()));
     }
     static TokenCredential getCredentialByAuthority(String endpoint) {
-        String authority = TestUtils.getAuthority(endpoint);
-        if (AzureAuthorityHosts.AZURE_PUBLIC_CLOUD.equals(authority)) {
-            return new DefaultAzureCredentialBuilder()
-                .authorityHost(TestUtils.getAuthority(endpoint))
-                .build();
-        } else {
-            return new ClientSecretCredentialBuilder()
-                .tenantId(AZURE_TENANT_ID)
-                .clientId(AZURE_CLIENT_ID)
-                .clientSecret(AZURE_FORM_RECOGNIZER_CLIENT_SECRET)
-                .authorityHost(authority)
-                .build();
-        }
+        return new DefaultAzureCredentialBuilder()
+            .authorityHost(TestUtils.getAuthority(endpoint))
+            .build();
     }
 
     static void validateCopyAuthorizationResult(DocumentModelCopyAuthorization actualResult) {

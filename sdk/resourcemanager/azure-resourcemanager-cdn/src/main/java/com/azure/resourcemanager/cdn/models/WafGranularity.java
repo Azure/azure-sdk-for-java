@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WafGranularity. */
+/**
+ * Defines values for WafGranularity.
+ */
 public final class WafGranularity extends ExpandableStringEnum<WafGranularity> {
-    /** Static value PT5M for WafGranularity. */
+    /**
+     * Static value PT5M for WafGranularity.
+     */
     public static final WafGranularity PT5M = fromString("PT5M");
 
-    /** Static value PT1H for WafGranularity. */
+    /**
+     * Static value PT1H for WafGranularity.
+     */
     public static final WafGranularity PT1H = fromString("PT1H");
 
-    /** Static value P1D for WafGranularity. */
+    /**
+     * Static value P1D for WafGranularity.
+     */
     public static final WafGranularity P1D = fromString("P1D");
 
     /**
      * Creates a new instance of WafGranularity value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class WafGranularity extends ExpandableStringEnum<WafGranularity> {
 
     /**
      * Creates or finds a WafGranularity from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WafGranularity.
      */
@@ -41,7 +49,7 @@ public final class WafGranularity extends ExpandableStringEnum<WafGranularity> {
 
     /**
      * Gets known WafGranularity values.
-     *
+     * 
      * @return known WafGranularity values.
      */
     public static Collection<WafGranularity> values() {

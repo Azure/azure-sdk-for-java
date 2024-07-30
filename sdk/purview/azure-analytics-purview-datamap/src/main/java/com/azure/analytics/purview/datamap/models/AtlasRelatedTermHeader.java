@@ -6,60 +6,57 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The header of the related term.
  */
 @Fluent
-public final class AtlasRelatedTermHeader {
+public final class AtlasRelatedTermHeader implements JsonSerializable<AtlasRelatedTermHeader> {
     /*
      * The description of the related term.
      */
     @Generated
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The display text.
      */
     @Generated
-    @JsonProperty(value = "displayText")
     private String displayText;
 
     /*
      * The expression of the term.
      */
     @Generated
-    @JsonProperty(value = "expression")
     private String expression;
 
     /*
      * The GUID of the relationship.
      */
     @Generated
-    @JsonProperty(value = "relationGuid")
     private String relationGuid;
 
     /*
      * The status of term relationship.
      */
     @Generated
-    @JsonProperty(value = "status")
     private AtlasTermRelationshipStatus status;
 
     /*
      * The steward of the term.
      */
     @Generated
-    @JsonProperty(value = "steward")
     private String steward;
 
     /*
      * The GUID of the term.
      */
     @Generated
-    @JsonProperty(value = "termGuid")
     private String termGuid;
 
     /**
@@ -221,5 +218,62 @@ public final class AtlasRelatedTermHeader {
     public AtlasRelatedTermHeader setTermGuid(String termGuid) {
         this.termGuid = termGuid;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("displayText", this.displayText);
+        jsonWriter.writeStringField("expression", this.expression);
+        jsonWriter.writeStringField("relationGuid", this.relationGuid);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("steward", this.steward);
+        jsonWriter.writeStringField("termGuid", this.termGuid);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AtlasRelatedTermHeader from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AtlasRelatedTermHeader if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AtlasRelatedTermHeader.
+     */
+    @Generated
+    public static AtlasRelatedTermHeader fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AtlasRelatedTermHeader deserializedAtlasRelatedTermHeader = new AtlasRelatedTermHeader();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedAtlasRelatedTermHeader.description = reader.getString();
+                } else if ("displayText".equals(fieldName)) {
+                    deserializedAtlasRelatedTermHeader.displayText = reader.getString();
+                } else if ("expression".equals(fieldName)) {
+                    deserializedAtlasRelatedTermHeader.expression = reader.getString();
+                } else if ("relationGuid".equals(fieldName)) {
+                    deserializedAtlasRelatedTermHeader.relationGuid = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedAtlasRelatedTermHeader.status
+                        = AtlasTermRelationshipStatus.fromString(reader.getString());
+                } else if ("steward".equals(fieldName)) {
+                    deserializedAtlasRelatedTermHeader.steward = reader.getString();
+                } else if ("termGuid".equals(fieldName)) {
+                    deserializedAtlasRelatedTermHeader.termGuid = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAtlasRelatedTermHeader;
+        });
     }
 }

@@ -20,7 +20,7 @@ import java.util.Arrays;
 public final class PrivateLinkServicesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/PrivateLinkServiceCreate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/PrivateLinkServiceCreate.json
      */
     /**
      * Sample code: Create private link service.
@@ -28,12 +28,16 @@ public final class PrivateLinkServicesCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createPrivateLinkService(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getPrivateLinkServices().createOrUpdate("rg1", "testPls",
-            new PrivateLinkServiceInner().withLocation("eastus")
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getPrivateLinkServices()
+            .createOrUpdate("rg1", "testPls", new PrivateLinkServiceInner().withLocation("eastus")
                 .withLoadBalancerFrontendIpConfigurations(Arrays.asList(new FrontendIpConfigurationInner().withId(
                     "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fe-lb")))
                 .withIpConfigurations(Arrays.asList(new PrivateLinkServiceIpConfigurationInner().withName("fe-lb")
-                    .withPrivateIpAddress("10.0.1.4").withPrivateIpAllocationMethod(IpAllocationMethod.STATIC)
+                    .withPrivateIpAddress("10.0.1.4")
+                    .withPrivateIpAllocationMethod(IpAllocationMethod.STATIC)
                     .withSubnet(new SubnetInner().withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnetlb/subnets/subnetlb"))
                     .withPrivateIpAddressVersion(IpVersion.IPV4)))
@@ -41,7 +45,6 @@ public final class PrivateLinkServicesCreateOrUpdateSamples {
                     .withSubscriptions(Arrays.asList("subscription1", "subscription2", "subscription3")))
                 .withAutoApproval(new PrivateLinkServicePropertiesAutoApproval()
                     .withSubscriptions(Arrays.asList("subscription1", "subscription2")))
-                .withFqdns(Arrays.asList("fqdn1", "fqdn2", "fqdn3")),
-            com.azure.core.util.Context.NONE);
+                .withFqdns(Arrays.asList("fqdn1", "fqdn2", "fqdn3")), com.azure.core.util.Context.NONE);
     }
 }

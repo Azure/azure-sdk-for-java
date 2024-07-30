@@ -5,24 +5,32 @@
 package com.azure.resourcemanager.nginx.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.nginx.models.AutoUpgradeProfile;
 import com.azure.resourcemanager.nginx.models.NginxDeploymentScalingProperties;
 import com.azure.resourcemanager.nginx.models.NginxDeploymentUpdateProperties;
 import com.azure.resourcemanager.nginx.models.NginxDeploymentUserProfile;
 import com.azure.resourcemanager.nginx.models.NginxLogging;
 import com.azure.resourcemanager.nginx.models.NginxStorageAccount;
+import com.azure.resourcemanager.nginx.models.ScaleProfile;
+import com.azure.resourcemanager.nginx.models.ScaleProfileCapacity;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class NginxDeploymentUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NginxDeploymentUpdateProperties model = BinaryData.fromString(
-            "{\"enableDiagnosticsSupport\":false,\"logging\":{\"storageAccount\":{\"accountName\":\"knvudwtiukb\",\"containerName\":\"ngkpocipazy\"}},\"scalingProperties\":{\"capacity\":2139015356},\"userProfile\":{\"preferredEmail\":\"g\"}}")
+            "{\"enableDiagnosticsSupport\":false,\"logging\":{\"storageAccount\":{\"accountName\":\"yvshxmz\",\"containerName\":\"bzoggigrx\"}},\"scalingProperties\":{\"capacity\":849896725,\"autoScaleSettings\":{\"profiles\":[{\"name\":\"xxjnspydptk\",\"capacity\":{\"min\":668833312,\"max\":1482419493}}]}},\"userProfile\":{\"preferredEmail\":\"uknvudwti\"},\"autoUpgradeProfile\":{\"upgradeChannel\":\"bldngkpoc\"}}")
             .toObject(NginxDeploymentUpdateProperties.class);
         Assertions.assertEquals(false, model.enableDiagnosticsSupport());
-        Assertions.assertEquals("knvudwtiukb", model.logging().storageAccount().accountName());
-        Assertions.assertEquals("ngkpocipazy", model.logging().storageAccount().containerName());
-        Assertions.assertEquals(2139015356, model.scalingProperties().capacity());
-        Assertions.assertEquals("g", model.userProfile().preferredEmail());
+        Assertions.assertEquals("yvshxmz", model.logging().storageAccount().accountName());
+        Assertions.assertEquals("bzoggigrx", model.logging().storageAccount().containerName());
+        Assertions.assertEquals(849896725, model.scalingProperties().capacity());
+        Assertions.assertEquals("xxjnspydptk", model.scalingProperties().profiles().get(0).name());
+        Assertions.assertEquals(668833312, model.scalingProperties().profiles().get(0).capacity().min());
+        Assertions.assertEquals(1482419493, model.scalingProperties().profiles().get(0).capacity().max());
+        Assertions.assertEquals("uknvudwti", model.userProfile().preferredEmail());
+        Assertions.assertEquals("bldngkpoc", model.autoUpgradeProfile().upgradeChannel());
     }
 
     @org.junit.jupiter.api.Test
@@ -30,14 +38,21 @@ public final class NginxDeploymentUpdatePropertiesTests {
         NginxDeploymentUpdateProperties model
             = new NginxDeploymentUpdateProperties().withEnableDiagnosticsSupport(false)
                 .withLogging(new NginxLogging().withStorageAccount(
-                    new NginxStorageAccount().withAccountName("knvudwtiukb").withContainerName("ngkpocipazy")))
-                .withScalingProperties(new NginxDeploymentScalingProperties().withCapacity(2139015356))
-                .withUserProfile(new NginxDeploymentUserProfile().withPreferredEmail("g"));
+                    new NginxStorageAccount().withAccountName("yvshxmz").withContainerName("bzoggigrx")))
+                .withScalingProperties(new NginxDeploymentScalingProperties().withCapacity(849896725)
+                    .withProfiles(Arrays.asList(new ScaleProfile().withName("xxjnspydptk")
+                        .withCapacity(new ScaleProfileCapacity().withMin(668833312).withMax(1482419493)))))
+                .withUserProfile(new NginxDeploymentUserProfile().withPreferredEmail("uknvudwti"))
+                .withAutoUpgradeProfile(new AutoUpgradeProfile().withUpgradeChannel("bldngkpoc"));
         model = BinaryData.fromObject(model).toObject(NginxDeploymentUpdateProperties.class);
         Assertions.assertEquals(false, model.enableDiagnosticsSupport());
-        Assertions.assertEquals("knvudwtiukb", model.logging().storageAccount().accountName());
-        Assertions.assertEquals("ngkpocipazy", model.logging().storageAccount().containerName());
-        Assertions.assertEquals(2139015356, model.scalingProperties().capacity());
-        Assertions.assertEquals("g", model.userProfile().preferredEmail());
+        Assertions.assertEquals("yvshxmz", model.logging().storageAccount().accountName());
+        Assertions.assertEquals("bzoggigrx", model.logging().storageAccount().containerName());
+        Assertions.assertEquals(849896725, model.scalingProperties().capacity());
+        Assertions.assertEquals("xxjnspydptk", model.scalingProperties().profiles().get(0).name());
+        Assertions.assertEquals(668833312, model.scalingProperties().profiles().get(0).capacity().min());
+        Assertions.assertEquals(1482419493, model.scalingProperties().profiles().get(0).capacity().max());
+        Assertions.assertEquals("uknvudwti", model.userProfile().preferredEmail());
+        Assertions.assertEquals("bldngkpoc", model.autoUpgradeProfile().upgradeChannel());
     }
 }

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class PublicIpAddressesGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/PublicIpAddressGet.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/PublicIpAddressGet.json
      */
     /**
      * Sample code: Get public IP address.
@@ -18,7 +18,10 @@ public final class PublicIpAddressesGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getPublicIPAddress(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getPublicIpAddresses().getByResourceGroupWithResponse("rg1",
-            "testDNS-ip", null, com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getPublicIpAddresses()
+            .getByResourceGroupWithResponse("rg1", "testDNS-ip", null, com.azure.core.util.Context.NONE);
     }
 }

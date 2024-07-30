@@ -6,6 +6,7 @@ package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -13,10 +14,21 @@ import java.util.List;
 /**
  * NumberNotInRange Advanced Filter.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "operatorType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "operatorType",
+    defaultImpl = NumberNotInRangeAdvancedFilter.class,
+    visible = true)
 @JsonTypeName("NumberNotInRange")
 @Fluent
 public final class NumberNotInRangeAdvancedFilter extends AdvancedFilter {
+    /*
+     * The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "operatorType", required = true)
+    private AdvancedFilterOperatorType operatorType = AdvancedFilterOperatorType.NUMBER_NOT_IN_RANGE;
+
     /*
      * The set of filter values.
      */
@@ -27,6 +39,17 @@ public final class NumberNotInRangeAdvancedFilter extends AdvancedFilter {
      * Creates an instance of NumberNotInRangeAdvancedFilter class.
      */
     public NumberNotInRangeAdvancedFilter() {
+    }
+
+    /**
+     * Get the operatorType property: The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals
+     * and others.
+     * 
+     * @return the operatorType value.
+     */
+    @Override
+    public AdvancedFilterOperatorType operatorType() {
+        return this.operatorType;
     }
 
     /**

@@ -6,6 +6,8 @@ package com.azure.core.util;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.policy.FixedDelayOptions;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.logging.ClientLogger;
@@ -318,7 +320,8 @@ public class FluxUtilTest {
         AtomicInteger errorCount = new AtomicInteger();
         Flux<ByteBuffer> retriableStream
             = FluxUtil.createRetriableDownloadFlux(() -> generateStream(data, 0, errorCount),
-                (throwable, position) -> generateStream(data, position, errorCount), 5);
+                (throwable, position) -> generateStream(data, position, errorCount),
+                new RetryOptions(new FixedDelayOptions(5, Duration.ofMillis(1))), 0L);
 
         Path file = Files.createTempFile("writingRetriableStreamThatFails" + UUID.randomUUID(), ".txt");
         file.toFile().deleteOnExit();
@@ -349,7 +352,7 @@ public class FluxUtilTest {
                     return;
                 }
 
-                int readCount = (int) Math.min(4096, data.length - pos[0]);
+                int readCount = (int) Math.min(16384, data.length - pos[0]);
                 emitter.next(ByteBuffer.wrap(data, (int) pos[0], readCount));
 
                 pos[0] += readCount;

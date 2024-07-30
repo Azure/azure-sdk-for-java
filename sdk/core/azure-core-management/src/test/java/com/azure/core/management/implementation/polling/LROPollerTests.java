@@ -22,6 +22,8 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
@@ -61,6 +63,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @SuppressWarnings("unchecked")
 public class LROPollerTests {
+    private static final ClientLogger LOGGER = new ClientLogger(LROPollerTests.class);
 
     private static final SerializerAdapter SERIALIZER = SerializerFactory.createDefaultManagementSerializerAdapter();
 
@@ -678,8 +681,12 @@ public class LROPollerTests {
 
             long nanoTime = System.nanoTime();
 
-            FooWithProvisioningState result = lroFlux.doOnNext(response -> System.out.printf("[%s] status %s%n",
-                OffsetDateTime.now(), response.getStatus().toString())).blockLast().getFinalResult().block();
+            FooWithProvisioningState result = lroFlux
+                .doOnNext(response -> LOGGER.log(LogLevel.VERBOSE,
+                    () -> String.format("[%s] status %s%n", OffsetDateTime.now(), response.getStatus())))
+                .blockLast()
+                .getFinalResult()
+                .block();
             Assertions.assertNotNull(result);
 
             Duration pollingDuration = Duration.ofNanos(System.nanoTime() - nanoTime);
@@ -879,7 +886,8 @@ public class LROPollerTests {
                         .build();
                 }
                 if (request.getMethod().isOneOf(RequestMethod.PUT)) {
-                    System.out.printf("[%s] PUT status %s%n", OffsetDateTime.now(), "IN_PROGRESS");
+                    LOGGER.log(LogLevel.VERBOSE,
+                        () -> String.format("[%s] PUT status %s%n", OffsetDateTime.now(), "IN_PROGRESS"));
                     return new com.github.tomakehurst.wiremock.http.Response.Builder()
                         .headers(serverConfigure.additionalHeaders)
                         .body(toJson(new FooWithProvisioningState("IN_PROGRESS")))
@@ -888,13 +896,15 @@ public class LROPollerTests {
                 if (request.getMethod().isOneOf(RequestMethod.GET)) {
                     getCallCount[0]++;
                     if (getCallCount[0] < serverConfigure.pollingCountTillSuccess) {
-                        System.out.printf("[%s] GET status %s%n", OffsetDateTime.now(), "IN_PROGRESS");
+                        LOGGER.log(LogLevel.VERBOSE,
+                            () -> String.format("[%s] GET status %s%n", OffsetDateTime.now(), "IN_PROGRESS"));
                         return new com.github.tomakehurst.wiremock.http.Response.Builder()
                             .headers(serverConfigure.additionalHeaders)
                             .body(toJson(new FooWithProvisioningState("IN_PROGRESS")))
                             .build();
                     } else if (getCallCount[0] == serverConfigure.pollingCountTillSuccess) {
-                        System.out.printf("[%s] GET status %s%n", OffsetDateTime.now(), "SUCCEEDED");
+                        LOGGER.log(LogLevel.VERBOSE,
+                            () -> String.format("[%s] GET status %s%n", OffsetDateTime.now(), "SUCCEEDED"));
                         return new com.github.tomakehurst.wiremock.http.Response.Builder()
                             .body(toJson(new FooWithProvisioningState("SUCCEEDED", UUID.randomUUID().toString())))
                             .build();

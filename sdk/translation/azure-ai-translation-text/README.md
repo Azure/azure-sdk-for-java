@@ -36,7 +36,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-translation-text</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -96,7 +96,7 @@ The following section provides several code snippets using the `client` [created
 Gets the set of languages currently supported by other operations of the Translator.
 
 ```java getTextTranslationLanguages
-GetLanguagesResult languages = client.getLanguages();
+GetSupportedLanguagesResult languages = client.getSupportedLanguages();
 
 System.out.println("Number of supported languages for translate operation: " + languages.getTranslation().size() + ".");
 System.out.println("Number of supported languages for transliterate operation: " + languages.getTransliteration().size() + ".");
@@ -125,18 +125,14 @@ Please refer to the service documentation for a conceptual discussion of [langua
 Renders single source-language text to multiple target-language texts with a single request.
 
 ```java getTextTranslationMultiple
-String from = "en";
-List<String> targetLanguages = new ArrayList<>();
-targetLanguages.add("cs");
-List<InputTextItem> content = new ArrayList<>();
-content.add(new InputTextItem("This is a test."));
+TranslateOptions translateOptions = new TranslateOptions()
+    .setSourceLanguage("en")
+    .addTargetLanguage("es");
 
-List<TranslatedTextItem> translations = client.translate(targetLanguages, content, null, from, TextType.PLAIN, null, ProfanityAction.NO_ACTION, ProfanityMarker.ASTERISK, false, false, null, null, null, false);
+TranslatedTextItem translation = client.translate("This is a test.", translateOptions);
 
-for (TranslatedTextItem translation : translations) {
-    for (Translation textTranslation : translation.getTranslations()) {
-        System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
-    }
+for (TranslationText textTranslation : translation.getTranslations()) {
+    System.out.println("Text was translated to: '" + textTranslation.getTargetLanguage() + "' and the result is: '" + textTranslation.getText() + "'.");
 }
 ```
 
@@ -150,14 +146,11 @@ Converts characters or letters of a source language to the corresponding charact
 String language = "zh-Hans";
 String fromScript = "Hans";
 String toScript = "Latn";
-List<InputTextItem> content = new ArrayList<>();
-content.add(new InputTextItem("这是个测试。"));
+String content = "这是个测试。";
 
-List<TransliteratedText> transliterations = client.transliterate(language, fromScript, toScript, content);
+TransliteratedText transliteration = client.transliterate(language, fromScript, toScript, content);
 
-for (TransliteratedText transliteration : transliterations) {
-    System.out.println("Input text was transliterated to '" + transliteration.getScript() + "' script. Transliterated text: '" + transliteration.getText() + "'.");
-}
+System.out.println("Input text was transliterated to '" + transliteration.getScript() + "' script. Transliterated text: '" + transliteration.getText() + "'.");
 ```
 
 Please refer to the service documentation for a conceptual discussion of [transliterate][transliterate_doc].
@@ -169,14 +162,11 @@ Identifies the positioning of sentence boundaries in a piece of text.
 ```java getTextTranslationSentenceBoundaries
 String sourceLanguage = "zh-Hans";
 String sourceScript = "Latn";
-List<InputTextItem> content = new ArrayList<>();
-content.add(new InputTextItem("zhè shì gè cè shì。"));
+String content = "zhè shì gè cè shì。";
 
-List<BreakSentenceItem> breakSentences = client.findSentenceBoundaries(content, null, sourceLanguage, sourceScript);
+BreakSentenceItem breakSentence = client.findSentenceBoundaries(content, sourceLanguage, sourceScript);
 
-for (BreakSentenceItem breakSentence : breakSentences) {
-    System.out.println("The detected sentence boundaries: " + breakSentence.getSentLen());
-}
+System.out.println("The detected sentence boundaries: " + breakSentence.getSentencesLengths());
 ```
 
 Please refer to the service documentation for a conceptual discussion of [break sentence][breaksentence_doc].
@@ -188,15 +178,12 @@ Returns equivalent words for the source term in the target language.
 ```java getTextTranslationDictionaryLookup
 String sourceLanguage = "en";
 String targetLanguage = "es";
-List<InputTextItem> content = new ArrayList<>();
-content.add(new InputTextItem("fly"));
+String content = "fly";
 
-List<DictionaryLookupItem> dictionaryEntries = client.lookupDictionaryEntries(sourceLanguage, targetLanguage, content);
+DictionaryLookupItem dictionaryEntry = client.lookupDictionaryEntries(sourceLanguage, targetLanguage, content);
 
-for (DictionaryLookupItem dictionaryEntry : dictionaryEntries) {
-    System.out.println("For the given input " + dictionaryEntry.getTranslations().size() + " entries were found in the dictionary.");
-    System.out.println("First entry: '" + dictionaryEntry.getTranslations().get(0).getDisplayTarget() + "', confidence: " + dictionaryEntry.getTranslations().get(0).getConfidence());
-}
+System.out.println("For the given input " + dictionaryEntry.getTranslations().size() + " entries were found in the dictionary.");
+System.out.println("First entry: '" + dictionaryEntry.getTranslations().get(0).getDisplayTarget() + "', confidence: " + dictionaryEntry.getTranslations().get(0).getConfidence());
 ```
 
 Please refer to the service documentation for a conceptual discussion of [dictionary lookup][dictionarylookup_doc].

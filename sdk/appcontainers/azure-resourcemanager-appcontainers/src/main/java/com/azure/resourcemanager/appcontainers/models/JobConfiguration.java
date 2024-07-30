@@ -6,69 +6,75 @@ package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Non versioned Container Apps Job configuration properties. */
+/**
+ * Non versioned Container Apps Job configuration properties.
+ */
 @Fluent
-public final class JobConfiguration {
+public final class JobConfiguration implements JsonSerializable<JobConfiguration> {
     /*
      * Collection of secrets used by a Container Apps Job
      */
-    @JsonProperty(value = "secrets")
     private List<Secret> secrets;
 
     /*
      * Trigger type of the job
      */
-    @JsonProperty(value = "triggerType", required = true)
     private TriggerType triggerType;
 
     /*
      * Maximum number of seconds a replica is allowed to run.
      */
-    @JsonProperty(value = "replicaTimeout", required = true)
     private int replicaTimeout;
 
     /*
      * Maximum number of retries before failing the job.
      */
-    @JsonProperty(value = "replicaRetryLimit")
     private Integer replicaRetryLimit;
 
     /*
      * Manual trigger configuration for a single execution job. Properties replicaCompletionCount and parallelism would
      * be set to 1 by default
      */
-    @JsonProperty(value = "manualTriggerConfig")
     private JobConfigurationManualTriggerConfig manualTriggerConfig;
 
     /*
      * Cron formatted repeating trigger schedule ("* * * * *") for cronjobs. Properties completions and parallelism
      * would be set to 1 by default
      */
-    @JsonProperty(value = "scheduleTriggerConfig")
     private JobConfigurationScheduleTriggerConfig scheduleTriggerConfig;
 
     /*
      * Trigger configuration of an event driven job.
      */
-    @JsonProperty(value = "eventTriggerConfig")
     private JobConfigurationEventTriggerConfig eventTriggerConfig;
 
     /*
      * Collection of private container registry credentials used by a Container apps job
      */
-    @JsonProperty(value = "registries")
     private List<RegistryCredentials> registries;
 
-    /** Creates an instance of JobConfiguration class. */
+    /*
+     * Optional settings for Managed Identities that are assigned to the Container App Job. If a Managed Identity is not
+     * specified here, default settings will be used.
+     */
+    private List<IdentitySettings> identitySettings;
+
+    /**
+     * Creates an instance of JobConfiguration class.
+     */
     public JobConfiguration() {
     }
 
     /**
      * Get the secrets property: Collection of secrets used by a Container Apps Job.
-     *
+     * 
      * @return the secrets value.
      */
     public List<Secret> secrets() {
@@ -77,7 +83,7 @@ public final class JobConfiguration {
 
     /**
      * Set the secrets property: Collection of secrets used by a Container Apps Job.
-     *
+     * 
      * @param secrets the secrets value to set.
      * @return the JobConfiguration object itself.
      */
@@ -88,7 +94,7 @@ public final class JobConfiguration {
 
     /**
      * Get the triggerType property: Trigger type of the job.
-     *
+     * 
      * @return the triggerType value.
      */
     public TriggerType triggerType() {
@@ -97,7 +103,7 @@ public final class JobConfiguration {
 
     /**
      * Set the triggerType property: Trigger type of the job.
-     *
+     * 
      * @param triggerType the triggerType value to set.
      * @return the JobConfiguration object itself.
      */
@@ -108,7 +114,7 @@ public final class JobConfiguration {
 
     /**
      * Get the replicaTimeout property: Maximum number of seconds a replica is allowed to run.
-     *
+     * 
      * @return the replicaTimeout value.
      */
     public int replicaTimeout() {
@@ -117,7 +123,7 @@ public final class JobConfiguration {
 
     /**
      * Set the replicaTimeout property: Maximum number of seconds a replica is allowed to run.
-     *
+     * 
      * @param replicaTimeout the replicaTimeout value to set.
      * @return the JobConfiguration object itself.
      */
@@ -128,7 +134,7 @@ public final class JobConfiguration {
 
     /**
      * Get the replicaRetryLimit property: Maximum number of retries before failing the job.
-     *
+     * 
      * @return the replicaRetryLimit value.
      */
     public Integer replicaRetryLimit() {
@@ -137,7 +143,7 @@ public final class JobConfiguration {
 
     /**
      * Set the replicaRetryLimit property: Maximum number of retries before failing the job.
-     *
+     * 
      * @param replicaRetryLimit the replicaRetryLimit value to set.
      * @return the JobConfiguration object itself.
      */
@@ -149,7 +155,7 @@ public final class JobConfiguration {
     /**
      * Get the manualTriggerConfig property: Manual trigger configuration for a single execution job. Properties
      * replicaCompletionCount and parallelism would be set to 1 by default.
-     *
+     * 
      * @return the manualTriggerConfig value.
      */
     public JobConfigurationManualTriggerConfig manualTriggerConfig() {
@@ -159,7 +165,7 @@ public final class JobConfiguration {
     /**
      * Set the manualTriggerConfig property: Manual trigger configuration for a single execution job. Properties
      * replicaCompletionCount and parallelism would be set to 1 by default.
-     *
+     * 
      * @param manualTriggerConfig the manualTriggerConfig value to set.
      * @return the JobConfiguration object itself.
      */
@@ -171,7 +177,7 @@ public final class JobConfiguration {
     /**
      * Get the scheduleTriggerConfig property: Cron formatted repeating trigger schedule ("* * * * *") for cronjobs.
      * Properties completions and parallelism would be set to 1 by default.
-     *
+     * 
      * @return the scheduleTriggerConfig value.
      */
     public JobConfigurationScheduleTriggerConfig scheduleTriggerConfig() {
@@ -181,7 +187,7 @@ public final class JobConfiguration {
     /**
      * Set the scheduleTriggerConfig property: Cron formatted repeating trigger schedule ("* * * * *") for cronjobs.
      * Properties completions and parallelism would be set to 1 by default.
-     *
+     * 
      * @param scheduleTriggerConfig the scheduleTriggerConfig value to set.
      * @return the JobConfiguration object itself.
      */
@@ -192,7 +198,7 @@ public final class JobConfiguration {
 
     /**
      * Get the eventTriggerConfig property: Trigger configuration of an event driven job.
-     *
+     * 
      * @return the eventTriggerConfig value.
      */
     public JobConfigurationEventTriggerConfig eventTriggerConfig() {
@@ -201,7 +207,7 @@ public final class JobConfiguration {
 
     /**
      * Set the eventTriggerConfig property: Trigger configuration of an event driven job.
-     *
+     * 
      * @param eventTriggerConfig the eventTriggerConfig value to set.
      * @return the JobConfiguration object itself.
      */
@@ -212,7 +218,7 @@ public final class JobConfiguration {
 
     /**
      * Get the registries property: Collection of private container registry credentials used by a Container apps job.
-     *
+     * 
      * @return the registries value.
      */
     public List<RegistryCredentials> registries() {
@@ -221,7 +227,7 @@ public final class JobConfiguration {
 
     /**
      * Set the registries property: Collection of private container registry credentials used by a Container apps job.
-     *
+     * 
      * @param registries the registries value to set.
      * @return the JobConfiguration object itself.
      */
@@ -231,8 +237,30 @@ public final class JobConfiguration {
     }
 
     /**
+     * Get the identitySettings property: Optional settings for Managed Identities that are assigned to the Container
+     * App Job. If a Managed Identity is not specified here, default settings will be used.
+     * 
+     * @return the identitySettings value.
+     */
+    public List<IdentitySettings> identitySettings() {
+        return this.identitySettings;
+    }
+
+    /**
+     * Set the identitySettings property: Optional settings for Managed Identities that are assigned to the Container
+     * App Job. If a Managed Identity is not specified here, default settings will be used.
+     * 
+     * @param identitySettings the identitySettings value to set.
+     * @return the JobConfiguration object itself.
+     */
+    public JobConfiguration withIdentitySettings(List<IdentitySettings> identitySettings) {
+        this.identitySettings = identitySettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -240,9 +268,8 @@ public final class JobConfiguration {
             secrets().forEach(e -> e.validate());
         }
         if (triggerType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property triggerType in model JobConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property triggerType in model JobConfiguration"));
         }
         if (manualTriggerConfig() != null) {
             manualTriggerConfig().validate();
@@ -256,7 +283,80 @@ public final class JobConfiguration {
         if (registries() != null) {
             registries().forEach(e -> e.validate());
         }
+        if (identitySettings() != null) {
+            identitySettings().forEach(e -> e.validate());
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(JobConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("triggerType", this.triggerType == null ? null : this.triggerType.toString());
+        jsonWriter.writeIntField("replicaTimeout", this.replicaTimeout);
+        jsonWriter.writeArrayField("secrets", this.secrets, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("replicaRetryLimit", this.replicaRetryLimit);
+        jsonWriter.writeJsonField("manualTriggerConfig", this.manualTriggerConfig);
+        jsonWriter.writeJsonField("scheduleTriggerConfig", this.scheduleTriggerConfig);
+        jsonWriter.writeJsonField("eventTriggerConfig", this.eventTriggerConfig);
+        jsonWriter.writeArrayField("registries", this.registries, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("identitySettings", this.identitySettings,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobConfiguration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JobConfiguration.
+     */
+    public static JobConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobConfiguration deserializedJobConfiguration = new JobConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("triggerType".equals(fieldName)) {
+                    deserializedJobConfiguration.triggerType = TriggerType.fromString(reader.getString());
+                } else if ("replicaTimeout".equals(fieldName)) {
+                    deserializedJobConfiguration.replicaTimeout = reader.getInt();
+                } else if ("secrets".equals(fieldName)) {
+                    List<Secret> secrets = reader.readArray(reader1 -> Secret.fromJson(reader1));
+                    deserializedJobConfiguration.secrets = secrets;
+                } else if ("replicaRetryLimit".equals(fieldName)) {
+                    deserializedJobConfiguration.replicaRetryLimit = reader.getNullable(JsonReader::getInt);
+                } else if ("manualTriggerConfig".equals(fieldName)) {
+                    deserializedJobConfiguration.manualTriggerConfig
+                        = JobConfigurationManualTriggerConfig.fromJson(reader);
+                } else if ("scheduleTriggerConfig".equals(fieldName)) {
+                    deserializedJobConfiguration.scheduleTriggerConfig
+                        = JobConfigurationScheduleTriggerConfig.fromJson(reader);
+                } else if ("eventTriggerConfig".equals(fieldName)) {
+                    deserializedJobConfiguration.eventTriggerConfig
+                        = JobConfigurationEventTriggerConfig.fromJson(reader);
+                } else if ("registries".equals(fieldName)) {
+                    List<RegistryCredentials> registries
+                        = reader.readArray(reader1 -> RegistryCredentials.fromJson(reader1));
+                    deserializedJobConfiguration.registries = registries;
+                } else if ("identitySettings".equals(fieldName)) {
+                    List<IdentitySettings> identitySettings
+                        = reader.readArray(reader1 -> IdentitySettings.fromJson(reader1));
+                    deserializedJobConfiguration.identitySettings = identitySettings;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobConfiguration;
+        });
+    }
 }

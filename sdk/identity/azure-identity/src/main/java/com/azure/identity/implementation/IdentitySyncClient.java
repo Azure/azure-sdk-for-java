@@ -6,6 +6,7 @@ package com.azure.identity.implementation;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.DeviceCodeInfo;
@@ -76,10 +77,12 @@ public class IdentitySyncClient extends IdentityClientBase {
      */
     IdentitySyncClient(String tenantId, String clientId, String clientSecret, String certificatePath,
                        String clientAssertionFilePath, String resourceId, Supplier<String> clientAssertionSupplier,
+                       Function<HttpPipeline, String> clientAssertionSupplierWithHttpPipeline,
                        byte[] certificate, String certificatePassword, boolean isSharedTokenCacheCredential,
                        Duration clientAssertionTimeout, IdentityClientOptions options) {
         super(tenantId, clientId, clientSecret, certificatePath, clientAssertionFilePath, resourceId, clientAssertionSupplier,
-            certificate, certificatePassword, isSharedTokenCacheCredential, clientAssertionTimeout, options);
+            clientAssertionSupplierWithHttpPipeline, certificate, certificatePassword, isSharedTokenCacheCredential,
+            clientAssertionTimeout, options);
 
         this.publicClientApplicationAccessor = new SynchronousAccessor<>(() ->
             this.getPublicClient(isSharedTokenCacheCredential, false));
@@ -135,6 +138,9 @@ public class IdentitySyncClient extends IdentityClientBase {
         if (clientAssertionSupplier != null) {
             builder.clientCredential(ClientCredentialFactory
                 .createFromClientAssertion(clientAssertionSupplier.get()));
+        } else if (clientAssertionSupplierWithHttpPipeline != null) {
+            builder.clientCredential(ClientCredentialFactory
+                .createFromClientAssertion(clientAssertionSupplierWithHttpPipeline.apply(getPipeline())));
         }
         try {
             return new MsalToken(confidentialClient.acquireToken(builder.build()).get());
@@ -337,12 +343,21 @@ public class IdentitySyncClient extends IdentityClientBase {
         }
         PublicClientApplication pc = getPublicClientInstance(request).getValue();
 
-        if (options.isBrokerEnabled() && options.useOperatingSystemAccount()) {
-            return acquireTokenFromPublicClientSilently(request,
-                pc,
-                null,
-                false);
-        } else {
+        // If the broker is enabled, try to get the token for the default account by passing
+        // a null account to MSAL. If that fails, show the dialog.
+        MsalToken token = null;
+        if (options.isBrokerEnabled() && options.useDefaultBrokerAccount()) {
+            try {
+                token = acquireTokenFromPublicClientSilently(request,
+                    pc,
+                    null,
+                    false);
+            } catch (Exception e) {
+                // The error case here represents the silent acquisition failing. There's nothing actionable and
+                // in this case the fallback path of showing the dialog will capture any meaningful error and share it.
+            }
+        }
+        if (token == null) {
             InteractiveRequestParameters.InteractiveRequestParametersBuilder builder =
                 buildInteractiveRequestParameters(request, loginHint, redirectUri);
 
@@ -353,6 +368,7 @@ public class IdentitySyncClient extends IdentityClientBase {
                     "Failed to acquire token with Interactive Browser Authentication.", null, e));
             }
         }
+        return token;
     }
 
     /**

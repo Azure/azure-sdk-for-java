@@ -15,22 +15,24 @@ public final class BlobTriggerTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BlobTriggerTypeProperties model = BinaryData.fromString(
-            "{\"folderPath\":\"uwgrtvyw\",\"maxConcurrency\":633624527,\"linkedService\":{\"referenceName\":\"bgwvhdbievyyp\",\"parameters\":{\"wpptessvmdox\":\"datacaschhfmidkd\"}}}")
+            "{\"folderPath\":\"hbtycfj\",\"maxConcurrency\":861668828,\"linkedService\":{\"referenceName\":\"xiapts\",\"parameters\":{\"vipxzzcxqdrqsu\":\"dataoybpwzniekedxvw\",\"ptzqazwybbewjvyr\":\"dataekzqybpoxqwcusl\",\"osmp\":\"dataownbwrnbmcblmzar\",\"abhpdkrjlwrqheh\":\"dataajx\"}}}")
             .toObject(BlobTriggerTypeProperties.class);
-        Assertions.assertEquals("uwgrtvyw", model.folderPath());
-        Assertions.assertEquals(633624527, model.maxConcurrency());
-        Assertions.assertEquals("bgwvhdbievyyp", model.linkedService().referenceName());
+        Assertions.assertEquals("hbtycfj", model.folderPath());
+        Assertions.assertEquals(861668828, model.maxConcurrency());
+        Assertions.assertEquals("xiapts", model.linkedService().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BlobTriggerTypeProperties model = new BlobTriggerTypeProperties().withFolderPath("uwgrtvyw")
-            .withMaxConcurrency(633624527).withLinkedService(new LinkedServiceReference()
-                .withReferenceName("bgwvhdbievyyp").withParameters(mapOf("wpptessvmdox", "datacaschhfmidkd")));
+        BlobTriggerTypeProperties model = new BlobTriggerTypeProperties().withFolderPath("hbtycfj")
+            .withMaxConcurrency(861668828)
+            .withLinkedService(new LinkedServiceReference().withReferenceName("xiapts")
+                .withParameters(mapOf("vipxzzcxqdrqsu", "dataoybpwzniekedxvw", "ptzqazwybbewjvyr",
+                    "dataekzqybpoxqwcusl", "osmp", "dataownbwrnbmcblmzar", "abhpdkrjlwrqheh", "dataajx")));
         model = BinaryData.fromObject(model).toObject(BlobTriggerTypeProperties.class);
-        Assertions.assertEquals("uwgrtvyw", model.folderPath());
-        Assertions.assertEquals(633624527, model.maxConcurrency());
-        Assertions.assertEquals("bgwvhdbievyyp", model.linkedService().referenceName());
+        Assertions.assertEquals("hbtycfj", model.folderPath());
+        Assertions.assertEquals(861668828, model.maxConcurrency());
+        Assertions.assertEquals("xiapts", model.linkedService().referenceName());
     }
 
     // Use "Map.of" if available

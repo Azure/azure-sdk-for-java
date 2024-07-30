@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of the ledger. Private means transaction data is encrypted. */
+/**
+ * Type of the ledger. Private means transaction data is encrypted.
+ */
 public final class LedgerType extends ExpandableStringEnum<LedgerType> {
-    /** Static value Unknown for LedgerType. */
+    /**
+     * Static value Unknown for LedgerType.
+     */
     public static final LedgerType UNKNOWN = fromString("Unknown");
 
-    /** Static value Public for LedgerType. */
+    /**
+     * Static value Public for LedgerType.
+     */
     public static final LedgerType PUBLIC = fromString("Public");
 
-    /** Static value Private for LedgerType. */
+    /**
+     * Static value Private for LedgerType.
+     */
     public static final LedgerType PRIVATE = fromString("Private");
 
     /**
      * Creates a new instance of LedgerType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class LedgerType extends ExpandableStringEnum<LedgerType> {
 
     /**
      * Creates or finds a LedgerType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LedgerType.
      */
@@ -41,7 +49,7 @@ public final class LedgerType extends ExpandableStringEnum<LedgerType> {
 
     /**
      * Gets known LedgerType values.
-     *
+     * 
      * @return known LedgerType values.
      */
     public static Collection<LedgerType> values() {

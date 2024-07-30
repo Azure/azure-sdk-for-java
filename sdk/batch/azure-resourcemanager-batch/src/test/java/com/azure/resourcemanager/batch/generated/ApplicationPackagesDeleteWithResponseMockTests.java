@@ -45,7 +45,7 @@ public final class ApplicationPackagesDeleteWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.applicationPackages().deleteWithResponse("ool", "rwxkvtkkgl", "qwjygvja", "vblm",
+        manager.applicationPackages().deleteWithResponse("tvsexsowuel", "qhhahhxvrhmzkwpj", "wws", "ughftqsx",
             com.azure.core.util.Context.NONE);
 
     }

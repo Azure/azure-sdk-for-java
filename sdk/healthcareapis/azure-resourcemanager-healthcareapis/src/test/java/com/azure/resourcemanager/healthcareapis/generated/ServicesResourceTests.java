@@ -29,7 +29,9 @@ public final class ServicesResourceTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ServicesResource model = new ServicesResource().withLocation("vwmf")
-            .withTags(mapOf("mkjozkrwf", "scmdvpjhulsuu")).withKind(Kind.FHIR_STU3).withEtag("inpm")
+            .withTags(mapOf("mkjozkrwf", "scmdvpjhulsuu"))
+            .withKind(Kind.FHIR_STU3)
+            .withEtag("inpm")
             .withIdentity(new ServicesResourceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED));
         model = BinaryData.fromObject(model).toObject(ServicesResource.class);
         Assertions.assertEquals("vwmf", model.location());

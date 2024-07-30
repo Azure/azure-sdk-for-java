@@ -18,41 +18,47 @@ public final class PowerQuerySourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PowerQuerySource model = BinaryData.fromString(
-            "{\"script\":\"wqikwepwogggic\",\"schemaLinkedService\":{\"referenceName\":\"xhtfmcqbsudzpgch\",\"parameters\":{\"djxh\":\"datafqum\",\"v\":\"dataghgodkynrceq\",\"mmxjdnajuopj\":\"datadbd\",\"cwlo\":\"datayqmkwlh\"}},\"name\":\"dejkluxxrwzobuz\",\"description\":\"xga\",\"dataset\":{\"referenceName\":\"dtkwppth\",\"parameters\":{\"imrljdp\":\"datapr\",\"mhk\":\"dataqfxy\",\"loamfmxtllfltym\":\"datatbaewhte\",\"rfijhggabq\":\"datacn\"}},\"linkedService\":{\"referenceName\":\"amklilirwdv\",\"parameters\":{\"jxrdfd\":\"datasdpzouhktqrxqwq\"}},\"flowlet\":{\"type\":\"DataFlowReference\",\"referenceName\":\"llygta\",\"datasetParameters\":\"datazcxdfweapyfmlxrl\",\"parameters\":{\"x\":\"dataraspifleim\"},\"\":{\"cehfgsm\":\"databg\",\"mtznpaxwfqtyyqi\":\"datarjuqbpxtokl\",\"i\":\"datarcltungbsoljckm\",\"iiqqcqikclsmalns\":\"datazbkuckgkdsksw\"}}}")
+            "{\"script\":\"yp\",\"schemaLinkedService\":{\"referenceName\":\"qvmtywhlakx\",\"parameters\":{\"fxampqcrzgeuqx\":\"datapewpyj\",\"adr\":\"datapiatwfaujegqd\",\"hjkrukizyhgs\":\"datakgd\"}},\"name\":\"tnqsktx\",\"description\":\"p\",\"dataset\":{\"referenceName\":\"qggweeiwdh\",\"parameters\":{\"lhxd\":\"datacgbfzuscstun\"}},\"linkedService\":{\"referenceName\":\"klciichgjsysm\",\"parameters\":{\"bdujgcwxvecbb\":\"datadgwxfkzsifcu\"}},\"flowlet\":{\"type\":\"DataFlowReference\",\"referenceName\":\"rdxrizagbbgiarks\",\"datasetParameters\":\"datapgdqxwabzrw\",\"parameters\":{\"kifmmainw\":\"dataxhaclcdosqkptjq\",\"izazz\":\"dataedxkpbqwuntob\",\"vydjufbnk\":\"datalw\",\"dabalfdxaglzfytl\":\"datablaxpegj\"},\"\":{\"xouvmrs\":\"dataqho\",\"qsdb\":\"dataflikyypzkgxfxfmy\",\"nm\":\"dataoksz\"}}}")
             .toObject(PowerQuerySource.class);
-        Assertions.assertEquals("dejkluxxrwzobuz", model.name());
-        Assertions.assertEquals("xga", model.description());
-        Assertions.assertEquals("dtkwppth", model.dataset().referenceName());
-        Assertions.assertEquals("amklilirwdv", model.linkedService().referenceName());
+        Assertions.assertEquals("tnqsktx", model.name());
+        Assertions.assertEquals("p", model.description());
+        Assertions.assertEquals("qggweeiwdh", model.dataset().referenceName());
+        Assertions.assertEquals("klciichgjsysm", model.linkedService().referenceName());
         Assertions.assertEquals(DataFlowReferenceType.DATA_FLOW_REFERENCE, model.flowlet().type());
-        Assertions.assertEquals("llygta", model.flowlet().referenceName());
-        Assertions.assertEquals("xhtfmcqbsudzpgch", model.schemaLinkedService().referenceName());
-        Assertions.assertEquals("wqikwepwogggic", model.script());
+        Assertions.assertEquals("rdxrizagbbgiarks", model.flowlet().referenceName());
+        Assertions.assertEquals("qvmtywhlakx", model.schemaLinkedService().referenceName());
+        Assertions.assertEquals("yp", model.script());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PowerQuerySource model = new PowerQuerySource().withName("dejkluxxrwzobuz").withDescription("xga")
-            .withDataset(new DatasetReference().withReferenceName("dtkwppth")
-                .withParameters(mapOf("imrljdp", "datapr", "mhk", "dataqfxy", "loamfmxtllfltym", "datatbaewhte",
-                    "rfijhggabq", "datacn")))
-            .withLinkedService(new LinkedServiceReference().withReferenceName("amklilirwdv")
-                .withParameters(mapOf("jxrdfd", "datasdpzouhktqrxqwq")))
-            .withFlowlet(new DataFlowReference().withType(DataFlowReferenceType.DATA_FLOW_REFERENCE)
-                .withReferenceName("llygta").withDatasetParameters("datazcxdfweapyfmlxrl")
-                .withParameters(mapOf("x", "dataraspifleim")).withAdditionalProperties(mapOf()))
-            .withSchemaLinkedService(new LinkedServiceReference().withReferenceName("xhtfmcqbsudzpgch").withParameters(
-                mapOf("djxh", "datafqum", "v", "dataghgodkynrceq", "mmxjdnajuopj", "datadbd", "cwlo", "datayqmkwlh")))
-            .withScript("wqikwepwogggic");
+        PowerQuerySource model
+            = new PowerQuerySource().withName("tnqsktx")
+                .withDescription("p")
+                .withDataset(new DatasetReference().withReferenceName("qggweeiwdh")
+                    .withParameters(mapOf("lhxd", "datacgbfzuscstun")))
+                .withLinkedService(new LinkedServiceReference().withReferenceName("klciichgjsysm")
+                    .withParameters(mapOf("bdujgcwxvecbb", "datadgwxfkzsifcu")))
+                .withFlowlet(new DataFlowReference().withType(DataFlowReferenceType.DATA_FLOW_REFERENCE)
+                    .withReferenceName("rdxrizagbbgiarks")
+                    .withDatasetParameters("datapgdqxwabzrw")
+                    .withParameters(mapOf("kifmmainw", "dataxhaclcdosqkptjq", "izazz", "dataedxkpbqwuntob", "vydjufbnk",
+                        "datalw", "dabalfdxaglzfytl", "datablaxpegj"))
+                    .withAdditionalProperties(mapOf()))
+                .withSchemaLinkedService(
+                    new LinkedServiceReference().withReferenceName("qvmtywhlakx")
+                        .withParameters(mapOf("fxampqcrzgeuqx", "datapewpyj", "adr", "datapiatwfaujegqd",
+                            "hjkrukizyhgs", "datakgd")))
+                .withScript("yp");
         model = BinaryData.fromObject(model).toObject(PowerQuerySource.class);
-        Assertions.assertEquals("dejkluxxrwzobuz", model.name());
-        Assertions.assertEquals("xga", model.description());
-        Assertions.assertEquals("dtkwppth", model.dataset().referenceName());
-        Assertions.assertEquals("amklilirwdv", model.linkedService().referenceName());
+        Assertions.assertEquals("tnqsktx", model.name());
+        Assertions.assertEquals("p", model.description());
+        Assertions.assertEquals("qggweeiwdh", model.dataset().referenceName());
+        Assertions.assertEquals("klciichgjsysm", model.linkedService().referenceName());
         Assertions.assertEquals(DataFlowReferenceType.DATA_FLOW_REFERENCE, model.flowlet().type());
-        Assertions.assertEquals("llygta", model.flowlet().referenceName());
-        Assertions.assertEquals("xhtfmcqbsudzpgch", model.schemaLinkedService().referenceName());
-        Assertions.assertEquals("wqikwepwogggic", model.script());
+        Assertions.assertEquals("rdxrizagbbgiarks", model.flowlet().referenceName());
+        Assertions.assertEquals("qvmtywhlakx", model.schemaLinkedService().referenceName());
+        Assertions.assertEquals("yp", model.script());
     }
 
     // Use "Map.of" if available

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.models.TopologyParameters;
 public final class NetworkWatchersGetTopologySamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkWatcherTopologyGet.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkWatcherTopologyGet.
      * json
      */
     /**
@@ -21,7 +21,11 @@ public final class NetworkWatchersGetTopologySamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getTopology(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getNetworkWatchers().getTopologyWithResponse("rg1", "nw1",
-            new TopologyParameters().withTargetResourceGroupName("rg2"), com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getNetworkWatchers()
+            .getTopologyWithResponse("rg1", "nw1", new TopologyParameters().withTargetResourceGroupName("rg2"),
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -31,7 +31,7 @@ public final class ApplicationsCreateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"displayName\":\"zejntps\",\"allowUpdates\":false,\"defaultVersion\":\"oi\"},\"etag\":\"ukry\",\"id\":\"xtqmieoxor\",\"name\":\"gufhyaomtbg\",\"type\":\"havgrvk\"}";
+            = "{\"properties\":{\"displayName\":\"txhojujb\",\"allowUpdates\":true,\"defaultVersion\":\"mc\"},\"etag\":\"hixbjxyfwnyl\",\"id\":\"coolsttpkiwkkb\",\"name\":\"ujrywvtyl\",\"type\":\"fpncurdo\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -48,11 +48,11 @@ public final class ApplicationsCreateWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Application response = manager.applications().define("lgnyhmo").withExistingBatchAccount("tw", "sgogczhonnxk")
-            .withDisplayName("kkgthr").withAllowUpdates(true).withDefaultVersion("jbdhqxvc").create();
+        Application response = manager.applications().define("aays").withExistingBatchAccount("ou", "ibreb")
+            .withDisplayName("xqtnq").withAllowUpdates(false).withDefaultVersion("lwfffi").create();
 
-        Assertions.assertEquals("zejntps", response.displayName());
-        Assertions.assertEquals(false, response.allowUpdates());
-        Assertions.assertEquals("oi", response.defaultVersion());
+        Assertions.assertEquals("txhojujb", response.displayName());
+        Assertions.assertEquals(true, response.allowUpdates());
+        Assertions.assertEquals("mc", response.defaultVersion());
     }
 }

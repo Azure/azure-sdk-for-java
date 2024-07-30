@@ -19,7 +19,7 @@
 # ensuring that all tests (recorded, live, etc.) are in a good state to ensure releases maintain quality and avoid
 # performance regressions or bugs. They are also responsible for smoke testing their library after every release.
 
-com.azure:azure-ai-content-safety # Tests owner: zhaiyutong
+com.azure:azure-ai-contentsafety # Tests owner: zhaiyutong
 com.azure:azure-ai-formrecognizer # Tests owner: samvaity
 com.azure:azure-ai-metricsadvisor # Tests owner: samvaity
 com.azure:azure-ai-textanalytics # Tests owner: mssfang
@@ -29,6 +29,7 @@ com.azure:azure-communication-common # Tests owner: AikoBB, maximrytych-ms, mjaf
 com.azure:azure-communication-email # Tests owner: yogeshmo, kagbakpem
 com.azure:azure-communication-identity # Tests owner: AikoBB, maximrytych-ms, mjafferi-msft
 com.azure:azure-communication-jobrouter # Tests owner: cparisineti
+com.azure:azure-communication-messages # Tests owner: arifibrahim4, juancamilor
 com.azure:azure-communication-phonenumbers # Tests owner: whisper6284, miguhern, danielortega-msft
 com.azure:azure-communication-sms # Tests owner: besh2014, DimaKolomiiets
 com.azure:azure-communication-rooms # Tests owner: minnieliu, Mrayyan
@@ -37,6 +38,7 @@ com.azure:azure-data-appconfiguration # Tests owner: mssfang
 com.azure:azure-data-schemaregistry # Tests owner: conniey
 com.azure:azure-data-schemaregistry-apacheavro # Tests owner: conniey
 com.azure:azure-data-tables # Tests owner: jairmyree
+com.azure:azure-developer-devcenter # Tests owner: drielenr, leti367
 com.azure:azure-developer-loadtesting # Tests owner: Harshan01, prativen
 com.azure:azure-digitaltwins-core # Tests owner: sjiherzig
 com.azure:azure-identity-broker # Tests owner: billwert, vigera
@@ -56,7 +58,7 @@ com.azure:azure-security-attestation # Tests owner: LarryOsterman
 com.azure:azure-security-confidentialledger # Tests owner: Xamrmo
 com.azure:azure-security-keyvault-administration # Tests owner: vcolin7
 com.azure:azure-security-keyvault-certificates # Tests owner: vcolin7
-com.azure:azure-security-keyvault-jca # Tests owner: chenrujun
+com.azure:azure-security-keyvault-jca # Tests owner: rujche
 com.azure:azure-security-keyvault-keys # Tests owner: vcolin7
 com.azure:azure-security-keyvault-secrets # Tests owner: vcolin7
 com.azure:azure-search-documents # Tests owner: jairmyree

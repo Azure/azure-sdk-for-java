@@ -11,14 +11,15 @@ public final class HttpServerLocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HttpServerLocation model = BinaryData.fromString(
-            "{\"type\":\"HttpServerLocation\",\"relativeUrl\":\"datauklajvcfoc\",\"folderPath\":\"dataapejovtkwx\",\"fileName\":\"datawhhnoyrzaa\",\"\":{\"envjeateaxxc\":\"datahpm\"}}")
+            "{\"type\":\"HttpServerLocation\",\"relativeUrl\":\"dataocxm\",\"folderPath\":\"datashksny\",\"fileName\":\"dataspamwbwmbnls\",\"\":{\"d\":\"datafi\",\"pfliwo\":\"datatwtkvih\",\"p\":\"datanguuzhwvla\"}}")
             .toObject(HttpServerLocation.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HttpServerLocation model = new HttpServerLocation().withFolderPath("dataapejovtkwx")
-            .withFileName("datawhhnoyrzaa").withRelativeUrl("datauklajvcfoc");
+        HttpServerLocation model = new HttpServerLocation().withFolderPath("datashksny")
+            .withFileName("dataspamwbwmbnls")
+            .withRelativeUrl("dataocxm");
         model = BinaryData.fromObject(model).toObject(HttpServerLocation.class);
     }
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The blob service properties for blob restore policy. */
+/**
+ * The blob service properties for blob restore policy.
+ */
 @Fluent
 public final class RestorePolicyProperties {
     /*
@@ -35,13 +37,15 @@ public final class RestorePolicyProperties {
     @JsonProperty(value = "minRestoreTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime minRestoreTime;
 
-    /** Creates an instance of RestorePolicyProperties class. */
+    /**
+     * Creates an instance of RestorePolicyProperties class.
+     */
     public RestorePolicyProperties() {
     }
 
     /**
      * Get the enabled property: Blob restore is enabled if set to true.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -50,7 +54,7 @@ public final class RestorePolicyProperties {
 
     /**
      * Set the enabled property: Blob restore is enabled if set to true.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the RestorePolicyProperties object itself.
      */
@@ -62,7 +66,7 @@ public final class RestorePolicyProperties {
     /**
      * Get the days property: how long this blob can be restored. It should be great than zero and less than
      * DeleteRetentionPolicy.days.
-     *
+     * 
      * @return the days value.
      */
     public Integer days() {
@@ -72,7 +76,7 @@ public final class RestorePolicyProperties {
     /**
      * Set the days property: how long this blob can be restored. It should be great than zero and less than
      * DeleteRetentionPolicy.days.
-     *
+     * 
      * @param days the days value to set.
      * @return the RestorePolicyProperties object itself.
      */
@@ -83,7 +87,7 @@ public final class RestorePolicyProperties {
 
     /**
      * Get the lastEnabledTime property: Deprecated in favor of minRestoreTime property.
-     *
+     * 
      * @return the lastEnabledTime value.
      */
     public OffsetDateTime lastEnabledTime() {
@@ -92,7 +96,7 @@ public final class RestorePolicyProperties {
 
     /**
      * Get the minRestoreTime property: Returns the minimum date and time that the restore can be started.
-     *
+     * 
      * @return the minRestoreTime value.
      */
     public OffsetDateTime minRestoreTime() {
@@ -101,7 +105,7 @@ public final class RestorePolicyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

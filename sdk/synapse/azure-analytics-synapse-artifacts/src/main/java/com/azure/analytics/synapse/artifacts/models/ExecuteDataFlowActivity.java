@@ -5,76 +5,78 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Execute data flow activity.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("ExecuteDataFlow")
-@JsonFlatten
 @Fluent
 public class ExecuteDataFlowActivity extends ExecutionActivity {
     /*
+     * Type of activity.
+     */
+    private String type = "ExecuteDataFlow";
+
+    /*
      * Data flow reference.
      */
-    @JsonProperty(value = "typeProperties.dataflow", required = true)
     private DataFlowReference dataflow;
 
     /*
      * Staging info for execute data flow activity.
      */
-    @JsonProperty(value = "typeProperties.staging")
     private DataFlowStagingInfo staging;
 
     /*
      * The integration runtime reference.
      */
-    @JsonProperty(value = "typeProperties.integrationRuntime")
     private IntegrationRuntimeReference integrationRuntime;
 
     /*
      * Compute properties for data flow activity.
      */
-    @JsonProperty(value = "typeProperties.compute")
     private ExecuteDataFlowActivityTypePropertiesCompute compute;
 
     /*
-     * Trace level setting used for data flow monitoring output. Supported values are: 'coarse', 'fine', and 'none'.
-     * Type: string (or Expression with resultType string)
+     * Trace level setting used for data flow monitoring output. Supported values are: 'coarse', 'fine', and 'none'. Type: string (or Expression with resultType string)
      */
-    @JsonProperty(value = "typeProperties.traceLevel")
     private Object traceLevel;
 
     /*
-     * Continue on error setting used for data flow execution. Enables processing to continue if a sink fails. Type:
-     * boolean (or Expression with resultType boolean)
+     * Continue on error setting used for data flow execution. Enables processing to continue if a sink fails. Type: boolean (or Expression with resultType boolean)
      */
-    @JsonProperty(value = "typeProperties.continueOnError")
     private Object continueOnError;
 
     /*
-     * Concurrent run setting used for data flow execution. Allows sinks with the same save order to be processed
-     * concurrently. Type: boolean (or Expression with resultType boolean)
+     * Concurrent run setting used for data flow execution. Allows sinks with the same save order to be processed concurrently. Type: boolean (or Expression with resultType boolean)
      */
-    @JsonProperty(value = "typeProperties.runConcurrently")
     private Object runConcurrently;
 
     /*
-     * Specify number of parallel staging for sources applicable to the sink. Type: integer (or Expression with
-     * resultType integer)
+     * Specify number of parallel staging for sources applicable to the sink. Type: integer (or Expression with resultType integer)
      */
-    @JsonProperty(value = "typeProperties.sourceStagingConcurrency")
     private Object sourceStagingConcurrency;
 
     /**
      * Creates an instance of ExecuteDataFlowActivity class.
      */
     public ExecuteDataFlowActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -202,8 +204,8 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
     }
 
     /**
-     * Get the runConcurrently property: Concurrent run setting used for data flow execution. Allows sinks with the
-     * same save order to be processed concurrently. Type: boolean (or Expression with resultType boolean).
+     * Get the runConcurrently property: Concurrent run setting used for data flow execution. Allows sinks with the same
+     * save order to be processed concurrently. Type: boolean (or Expression with resultType boolean).
      * 
      * @return the runConcurrently value.
      */
@@ -212,8 +214,8 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the runConcurrently property: Concurrent run setting used for data flow execution. Allows sinks with the
-     * same save order to be processed concurrently. Type: boolean (or Expression with resultType boolean).
+     * Set the runConcurrently property: Concurrent run setting used for data flow execution. Allows sinks with the same
+     * save order to be processed concurrently. Type: boolean (or Expression with resultType boolean).
      * 
      * @param runConcurrently the runConcurrently value to set.
      * @return the ExecuteDataFlowActivity object itself.
@@ -224,8 +226,8 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
     }
 
     /**
-     * Get the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the
-     * sink. Type: integer (or Expression with resultType integer).
+     * Get the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the sink.
+     * Type: integer (or Expression with resultType integer).
      * 
      * @return the sourceStagingConcurrency value.
      */
@@ -234,8 +236,8 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the
-     * sink. Type: integer (or Expression with resultType integer).
+     * Set the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the sink.
+     * Type: integer (or Expression with resultType integer).
      * 
      * @param sourceStagingConcurrency the sourceStagingConcurrency value to set.
      * @return the ExecuteDataFlowActivity object itself.
@@ -315,5 +317,129 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
     public ExecuteDataFlowActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeStringField("state", getState() == null ? null : getState().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            getOnInactiveMarkAs() == null ? null : getOnInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", getDependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", getUserProperties(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
+        jsonWriter.writeJsonField("policy", getPolicy());
+        jsonWriter.writeStringField("type", this.type);
+        if (dataflow != null
+            || staging != null
+            || integrationRuntime != null
+            || compute != null
+            || traceLevel != null
+            || continueOnError != null
+            || runConcurrently != null
+            || sourceStagingConcurrency != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeJsonField("dataflow", this.dataflow);
+            jsonWriter.writeJsonField("staging", this.staging);
+            jsonWriter.writeJsonField("integrationRuntime", this.integrationRuntime);
+            jsonWriter.writeJsonField("compute", this.compute);
+            jsonWriter.writeUntypedField("traceLevel", this.traceLevel);
+            jsonWriter.writeUntypedField("continueOnError", this.continueOnError);
+            jsonWriter.writeUntypedField("runConcurrently", this.runConcurrently);
+            jsonWriter.writeUntypedField("sourceStagingConcurrency", this.sourceStagingConcurrency);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExecuteDataFlowActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExecuteDataFlowActivity if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExecuteDataFlowActivity.
+     */
+    public static ExecuteDataFlowActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExecuteDataFlowActivity deserializedExecuteDataFlowActivity = new ExecuteDataFlowActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedExecuteDataFlowActivity.setName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedExecuteDataFlowActivity.setDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedExecuteDataFlowActivity.setState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedExecuteDataFlowActivity
+                        .setOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedExecuteDataFlowActivity.setDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedExecuteDataFlowActivity.setUserProperties(userProperties);
+                } else if ("linkedServiceName".equals(fieldName)) {
+                    deserializedExecuteDataFlowActivity.setLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("policy".equals(fieldName)) {
+                    deserializedExecuteDataFlowActivity.setPolicy(ActivityPolicy.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedExecuteDataFlowActivity.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("dataflow".equals(fieldName)) {
+                            deserializedExecuteDataFlowActivity.dataflow = DataFlowReference.fromJson(reader);
+                        } else if ("staging".equals(fieldName)) {
+                            deserializedExecuteDataFlowActivity.staging = DataFlowStagingInfo.fromJson(reader);
+                        } else if ("integrationRuntime".equals(fieldName)) {
+                            deserializedExecuteDataFlowActivity.integrationRuntime
+                                = IntegrationRuntimeReference.fromJson(reader);
+                        } else if ("compute".equals(fieldName)) {
+                            deserializedExecuteDataFlowActivity.compute
+                                = ExecuteDataFlowActivityTypePropertiesCompute.fromJson(reader);
+                        } else if ("traceLevel".equals(fieldName)) {
+                            deserializedExecuteDataFlowActivity.traceLevel = reader.readUntyped();
+                        } else if ("continueOnError".equals(fieldName)) {
+                            deserializedExecuteDataFlowActivity.continueOnError = reader.readUntyped();
+                        } else if ("runConcurrently".equals(fieldName)) {
+                            deserializedExecuteDataFlowActivity.runConcurrently = reader.readUntyped();
+                        } else if ("sourceStagingConcurrency".equals(fieldName)) {
+                            deserializedExecuteDataFlowActivity.sourceStagingConcurrency = reader.readUntyped();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedExecuteDataFlowActivity.setAdditionalProperties(additionalProperties);
+
+            return deserializedExecuteDataFlowActivity;
+        });
     }
 }

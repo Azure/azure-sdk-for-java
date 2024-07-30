@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class StaticSitesListStaticSiteBuildFunctionsSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/ListStaticSiteBuildFunctions.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListStaticSiteBuildFunctions.json
      */
     /**
      * Sample code: Gets the functions of a particular static site build.
@@ -19,7 +18,10 @@ public final class StaticSitesListStaticSiteBuildFunctionsSamples {
      */
     public static void
         getsTheFunctionsOfAParticularStaticSiteBuild(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getStaticSites().listStaticSiteBuildFunctions("rg", "testStaticSite0",
-            "default", com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getStaticSites()
+            .listStaticSiteBuildFunctions("rg", "testStaticSite0", "default", com.azure.core.util.Context.NONE);
     }
 }

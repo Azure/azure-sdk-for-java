@@ -10,15 +10,14 @@ import com.azure.resourcemanager.datafactory.fluent.models.MongoDbAtlasCollectio
 public final class MongoDbAtlasCollectionDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MongoDbAtlasCollectionDatasetTypeProperties model
-            = BinaryData.fromString("{\"collection\":\"dataodnjyhzfaxskdv\"}")
-                .toObject(MongoDbAtlasCollectionDatasetTypeProperties.class);
+        MongoDbAtlasCollectionDatasetTypeProperties model = BinaryData.fromString("{\"collection\":\"dataqvcml\"}")
+            .toObject(MongoDbAtlasCollectionDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MongoDbAtlasCollectionDatasetTypeProperties model
-            = new MongoDbAtlasCollectionDatasetTypeProperties().withCollection("dataodnjyhzfaxskdv");
+            = new MongoDbAtlasCollectionDatasetTypeProperties().withCollection("dataqvcml");
         model = BinaryData.fromObject(model).toObject(MongoDbAtlasCollectionDatasetTypeProperties.class);
     }
 }

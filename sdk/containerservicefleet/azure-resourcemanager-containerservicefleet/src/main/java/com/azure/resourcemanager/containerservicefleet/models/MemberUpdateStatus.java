@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservicefleet.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The status of a member update operation. */
+/**
+ * The status of a member update operation.
+ */
 @Immutable
 public final class MemberUpdateStatus {
     /*
@@ -40,13 +42,15 @@ public final class MemberUpdateStatus {
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
-    /** Creates an instance of MemberUpdateStatus class. */
+    /**
+     * Creates an instance of MemberUpdateStatus class.
+     */
     public MemberUpdateStatus() {
     }
 
     /**
      * Get the status property: The status of the MemberUpdate operation.
-     *
+     * 
      * @return the status value.
      */
     public UpdateStatus status() {
@@ -55,7 +59,7 @@ public final class MemberUpdateStatus {
 
     /**
      * Get the name property: The name of the FleetMember.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -64,7 +68,7 @@ public final class MemberUpdateStatus {
 
     /**
      * Get the clusterResourceId property: The Azure resource id of the target Kubernetes cluster.
-     *
+     * 
      * @return the clusterResourceId value.
      */
     public String clusterResourceId() {
@@ -73,7 +77,7 @@ public final class MemberUpdateStatus {
 
     /**
      * Get the operationId property: The operation resource id of the latest attempt to perform the operation.
-     *
+     * 
      * @return the operationId value.
      */
     public String operationId() {
@@ -82,7 +86,7 @@ public final class MemberUpdateStatus {
 
     /**
      * Get the message property: The status message after processing the member update operation.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -91,7 +95,7 @@ public final class MemberUpdateStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

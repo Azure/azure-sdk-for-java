@@ -145,8 +145,8 @@ public final class AmazonRedshiftLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the port property: The TCP port number that the Amazon Redshift server uses to listen for client
-     * connections. The default value is 5439. Type: integer (or Expression with resultType integer).
+     * Get the port property: The TCP port number that the Amazon Redshift server uses to listen for client connections.
+     * The default value is 5439. Type: integer (or Expression with resultType integer).
      * 
      * @return the port value.
      */
@@ -155,8 +155,8 @@ public final class AmazonRedshiftLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the port property: The TCP port number that the Amazon Redshift server uses to listen for client
-     * connections. The default value is 5439. Type: integer (or Expression with resultType integer).
+     * Set the port property: The TCP port number that the Amazon Redshift server uses to listen for client connections.
+     * The default value is 5439. Type: integer (or Expression with resultType integer).
      * 
      * @param port the port value to set.
      * @return the AmazonRedshiftLinkedServiceTypeProperties object itself.
@@ -167,8 +167,8 @@ public final class AmazonRedshiftLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -177,8 +177,8 @@ public final class AmazonRedshiftLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AmazonRedshiftLinkedServiceTypeProperties object itself.
@@ -195,15 +195,17 @@ public final class AmazonRedshiftLinkedServiceTypeProperties {
      */
     public void validate() {
         if (server() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property server in model AmazonRedshiftLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property server in model AmazonRedshiftLinkedServiceTypeProperties"));
         }
         if (password() != null) {
             password().validate();
         }
         if (database() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property database in model AmazonRedshiftLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property database in model AmazonRedshiftLinkedServiceTypeProperties"));
         }
     }
 

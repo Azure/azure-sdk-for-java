@@ -6,11 +6,9 @@ package com.azure.resourcemanager.maintenance.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.maintenance.MaintenanceManager;
 import com.azure.resourcemanager.maintenance.models.InputLinuxParameters;
 import com.azure.resourcemanager.maintenance.models.InputPatchConfiguration;
@@ -19,7 +17,6 @@ import com.azure.resourcemanager.maintenance.models.MaintenanceConfiguration;
 import com.azure.resourcemanager.maintenance.models.MaintenanceScope;
 import com.azure.resourcemanager.maintenance.models.RebootOptions;
 import com.azure.resourcemanager.maintenance.models.Visibility;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -27,114 +24,70 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class MaintenanceConfigurationsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"location\":\"vwrdnhfukuvsj\",\"tags\":{\"lerchpq\":\"smystuluqypfc\",\"dfc\":\"mfpjbabw\",\"qddrihpfhoqcaae\":\"sspuunnoxyhkx\",\"djvlpj\":\"dao\"},\"properties\":{\"namespace\":\"zb\",\"extensionProperties\":{\"xonbzoggculapz\":\"geivsiykzkdncj\",\"pgogtqxepny\":\"y\"},\"maintenanceScope\":\"SQLManagedInstance\",\"maintenanceWindow\":{\"startDateTime\":\"jlyjtlvofq\",\"expirationDateTime\":\"vfcibyfmowux\",\"duration\":\"jpvd\",\"timeZone\":\"fzwiivwzjbhyz\",\"recurEvery\":\"jrkambtrnegvmnv\"},\"visibility\":\"Public\",\"installPatches\":{\"rebootSetting\":\"Always\",\"windowsParameters\":{\"kbNumbersToExclude\":[\"astjbkkdmflvestm\"],\"kbNumbersToInclude\":[\"rriloz\",\"peewchpxlkt\",\"kuziycsle\"],\"classificationsToInclude\":[\"uztcktyhjtqed\"],\"excludeKbsRequiringReboot\":true},\"linuxParameters\":{\"packageNameMasksToExclude\":[\"mmrqz\",\"rr\"],\"packageNameMasksToInclude\":[\"gl\",\"dzgkr\"],\"classificationsToInclude\":[\"ev\"]}}},\"id\":\"epr\",\"name\":\"utnwytpzdmovzvf\",\"type\":\"aawzqadfl\"}";
 
-        String responseStr =
-            "{\"location\":\"ywdxsmic\",\"tags\":{\"nszqujiz\":\"wfscjfn\",\"byowbblgyavutp\":\"voqyt\",\"smsks\":\"hjoxo\",\"lqol\":\"pi\"},\"properties\":{\"namespace\":\"cgxxlxs\",\"extensionProperties\":{\"youpfgfbkj\":\"cvizqzdwlvw\",\"ttsttktlahbqact\":\"bdyhgkfminsgowz\",\"qqqxhrnxrx\":\"tgzukxitmmqt\",\"av\":\"pjui\"},\"maintenanceScope\":\"Extension\",\"maintenanceWindow\":{\"startDateTime\":\"fvazivjlfrqttba\",\"expirationDateTime\":\"katnwxyi\",\"duration\":\"id\",\"timeZone\":\"qfkuvscxkdmli\",\"recurEvery\":\"vibrxkpmloazuruo\"},\"visibility\":\"Custom\",\"installPatches\":{\"rebootSetting\":\"Never\",\"windowsParameters\":{\"kbNumbersToExclude\":[\"oybfhjxakvvj\",\"slordilmyww\",\"kgkxn\",\"edabgyvudtjue\"],\"kbNumbersToInclude\":[\"ihxuuwh\",\"j\",\"xccybvpa\"],\"classificationsToInclude\":[\"kudzpxgwj\",\"lma\"],\"excludeKbsRequiringReboot\":true},\"linuxParameters\":{\"packageNameMasksToExclude\":[\"hpfkyrkdbdgi\",\"gsj\",\"mnwqj\",\"obaiyhddviaceg\"],\"packageNameMasksToInclude\":[\"ntfpmvmemfnc\"],\"classificationsToInclude\":[\"vvbalx\"]}}},\"id\":\"lchpodbzevwrdn\",\"name\":\"fukuvsjcswsmystu\",\"type\":\"uqypfcvle\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MaintenanceManager manager = MaintenanceManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        MaintenanceConfiguration response = manager.maintenanceConfigurations()
+            .define("gyavu")
+            .withExistingResourceGroup("zdvoqytibyowbb")
+            .withRegion("thjoxoism")
+            .withTags(mapOf("sffgcvizqzd", "bpimlqoljxkcgxxl", "w", "l"))
+            .withNamespace("upfgfbk")
+            .withExtensionProperties(mapOf("wzf", "dyhgkfminsg", "ctxtgzukxi", "tsttktlahbq", "xrxc", "mmqtgqqqxhr",
+                "azivjlfrqttbajl", "juisavokqdzf"))
+            .withMaintenanceScope(MaintenanceScope.IN_GUEST_PATCH)
+            .withVisibility(Visibility.PUBLIC)
+            .withInstallPatches(new InputPatchConfiguration().withRebootSetting(RebootOptions.ALWAYS)
+                .withWindowsParameters(
+                    new InputWindowsParameters().withKbNumbersToExclude(Arrays.asList("vvjgslor", "il", "yw", "t"))
+                        .withKbNumbersToInclude(Arrays.asList("xnyed"))
+                        .withClassificationsToInclude(Arrays.asList("yvudtjuewbci", "xuuwhcj", "xccybvpa"))
+                        .withExcludeKbsRequiringReboot(false))
+                .withLinuxParameters(new InputLinuxParameters()
+                    .withPackageNameMasksToExclude(Arrays.asList("zp", "gwjplmag", "tcyohpfkyrk"))
+                    .withPackageNameMasksToInclude(Arrays.asList("giogsjkmnwqjno"))
+                    .withClassificationsToInclude(Arrays.asList("yhddvia", "egfnmntfpmvmemfn"))))
+            .withStartDateTime("xyiopidkqqfku")
+            .withExpirationDateTime("cxkdmligovi")
+            .withDuration("xk")
+            .withTimeZone("loazuruocbgoo")
+            .withRecurEvery("te")
+            .create();
 
-        MaintenanceManager manager =
-            MaintenanceManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        MaintenanceConfiguration response =
-            manager
-                .maintenanceConfigurations()
-                .define("qgzsles")
-                .withExistingResourceGroup("ayjkqa")
-                .withRegion("bhernntiew")
-                .withTags(mapOf("ehwagoh", "vbquwr"))
-                .withNamespace("fkmr")
-                .withExtensionProperties(
-                    mapOf(
-                        "utacoe",
-                        "vvhmxtdrj",
-                        "guaadraufactkahz",
-                        "jvewzcjznmwcp",
-                        "jjziuxxpsh",
-                        "v",
-                        "enr",
-                        "eekulfgslqubkwd"))
-                .withMaintenanceScope(MaintenanceScope.RESOURCE)
-                .withVisibility(Visibility.PUBLIC)
-                .withInstallPatches(
-                    new InputPatchConfiguration()
-                        .withRebootSetting(RebootOptions.IF_REQUIRED)
-                        .withWindowsParameters(
-                            new InputWindowsParameters()
-                                .withKbNumbersToExclude(Arrays.asList("sukokwbqplhl", "nuuepzlrp", "wzsoldweyuqdunv"))
-                                .withKbNumbersToInclude(Arrays.asList("rwrbi", "rk", "alywjhhgdn"))
-                                .withClassificationsToInclude(Arrays.asList("sivfomilo"))
-                                .withExcludeKbsRequiringReboot(false))
-                        .withLinuxParameters(
-                            new InputLinuxParameters()
-                                .withPackageNameMasksToExclude(Arrays.asList("iqndieuzaofj"))
-                                .withPackageNameMasksToInclude(Arrays.asList("cyyysfgdot"))
-                                .withClassificationsToInclude(Arrays.asList("iipuipwoqonm", "cje"))))
-                .withStartDateTime("jbazpjuohminy")
-                .withExpirationDateTime("norwmduvwpklvx")
-                .withDuration("ygdxpgpqchis")
-                .withTimeZone("pnnbjc")
-                .withRecurEvery("gibbdaxc")
-                .create();
-
-        Assertions.assertEquals("ywdxsmic", response.location());
-        Assertions.assertEquals("wfscjfn", response.tags().get("nszqujiz"));
-        Assertions.assertEquals("cgxxlxs", response.namespace());
-        Assertions.assertEquals("cvizqzdwlvw", response.extensionProperties().get("youpfgfbkj"));
-        Assertions.assertEquals(MaintenanceScope.EXTENSION, response.maintenanceScope());
-        Assertions.assertEquals(Visibility.CUSTOM, response.visibility());
-        Assertions.assertEquals(RebootOptions.NEVER, response.installPatches().rebootSetting());
-        Assertions
-            .assertEquals("oybfhjxakvvj", response.installPatches().windowsParameters().kbNumbersToExclude().get(0));
-        Assertions.assertEquals("ihxuuwh", response.installPatches().windowsParameters().kbNumbersToInclude().get(0));
-        Assertions
-            .assertEquals("kudzpxgwj", response.installPatches().windowsParameters().classificationsToInclude().get(0));
+        Assertions.assertEquals("vwrdnhfukuvsj", response.location());
+        Assertions.assertEquals("smystuluqypfc", response.tags().get("lerchpq"));
+        Assertions.assertEquals("zb", response.namespace());
+        Assertions.assertEquals("geivsiykzkdncj", response.extensionProperties().get("xonbzoggculapz"));
+        Assertions.assertEquals(MaintenanceScope.SQLMANAGED_INSTANCE, response.maintenanceScope());
+        Assertions.assertEquals(Visibility.PUBLIC, response.visibility());
+        Assertions.assertEquals(RebootOptions.ALWAYS, response.installPatches().rebootSetting());
+        Assertions.assertEquals("astjbkkdmflvestm",
+            response.installPatches().windowsParameters().kbNumbersToExclude().get(0));
+        Assertions.assertEquals("rriloz", response.installPatches().windowsParameters().kbNumbersToInclude().get(0));
+        Assertions.assertEquals("uztcktyhjtqed",
+            response.installPatches().windowsParameters().classificationsToInclude().get(0));
         Assertions.assertEquals(true, response.installPatches().windowsParameters().excludeKbsRequiringReboot());
-        Assertions
-            .assertEquals(
-                "hpfkyrkdbdgi", response.installPatches().linuxParameters().packageNameMasksToExclude().get(0));
-        Assertions
-            .assertEquals(
-                "ntfpmvmemfnc", response.installPatches().linuxParameters().packageNameMasksToInclude().get(0));
-        Assertions
-            .assertEquals("vvbalx", response.installPatches().linuxParameters().classificationsToInclude().get(0));
-        Assertions.assertEquals("fvazivjlfrqttba", response.startDateTime());
-        Assertions.assertEquals("katnwxyi", response.expirationDateTime());
-        Assertions.assertEquals("id", response.duration());
-        Assertions.assertEquals("qfkuvscxkdmli", response.timeZone());
-        Assertions.assertEquals("vibrxkpmloazuruo", response.recurEvery());
+        Assertions.assertEquals("mmrqz",
+            response.installPatches().linuxParameters().packageNameMasksToExclude().get(0));
+        Assertions.assertEquals("gl", response.installPatches().linuxParameters().packageNameMasksToInclude().get(0));
+        Assertions.assertEquals("ev", response.installPatches().linuxParameters().classificationsToInclude().get(0));
+        Assertions.assertEquals("jlyjtlvofq", response.startDateTime());
+        Assertions.assertEquals("vfcibyfmowux", response.expirationDateTime());
+        Assertions.assertEquals("jpvd", response.duration());
+        Assertions.assertEquals("fzwiivwzjbhyz", response.timeZone());
+        Assertions.assertEquals("jrkambtrnegvmnv", response.recurEvery());
     }
 
     // Use "Map.of" if available

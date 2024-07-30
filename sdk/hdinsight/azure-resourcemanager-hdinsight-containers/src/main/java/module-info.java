@@ -4,16 +4,10 @@
 
 module com.azure.resourcemanager.hdinsight.containers {
     requires transitive com.azure.core.management;
-
     exports com.azure.resourcemanager.hdinsight.containers;
     exports com.azure.resourcemanager.hdinsight.containers.fluent;
     exports com.azure.resourcemanager.hdinsight.containers.fluent.models;
     exports com.azure.resourcemanager.hdinsight.containers.models;
-
-    opens com.azure.resourcemanager.hdinsight.containers.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.hdinsight.containers.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.hdinsight.containers.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.hdinsight.containers.models to com.azure.core, com.fasterxml.jackson.databind;
 }

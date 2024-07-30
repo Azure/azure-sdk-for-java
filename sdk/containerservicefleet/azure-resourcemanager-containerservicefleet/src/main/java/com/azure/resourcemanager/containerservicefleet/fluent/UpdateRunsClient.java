@@ -12,12 +12,15 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.containerservicefleet.fluent.models.UpdateRunInner;
+import com.azure.resourcemanager.containerservicefleet.models.SkipProperties;
 
-/** An instance of this class provides access to all the operations defined in UpdateRunsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in UpdateRunsClient.
+ */
 public interface UpdateRunsClient {
     /**
      * List UpdateRun resources by Fleet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +33,7 @@ public interface UpdateRunsClient {
 
     /**
      * List UpdateRun resources by Fleet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param context The context to associate with this operation.
@@ -44,7 +47,7 @@ public interface UpdateRunsClient {
 
     /**
      * Get a UpdateRun.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateRunName The name of the UpdateRun resource.
@@ -55,12 +58,12 @@ public interface UpdateRunsClient {
      * @return a UpdateRun along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<UpdateRunInner> getWithResponse(
-        String resourceGroupName, String fleetName, String updateRunName, Context context);
+    Response<UpdateRunInner> getWithResponse(String resourceGroupName, String fleetName, String updateRunName,
+        Context context);
 
     /**
      * Get a UpdateRun.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateRunName The name of the UpdateRun resource.
@@ -74,7 +77,7 @@ public interface UpdateRunsClient {
 
     /**
      * Create a UpdateRun.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateRunName The name of the UpdateRun resource.
@@ -83,15 +86,15 @@ public interface UpdateRunsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
-     *     of a Fleet.
+     * of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginCreateOrUpdate(
-        String resourceGroupName, String fleetName, String updateRunName, UpdateRunInner resource);
+    SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginCreateOrUpdate(String resourceGroupName,
+        String fleetName, String updateRunName, UpdateRunInner resource);
 
     /**
      * Create a UpdateRun.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateRunName The name of the UpdateRun resource.
@@ -103,21 +106,16 @@ public interface UpdateRunsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
-     *     of a Fleet.
+     * of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String fleetName,
-        String updateRunName,
-        UpdateRunInner resource,
-        String ifMatch,
-        String ifNoneMatch,
+    SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginCreateOrUpdate(String resourceGroupName,
+        String fleetName, String updateRunName, UpdateRunInner resource, String ifMatch, String ifNoneMatch,
         Context context);
 
     /**
      * Create a UpdateRun.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateRunName The name of the UpdateRun resource.
@@ -128,12 +126,12 @@ public interface UpdateRunsClient {
      * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    UpdateRunInner createOrUpdate(
-        String resourceGroupName, String fleetName, String updateRunName, UpdateRunInner resource);
+    UpdateRunInner createOrUpdate(String resourceGroupName, String fleetName, String updateRunName,
+        UpdateRunInner resource);
 
     /**
      * Create a UpdateRun.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateRunName The name of the UpdateRun resource.
@@ -147,18 +145,12 @@ public interface UpdateRunsClient {
      * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    UpdateRunInner createOrUpdate(
-        String resourceGroupName,
-        String fleetName,
-        String updateRunName,
-        UpdateRunInner resource,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context);
+    UpdateRunInner createOrUpdate(String resourceGroupName, String fleetName, String updateRunName,
+        UpdateRunInner resource, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Delete a UpdateRun.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateRunName The name of the UpdateRun resource.
@@ -172,7 +164,7 @@ public interface UpdateRunsClient {
 
     /**
      * Delete a UpdateRun.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateRunName The name of the UpdateRun resource.
@@ -184,12 +176,12 @@ public interface UpdateRunsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String fleetName, String updateRunName, String ifMatch, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName, String updateRunName,
+        String ifMatch, Context context);
 
     /**
      * Delete a UpdateRun.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateRunName The name of the UpdateRun resource.
@@ -202,7 +194,7 @@ public interface UpdateRunsClient {
 
     /**
      * Delete a UpdateRun.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateRunName The name of the UpdateRun resource.
@@ -216,8 +208,77 @@ public interface UpdateRunsClient {
     void delete(String resourceGroupName, String fleetName, String updateRunName, String ifMatch, Context context);
 
     /**
+     * Skips one or a combination of member/group/stage/afterStageWait(s) of an update run.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param fleetName The name of the Fleet resource.
+     * @param updateRunName The name of the UpdateRun resource.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
+     * of a Fleet.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginSkip(String resourceGroupName, String fleetName,
+        String updateRunName, SkipProperties body);
+
+    /**
+     * Skips one or a combination of member/group/stage/afterStageWait(s) of an update run.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param fleetName The name of the Fleet resource.
+     * @param updateRunName The name of the UpdateRun resource.
+     * @param body The content of the action request.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
+     * of a Fleet.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginSkip(String resourceGroupName, String fleetName,
+        String updateRunName, SkipProperties body, String ifMatch, Context context);
+
+    /**
+     * Skips one or a combination of member/group/stage/afterStageWait(s) of an update run.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param fleetName The name of the Fleet resource.
+     * @param updateRunName The name of the UpdateRun resource.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    UpdateRunInner skip(String resourceGroupName, String fleetName, String updateRunName, SkipProperties body);
+
+    /**
+     * Skips one or a combination of member/group/stage/afterStageWait(s) of an update run.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param fleetName The name of the Fleet resource.
+     * @param updateRunName The name of the UpdateRun resource.
+     * @param body The content of the action request.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    UpdateRunInner skip(String resourceGroupName, String fleetName, String updateRunName, SkipProperties body,
+        String ifMatch, Context context);
+
+    /**
      * Starts an UpdateRun.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateRunName The name of the UpdateRun resource.
@@ -225,15 +286,15 @@ public interface UpdateRunsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
-     *     of a Fleet.
+     * of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStart(
-        String resourceGroupName, String fleetName, String updateRunName);
+    SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStart(String resourceGroupName, String fleetName,
+        String updateRunName);
 
     /**
      * Starts an UpdateRun.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateRunName The name of the UpdateRun resource.
@@ -243,15 +304,15 @@ public interface UpdateRunsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
-     *     of a Fleet.
+     * of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStart(
-        String resourceGroupName, String fleetName, String updateRunName, String ifMatch, Context context);
+    SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStart(String resourceGroupName, String fleetName,
+        String updateRunName, String ifMatch, Context context);
 
     /**
      * Starts an UpdateRun.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateRunName The name of the UpdateRun resource.
@@ -265,7 +326,7 @@ public interface UpdateRunsClient {
 
     /**
      * Starts an UpdateRun.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateRunName The name of the UpdateRun resource.
@@ -277,12 +338,12 @@ public interface UpdateRunsClient {
      * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    UpdateRunInner start(
-        String resourceGroupName, String fleetName, String updateRunName, String ifMatch, Context context);
+    UpdateRunInner start(String resourceGroupName, String fleetName, String updateRunName, String ifMatch,
+        Context context);
 
     /**
      * Stops an UpdateRun.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateRunName The name of the UpdateRun resource.
@@ -290,15 +351,15 @@ public interface UpdateRunsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
-     *     of a Fleet.
+     * of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStop(
-        String resourceGroupName, String fleetName, String updateRunName);
+    SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStop(String resourceGroupName, String fleetName,
+        String updateRunName);
 
     /**
      * Stops an UpdateRun.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateRunName The name of the UpdateRun resource.
@@ -308,15 +369,15 @@ public interface UpdateRunsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
-     *     of a Fleet.
+     * of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStop(
-        String resourceGroupName, String fleetName, String updateRunName, String ifMatch, Context context);
+    SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStop(String resourceGroupName, String fleetName,
+        String updateRunName, String ifMatch, Context context);
 
     /**
      * Stops an UpdateRun.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateRunName The name of the UpdateRun resource.
@@ -330,7 +391,7 @@ public interface UpdateRunsClient {
 
     /**
      * Stops an UpdateRun.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateRunName The name of the UpdateRun resource.
@@ -342,6 +403,6 @@ public interface UpdateRunsClient {
      * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    UpdateRunInner stop(
-        String resourceGroupName, String fleetName, String updateRunName, String ifMatch, Context context);
+    UpdateRunInner stop(String resourceGroupName, String fleetName, String updateRunName, String ifMatch,
+        Context context);
 }

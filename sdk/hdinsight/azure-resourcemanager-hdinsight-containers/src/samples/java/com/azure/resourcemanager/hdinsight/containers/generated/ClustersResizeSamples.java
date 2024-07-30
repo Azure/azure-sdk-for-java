@@ -5,26 +5,27 @@
 package com.azure.resourcemanager.hdinsight.containers.generated;
 
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterResizeData;
+import com.azure.resourcemanager.hdinsight.containers.models.ClusterResizeProperties;
 
-/** Samples for Clusters Resize. */
+/**
+ * Samples for Clusters Resize.
+ */
 public final class ClustersResizeSamples {
     /*
-     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-06-01-preview/examples/ResizeCluster.json
+     * x-ms-original-file:
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/
+     * ResizeCluster.json
      */
     /**
      * Sample code: HDInsightClusterResize.
-     *
+     * 
      * @param manager Entry point to HDInsightContainersManager.
      */
-    public static void hDInsightClusterResize(
-        com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager manager) {
-        manager
-            .clusters()
-            .resize(
-                "hiloResourcegroup",
-                "clusterpool1",
-                "cluster1",
-                new ClusterResizeData().withLocation("West US 2").withTargetWorkerNodeCount(5),
-                com.azure.core.util.Context.NONE);
+    public static void
+        hDInsightClusterResize(com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager manager) {
+        manager.clusters().resize(
+            "hiloResourcegroup", "clusterpool1", "cluster1", new ClusterResizeData().withLocation("West US 2")
+                .withProperties(new ClusterResizeProperties().withTargetWorkerNodeCount(5)),
+            com.azure.core.util.Context.NONE);
     }
 }

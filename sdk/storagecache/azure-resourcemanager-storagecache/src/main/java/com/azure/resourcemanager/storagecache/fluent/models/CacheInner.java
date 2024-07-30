@@ -368,8 +368,7 @@ public final class CacheInner extends Resource {
     }
 
     /**
-     * Get the spaceAllocation property: Specifies the space allocation percentage for each storage target in the
-     * cache.
+     * Get the spaceAllocation property: Specifies the space allocation percentage for each storage target in the cache.
      * 
      * @return the spaceAllocation value.
      */

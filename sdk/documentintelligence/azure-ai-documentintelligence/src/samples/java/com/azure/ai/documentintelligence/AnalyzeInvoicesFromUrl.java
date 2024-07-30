@@ -40,7 +40,7 @@ public class AnalyzeInvoicesFromUrl {
             "https://raw.githubusercontent.com/Azure/azure-sdk-for-python/main/sdk/documentintelligence/"
                 + "azure-ai-documentintelligence/samples/sample_forms/forms/sample_invoice.jpg";
 
-        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeInvoicesPoller
+        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeInvoicesPoller
             = client.beginAnalyzeDocument("prebuilt-invoice",
             null,
             null,
@@ -49,7 +49,7 @@ public class AnalyzeInvoicesFromUrl {
             null,
             null, new AnalyzeDocumentRequest().setUrlSource(invoiceUrl));
 
-        AnalyzeResult analyzeInvoiceResult = analyzeInvoicesPoller.getFinalResult().getAnalyzeResult();
+        AnalyzeResult analyzeInvoiceResult = analyzeInvoicesPoller.getFinalResult();
 
         for (int i = 0; i < analyzeInvoiceResult.getDocuments().size(); i++) {
             Document analyzedInvoice = analyzeInvoiceResult.getDocuments().get(i);

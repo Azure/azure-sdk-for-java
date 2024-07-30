@@ -129,7 +129,7 @@ public final class AzureSdkTreeFilterProvider implements TreeFilterProvider {
                     return true;
                 } else if (packageName.indexOf("implementation", 10) != -1
                     || packageName.indexOf("samples", 10) != -1) {
-                    // Exclude com.azure*.implementation* and com.azure*.samples*
+                    // Exclude com.azure*.implementation*, com.azure.json*, com.azure*.samples*, and com.azure.xml*
                     return true;
                 } else if ("resourcemanager".regionMatches(0, packageName, 10, 15)) {
                     // Exclude com.azure.resourcemanager*.fluent.* but don't match fluentcore or confluent
@@ -177,6 +177,7 @@ public final class AzureSdkTreeFilterProvider implements TreeFilterProvider {
             } else {
                 // Exclude org.junit*, org.slf4j*, and org.springframework*
                 return "junit".regionMatches(0, packageName, 4, 5)
+                    || "reactivestreams".regionMatches(0, packageName, 4, 15)
                     || "slf4j".regionMatches(0, packageName, 4, 5)
                     || "springframework".regionMatches(0, packageName, 4, 15);
             }

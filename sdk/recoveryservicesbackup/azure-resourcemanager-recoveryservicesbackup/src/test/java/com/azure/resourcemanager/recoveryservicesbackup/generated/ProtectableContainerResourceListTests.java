@@ -38,20 +38,23 @@ public final class ProtectableContainerResourceListTests {
                     .withTags(mapOf("zdtmhrkwofy", "hwflu", "iwbwoenwashrtdtk", "voqacpiexpbt", "kulpiujwaasi",
                         "nqxwbp", "qlpqwcciuq", "qiiobyuqer"))
                     .withProperties(new ProtectableContainer().withFriendlyName("zapvhelx")
-                        .withBackupManagementType(BackupManagementType.MAB).withHealthStatus("yat")
+                        .withBackupManagementType(BackupManagementType.MAB)
+                        .withHealthStatus("yat")
                         .withContainerId("ckcb"))
                     .withEtag("ejrjxgciqibrho"),
                 new ProtectableContainerResourceInner().withLocation("r")
                     .withTags(mapOf("qnzarrwl", "en", "jfqka", "uu", "iipfpubj", "e"))
                     .withProperties(new ProtectableContainer().withFriendlyName("ichkoymkcdyhb")
-                        .withBackupManagementType(BackupManagementType.AZURE_SQL).withHealthStatus("wdreqnovvqfovl")
+                        .withBackupManagementType(BackupManagementType.AZURE_SQL)
+                        .withHealthStatus("wdreqnovvqfovl")
                         .withContainerId("ywsuwsy"))
                     .withEtag("ndsytgadg"),
                 new ProtectableContainerResourceInner().withLocation("hckqqzqioxiy")
                     .withTags(mapOf("ynkedyatrwyhqmib", "i", "mnzgmwznmabi", "yhwitsmypyynpcdp", "wwrlkdmtncv",
                         "nsorgjhxbldt", "xdy", "kotl"))
                     .withProperties(new ProtectableContainer().withFriendlyName("jphuopxodlqi")
-                        .withBackupManagementType(BackupManagementType.AZURE_STORAGE).withHealthStatus("rz")
+                        .withBackupManagementType(BackupManagementType.AZURE_STORAGE)
+                        .withHealthStatus("rz")
                         .withContainerId("leosjswsrms"))
                     .withEtag("zrpzb")));
         model = BinaryData.fromObject(model).toObject(ProtectableContainerResourceList.class);

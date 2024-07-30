@@ -1,15 +1,78 @@
 ## Release History
 
-### 3.44.0-beta.1 (Unreleased)
+### 5.14.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added hierarchical or sub-partitioning support to 'azure-spring-data-cosmos' - See [PR 40928](https://github.com/Azure/azure-sdk-for-java/pull/40928).
 
 #### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
+### 5.14.0 (2024-07-05)
+
+#### Features Added
+* Added hierarchical or sub-partitioning support to 'azure-spring-data-cosmos' - See [PR 40928](https://github.com/Azure/azure-sdk-for-java/pull/40928).
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.62.0`.
+
+### 5.13.0 (2024-06-06)
+
+#### Features Added
+* Added support for `@Transient` annotation - see [PR 40401](https://github.com/Azure/azure-sdk-for-java/pull/40401).
+
+#### Bugs Fixed
+* Fixing bug with annotated queries that have no where clause but do have a sort - See [PR 40165](https://github.com/Azure/azure-sdk-for-java/pull/40165).
+* Fixing bug with Spring JPA keywords that don't lead to criteria creation - See [PR 40204](https://github.com/Azure/azure-sdk-for-java/pull/40204).
+
+### 3.46.0 (2024-06-03)
+
+#### Features Added
+* Added support for `@Transient` annotation - see [PR 39760](https://github.com/Azure/azure-sdk-for-java/pull/39760).
+
+#### Bugs Fixed
+* Fixing bug with annotated queries that have no where clause but do have a sort - See [PR 40083](https://github.com/Azure/azure-sdk-for-java/pull/40083).
+* Fixing bug with Spring JPA keywords that don't lead to criteria creation - See [PR 40167](https://github.com/Azure/azure-sdk-for-java/pull/40167).
+
+### 5.12.0 (2024-05-09)
+
+#### Features Added
+* Exposing the `indexQueryMetrics` to the `CosmosConfig` via the `application.properties` configuration file - See [PR 39623](https://github.com/Azure/azure-sdk-for-java/pull/39623).
+
+#### Bugs Fixed
+* Fixed all saveAll/insertAll bulk functionality to populated audit data - See [PR 39811](https://github.com/Azure/azure-sdk-for-java/pull/39811).
+* Fixed `existsById` API in `ReactiveCosmosTemplate` to return `Mono<Boolean>` containing `False` in case the item does not exist - See [PR 40050](https://github.com/Azure/azure-sdk-for-java/pull/40050).
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.58.0`.
+
+### 3.45.0 (2024-05-07)
+
+#### Features Added
+* Exposing the `indexQueryMetrics` to the `CosmosConfig` via the `application.properties` configuration file - See [PR 39433](https://github.com/Azure/azure-sdk-for-java/pull/39433).
+
+#### Bugs Fixed
+* Fixed all saveAll/insertAll bulk functionality to populated audit data - See [PR 39620](https://github.com/Azure/azure-sdk-for-java/pull/39620).
+* Fixed `existsById` API in `ReactiveCosmosTemplate` to return `Mono<Boolean>` containing `False` in case the item does not exist - See [PR 40022](https://github.com/Azure/azure-sdk-for-java/pull/40022)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.58.0`.
+
+### 5.11.0 (2024-03-29)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.57.0`.
+
+### 3.44.0 (2024-03-28)
 
 #### Bugs Fixed
 * Fixed `IllegalStateException` for `delete` - See [PR 38996](https://github.com/Azure/azure-sdk-for-java/pull/38996). 
 
 #### Other Changes
+* Updated `azure-cosmos` to version `4.57.0`.
 
 ### 5.10.0 (2024-03-01)
 

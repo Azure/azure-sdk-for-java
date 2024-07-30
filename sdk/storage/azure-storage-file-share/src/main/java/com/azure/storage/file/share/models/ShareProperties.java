@@ -5,131 +5,126 @@
 package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.storage.file.share.implementation.util.ModelHelper;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 import java.time.OffsetDateTime;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Properties of a share.
  */
-@JacksonXmlRootElement(localName = "ShareProperties")
 @Fluent
-public final class ShareProperties {
+public final class ShareProperties implements XmlSerializable<ShareProperties> {
     /*
      * The lastModified property.
      */
-    @JsonProperty(value = "Last-Modified", required = true)
     private DateTimeRfc1123 lastModified;
 
     /*
      * The eTag property.
      */
-    @JsonProperty(value = "Etag", required = true)
     private String eTag;
 
     /*
      * The quota property.
      */
-    @JsonProperty(value = "Quota", required = true)
     private int quota;
 
     /*
      * The provisionedIops property.
      */
-    @JsonProperty(value = "ProvisionedIops")
     private Integer provisionedIops;
 
     /*
      * The provisionedIngressMBps property.
      */
-    @JsonProperty(value = "ProvisionedIngressMBps")
     private Integer provisionedIngressMBps;
 
     /*
      * The provisionedEgressMBps property.
      */
-    @JsonProperty(value = "ProvisionedEgressMBps")
     private Integer provisionedEgressMBps;
 
     /*
      * The nextAllowedQuotaDowngradeTime property.
      */
-    @JsonProperty(value = "NextAllowedQuotaDowngradeTime")
     private DateTimeRfc1123 nextAllowedQuotaDowngradeTime;
 
     /*
      * The deletedTime property.
      */
-    @JsonProperty(value = "DeletedTime")
     private DateTimeRfc1123 deletedTime;
 
     /*
      * The remainingRetentionDays property.
      */
-    @JsonProperty(value = "RemainingRetentionDays")
     private Integer remainingRetentionDays;
 
     /*
      * The accessTier property.
      */
-    @JsonProperty(value = "AccessTier")
     private String accessTier;
 
     /*
      * The accessTierChangeTime property.
      */
-    @JsonProperty(value = "AccessTierChangeTime")
     private DateTimeRfc1123 accessTierChangeTime;
 
     /*
      * The accessTierTransitionState property.
      */
-    @JsonProperty(value = "AccessTierTransitionState")
     private String accessTierTransitionState;
 
     /*
      * Possible values include: 'locked', 'unlocked'
      */
-    @JsonProperty(value = "LeaseStatus")
     private LeaseStatusType leaseStatus;
 
     /*
      * Possible values include: 'available', 'leased', 'expired', 'breaking',
      * 'broken'
      */
-    @JsonProperty(value = "LeaseState")
     private LeaseStateType leaseState;
 
     /*
      * Possible values include: 'infinite', 'fixed'
      */
-    @JsonProperty(value = "LeaseDuration")
     private LeaseDurationType leaseDuration;
 
     /*
      * The enabledProtocols property.
      */
-    @JsonProperty(value = "EnabledProtocols")
     private ShareProtocols protocols;
 
     /*
      * Possible values include: 'NoRootSquash', 'RootSquash', 'AllSquash'
      */
-    @JsonProperty(value = "RootSquash")
     private ShareRootSquash rootSquash;
 
     /*
      * The metadata property.
      */
-    @JsonProperty(value = "Metadata")
     private Map<String, String> metadata;
 
     /*
      * The provisioned bandwidth.
      */
     private Integer provisionedBandwidthMiBps;
+
+    /*
+     * The EnableSnapshotVirtualDirectoryAccess property.
+     */
+    private Boolean enableSnapshotVirtualDirectoryAccess;
 
     /**
      * Get the lastModified property: The lastModified property.
@@ -567,5 +562,158 @@ public final class ShareProperties {
     public ShareProperties setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
+    }
+
+    /**
+     * Get the enableSnapshotVirtualDirectoryAccess property:
+     * Optional. Supported in version 2023-08-03 and above. Only applicable for premium file storage accounts.
+     * Specifies whether the snapshot virtual directory should be accessible at the root of share mount point when NFS is enabled.
+     * If not specified, the default is true.
+     *
+     * @return the enableSnapshotVirtualDirectoryAccess value.
+     */
+    public Boolean isSnapshotVirtualDirectoryAccessEnabled() {
+        return this.enableSnapshotVirtualDirectoryAccess;
+    }
+
+    /**
+     * Set the enableSnapshotVirtualDirectoryAccess property:
+     * Optional. Supported in version 2023-08-03 and above. Only applicable for premium file storage accounts.
+     * Specifies whether the snapshot virtual directory should be accessible at the root of share mount point when NFS is enabled.
+     * If not specified, the default is true.
+     *
+     * @param enableSnapshotVirtualDirectoryAccess the enableSnapshotVirtualDirectoryAccess value to set.
+     * @return the ShareProperties object itself.
+     */
+    public ShareProperties setSnapshotVirtualDirectoryAccessEnabled(
+        Boolean enableSnapshotVirtualDirectoryAccess) {
+        this.enableSnapshotVirtualDirectoryAccess = enableSnapshotVirtualDirectoryAccess;
+        return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "ShareProperties" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+
+        xmlWriter.writeStringElement("Last-Modified", Objects.toString(this.lastModified, null));
+        xmlWriter.writeStringElement("Etag", this.eTag);
+        xmlWriter.writeIntElement("Quota", this.quota);
+        xmlWriter.writeNumberElement("ProvisionedIops", this.provisionedIops);
+        xmlWriter.writeNumberElement("ProvisionedIngressMBps", this.provisionedIngressMBps);
+        xmlWriter.writeNumberElement("ProvisionedEgressMBps", this.provisionedEgressMBps);
+        xmlWriter.writeStringElement("NextAllowedQuotaDowngradeTime",
+            Objects.toString(this.nextAllowedQuotaDowngradeTime, null));
+        xmlWriter.writeStringElement("DeletedTime", Objects.toString(this.deletedTime, null));
+        xmlWriter.writeNumberElement("RemainingRetentionDays", this.remainingRetentionDays);
+        xmlWriter.writeStringElement("AccessTier", this.accessTier);
+        xmlWriter.writeStringElement("AccessTierChangeTime", Objects.toString(this.accessTierChangeTime, null));
+        xmlWriter.writeStringElement("AccessTierTransitionState", this.accessTierTransitionState);
+        xmlWriter.writeStringElement("LeaseStatus", this.leaseStatus == null ? null : this.leaseStatus.toString());
+        xmlWriter.writeStringElement("LeaseState", this.leaseState == null ? null : this.leaseState.toString());
+        xmlWriter.writeStringElement("LeaseDuration",
+            this.leaseDuration == null ? null : this.leaseDuration.toString());
+        xmlWriter.writeStringElement("EnabledProtocols", Objects.toString(this.protocols, null));
+        xmlWriter.writeStringElement("RootSquash", this.rootSquash == null ? null : this.rootSquash.toString());
+        if (this.metadata != null) {
+            xmlWriter.writeStartElement("Metadata");
+            for (Map.Entry<String, String> entry : this.metadata.entrySet()) {
+                xmlWriter.writeStringElement(entry.getKey(), entry.getValue());
+            }
+            xmlWriter.writeEndElement();
+        }
+
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of ShareProperties from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of ShareProperties if the XmlReader was pointing to an instance of it, or null if it was
+     * pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the ShareProperties.
+     */
+    public static ShareProperties fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of ShareProperties from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     * cases where the model can deserialize from different root element names.
+     * @return An instance of ShareProperties if the XmlReader was pointing to an instance of it, or null if it was
+     * pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the ShareProperties.
+     */
+    public static ShareProperties fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "ShareProperties" : rootElementName;
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            ShareProperties deserializedShareProperties = new ShareProperties();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
+
+                if ("Last-Modified".equals(elementName.getLocalPart())) {
+                    deserializedShareProperties.lastModified = reader.getNullableElement(DateTimeRfc1123::new);
+                } else if ("Etag".equals(elementName.getLocalPart())) {
+                    deserializedShareProperties.eTag = reader.getStringElement();
+                } else if ("Quota".equals(elementName.getLocalPart())) {
+                    deserializedShareProperties.quota = reader.getIntElement();
+                } else if ("ProvisionedIops".equals(elementName.getLocalPart())) {
+                    deserializedShareProperties.provisionedIops = reader.getNullableElement(Integer::parseInt);
+                } else if ("ProvisionedIngressMBps".equals(elementName.getLocalPart())) {
+                    deserializedShareProperties.provisionedIngressMBps = reader.getNullableElement(Integer::parseInt);
+                } else if ("ProvisionedEgressMBps".equals(elementName.getLocalPart())) {
+                    deserializedShareProperties.provisionedEgressMBps = reader.getNullableElement(Integer::parseInt);
+                } else if ("ProvisionedBandwidthMiBps".equals(elementName.getLocalPart())) {
+                    deserializedShareProperties.provisionedBandwidthMiBps
+                        = reader.getNullableElement(Integer::parseInt);
+                } else if ("NextAllowedQuotaDowngradeTime".equals(elementName.getLocalPart())) {
+                    deserializedShareProperties.nextAllowedQuotaDowngradeTime
+                        = reader.getNullableElement(DateTimeRfc1123::new);
+                } else if ("DeletedTime".equals(elementName.getLocalPart())) {
+                    deserializedShareProperties.deletedTime = reader.getNullableElement(DateTimeRfc1123::new);
+                } else if ("RemainingRetentionDays".equals(elementName.getLocalPart())) {
+                    deserializedShareProperties.remainingRetentionDays = reader.getNullableElement(Integer::parseInt);
+                } else if ("AccessTier".equals(elementName.getLocalPart())) {
+                    deserializedShareProperties.accessTier = reader.getStringElement();
+                } else if ("AccessTierChangeTime".equals(elementName.getLocalPart())) {
+                    deserializedShareProperties.accessTierChangeTime = reader.getNullableElement(DateTimeRfc1123::new);
+                } else if ("AccessTierTransitionState".equals(elementName.getLocalPart())) {
+                    deserializedShareProperties.accessTierTransitionState = reader.getStringElement();
+                } else if ("LeaseStatus".equals(elementName.getLocalPart())) {
+                    deserializedShareProperties.leaseStatus = LeaseStatusType.fromString(reader.getStringElement());
+                } else if ("LeaseState".equals(elementName.getLocalPart())) {
+                    deserializedShareProperties.leaseState = LeaseStateType.fromString(reader.getStringElement());
+                } else if ("LeaseDuration".equals(elementName.getLocalPart())) {
+                    deserializedShareProperties.leaseDuration = LeaseDurationType.fromString(reader.getStringElement());
+                } else if ("EnabledProtocols".equals(elementName.getLocalPart())) {
+                    deserializedShareProperties.protocols = ModelHelper.parseShareProtocols(reader.getStringElement());
+                } else if ("RootSquash".equals(elementName.getLocalPart())) {
+                    deserializedShareProperties.rootSquash = ShareRootSquash.fromString(reader.getStringElement());
+                } else if ("Metadata".equals(elementName.getLocalPart())) {
+                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                        if (deserializedShareProperties.metadata == null) {
+                            deserializedShareProperties.metadata = new LinkedHashMap<>();
+                        }
+                        deserializedShareProperties.metadata.put(reader.getElementName().getLocalPart(),
+                            reader.getStringElement());
+                    }
+                } else {
+                    reader.skipElement();
+                }
+            }
+
+            return deserializedShareProperties;
+        });
     }
 }

@@ -9,9 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class JobCancellationsTriggerSamples {
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * Common/TriggerCancelJob.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/Common/TriggerCancelJob.json
      */
     /**
      * Sample code: Cancel Job.
@@ -20,7 +18,8 @@ public final class JobCancellationsTriggerSamples {
      */
     public static void
         cancelJob(com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.jobCancellations().triggerWithResponse("NetSDKTestRsVault", "SwaggerTestRg",
-            "00000000-0000-0000-0000-000000000000", com.azure.core.util.Context.NONE);
+        manager.jobCancellations()
+            .triggerWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "00000000-0000-0000-0000-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }

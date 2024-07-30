@@ -31,8 +31,8 @@ public final class TumblingWindowTriggerTypeProperties {
     private int interval;
 
     /*
-     * The start time for the time period for the trigger during which events are fired for windows that are ready.
-     * Only UTC time is currently supported.
+     * The start time for the time period for the trigger during which events are fired for windows that are ready. Only
+     * UTC time is currently supported.
      */
     @JsonProperty(value = "startTime", required = true)
     private OffsetDateTime startTime;
@@ -253,12 +253,14 @@ public final class TumblingWindowTriggerTypeProperties {
      */
     public void validate() {
         if (frequency() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property frequency in model TumblingWindowTriggerTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property frequency in model TumblingWindowTriggerTypeProperties"));
         }
         if (startTime() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property startTime in model TumblingWindowTriggerTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property startTime in model TumblingWindowTriggerTypeProperties"));
         }
         if (retryPolicy() != null) {
             retryPolicy().validate();

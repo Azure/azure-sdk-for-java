@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class RouteFiltersGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/RouteFilterGet.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/RouteFilterGet.json
      */
     /**
      * Sample code: RouteFilterGet.
@@ -18,7 +18,10 @@ public final class RouteFiltersGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void routeFilterGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getRouteFilters().getByResourceGroupWithResponse("rg1", "filterName",
-            null, com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getRouteFilters()
+            .getByResourceGroupWithResponse("rg1", "filterName", null, com.azure.core.util.Context.NONE);
     }
 }

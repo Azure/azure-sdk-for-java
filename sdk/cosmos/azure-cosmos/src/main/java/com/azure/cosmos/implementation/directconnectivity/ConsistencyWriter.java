@@ -37,7 +37,12 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
@@ -166,12 +171,19 @@ public class ConsistencyWriter {
 
             Mono<List<AddressInformation>> replicaAddressesObs = this.addressSelector.resolveAddressesAsync(request, forceRefresh);
             AtomicReference<Uri> primaryURI = new AtomicReference<>();
-            AtomicReference<List<String>> replicaStatusList = new AtomicReference<>();
+            Map<String, Set<String>> replicaStatusList = new ConcurrentHashMap<>();
+            Set<String> replicaStatuses = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
             return replicaAddressesObs.flatMap(replicaAddresses -> {
                 try {
                     List<URI> contactedReplicas = new ArrayList<>();
-                    replicaAddresses.forEach(replicaAddress -> contactedReplicas.add(replicaAddress.getPhysicalUri().getURI()));
+                    replicaAddresses.forEach(replicaAddress -> {
+                        Uri uri = replicaAddress.getPhysicalUri();
+                        contactedReplicas.add(uri.getURI());
+                        if (!uri.isPrimary()) {
+                            replicaStatuses.add(uri.getHealthStatusDiagnosticString());
+                        }
+                    });
                     BridgeInternal.setContactedReplicas(request.requestContext.cosmosDiagnostics, contactedReplicas);
                     return Mono.just(AddressSelector.getPrimaryUri(request, replicaAddresses));
                 } catch (GoneException e) {
@@ -196,8 +208,8 @@ public class ConsistencyWriter {
                 } catch (Exception e) {
                     return Mono.error(e);
                 }
-
-                replicaStatusList.set(Arrays.asList(primaryUri.getHealthStatusDiagnosticString()));
+                replicaStatusList.put(Uri.IGNORING, replicaStatuses);
+                replicaStatusList.put(Uri.ATTEMPTING, new HashSet<>(Arrays.asList(primaryUri.getHealthStatusDiagnosticString())));
 
                 return this.transportClient.invokeResourceOperationAsync(primaryUri, request)
                                            .doOnError(
@@ -220,7 +232,7 @@ public class ConsistencyWriter {
                                                            false,
                                                            false,
                                                            primaryUri,
-                                                           replicaStatusList.get());
+                                                           replicaStatusList);
                                                        String value = ex != null ?
                                                            ex
                                                                .getResponseHeaders()
@@ -235,10 +247,15 @@ public class ConsistencyWriter {
                                                            }
                                                        }
                                                    } catch (Throwable throwable) {
-                                                       logger.error("Unexpected failure in handling orig [{}]", t.getMessage(), t);
-                                                       logger.error("Unexpected failure in handling orig [{}] : new [{}]", t.getMessage(), throwable.getMessage(), throwable);
                                                        if (throwable instanceof Error) {
+                                                           logger.error("Unexpected failure in handling orig [{}]", t.getMessage(), t);
+                                                           logger.error("Unexpected failure in handling orig [{}] : new [{}]", t.getMessage(), throwable.getMessage(), throwable);
                                                            throw (Error) throwable;
+                                                       } else {
+                                                           // this happens before any retry policy - like for example GoneAndRetryRetryPolicy
+                                                           // kicks in - no need to spam warn/error level logs yet
+                                                           logger.info("Unexpected failure in handling orig [{}]", t.getMessage(), t);
+                                                           logger.info("Unexpected failure in handling orig [{}] : new [{}]", t.getMessage(), throwable.getMessage(), throwable);
                                                        }
                                                    }
                                                }
@@ -252,7 +269,7 @@ public class ConsistencyWriter {
                         false,
                         false,
                         primaryURI.get(),
-                        replicaStatusList.get());
+                        replicaStatusList);
                 return barrierForGlobalStrong(request, response);
             })
             .doFinally(signalType -> {
@@ -264,7 +281,7 @@ public class ConsistencyWriter {
                     request,
                     false,
                     false,
-                    replicaStatusList.get());
+                    replicaStatusList);
             });
         } else {
 
@@ -273,7 +290,7 @@ public class ConsistencyWriter {
                 .flatMap(v -> {
 
                     if (!v) {
-                        logger.warn("ConsistencyWriter: Write barrier has not been met for global strong request. SelectedGlobalCommittedLsn: {}", request.requestContext.globalCommittedSelectedLSN);
+                        logger.info("ConsistencyWriter: Write barrier has not been met for global strong request. SelectedGlobalCommittedLsn: {}", request.requestContext.globalCommittedSelectedLSN);
                         return Mono.error(new GoneException(RMResources.GlobalStrongWriteBarrierNotMet,
                             HttpConstants.SubStatusCodes.GLOBAL_STRONG_WRITE_BARRIER_NOT_MET));
                     }

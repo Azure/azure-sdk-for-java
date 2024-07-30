@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Cluster log analytics profile to enable or disable OMS agent for cluster. */
+/**
+ * Cluster log analytics profile to enable or disable OMS agent for cluster.
+ */
 @Fluent
 public final class ClusterLogAnalyticsProfile {
     /*
@@ -28,13 +30,15 @@ public final class ClusterLogAnalyticsProfile {
     @JsonProperty(value = "metricsEnabled")
     private Boolean metricsEnabled;
 
-    /** Creates an instance of ClusterLogAnalyticsProfile class. */
+    /**
+     * Creates an instance of ClusterLogAnalyticsProfile class.
+     */
     public ClusterLogAnalyticsProfile() {
     }
 
     /**
      * Get the enabled property: True if log analytics is enabled for the cluster, otherwise false.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -43,7 +47,7 @@ public final class ClusterLogAnalyticsProfile {
 
     /**
      * Set the enabled property: True if log analytics is enabled for the cluster, otherwise false.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ClusterLogAnalyticsProfile object itself.
      */
@@ -54,7 +58,7 @@ public final class ClusterLogAnalyticsProfile {
 
     /**
      * Get the applicationLogs property: Collection of logs to be enabled or disabled for log analytics.
-     *
+     * 
      * @return the applicationLogs value.
      */
     public ClusterLogAnalyticsApplicationLogs applicationLogs() {
@@ -63,7 +67,7 @@ public final class ClusterLogAnalyticsProfile {
 
     /**
      * Set the applicationLogs property: Collection of logs to be enabled or disabled for log analytics.
-     *
+     * 
      * @param applicationLogs the applicationLogs value to set.
      * @return the ClusterLogAnalyticsProfile object itself.
      */
@@ -74,7 +78,7 @@ public final class ClusterLogAnalyticsProfile {
 
     /**
      * Get the metricsEnabled property: True if metrics are enabled, otherwise false.
-     *
+     * 
      * @return the metricsEnabled value.
      */
     public Boolean metricsEnabled() {
@@ -83,7 +87,7 @@ public final class ClusterLogAnalyticsProfile {
 
     /**
      * Set the metricsEnabled property: True if metrics are enabled, otherwise false.
-     *
+     * 
      * @param metricsEnabled the metricsEnabled value to set.
      * @return the ClusterLogAnalyticsProfile object itself.
      */
@@ -94,7 +98,7 @@ public final class ClusterLogAnalyticsProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

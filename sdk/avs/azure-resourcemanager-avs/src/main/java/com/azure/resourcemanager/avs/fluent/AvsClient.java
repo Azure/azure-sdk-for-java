@@ -7,152 +7,161 @@ package com.azure.resourcemanager.avs.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for AvsClient class. */
+/**
+ * The interface for AvsClient class.
+ */
 public interface AvsClient {
     /**
-     * Gets The ID of the target subscription.
-     *
+     * Gets The ID of the target subscription. The value must be an UUID.
+     * 
      * @return the subscriptionId value.
      */
     String getSubscriptionId();
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     String getEndpoint();
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     String getApiVersion();
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
 
     /**
      * Gets the LocationsClient object to access its operations.
-     *
+     * 
      * @return the LocationsClient object.
      */
     LocationsClient getLocations();
 
     /**
      * Gets the PrivateCloudsClient object to access its operations.
-     *
+     * 
      * @return the PrivateCloudsClient object.
      */
     PrivateCloudsClient getPrivateClouds();
 
     /**
+     * Gets the AddonsClient object to access its operations.
+     * 
+     * @return the AddonsClient object.
+     */
+    AddonsClient getAddons();
+
+    /**
+     * Gets the AuthorizationsClient object to access its operations.
+     * 
+     * @return the AuthorizationsClient object.
+     */
+    AuthorizationsClient getAuthorizations();
+
+    /**
+     * Gets the CloudLinksClient object to access its operations.
+     * 
+     * @return the CloudLinksClient object.
+     */
+    CloudLinksClient getCloudLinks();
+
+    /**
      * Gets the ClustersClient object to access its operations.
-     *
+     * 
      * @return the ClustersClient object.
      */
     ClustersClient getClusters();
 
     /**
      * Gets the DatastoresClient object to access its operations.
-     *
+     * 
      * @return the DatastoresClient object.
      */
     DatastoresClient getDatastores();
 
     /**
-     * Gets the HcxEnterpriseSitesClient object to access its operations.
-     *
-     * @return the HcxEnterpriseSitesClient object.
-     */
-    HcxEnterpriseSitesClient getHcxEnterpriseSites();
-
-    /**
-     * Gets the AuthorizationsClient object to access its operations.
-     *
-     * @return the AuthorizationsClient object.
-     */
-    AuthorizationsClient getAuthorizations();
-
-    /**
-     * Gets the GlobalReachConnectionsClient object to access its operations.
-     *
-     * @return the GlobalReachConnectionsClient object.
-     */
-    GlobalReachConnectionsClient getGlobalReachConnections();
-
-    /**
-     * Gets the WorkloadNetworksClient object to access its operations.
-     *
-     * @return the WorkloadNetworksClient object.
-     */
-    WorkloadNetworksClient getWorkloadNetworks();
-
-    /**
-     * Gets the CloudLinksClient object to access its operations.
-     *
-     * @return the CloudLinksClient object.
-     */
-    CloudLinksClient getCloudLinks();
-
-    /**
-     * Gets the AddonsClient object to access its operations.
-     *
-     * @return the AddonsClient object.
-     */
-    AddonsClient getAddons();
-
-    /**
-     * Gets the VirtualMachinesClient object to access its operations.
-     *
-     * @return the VirtualMachinesClient object.
-     */
-    VirtualMachinesClient getVirtualMachines();
-
-    /**
      * Gets the PlacementPoliciesClient object to access its operations.
-     *
+     * 
      * @return the PlacementPoliciesClient object.
      */
     PlacementPoliciesClient getPlacementPolicies();
 
     /**
+     * Gets the VirtualMachinesClient object to access its operations.
+     * 
+     * @return the VirtualMachinesClient object.
+     */
+    VirtualMachinesClient getVirtualMachines();
+
+    /**
+     * Gets the GlobalReachConnectionsClient object to access its operations.
+     * 
+     * @return the GlobalReachConnectionsClient object.
+     */
+    GlobalReachConnectionsClient getGlobalReachConnections();
+
+    /**
+     * Gets the HcxEnterpriseSitesClient object to access its operations.
+     * 
+     * @return the HcxEnterpriseSitesClient object.
+     */
+    HcxEnterpriseSitesClient getHcxEnterpriseSites();
+
+    /**
+     * Gets the IscsiPathsClient object to access its operations.
+     * 
+     * @return the IscsiPathsClient object.
+     */
+    IscsiPathsClient getIscsiPaths();
+
+    /**
+     * Gets the ScriptExecutionsClient object to access its operations.
+     * 
+     * @return the ScriptExecutionsClient object.
+     */
+    ScriptExecutionsClient getScriptExecutions();
+
+    /**
      * Gets the ScriptPackagesClient object to access its operations.
-     *
+     * 
      * @return the ScriptPackagesClient object.
      */
     ScriptPackagesClient getScriptPackages();
 
     /**
      * Gets the ScriptCmdletsClient object to access its operations.
-     *
+     * 
      * @return the ScriptCmdletsClient object.
      */
     ScriptCmdletsClient getScriptCmdlets();
 
     /**
-     * Gets the ScriptExecutionsClient object to access its operations.
-     *
-     * @return the ScriptExecutionsClient object.
+     * Gets the WorkloadNetworksClient object to access its operations.
+     * 
+     * @return the WorkloadNetworksClient object.
      */
-    ScriptExecutionsClient getScriptExecutions();
+    WorkloadNetworksClient getWorkloadNetworks();
 }

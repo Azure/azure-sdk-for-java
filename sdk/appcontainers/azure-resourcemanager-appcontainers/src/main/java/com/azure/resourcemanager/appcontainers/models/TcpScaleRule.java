@@ -5,34 +5,44 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Container App container Tcp scaling rule. */
+/**
+ * Container App container Tcp scaling rule.
+ */
 @Fluent
-public final class TcpScaleRule {
+public final class TcpScaleRule implements JsonSerializable<TcpScaleRule> {
     /*
      * Metadata properties to describe tcp scale rule.
      */
-    @JsonProperty(value = "metadata")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> metadata;
 
     /*
      * Authentication secrets for the tcp scale rule.
      */
-    @JsonProperty(value = "auth")
     private List<ScaleRuleAuth> auth;
 
-    /** Creates an instance of TcpScaleRule class. */
+    /*
+     * The resource ID of a user-assigned managed identity that is assigned to the Container App, or 'system' for
+     * system-assigned identity.
+     */
+    private String identity;
+
+    /**
+     * Creates an instance of TcpScaleRule class.
+     */
     public TcpScaleRule() {
     }
 
     /**
      * Get the metadata property: Metadata properties to describe tcp scale rule.
-     *
+     * 
      * @return the metadata value.
      */
     public Map<String, String> metadata() {
@@ -41,7 +51,7 @@ public final class TcpScaleRule {
 
     /**
      * Set the metadata property: Metadata properties to describe tcp scale rule.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the TcpScaleRule object itself.
      */
@@ -52,7 +62,7 @@ public final class TcpScaleRule {
 
     /**
      * Get the auth property: Authentication secrets for the tcp scale rule.
-     *
+     * 
      * @return the auth value.
      */
     public List<ScaleRuleAuth> auth() {
@@ -61,7 +71,7 @@ public final class TcpScaleRule {
 
     /**
      * Set the auth property: Authentication secrets for the tcp scale rule.
-     *
+     * 
      * @param auth the auth value to set.
      * @return the TcpScaleRule object itself.
      */
@@ -71,13 +81,79 @@ public final class TcpScaleRule {
     }
 
     /**
+     * Get the identity property: The resource ID of a user-assigned managed identity that is assigned to the Container
+     * App, or 'system' for system-assigned identity.
+     * 
+     * @return the identity value.
+     */
+    public String identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The resource ID of a user-assigned managed identity that is assigned to the Container
+     * App, or 'system' for system-assigned identity.
+     * 
+     * @param identity the identity value to set.
+     * @return the TcpScaleRule object itself.
+     */
+    public TcpScaleRule withIdentity(String identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (auth() != null) {
             auth().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("auth", this.auth, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TcpScaleRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TcpScaleRule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TcpScaleRule.
+     */
+    public static TcpScaleRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TcpScaleRule deserializedTcpScaleRule = new TcpScaleRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    deserializedTcpScaleRule.metadata = metadata;
+                } else if ("auth".equals(fieldName)) {
+                    List<ScaleRuleAuth> auth = reader.readArray(reader1 -> ScaleRuleAuth.fromJson(reader1));
+                    deserializedTcpScaleRule.auth = auth;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedTcpScaleRule.identity = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTcpScaleRule;
+        });
     }
 }

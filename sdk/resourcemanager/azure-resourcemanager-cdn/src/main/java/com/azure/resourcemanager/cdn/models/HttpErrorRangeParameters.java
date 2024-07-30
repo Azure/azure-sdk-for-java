@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cdn.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The JSON object that represents the range for http status codes. */
+/**
+ * The JSON object that represents the range for http status codes.
+ */
 @Fluent
 public final class HttpErrorRangeParameters {
     /*
@@ -22,13 +24,15 @@ public final class HttpErrorRangeParameters {
     @JsonProperty(value = "end")
     private Integer end;
 
-    /** Creates an instance of HttpErrorRangeParameters class. */
+    /**
+     * Creates an instance of HttpErrorRangeParameters class.
+     */
     public HttpErrorRangeParameters() {
     }
 
     /**
      * Get the begin property: The inclusive start of the http status code range.
-     *
+     * 
      * @return the begin value.
      */
     public Integer begin() {
@@ -37,7 +41,7 @@ public final class HttpErrorRangeParameters {
 
     /**
      * Set the begin property: The inclusive start of the http status code range.
-     *
+     * 
      * @param begin the begin value to set.
      * @return the HttpErrorRangeParameters object itself.
      */
@@ -48,7 +52,7 @@ public final class HttpErrorRangeParameters {
 
     /**
      * Get the end property: The inclusive end of the http status code range.
-     *
+     * 
      * @return the end value.
      */
     public Integer end() {
@@ -57,7 +61,7 @@ public final class HttpErrorRangeParameters {
 
     /**
      * Set the end property: The inclusive end of the http status code range.
-     *
+     * 
      * @param end the end value to set.
      * @return the HttpErrorRangeParameters object itself.
      */
@@ -68,7 +72,7 @@ public final class HttpErrorRangeParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

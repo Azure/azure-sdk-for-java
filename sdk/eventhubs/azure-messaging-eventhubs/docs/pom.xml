@@ -20,12 +20,12 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-            <version>1.20.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
+            <version>1.20.0-beta.2</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
         </dependency>
         <dependency>
             <groupId>io.projectreactor</groupId>
             <artifactId>reactor-core</artifactId>
-            <version>3.4.34</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
+            <version>3.4.38</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
         </dependency>
 
         <!-- Dependencies required for Log4j2 -->
@@ -55,7 +55,7 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.3.12</version> <!-- {x-version-update;ch.qos.logback:logback-classic;external_dependency} -->
+            <version>1.3.14</version> <!-- {x-version-update;ch.qos.logback:logback-classic;external_dependency} -->
         </dependency>
         <dependency>
             <groupId>org.codehaus.janino</groupId>

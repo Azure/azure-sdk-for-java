@@ -156,14 +156,15 @@ public final class ConnectivityParameters {
      */
     public void validate() {
         if (source() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property source in model ConnectivityParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property source in model ConnectivityParameters"));
         } else {
             source().validate();
         }
         if (destination() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property destination in model ConnectivityParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property destination in model ConnectivityParameters"));
         } else {
             destination().validate();
         }

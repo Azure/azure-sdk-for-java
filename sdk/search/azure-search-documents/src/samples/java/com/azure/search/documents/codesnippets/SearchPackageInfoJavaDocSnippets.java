@@ -14,6 +14,7 @@ import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerClient;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
+import com.azure.search.documents.indexes.SimpleField;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.SearchField;
@@ -97,6 +98,7 @@ public class SearchPackageInfoJavaDocSnippets {
         private String hotelId;
         private String hotelName;
 
+        @SimpleField(isKey = true)
         public String getHotelId() {
             return this.hotelId;
         }

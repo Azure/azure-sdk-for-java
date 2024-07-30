@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class VirtualHubRouteTableV2SDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualHubRouteTableV2Delete.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualHubRouteTableV2Delete.
      * json
      */
     /**
@@ -19,7 +19,10 @@ public final class VirtualHubRouteTableV2SDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualHubRouteTableV2Delete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualHubRouteTableV2S().delete("rg1", "virtualHub1",
-            "virtualHubRouteTable1a", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualHubRouteTableV2S()
+            .delete("rg1", "virtualHub1", "virtualHubRouteTable1a", com.azure.core.util.Context.NONE);
     }
 }

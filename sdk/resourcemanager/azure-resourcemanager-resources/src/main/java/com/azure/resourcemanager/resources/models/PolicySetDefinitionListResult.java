@@ -9,7 +9,9 @@ import com.azure.resourcemanager.resources.fluent.models.PolicySetDefinitionInne
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of policy set definitions. */
+/**
+ * List of policy set definitions.
+ */
 @Fluent
 public final class PolicySetDefinitionListResult {
     /*
@@ -24,13 +26,15 @@ public final class PolicySetDefinitionListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of PolicySetDefinitionListResult class. */
+    /**
+     * Creates an instance of PolicySetDefinitionListResult class.
+     */
     public PolicySetDefinitionListResult() {
     }
 
     /**
      * Get the value property: An array of policy set definitions.
-     *
+     * 
      * @return the value value.
      */
     public List<PolicySetDefinitionInner> value() {
@@ -39,7 +43,7 @@ public final class PolicySetDefinitionListResult {
 
     /**
      * Set the value property: An array of policy set definitions.
-     *
+     * 
      * @param value the value value to set.
      * @return the PolicySetDefinitionListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class PolicySetDefinitionListResult {
 
     /**
      * Get the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class PolicySetDefinitionListResult {
 
     /**
      * Set the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the PolicySetDefinitionListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class PolicySetDefinitionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,8 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class AlertsListResourceGroupLevelByRegionSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/
-     * GetAlertsResourceGroupLocation_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/GetAlertsResourceGroupLocation_example.json
      */
     /**
      * Sample code: Get security alerts on a resource group from a security data location.

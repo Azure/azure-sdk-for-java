@@ -110,8 +110,9 @@ public final class ApplicationGatewayFirewallExclusion {
      */
     public void validate() {
         if (matchVariable() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property matchVariable in model ApplicationGatewayFirewallExclusion"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property matchVariable in model ApplicationGatewayFirewallExclusion"));
         }
     }
 

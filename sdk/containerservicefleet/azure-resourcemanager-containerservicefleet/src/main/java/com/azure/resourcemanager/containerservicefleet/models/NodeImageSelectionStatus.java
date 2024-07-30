@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The node image upgrade specs for the update run. */
+/**
+ * The node image upgrade specs for the update run.
+ */
 @Immutable
 public final class NodeImageSelectionStatus {
     /*
@@ -17,13 +19,15 @@ public final class NodeImageSelectionStatus {
     @JsonProperty(value = "selectedNodeImageVersions", access = JsonProperty.Access.WRITE_ONLY)
     private List<NodeImageVersion> selectedNodeImageVersions;
 
-    /** Creates an instance of NodeImageSelectionStatus class. */
+    /**
+     * Creates an instance of NodeImageSelectionStatus class.
+     */
     public NodeImageSelectionStatus() {
     }
 
     /**
      * Get the selectedNodeImageVersions property: The image versions to upgrade the nodes to.
-     *
+     * 
      * @return the selectedNodeImageVersions value.
      */
     public List<NodeImageVersion> selectedNodeImageVersions() {
@@ -32,7 +36,7 @@ public final class NodeImageSelectionStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

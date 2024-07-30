@@ -3,6 +3,8 @@
 
 package com.azure.resourcemanager.resources.fluentcore.dag;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Executable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.ExecutableImpl;
@@ -14,6 +16,8 @@ import java.time.Duration;
  * Implementation for IBreadSlice.
  */
 public class BreadSliceImpl extends ExecutableImpl<IBreadSlice> implements IBreadSlice {
+    private static final ClientLogger LOGGER = new ClientLogger(BreadSliceImpl.class);
+
     private final String name;
 
     public BreadSliceImpl(String name) {
@@ -23,7 +27,7 @@ public class BreadSliceImpl extends ExecutableImpl<IBreadSlice> implements IBrea
 
     @Override
     public Mono<IBreadSlice> executeWorkAsync() {
-        System.out.println("Bread(" + this.name + ")::executeWorkAsync() [Getting slice from store]");
+        LOGGER.log(LogLevel.VERBOSE, () -> "Bread(" + this.name + ")::executeWorkAsync() [Getting slice from store]");
         return Mono.just(this)
                 .delayElement(Duration.ofMillis(250))
                 .map(breadSlice -> breadSlice);

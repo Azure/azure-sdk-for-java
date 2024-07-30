@@ -6,6 +6,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
@@ -13,10 +14,21 @@ import java.time.OffsetDateTime;
 /**
  * Azure File Share workload specific backup copy.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "objectType",
+    defaultImpl = AzureFileShareRecoveryPoint.class,
+    visible = true)
 @JsonTypeName("AzureFileShareRecoveryPoint")
 @Fluent
 public final class AzureFileShareRecoveryPoint extends RecoveryPoint {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "objectType", required = true)
+    private String objectType = "AzureFileShareRecoveryPoint";
+
     /*
      * Type of the backup copy. Specifies whether it is a crash consistent backup or app consistent.
      */
@@ -54,8 +66,19 @@ public final class AzureFileShareRecoveryPoint extends RecoveryPoint {
     }
 
     /**
-     * Get the recoveryPointType property: Type of the backup copy. Specifies whether it is a crash consistent backup
-     * or app consistent.
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
+     * Get the recoveryPointType property: Type of the backup copy. Specifies whether it is a crash consistent backup or
+     * app consistent.
      * 
      * @return the recoveryPointType value.
      */
@@ -64,8 +87,8 @@ public final class AzureFileShareRecoveryPoint extends RecoveryPoint {
     }
 
     /**
-     * Set the recoveryPointType property: Type of the backup copy. Specifies whether it is a crash consistent backup
-     * or app consistent.
+     * Set the recoveryPointType property: Type of the backup copy. Specifies whether it is a crash consistent backup or
+     * app consistent.
      * 
      * @param recoveryPointType the recoveryPointType value to set.
      * @return the AzureFileShareRecoveryPoint object itself.

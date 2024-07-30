@@ -15,7 +15,7 @@ import java.util.Arrays;
 public final class NetworkManagersCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkManagerPut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkManagerPut.json
      */
     /**
      * Sample code: Put Network Manager.
@@ -23,13 +23,16 @@ public final class NetworkManagersCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void putNetworkManager(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getNetworkManagers().createOrUpdateWithResponse("rg1",
-            "TestNetworkManager",
-            new NetworkManagerInner().withDescription("My Test Network Manager")
-                .withNetworkManagerScopes(new NetworkManagerPropertiesNetworkManagerScopes()
-                    .withManagementGroups(Arrays.asList("/Microsoft.Management/testmg"))
-                    .withSubscriptions(Arrays.asList("/subscriptions/00000000-0000-0000-0000-000000000000")))
-                .withNetworkManagerScopeAccesses(Arrays.asList(ConfigurationType.CONNECTIVITY)),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getNetworkManagers()
+            .createOrUpdateWithResponse("rg1", "TestNetworkManager",
+                new NetworkManagerInner().withDescription("My Test Network Manager")
+                    .withNetworkManagerScopes(new NetworkManagerPropertiesNetworkManagerScopes()
+                        .withManagementGroups(Arrays.asList("/Microsoft.Management/testmg"))
+                        .withSubscriptions(Arrays.asList("/subscriptions/00000000-0000-0000-0000-000000000000")))
+                    .withNetworkManagerScopeAccesses(Arrays.asList(ConfigurationType.CONNECTIVITY)),
+                com.azure.core.util.Context.NONE);
     }
 }

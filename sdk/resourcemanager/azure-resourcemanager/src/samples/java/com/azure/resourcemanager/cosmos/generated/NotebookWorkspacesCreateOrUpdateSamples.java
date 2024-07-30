@@ -12,8 +12,7 @@ import com.azure.resourcemanager.cosmos.models.NotebookWorkspaceName;
  */
 public final class NotebookWorkspacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
-     * CosmosDBNotebookWorkspaceCreate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBNotebookWorkspaceCreate.json
      */
     /**
      * Sample code: CosmosDBNotebookWorkspaceCreate.
@@ -21,8 +20,11 @@ public final class NotebookWorkspacesCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBNotebookWorkspaceCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getNotebookWorkspaces().createOrUpdate("rg1", "ddb1",
-            NotebookWorkspaceName.DEFAULT, new NotebookWorkspaceCreateUpdateParameters(),
-            com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getNotebookWorkspaces()
+            .createOrUpdate("rg1", "ddb1", NotebookWorkspaceName.DEFAULT, new NotebookWorkspaceCreateUpdateParameters(),
+                com.azure.core.util.Context.NONE);
     }
 }

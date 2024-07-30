@@ -159,24 +159,24 @@ public final class HubRoute {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property name in model HubRoute"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model HubRoute"));
         }
         if (destinationType() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property destinationType in model HubRoute"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property destinationType in model HubRoute"));
         }
         if (destinations() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property destinations in model HubRoute"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property destinations in model HubRoute"));
         }
         if (nextHopType() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property nextHopType in model HubRoute"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property nextHopType in model HubRoute"));
         }
         if (nextHop() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property nextHop in model HubRoute"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property nextHop in model HubRoute"));
         }
     }
 

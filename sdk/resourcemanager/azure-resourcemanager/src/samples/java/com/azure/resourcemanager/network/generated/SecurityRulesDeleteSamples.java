@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class SecurityRulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * NetworkSecurityGroupRuleDelete.json
      */
     /**
@@ -19,7 +19,10 @@ public final class SecurityRulesDeleteSamples {
      */
     public static void
         deleteNetworkSecurityRuleFromNetworkSecurityGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getSecurityRules().delete("rg1", "testnsg", "rule1",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getSecurityRules()
+            .delete("rg1", "testnsg", "rule1", com.azure.core.util.Context.NONE);
     }
 }

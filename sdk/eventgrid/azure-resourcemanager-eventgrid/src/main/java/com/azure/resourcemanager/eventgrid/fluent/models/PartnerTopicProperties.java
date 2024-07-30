@@ -55,8 +55,7 @@ public final class PartnerTopicProperties {
     private PartnerTopicActivationState activationState;
 
     /*
-     * Friendly description about the topic. This can be set by the publisher/partner to show custom description for
-     * the customer partner topic.
+     * Friendly description about the topic. This can be set by the publisher/partner to show custom description for the customer partner topic.
      * This will be helpful to remove any ambiguity of the origin of creation of the partner topic for the customer.
      */
     @JsonProperty(value = "partnerTopicFriendlyDescription")
@@ -212,8 +211,8 @@ public final class PartnerTopicProperties {
     }
 
     /**
-     * Get the messageForActivation property: Context or helpful message that can be used during the approval process
-     * by the subscriber.
+     * Get the messageForActivation property: Context or helpful message that can be used during the approval process by
+     * the subscriber.
      * 
      * @return the messageForActivation value.
      */
@@ -222,8 +221,8 @@ public final class PartnerTopicProperties {
     }
 
     /**
-     * Set the messageForActivation property: Context or helpful message that can be used during the approval process
-     * by the subscriber.
+     * Set the messageForActivation property: Context or helpful message that can be used during the approval process by
+     * the subscriber.
      * 
      * @param messageForActivation the messageForActivation value to set.
      * @return the PartnerTopicProperties object itself.

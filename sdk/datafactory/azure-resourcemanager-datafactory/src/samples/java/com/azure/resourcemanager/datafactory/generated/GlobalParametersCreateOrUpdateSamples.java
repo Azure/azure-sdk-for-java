@@ -22,8 +22,11 @@ public final class GlobalParametersCreateOrUpdateSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void globalParametersCreate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.globalParameters().define("default").withExistingFactory("exampleResourceGroup", "exampleFactoryName")
-            .withProperties((Map<String, GlobalParameterSpecification>) null).create();
+        manager.globalParameters()
+            .define("default")
+            .withExistingFactory("exampleResourceGroup", "exampleFactoryName")
+            .withProperties((Map<String, GlobalParameterSpecification>) null)
+            .create();
     }
 
     /*

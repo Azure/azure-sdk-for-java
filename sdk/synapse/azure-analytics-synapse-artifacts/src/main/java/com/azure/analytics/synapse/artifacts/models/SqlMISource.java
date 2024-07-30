@@ -5,67 +5,72 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * A copy activity Azure SQL Managed Instance source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("SqlMISource")
 @Fluent
 public final class SqlMISource extends TabularSource {
     /*
+     * Copy source type.
+     */
+    private String type = "SqlMISource";
+
+    /*
      * SQL reader query. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "sqlReaderQuery")
     private Object sqlReaderQuery;
 
     /*
-     * Name of the stored procedure for a Azure SQL Managed Instance source. This cannot be used at the same time as
-     * SqlReaderQuery. Type: string (or Expression with resultType string).
+     * Name of the stored procedure for a Azure SQL Managed Instance source. This cannot be used at the same time as SqlReaderQuery. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "sqlReaderStoredProcedureName")
     private Object sqlReaderStoredProcedureName;
 
     /*
      * Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}".
      */
-    @JsonProperty(value = "storedProcedureParameters")
     private Object storedProcedureParameters;
 
     /*
-     * Specifies the transaction locking behavior for the SQL source. Allowed values:
-     * ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The default value is ReadCommitted. Type:
-     * string (or Expression with resultType string).
+     * Specifies the transaction locking behavior for the SQL source. Allowed values: ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The default value is ReadCommitted. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "isolationLevel")
     private Object isolationLevel;
 
     /*
      * Which additional types to produce.
      */
-    @JsonProperty(value = "produceAdditionalTypes")
     private Object produceAdditionalTypes;
 
     /*
-     * The partition mechanism that will be used for Sql read in parallel. Possible values include: "None",
-     * "PhysicalPartitionsOfTable", "DynamicRange".
+     * The partition mechanism that will be used for Sql read in parallel. Possible values include: "None", "PhysicalPartitionsOfTable", "DynamicRange".
      */
-    @JsonProperty(value = "partitionOption")
     private Object partitionOption;
 
     /*
      * The settings that will be leveraged for Sql source partitioning.
      */
-    @JsonProperty(value = "partitionSettings")
     private SqlPartitionSettings partitionSettings;
 
     /**
      * Creates an instance of SqlMISource class.
      */
     public SqlMISource() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -263,5 +268,88 @@ public final class SqlMISource extends TabularSource {
     public SqlMISource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        jsonWriter.writeUntypedField("queryTimeout", getQueryTimeout());
+        jsonWriter.writeUntypedField("additionalColumns", getAdditionalColumns());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("sqlReaderQuery", this.sqlReaderQuery);
+        jsonWriter.writeUntypedField("sqlReaderStoredProcedureName", this.sqlReaderStoredProcedureName);
+        jsonWriter.writeUntypedField("storedProcedureParameters", this.storedProcedureParameters);
+        jsonWriter.writeUntypedField("isolationLevel", this.isolationLevel);
+        jsonWriter.writeUntypedField("produceAdditionalTypes", this.produceAdditionalTypes);
+        jsonWriter.writeUntypedField("partitionOption", this.partitionOption);
+        jsonWriter.writeJsonField("partitionSettings", this.partitionSettings);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlMISource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlMISource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SqlMISource.
+     */
+    public static SqlMISource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlMISource deserializedSqlMISource = new SqlMISource();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceRetryCount".equals(fieldName)) {
+                    deserializedSqlMISource.setSourceRetryCount(reader.readUntyped());
+                } else if ("sourceRetryWait".equals(fieldName)) {
+                    deserializedSqlMISource.setSourceRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedSqlMISource.setMaxConcurrentConnections(reader.readUntyped());
+                } else if ("queryTimeout".equals(fieldName)) {
+                    deserializedSqlMISource.setQueryTimeout(reader.readUntyped());
+                } else if ("additionalColumns".equals(fieldName)) {
+                    deserializedSqlMISource.setAdditionalColumns(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedSqlMISource.type = reader.getString();
+                } else if ("sqlReaderQuery".equals(fieldName)) {
+                    deserializedSqlMISource.sqlReaderQuery = reader.readUntyped();
+                } else if ("sqlReaderStoredProcedureName".equals(fieldName)) {
+                    deserializedSqlMISource.sqlReaderStoredProcedureName = reader.readUntyped();
+                } else if ("storedProcedureParameters".equals(fieldName)) {
+                    deserializedSqlMISource.storedProcedureParameters = reader.readUntyped();
+                } else if ("isolationLevel".equals(fieldName)) {
+                    deserializedSqlMISource.isolationLevel = reader.readUntyped();
+                } else if ("produceAdditionalTypes".equals(fieldName)) {
+                    deserializedSqlMISource.produceAdditionalTypes = reader.readUntyped();
+                } else if ("partitionOption".equals(fieldName)) {
+                    deserializedSqlMISource.partitionOption = reader.readUntyped();
+                } else if ("partitionSettings".equals(fieldName)) {
+                    deserializedSqlMISource.partitionSettings = SqlPartitionSettings.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSqlMISource.setAdditionalProperties(additionalProperties);
+
+            return deserializedSqlMISource;
+        });
     }
 }

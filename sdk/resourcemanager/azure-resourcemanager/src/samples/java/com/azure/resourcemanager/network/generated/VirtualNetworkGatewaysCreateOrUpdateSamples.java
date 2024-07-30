@@ -30,7 +30,7 @@ import java.util.Arrays;
 public final class VirtualNetworkGatewaysCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkGatewayUpdate.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualNetworkGatewayUpdate.
      * json
      */
     /**
@@ -39,47 +39,57 @@ public final class VirtualNetworkGatewaysCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateVirtualNetworkGateway(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualNetworkGateways().createOrUpdate("rg1", "vpngw",
-            new VirtualNetworkGatewayInner().withLocation("centralus")
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworkGateways()
+            .createOrUpdate("rg1", "vpngw", new VirtualNetworkGatewayInner().withLocation("centralus")
                 .withIpConfigurations(Arrays.asList(new VirtualNetworkGatewayIpConfigurationInner()
-                    .withName("gwipconfig1").withPrivateIpAllocationMethod(IpAllocationMethod.DYNAMIC)
+                    .withName("gwipconfig1")
+                    .withPrivateIpAllocationMethod(IpAllocationMethod.DYNAMIC)
                     .withSubnet(new SubResource().withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/GatewaySubnet"))
                     .withPublicIpAddress(new SubResource().withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/gwpip"))))
-                .withGatewayType(VirtualNetworkGatewayType.VPN).withVpnType(VpnType.ROUTE_BASED).withEnableBgp(false)
-                .withActive(false).withDisableIpSecReplayProtection(false)
+                .withGatewayType(VirtualNetworkGatewayType.VPN)
+                .withVpnType(VpnType.ROUTE_BASED)
+                .withEnableBgp(false)
+                .withActive(false)
+                .withDisableIpSecReplayProtection(false)
                 .withSku(new VirtualNetworkGatewaySku().withName(VirtualNetworkGatewaySkuName.VPN_GW1)
                     .withTier(VirtualNetworkGatewaySkuTier.VPN_GW1))
                 .withVpnClientConfiguration(new VpnClientConfiguration().withVpnClientRootCertificates(Arrays.asList())
                     .withVpnClientRevokedCertificates(Arrays.asList())
                     .withVpnClientProtocols(Arrays.asList(VpnClientProtocol.OPEN_VPN))
                     .withRadiusServers(Arrays.asList(new RadiusServer().withRadiusServerAddress("10.2.0.0")
-                        .withRadiusServerScore(20L).withRadiusServerSecret("fakeTokenPlaceholder"))))
+                        .withRadiusServerScore(20L)
+                        .withRadiusServerSecret("fakeTokenPlaceholder"))))
                 .withBgpSettings(new BgpSettings().withAsn(65515L).withBgpPeeringAddress("10.0.1.30").withPeerWeight(0))
                 .withCustomRoutes(new AddressSpace().withAddressPrefixes(Arrays.asList("101.168.0.6/32")))
                 .withEnableDnsForwarding(true)
                 .withNatRules(Arrays.asList(new VirtualNetworkGatewayNatRuleInner().withId(
                     "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw/natRules/natRule1")
-                    .withName("natRule1").withTypePropertiesType(VpnNatRuleType.STATIC)
+                    .withName("natRule1")
+                    .withTypePropertiesType(VpnNatRuleType.STATIC)
                     .withMode(VpnNatRuleMode.EGRESS_SNAT)
                     .withInternalMappings(Arrays.asList(new VpnNatRuleMapping().withAddressSpace("10.10.0.0/24")))
                     .withExternalMappings(Arrays.asList(new VpnNatRuleMapping().withAddressSpace("50.0.0.0/24")))
                     .withIpConfigurationId(""),
                     new VirtualNetworkGatewayNatRuleInner().withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw/natRules/natRule2")
-                        .withName("natRule2").withTypePropertiesType(VpnNatRuleType.STATIC)
+                        .withName("natRule2")
+                        .withTypePropertiesType(VpnNatRuleType.STATIC)
                         .withMode(VpnNatRuleMode.INGRESS_SNAT)
                         .withInternalMappings(Arrays.asList(new VpnNatRuleMapping().withAddressSpace("20.10.0.0/24")))
                         .withExternalMappings(Arrays.asList(new VpnNatRuleMapping().withAddressSpace("30.0.0.0/24")))
                         .withIpConfigurationId("")))
-                .withEnableBgpRouteTranslationForNat(false).withAllowVirtualWanTraffic(false)
-                .withAllowRemoteVnetTraffic(false),
-            com.azure.core.util.Context.NONE);
+                .withEnableBgpRouteTranslationForNat(false)
+                .withAllowVirtualWanTraffic(false)
+                .withAllowRemoteVnetTraffic(false), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * VirtualNetworkScalableGatewayUpdate.json
      */
     /**
@@ -88,34 +98,43 @@ public final class VirtualNetworkGatewaysCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateVirtualNetworkScalableGateway(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualNetworkGateways().createOrUpdate("rg1", "ergw",
-            new VirtualNetworkGatewayInner().withLocation("centralus")
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworkGateways()
+            .createOrUpdate("rg1", "ergw", new VirtualNetworkGatewayInner().withLocation("centralus")
                 .withIpConfigurations(Arrays.asList(new VirtualNetworkGatewayIpConfigurationInner()
-                    .withName("gwipconfig1").withPrivateIpAllocationMethod(IpAllocationMethod.STATIC)
+                    .withName("gwipconfig1")
+                    .withPrivateIpAllocationMethod(IpAllocationMethod.STATIC)
                     .withSubnet(new SubResource().withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/GatewaySubnet"))
                     .withPublicIpAddress(new SubResource().withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/gwpip"))))
-                .withGatewayType(VirtualNetworkGatewayType.EXPRESS_ROUTE).withVpnType(VpnType.POLICY_BASED)
-                .withEnableBgp(false).withActive(false).withDisableIpSecReplayProtection(false)
+                .withGatewayType(VirtualNetworkGatewayType.EXPRESS_ROUTE)
+                .withVpnType(VpnType.POLICY_BASED)
+                .withEnableBgp(false)
+                .withActive(false)
+                .withDisableIpSecReplayProtection(false)
                 .withSku(new VirtualNetworkGatewaySku().withName(VirtualNetworkGatewaySkuName.ER_GW_SCALE)
                     .withTier(VirtualNetworkGatewaySkuTier.ER_GW_SCALE))
                 .withNatRules(Arrays.asList(new VirtualNetworkGatewayNatRuleInner().withId(
                     "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/ergw/natRules/natRule1")
-                    .withName("natRule1").withTypePropertiesType(VpnNatRuleType.STATIC)
+                    .withName("natRule1")
+                    .withTypePropertiesType(VpnNatRuleType.STATIC)
                     .withMode(VpnNatRuleMode.EGRESS_SNAT)
                     .withInternalMappings(Arrays.asList(new VpnNatRuleMapping().withAddressSpace("10.10.0.0/24")))
                     .withExternalMappings(Arrays.asList(new VpnNatRuleMapping().withAddressSpace("50.0.0.0/24")))
                     .withIpConfigurationId(""),
                     new VirtualNetworkGatewayNatRuleInner().withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/ergw/natRules/natRule2")
-                        .withName("natRule2").withTypePropertiesType(VpnNatRuleType.STATIC)
+                        .withName("natRule2")
+                        .withTypePropertiesType(VpnNatRuleType.STATIC)
                         .withMode(VpnNatRuleMode.INGRESS_SNAT)
                         .withInternalMappings(Arrays.asList(new VpnNatRuleMapping().withAddressSpace("20.10.0.0/24")))
                         .withExternalMappings(Arrays.asList(new VpnNatRuleMapping().withAddressSpace("30.0.0.0/24")))
                         .withIpConfigurationId("")))
-                .withEnableBgpRouteTranslationForNat(false).withAllowVirtualWanTraffic(false)
-                .withAllowRemoteVnetTraffic(false),
-            com.azure.core.util.Context.NONE);
+                .withEnableBgpRouteTranslationForNat(false)
+                .withAllowVirtualWanTraffic(false)
+                .withAllowRemoteVnetTraffic(false), com.azure.core.util.Context.NONE);
     }
 }

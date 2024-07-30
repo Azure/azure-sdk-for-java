@@ -49,8 +49,8 @@ public final class SalesforceMarketingCloudLinkedServiceTypeProperties {
     private Object useHostVerification;
 
     /*
-     * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
-     * Type: boolean (or Expression with resultType boolean).
+     * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true. Type:
+     * boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "usePeerVerification")
     private Object usePeerVerification;
@@ -91,8 +91,8 @@ public final class SalesforceMarketingCloudLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the clientId property: The client ID associated with the Salesforce Marketing Cloud application. Type:
-     * string (or Expression with resultType string).
+     * Get the clientId property: The client ID associated with the Salesforce Marketing Cloud application. Type: string
+     * (or Expression with resultType string).
      * 
      * @return the clientId value.
      */
@@ -101,8 +101,8 @@ public final class SalesforceMarketingCloudLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the clientId property: The client ID associated with the Salesforce Marketing Cloud application. Type:
-     * string (or Expression with resultType string).
+     * Set the clientId property: The client ID associated with the Salesforce Marketing Cloud application. Type: string
+     * (or Expression with resultType string).
      * 
      * @param clientId the clientId value to set.
      * @return the SalesforceMarketingCloudLinkedServiceTypeProperties object itself.
@@ -181,8 +181,8 @@ public final class SalesforceMarketingCloudLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
+     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
+     * SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
      * 
      * @return the usePeerVerification value.
      */
@@ -191,8 +191,8 @@ public final class SalesforceMarketingCloudLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
+     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
+     * SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
      * 
      * @param usePeerVerification the usePeerVerification value to set.
      * @return the SalesforceMarketingCloudLinkedServiceTypeProperties object itself.
@@ -203,8 +203,8 @@ public final class SalesforceMarketingCloudLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -213,8 +213,8 @@ public final class SalesforceMarketingCloudLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SalesforceMarketingCloudLinkedServiceTypeProperties object itself.

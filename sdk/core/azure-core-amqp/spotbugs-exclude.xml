@@ -96,7 +96,10 @@
 
   <Match>
     <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT" />
-    <Class name="com.azure.core.amqp.implementation.ReactorExecutor" />
+    <Or>
+      <Class name="com.azure.core.amqp.implementation.ReactorExecutor" />
+      <Class name="com.azure.core.amqp.implementation.WindowedSubscriber$WindowWork" />
+    </Or>
   </Match>
 
   <Match>

@@ -11,14 +11,14 @@ public final class AzureMySqlTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureMySqlTableDatasetTypeProperties model
-            = BinaryData.fromString("{\"tableName\":\"datawfsaa\",\"table\":\"datafgb\"}")
+            = BinaryData.fromString("{\"tableName\":\"datanpfydrfb\",\"table\":\"datanyxbyxmk\"}")
                 .toObject(AzureMySqlTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureMySqlTableDatasetTypeProperties model
-            = new AzureMySqlTableDatasetTypeProperties().withTableName("datawfsaa").withTable("datafgb");
+            = new AzureMySqlTableDatasetTypeProperties().withTableName("datanpfydrfb").withTable("datanyxbyxmk");
         model = BinaryData.fromObject(model).toObject(AzureMySqlTableDatasetTypeProperties.class);
     }
 }

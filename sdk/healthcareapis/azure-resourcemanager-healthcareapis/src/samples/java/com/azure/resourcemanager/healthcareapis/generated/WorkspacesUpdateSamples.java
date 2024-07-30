@@ -13,9 +13,7 @@ import java.util.Map;
  */
 public final class WorkspacesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/workspaces/
-     * Workspaces_Patch.json
+     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/workspaces/Workspaces_Patch.json
      */
     /**
      * Sample code: Update a workspace.
@@ -24,7 +22,8 @@ public final class WorkspacesUpdateSamples {
      */
     public static void updateAWorkspace(com.azure.resourcemanager.healthcareapis.HealthcareApisManager manager) {
         Workspace resource = manager.workspaces()
-            .getByResourceGroupWithResponse("testRG", "workspace1", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("testRG", "workspace1", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tagKey", "fakeTokenPlaceholder")).apply();
     }
 

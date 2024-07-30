@@ -13,7 +13,7 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayProtocol;
  */
 public final class ApplicationGatewaysBackendHealthOnDemandSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * ApplicationGatewayBackendHealthTest.json
      */
     /**
@@ -22,13 +22,19 @@ public final class ApplicationGatewaysBackendHealthOnDemandSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void testBackendHealth(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getApplicationGateways().backendHealthOnDemand("rg1", "appgw",
-            new ApplicationGatewayOnDemandProbe().withProtocol(ApplicationGatewayProtocol.HTTP).withPath("/")
-                .withTimeout(30).withPickHostnameFromBackendHttpSettings(true)
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getApplicationGateways()
+            .backendHealthOnDemand("rg1", "appgw", new ApplicationGatewayOnDemandProbe()
+                .withProtocol(ApplicationGatewayProtocol.HTTP)
+                .withPath("/")
+                .withTimeout(30)
+                .withPickHostnameFromBackendHttpSettings(true)
                 .withBackendAddressPool(new SubResource().withId(
                     "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendaddressPools/MFAnalyticsPool"))
                 .withBackendHttpSettings(new SubResource().withId(
                     "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendHttpSettingsCollection/MFPoolSettings")),
-            null, com.azure.core.util.Context.NONE);
+                null, com.azure.core.util.Context.NONE);
     }
 }

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The properties of a change. */
+/**
+ * The properties of a change.
+ */
 @Fluent
 public final class ChangeProperties {
     /*
@@ -43,13 +45,15 @@ public final class ChangeProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ChangeBase> changes;
 
-    /** Creates an instance of ChangeProperties class. */
+    /**
+     * Creates an instance of ChangeProperties class.
+     */
     public ChangeProperties() {
     }
 
     /**
      * Get the targetResourceId property: The fully qualified ID of the target resource that was changed.
-     *
+     * 
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -58,7 +62,7 @@ public final class ChangeProperties {
 
     /**
      * Get the targetResourceType property: The namespace and type of the resource.
-     *
+     * 
      * @return the targetResourceType value.
      */
     public String targetResourceType() {
@@ -67,7 +71,7 @@ public final class ChangeProperties {
 
     /**
      * Get the changeType property: The type of change that was captured in the resource.
-     *
+     * 
      * @return the changeType value.
      */
     public ResourceChangeType changeType() {
@@ -76,7 +80,7 @@ public final class ChangeProperties {
 
     /**
      * Get the changeAttributes property: Details about the change resource.
-     *
+     * 
      * @return the changeAttributes value.
      */
     public ChangeAttributes changeAttributes() {
@@ -85,7 +89,7 @@ public final class ChangeProperties {
 
     /**
      * Set the changeAttributes property: Details about the change resource.
-     *
+     * 
      * @param changeAttributes the changeAttributes value to set.
      * @return the ChangeProperties object itself.
      */
@@ -96,7 +100,7 @@ public final class ChangeProperties {
 
     /**
      * Get the changes property: A dictionary with changed property name as a key and the change details as the value.
-     *
+     * 
      * @return the changes value.
      */
     public Map<String, ChangeBase> changes() {
@@ -105,7 +109,7 @@ public final class ChangeProperties {
 
     /**
      * Set the changes property: A dictionary with changed property name as a key and the change details as the value.
-     *
+     * 
      * @param changes the changes value to set.
      * @return the ChangeProperties object itself.
      */
@@ -116,7 +120,7 @@ public final class ChangeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -124,14 +128,11 @@ public final class ChangeProperties {
             changeAttributes().validate();
         }
         if (changes() != null) {
-            changes()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            changes().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

@@ -5,28 +5,31 @@
 package com.azure.monitor.query.implementation.metrics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.monitor.query.implementation.metrics.implementation.CoreToCodegenBridgeUtils;
+import java.io.IOException;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * The response to a metrics query.
  */
 @Fluent
-public final class MetricsResponse {
+public final class MetricsResponse implements JsonSerializable<MetricsResponse> {
     /*
      * The integer value representing the relative cost of the query.
      */
-    @JsonProperty(value = "cost")
     private Integer cost;
 
     /*
      * The timespan for which the data was retrieved. Its value consists of two datetimes concatenated, separated by
      * '/'. This may be adjusted in the future and returned back from what was originally requested.
      */
-    @JsonProperty(value = "timespan", required = true)
-    private String timespan;
+    private final String timespan;
 
     /*
      * The interval (window size) for which the metric data was returned in ISO 8601 duration format with a special
@@ -35,26 +38,22 @@ public final class MetricsResponse {
      * This may be adjusted and different from what was originally requested if AutoAdjustTimegrain=true is specified.
      * This is not present if a metadata request was made.
      */
-    @JsonProperty(value = "interval")
     private Duration interval;
 
     /*
      * The namespace of the metrics being queried
      */
-    @JsonProperty(value = "namespace")
     private String namespace;
 
     /*
      * The region of the resource being queried for metrics.
      */
-    @JsonProperty(value = "resourceregion")
     private String resourceregion;
 
     /*
      * The value of the collection.
      */
-    @JsonProperty(value = "value", required = true)
-    private List<Metric> value;
+    private final List<Metric> value;
 
     /**
      * Creates an instance of MetricsResponse class.
@@ -62,9 +61,7 @@ public final class MetricsResponse {
      * @param timespan the timespan value to set.
      * @param value the value value to set.
      */
-    @JsonCreator
-    public MetricsResponse(@JsonProperty(value = "timespan", required = true) String timespan,
-        @JsonProperty(value = "value", required = true) List<Metric> value) {
+    public MetricsResponse(String timespan, List<Metric> value) {
         this.timespan = timespan;
         this.value = value;
     }
@@ -175,5 +172,80 @@ public final class MetricsResponse {
      */
     public List<Metric> getValue() {
         return this.value;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("timespan", this.timespan);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("cost", this.cost);
+        jsonWriter.writeStringField("interval", CoreToCodegenBridgeUtils.durationToStringWithDays(this.interval));
+        jsonWriter.writeStringField("namespace", this.namespace);
+        jsonWriter.writeStringField("resourceregion", this.resourceregion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetricsResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricsResponse if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MetricsResponse.
+     */
+    public static MetricsResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean timespanFound = false;
+            String timespan = null;
+            boolean valueFound = false;
+            List<Metric> value = null;
+            Integer cost = null;
+            Duration interval = null;
+            String namespace = null;
+            String resourceregion = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timespan".equals(fieldName)) {
+                    timespan = reader.getString();
+                    timespanFound = true;
+                } else if ("value".equals(fieldName)) {
+                    value = reader.readArray(reader1 -> Metric.fromJson(reader1));
+                    valueFound = true;
+                } else if ("cost".equals(fieldName)) {
+                    cost = reader.getNullable(JsonReader::getInt);
+                } else if ("interval".equals(fieldName)) {
+                    interval = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("namespace".equals(fieldName)) {
+                    namespace = reader.getString();
+                } else if ("resourceregion".equals(fieldName)) {
+                    resourceregion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (timespanFound && valueFound) {
+                MetricsResponse deserializedMetricsResponse = new MetricsResponse(timespan, value);
+                deserializedMetricsResponse.cost = cost;
+                deserializedMetricsResponse.interval = interval;
+                deserializedMetricsResponse.namespace = namespace;
+                deserializedMetricsResponse.resourceregion = resourceregion;
+
+                return deserializedMetricsResponse;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!timespanFound) {
+                missingProperties.add("timespan");
+            }
+            if (!valueFound) {
+                missingProperties.add("value");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

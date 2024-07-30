@@ -21,7 +21,7 @@ import java.util.Arrays;
 public final class VirtualNetworksCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkCreateSubnet.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualNetworkCreateSubnet.
      * json
      */
     /**
@@ -30,15 +30,19 @@ public final class VirtualNetworksCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createVirtualNetworkWithSubnet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualNetworks().createOrUpdate("rg1", "test-vnet",
-            new VirtualNetworkInner().withLocation("eastus")
-                .withAddressSpace(new AddressSpace().withAddressPrefixes(Arrays.asList("10.0.0.0/16")))
-                .withSubnets(Arrays.asList(new SubnetInner().withName("test-1").withAddressPrefix("10.0.0.0/24"))),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworks()
+            .createOrUpdate("rg1", "test-vnet",
+                new VirtualNetworkInner().withLocation("eastus")
+                    .withAddressSpace(new AddressSpace().withAddressPrefixes(Arrays.asList("10.0.0.0/16")))
+                    .withSubnets(Arrays.asList(new SubnetInner().withName("test-1").withAddressPrefix("10.0.0.0/24"))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * VirtualNetworkCreateWithBgpCommunities.json
      */
     /**
@@ -47,16 +51,20 @@ public final class VirtualNetworksCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createVirtualNetworkWithBgpCommunities(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualNetworks().createOrUpdate("rg1", "test-vnet",
-            new VirtualNetworkInner().withLocation("eastus")
-                .withAddressSpace(new AddressSpace().withAddressPrefixes(Arrays.asList("10.0.0.0/16")))
-                .withSubnets(Arrays.asList(new SubnetInner().withName("test-1").withAddressPrefix("10.0.0.0/24")))
-                .withBgpCommunities(new VirtualNetworkBgpCommunities().withVirtualNetworkCommunity("12076:20000")),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworks()
+            .createOrUpdate("rg1", "test-vnet",
+                new VirtualNetworkInner().withLocation("eastus")
+                    .withAddressSpace(new AddressSpace().withAddressPrefixes(Arrays.asList("10.0.0.0/16")))
+                    .withSubnets(Arrays.asList(new SubnetInner().withName("test-1").withAddressPrefix("10.0.0.0/24")))
+                    .withBgpCommunities(new VirtualNetworkBgpCommunities().withVirtualNetworkCommunity("12076:20000")),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * VirtualNetworkCreateSubnetWithAddressPrefixes.json
      */
     /**
@@ -66,16 +74,20 @@ public final class VirtualNetworksCreateOrUpdateSamples {
      */
     public static void
         createVirtualNetworkWithSubnetContainingAddressPrefixes(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualNetworks().createOrUpdate("rg1", "test-vnet",
-            new VirtualNetworkInner().withLocation("eastus")
-                .withAddressSpace(new AddressSpace().withAddressPrefixes(Arrays.asList("10.0.0.0/16")))
-                .withSubnets(Arrays.asList(new SubnetInner().withName("test-2")
-                    .withAddressPrefixes(Arrays.asList("10.0.0.0/28", "10.0.1.0/28")))),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworks()
+            .createOrUpdate("rg1", "test-vnet",
+                new VirtualNetworkInner().withLocation("eastus")
+                    .withAddressSpace(new AddressSpace().withAddressPrefixes(Arrays.asList("10.0.0.0/16")))
+                    .withSubnets(Arrays.asList(new SubnetInner().withName("test-2")
+                        .withAddressPrefixes(Arrays.asList("10.0.0.0/28", "10.0.1.0/28")))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * VirtualNetworkCreateSubnetWithDelegation.json
      */
     /**
@@ -84,17 +96,21 @@ public final class VirtualNetworksCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createVirtualNetworkWithDelegatedSubnets(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualNetworks().createOrUpdate("rg1", "test-vnet",
-            new VirtualNetworkInner().withLocation("westcentralus")
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworks()
+            .createOrUpdate("rg1", "test-vnet", new VirtualNetworkInner().withLocation("westcentralus")
                 .withAddressSpace(new AddressSpace().withAddressPrefixes(Arrays.asList("10.0.0.0/16")))
-                .withSubnets(Arrays.asList(new SubnetInner().withName("test-1").withAddressPrefix("10.0.0.0/24")
+                .withSubnets(Arrays.asList(new SubnetInner().withName("test-1")
+                    .withAddressPrefix("10.0.0.0/24")
                     .withDelegations(Arrays.asList(
                         new Delegation().withName("myDelegation").withServiceName("Microsoft.Sql/managedInstances"))))),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * VirtualNetworkCreateWithEncryption.json
      */
     /**
@@ -103,18 +119,22 @@ public final class VirtualNetworksCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createVirtualNetworkWithEncryption(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualNetworks().createOrUpdate("rg1", "test-vnet",
-            new VirtualNetworkInner().withLocation("eastus")
-                .withAddressSpace(new AddressSpace().withAddressPrefixes(Arrays.asList("10.0.0.0/16")))
-                .withSubnets(Arrays.asList(new SubnetInner().withName("test-1").withAddressPrefix("10.0.0.0/24")))
-                .withEncryption(new VirtualNetworkEncryption().withEnabled(true)
-                    .withEnforcement(VirtualNetworkEncryptionEnforcement.ALLOW_UNENCRYPTED)),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworks()
+            .createOrUpdate("rg1", "test-vnet",
+                new VirtualNetworkInner().withLocation("eastus")
+                    .withAddressSpace(new AddressSpace().withAddressPrefixes(Arrays.asList("10.0.0.0/16")))
+                    .withSubnets(Arrays.asList(new SubnetInner().withName("test-1").withAddressPrefix("10.0.0.0/24")))
+                    .withEncryption(new VirtualNetworkEncryption().withEnabled(true)
+                        .withEnforcement(VirtualNetworkEncryptionEnforcement.ALLOW_UNENCRYPTED)),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkCreate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualNetworkCreate.json
      */
     /**
      * Sample code: Create virtual network.
@@ -122,15 +142,19 @@ public final class VirtualNetworksCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createVirtualNetwork(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualNetworks().createOrUpdate("rg1", "test-vnet",
-            new VirtualNetworkInner().withLocation("eastus")
-                .withAddressSpace(new AddressSpace().withAddressPrefixes(Arrays.asList("10.0.0.0/16")))
-                .withFlowTimeoutInMinutes(10),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworks()
+            .createOrUpdate("rg1", "test-vnet",
+                new VirtualNetworkInner().withLocation("eastus")
+                    .withAddressSpace(new AddressSpace().withAddressPrefixes(Arrays.asList("10.0.0.0/16")))
+                    .withFlowTimeoutInMinutes(10),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * VirtualNetworkCreateServiceEndpointPolicy.json
      */
     /**
@@ -140,19 +164,23 @@ public final class VirtualNetworksCreateOrUpdateSamples {
      */
     public static void createVirtualNetworkWithServiceEndpointsAndServiceEndpointPolicy(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualNetworks().createOrUpdate("vnetTest", "vnet1",
-            new VirtualNetworkInner().withLocation("eastus2euap")
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworks()
+            .createOrUpdate("vnetTest", "vnet1", new VirtualNetworkInner().withLocation("eastus2euap")
                 .withAddressSpace(new AddressSpace().withAddressPrefixes(Arrays.asList("10.0.0.0/16")))
-                .withSubnets(Arrays.asList(new SubnetInner().withName("test-1").withAddressPrefix("10.0.0.0/16")
+                .withSubnets(Arrays.asList(new SubnetInner().withName("test-1")
+                    .withAddressPrefix("10.0.0.0/16")
                     .withServiceEndpoints(
                         Arrays.asList(new ServiceEndpointPropertiesFormat().withService("Microsoft.Storage")))
                     .withServiceEndpointPolicies(Arrays.asList(new ServiceEndpointPolicyInner().withId(
                         "/subscriptions/subid/resourceGroups/vnetTest/providers/Microsoft.Network/serviceEndpointPolicies/ServiceEndpointPolicy1"))))),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * VirtualNetworkCreateServiceEndpoints.json
      */
     /**
@@ -161,12 +189,18 @@ public final class VirtualNetworksCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createVirtualNetworkWithServiceEndpoints(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualNetworks().createOrUpdate("vnetTest", "vnet1",
-            new VirtualNetworkInner().withLocation("eastus")
-                .withAddressSpace(new AddressSpace().withAddressPrefixes(Arrays.asList("10.0.0.0/16")))
-                .withSubnets(Arrays
-                    .asList(new SubnetInner().withName("test-1").withAddressPrefix("10.0.0.0/16").withServiceEndpoints(
-                        Arrays.asList(new ServiceEndpointPropertiesFormat().withService("Microsoft.Storage"))))),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworks()
+            .createOrUpdate("vnetTest", "vnet1",
+                new VirtualNetworkInner().withLocation("eastus")
+                    .withAddressSpace(new AddressSpace().withAddressPrefixes(Arrays.asList("10.0.0.0/16")))
+                    .withSubnets(
+                        Arrays.asList(new SubnetInner().withName("test-1")
+                            .withAddressPrefix("10.0.0.0/16")
+                            .withServiceEndpoints(Arrays
+                                .asList(new ServiceEndpointPropertiesFormat().withService("Microsoft.Storage"))))),
+                com.azure.core.util.Context.NONE);
     }
 }

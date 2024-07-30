@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Base tracked resource type for PATCH updates. */
+/**
+ * Base tracked resource type for PATCH updates.
+ */
 @Fluent
 public class TrackedResourceUpdate {
     /*
@@ -25,13 +27,15 @@ public class TrackedResourceUpdate {
     @JsonProperty(value = "location")
     private String location;
 
-    /** Creates an instance of TrackedResourceUpdate class. */
+    /**
+     * Creates an instance of TrackedResourceUpdate class.
+     */
     public TrackedResourceUpdate() {
     }
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -40,7 +44,7 @@ public class TrackedResourceUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the TrackedResourceUpdate object itself.
      */
@@ -51,7 +55,7 @@ public class TrackedResourceUpdate {
 
     /**
      * Get the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -60,7 +64,7 @@ public class TrackedResourceUpdate {
 
     /**
      * Set the location property: The geo-location where the resource lives.
-     *
+     * 
      * @param location the location value to set.
      * @return the TrackedResourceUpdate object itself.
      */
@@ -71,7 +75,7 @@ public class TrackedResourceUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

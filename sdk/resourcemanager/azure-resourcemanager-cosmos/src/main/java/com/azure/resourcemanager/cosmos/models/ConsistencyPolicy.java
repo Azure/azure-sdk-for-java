@@ -20,17 +20,13 @@ public final class ConsistencyPolicy {
     private DefaultConsistencyLevel defaultConsistencyLevel;
 
     /*
-     * When used with the Bounded Staleness consistency level, this value represents the number of stale requests
-     * tolerated. Accepted range for this value is 1 – 2,147,483,647. Required when defaultConsistencyPolicy is set to
-     * 'BoundedStaleness'.
+     * When used with the Bounded Staleness consistency level, this value represents the number of stale requests tolerated. Accepted range for this value is 1 – 2,147,483,647. Required when defaultConsistencyPolicy is set to 'BoundedStaleness'.
      */
     @JsonProperty(value = "maxStalenessPrefix")
     private Long maxStalenessPrefix;
 
     /*
-     * When used with the Bounded Staleness consistency level, this value represents the time amount of staleness (in
-     * seconds) tolerated. Accepted range for this value is 5 - 86400. Required when defaultConsistencyPolicy is set to
-     * 'BoundedStaleness'.
+     * When used with the Bounded Staleness consistency level, this value represents the time amount of staleness (in seconds) tolerated. Accepted range for this value is 5 - 86400. Required when defaultConsistencyPolicy is set to 'BoundedStaleness'.
      */
     @JsonProperty(value = "maxIntervalInSeconds")
     private Integer maxIntervalInSeconds;
@@ -118,8 +114,9 @@ public final class ConsistencyPolicy {
      */
     public void validate() {
         if (defaultConsistencyLevel() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property defaultConsistencyLevel in model ConsistencyPolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property defaultConsistencyLevel in model ConsistencyPolicy"));
         }
     }
 

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sphere.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Response of the count for elements. */
+/**
+ * Response of the count for elements.
+ */
 @Fluent
 public class CountElementsResponse {
     /*
@@ -16,13 +18,15 @@ public class CountElementsResponse {
     @JsonProperty(value = "value", required = true)
     private int value;
 
-    /** Creates an instance of CountElementsResponse class. */
+    /**
+     * Creates an instance of CountElementsResponse class.
+     */
     public CountElementsResponse() {
     }
 
     /**
      * Get the value property: Number of children resources in parent resource.
-     *
+     * 
      * @return the value value.
      */
     public int value() {
@@ -31,7 +35,7 @@ public class CountElementsResponse {
 
     /**
      * Set the value property: Number of children resources in parent resource.
-     *
+     * 
      * @param value the value value to set.
      * @return the CountElementsResponse object itself.
      */
@@ -42,7 +46,7 @@ public class CountElementsResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -107,14 +107,16 @@ public final class BackupImpl implements Backup, Backup.Definition, Backup.Updat
     }
 
     public Backup create() {
-        this.innerObject = serviceManager.serviceClient().getBackups().create(resourceGroupName, accountName,
-            backupVaultName, backupName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getBackups()
+            .create(resourceGroupName, accountName, backupVaultName, backupName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Backup create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getBackups().create(resourceGroupName, accountName,
-            backupVaultName, backupName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getBackups()
+            .create(resourceGroupName, accountName, backupVaultName, backupName, this.innerModel(), context);
         return this;
     }
 
@@ -130,35 +132,41 @@ public final class BackupImpl implements Backup, Backup.Definition, Backup.Updat
     }
 
     public Backup apply() {
-        this.innerObject = serviceManager.serviceClient().getBackups().update(resourceGroupName, accountName,
-            backupVaultName, backupName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getBackups()
+            .update(resourceGroupName, accountName, backupVaultName, backupName, updateBody, Context.NONE);
         return this;
     }
 
     public Backup apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getBackups().update(resourceGroupName, accountName,
-            backupVaultName, backupName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getBackups()
+            .update(resourceGroupName, accountName, backupVaultName, backupName, updateBody, context);
         return this;
     }
 
     BackupImpl(BackupInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "netAppAccounts");
-        this.backupVaultName = Utils.getValueFromIdByName(innerObject.id(), "backupVaults");
-        this.backupName = Utils.getValueFromIdByName(innerObject.id(), "backups");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "netAppAccounts");
+        this.backupVaultName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "backupVaults");
+        this.backupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "backups");
     }
 
     public Backup refresh() {
-        this.innerObject = serviceManager.serviceClient().getBackups()
-            .getWithResponse(resourceGroupName, accountName, backupVaultName, backupName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBackups()
+            .getWithResponse(resourceGroupName, accountName, backupVaultName, backupName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Backup refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getBackups()
-            .getWithResponse(resourceGroupName, accountName, backupVaultName, backupName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBackups()
+            .getWithResponse(resourceGroupName, accountName, backupVaultName, backupName, context)
+            .getValue();
         return this;
     }
 

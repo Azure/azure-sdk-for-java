@@ -1,14 +1,41 @@
 # Release History
 
-## 2.37.0-beta.1 (Unreleased)
-
-### Features Added
+## 2.41.0-beta.1 (Unreleased)
 
 ### Breaking Changes
 
-### Bugs Fixed
+- Changed type from `List<VirtualMachineExtensionInner>` to `List<String>` of `excludeExtensions` property in `SecurityPostureReference` class.
+
+## 2.40.0 (2024-06-24)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.39.0 (2024-05-24)
+
+### Features Added
+
+- Supported disabling public network access in `Disk` via `disablePublicNetworkAccess()`, for private link feature.
+- Supported disabling public network access in `Snapshot` via `disablePublicNetworkAccess()`, for private link feature.
+
+## 2.38.0 (2024-04-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of ComputeRP to `2024-03-01`.
+
+## 2.37.0 (2024-03-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.36.0 (2024-02-29)
 

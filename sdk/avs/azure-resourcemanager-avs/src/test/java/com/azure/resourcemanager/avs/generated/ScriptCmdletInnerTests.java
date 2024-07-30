@@ -10,11 +10,9 @@ import com.azure.resourcemanager.avs.fluent.models.ScriptCmdletInner;
 public final class ScriptCmdletInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScriptCmdletInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"description\":\"eydbsd\",\"timeout\":\"m\",\"parameters\":[{\"type\":\"Credential\",\"name\":\"vbbxuripl\",\"description\":\"n\",\"visibility\":\"Visible\",\"optional\":\"Optional\"},{\"type\":\"Bool\",\"name\":\"ywrckp\",\"description\":\"lyhpluodpvruud\",\"visibility\":\"Visible\",\"optional\":\"Optional\"},{\"type\":\"SecureString\",\"name\":\"stgktst\",\"description\":\"xeclzedqbcvhzlhp\",\"visibility\":\"Hidden\",\"optional\":\"Optional\"}]},\"id\":\"dlwwqfbumlkxt\",\"name\":\"qjfsmlmbtxhw\",\"type\":\"fwsrtawcoezbrhu\"}")
-                .toObject(ScriptCmdletInner.class);
+        ScriptCmdletInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Failed\",\"description\":\"hos\",\"timeout\":\"dqrhzoymib\",\"audience\":\"Automation\",\"parameters\":[{\"type\":\"Float\",\"name\":\"wfluszdt\",\"description\":\"rkwofyyvoqa\",\"visibility\":\"Hidden\",\"optional\":\"Required\"},{\"type\":\"SecureString\",\"name\":\"giwbwoenwa\",\"description\":\"rtdtkcnqxw\",\"visibility\":\"Hidden\",\"optional\":\"Optional\"},{\"type\":\"Float\",\"name\":\"ujw\",\"description\":\"sipqii\",\"visibility\":\"Visible\",\"optional\":\"Required\"}]},\"id\":\"rpqlp\",\"name\":\"wcciuqgbdbu\",\"type\":\"auvfbtkuwhhmhyk\"}")
+            .toObject(ScriptCmdletInner.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -25,7 +25,8 @@ public final class ActivityDependencyTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ActivityDependency model = new ActivityDependency().withActivity("wcoezbrhub")
-            .withDependencyConditions(Arrays.asList(DependencyCondition.SUCCEEDED)).withAdditionalProperties(mapOf());
+            .withDependencyConditions(Arrays.asList(DependencyCondition.SUCCEEDED))
+            .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(ActivityDependency.class);
         Assertions.assertEquals("wcoezbrhub", model.activity());
         Assertions.assertEquals(DependencyCondition.SUCCEEDED, model.dependencyConditions().get(0));

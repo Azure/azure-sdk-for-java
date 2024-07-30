@@ -11,15 +11,16 @@ public final class OraclePartitionSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OraclePartitionSettings model = BinaryData.fromString(
-            "{\"partitionNames\":\"datapomihgksqwzuosy\",\"partitionColumnName\":\"datalr\",\"partitionUpperBound\":\"datazudfar\",\"partitionLowerBound\":\"datayrdy\"}")
+            "{\"partitionNames\":\"datauknbtxt\",\"partitionColumnName\":\"datautdrrqqajhklttl\",\"partitionUpperBound\":\"datawdrt\",\"partitionLowerBound\":\"datajfty\"}")
             .toObject(OraclePartitionSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OraclePartitionSettings model
-            = new OraclePartitionSettings().withPartitionNames("datapomihgksqwzuosy").withPartitionColumnName("datalr")
-                .withPartitionUpperBound("datazudfar").withPartitionLowerBound("datayrdy");
+        OraclePartitionSettings model = new OraclePartitionSettings().withPartitionNames("datauknbtxt")
+            .withPartitionColumnName("datautdrrqqajhklttl")
+            .withPartitionUpperBound("datawdrt")
+            .withPartitionLowerBound("datajfty");
         model = BinaryData.fromObject(model).toObject(OraclePartitionSettings.class);
     }
 }

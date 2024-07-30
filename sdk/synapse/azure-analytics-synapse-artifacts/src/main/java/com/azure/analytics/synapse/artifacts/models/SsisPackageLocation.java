@@ -5,74 +5,66 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * SSIS package location.
  */
-@JsonFlatten
 @Fluent
-public class SsisPackageLocation {
+public class SsisPackageLocation implements JsonSerializable<SsisPackageLocation> {
     /*
      * The SSIS package path. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "packagePath")
     private Object packagePath;
 
     /*
      * The type of SSIS package location.
      */
-    @JsonProperty(value = "type")
     private SsisPackageLocationType type;
 
     /*
      * Password of the package.
      */
-    @JsonProperty(value = "typeProperties.packagePassword")
     private SecretBase packagePassword;
 
     /*
      * The package access credential.
      */
-    @JsonProperty(value = "typeProperties.accessCredential")
     private SsisAccessCredential accessCredential;
 
     /*
      * The configuration file of the package execution. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.configurationPath")
     private Object configurationPath;
 
     /*
      * The configuration file access credential.
      */
-    @JsonProperty(value = "typeProperties.configurationAccessCredential")
     private SsisAccessCredential configurationAccessCredential;
 
     /*
      * The package name.
      */
-    @JsonProperty(value = "typeProperties.packageName")
     private String packageName;
 
     /*
      * The embedded package content. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.packageContent")
     private Object packageContent;
 
     /*
      * The embedded package last modified date.
      */
-    @JsonProperty(value = "typeProperties.packageLastModifiedDate")
     private String packageLastModifiedDate;
 
     /*
      * The embedded child package list.
      */
-    @JsonProperty(value = "typeProperties.childPackages")
     private List<SsisChildPackage> childPackages;
 
     /**
@@ -283,5 +275,92 @@ public class SsisPackageLocation {
     public SsisPackageLocation setChildPackages(List<SsisChildPackage> childPackages) {
         this.childPackages = childPackages;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("packagePath", this.packagePath);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        if (packagePassword != null
+            || accessCredential != null
+            || configurationPath != null
+            || configurationAccessCredential != null
+            || packageName != null
+            || packageContent != null
+            || packageLastModifiedDate != null
+            || childPackages != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeJsonField("packagePassword", this.packagePassword);
+            jsonWriter.writeJsonField("accessCredential", this.accessCredential);
+            jsonWriter.writeUntypedField("configurationPath", this.configurationPath);
+            jsonWriter.writeJsonField("configurationAccessCredential", this.configurationAccessCredential);
+            jsonWriter.writeStringField("packageName", this.packageName);
+            jsonWriter.writeUntypedField("packageContent", this.packageContent);
+            jsonWriter.writeStringField("packageLastModifiedDate", this.packageLastModifiedDate);
+            jsonWriter.writeArrayField("childPackages", this.childPackages,
+                (writer, element) -> writer.writeJson(element));
+            jsonWriter.writeEndObject();
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SsisPackageLocation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SsisPackageLocation if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SsisPackageLocation.
+     */
+    public static SsisPackageLocation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SsisPackageLocation deserializedSsisPackageLocation = new SsisPackageLocation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("packagePath".equals(fieldName)) {
+                    deserializedSsisPackageLocation.packagePath = reader.readUntyped();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSsisPackageLocation.type = SsisPackageLocationType.fromString(reader.getString());
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("packagePassword".equals(fieldName)) {
+                            deserializedSsisPackageLocation.packagePassword = SecretBase.fromJson(reader);
+                        } else if ("accessCredential".equals(fieldName)) {
+                            deserializedSsisPackageLocation.accessCredential = SsisAccessCredential.fromJson(reader);
+                        } else if ("configurationPath".equals(fieldName)) {
+                            deserializedSsisPackageLocation.configurationPath = reader.readUntyped();
+                        } else if ("configurationAccessCredential".equals(fieldName)) {
+                            deserializedSsisPackageLocation.configurationAccessCredential
+                                = SsisAccessCredential.fromJson(reader);
+                        } else if ("packageName".equals(fieldName)) {
+                            deserializedSsisPackageLocation.packageName = reader.getString();
+                        } else if ("packageContent".equals(fieldName)) {
+                            deserializedSsisPackageLocation.packageContent = reader.readUntyped();
+                        } else if ("packageLastModifiedDate".equals(fieldName)) {
+                            deserializedSsisPackageLocation.packageLastModifiedDate = reader.getString();
+                        } else if ("childPackages".equals(fieldName)) {
+                            List<SsisChildPackage> childPackages
+                                = reader.readArray(reader1 -> SsisChildPackage.fromJson(reader1));
+                            deserializedSsisPackageLocation.childPackages = childPackages;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSsisPackageLocation;
+        });
     }
 }

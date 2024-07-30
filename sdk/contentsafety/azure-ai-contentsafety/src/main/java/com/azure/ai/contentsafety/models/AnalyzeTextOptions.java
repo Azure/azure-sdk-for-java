@@ -5,37 +5,37 @@ package com.azure.ai.contentsafety.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The text analysis request.
  */
 @Fluent
-public final class AnalyzeTextOptions {
+public final class AnalyzeTextOptions implements JsonSerializable<AnalyzeTextOptions> {
 
     /*
      * The text needs to be analyzed. We support a maximum of 10k Unicode characters (Unicode code points) in the text
      * of one request.
      */
     @Generated
-    @JsonProperty(value = "text")
-    private String text;
+    private final String text;
 
     /*
      * The categories will be analyzed. If they are not assigned, a default set of analysis results for the categories
      * will be returned.
      */
     @Generated
-    @JsonProperty(value = "categories")
     private List<TextCategory> categories;
 
     /*
      * The names of blocklists.
      */
     @Generated
-    @JsonProperty(value = "blocklistNames")
     private List<String> blocklistNames;
 
     /*
@@ -43,7 +43,6 @@ public final class AnalyzeTextOptions {
      * When set to false, all analyses of harmful content will be performed, whether or not blocklists are hit.
      */
     @Generated
-    @JsonProperty(value = "haltOnBlocklistHit")
     private Boolean haltOnBlocklistHit;
 
     /*
@@ -51,7 +50,6 @@ public final class AnalyzeTextOptions {
      * "FourSeverityLevels".
      */
     @Generated
-    @JsonProperty(value = "outputType")
     private AnalyzeTextOutputType outputType;
 
     /**
@@ -60,8 +58,7 @@ public final class AnalyzeTextOptions {
      * @param text the text value to set.
      */
     @Generated
-    @JsonCreator
-    public AnalyzeTextOptions(@JsonProperty(value = "text") String text) {
+    public AnalyzeTextOptions(String text) {
         this.text = text;
     }
 
@@ -77,8 +74,8 @@ public final class AnalyzeTextOptions {
     }
 
     /**
-     * Get the categories property: The categories will be analyzed. If they are not assigned, a default set of
-     * analysis results for the categories will be returned.
+     * Get the categories property: The categories will be analyzed. If they are not assigned, a default set of analysis
+     * results for the categories will be returned.
      *
      * @return the categories value.
      */
@@ -88,8 +85,8 @@ public final class AnalyzeTextOptions {
     }
 
     /**
-     * Set the categories property: The categories will be analyzed. If they are not assigned, a default set of
-     * analysis results for the categories will be returned.
+     * Set the categories property: The categories will be analyzed. If they are not assigned, a default set of analysis
+     * results for the categories will be returned.
      *
      * @param categories the categories value to set.
      * @return the AnalyzeTextOptions object itself.
@@ -170,5 +167,65 @@ public final class AnalyzeTextOptions {
     public AnalyzeTextOptions setOutputType(AnalyzeTextOutputType outputType) {
         this.outputType = outputType;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("text", this.text);
+        jsonWriter.writeArrayField("categories", this.categories,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("blocklistNames", this.blocklistNames,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("haltOnBlocklistHit", this.haltOnBlocklistHit);
+        jsonWriter.writeStringField("outputType", this.outputType == null ? null : this.outputType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AnalyzeTextOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AnalyzeTextOptions if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AnalyzeTextOptions.
+     */
+    @Generated
+    public static AnalyzeTextOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String text = null;
+            List<TextCategory> categories = null;
+            List<String> blocklistNames = null;
+            Boolean haltOnBlocklistHit = null;
+            AnalyzeTextOutputType outputType = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("text".equals(fieldName)) {
+                    text = reader.getString();
+                } else if ("categories".equals(fieldName)) {
+                    categories = reader.readArray(reader1 -> TextCategory.fromString(reader1.getString()));
+                } else if ("blocklistNames".equals(fieldName)) {
+                    blocklistNames = reader.readArray(reader1 -> reader1.getString());
+                } else if ("haltOnBlocklistHit".equals(fieldName)) {
+                    haltOnBlocklistHit = reader.getNullable(JsonReader::getBoolean);
+                } else if ("outputType".equals(fieldName)) {
+                    outputType = AnalyzeTextOutputType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            AnalyzeTextOptions deserializedAnalyzeTextOptions = new AnalyzeTextOptions(text);
+            deserializedAnalyzeTextOptions.categories = categories;
+            deserializedAnalyzeTextOptions.blocklistNames = blocklistNames;
+            deserializedAnalyzeTextOptions.haltOnBlocklistHit = haltOnBlocklistHit;
+            deserializedAnalyzeTextOptions.outputType = outputType;
+            return deserializedAnalyzeTextOptions;
+        });
     }
 }

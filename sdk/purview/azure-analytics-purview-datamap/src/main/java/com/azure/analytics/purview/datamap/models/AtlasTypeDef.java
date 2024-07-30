@@ -6,7 +6,11 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -14,103 +18,89 @@ import java.util.Map;
  * The definitions of type.
  */
 @Immutable
-public final class AtlasTypeDef {
+public final class AtlasTypeDef implements JsonSerializable<AtlasTypeDef> {
     /*
      * The enum of type category.
      */
     @Generated
-    @JsonProperty(value = "category")
     private TypeCategory category;
 
     /*
      * The created time of the record.
      */
     @Generated
-    @JsonProperty(value = "createTime")
     private Long createTime;
 
     /*
      * The user who created the record.
      */
     @Generated
-    @JsonProperty(value = "createdBy")
     private String createdBy;
 
     /*
      * The date format.
      */
     @Generated
-    @JsonProperty(value = "dateFormatter")
     private DateFormat dateFormatter;
 
     /*
      * The description of the type definition.
      */
     @Generated
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The GUID of the type definition.
      */
     @Generated
-    @JsonProperty(value = "guid")
     private String guid;
 
     /*
      * The name of the type definition.
      */
     @Generated
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The options for the type definition.
      */
     @Generated
-    @JsonProperty(value = "options")
     private Map<String, String> options;
 
     /*
      * The service type.
      */
     @Generated
-    @JsonProperty(value = "serviceType")
     private String serviceType;
 
     /*
      * The version of the type.
      */
     @Generated
-    @JsonProperty(value = "typeVersion")
     private String typeVersion;
 
     /*
      * The update time of the record.
      */
     @Generated
-    @JsonProperty(value = "updateTime")
     private Long updateTime;
 
     /*
      * The user who updated the record.
      */
     @Generated
-    @JsonProperty(value = "updatedBy")
     private String updatedBy;
 
     /*
      * The version of the record.
      */
     @Generated
-    @JsonProperty(value = "version")
     private Long version;
 
     /*
      * ETag for concurrency control.
      */
     @Generated
-    @JsonProperty(value = "lastModifiedTS")
     private String lastModifiedTS;
 
     /*
@@ -135,45 +125,38 @@ public final class AtlasTypeDef {
      * If a list of entityTypes are supplied, where one inherits
      * from another, this will be rejected. This should encourage cleaner
      * classificationsDefs.
-     * 
      */
     @Generated
-    @JsonProperty(value = "entityTypes")
     private List<String> entityTypes;
 
     /*
      * An array of sub types.
      */
     @Generated
-    @JsonProperty(value = "subTypes")
     private List<String> subTypes;
 
     /*
      * An array of super types.
      */
     @Generated
-    @JsonProperty(value = "superTypes")
     private List<String> superTypes;
 
     /*
      * An array of relationship attributes.
      */
     @Generated
-    @JsonProperty(value = "relationshipAttributeDefs")
     private List<AtlasRelationshipAttributeDef> relationshipAttributeDefs;
 
     /*
      * The default value.
      */
     @Generated
-    @JsonProperty(value = "defaultValue")
     private String defaultValue;
 
     /*
      * An array of enum element definitions.
      */
     @Generated
-    @JsonProperty(value = "elementDefs")
     private List<AtlasEnumElementDef> elementDefs;
 
     /*
@@ -183,7 +166,6 @@ public final class AtlasTypeDef {
      * it is the container end of the relationship.
      */
     @Generated
-    @JsonProperty(value = "endDef1")
     private AtlasRelationshipEndDef endDef1;
 
     /*
@@ -193,7 +175,6 @@ public final class AtlasTypeDef {
      * it is the container end of the relationship.
      */
     @Generated
-    @JsonProperty(value = "endDef2")
     private AtlasRelationshipEndDef endDef2;
 
     /*
@@ -209,21 +190,18 @@ public final class AtlasTypeDef {
      * For AGGREGATION, the life cycles of the container and children are totally independent.
      */
     @Generated
-    @JsonProperty(value = "relationshipCategory")
     private RelationshipCategory relationshipCategory;
 
     /*
      * The label of the relationship.
      */
     @Generated
-    @JsonProperty(value = "relationshipLabel")
     private String relationshipLabel;
 
     /*
      * An array of attribute definitions.
      */
     @Generated
-    @JsonProperty(value = "attributeDefs")
     private List<AtlasAttributeDef> attributeDefs;
 
     /**
@@ -516,5 +494,127 @@ public final class AtlasTypeDef {
     @Generated
     public List<AtlasAttributeDef> getAttributeDefs() {
         return this.attributeDefs;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("category", this.category == null ? null : this.category.toString());
+        jsonWriter.writeNumberField("createTime", this.createTime);
+        jsonWriter.writeStringField("createdBy", this.createdBy);
+        jsonWriter.writeJsonField("dateFormatter", this.dateFormatter);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("guid", this.guid);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeMapField("options", this.options, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("serviceType", this.serviceType);
+        jsonWriter.writeStringField("typeVersion", this.typeVersion);
+        jsonWriter.writeNumberField("updateTime", this.updateTime);
+        jsonWriter.writeStringField("updatedBy", this.updatedBy);
+        jsonWriter.writeNumberField("version", this.version);
+        jsonWriter.writeStringField("lastModifiedTS", this.lastModifiedTS);
+        jsonWriter.writeArrayField("entityTypes", this.entityTypes, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("subTypes", this.subTypes, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("superTypes", this.superTypes, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("relationshipAttributeDefs", this.relationshipAttributeDefs,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("defaultValue", this.defaultValue);
+        jsonWriter.writeArrayField("elementDefs", this.elementDefs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("endDef1", this.endDef1);
+        jsonWriter.writeJsonField("endDef2", this.endDef2);
+        jsonWriter.writeStringField("relationshipCategory",
+            this.relationshipCategory == null ? null : this.relationshipCategory.toString());
+        jsonWriter.writeStringField("relationshipLabel", this.relationshipLabel);
+        jsonWriter.writeArrayField("attributeDefs", this.attributeDefs, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AtlasTypeDef from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AtlasTypeDef if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AtlasTypeDef.
+     */
+    @Generated
+    public static AtlasTypeDef fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AtlasTypeDef deserializedAtlasTypeDef = new AtlasTypeDef();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("category".equals(fieldName)) {
+                    deserializedAtlasTypeDef.category = TypeCategory.fromString(reader.getString());
+                } else if ("createTime".equals(fieldName)) {
+                    deserializedAtlasTypeDef.createTime = reader.getNullable(JsonReader::getLong);
+                } else if ("createdBy".equals(fieldName)) {
+                    deserializedAtlasTypeDef.createdBy = reader.getString();
+                } else if ("dateFormatter".equals(fieldName)) {
+                    deserializedAtlasTypeDef.dateFormatter = DateFormat.fromJson(reader);
+                } else if ("description".equals(fieldName)) {
+                    deserializedAtlasTypeDef.description = reader.getString();
+                } else if ("guid".equals(fieldName)) {
+                    deserializedAtlasTypeDef.guid = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAtlasTypeDef.name = reader.getString();
+                } else if ("options".equals(fieldName)) {
+                    Map<String, String> options = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAtlasTypeDef.options = options;
+                } else if ("serviceType".equals(fieldName)) {
+                    deserializedAtlasTypeDef.serviceType = reader.getString();
+                } else if ("typeVersion".equals(fieldName)) {
+                    deserializedAtlasTypeDef.typeVersion = reader.getString();
+                } else if ("updateTime".equals(fieldName)) {
+                    deserializedAtlasTypeDef.updateTime = reader.getNullable(JsonReader::getLong);
+                } else if ("updatedBy".equals(fieldName)) {
+                    deserializedAtlasTypeDef.updatedBy = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedAtlasTypeDef.version = reader.getNullable(JsonReader::getLong);
+                } else if ("lastModifiedTS".equals(fieldName)) {
+                    deserializedAtlasTypeDef.lastModifiedTS = reader.getString();
+                } else if ("entityTypes".equals(fieldName)) {
+                    List<String> entityTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAtlasTypeDef.entityTypes = entityTypes;
+                } else if ("subTypes".equals(fieldName)) {
+                    List<String> subTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAtlasTypeDef.subTypes = subTypes;
+                } else if ("superTypes".equals(fieldName)) {
+                    List<String> superTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAtlasTypeDef.superTypes = superTypes;
+                } else if ("relationshipAttributeDefs".equals(fieldName)) {
+                    List<AtlasRelationshipAttributeDef> relationshipAttributeDefs
+                        = reader.readArray(reader1 -> AtlasRelationshipAttributeDef.fromJson(reader1));
+                    deserializedAtlasTypeDef.relationshipAttributeDefs = relationshipAttributeDefs;
+                } else if ("defaultValue".equals(fieldName)) {
+                    deserializedAtlasTypeDef.defaultValue = reader.getString();
+                } else if ("elementDefs".equals(fieldName)) {
+                    List<AtlasEnumElementDef> elementDefs
+                        = reader.readArray(reader1 -> AtlasEnumElementDef.fromJson(reader1));
+                    deserializedAtlasTypeDef.elementDefs = elementDefs;
+                } else if ("endDef1".equals(fieldName)) {
+                    deserializedAtlasTypeDef.endDef1 = AtlasRelationshipEndDef.fromJson(reader);
+                } else if ("endDef2".equals(fieldName)) {
+                    deserializedAtlasTypeDef.endDef2 = AtlasRelationshipEndDef.fromJson(reader);
+                } else if ("relationshipCategory".equals(fieldName)) {
+                    deserializedAtlasTypeDef.relationshipCategory = RelationshipCategory.fromString(reader.getString());
+                } else if ("relationshipLabel".equals(fieldName)) {
+                    deserializedAtlasTypeDef.relationshipLabel = reader.getString();
+                } else if ("attributeDefs".equals(fieldName)) {
+                    List<AtlasAttributeDef> attributeDefs
+                        = reader.readArray(reader1 -> AtlasAttributeDef.fromJson(reader1));
+                    deserializedAtlasTypeDef.attributeDefs = attributeDefs;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAtlasTypeDef;
+        });
     }
 }

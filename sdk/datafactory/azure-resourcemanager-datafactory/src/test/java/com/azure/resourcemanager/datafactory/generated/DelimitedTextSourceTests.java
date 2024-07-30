@@ -16,21 +16,24 @@ public final class DelimitedTextSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DelimitedTextSource model = BinaryData.fromString(
-            "{\"type\":\"DelimitedTextSource\",\"storeSettings\":{\"type\":\"StoreReadSettings\",\"maxConcurrentConnections\":\"datamg\",\"disableMetricsCollection\":\"databqxlsam\",\"\":{\"gvmowyzxqhuhmldh\":\"dataqhwsojnbb\"}},\"formatSettings\":{\"type\":\"DelimitedTextReadSettings\",\"skipLineCount\":\"datackfu\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"dztqhqhwpuaermaw\":\"datao\",\"otwfu\":\"datalnsdazqcem\",\"dfszxbups\":\"datathisxzhik\"}},\"\":{\"tajwkrxmz\":\"datajpgxcgqkhy\"}},\"additionalColumns\":\"datawfn\",\"sourceRetryCount\":\"datalwovkzbomjby\",\"sourceRetryWait\":\"dataprkbzraljwfnc\",\"maxConcurrentConnections\":\"dataaylcpgzmx\",\"disableMetricsCollection\":\"datappqajdm\",\"\":{\"iminetbzfwfuxdt\":\"datantqqguhvnwr\",\"xxquyfft\":\"datajcsqkedlc\"}}")
+            "{\"type\":\"DelimitedTextSource\",\"storeSettings\":{\"type\":\"StoreReadSettings\",\"maxConcurrentConnections\":\"datayiwzou\",\"disableMetricsCollection\":\"dataamdgff\",\"\":{\"jwlpcxljzzcdrgtu\":\"dataisoorwfdtjp\",\"rolge\":\"dataoouocafaxvhjrpb\",\"njtxuuwdmrqah\":\"datasgn\",\"lmacbwmvphmjyzic\":\"databyjahbzb\"}},\"formatSettings\":{\"type\":\"DelimitedTextReadSettings\",\"skipLineCount\":\"datalazcgwnibnduqgj\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"uhumgw\":\"dataxiaocr\",\"okoxqboz\":\"datapugnvhtgwadu\"}},\"\":{\"ukqobovqll\":\"datazwinr\",\"ozqlyputawdm\":\"dataqlqufkrnrbnjkco\",\"jzofyldxkzhvfo\":\"dataikufzqvvk\"}},\"additionalColumns\":\"datavnhpebuiyw\",\"sourceRetryCount\":\"datasgqacbeau\",\"sourceRetryWait\":\"datadbdnmguifq\",\"maxConcurrentConnections\":\"dataoxzxbljpzauug\",\"disableMetricsCollection\":\"datarfumitjaii\",\"\":{\"sqrjcozrw\":\"datakfdybvywbgmjrv\",\"tvxkxg\":\"dataylc\",\"qaaqjbl\":\"datafpvvqwvvnx\",\"tsztxoswvfrym\":\"dataqwwtevfeugc\"}}")
             .toObject(DelimitedTextSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DelimitedTextSource model = new DelimitedTextSource().withSourceRetryCount("datalwovkzbomjby")
-            .withSourceRetryWait("dataprkbzraljwfnc").withMaxConcurrentConnections("dataaylcpgzmx")
-            .withDisableMetricsCollection("datappqajdm")
-            .withStoreSettings(new StoreReadSettings().withMaxConcurrentConnections("datamg")
-                .withDisableMetricsCollection("databqxlsam")
-                .withAdditionalProperties(mapOf("type", "StoreReadSettings")))
-            .withFormatSettings(new DelimitedTextReadSettings().withSkipLineCount("datackfu").withCompressionProperties(
-                new CompressionReadSettings().withAdditionalProperties(mapOf("type", "CompressionReadSettings"))))
-            .withAdditionalColumns("datawfn");
+        DelimitedTextSource model
+            = new DelimitedTextSource().withSourceRetryCount("datasgqacbeau")
+                .withSourceRetryWait("datadbdnmguifq")
+                .withMaxConcurrentConnections("dataoxzxbljpzauug")
+                .withDisableMetricsCollection("datarfumitjaii")
+                .withStoreSettings(new StoreReadSettings().withMaxConcurrentConnections("datayiwzou")
+                    .withDisableMetricsCollection("dataamdgff")
+                    .withAdditionalProperties(mapOf("type", "StoreReadSettings")))
+                .withFormatSettings(new DelimitedTextReadSettings().withSkipLineCount("datalazcgwnibnduqgj")
+                    .withCompressionProperties(new CompressionReadSettings()
+                        .withAdditionalProperties(mapOf("type", "CompressionReadSettings"))))
+                .withAdditionalColumns("datavnhpebuiyw");
         model = BinaryData.fromObject(model).toObject(DelimitedTextSource.class);
     }
 

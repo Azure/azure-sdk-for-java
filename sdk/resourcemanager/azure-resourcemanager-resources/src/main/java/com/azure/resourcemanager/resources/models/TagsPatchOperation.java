@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The operation type for the patch API. */
+/**
+ * The operation type for the patch API.
+ */
 public final class TagsPatchOperation extends ExpandableStringEnum<TagsPatchOperation> {
-    /** Static value Replace for TagsPatchOperation. */
+    /**
+     * Static value Replace for TagsPatchOperation.
+     */
     public static final TagsPatchOperation REPLACE = fromString("Replace");
 
-    /** Static value Merge for TagsPatchOperation. */
+    /**
+     * Static value Merge for TagsPatchOperation.
+     */
     public static final TagsPatchOperation MERGE = fromString("Merge");
 
-    /** Static value Delete for TagsPatchOperation. */
+    /**
+     * Static value Delete for TagsPatchOperation.
+     */
     public static final TagsPatchOperation DELETE = fromString("Delete");
 
     /**
      * Creates a new instance of TagsPatchOperation value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class TagsPatchOperation extends ExpandableStringEnum<TagsPatchOper
 
     /**
      * Creates or finds a TagsPatchOperation from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TagsPatchOperation.
      */
@@ -41,7 +49,7 @@ public final class TagsPatchOperation extends ExpandableStringEnum<TagsPatchOper
 
     /**
      * Gets known TagsPatchOperation values.
-     *
+     * 
      * @return known TagsPatchOperation values.
      */
     public static Collection<TagsPatchOperation> values() {

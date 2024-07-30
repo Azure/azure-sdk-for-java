@@ -40,22 +40,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in OriginGroupsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OriginGroupsClient.
+ */
 public final class OriginGroupsClientImpl implements OriginGroupsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final OriginGroupsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CdnManagementClientImpl client;
 
     /**
      * Initializes an instance of OriginGroupsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     OriginGroupsClientImpl(CdnManagementClientImpl client) {
-        this.service =
-            RestProxy.create(OriginGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(OriginGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,101 +72,69 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
     @Host("{$host}")
     @ServiceInterface(name = "CdnManagementClientO")
     public interface OriginGroupsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/originGroups")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/originGroups")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OriginGroupListResult>> listByEndpoint(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("endpointName") String endpointName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<OriginGroupListResult>> listByEndpoint(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @PathParam("endpointName") String endpointName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/originGroups/{originGroupName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<OriginGroupInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @PathParam("endpointName") String endpointName, @PathParam("originGroupName") String originGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/originGroups/{originGroupName}")
+        @ExpectedResponses({ 200, 201, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @PathParam("endpointName") String endpointName, @PathParam("originGroupName") String originGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") OriginGroupInner originGroup, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/originGroups/{originGroupName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/originGroups/{originGroupName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OriginGroupInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("endpointName") String endpointName,
-            @PathParam("originGroupName") String originGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/originGroups/{originGroupName}")
-        @ExpectedResponses({200, 201, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("endpointName") String endpointName,
-            @PathParam("originGroupName") String originGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") OriginGroupInner originGroup,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/originGroups/{originGroupName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("endpointName") String endpointName,
-            @PathParam("originGroupName") String originGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @PathParam("endpointName") String endpointName, @PathParam("originGroupName") String originGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") OriginGroupUpdateParameters originGroupUpdateProperties,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/originGroups/{originGroupName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/originGroups/{originGroupName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("endpointName") String endpointName,
-            @PathParam("originGroupName") String originGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @PathParam("endpointName") String endpointName, @PathParam("originGroupName") String originGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OriginGroupListResult>> listByEndpointNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists all of the existing origin groups within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -168,16 +142,14 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list origin groups along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OriginGroupInner>> listByEndpointSinglePageAsync(
-        String resourceGroupName, String profileName, String endpointName) {
+    private Mono<PagedResponse<OriginGroupInner>> listByEndpointSinglePageAsync(String resourceGroupName,
+        String profileName, String endpointName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -190,40 +162,21 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
             return Mono.error(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByEndpoint(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            endpointName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<OriginGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByEndpoint(this.client.getEndpoint(), resourceGroupName, profileName,
+                endpointName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<OriginGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all of the existing origin groups within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -232,16 +185,14 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list origin groups along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OriginGroupInner>> listByEndpointSinglePageAsync(
-        String resourceGroupName, String profileName, String endpointName, Context context) {
+    private Mono<PagedResponse<OriginGroupInner>> listByEndpointSinglePageAsync(String resourceGroupName,
+        String profileName, String endpointName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -254,37 +205,21 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
             return Mono.error(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByEndpoint(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                endpointName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByEndpoint(this.client.getEndpoint(), resourceGroupName, profileName, endpointName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all of the existing origin groups within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -294,16 +229,15 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @return result of the request to list origin groups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<OriginGroupInner> listByEndpointAsync(
-        String resourceGroupName, String profileName, String endpointName) {
-        return new PagedFlux<>(
-            () -> listByEndpointSinglePageAsync(resourceGroupName, profileName, endpointName),
+    public PagedFlux<OriginGroupInner> listByEndpointAsync(String resourceGroupName, String profileName,
+        String endpointName) {
+        return new PagedFlux<>(() -> listByEndpointSinglePageAsync(resourceGroupName, profileName, endpointName),
             nextLink -> listByEndpointNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all of the existing origin groups within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -314,8 +248,8 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @return result of the request to list origin groups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OriginGroupInner> listByEndpointAsync(
-        String resourceGroupName, String profileName, String endpointName, Context context) {
+    private PagedFlux<OriginGroupInner> listByEndpointAsync(String resourceGroupName, String profileName,
+        String endpointName, Context context) {
         return new PagedFlux<>(
             () -> listByEndpointSinglePageAsync(resourceGroupName, profileName, endpointName, context),
             nextLink -> listByEndpointNextSinglePageAsync(nextLink, context));
@@ -323,7 +257,7 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
 
     /**
      * Lists all of the existing origin groups within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -333,14 +267,14 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @return result of the request to list origin groups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OriginGroupInner> listByEndpoint(
-        String resourceGroupName, String profileName, String endpointName) {
+    public PagedIterable<OriginGroupInner> listByEndpoint(String resourceGroupName, String profileName,
+        String endpointName) {
         return new PagedIterable<>(listByEndpointAsync(resourceGroupName, profileName, endpointName));
     }
 
     /**
      * Lists all of the existing origin groups within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -351,14 +285,14 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @return result of the request to list origin groups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OriginGroupInner> listByEndpoint(
-        String resourceGroupName, String profileName, String endpointName, Context context) {
+    public PagedIterable<OriginGroupInner> listByEndpoint(String resourceGroupName, String profileName,
+        String endpointName, Context context) {
         return new PagedIterable<>(listByEndpointAsync(resourceGroupName, profileName, endpointName, context));
     }
 
     /**
      * Gets an existing origin group within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -367,16 +301,14 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing origin group within an endpoint along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<OriginGroupInner>> getWithResponseAsync(
-        String resourceGroupName, String profileName, String endpointName, String originGroupName) {
+    public Mono<Response<OriginGroupInner>> getWithResponseAsync(String resourceGroupName, String profileName,
+        String endpointName, String originGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -393,32 +325,19 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
                 .error(new IllegalArgumentException("Parameter originGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            endpointName,
-                            originGroupName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, profileName, endpointName,
+                originGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets an existing origin group within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -428,16 +347,14 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing origin group within an endpoint along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OriginGroupInner>> getWithResponseAsync(
-        String resourceGroupName, String profileName, String endpointName, String originGroupName, Context context) {
+    private Mono<Response<OriginGroupInner>> getWithResponseAsync(String resourceGroupName, String profileName,
+        String endpointName, String originGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -454,29 +371,18 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
                 .error(new IllegalArgumentException("Parameter originGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                endpointName,
-                originGroupName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, profileName, endpointName, originGroupName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets an existing origin group within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -487,15 +393,15 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @return an existing origin group within an endpoint on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OriginGroupInner> getAsync(
-        String resourceGroupName, String profileName, String endpointName, String originGroupName) {
+    public Mono<OriginGroupInner> getAsync(String resourceGroupName, String profileName, String endpointName,
+        String originGroupName) {
         return getWithResponseAsync(resourceGroupName, profileName, endpointName, originGroupName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets an existing origin group within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -507,14 +413,14 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @return an existing origin group within an endpoint along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OriginGroupInner> getWithResponse(
-        String resourceGroupName, String profileName, String endpointName, String originGroupName, Context context) {
+    public Response<OriginGroupInner> getWithResponse(String resourceGroupName, String profileName, String endpointName,
+        String originGroupName, Context context) {
         return getWithResponseAsync(resourceGroupName, profileName, endpointName, originGroupName, context).block();
     }
 
     /**
      * Gets an existing origin group within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -525,14 +431,14 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @return an existing origin group within an endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OriginGroupInner get(
-        String resourceGroupName, String profileName, String endpointName, String originGroupName) {
+    public OriginGroupInner get(String resourceGroupName, String profileName, String endpointName,
+        String originGroupName) {
         return getWithResponse(resourceGroupName, profileName, endpointName, originGroupName, Context.NONE).getValue();
     }
 
     /**
      * Creates a new origin group within the specified endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -542,20 +448,14 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN along with {@link Response} on successful completion of {@link Mono}.
+     * served from CDN along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String originGroupName,
-        OriginGroupInner originGroup) {
+    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String profileName,
+        String endpointName, String originGroupName, OriginGroupInner originGroup) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -572,10 +472,8 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
                 .error(new IllegalArgumentException("Parameter originGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (originGroup == null) {
             return Mono.error(new IllegalArgumentException("Parameter originGroup is required and cannot be null."));
@@ -584,26 +482,15 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            endpointName,
-                            originGroupName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            originGroup,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), resourceGroupName, profileName,
+                endpointName, originGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+                originGroup, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a new origin group within the specified endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -614,21 +501,14 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN along with {@link Response} on successful completion of {@link Mono}.
+     * served from CDN along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String originGroupName,
-        OriginGroupInner originGroup,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String profileName,
+        String endpointName, String originGroupName, OriginGroupInner originGroup, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -645,10 +525,8 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
                 .error(new IllegalArgumentException("Parameter originGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (originGroup == null) {
             return Mono.error(new IllegalArgumentException("Parameter originGroup is required and cannot be null."));
@@ -657,23 +535,13 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                endpointName,
-                originGroupName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                originGroup,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), resourceGroupName, profileName, endpointName, originGroupName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), originGroup, accept, context);
     }
 
     /**
      * Creates a new origin group within the specified endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -683,30 +551,20 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of origin group comprising of origins is used for load balancing to
-     *     origins when the content cannot be served from CDN.
+     * origins when the content cannot be served from CDN.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<OriginGroupInner>, OriginGroupInner> beginCreateAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String originGroupName,
-        OriginGroupInner originGroup) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, profileName, endpointName, originGroupName, originGroup);
-        return this
-            .client
-            .<OriginGroupInner, OriginGroupInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OriginGroupInner.class,
-                OriginGroupInner.class,
-                this.client.getContext());
+    public PollerFlux<PollResult<OriginGroupInner>, OriginGroupInner> beginCreateAsync(String resourceGroupName,
+        String profileName, String endpointName, String originGroupName, OriginGroupInner originGroup) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, profileName, endpointName, originGroupName, originGroup);
+        return this.client.<OriginGroupInner, OriginGroupInner>getLroResult(mono, this.client.getHttpPipeline(),
+            OriginGroupInner.class, OriginGroupInner.class, this.client.getContext());
     }
 
     /**
      * Creates a new origin group within the specified endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -717,29 +575,22 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of origin group comprising of origins is used for load balancing to
-     *     origins when the content cannot be served from CDN.
+     * origins when the content cannot be served from CDN.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OriginGroupInner>, OriginGroupInner> beginCreateAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String originGroupName,
-        OriginGroupInner originGroup,
+    private PollerFlux<PollResult<OriginGroupInner>, OriginGroupInner> beginCreateAsync(String resourceGroupName,
+        String profileName, String endpointName, String originGroupName, OriginGroupInner originGroup,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(
-                resourceGroupName, profileName, endpointName, originGroupName, originGroup, context);
-        return this
-            .client
-            .<OriginGroupInner, OriginGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), OriginGroupInner.class, OriginGroupInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, profileName, endpointName,
+            originGroupName, originGroup, context);
+        return this.client.<OriginGroupInner, OriginGroupInner>getLroResult(mono, this.client.getHttpPipeline(),
+            OriginGroupInner.class, OriginGroupInner.class, context);
     }
 
     /**
      * Creates a new origin group within the specified endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -749,23 +600,18 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of origin group comprising of origins is used for load balancing to
-     *     origins when the content cannot be served from CDN.
+     * origins when the content cannot be served from CDN.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OriginGroupInner>, OriginGroupInner> beginCreate(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String originGroupName,
-        OriginGroupInner originGroup) {
-        return this
-            .beginCreateAsync(resourceGroupName, profileName, endpointName, originGroupName, originGroup)
+    public SyncPoller<PollResult<OriginGroupInner>, OriginGroupInner> beginCreate(String resourceGroupName,
+        String profileName, String endpointName, String originGroupName, OriginGroupInner originGroup) {
+        return this.beginCreateAsync(resourceGroupName, profileName, endpointName, originGroupName, originGroup)
             .getSyncPoller();
     }
 
     /**
      * Creates a new origin group within the specified endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -776,15 +622,11 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of origin group comprising of origins is used for load balancing to
-     *     origins when the content cannot be served from CDN.
+     * origins when the content cannot be served from CDN.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OriginGroupInner>, OriginGroupInner> beginCreate(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String originGroupName,
-        OriginGroupInner originGroup,
+    public SyncPoller<PollResult<OriginGroupInner>, OriginGroupInner> beginCreate(String resourceGroupName,
+        String profileName, String endpointName, String originGroupName, OriginGroupInner originGroup,
         Context context) {
         return this
             .beginCreateAsync(resourceGroupName, profileName, endpointName, originGroupName, originGroup, context)
@@ -793,7 +635,7 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
 
     /**
      * Creates a new origin group within the specified endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -803,23 +645,18 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN on successful completion of {@link Mono}.
+     * served from CDN on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OriginGroupInner> createAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String originGroupName,
-        OriginGroupInner originGroup) {
-        return beginCreateAsync(resourceGroupName, profileName, endpointName, originGroupName, originGroup)
-            .last()
+    public Mono<OriginGroupInner> createAsync(String resourceGroupName, String profileName, String endpointName,
+        String originGroupName, OriginGroupInner originGroup) {
+        return beginCreateAsync(resourceGroupName, profileName, endpointName, originGroupName, originGroup).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a new origin group within the specified endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -830,24 +667,18 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN on successful completion of {@link Mono}.
+     * served from CDN on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OriginGroupInner> createAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String originGroupName,
-        OriginGroupInner originGroup,
-        Context context) {
+    private Mono<OriginGroupInner> createAsync(String resourceGroupName, String profileName, String endpointName,
+        String originGroupName, OriginGroupInner originGroup, Context context) {
         return beginCreateAsync(resourceGroupName, profileName, endpointName, originGroupName, originGroup, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a new origin group within the specified endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -857,21 +688,17 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN.
+     * served from CDN.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OriginGroupInner create(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String originGroupName,
-        OriginGroupInner originGroup) {
+    public OriginGroupInner create(String resourceGroupName, String profileName, String endpointName,
+        String originGroupName, OriginGroupInner originGroup) {
         return createAsync(resourceGroupName, profileName, endpointName, originGroupName, originGroup).block();
     }
 
     /**
      * Creates a new origin group within the specified endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -882,22 +709,17 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN.
+     * served from CDN.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OriginGroupInner create(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String originGroupName,
-        OriginGroupInner originGroup,
-        Context context) {
+    public OriginGroupInner create(String resourceGroupName, String profileName, String endpointName,
+        String originGroupName, OriginGroupInner originGroup, Context context) {
         return createAsync(resourceGroupName, profileName, endpointName, originGroupName, originGroup, context).block();
     }
 
     /**
      * Updates an existing origin group within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -907,20 +729,14 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN along with {@link Response} on successful completion of {@link Mono}.
+     * served from CDN along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String originGroupName,
-        OriginGroupUpdateParameters originGroupUpdateProperties) {
+    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String profileName,
+        String endpointName, String originGroupName, OriginGroupUpdateParameters originGroupUpdateProperties) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -937,41 +753,26 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
                 .error(new IllegalArgumentException("Parameter originGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (originGroupUpdateProperties == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter originGroupUpdateProperties is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter originGroupUpdateProperties is required and cannot be null."));
         } else {
             originGroupUpdateProperties.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            endpointName,
-                            originGroupName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            originGroupUpdateProperties,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, profileName,
+                endpointName, originGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+                originGroupUpdateProperties, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates an existing origin group within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -982,21 +783,15 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN along with {@link Response} on successful completion of {@link Mono}.
+     * served from CDN along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String originGroupName,
-        OriginGroupUpdateParameters originGroupUpdateProperties,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String profileName,
+        String endpointName, String originGroupName, OriginGroupUpdateParameters originGroupUpdateProperties,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1013,38 +808,24 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
                 .error(new IllegalArgumentException("Parameter originGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (originGroupUpdateProperties == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter originGroupUpdateProperties is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter originGroupUpdateProperties is required and cannot be null."));
         } else {
             originGroupUpdateProperties.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                endpointName,
-                originGroupName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                originGroupUpdateProperties,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, profileName, endpointName, originGroupName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), originGroupUpdateProperties, accept, context);
     }
 
     /**
      * Updates an existing origin group within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -1054,31 +835,21 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of origin group comprising of origins is used for load balancing to
-     *     origins when the content cannot be served from CDN.
+     * origins when the content cannot be served from CDN.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<OriginGroupInner>, OriginGroupInner> beginUpdateAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String originGroupName,
+    public PollerFlux<PollResult<OriginGroupInner>, OriginGroupInner> beginUpdateAsync(String resourceGroupName,
+        String profileName, String endpointName, String originGroupName,
         OriginGroupUpdateParameters originGroupUpdateProperties) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, profileName, endpointName, originGroupName, originGroupUpdateProperties);
-        return this
-            .client
-            .<OriginGroupInner, OriginGroupInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OriginGroupInner.class,
-                OriginGroupInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, profileName, endpointName,
+            originGroupName, originGroupUpdateProperties);
+        return this.client.<OriginGroupInner, OriginGroupInner>getLroResult(mono, this.client.getHttpPipeline(),
+            OriginGroupInner.class, OriginGroupInner.class, this.client.getContext());
     }
 
     /**
      * Updates an existing origin group within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -1089,29 +860,22 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of origin group comprising of origins is used for load balancing to
-     *     origins when the content cannot be served from CDN.
+     * origins when the content cannot be served from CDN.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OriginGroupInner>, OriginGroupInner> beginUpdateAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String originGroupName,
-        OriginGroupUpdateParameters originGroupUpdateProperties,
-        Context context) {
+    private PollerFlux<PollResult<OriginGroupInner>, OriginGroupInner> beginUpdateAsync(String resourceGroupName,
+        String profileName, String endpointName, String originGroupName,
+        OriginGroupUpdateParameters originGroupUpdateProperties, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, profileName, endpointName, originGroupName, originGroupUpdateProperties, context);
-        return this
-            .client
-            .<OriginGroupInner, OriginGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), OriginGroupInner.class, OriginGroupInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, profileName, endpointName,
+            originGroupName, originGroupUpdateProperties, context);
+        return this.client.<OriginGroupInner, OriginGroupInner>getLroResult(mono, this.client.getHttpPipeline(),
+            OriginGroupInner.class, OriginGroupInner.class, context);
     }
 
     /**
      * Updates an existing origin group within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -1121,24 +885,19 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of origin group comprising of origins is used for load balancing to
-     *     origins when the content cannot be served from CDN.
+     * origins when the content cannot be served from CDN.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OriginGroupInner>, OriginGroupInner> beginUpdate(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String originGroupName,
+    public SyncPoller<PollResult<OriginGroupInner>, OriginGroupInner> beginUpdate(String resourceGroupName,
+        String profileName, String endpointName, String originGroupName,
         OriginGroupUpdateParameters originGroupUpdateProperties) {
-        return this
-            .beginUpdateAsync(
-                resourceGroupName, profileName, endpointName, originGroupName, originGroupUpdateProperties)
-            .getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, profileName, endpointName, originGroupName,
+            originGroupUpdateProperties).getSyncPoller();
     }
 
     /**
      * Updates an existing origin group within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -1149,25 +908,19 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of origin group comprising of origins is used for load balancing to
-     *     origins when the content cannot be served from CDN.
+     * origins when the content cannot be served from CDN.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OriginGroupInner>, OriginGroupInner> beginUpdate(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String originGroupName,
-        OriginGroupUpdateParameters originGroupUpdateProperties,
-        Context context) {
-        return this
-            .beginUpdateAsync(
-                resourceGroupName, profileName, endpointName, originGroupName, originGroupUpdateProperties, context)
-            .getSyncPoller();
+    public SyncPoller<PollResult<OriginGroupInner>, OriginGroupInner> beginUpdate(String resourceGroupName,
+        String profileName, String endpointName, String originGroupName,
+        OriginGroupUpdateParameters originGroupUpdateProperties, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, profileName, endpointName, originGroupName,
+            originGroupUpdateProperties, context).getSyncPoller();
     }
 
     /**
      * Updates an existing origin group within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -1177,24 +930,18 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN on successful completion of {@link Mono}.
+     * served from CDN on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OriginGroupInner> updateAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String originGroupName,
-        OriginGroupUpdateParameters originGroupUpdateProperties) {
-        return beginUpdateAsync(
-                resourceGroupName, profileName, endpointName, originGroupName, originGroupUpdateProperties)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    public Mono<OriginGroupInner> updateAsync(String resourceGroupName, String profileName, String endpointName,
+        String originGroupName, OriginGroupUpdateParameters originGroupUpdateProperties) {
+        return beginUpdateAsync(resourceGroupName, profileName, endpointName, originGroupName,
+            originGroupUpdateProperties).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates an existing origin group within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -1205,25 +952,18 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN on successful completion of {@link Mono}.
+     * served from CDN on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OriginGroupInner> updateAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String originGroupName,
-        OriginGroupUpdateParameters originGroupUpdateProperties,
-        Context context) {
-        return beginUpdateAsync(
-                resourceGroupName, profileName, endpointName, originGroupName, originGroupUpdateProperties, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<OriginGroupInner> updateAsync(String resourceGroupName, String profileName, String endpointName,
+        String originGroupName, OriginGroupUpdateParameters originGroupUpdateProperties, Context context) {
+        return beginUpdateAsync(resourceGroupName, profileName, endpointName, originGroupName,
+            originGroupUpdateProperties, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates an existing origin group within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -1233,22 +973,18 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN.
+     * served from CDN.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OriginGroupInner update(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String originGroupName,
-        OriginGroupUpdateParameters originGroupUpdateProperties) {
+    public OriginGroupInner update(String resourceGroupName, String profileName, String endpointName,
+        String originGroupName, OriginGroupUpdateParameters originGroupUpdateProperties) {
         return updateAsync(resourceGroupName, profileName, endpointName, originGroupName, originGroupUpdateProperties)
             .block();
     }
 
     /**
      * Updates an existing origin group within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -1259,24 +995,18 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN.
+     * served from CDN.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OriginGroupInner update(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String originGroupName,
-        OriginGroupUpdateParameters originGroupUpdateProperties,
-        Context context) {
-        return updateAsync(
-                resourceGroupName, profileName, endpointName, originGroupName, originGroupUpdateProperties, context)
-            .block();
+    public OriginGroupInner update(String resourceGroupName, String profileName, String endpointName,
+        String originGroupName, OriginGroupUpdateParameters originGroupUpdateProperties, Context context) {
+        return updateAsync(resourceGroupName, profileName, endpointName, originGroupName, originGroupUpdateProperties,
+            context).block();
     }
 
     /**
      * Deletes an existing origin group within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -1287,13 +1017,11 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String profileName, String endpointName, String originGroupName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String profileName,
+        String endpointName, String originGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1310,32 +1038,20 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
                 .error(new IllegalArgumentException("Parameter originGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            endpointName,
-                            originGroupName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.delete(this.client.getEndpoint(), resourceGroupName, profileName, endpointName,
+                    originGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes an existing origin group within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -1347,13 +1063,11 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String profileName, String endpointName, String originGroupName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String profileName,
+        String endpointName, String originGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1370,29 +1084,18 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
                 .error(new IllegalArgumentException("Parameter originGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                endpointName,
-                originGroupName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, profileName, endpointName, originGroupName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes an existing origin group within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -1403,19 +1106,17 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String profileName, String endpointName, String originGroupName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, profileName, endpointName, originGroupName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String profileName,
+        String endpointName, String originGroupName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, profileName, endpointName, originGroupName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes an existing origin group within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -1427,19 +1128,18 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String profileName, String endpointName, String originGroupName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String profileName,
+        String endpointName, String originGroupName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, profileName, endpointName, originGroupName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, profileName, endpointName, originGroupName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes an existing origin group within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -1450,14 +1150,14 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String profileName, String endpointName, String originGroupName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName,
+        String endpointName, String originGroupName) {
         return this.beginDeleteAsync(resourceGroupName, profileName, endpointName, originGroupName).getSyncPoller();
     }
 
     /**
      * Deletes an existing origin group within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -1469,16 +1169,15 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String profileName, String endpointName, String originGroupName, Context context) {
-        return this
-            .beginDeleteAsync(resourceGroupName, profileName, endpointName, originGroupName, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName,
+        String endpointName, String originGroupName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, profileName, endpointName, originGroupName, context)
             .getSyncPoller();
     }
 
     /**
      * Deletes an existing origin group within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -1489,16 +1188,15 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String resourceGroupName, String profileName, String endpointName, String originGroupName) {
-        return beginDeleteAsync(resourceGroupName, profileName, endpointName, originGroupName)
-            .last()
+    public Mono<Void> deleteAsync(String resourceGroupName, String profileName, String endpointName,
+        String originGroupName) {
+        return beginDeleteAsync(resourceGroupName, profileName, endpointName, originGroupName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an existing origin group within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -1510,16 +1208,15 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String profileName, String endpointName, String originGroupName, Context context) {
-        return beginDeleteAsync(resourceGroupName, profileName, endpointName, originGroupName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String profileName, String endpointName,
+        String originGroupName, Context context) {
+        return beginDeleteAsync(resourceGroupName, profileName, endpointName, originGroupName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an existing origin group within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -1535,7 +1232,7 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
 
     /**
      * Deletes an existing origin group within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -1546,21 +1243,22 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String profileName, String endpointName, String originGroupName, Context context) {
+    public void delete(String resourceGroupName, String profileName, String endpointName, String originGroupName,
+        Context context) {
         deleteAsync(resourceGroupName, profileName, endpointName, originGroupName, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list origin groups along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OriginGroupInner>> listByEndpointNextSinglePageAsync(String nextLink) {
@@ -1568,37 +1266,29 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByEndpointNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<OriginGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<OriginGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list origin groups along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OriginGroupInner>> listByEndpointNextSinglePageAsync(String nextLink, Context context) {
@@ -1606,23 +1296,13 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByEndpointNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByEndpointNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

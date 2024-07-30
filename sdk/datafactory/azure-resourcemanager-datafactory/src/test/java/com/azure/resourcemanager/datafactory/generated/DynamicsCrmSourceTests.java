@@ -11,15 +11,18 @@ public final class DynamicsCrmSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DynamicsCrmSource model = BinaryData.fromString(
-            "{\"type\":\"DynamicsCrmSource\",\"query\":\"datasjhh\",\"additionalColumns\":\"datawizqvgadolep\",\"sourceRetryCount\":\"datalzjhaqxfams\",\"sourceRetryWait\":\"datacesvvrabbyfhzy\",\"maxConcurrentConnections\":\"datarxenp\",\"disableMetricsCollection\":\"dataanlb\",\"\":{\"hoxcgfyzluilzgp\":\"datadwrcjtanbwxhlqio\",\"nxjnqm\":\"datahjakz\",\"vpfyupgojrwpoxuy\":\"datajslwmjlpb\"}}")
+            "{\"type\":\"DynamicsCrmSource\",\"query\":\"databomjby\",\"additionalColumns\":\"dataprkbzraljwfnc\",\"sourceRetryCount\":\"dataaylcpgzmx\",\"sourceRetryWait\":\"datappqajdm\",\"maxConcurrentConnections\":\"datanntqqgu\",\"disableMetricsCollection\":\"datanwrzimin\",\"\":{\"dlclxxquyff\":\"datazfwfuxdtpjcsqk\",\"b\":\"dataqombdsgqxacidu\"}}")
             .toObject(DynamicsCrmSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DynamicsCrmSource model = new DynamicsCrmSource().withSourceRetryCount("datalzjhaqxfams")
-            .withSourceRetryWait("datacesvvrabbyfhzy").withMaxConcurrentConnections("datarxenp")
-            .withDisableMetricsCollection("dataanlb").withQuery("datasjhh").withAdditionalColumns("datawizqvgadolep");
+        DynamicsCrmSource model = new DynamicsCrmSource().withSourceRetryCount("dataaylcpgzmx")
+            .withSourceRetryWait("datappqajdm")
+            .withMaxConcurrentConnections("datanntqqgu")
+            .withDisableMetricsCollection("datanwrzimin")
+            .withQuery("databomjby")
+            .withAdditionalColumns("dataprkbzraljwfnc");
         model = BinaryData.fromObject(model).toObject(DynamicsCrmSource.class);
     }
 }

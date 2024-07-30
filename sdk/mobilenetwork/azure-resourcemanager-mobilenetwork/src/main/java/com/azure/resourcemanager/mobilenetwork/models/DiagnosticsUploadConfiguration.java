@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Configuration for uploading packet core diagnostics. */
+/**
+ * Configuration for uploading packet core diagnostics.
+ */
 @Fluent
 public final class DiagnosticsUploadConfiguration {
     /*
@@ -17,13 +19,15 @@ public final class DiagnosticsUploadConfiguration {
     @JsonProperty(value = "storageAccountContainerUrl", required = true)
     private String storageAccountContainerUrl;
 
-    /** Creates an instance of DiagnosticsUploadConfiguration class. */
+    /**
+     * Creates an instance of DiagnosticsUploadConfiguration class.
+     */
     public DiagnosticsUploadConfiguration() {
     }
 
     /**
      * Get the storageAccountContainerUrl property: The Storage Account Container URL to upload diagnostics to.
-     *
+     * 
      * @return the storageAccountContainerUrl value.
      */
     public String storageAccountContainerUrl() {
@@ -32,7 +36,7 @@ public final class DiagnosticsUploadConfiguration {
 
     /**
      * Set the storageAccountContainerUrl property: The Storage Account Container URL to upload diagnostics to.
-     *
+     * 
      * @param storageAccountContainerUrl the storageAccountContainerUrl value to set.
      * @return the DiagnosticsUploadConfiguration object itself.
      */
@@ -43,16 +47,14 @@ public final class DiagnosticsUploadConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (storageAccountContainerUrl() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageAccountContainerUrl in model"
-                            + " DiagnosticsUploadConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageAccountContainerUrl in model DiagnosticsUploadConfiguration"));
         }
     }
 

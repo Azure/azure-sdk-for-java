@@ -11,14 +11,14 @@ public final class TeradataTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TeradataTableDatasetTypeProperties model
-            = BinaryData.fromString("{\"database\":\"datas\",\"table\":\"datazbevgbnrommkiqh\"}")
+            = BinaryData.fromString("{\"database\":\"datarn\",\"table\":\"dataocjnzdaiovrbhr\"}")
                 .toObject(TeradataTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TeradataTableDatasetTypeProperties model
-            = new TeradataTableDatasetTypeProperties().withDatabase("datas").withTable("datazbevgbnrommkiqh");
+            = new TeradataTableDatasetTypeProperties().withDatabase("datarn").withTable("dataocjnzdaiovrbhr");
         model = BinaryData.fromObject(model).toObject(TeradataTableDatasetTypeProperties.class);
     }
 }

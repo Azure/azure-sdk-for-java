@@ -10,8 +10,9 @@ import com.azure.resourcemanager.devcenter.models.CatalogConflictError;
 public final class CatalogConflictErrorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CatalogConflictError model =
-            BinaryData.fromString("{\"path\":\"s\",\"name\":\"ddystkiiuxhqy\"}").toObject(CatalogConflictError.class);
+        CatalogConflictError model
+            = BinaryData.fromString("{\"path\":\"typmrbpizcdrqjsd\",\"name\":\"dnfyhxdeoejzicwi\"}")
+                .toObject(CatalogConflictError.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -52,8 +52,9 @@ public final class PrimingJobIdParameter {
      */
     public void validate() {
         if (primingJobId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property primingJobId in model PrimingJobIdParameter"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property primingJobId in model PrimingJobIdParameter"));
         }
     }
 

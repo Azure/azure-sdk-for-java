@@ -23,21 +23,22 @@ There is one swagger for Chat management APIs.
 
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/modelerfour@4.15.442
+autorest README.md --java --v4 --use=@autorest/modelerfour@4.15.442
 ```
 
 ## Update generated files for chat service
 
 To update generated files for chat service, run the following command
 
-> autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/modelerfour@4.15.442
+> autorest README.md --java --v4 --use=@autorest/modelerfour@4.15.442
 
 ### Code generation settings
 
 ```yaml
-tag: package-chat-2023-11-07
+tag: package-chat-2024-03-07
+use: '@autorest/java@4.1.33'
 require:
-    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/731138d0505c02fcee05d7b5a1417fd10ef5efc3/specification/communication/data-plane/Chat/readme.md
+    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/72d4c8cae964a12dc27ad4684b0bddf493225338/specification/communication/data-plane/Chat/readme.md
 java: true
 title: AzureCommunicationChatService
 output-folder: ..\

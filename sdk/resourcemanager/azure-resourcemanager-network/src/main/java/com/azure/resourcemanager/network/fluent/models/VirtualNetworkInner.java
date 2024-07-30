@@ -266,8 +266,8 @@ public final class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Get the enableDdosProtection property: Indicates if DDoS protection is enabled for all the protected resources
-     * in the virtual network. It requires a DDoS protection plan associated with the resource.
+     * Get the enableDdosProtection property: Indicates if DDoS protection is enabled for all the protected resources in
+     * the virtual network. It requires a DDoS protection plan associated with the resource.
      * 
      * @return the enableDdosProtection value.
      */
@@ -276,8 +276,8 @@ public final class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Set the enableDdosProtection property: Indicates if DDoS protection is enabled for all the protected resources
-     * in the virtual network. It requires a DDoS protection plan associated with the resource.
+     * Set the enableDdosProtection property: Indicates if DDoS protection is enabled for all the protected resources in
+     * the virtual network. It requires a DDoS protection plan associated with the resource.
      * 
      * @param enableDdosProtection the enableDdosProtection value to set.
      * @return the VirtualNetworkInner object itself.
@@ -339,8 +339,8 @@ public final class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Get the bgpCommunities property: Bgp Communities sent over ExpressRoute with each route corresponding to a
-     * prefix in this VNET.
+     * Get the bgpCommunities property: Bgp Communities sent over ExpressRoute with each route corresponding to a prefix
+     * in this VNET.
      * 
      * @return the bgpCommunities value.
      */
@@ -349,8 +349,8 @@ public final class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Set the bgpCommunities property: Bgp Communities sent over ExpressRoute with each route corresponding to a
-     * prefix in this VNET.
+     * Set the bgpCommunities property: Bgp Communities sent over ExpressRoute with each route corresponding to a prefix
+     * in this VNET.
      * 
      * @param bgpCommunities the bgpCommunities value to set.
      * @return the VirtualNetworkInner object itself.

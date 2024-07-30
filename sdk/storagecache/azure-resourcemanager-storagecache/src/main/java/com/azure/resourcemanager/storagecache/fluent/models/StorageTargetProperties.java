@@ -35,8 +35,7 @@ public final class StorageTargetProperties {
     private StorageTargetType targetType;
 
     /*
-     * ARM provisioning state, see
-     * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property
+     * ARM provisioning state, see https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningStateType provisioningState;
@@ -252,8 +251,9 @@ public final class StorageTargetProperties {
             junctions().forEach(e -> e.validate());
         }
         if (targetType() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property targetType in model StorageTargetProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetType in model StorageTargetProperties"));
         }
         if (nfs3() != null) {
             nfs3().validate();

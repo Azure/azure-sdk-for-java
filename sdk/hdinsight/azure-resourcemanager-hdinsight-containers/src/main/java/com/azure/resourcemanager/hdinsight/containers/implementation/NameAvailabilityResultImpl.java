@@ -12,8 +12,7 @@ public final class NameAvailabilityResultImpl implements NameAvailabilityResult 
 
     private final com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager serviceManager;
 
-    NameAvailabilityResultImpl(
-        NameAvailabilityResultInner innerObject,
+    NameAvailabilityResultImpl(NameAvailabilityResultInner innerObject,
         com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.frontdoor.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -12,8 +13,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -44,7 +45,9 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the FrontDoorManagementClientImpl type. */
+/**
+ * Initializes a new instance of the FrontDoorManagementClientImpl type.
+ */
 @ServiceClient(builder = FrontDoorManagementClientBuilder.class)
 public final class FrontDoorManagementClientImpl implements FrontDoorManagementClient {
     /**
@@ -56,199 +59,231 @@ public final class FrontDoorManagementClientImpl implements FrontDoorManagementC
     /**
      * Gets The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription ID
      * forms part of the URI for every service call.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The PoliciesClient object to access its operations. */
+    /**
+     * The PoliciesClient object to access its operations.
+     */
     private final PoliciesClient policies;
 
     /**
      * Gets the PoliciesClient object to access its operations.
-     *
+     * 
      * @return the PoliciesClient object.
      */
     public PoliciesClient getPolicies() {
         return this.policies;
     }
 
-    /** The ManagedRuleSetsClient object to access its operations. */
+    /**
+     * The ManagedRuleSetsClient object to access its operations.
+     */
     private final ManagedRuleSetsClient managedRuleSets;
 
     /**
      * Gets the ManagedRuleSetsClient object to access its operations.
-     *
+     * 
      * @return the ManagedRuleSetsClient object.
      */
     public ManagedRuleSetsClient getManagedRuleSets() {
         return this.managedRuleSets;
     }
 
-    /** The FrontDoorNameAvailabilitiesClient object to access its operations. */
+    /**
+     * The FrontDoorNameAvailabilitiesClient object to access its operations.
+     */
     private final FrontDoorNameAvailabilitiesClient frontDoorNameAvailabilities;
 
     /**
      * Gets the FrontDoorNameAvailabilitiesClient object to access its operations.
-     *
+     * 
      * @return the FrontDoorNameAvailabilitiesClient object.
      */
     public FrontDoorNameAvailabilitiesClient getFrontDoorNameAvailabilities() {
         return this.frontDoorNameAvailabilities;
     }
 
-    /** The FrontDoorNameAvailabilityWithSubscriptionsClient object to access its operations. */
+    /**
+     * The FrontDoorNameAvailabilityWithSubscriptionsClient object to access its operations.
+     */
     private final FrontDoorNameAvailabilityWithSubscriptionsClient frontDoorNameAvailabilityWithSubscriptions;
 
     /**
      * Gets the FrontDoorNameAvailabilityWithSubscriptionsClient object to access its operations.
-     *
+     * 
      * @return the FrontDoorNameAvailabilityWithSubscriptionsClient object.
      */
     public FrontDoorNameAvailabilityWithSubscriptionsClient getFrontDoorNameAvailabilityWithSubscriptions() {
         return this.frontDoorNameAvailabilityWithSubscriptions;
     }
 
-    /** The FrontDoorsClient object to access its operations. */
+    /**
+     * The FrontDoorsClient object to access its operations.
+     */
     private final FrontDoorsClient frontDoors;
 
     /**
      * Gets the FrontDoorsClient object to access its operations.
-     *
+     * 
      * @return the FrontDoorsClient object.
      */
     public FrontDoorsClient getFrontDoors() {
         return this.frontDoors;
     }
 
-    /** The FrontendEndpointsClient object to access its operations. */
+    /**
+     * The FrontendEndpointsClient object to access its operations.
+     */
     private final FrontendEndpointsClient frontendEndpoints;
 
     /**
      * Gets the FrontendEndpointsClient object to access its operations.
-     *
+     * 
      * @return the FrontendEndpointsClient object.
      */
     public FrontendEndpointsClient getFrontendEndpoints() {
         return this.frontendEndpoints;
     }
 
-    /** The EndpointsClient object to access its operations. */
+    /**
+     * The EndpointsClient object to access its operations.
+     */
     private final EndpointsClient endpoints;
 
     /**
      * Gets the EndpointsClient object to access its operations.
-     *
+     * 
      * @return the EndpointsClient object.
      */
     public EndpointsClient getEndpoints() {
         return this.endpoints;
     }
 
-    /** The RulesEnginesClient object to access its operations. */
+    /**
+     * The RulesEnginesClient object to access its operations.
+     */
     private final RulesEnginesClient rulesEngines;
 
     /**
      * Gets the RulesEnginesClient object to access its operations.
-     *
+     * 
      * @return the RulesEnginesClient object.
      */
     public RulesEnginesClient getRulesEngines() {
         return this.rulesEngines;
     }
 
-    /** The NetworkExperimentProfilesClient object to access its operations. */
+    /**
+     * The NetworkExperimentProfilesClient object to access its operations.
+     */
     private final NetworkExperimentProfilesClient networkExperimentProfiles;
 
     /**
      * Gets the NetworkExperimentProfilesClient object to access its operations.
-     *
+     * 
      * @return the NetworkExperimentProfilesClient object.
      */
     public NetworkExperimentProfilesClient getNetworkExperimentProfiles() {
         return this.networkExperimentProfiles;
     }
 
-    /** The PreconfiguredEndpointsClient object to access its operations. */
+    /**
+     * The PreconfiguredEndpointsClient object to access its operations.
+     */
     private final PreconfiguredEndpointsClient preconfiguredEndpoints;
 
     /**
      * Gets the PreconfiguredEndpointsClient object to access its operations.
-     *
+     * 
      * @return the PreconfiguredEndpointsClient object.
      */
     public PreconfiguredEndpointsClient getPreconfiguredEndpoints() {
         return this.preconfiguredEndpoints;
     }
 
-    /** The ExperimentsClient object to access its operations. */
+    /**
+     * The ExperimentsClient object to access its operations.
+     */
     private final ExperimentsClient experiments;
 
     /**
      * Gets the ExperimentsClient object to access its operations.
-     *
+     * 
      * @return the ExperimentsClient object.
      */
     public ExperimentsClient getExperiments() {
         return this.experiments;
     }
 
-    /** The ReportsClient object to access its operations. */
+    /**
+     * The ReportsClient object to access its operations.
+     */
     private final ReportsClient reports;
 
     /**
      * Gets the ReportsClient object to access its operations.
-     *
+     * 
      * @return the ReportsClient object.
      */
     public ReportsClient getReports() {
@@ -257,22 +292,17 @@ public final class FrontDoorManagementClientImpl implements FrontDoorManagementC
 
     /**
      * Initializes an instance of FrontDoorManagementClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
      * @param subscriptionId The subscription credentials which uniquely identify the Microsoft Azure subscription. The
-     *     subscription ID forms part of the URI for every service call.
+     * subscription ID forms part of the URI for every service call.
      * @param endpoint server parameter.
      */
-    FrontDoorManagementClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    FrontDoorManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
@@ -281,8 +311,8 @@ public final class FrontDoorManagementClientImpl implements FrontDoorManagementC
         this.policies = new PoliciesClientImpl(this);
         this.managedRuleSets = new ManagedRuleSetsClientImpl(this);
         this.frontDoorNameAvailabilities = new FrontDoorNameAvailabilitiesClientImpl(this);
-        this.frontDoorNameAvailabilityWithSubscriptions =
-            new FrontDoorNameAvailabilityWithSubscriptionsClientImpl(this);
+        this.frontDoorNameAvailabilityWithSubscriptions
+            = new FrontDoorNameAvailabilityWithSubscriptionsClientImpl(this);
         this.frontDoors = new FrontDoorsClientImpl(this);
         this.frontendEndpoints = new FrontendEndpointsClientImpl(this);
         this.endpoints = new EndpointsClientImpl(this);
@@ -295,7 +325,7 @@ public final class FrontDoorManagementClientImpl implements FrontDoorManagementC
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -304,7 +334,7 @@ public final class FrontDoorManagementClientImpl implements FrontDoorManagementC
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -314,7 +344,7 @@ public final class FrontDoorManagementClientImpl implements FrontDoorManagementC
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -324,26 +354,15 @@ public final class FrontDoorManagementClientImpl implements FrontDoorManagementC
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -356,19 +375,16 @@ public final class FrontDoorManagementClientImpl implements FrontDoorManagementC
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -409,7 +425,7 @@ public final class FrontDoorManagementClientImpl implements FrontDoorManagementC
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

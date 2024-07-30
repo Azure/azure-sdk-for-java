@@ -7,9 +7,12 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.ChangeFeedOperationState;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
@@ -53,6 +56,8 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     private final AsyncDocumentClient documentClient;
     private final CosmosAsyncContainer cosmosContainer;
     private Scheduler scheduler;
+   private static final ImplementationBridgeHelpers.CosmosAsyncDatabaseHelper.CosmosAsyncDatabaseAccessor cosmosAsyncDatabaseAccessor =
+        ImplementationBridgeHelpers.CosmosAsyncDatabaseHelper.getCosmosAsyncDatabaseAccessor();
 
     /**
      * Initializes a new instance of the {@link ChangeFeedContextClient} interface.
@@ -144,9 +149,9 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
         if (isSplitHandlingDisabled) {
             ModelBridgeInternal.disableSplitHandling(changeFeedRequestOptions);
         }
-
+        CosmosAsyncDatabase database = collectionLink.getDatabase();
         AsyncDocumentClient clientWrapper =
-            CosmosBridgeInternal.getAsyncDocumentClient(collectionLink.getDatabase());
+            CosmosBridgeInternal.getAsyncDocumentClient(database);
         Flux<FeedResponse<T>> feedResponseFlux =
             clientWrapper
                 .getCollectionCache()
@@ -159,15 +164,23 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
                         throw new IllegalStateException("Collection cannot be null");
                     }
 
+                    ChangeFeedOperationState state = new ChangeFeedOperationState(
+                        cosmosAsyncDatabaseAccessor.getCosmosAsyncClient(database),
+                        "queryChangeFeed." + collection.getId(),
+                        database.getId(),
+                        collection.getId(),
+                        ResourceType.Document,
+                        OperationType.ReadFeed,
+                        null,
+                        changeFeedRequestOptions,
+                        null);
+
                     return clientWrapper
-                        .queryDocumentChangeFeed(collection, changeFeedRequestOptions, Document.class)
+                        .queryDocumentChangeFeedFromPagedFlux(collection, state, Document.class)
                         .map(response -> {
                             List<T> results = response.getResults()
                                                              .stream()
-                                                             .map(document ->
-                                                                 ModelBridgeInternal.toObjectFromJsonSerializable(
-                                                                     document,
-                                                                     klass))
+                                                             .map(document -> document.toObject(klass))
                                                              .collect(Collectors.toList());
                             return BridgeInternal.toFeedResponsePage(
                                 results,

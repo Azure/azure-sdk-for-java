@@ -27,8 +27,8 @@ public final class ShareFileInfo {
      * encrypted using the specified algorithm. Otherwise, the value is set to false.
      * @param smbProperties The SMB properties of the file.
      */
-    public ShareFileInfo(final String eTag, final OffsetDateTime lastModified, final Boolean isServerEncrypted,
-        final FileSmbProperties smbProperties) {
+    public ShareFileInfo(String eTag, OffsetDateTime lastModified, Boolean isServerEncrypted,
+        FileSmbProperties smbProperties) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.isServerEncrypted = isServerEncrypted;
@@ -36,21 +36,28 @@ public final class ShareFileInfo {
     }
 
     /**
-     * @return The entity tag that corresponds to the directory.
+     * Gets the entity tag that corresponds to the file.
+     *
+     * @return The entity tag that corresponds to the file.
      */
     public String getETag() {
         return eTag;
     }
 
     /**
-     * @return The last time the share was modified.
+     * Gets the last time the file was modified.
+     *
+     * @return The last time the file was modified.
      */
     public OffsetDateTime getLastModified() {
         return lastModified;
     }
 
     /**
-     * @return The value of this header is true if the directory metadata is completely encrypted using the specified
+     * The value of this header is true if the file metadata is completely encrypted using the specified algorithm.
+     * Otherwise, the value is false.
+     *
+     * @return The value of this header is true if the file metadata is completely encrypted using the specified
      * algorithm. Otherwise, the value is false.
      */
     public Boolean isServerEncrypted() {
@@ -58,6 +65,8 @@ public final class ShareFileInfo {
     }
 
     /**
+     * Gets the SMB Properties of the file.
+     *
      * @return The SMB Properties of the file.
      */
     public FileSmbProperties getSmbProperties() {

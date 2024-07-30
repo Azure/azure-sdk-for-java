@@ -7,6 +7,7 @@ package com.azure.resourcemanager.eventgrid.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.eventgrid.fluent.models.ServiceBusTopicEventSubscriptionDestinationProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -14,10 +15,21 @@ import java.util.List;
 /**
  * Information about the service bus topic destination for an event subscription.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "endpointType",
+    defaultImpl = ServiceBusTopicEventSubscriptionDestination.class,
+    visible = true)
 @JsonTypeName("ServiceBusTopic")
 @Fluent
 public final class ServiceBusTopicEventSubscriptionDestination extends EventSubscriptionDestination {
+    /*
+     * Type of the endpoint for the event subscription destination.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "endpointType", required = true)
+    private EndpointType endpointType = EndpointType.SERVICE_BUS_TOPIC;
+
     /*
      * Service Bus Topic Properties of the event subscription destination.
      */
@@ -28,6 +40,16 @@ public final class ServiceBusTopicEventSubscriptionDestination extends EventSubs
      * Creates an instance of ServiceBusTopicEventSubscriptionDestination class.
      */
     public ServiceBusTopicEventSubscriptionDestination() {
+    }
+
+    /**
+     * Get the endpointType property: Type of the endpoint for the event subscription destination.
+     * 
+     * @return the endpointType value.
+     */
+    @Override
+    public EndpointType endpointType() {
+        return this.endpointType;
     }
 
     /**

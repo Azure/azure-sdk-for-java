@@ -15,7 +15,7 @@ import java.util.Map;
 public final class DedicatedHostsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * dedicatedHostExamples/DedicatedHost_CreateOrUpdate.json
      */
     /**
@@ -24,11 +24,16 @@ public final class DedicatedHostsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateADedicatedHost(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDedicatedHosts().createOrUpdate("myResourceGroup",
-            "myDedicatedHostGroup", "myDedicatedHost",
-            new DedicatedHostInner().withLocation("westus").withTags(mapOf("department", "HR"))
-                .withSku(new Sku().withName("DSv3-Type1")).withPlatformFaultDomain(1),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHosts()
+            .createOrUpdate("myResourceGroup", "myDedicatedHostGroup", "myDedicatedHost",
+                new DedicatedHostInner().withLocation("westus")
+                    .withTags(mapOf("department", "HR"))
+                    .withSku(new Sku().withName("DSv3-Type1"))
+                    .withPlatformFaultDomain(1),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

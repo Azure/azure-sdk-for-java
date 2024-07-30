@@ -6,27 +6,26 @@ package com.azure.resourcemanager.mobilenetwork.generated;
 
 import java.util.Arrays;
 
-/** Samples for PacketCaptures CreateOrUpdate. */
+/**
+ * Samples for PacketCaptures CreateOrUpdate.
+ */
 public final class PacketCapturesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCaptureCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCaptureCreate.json
      */
     /**
      * Sample code: Create packet capture.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void createPacketCapture(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .packetCaptures()
+        manager.packetCaptures()
             .define("pc1")
             .withExistingPacketCoreControlPlane("rg1", "TestPacketCoreCP")
-            .withNetworkInterfaces(
-                Arrays
-                    .asList(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP",
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP",
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestADN"))
+            .withNetworkInterfaces(Arrays.asList(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP",
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP",
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestADN"))
             .withBytesToCapturePerPacket(10000L)
             .withTotalBytesPerSession(100000L)
             .withTimeLimitInSeconds(100)

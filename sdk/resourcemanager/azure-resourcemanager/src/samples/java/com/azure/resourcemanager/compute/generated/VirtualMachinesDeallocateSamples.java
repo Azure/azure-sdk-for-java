@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class VirtualMachinesDeallocateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Deallocate_MaximumSet_Gen.json
      */
     /**
@@ -19,13 +19,16 @@ public final class VirtualMachinesDeallocateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualMachineDeallocateMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().deallocate("rgcompute", "aaaaaaaaaa",
-            true, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .deallocate("rgcompute", "aaaaaaaaaa", true, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Deallocate_MinimumSet_Gen.json
      */
     /**
@@ -34,7 +37,10 @@ public final class VirtualMachinesDeallocateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualMachineDeallocateMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().deallocate("rgcompute",
-            "aaaaaaaaaaaaaaaa", null, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .deallocate("rgcompute", "aaaaaaaaaaaaaaaa", null, com.azure.core.util.Context.NONE);
     }
 }

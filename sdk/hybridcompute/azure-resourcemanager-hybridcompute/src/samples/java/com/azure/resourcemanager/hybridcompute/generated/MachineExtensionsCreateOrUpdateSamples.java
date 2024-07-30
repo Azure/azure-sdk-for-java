@@ -8,32 +8,32 @@ import com.azure.resourcemanager.hybridcompute.models.MachineExtensionProperties
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for MachineExtensions CreateOrUpdate. */
+/**
+ * Samples for MachineExtensions CreateOrUpdate.
+ */
 public final class MachineExtensionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-06-20-preview/examples/extension/Extension_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-05-20-preview/examples/
+     * extension/Extension_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update a Machine Extension.
-     *
+     * 
      * @param manager Entry point to HybridComputeManager.
      */
-    public static void createOrUpdateAMachineExtension(
-        com.azure.resourcemanager.hybridcompute.HybridComputeManager manager) {
-        manager
-            .machineExtensions()
+    public static void
+        createOrUpdateAMachineExtension(com.azure.resourcemanager.hybridcompute.HybridComputeManager manager) {
+        manager.machineExtensions()
             .define("CustomScriptExtension")
             .withRegion("eastus2euap")
             .withExistingMachine("myResourceGroup", "myMachine")
             .withProperties(
-                new MachineExtensionProperties()
-                    .withPublisher("Microsoft.Compute")
+                new MachineExtensionProperties().withPublisher("Microsoft.Compute")
                     .withType("CustomScriptExtension")
                     .withTypeHandlerVersion("1.10")
-                    .withSettings(
-                        mapOf(
-                            "commandToExecute",
-                            "powershell.exe -c \"Get-Process | Where-Object { $_.CPU -gt 10000 }\"")))
+                    .withSettings(mapOf("commandToExecute",
+                        "powershell.exe -c \"Get-Process | Where-Object { $_.CPU -gt 10000 }\"")))
             .create();
     }
 

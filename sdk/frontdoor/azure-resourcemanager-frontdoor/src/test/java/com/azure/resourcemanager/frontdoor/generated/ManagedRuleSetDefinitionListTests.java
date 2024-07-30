@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedRuleSetDefinitionListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedRuleSetDefinitionList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"rl\",\"ruleSetId\":\"ugjzzdatqxhocdge\",\"ruleSetType\":\"lgphu\",\"ruleSetVersion\":\"cndvkaozwyiftyhx\",\"ruleGroups\":[]},\"location\":\"rokft\",\"tags\":{\"klryplwck\":\"lniwpwcukjfkgiaw\",\"pnddhsgcbacphejk\":\"asy\",\"ndlik\":\"tynqgoul\"},\"id\":\"yqkgfg\",\"name\":\"bmadgak\",\"type\":\"qsrxybzqqed\"},{\"properties\":{\"provisioningState\":\"bciqfouflm\",\"ruleSetId\":\"kzsmodm\",\"ruleSetType\":\"ougpbkwt\",\"ruleSetVersion\":\"tduqktapspwgcuer\",\"ruleGroups\":[]},\"location\":\"mkdo\",\"tags\":{\"bbjfddgmbmbexp\":\"whbmd\"},\"id\":\"bhtqqrolfpfpsa\",\"name\":\"gbquxigj\",\"type\":\"jgzjaoyfhrtx\"}],\"nextLink\":\"n\"}")
-                .toObject(ManagedRuleSetDefinitionList.class);
-        Assertions.assertEquals("n", model.nextLink());
+        ManagedRuleSetDefinitionList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"x\",\"ruleSetId\":\"qgtz\",\"ruleSetType\":\"pnqbqqwxrjfe\",\"ruleSetVersion\":\"lnwsubisn\",\"ruleGroups\":[{\"ruleGroupName\":\"mngnzscxaqw\",\"description\":\"chcbonqvpkvlrxnj\",\"rules\":[{},{}]},{\"ruleGroupName\":\"ipheoflokeyyien\",\"description\":\"dlwtgrhpdj\",\"rules\":[{},{},{}]},{\"ruleGroupName\":\"asxazjpqyegualhb\",\"description\":\"hejjz\",\"rules\":[{},{},{}]},{\"ruleGroupName\":\"dgwdslfhot\",\"description\":\"cynpwlbjnp\",\"rules\":[{},{}]}]},\"location\":\"ftadehxnltyfs\",\"tags\":{\"nzwdejba\":\"usue\",\"xdn\":\"orxzdmohctbqvud\"},\"id\":\"nvowgujju\",\"name\":\"wdkcglhsl\",\"type\":\"zj\"}],\"nextLink\":\"ggd\"}")
+            .toObject(ManagedRuleSetDefinitionList.class);
+        Assertions.assertEquals("ggd", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedRuleSetDefinitionList model = new ManagedRuleSetDefinitionList().withNextLink("n");
+        ManagedRuleSetDefinitionList model = new ManagedRuleSetDefinitionList().withNextLink("ggd");
         model = BinaryData.fromObject(model).toObject(ManagedRuleSetDefinitionList.class);
-        Assertions.assertEquals("n", model.nextLink());
+        Assertions.assertEquals("ggd", model.nextLink());
     }
 }

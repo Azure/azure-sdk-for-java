@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.models.PrepareNetworkPoliciesRequest;
 public final class SubnetsPrepareNetworkPoliciesSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/SubnetPrepareNetworkPolicies.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/SubnetPrepareNetworkPolicies.
      * json
      */
     /**
@@ -21,8 +21,12 @@ public final class SubnetsPrepareNetworkPoliciesSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void prepareNetworkPolicies(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getSubnets().prepareNetworkPolicies("rg1", "test-vnet", "subnet1",
-            new PrepareNetworkPoliciesRequest().withServiceName("Microsoft.Sql/managedInstances"),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getSubnets()
+            .prepareNetworkPolicies("rg1", "test-vnet", "subnet1",
+                new PrepareNetworkPoliciesRequest().withServiceName("Microsoft.Sql/managedInstances"),
+                com.azure.core.util.Context.NONE);
     }
 }

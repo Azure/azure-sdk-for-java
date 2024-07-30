@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.models.P2SVpnProfileParameters;
  */
 public final class P2SVpnGatewaysGenerateVpnProfileSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * P2SVpnGatewayGenerateVpnProfile.json
      */
     /**
@@ -21,8 +21,12 @@ public final class P2SVpnGatewaysGenerateVpnProfileSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void generateP2SVpnGatewayVPNProfile(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getP2SVpnGateways().generateVpnProfile("rg1", "p2sVpnGateway1",
-            new P2SVpnProfileParameters().withAuthenticationMethod(AuthenticationMethod.EAPTLS),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getP2SVpnGateways()
+            .generateVpnProfile("rg1", "p2sVpnGateway1",
+                new P2SVpnProfileParameters().withAuthenticationMethod(AuthenticationMethod.EAPTLS),
+                com.azure.core.util.Context.NONE);
     }
 }

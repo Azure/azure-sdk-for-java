@@ -21,7 +21,7 @@ There are two libraries that can be used spring-cloud-azure-appconfiguration-con
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>spring-cloud-azure-appconfiguration-config</artifactId>
-    <version>4.16.0</version>
+    <version>5.13.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -33,7 +33,7 @@ or
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>spring-cloud-azure-appconfiguration-config-web</artifactId>
-    <version>4.16.0</version>
+    <version>5.13.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -64,6 +64,7 @@ spring.cloud.azure.appconfiguration.stores[0].selects[0].key-filter | The key pa
 spring.cloud.azure.appconfiguration.stores[0].selects[0].label-filter | The label used to indicate which configuration(s) will be loaded. | No | `${spring.profiles.active}` or if null `\0`
 spring.cloud.azure.appconfiguration.stores[0].selects[0].snapshot-name | The snapshot name used to indicate which configuration(s) will be loaded. | No | null
 spring.cloud.azure.appconfiguration.stores[0].trim-key-prefix[0] | The prefix that will be trimmed from the key when the configuration is loaded. | No | null, unless using key-filter, then it is the key-filter
+spring.cloud.azure.appconfiguration.stores[0].replicaDiscoveryEnabled | Enables periodic checking if new replicas of the store have been created. And found stores will be added to the bottom of the list of endpoints used in cases where the store can't be reached. | No | true
 
 Configuration Store Authentication
 
@@ -402,7 +403,7 @@ This project welcomes contributions and suggestions.  Most contributions require
 Please follow [instructions here][contributing_md] to build from source or contribute.
 
 <!-- Link -->
-[package]: https://central.sonatype.com/artifact/com.microsoft.azure/spring-cloud-azure-appconfiguration-config
+[package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-cloud-azure-appconfiguration-config
 [app_configuration_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_v4.3.0/appconfiguration/azure-spring-cloud-appconfiguration-config/azure-spring-cloud-appconfiguration-config-sample
 [app_configuration_conversation_complete_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_v4.3.0/appconfiguration/azure-spring-cloud-appconfiguration-config/azure-spring-cloud-appconfiguration-config-convert-sample/azure-spring-cloud-appconfiguration-config-convert-sample-complete
 [app_configuration_conversation_initail_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_v4.3.0/appconfiguration/azure-spring-cloud-appconfiguration-config/azure-spring-cloud-appconfiguration-config-convert-sample/azure-spring-cloud-appconfiguration-config-convert-sample-initial

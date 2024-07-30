@@ -14,23 +14,25 @@ public final class AtaExternalSecuritySolutionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AtaExternalSecuritySolution model = BinaryData.fromString(
-            "{\"kind\":\"ATA\",\"properties\":{\"lastEventReceived\":\"dqhua\",\"deviceVendor\":\"mzivr\",\"deviceType\":\"fzhhezvhjudxdyyr\",\"workspace\":{\"id\":\"ahswtvdkxb\"},\"\":{\"dxbvwf\":\"datagfenf\",\"dmuvardlmz\":\"datajchivdrijanx\",\"lxiwyo\":\"dataotprrmuhcuhtu\"}},\"location\":\"arpfctwrap\",\"id\":\"zdojqyvzesipiys\",\"name\":\"jqyowaadc\",\"type\":\"dazabundtse\"}")
+            "{\"kind\":\"ATA\",\"properties\":{\"lastEventReceived\":\"zdqiqdlrat\",\"deviceVendor\":\"wxoauwxsuy\",\"deviceType\":\"nhrfgslgl\",\"workspace\":{\"id\":\"yjfzi\"},\"\":{\"ajtfey\":\"dataoaeoc\"}},\"location\":\"bdgddkrh\",\"id\":\"ccxbeuuqutkz\",\"name\":\"tjwwg\",\"type\":\"zytijcx\"}")
             .toObject(AtaExternalSecuritySolution.class);
-        Assertions.assertEquals("mzivr", model.properties().deviceVendor());
-        Assertions.assertEquals("fzhhezvhjudxdyyr", model.properties().deviceType());
-        Assertions.assertEquals("ahswtvdkxb", model.properties().workspace().id());
-        Assertions.assertEquals("dqhua", model.properties().lastEventReceived());
+        Assertions.assertEquals("wxoauwxsuy", model.properties().deviceVendor());
+        Assertions.assertEquals("nhrfgslgl", model.properties().deviceType());
+        Assertions.assertEquals("yjfzi", model.properties().workspace().id());
+        Assertions.assertEquals("zdqiqdlrat", model.properties().lastEventReceived());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AtaExternalSecuritySolution model = new AtaExternalSecuritySolution()
-            .withProperties(new AtaSolutionProperties().withDeviceVendor("mzivr").withDeviceType("fzhhezvhjudxdyyr")
-                .withWorkspace(new ConnectedWorkspace().withId("ahswtvdkxb")).withLastEventReceived("dqhua"));
+            .withProperties(new AtaSolutionProperties().withDeviceVendor("wxoauwxsuy")
+                .withDeviceType("nhrfgslgl")
+                .withWorkspace(new ConnectedWorkspace().withId("yjfzi"))
+                .withLastEventReceived("zdqiqdlrat"));
         model = BinaryData.fromObject(model).toObject(AtaExternalSecuritySolution.class);
-        Assertions.assertEquals("mzivr", model.properties().deviceVendor());
-        Assertions.assertEquals("fzhhezvhjudxdyyr", model.properties().deviceType());
-        Assertions.assertEquals("ahswtvdkxb", model.properties().workspace().id());
-        Assertions.assertEquals("dqhua", model.properties().lastEventReceived());
+        Assertions.assertEquals("wxoauwxsuy", model.properties().deviceVendor());
+        Assertions.assertEquals("nhrfgslgl", model.properties().deviceType());
+        Assertions.assertEquals("yjfzi", model.properties().workspace().id());
+        Assertions.assertEquals("zdqiqdlrat", model.properties().lastEventReceived());
     }
 }

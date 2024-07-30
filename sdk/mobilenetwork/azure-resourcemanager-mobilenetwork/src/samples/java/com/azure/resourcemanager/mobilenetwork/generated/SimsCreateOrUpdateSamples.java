@@ -11,19 +11,20 @@ import com.azure.resourcemanager.mobilenetwork.models.SimStaticIpPropertiesStati
 import com.azure.resourcemanager.mobilenetwork.models.SliceResourceId;
 import java.util.Arrays;
 
-/** Samples for Sims CreateOrUpdate. */
+/**
+ * Samples for Sims CreateOrUpdate.
+ */
 public final class SimsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimCreate.json
      */
     /**
      * Sample code: Create SIM.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void createSIM(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .sims()
+        manager.sims()
             .define("testSim")
             .withExistingSimGroup("rg1", "testSimGroup")
             .withInternationalMobileSubscriberIdentity("00000")
@@ -31,23 +32,14 @@ public final class SimsCreateOrUpdateSamples {
             .withOperatorKeyCode("00000000000000000000000000000000")
             .withIntegratedCircuitCardIdentifier("8900000000000000000")
             .withDeviceType("Video camera")
-            .withSimPolicy(
-                new SimPolicyResourceId()
-                    .withId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"))
-            .withStaticIpConfiguration(
-                Arrays
-                    .asList(
-                        new SimStaticIpProperties()
-                            .withAttachedDataNetwork(
-                                new AttachedDataNetworkResourceId()
-                                    .withId(
-                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"))
-                            .withSlice(
-                                new SliceResourceId()
-                                    .withId(
-                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"))
-                            .withStaticIp(new SimStaticIpPropertiesStaticIp().withIpv4Address("2.4.0.1"))))
+            .withSimPolicy(new SimPolicyResourceId().withId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"))
+            .withStaticIpConfiguration(Arrays.asList(new SimStaticIpProperties()
+                .withAttachedDataNetwork(new AttachedDataNetworkResourceId().withId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/TestPacketCoreCP/packetCoreDataPlanes/TestPacketCoreDP/attachedDataNetworks/TestAttachedDataNetwork"))
+                .withSlice(new SliceResourceId().withId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"))
+                .withStaticIp(new SimStaticIpPropertiesStaticIp().withIpv4Address("2.4.0.1"))))
             .create();
     }
 }

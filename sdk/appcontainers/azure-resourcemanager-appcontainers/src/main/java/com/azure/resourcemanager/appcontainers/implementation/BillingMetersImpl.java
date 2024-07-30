@@ -20,8 +20,7 @@ public final class BillingMetersImpl implements BillingMeters {
 
     private final com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager;
 
-    public BillingMetersImpl(
-        BillingMetersClient innerClient,
+    public BillingMetersImpl(BillingMetersClient innerClient,
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -30,10 +29,7 @@ public final class BillingMetersImpl implements BillingMeters {
     public Response<BillingMeterCollection> getWithResponse(String location, Context context) {
         Response<BillingMeterCollectionInner> inner = this.serviceClient().getWithResponse(location, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new BillingMeterCollectionImpl(inner.getValue(), this.manager()));
         } else {
             return null;

@@ -1069,6 +1069,199 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         }
     }
 
+    @Test(groups = {"long"}, timeOut = TIMEOUT)
+    public void faultInjectionServerErrorRuleTests_InjectionRate50Percent() throws JsonProcessingException {
+        String applyPercentageRuleId = "applyPercentage-"+UUID.randomUUID();
+
+        FaultInjectionRule applyPercentageRule =
+            new FaultInjectionRuleBuilder(applyPercentageRuleId)
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .operationType(FaultInjectionOperationType.READ_ITEM)
+                        .build()
+                )
+                .result(
+                    FaultInjectionResultBuilders
+                        .getResultBuilder(FaultInjectionServerErrorType.GONE)
+                        .injectionRate(.5)
+                        .times(1)//for each operation, only apply the rule one time
+                        .build()
+                )
+                .duration(Duration.ofMinutes(5))
+                .build();
+
+        try {
+            TestItem createdItem = TestItem.createNewItem();
+            cosmosAsyncContainer.createItem(createdItem).block();
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(
+                cosmosAsyncContainer,
+                Arrays.asList(applyPercentageRule)).block();
+
+            for(int i = 0; i < 100; i++){
+                this.performDocumentOperation(cosmosAsyncContainer, OperationType.Read, createdItem);
+            }
+
+            //Because applyPercentage is based on Random probability,
+            //we expect that this assert will fail 0.66% of the time.
+            assertThat(applyPercentageRule.getHitCount()).isBetween(37L, 63L);
+
+        } finally {
+            applyPercentageRule.disable();
+        }
+    }
+
+    @Test(groups = {"long"}, timeOut = TIMEOUT)
+    public void faultInjectionServerErrorRuleTests_InjectionRate100Percent() throws JsonProcessingException {
+        String applyPercentageRuleId = "applyPercentage-"+UUID.randomUUID();
+
+        FaultInjectionRule applyPercentageRule =
+            new FaultInjectionRuleBuilder(applyPercentageRuleId)
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .operationType(FaultInjectionOperationType.READ_ITEM)
+                        .build()
+                )
+                .result(
+                    FaultInjectionResultBuilders
+                        .getResultBuilder(FaultInjectionServerErrorType.GONE)
+                        .injectionRate(1)
+                        .times(1)//for each operation, only apply the rule one time
+                        .build()
+                )
+                .duration(Duration.ofMinutes(5))
+                .build();
+
+        try {
+            TestItem createdItem = TestItem.createNewItem();
+            cosmosAsyncContainer.createItem(createdItem).block();
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(
+                cosmosAsyncContainer,
+                Arrays.asList(applyPercentageRule)).block();
+
+            for(int i = 0; i < 100; i++){
+                this.performDocumentOperation(cosmosAsyncContainer, OperationType.Read, createdItem);
+            }
+
+            assertThat(applyPercentageRule.getHitCount()).isEqualTo(100L);
+
+        } finally {
+            applyPercentageRule.disable();
+        }
+    }
+
+    @Test(groups = {"long"}, timeOut = TIMEOUT)
+    public void faultInjectionServerErrorRuleTests_InjectionRate0Percent() throws JsonProcessingException {
+        String applyPercentageRuleId = "applyPercentage-"+UUID.randomUUID();
+
+        try {
+            FaultInjectionRule applyPercentageRule =
+                new FaultInjectionRuleBuilder(applyPercentageRuleId)
+                    .condition(
+                        new FaultInjectionConditionBuilder()
+                            .operationType(FaultInjectionOperationType.READ_ITEM)
+                            .build()
+                    )
+                    .result(
+                        FaultInjectionResultBuilders
+                            .getResultBuilder(FaultInjectionServerErrorType.GONE)
+                            .injectionRate(0)
+                            .times(1)//for each operation, only apply the rule one time
+                            .build()
+                    )
+                    .duration(Duration.ofMinutes(5))
+                    .build();
+
+        } catch (IllegalArgumentException e) {
+            assertThat(e.getMessage().contains("Argument 'injectionRate' should be between (0, 1]"));
+        }
+    }
+
+    @Test(groups = {"long"}, timeOut = TIMEOUT)
+    public void faultInjectionServerErrorRuleTests_InjectionRate25Percent() throws JsonProcessingException {
+        String applyPercentageRuleId = "applyPercentage-" + UUID.randomUUID();
+
+        FaultInjectionRule applyPercentageRule =
+            new FaultInjectionRuleBuilder(applyPercentageRuleId)
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .operationType(FaultInjectionOperationType.READ_ITEM)
+                        .build()
+                )
+                .result(
+                    FaultInjectionResultBuilders
+                        .getResultBuilder(FaultInjectionServerErrorType.GONE)
+                        .injectionRate(.25)
+                        .times(1)//for each operation, only apply the rule one time
+                        .build()
+                )
+                .duration(Duration.ofMinutes(5))
+                .build();
+
+        try {
+            TestItem createdItem = TestItem.createNewItem();
+            cosmosAsyncContainer.createItem(createdItem).block();
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(
+                cosmosAsyncContainer,
+                Arrays.asList(applyPercentageRule)).block();
+
+            for (int i = 0; i < 100; i++) {
+                this.performDocumentOperation(cosmosAsyncContainer, OperationType.Read, createdItem);
+            }
+            
+            //Because applyPercentage is based on Random probability,
+            //we expect that this assert will fail 0.53% of the time.
+            assertThat(applyPercentageRule.getHitCount()).isBetween(14L, 37L);
+
+        } finally {
+            applyPercentageRule.disable();
+        }
+    }
+
+    @Test(groups = {"long"}, timeOut = TIMEOUT)
+    public void faultInjectionServerErrorRuleTests_InjectionRate75Percent() throws JsonProcessingException {
+        String applyPercentageRuleId = "applyPercentage-" + UUID.randomUUID();
+
+        FaultInjectionRule applyPercentageRule =
+            new FaultInjectionRuleBuilder(applyPercentageRuleId)
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .operationType(FaultInjectionOperationType.READ_ITEM)
+                        .build()
+                )
+                .result(
+                    FaultInjectionResultBuilders
+                        .getResultBuilder(FaultInjectionServerErrorType.GONE)
+                        .injectionRate(.75)
+                        .times(1)//for each operation, only apply the rule one time
+                        .build()
+                )
+                .duration(Duration.ofMinutes(5))
+                .build();
+
+        try {
+            TestItem createdItem = TestItem.createNewItem();
+            cosmosAsyncContainer.createItem(createdItem).block();
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(
+                cosmosAsyncContainer,
+                Arrays.asList(applyPercentageRule)).block();
+
+            for (int i = 0; i < 100; i++) {
+                this.performDocumentOperation(cosmosAsyncContainer, OperationType.Read, createdItem);
+            }
+
+            //Because applyPercentage is based on Random probability,
+            //we expect that this assert will fail 0.53% of the time.
+            assertThat(applyPercentageRule.getHitCount()).isBetween(63L, 86L);
+
+        } finally {
+            applyPercentageRule.disable();
+        }
+    }
+
     private void validateFaultInjectionRuleApplied(
         CosmosDiagnostics cosmosDiagnostics,
         OperationType operationType,

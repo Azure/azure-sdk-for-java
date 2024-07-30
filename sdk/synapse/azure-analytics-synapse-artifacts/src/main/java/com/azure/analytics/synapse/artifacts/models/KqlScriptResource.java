@@ -5,35 +5,35 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The KqlScriptResource model.
  */
 @Fluent
-public final class KqlScriptResource {
+public final class KqlScriptResource implements JsonSerializable<KqlScriptResource> {
     /*
      * The id property.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The name property.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The type property.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * Properties of sql script.
      */
-    @JsonProperty(value = "properties")
     private KqlScript properties;
 
     /**
@@ -120,5 +120,50 @@ public final class KqlScriptResource {
     public KqlScriptResource setProperties(KqlScript properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KqlScriptResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KqlScriptResource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KqlScriptResource.
+     */
+    public static KqlScriptResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KqlScriptResource deserializedKqlScriptResource = new KqlScriptResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedKqlScriptResource.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedKqlScriptResource.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedKqlScriptResource.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedKqlScriptResource.properties = KqlScript.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKqlScriptResource;
+        });
     }
 }

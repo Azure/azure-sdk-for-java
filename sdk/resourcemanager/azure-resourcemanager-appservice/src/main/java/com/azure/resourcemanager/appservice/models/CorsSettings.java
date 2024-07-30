@@ -6,6 +6,7 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -37,7 +38,7 @@ public final class CorsSettings {
     /**
      * Get the allowedOrigins property: Gets or sets the list of origins that should be allowed to make cross-origin
      * calls (for example: http://example.com:12345). Use "*" to allow all.
-     * 
+     *
      * @return the allowedOrigins value.
      */
     public List<String> allowedOrigins() {
@@ -47,7 +48,7 @@ public final class CorsSettings {
     /**
      * Set the allowedOrigins property: Gets or sets the list of origins that should be allowed to make cross-origin
      * calls (for example: http://example.com:12345). Use "*" to allow all.
-     * 
+     *
      * @param allowedOrigins the allowedOrigins value to set.
      * @return the CorsSettings object itself.
      */
@@ -60,7 +61,7 @@ public final class CorsSettings {
      * Get the supportCredentials property: Gets or sets whether CORS requests with credentials are allowed. See
      * https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#Requests_with_credentials
      * for more details.
-     * 
+     *
      * @return the supportCredentials value.
      */
     public Boolean supportCredentials() {
@@ -71,7 +72,7 @@ public final class CorsSettings {
      * Set the supportCredentials property: Gets or sets whether CORS requests with credentials are allowed. See
      * https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#Requests_with_credentials
      * for more details.
-     * 
+     *
      * @param supportCredentials the supportCredentials value to set.
      * @return the CorsSettings object itself.
      */
@@ -82,7 +83,7 @@ public final class CorsSettings {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -128,6 +128,12 @@ public final class VpnSiteLinkConnectionProperties {
     @JsonProperty(value = "egressNatRules")
     private List<SubResource> egressNatRules;
 
+    /*
+     * Dead Peer Detection timeout in seconds for VpnLink connection.
+     */
+    @JsonProperty(value = "dpdTimeoutSeconds")
+    private Integer dpdTimeoutSeconds;
+
     /**
      * Creates an instance of VpnSiteLinkConnectionProperties class.
      */
@@ -449,6 +455,26 @@ public final class VpnSiteLinkConnectionProperties {
      */
     public VpnSiteLinkConnectionProperties withEgressNatRules(List<SubResource> egressNatRules) {
         this.egressNatRules = egressNatRules;
+        return this;
+    }
+
+    /**
+     * Get the dpdTimeoutSeconds property: Dead Peer Detection timeout in seconds for VpnLink connection.
+     * 
+     * @return the dpdTimeoutSeconds value.
+     */
+    public Integer dpdTimeoutSeconds() {
+        return this.dpdTimeoutSeconds;
+    }
+
+    /**
+     * Set the dpdTimeoutSeconds property: Dead Peer Detection timeout in seconds for VpnLink connection.
+     * 
+     * @param dpdTimeoutSeconds the dpdTimeoutSeconds value to set.
+     * @return the VpnSiteLinkConnectionProperties object itself.
+     */
+    public VpnSiteLinkConnectionProperties withDpdTimeoutSeconds(Integer dpdTimeoutSeconds) {
+        this.dpdTimeoutSeconds = dpdTimeoutSeconds;
         return this;
     }
 

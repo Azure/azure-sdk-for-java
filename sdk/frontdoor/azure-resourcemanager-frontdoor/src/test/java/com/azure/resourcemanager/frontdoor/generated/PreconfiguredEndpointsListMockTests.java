@@ -6,69 +6,40 @@ package com.azure.resourcemanager.frontdoor.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.frontdoor.FrontDoorManager;
 import com.azure.resourcemanager.frontdoor.models.EndpointType;
 import com.azure.resourcemanager.frontdoor.models.PreconfiguredEndpoint;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PreconfiguredEndpointsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"description\":\"qsg\",\"endpoint\":\"yuuzivens\",\"endpointType\":\"CDN\",\"backend\":\"yyvpkpatlb\"},\"location\":\"jp\",\"tags\":{\"fvolmknbnxwcd\":\"ksrf\",\"awz\":\"mmpvf\",\"uiaclkiexhajlfn\":\"gbrt\",\"b\":\"hiqfyuttdiy\"},\"id\":\"vnwsw\",\"name\":\"txkyctwwgzwxjlm\",\"type\":\"cvogygzyvne\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"description\":\"yklxubyjaffmmfbl\",\"endpoint\":\"cuubgq\",\"endpointType\":\"AzureRegion\",\"backend\":\"a\"},\"location\":\"metttwgd\",\"tags\":{\"rmooizqse\":\"xih\",\"apzhyrpetoge\":\"pxiutc\",\"rqnkkzjcjbtr\":\"joxslhvnhla\"},\"id\":\"aehvvibrxjjstoq\",\"name\":\"eitpkxztmo\",\"type\":\"bklftidgfcwqmpim\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        FrontDoorManager manager = FrontDoorManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<PreconfiguredEndpoint> response = manager.preconfiguredEndpoints()
+            .list("mlghktuidvrmazlp", "wwexymzvlazipbh", com.azure.core.util.Context.NONE);
 
-        FrontDoorManager manager =
-            FrontDoorManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<PreconfiguredEndpoint> response =
-            manager.preconfiguredEndpoints().list("cvhrfsp", "uagrttikteusqc", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("metttwgd", response.iterator().next().location());
-        Assertions.assertEquals("xih", response.iterator().next().tags().get("rmooizqse"));
-        Assertions.assertEquals("yklxubyjaffmmfbl", response.iterator().next().description());
-        Assertions.assertEquals("cuubgq", response.iterator().next().endpoint());
-        Assertions.assertEquals(EndpointType.AZURE_REGION, response.iterator().next().endpointType());
-        Assertions.assertEquals("a", response.iterator().next().backend());
+        Assertions.assertEquals("jp", response.iterator().next().location());
+        Assertions.assertEquals("ksrf", response.iterator().next().tags().get("fvolmknbnxwcd"));
+        Assertions.assertEquals("qsg", response.iterator().next().description());
+        Assertions.assertEquals("yuuzivens", response.iterator().next().endpoint());
+        Assertions.assertEquals(EndpointType.CDN, response.iterator().next().endpointType());
+        Assertions.assertEquals("yyvpkpatlb", response.iterator().next().backend());
     }
 }

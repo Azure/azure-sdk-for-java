@@ -8,84 +8,65 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcomplianceautomation.fluent.models.ReportResourceInner;
 import com.azure.resourcemanager.appcomplianceautomation.models.ReportProperties;
 import com.azure.resourcemanager.appcomplianceautomation.models.ResourceMetadata;
+import com.azure.resourcemanager.appcomplianceautomation.models.ResourceOrigin;
+import com.azure.resourcemanager.appcomplianceautomation.models.StorageInfo;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ReportResourceInnerTests {
-    @Test
-    public void testDeserialize() {
-        ReportResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"id\":\"czwlokjyem\",\"status\":\"Disabled\",\"tenantId\":\"ipjoxzjnchgejs\",\"reportName\":\"dmailzydehojw\",\"offerGuid\":\"huxinpmqnj\",\"timeZone\":\"qwixjspro\",\"triggerTime\":\"2021-09-07T15:56:43Z\",\"nextTriggerTime\":\"2021-01-29T23:00:34Z\",\"lastTriggerTime\":\"2021-04-27T04:38:08Z\",\"subscriptions\":[\"jvwmfda\"],\"resources\":[{\"resourceId\":\"cmdv\",\"resourceType\":\"hulsuuvmkjozkrwf\",\"resourceKind\":\"iodjp\",\"resourceName\":\"w\",\"tags\":{}},{\"resourceId\":\"dpvwryoqpsoaccta\",\"resourceType\":\"kljla\",\"resourceKind\":\"cr\",\"resourceName\":\"fdfdosygexpa\",\"tags\":{}},{\"resourceId\":\"akhmsbzjhcrz\",\"resourceType\":\"dphlxaolt\",\"resourceKind\":\"trg\",\"resourceName\":\"bpf\",\"tags\":{}},{\"resourceId\":\"s\",\"resourceType\":\"zgvfcjrwz\",\"resourceKind\":\"xjtfelluwfzit\",\"resourceName\":\"peqfpjkjl\",\"tags\":{}}],\"complianceStatus\":{},\"provisioningState\":\"Creating\"},\"id\":\"pfxxy\",\"name\":\"ininmay\",\"type\":\"uybbkpodep\"}")
-                .toObject(ReportResourceInner.class);
-        Assertions.assertEquals("huxinpmqnj", model.properties().offerGuid());
-        Assertions.assertEquals("qwixjspro", model.properties().timeZone());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-07T15:56:43Z"), model.properties().triggerTime());
-        Assertions.assertEquals("cmdv", model.properties().resources().get(0).resourceId());
-        Assertions.assertEquals("hulsuuvmkjozkrwf", model.properties().resources().get(0).resourceType());
-        Assertions.assertEquals("iodjp", model.properties().resources().get(0).resourceKind());
-        Assertions.assertEquals("w", model.properties().resources().get(0).resourceName());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ReportResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"triggerTime\":\"2021-08-24T18:20:56Z\",\"timeZone\":\"zafb\",\"resources\":[{\"resourceId\":\"j\",\"resourceType\":\"btoqcjmkljavbqid\",\"resourceKind\":\"ajzyul\",\"resourceOrigin\":\"Azure\",\"accountId\":\"jkrlkhbzhfepg\"},{\"resourceId\":\"gqexzlocxs\",\"resourceType\":\"aierhhb\",\"resourceKind\":\"glu\",\"resourceOrigin\":\"Azure\",\"accountId\":\"tjaodxobnb\"}],\"status\":\"Active\",\"errors\":[\"xo\",\"ajionpimexgstxg\",\"po\"],\"tenantId\":\"maajrmvdjwzrlo\",\"offerGuid\":\"clwhijcoejctbz\",\"nextTriggerTime\":\"2021-04-25T10:37:50Z\",\"lastTriggerTime\":\"2021-02-04T17:33:10Z\",\"subscriptions\":[\"bkbfkgukdkex\",\"ppofmxaxcfjpgdd\"],\"complianceStatus\":{\"m365\":{\"passedCount\":217282590,\"failedCount\":1680873734,\"manualCount\":256483207,\"notApplicableCount\":70113912,\"pendingCount\":805352848}},\"storageInfo\":{\"subscriptionId\":\"dzxibqeojnxqbzvd\",\"resourceGroup\":\"t\",\"accountName\":\"deicbtwnpzao\",\"location\":\"uhrhcffcyddgl\"},\"certRecords\":[{\"offerGuid\":\"jqkwpyeicx\",\"certificationStatus\":\"ciwqvhk\",\"ingestionStatus\":\"xuigdtopbobj\",\"controls\":[{\"controlId\":\"e\",\"controlStatus\":\"a\"}]}],\"provisioningState\":\"Deleting\"},\"id\":\"rzayv\",\"name\":\"t\",\"type\":\"gvdfgiotkftutq\"}")
+            .toObject(ReportResourceInner.class);
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-24T18:20:56Z"), model.properties().triggerTime());
+        Assertions.assertEquals("zafb", model.properties().timeZone());
+        Assertions.assertEquals("j", model.properties().resources().get(0).resourceId());
+        Assertions.assertEquals("btoqcjmkljavbqid", model.properties().resources().get(0).resourceType());
+        Assertions.assertEquals("ajzyul", model.properties().resources().get(0).resourceKind());
+        Assertions.assertEquals(ResourceOrigin.AZURE, model.properties().resources().get(0).resourceOrigin());
+        Assertions.assertEquals("jkrlkhbzhfepg", model.properties().resources().get(0).accountId());
+        Assertions.assertEquals("clwhijcoejctbz", model.properties().offerGuid());
+        Assertions.assertEquals("dzxibqeojnxqbzvd", model.properties().storageInfo().subscriptionId());
+        Assertions.assertEquals("t", model.properties().storageInfo().resourceGroup());
+        Assertions.assertEquals("deicbtwnpzao", model.properties().storageInfo().accountName());
+        Assertions.assertEquals("uhrhcffcyddgl", model.properties().storageInfo().location());
     }
 
-    @Test
-    public void testSerialize() {
-        ReportResourceInner model =
-            new ReportResourceInner()
-                .withProperties(
-                    new ReportProperties()
-                        .withOfferGuid("huxinpmqnj")
-                        .withTimeZone("qwixjspro")
-                        .withTriggerTime(OffsetDateTime.parse("2021-09-07T15:56:43Z"))
-                        .withResources(
-                            Arrays
-                                .asList(
-                                    new ResourceMetadata()
-                                        .withResourceId("cmdv")
-                                        .withResourceType("hulsuuvmkjozkrwf")
-                                        .withResourceKind("iodjp")
-                                        .withResourceName("w")
-                                        .withTags(mapOf()),
-                                    new ResourceMetadata()
-                                        .withResourceId("dpvwryoqpsoaccta")
-                                        .withResourceType("kljla")
-                                        .withResourceKind("cr")
-                                        .withResourceName("fdfdosygexpa")
-                                        .withTags(mapOf()),
-                                    new ResourceMetadata()
-                                        .withResourceId("akhmsbzjhcrz")
-                                        .withResourceType("dphlxaolt")
-                                        .withResourceKind("trg")
-                                        .withResourceName("bpf")
-                                        .withTags(mapOf()),
-                                    new ResourceMetadata()
-                                        .withResourceId("s")
-                                        .withResourceType("zgvfcjrwz")
-                                        .withResourceKind("xjtfelluwfzit")
-                                        .withResourceName("peqfpjkjl")
-                                        .withTags(mapOf()))));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ReportResourceInner model = new ReportResourceInner()
+            .withProperties(new ReportProperties().withTriggerTime(OffsetDateTime.parse("2021-08-24T18:20:56Z"))
+                .withTimeZone("zafb")
+                .withResources(Arrays.asList(
+                    new ResourceMetadata().withResourceId("j")
+                        .withResourceType("btoqcjmkljavbqid")
+                        .withResourceKind("ajzyul")
+                        .withResourceOrigin(ResourceOrigin.AZURE)
+                        .withAccountId("jkrlkhbzhfepg"),
+                    new ResourceMetadata().withResourceId("gqexzlocxs")
+                        .withResourceType("aierhhb")
+                        .withResourceKind("glu")
+                        .withResourceOrigin(ResourceOrigin.AZURE)
+                        .withAccountId("tjaodxobnb")))
+                .withOfferGuid("clwhijcoejctbz")
+                .withStorageInfo(new StorageInfo().withSubscriptionId("dzxibqeojnxqbzvd")
+                    .withResourceGroup("t")
+                    .withAccountName("deicbtwnpzao")
+                    .withLocation("uhrhcffcyddgl")));
         model = BinaryData.fromObject(model).toObject(ReportResourceInner.class);
-        Assertions.assertEquals("huxinpmqnj", model.properties().offerGuid());
-        Assertions.assertEquals("qwixjspro", model.properties().timeZone());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-07T15:56:43Z"), model.properties().triggerTime());
-        Assertions.assertEquals("cmdv", model.properties().resources().get(0).resourceId());
-        Assertions.assertEquals("hulsuuvmkjozkrwf", model.properties().resources().get(0).resourceType());
-        Assertions.assertEquals("iodjp", model.properties().resources().get(0).resourceKind());
-        Assertions.assertEquals("w", model.properties().resources().get(0).resourceName());
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-24T18:20:56Z"), model.properties().triggerTime());
+        Assertions.assertEquals("zafb", model.properties().timeZone());
+        Assertions.assertEquals("j", model.properties().resources().get(0).resourceId());
+        Assertions.assertEquals("btoqcjmkljavbqid", model.properties().resources().get(0).resourceType());
+        Assertions.assertEquals("ajzyul", model.properties().resources().get(0).resourceKind());
+        Assertions.assertEquals(ResourceOrigin.AZURE, model.properties().resources().get(0).resourceOrigin());
+        Assertions.assertEquals("jkrlkhbzhfepg", model.properties().resources().get(0).accountId());
+        Assertions.assertEquals("clwhijcoejctbz", model.properties().offerGuid());
+        Assertions.assertEquals("dzxibqeojnxqbzvd", model.properties().storageInfo().subscriptionId());
+        Assertions.assertEquals("t", model.properties().storageInfo().resourceGroup());
+        Assertions.assertEquals("deicbtwnpzao", model.properties().storageInfo().accountName());
+        Assertions.assertEquals("uhrhcffcyddgl", model.properties().storageInfo().location());
     }
 }

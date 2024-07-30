@@ -6,16 +6,28 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * AzureResource(IaaS VM) Specific feature support request.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "featureType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "featureType",
+    defaultImpl = AzureVMResourceFeatureSupportRequest.class,
+    visible = true)
 @JsonTypeName("AzureVMResourceBackup")
 @Fluent
 public final class AzureVMResourceFeatureSupportRequest extends FeatureSupportRequest {
+    /*
+     * backup support feature type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "featureType", required = true)
+    private String featureType = "AzureVMResourceBackup";
+
     /*
      * Size of the resource: VM size(A/D series etc) in case of IaasVM
      */
@@ -32,6 +44,16 @@ public final class AzureVMResourceFeatureSupportRequest extends FeatureSupportRe
      * Creates an instance of AzureVMResourceFeatureSupportRequest class.
      */
     public AzureVMResourceFeatureSupportRequest() {
+    }
+
+    /**
+     * Get the featureType property: backup support feature type.
+     * 
+     * @return the featureType value.
+     */
+    @Override
+    public String featureType() {
+        return this.featureType;
     }
 
     /**

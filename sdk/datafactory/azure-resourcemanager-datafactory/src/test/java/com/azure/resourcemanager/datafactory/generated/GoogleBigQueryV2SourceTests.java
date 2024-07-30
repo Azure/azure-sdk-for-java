@@ -11,16 +11,19 @@ public final class GoogleBigQueryV2SourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GoogleBigQueryV2Source model = BinaryData.fromString(
-            "{\"type\":\"GoogleBigQueryV2Source\",\"query\":\"datahndfpf\",\"queryTimeout\":\"datafdgf\",\"additionalColumns\":\"dataoeh\",\"sourceRetryCount\":\"datapkssjbw\",\"sourceRetryWait\":\"dataxdgcfcfky\",\"maxConcurrentConnections\":\"datajwxhslrbwwk\",\"disableMetricsCollection\":\"datawodhsodofsxjiky\",\"\":{\"cxdmxhuwldfa\":\"datauhuixqwogg\",\"dkbgsg\":\"datakyft\",\"ayqkg\":\"datapyckmncrutoudjm\"}}")
+            "{\"type\":\"GoogleBigQueryV2Source\",\"query\":\"datajwiz\",\"queryTimeout\":\"dataifz\",\"additionalColumns\":\"dataxtykjrdxlximvr\",\"sourceRetryCount\":\"datajja\",\"sourceRetryWait\":\"dataaskullvtsauj\",\"maxConcurrentConnections\":\"datahtz\",\"disableMetricsCollection\":\"datazqrpfhzxkjyg\",\"\":{\"jcozbnmthxcm\":\"datadgwdha\",\"exn\":\"dataq\",\"msmzykpnjgi\":\"datapvox\"}}")
             .toObject(GoogleBigQueryV2Source.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GoogleBigQueryV2Source model
-            = new GoogleBigQueryV2Source().withSourceRetryCount("datapkssjbw").withSourceRetryWait("dataxdgcfcfky")
-                .withMaxConcurrentConnections("datajwxhslrbwwk").withDisableMetricsCollection("datawodhsodofsxjiky")
-                .withQueryTimeout("datafdgf").withAdditionalColumns("dataoeh").withQuery("datahndfpf");
+        GoogleBigQueryV2Source model = new GoogleBigQueryV2Source().withSourceRetryCount("datajja")
+            .withSourceRetryWait("dataaskullvtsauj")
+            .withMaxConcurrentConnections("datahtz")
+            .withDisableMetricsCollection("datazqrpfhzxkjyg")
+            .withQueryTimeout("dataifz")
+            .withAdditionalColumns("dataxtykjrdxlximvr")
+            .withQuery("datajwiz");
         model = BinaryData.fromObject(model).toObject(GoogleBigQueryV2Source.class);
     }
 }

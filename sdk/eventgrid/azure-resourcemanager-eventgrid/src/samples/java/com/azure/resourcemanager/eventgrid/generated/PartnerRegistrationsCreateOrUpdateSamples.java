@@ -12,9 +12,7 @@ import java.util.Map;
  */
 public final class PartnerRegistrationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
-     * PartnerRegistrations_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/PartnerRegistrations_CreateOrUpdate.json
      */
     /**
      * Sample code: PartnerRegistrations_CreateOrUpdate.
@@ -23,7 +21,9 @@ public final class PartnerRegistrationsCreateOrUpdateSamples {
      */
     public static void
         partnerRegistrationsCreateOrUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.partnerRegistrations().define("examplePartnerRegistrationName1").withRegion("global")
+        manager.partnerRegistrations()
+            .define("examplePartnerRegistrationName1")
+            .withRegion("global")
             .withExistingResourceGroup("examplerg")
             .withTags(
                 mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder", "key3", "fakeTokenPlaceholder"))

@@ -12,18 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class MapperPolicyRecurrenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MapperPolicyRecurrence model = BinaryData.fromString("{\"frequency\":\"Hour\",\"interval\":1799145797}")
+        MapperPolicyRecurrence model = BinaryData.fromString("{\"frequency\":\"Minute\",\"interval\":1079278403}")
             .toObject(MapperPolicyRecurrence.class);
-        Assertions.assertEquals(FrequencyType.HOUR, model.frequency());
-        Assertions.assertEquals(1799145797, model.interval());
+        Assertions.assertEquals(FrequencyType.MINUTE, model.frequency());
+        Assertions.assertEquals(1079278403, model.interval());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MapperPolicyRecurrence model
-            = new MapperPolicyRecurrence().withFrequency(FrequencyType.HOUR).withInterval(1799145797);
+            = new MapperPolicyRecurrence().withFrequency(FrequencyType.MINUTE).withInterval(1079278403);
         model = BinaryData.fromObject(model).toObject(MapperPolicyRecurrence.class);
-        Assertions.assertEquals(FrequencyType.HOUR, model.frequency());
-        Assertions.assertEquals(1799145797, model.interval());
+        Assertions.assertEquals(FrequencyType.MINUTE, model.frequency());
+        Assertions.assertEquals(1079278403, model.interval());
     }
 }

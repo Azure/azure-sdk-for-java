@@ -15,20 +15,21 @@ public final class TriggerPipelineReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TriggerPipelineReference model = BinaryData.fromString(
-            "{\"pipelineReference\":{\"referenceName\":\"wkpphefsb\",\"name\":\"lbzxomeikjc\"},\"parameters\":{\"qbxyxoyfpuqqi\":\"dataacnmwpfsuqtaaz\"}}")
+            "{\"pipelineReference\":{\"referenceName\":\"adswz\",\"name\":\"uyem\"},\"parameters\":{\"wyrmouv\":\"datauowhlxl\",\"rfowtdvrfmvlih\":\"datalgmokzkl\",\"hdxlw\":\"datavjdrqcrjidhftuk\"}}")
             .toObject(TriggerPipelineReference.class);
-        Assertions.assertEquals("wkpphefsb", model.pipelineReference().referenceName());
-        Assertions.assertEquals("lbzxomeikjc", model.pipelineReference().name());
+        Assertions.assertEquals("adswz", model.pipelineReference().referenceName());
+        Assertions.assertEquals("uyem", model.pipelineReference().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TriggerPipelineReference model = new TriggerPipelineReference()
-            .withPipelineReference(new PipelineReference().withReferenceName("wkpphefsb").withName("lbzxomeikjc"))
-            .withParameters(mapOf("qbxyxoyfpuqqi", "dataacnmwpfsuqtaaz"));
+            .withPipelineReference(new PipelineReference().withReferenceName("adswz").withName("uyem"))
+            .withParameters(
+                mapOf("wyrmouv", "datauowhlxl", "rfowtdvrfmvlih", "datalgmokzkl", "hdxlw", "datavjdrqcrjidhftuk"));
         model = BinaryData.fromObject(model).toObject(TriggerPipelineReference.class);
-        Assertions.assertEquals("wkpphefsb", model.pipelineReference().referenceName());
-        Assertions.assertEquals("lbzxomeikjc", model.pipelineReference().name());
+        Assertions.assertEquals("adswz", model.pipelineReference().referenceName());
+        Assertions.assertEquals("uyem", model.pipelineReference().name());
     }
 
     // Use "Map.of" if available

@@ -36,7 +36,7 @@ public final class AzureFunctionActivityTypeProperties {
      */
     @JsonProperty(value = "headers")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> headers;
+    private Map<String, Object> headers;
 
     /*
      * Represents the payload that will be sent to the endpoint. Required for POST/PUT method, not allowed for GET
@@ -100,7 +100,7 @@ public final class AzureFunctionActivityTypeProperties {
      * 
      * @return the headers value.
      */
-    public Map<String, String> headers() {
+    public Map<String, Object> headers() {
         return this.headers;
     }
 
@@ -112,7 +112,7 @@ public final class AzureFunctionActivityTypeProperties {
      * @param headers the headers value to set.
      * @return the AzureFunctionActivityTypeProperties object itself.
      */
-    public AzureFunctionActivityTypeProperties withHeaders(Map<String, String> headers) {
+    public AzureFunctionActivityTypeProperties withHeaders(Map<String, Object> headers) {
         this.headers = headers;
         return this;
     }
@@ -146,12 +146,14 @@ public final class AzureFunctionActivityTypeProperties {
      */
     public void validate() {
         if (method() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property method in model AzureFunctionActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property method in model AzureFunctionActivityTypeProperties"));
         }
         if (functionName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property functionName in model AzureFunctionActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property functionName in model AzureFunctionActivityTypeProperties"));
         }
     }
 

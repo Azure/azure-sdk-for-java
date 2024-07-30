@@ -117,7 +117,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
             @BodyParam("application/json") VolumeQuotaRulePatch body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/volumeQuotaRules/{volumeQuotaRuleName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -126,7 +126,7 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
             @PathParam("volumeQuotaRuleName") String volumeQuotaRuleName, @QueryParam("api-version") String apiVersion,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -1136,10 +1136,11 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter volumeQuotaRuleName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                    accountName, poolName, volumeName, volumeQuotaRuleName, this.client.getApiVersion(), context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, this.client.getApiVersion(),
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1187,9 +1188,10 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter volumeQuotaRuleName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, poolName, volumeName, volumeQuotaRuleName, this.client.getApiVersion(), context);
+            accountName, poolName, volumeName, volumeQuotaRuleName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1329,7 +1331,8 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String poolName, String volumeName,
         String volumeQuotaRuleName, Context context) {
         return beginDeleteAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

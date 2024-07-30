@@ -80,8 +80,8 @@ public final class SapBWLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the systemNumber property: System number of the BW system. (Usually a two-digit decimal number represented
-     * as a string.) Type: string (or Expression with resultType string).
+     * Get the systemNumber property: System number of the BW system. (Usually a two-digit decimal number represented as
+     * a string.) Type: string (or Expression with resultType string).
      * 
      * @return the systemNumber value.
      */
@@ -90,8 +90,8 @@ public final class SapBWLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the systemNumber property: System number of the BW system. (Usually a two-digit decimal number represented
-     * as a string.) Type: string (or Expression with resultType string).
+     * Set the systemNumber property: System number of the BW system. (Usually a two-digit decimal number represented as
+     * a string.) Type: string (or Expression with resultType string).
      * 
      * @param systemNumber the systemNumber value to set.
      * @return the SapBWLinkedServiceTypeProperties object itself.
@@ -166,8 +166,8 @@ public final class SapBWLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -176,8 +176,8 @@ public final class SapBWLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SapBWLinkedServiceTypeProperties object itself.
@@ -194,16 +194,19 @@ public final class SapBWLinkedServiceTypeProperties {
      */
     public void validate() {
         if (server() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property server in model SapBWLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property server in model SapBWLinkedServiceTypeProperties"));
         }
         if (systemNumber() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property systemNumber in model SapBWLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property systemNumber in model SapBWLinkedServiceTypeProperties"));
         }
         if (clientId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property clientId in model SapBWLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property clientId in model SapBWLinkedServiceTypeProperties"));
         }
         if (password() != null) {
             password().validate();

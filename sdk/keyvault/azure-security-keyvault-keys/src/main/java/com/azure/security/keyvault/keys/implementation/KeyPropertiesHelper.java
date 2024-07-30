@@ -18,6 +18,7 @@ public final class KeyPropertiesHelper {
         void setId(KeyProperties keyProperties, String id);
         void setManaged(KeyProperties keyProperties, Boolean managed);
         void setRecoverableDays(KeyProperties keyProperties, Integer recoverableDays);
+        void setHsmPlatform(KeyProperties keyProperties, String hsmPlatform);
     }
 
     public static void setCreatedOn(KeyProperties keyProperties, OffsetDateTime createdOn) {
@@ -50,6 +51,10 @@ public final class KeyPropertiesHelper {
 
     public static void setRecoverableDays(KeyProperties keyProperties, Integer recoverableDays) {
         accessor.setRecoverableDays(keyProperties, recoverableDays);
+    }
+
+    public static void setHsmPlatform(KeyProperties keyProperties, String hsmPlatform) {
+        accessor.setHsmPlatform(keyProperties, hsmPlatform);
     }
 
     public static void setAccessor(KeyPropertiesAccessor accessor) {

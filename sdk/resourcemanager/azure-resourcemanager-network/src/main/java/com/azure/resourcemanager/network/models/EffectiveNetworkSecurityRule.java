@@ -194,8 +194,8 @@ public final class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Get the sourcePortRanges property: The source port ranges. Expected values include a single integer between 0
-     * and 65535, a range using '-' as separator (e.g. 100-400), or an asterisk (*).
+     * Get the sourcePortRanges property: The source port ranges. Expected values include a single integer between 0 and
+     * 65535, a range using '-' as separator (e.g. 100-400), or an asterisk (*).
      * 
      * @return the sourcePortRanges value.
      */
@@ -204,8 +204,8 @@ public final class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Set the sourcePortRanges property: The source port ranges. Expected values include a single integer between 0
-     * and 65535, a range using '-' as separator (e.g. 100-400), or an asterisk (*).
+     * Set the sourcePortRanges property: The source port ranges. Expected values include a single integer between 0 and
+     * 65535, a range using '-' as separator (e.g. 100-400), or an asterisk (*).
      * 
      * @param sourcePortRanges the sourcePortRanges value to set.
      * @return the EffectiveNetworkSecurityRule object itself.

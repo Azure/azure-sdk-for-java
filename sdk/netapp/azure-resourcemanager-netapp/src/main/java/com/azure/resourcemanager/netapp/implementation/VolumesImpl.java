@@ -42,12 +42,12 @@ public final class VolumesImpl implements Volumes {
 
     public PagedIterable<Volume> list(String resourceGroupName, String accountName, String poolName) {
         PagedIterable<VolumeInner> inner = this.serviceClient().list(resourceGroupName, accountName, poolName);
-        return Utils.mapPage(inner, inner1 -> new VolumeImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VolumeImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Volume> list(String resourceGroupName, String accountName, String poolName, Context context) {
         PagedIterable<VolumeInner> inner = this.serviceClient().list(resourceGroupName, accountName, poolName, context);
-        return Utils.mapPage(inner, inner1 -> new VolumeImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VolumeImpl(inner1, this.manager()));
     }
 
     public Response<Volume> getWithResponse(String resourceGroupName, String accountName, String poolName,
@@ -93,8 +93,8 @@ public final class VolumesImpl implements Volumes {
 
     public Volume populateAvailabilityZone(String resourceGroupName, String accountName, String poolName,
         String volumeName, Context context) {
-        VolumeInner inner = this.serviceClient().populateAvailabilityZone(resourceGroupName, accountName, poolName,
-            volumeName, context);
+        VolumeInner inner = this.serviceClient()
+            .populateAvailabilityZone(resourceGroupName, accountName, poolName, volumeName, context);
         if (inner != null) {
             return new VolumeImpl(inner, this.manager());
         } else {
@@ -119,15 +119,6 @@ public final class VolumesImpl implements Volumes {
     public void resetCifsPassword(String resourceGroupName, String accountName, String poolName, String volumeName,
         Context context) {
         this.serviceClient().resetCifsPassword(resourceGroupName, accountName, poolName, volumeName, context);
-    }
-
-    public void splitCloneFromParent(String resourceGroupName, String accountName, String poolName, String volumeName) {
-        this.serviceClient().splitCloneFromParent(resourceGroupName, accountName, poolName, volumeName);
-    }
-
-    public void splitCloneFromParent(String resourceGroupName, String accountName, String poolName, String volumeName,
-        Context context) {
-        this.serviceClient().splitCloneFromParent(resourceGroupName, accountName, poolName, volumeName, context);
     }
 
     public void breakFileLocks(String resourceGroupName, String accountName, String poolName, String volumeName) {
@@ -177,14 +168,14 @@ public final class VolumesImpl implements Volumes {
 
     public void reestablishReplication(String resourceGroupName, String accountName, String poolName, String volumeName,
         ReestablishReplicationRequest body, Context context) {
-        this.serviceClient().reestablishReplication(resourceGroupName, accountName, poolName, volumeName, body,
-            context);
+        this.serviceClient()
+            .reestablishReplication(resourceGroupName, accountName, poolName, volumeName, body, context);
     }
 
     public Response<ReplicationStatus> replicationStatusWithResponse(String resourceGroupName, String accountName,
         String poolName, String volumeName, Context context) {
-        Response<ReplicationStatusInner> inner = this.serviceClient().replicationStatusWithResponse(resourceGroupName,
-            accountName, poolName, volumeName, context);
+        Response<ReplicationStatusInner> inner = this.serviceClient()
+            .replicationStatusWithResponse(resourceGroupName, accountName, poolName, volumeName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ReplicationStatusImpl(inner.getValue(), this.manager()));
@@ -208,14 +199,14 @@ public final class VolumesImpl implements Volumes {
         String volumeName) {
         PagedIterable<ReplicationInner> inner
             = this.serviceClient().listReplications(resourceGroupName, accountName, poolName, volumeName);
-        return Utils.mapPage(inner, inner1 -> new ReplicationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReplicationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Replication> listReplications(String resourceGroupName, String accountName, String poolName,
         String volumeName, Context context) {
         PagedIterable<ReplicationInner> inner
             = this.serviceClient().listReplications(resourceGroupName, accountName, poolName, volumeName, context);
-        return Utils.mapPage(inner, inner1 -> new ReplicationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReplicationImpl(inner1, this.manager()));
     }
 
     public void resyncReplication(String resourceGroupName, String accountName, String poolName, String volumeName) {
@@ -294,22 +285,22 @@ public final class VolumesImpl implements Volumes {
     }
 
     public Volume getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
-        String poolName = Utils.getValueFromIdByName(id, "capacityPools");
+        String poolName = ResourceManagerUtils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
-        String volumeName = Utils.getValueFromIdByName(id, "volumes");
+        String volumeName = ResourceManagerUtils.getValueFromIdByName(id, "volumes");
         if (volumeName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
@@ -318,22 +309,22 @@ public final class VolumesImpl implements Volumes {
     }
 
     public Response<Volume> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
-        String poolName = Utils.getValueFromIdByName(id, "capacityPools");
+        String poolName = ResourceManagerUtils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
-        String volumeName = Utils.getValueFromIdByName(id, "volumes");
+        String volumeName = ResourceManagerUtils.getValueFromIdByName(id, "volumes");
         if (volumeName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
@@ -342,22 +333,22 @@ public final class VolumesImpl implements Volumes {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
-        String poolName = Utils.getValueFromIdByName(id, "capacityPools");
+        String poolName = ResourceManagerUtils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
-        String volumeName = Utils.getValueFromIdByName(id, "volumes");
+        String volumeName = ResourceManagerUtils.getValueFromIdByName(id, "volumes");
         if (volumeName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
@@ -367,22 +358,22 @@ public final class VolumesImpl implements Volumes {
     }
 
     public void deleteByIdWithResponse(String id, Boolean forceDelete, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
-        String poolName = Utils.getValueFromIdByName(id, "capacityPools");
+        String poolName = ResourceManagerUtils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
-        String volumeName = Utils.getValueFromIdByName(id, "volumes");
+        String volumeName = ResourceManagerUtils.getValueFromIdByName(id, "volumes");
         if (volumeName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));

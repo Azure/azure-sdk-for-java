@@ -23,7 +23,8 @@ public final class CheckAvailabilityResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CheckAvailabilityResponseInner model = new CheckAvailabilityResponseInner().withIsAvailable(true)
-            .withReason(InAvailabilityReasonType.ALREADY_EXISTS).withMessage("czwtruwiqzbqjv");
+            .withReason(InAvailabilityReasonType.ALREADY_EXISTS)
+            .withMessage("czwtruwiqzbqjv");
         model = BinaryData.fromObject(model).toObject(CheckAvailabilityResponseInner.class);
         Assertions.assertEquals(true, model.isAvailable());
         Assertions.assertEquals(InAvailabilityReasonType.ALREADY_EXISTS, model.reason());

@@ -12,22 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ServerRestartParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerRestartParameter model =
-            BinaryData
-                .fromString("{\"restartWithFailover\":\"Enabled\",\"maxFailoverSeconds\":1752385169}")
+        ServerRestartParameter model
+            = BinaryData.fromString("{\"restartWithFailover\":\"Enabled\",\"maxFailoverSeconds\":1877680716}")
                 .toObject(ServerRestartParameter.class);
         Assertions.assertEquals(EnableStatusEnum.ENABLED, model.restartWithFailover());
-        Assertions.assertEquals(1752385169, model.maxFailoverSeconds());
+        Assertions.assertEquals(1877680716, model.maxFailoverSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerRestartParameter model =
-            new ServerRestartParameter()
-                .withRestartWithFailover(EnableStatusEnum.ENABLED)
-                .withMaxFailoverSeconds(1752385169);
+        ServerRestartParameter model = new ServerRestartParameter().withRestartWithFailover(EnableStatusEnum.ENABLED)
+            .withMaxFailoverSeconds(1877680716);
         model = BinaryData.fromObject(model).toObject(ServerRestartParameter.class);
         Assertions.assertEquals(EnableStatusEnum.ENABLED, model.restartWithFailover());
-        Assertions.assertEquals(1752385169, model.maxFailoverSeconds());
+        Assertions.assertEquals(1877680716, model.maxFailoverSeconds());
     }
 }

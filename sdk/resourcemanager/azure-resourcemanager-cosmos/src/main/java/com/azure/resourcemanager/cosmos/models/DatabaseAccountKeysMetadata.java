@@ -53,8 +53,8 @@ public final class DatabaseAccountKeysMetadata {
     }
 
     /**
-     * Get the secondaryMasterKey property: The metadata related to the Secondary Read-Write Key for the given Cosmos
-     * DB database account.
+     * Get the secondaryMasterKey property: The metadata related to the Secondary Read-Write Key for the given Cosmos DB
+     * database account.
      * 
      * @return the secondaryMasterKey value.
      */
@@ -63,8 +63,8 @@ public final class DatabaseAccountKeysMetadata {
     }
 
     /**
-     * Get the primaryReadonlyMasterKey property: The metadata related to the Primary Read-Only Key for the given
-     * Cosmos DB database account.
+     * Get the primaryReadonlyMasterKey property: The metadata related to the Primary Read-Only Key for the given Cosmos
+     * DB database account.
      * 
      * @return the primaryReadonlyMasterKey value.
      */

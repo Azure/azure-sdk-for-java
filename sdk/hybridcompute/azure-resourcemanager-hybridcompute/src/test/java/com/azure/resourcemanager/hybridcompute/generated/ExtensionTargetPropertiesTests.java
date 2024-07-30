@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ExtensionTargetPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExtensionTargetProperties model =
-            BinaryData.fromString("{\"targetVersion\":\"gqzcjr\"}").toObject(ExtensionTargetProperties.class);
-        Assertions.assertEquals("gqzcjr", model.targetVersion());
+        ExtensionTargetProperties model
+            = BinaryData.fromString("{\"targetVersion\":\"qbhsfxobl\"}").toObject(ExtensionTargetProperties.class);
+        Assertions.assertEquals("qbhsfxobl", model.targetVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExtensionTargetProperties model = new ExtensionTargetProperties().withTargetVersion("gqzcjr");
+        ExtensionTargetProperties model = new ExtensionTargetProperties().withTargetVersion("qbhsfxobl");
         model = BinaryData.fromObject(model).toObject(ExtensionTargetProperties.class);
-        Assertions.assertEquals("gqzcjr", model.targetVersion());
+        Assertions.assertEquals("qbhsfxobl", model.targetVersion());
     }
 }

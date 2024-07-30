@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The scaling rule. */
+/**
+ * The scaling rule.
+ */
 @Fluent
 public final class ScalingRule {
     /*
@@ -36,13 +38,15 @@ public final class ScalingRule {
     @JsonProperty(value = "comparisonRule", required = true)
     private ComparisonRule comparisonRule;
 
-    /** Creates an instance of ScalingRule class. */
+    /**
+     * Creates an instance of ScalingRule class.
+     */
     public ScalingRule() {
     }
 
     /**
      * Get the actionType property: The action type.
-     *
+     * 
      * @return the actionType value.
      */
     public ScaleActionType actionType() {
@@ -51,7 +55,7 @@ public final class ScalingRule {
 
     /**
      * Set the actionType property: The action type.
-     *
+     * 
      * @param actionType the actionType value to set.
      * @return the ScalingRule object itself.
      */
@@ -63,7 +67,7 @@ public final class ScalingRule {
     /**
      * Get the evaluationCount property: This is an evaluation count for a scaling condition, the number of times a
      * trigger condition should be successful, before scaling activity is triggered.
-     *
+     * 
      * @return the evaluationCount value.
      */
     public int evaluationCount() {
@@ -73,7 +77,7 @@ public final class ScalingRule {
     /**
      * Set the evaluationCount property: This is an evaluation count for a scaling condition, the number of times a
      * trigger condition should be successful, before scaling activity is triggered.
-     *
+     * 
      * @param evaluationCount the evaluationCount value to set.
      * @return the ScalingRule object itself.
      */
@@ -84,7 +88,7 @@ public final class ScalingRule {
 
     /**
      * Get the scalingMetric property: Metrics name for individual workloads. For example: cpu.
-     *
+     * 
      * @return the scalingMetric value.
      */
     public String scalingMetric() {
@@ -93,7 +97,7 @@ public final class ScalingRule {
 
     /**
      * Set the scalingMetric property: Metrics name for individual workloads. For example: cpu.
-     *
+     * 
      * @param scalingMetric the scalingMetric value to set.
      * @return the ScalingRule object itself.
      */
@@ -104,7 +108,7 @@ public final class ScalingRule {
 
     /**
      * Get the comparisonRule property: The comparison rule.
-     *
+     * 
      * @return the comparisonRule value.
      */
     public ComparisonRule comparisonRule() {
@@ -113,7 +117,7 @@ public final class ScalingRule {
 
     /**
      * Set the comparisonRule property: The comparison rule.
-     *
+     * 
      * @param comparisonRule the comparisonRule value to set.
      * @return the ScalingRule object itself.
      */
@@ -124,24 +128,21 @@ public final class ScalingRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (actionType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property actionType in model ScalingRule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property actionType in model ScalingRule"));
         }
         if (scalingMetric() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property scalingMetric in model ScalingRule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property scalingMetric in model ScalingRule"));
         }
         if (comparisonRule() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property comparisonRule in model ScalingRule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property comparisonRule in model ScalingRule"));
         } else {
             comparisonRule().validate();
         }

@@ -5,53 +5,62 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * A copy activity Oracle source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("OracleSource")
 @Fluent
 public final class OracleSource extends CopySource {
     /*
+     * Copy source type.
+     */
+    private String type = "OracleSource";
+
+    /*
      * Oracle reader query. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "oracleReaderQuery")
     private Object oracleReaderQuery;
 
     /*
-     * Query timeout. Type: string (or Expression with resultType string), pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
-    @JsonProperty(value = "queryTimeout")
     private Object queryTimeout;
 
     /*
      * The partition mechanism that will be used for Oracle read in parallel.
      */
-    @JsonProperty(value = "partitionOption")
     private OraclePartitionOption partitionOption;
 
     /*
      * The settings that will be leveraged for Oracle source partitioning.
      */
-    @JsonProperty(value = "partitionSettings")
     private OraclePartitionSettings partitionSettings;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
-     * Expression with resultType array of objects).
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with resultType array of objects).
      */
-    @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
     /**
      * Creates an instance of OracleSource class.
      */
     public OracleSource() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -183,5 +192,77 @@ public final class OracleSource extends CopySource {
     public OracleSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("oracleReaderQuery", this.oracleReaderQuery);
+        jsonWriter.writeUntypedField("queryTimeout", this.queryTimeout);
+        jsonWriter.writeStringField("partitionOption",
+            this.partitionOption == null ? null : this.partitionOption.toString());
+        jsonWriter.writeJsonField("partitionSettings", this.partitionSettings);
+        jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OracleSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OracleSource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OracleSource.
+     */
+    public static OracleSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OracleSource deserializedOracleSource = new OracleSource();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceRetryCount".equals(fieldName)) {
+                    deserializedOracleSource.setSourceRetryCount(reader.readUntyped());
+                } else if ("sourceRetryWait".equals(fieldName)) {
+                    deserializedOracleSource.setSourceRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedOracleSource.setMaxConcurrentConnections(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedOracleSource.type = reader.getString();
+                } else if ("oracleReaderQuery".equals(fieldName)) {
+                    deserializedOracleSource.oracleReaderQuery = reader.readUntyped();
+                } else if ("queryTimeout".equals(fieldName)) {
+                    deserializedOracleSource.queryTimeout = reader.readUntyped();
+                } else if ("partitionOption".equals(fieldName)) {
+                    deserializedOracleSource.partitionOption = OraclePartitionOption.fromString(reader.getString());
+                } else if ("partitionSettings".equals(fieldName)) {
+                    deserializedOracleSource.partitionSettings = OraclePartitionSettings.fromJson(reader);
+                } else if ("additionalColumns".equals(fieldName)) {
+                    deserializedOracleSource.additionalColumns = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedOracleSource.setAdditionalProperties(additionalProperties);
+
+            return deserializedOracleSource;
+        });
     }
 }

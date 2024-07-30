@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Products. */
+/**
+ * Resource collection API of Products.
+ */
 public interface Products {
     /**
      * List Product resources by Catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface Products {
 
     /**
      * List Product resources by Catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param context The context to associate with this operation.
@@ -37,7 +39,7 @@ public interface Products {
 
     /**
      * Get a Product. '.default' and '.unassigned' are system defined values and cannot be used for product name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -47,12 +49,12 @@ public interface Products {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Product along with {@link Response}.
      */
-    Response<Product> getWithResponse(
-        String resourceGroupName, String catalogName, String productName, Context context);
+    Response<Product> getWithResponse(String resourceGroupName, String catalogName, String productName,
+        Context context);
 
     /**
      * Get a Product. '.default' and '.unassigned' are system defined values and cannot be used for product name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -65,7 +67,7 @@ public interface Products {
 
     /**
      * Delete a Product. '.default' and '.unassigned' are system defined values and cannot be used for product name'.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -77,7 +79,7 @@ public interface Products {
 
     /**
      * Delete a Product. '.default' and '.unassigned' are system defined values and cannot be used for product name'.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -91,7 +93,7 @@ public interface Products {
     /**
      * Counts devices in product. '.default' and '.unassigned' are system defined values and cannot be used for product
      * name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -101,13 +103,13 @@ public interface Products {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response to the action call for count devices in a catalog along with {@link Response}.
      */
-    Response<CountDeviceResponse> countDevicesWithResponse(
-        String resourceGroupName, String catalogName, String productName, Context context);
+    Response<CountDevicesResponse> countDevicesWithResponse(String resourceGroupName, String catalogName,
+        String productName, Context context);
 
     /**
      * Counts devices in product. '.default' and '.unassigned' are system defined values and cannot be used for product
      * name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -116,12 +118,12 @@ public interface Products {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response to the action call for count devices in a catalog.
      */
-    CountDeviceResponse countDevices(String resourceGroupName, String catalogName, String productName);
+    CountDevicesResponse countDevices(String resourceGroupName, String catalogName, String productName);
 
     /**
      * Generates default device groups for the product. '.default' and '.unassigned' are system defined values and
      * cannot be used for product name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -130,13 +132,13 @@ public interface Products {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a DeviceGroup list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DeviceGroup> generateDefaultDeviceGroups(
-        String resourceGroupName, String catalogName, String productName);
+    PagedIterable<DeviceGroup> generateDefaultDeviceGroups(String resourceGroupName, String catalogName,
+        String productName);
 
     /**
      * Generates default device groups for the product. '.default' and '.unassigned' are system defined values and
      * cannot be used for product name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -146,12 +148,12 @@ public interface Products {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a DeviceGroup list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DeviceGroup> generateDefaultDeviceGroups(
-        String resourceGroupName, String catalogName, String productName, Context context);
+    PagedIterable<DeviceGroup> generateDefaultDeviceGroups(String resourceGroupName, String catalogName,
+        String productName, Context context);
 
     /**
      * Get a Product. '.default' and '.unassigned' are system defined values and cannot be used for product name.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -162,7 +164,7 @@ public interface Products {
 
     /**
      * Get a Product. '.default' and '.unassigned' are system defined values and cannot be used for product name.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -174,7 +176,7 @@ public interface Products {
 
     /**
      * Delete a Product. '.default' and '.unassigned' are system defined values and cannot be used for product name'.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -184,7 +186,7 @@ public interface Products {
 
     /**
      * Delete a Product. '.default' and '.unassigned' are system defined values and cannot be used for product name'.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -195,7 +197,7 @@ public interface Products {
 
     /**
      * Begins definition for a new Product resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Product definition.
      */

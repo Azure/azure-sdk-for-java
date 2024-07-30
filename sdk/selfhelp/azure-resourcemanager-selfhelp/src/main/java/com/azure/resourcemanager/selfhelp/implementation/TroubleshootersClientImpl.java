@@ -59,8 +59,8 @@ public final class TroubleshootersClientImpl implements TroubleshootersClient {
     }
 
     /**
-     * The interface defining all the services for HelpRPTroubleshooters to be used by the proxy service to perform
-     * REST calls.
+     * The interface defining all the services for HelpRPTroubleshooters to be used by the proxy service to perform REST
+     * calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "HelpRPTroubleshooter")

@@ -9,9 +9,7 @@ package com.azure.resourcemanager.eventgrid.generated;
  */
 public final class PartnerTopicEventSubscriptionsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
-     * PartnerTopicEventSubscriptions_Delete.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/PartnerTopicEventSubscriptions_Delete.json
      */
     /**
      * Sample code: PartnerTopicEventSubscriptions_Delete.
@@ -20,7 +18,7 @@ public final class PartnerTopicEventSubscriptionsDeleteSamples {
      */
     public static void
         partnerTopicEventSubscriptionsDelete(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.partnerTopicEventSubscriptions().delete("examplerg", "examplePartnerTopic1", "examplesubscription1",
-            com.azure.core.util.Context.NONE);
+        manager.partnerTopicEventSubscriptions()
+            .delete("examplerg", "examplePartnerTopic1", "examplesubscription1", com.azure.core.util.Context.NONE);
     }
 }

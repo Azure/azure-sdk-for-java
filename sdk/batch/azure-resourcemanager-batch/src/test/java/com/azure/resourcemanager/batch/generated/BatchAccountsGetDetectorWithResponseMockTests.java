@@ -31,7 +31,7 @@ public final class BatchAccountsGetDetectorWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"value\":\"j\"},\"etag\":\"nlfzxiavrmbz\",\"id\":\"nokixrjqcirgz\",\"name\":\"frl\",\"type\":\"zszrnwoiindfpw\"}";
+            = "{\"properties\":{\"value\":\"wxqibyq\"},\"etag\":\"y\",\"id\":\"wxwlmdjrkvfgb\",\"name\":\"fvpdbo\",\"type\":\"acizsjqlhkrr\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -49,9 +49,8 @@ public final class BatchAccountsGetDetectorWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DetectorResponse response = manager.batchAccounts()
-            .getDetectorWithResponse("zpdrhneu", "owqkdwytisi", "ircgpikpz", com.azure.core.util.Context.NONE)
-            .getValue();
+            .getDetectorWithResponse("nmdyodnwzxl", "jc", "nhltiugcxn", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("j", response.value());
+        Assertions.assertEquals("wxqibyq", response.value());
     }
 }

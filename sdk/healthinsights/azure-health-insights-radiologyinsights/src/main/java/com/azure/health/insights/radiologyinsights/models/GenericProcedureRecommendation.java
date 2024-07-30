@@ -7,23 +7,36 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Generic procedure information.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = GenericProcedureRecommendation.class,
+    visible = true)
 @JsonTypeName("genericProcedureRecommendation")
 @Immutable
 public final class GenericProcedureRecommendation extends ProcedureRecommendation {
+
+    /*
+     * Discriminator property for ProcedureRecommendation.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private String kind = "genericProcedureRecommendation";
 
     /*
      * Procedure modality : SNOMED CT code.
      */
     @Generated
     @JsonProperty(value = "code")
-    private FhirR4CodeableConcept code;
+    private final FhirR4CodeableConcept code;
 
     /*
      * Procedure description : MANAGEMENT PROCEDURE (PROCEDURE) or CONSULTATION (PROCEDURE) based on SNOMED CT.
@@ -41,6 +54,17 @@ public final class GenericProcedureRecommendation extends ProcedureRecommendatio
     @JsonCreator
     private GenericProcedureRecommendation(@JsonProperty(value = "code") FhirR4CodeableConcept code) {
         this.code = code;
+    }
+
+    /**
+     * Get the kind property: Discriminator property for ProcedureRecommendation.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public String getKind() {
+        return this.kind;
     }
 
     /**

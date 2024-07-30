@@ -13,26 +13,21 @@ import org.junit.jupiter.api.Assertions;
 public final class SiteInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SiteInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Unknown\",\"networkFunctions\":[{\"id\":\"b\"},{\"id\":\"hhxud\"},{\"id\":\"vodhtn\"}]},\"location\":\"rudhzmmesckdl\",\"tags\":{\"dfgsftufqobrj\":\"zrcxfailcfxwmdbo\",\"cc\":\"nac\",\"kizvytn\":\"knh\",\"aaeranokqgukk\":\"zvulj\"},\"id\":\"qnvb\",\"name\":\"oylaxxul\",\"type\":\"disdosfjbjsvgj\"}")
-                .toObject(SiteInner.class);
-        Assertions.assertEquals("rudhzmmesckdl", model.location());
-        Assertions.assertEquals("zrcxfailcfxwmdbo", model.tags().get("dfgsftufqobrj"));
+        SiteInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Deleted\",\"networkFunctions\":[{\"id\":\"rdve\"}]},\"location\":\"wsdtutnwl\",\"tags\":{\"dxukuqgsjjxundxg\":\"cvuzhyrmewipmve\",\"hhzjhfj\":\"etw\",\"qsxvmhf\":\"hvvmuvgpmun\",\"yue\":\"uzjyihsasbhudypo\"},\"id\":\"slynsqyrpfoo\",\"name\":\"rlttymsjnygqdnfw\",\"type\":\"zdzgtilaxhnfhqly\"}")
+            .toObject(SiteInner.class);
+        Assertions.assertEquals("wsdtutnwl", model.location());
+        Assertions.assertEquals("cvuzhyrmewipmve", model.tags().get("dxukuqgsjjxundxg"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SiteInner model =
-            new SiteInner()
-                .withLocation("rudhzmmesckdl")
-                .withTags(
-                    mapOf(
-                        "dfgsftufqobrj", "zrcxfailcfxwmdbo", "cc", "nac", "kizvytn", "knh", "aaeranokqgukk", "zvulj"));
+        SiteInner model = new SiteInner().withLocation("wsdtutnwl")
+            .withTags(mapOf("dxukuqgsjjxundxg", "cvuzhyrmewipmve", "hhzjhfj", "etw", "qsxvmhf", "hvvmuvgpmun", "yue",
+                "uzjyihsasbhudypo"));
         model = BinaryData.fromObject(model).toObject(SiteInner.class);
-        Assertions.assertEquals("rudhzmmesckdl", model.location());
-        Assertions.assertEquals("zrcxfailcfxwmdbo", model.tags().get("dfgsftufqobrj"));
+        Assertions.assertEquals("wsdtutnwl", model.location());
+        Assertions.assertEquals("cvuzhyrmewipmve", model.tags().get("dxukuqgsjjxundxg"));
     }
 
     // Use "Map.of" if available

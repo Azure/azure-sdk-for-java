@@ -188,7 +188,7 @@ public class QuorumReader {
                                             }
 
                                             // else barrier was not successful
-                                            logger.warn(
+                                            logger.info(
                                                 "QuorumSelected: Could not converge on the LSN {} GlobalCommittedLSN {} after primary read barrier with read quorum {} for strong read, Responses: {}",
                                                 secondaryQuorumReadResult.selectedLsn,
                                                 secondaryQuorumReadResult.globalCommittedSelectedLsn,
@@ -208,7 +208,7 @@ public class QuorumReader {
 
                             case QuorumNotSelected:
                                 if (hasPerformedReadFromPrimary.v) {
-                                    logger.warn(
+                                    logger.info(
                                         "QuorumNotSelected: Primary read already attempted. Quorum could not be "
                                         + "selected after retrying on secondaries. ReadQuorumResult StoreResponses: {}",
                                         String.join(";", secondaryQuorumReadResult.storeResponses));
@@ -218,7 +218,7 @@ public class QuorumReader {
                                             HttpConstants.SubStatusCodes.READ_QUORUM_NOT_MET));
                                 }
 
-                                logger.warn(
+                                logger.info(
                                     "QuorumNotSelected: Quorum could not be selected with read quorum of {}, "
                                     + "ReadQuorumResult StoreResponses: {}",
                                     readQuorumValue,
@@ -244,7 +244,7 @@ public class QuorumReader {
                                             }
                                         } else if (response.shouldRetryOnSecondary) {
                                             shouldRetryOnSecondary.v = true;
-                                            logger.warn("QuorumNotSelected: ReadPrimary did not succeed. Will retry "
+                                            logger.info("QuorumNotSelected: ReadPrimary did not succeed. Will retry "
                                                 + "on secondary. ReadQuorumResult StoreResponses: {}",
                                                 String.join(";", secondaryQuorumReadResult.storeResponses));
                                             hasPerformedReadFromPrimary.v = true;
@@ -255,7 +255,7 @@ public class QuorumReader {
                                             // Primary replica even for quorum selection in this case for the retry
                                             includePrimary.v = true;
                                         } else {
-                                            logger.warn("QuorumNotSelected: Could not get successful response from ReadPrimary");
+                                            logger.info("QuorumNotSelected: Could not get successful response from ReadPrimary");
                                             return Flux.error(new GoneException(String.format(RMResources.ReadQuorumNotMet, readQuorumValue), HttpConstants.SubStatusCodes.READ_QUORUM_NOT_MET));
                                         }
 
@@ -278,7 +278,7 @@ public class QuorumReader {
                    //   In case there is an empty response from above flatMap, it means we could not complete read quorum
                    //   So we will throw an error, which will be eventually retried.
                    .switchIfEmpty(Flux.defer(() -> {
-                       logger.warn("Could not complete read quorum with read quorum value of {}", readQuorumValue);
+                       logger.info("Could not complete read quorum with read quorum value of {}", readQuorumValue);
 
                     return Flux.error(new GoneException(
                            String.format(
@@ -466,7 +466,7 @@ public class QuorumReader {
                 }
 
                 if (storeResult.currentReplicaSetSize > readQuorum) {
-                    logger.warn(
+                    logger.info(
                         "Unexpected response. Replica Set size is {} which is greater than min value {}", storeResult.currentReplicaSetSize, readQuorum);
                     return Mono.just(new ReadPrimaryResult(entity.requestContext.requestChargeTracker,  /*isSuccessful */ false,
                         /* shouldRetryOnSecondary: */ true, /* response: */ null));
@@ -477,7 +477,7 @@ public class QuorumReader {
                 // In case of async replication (if enabled for bounded staleness), the store LSN can be ahead of the quorum committed LSN if the primary is able write to faster than secondary acks.
                 // We pick higher of the 2 LSN and wait for the other to reach that LSN.
                 if (storeResult.lsn != storeResult.quorumAckedLSN) {
-                    logger.warn("Store LSN {} and quorum acked LSN {} don't match", storeResult.lsn, storeResult.quorumAckedLSN);
+                    logger.info("Store LSN {} and quorum acked LSN {} don't match", storeResult.lsn, storeResult.quorumAckedLSN);
                     long higherLsn = storeResult.lsn > storeResult.quorumAckedLSN ? storeResult.lsn : storeResult.quorumAckedLSN;
 
                     Mono<RxDocumentServiceRequest> waitForLsnRequestObs = BarrierRequestHelper.createAsync(this.diagnosticsClientContext, entity, this.authorizationTokenProvider, higherLsn, null);
@@ -536,14 +536,14 @@ public class QuorumReader {
                     }
 
                     if (storeResult.currentReplicaSetSize > readQuorum) {
-                        logger.warn(
+                        logger.info(
                             "Unexpected response. Replica Set size is {} which is greater than min value {}", storeResult.currentReplicaSetSize, readQuorum);
                             return Flux.just(PrimaryReadOutcome.QuorumInconclusive);
                     }
 
                     // Java this will move to the repeat logic
                     if (storeResult.lsn < lsnToWaitFor || storeResult.quorumAckedLSN < lsnToWaitFor) {
-                        logger.warn(
+                        logger.info(
                             "Store LSN {} or quorum acked LSN {} are lower than expected LSN {}", storeResult.lsn, storeResult.quorumAckedLSN, lsnToWaitFor);
 
                             return Flux.just(0L).delayElements(

@@ -244,28 +244,34 @@ public final class VpnClientIPsecParametersInner {
      */
     public void validate() {
         if (ipsecEncryption() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property ipsecEncryption in model VpnClientIPsecParametersInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property ipsecEncryption in model VpnClientIPsecParametersInner"));
         }
         if (ipsecIntegrity() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property ipsecIntegrity in model VpnClientIPsecParametersInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property ipsecIntegrity in model VpnClientIPsecParametersInner"));
         }
         if (ikeEncryption() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property ikeEncryption in model VpnClientIPsecParametersInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property ikeEncryption in model VpnClientIPsecParametersInner"));
         }
         if (ikeIntegrity() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property ikeIntegrity in model VpnClientIPsecParametersInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property ikeIntegrity in model VpnClientIPsecParametersInner"));
         }
         if (dhGroup() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property dhGroup in model VpnClientIPsecParametersInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dhGroup in model VpnClientIPsecParametersInner"));
         }
         if (pfsGroup() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property pfsGroup in model VpnClientIPsecParametersInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property pfsGroup in model VpnClientIPsecParametersInner"));
         }
     }
 

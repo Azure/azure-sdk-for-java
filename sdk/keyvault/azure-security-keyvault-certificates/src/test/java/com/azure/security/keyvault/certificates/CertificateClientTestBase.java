@@ -19,7 +19,8 @@ import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.certificates.models.AdministratorContact;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
@@ -96,25 +97,13 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
         CertificateServiceVersion serviceVersion) {
         TokenCredential credential;
 
-        if (!interceptorManager.isPlaybackMode()) {
-            String clientId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_ID");
-            String clientKey = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_SECRET");
-            String tenantId = testTenantId == null
-                ? Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_TENANT_ID")
-                : testTenantId;
-
-            credential = new ClientSecretCredentialBuilder()
-                .clientSecret(Objects.requireNonNull(clientKey, "The client key cannot be null"))
-                .clientId(Objects.requireNonNull(clientId, "The client id cannot be null"))
-                .tenantId(Objects.requireNonNull(tenantId, "The tenant id cannot be null"))
-                .additionallyAllowedTenants("*")
-                .build();
-
-            if (interceptorManager.isRecordMode()) {
-                List<TestProxySanitizer> customSanitizers = new ArrayList<>();
-                customSanitizers.add(new TestProxySanitizer("value", "-----BEGIN PRIVATE KEY-----\\n(.+\\n)*-----END PRIVATE KEY-----\\n", "-----BEGIN PRIVATE KEY-----\\nREDACTED\\n-----END PRIVATE KEY-----\\n", TestProxySanitizerType.BODY_KEY));
-                interceptorManager.addSanitizers(customSanitizers);
-            }
+        if (interceptorManager.isLiveMode()) {
+            credential = new AzurePowerShellCredentialBuilder().additionallyAllowedTenants("*").build();
+        } else if (interceptorManager.isRecordMode()) {
+            credential = new DefaultAzureCredentialBuilder().additionallyAllowedTenants("*").build();
+            List<TestProxySanitizer> customSanitizers = new ArrayList<>();
+            customSanitizers.add(new TestProxySanitizer("value", "-----BEGIN PRIVATE KEY-----\\n(.+\\n)*-----END PRIVATE KEY-----\\n", "-----BEGIN PRIVATE KEY-----\\nREDACTED\\n-----END PRIVATE KEY-----\\n", TestProxySanitizerType.BODY_KEY));
+            interceptorManager.addSanitizers(customSanitizers);
         } else {
             credential = new MockTokenCredential();
 
@@ -129,6 +118,11 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
             .serviceVersion(serviceVersion)
             .credential(credential)
             .httpClient(httpClient);
+
+        if (!interceptorManager.isLiveMode()) {
+            // Remove `id` and `name` sanitizers from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493");
+        }
 
         if (interceptorManager.isPlaybackMode()) {
             return builder.retryOptions(PLAYBACK_RETRY_OPTIONS);

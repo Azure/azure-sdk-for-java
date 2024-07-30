@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Role definition permissions. */
+/**
+ * Role definition permissions.
+ */
 @Fluent
 public final class Permission {
     /*
@@ -35,13 +37,15 @@ public final class Permission {
     @JsonProperty(value = "notDataActions")
     private List<String> notDataActions;
 
-    /** Creates an instance of Permission class. */
+    /**
+     * Creates an instance of Permission class.
+     */
     public Permission() {
     }
 
     /**
      * Get the actions property: Allowed actions.
-     *
+     * 
      * @return the actions value.
      */
     public List<String> actions() {
@@ -50,7 +54,7 @@ public final class Permission {
 
     /**
      * Set the actions property: Allowed actions.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the Permission object itself.
      */
@@ -61,7 +65,7 @@ public final class Permission {
 
     /**
      * Get the notActions property: Denied actions.
-     *
+     * 
      * @return the notActions value.
      */
     public List<String> notActions() {
@@ -70,7 +74,7 @@ public final class Permission {
 
     /**
      * Set the notActions property: Denied actions.
-     *
+     * 
      * @param notActions the notActions value to set.
      * @return the Permission object itself.
      */
@@ -81,7 +85,7 @@ public final class Permission {
 
     /**
      * Get the dataActions property: Allowed Data actions.
-     *
+     * 
      * @return the dataActions value.
      */
     public List<String> dataActions() {
@@ -90,7 +94,7 @@ public final class Permission {
 
     /**
      * Set the dataActions property: Allowed Data actions.
-     *
+     * 
      * @param dataActions the dataActions value to set.
      * @return the Permission object itself.
      */
@@ -101,7 +105,7 @@ public final class Permission {
 
     /**
      * Get the notDataActions property: Denied Data actions.
-     *
+     * 
      * @return the notDataActions value.
      */
     public List<String> notDataActions() {
@@ -110,7 +114,7 @@ public final class Permission {
 
     /**
      * Set the notDataActions property: Denied Data actions.
-     *
+     * 
      * @param notDataActions the notDataActions value to set.
      * @return the Permission object itself.
      */
@@ -121,7 +125,7 @@ public final class Permission {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -6,14 +6,20 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 
-/** Azure FirstParty Managed Certificate provided by other first party resource providers to enable HTTPS. */
+/**
+ * Azure FirstParty Managed Certificate provided by other first party resource providers to enable HTTPS.
+ */
 @Fluent
 public final class AzureFirstPartyManagedCertificate extends Certificate {
-    /** Creates an instance of AzureFirstPartyManagedCertificate class. */
+    /**
+     * Creates an instance of AzureFirstPartyManagedCertificate class.
+     */
     public AzureFirstPartyManagedCertificate() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFirstPartyManagedCertificate withType(SecretType type) {
         super.withType(type);
@@ -22,7 +28,7 @@ public final class AzureFirstPartyManagedCertificate extends Certificate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

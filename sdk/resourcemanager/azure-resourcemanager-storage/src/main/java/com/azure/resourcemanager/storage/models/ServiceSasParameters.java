@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The parameters to list service SAS credentials of a specific resource. */
+/**
+ * The parameters to list service SAS credentials of a specific resource.
+ */
 @Fluent
 public final class ServiceSasParameters {
     /*
@@ -123,13 +125,15 @@ public final class ServiceSasParameters {
     @JsonProperty(value = "rsct")
     private String contentType;
 
-    /** Creates an instance of ServiceSasParameters class. */
+    /**
+     * Creates an instance of ServiceSasParameters class.
+     */
     public ServiceSasParameters() {
     }
 
     /**
      * Get the canonicalizedResource property: The canonical path to the signed resource.
-     *
+     * 
      * @return the canonicalizedResource value.
      */
     public String canonicalizedResource() {
@@ -138,7 +142,7 @@ public final class ServiceSasParameters {
 
     /**
      * Set the canonicalizedResource property: The canonical path to the signed resource.
-     *
+     * 
      * @param canonicalizedResource the canonicalizedResource value to set.
      * @return the ServiceSasParameters object itself.
      */
@@ -150,7 +154,7 @@ public final class ServiceSasParameters {
     /**
      * Get the resource property: The signed services accessible with the service SAS. Possible values include: Blob
      * (b), Container (c), File (f), Share (s).
-     *
+     * 
      * @return the resource value.
      */
     public SignedResource resource() {
@@ -160,7 +164,7 @@ public final class ServiceSasParameters {
     /**
      * Set the resource property: The signed services accessible with the service SAS. Possible values include: Blob
      * (b), Container (c), File (f), Share (s).
-     *
+     * 
      * @param resource the resource value to set.
      * @return the ServiceSasParameters object itself.
      */
@@ -172,7 +176,7 @@ public final class ServiceSasParameters {
     /**
      * Get the permissions property: The signed permissions for the service SAS. Possible values include: Read (r),
      * Write (w), Delete (d), List (l), Add (a), Create (c), Update (u) and Process (p).
-     *
+     * 
      * @return the permissions value.
      */
     public Permissions permissions() {
@@ -182,7 +186,7 @@ public final class ServiceSasParameters {
     /**
      * Set the permissions property: The signed permissions for the service SAS. Possible values include: Read (r),
      * Write (w), Delete (d), List (l), Add (a), Create (c), Update (u) and Process (p).
-     *
+     * 
      * @param permissions the permissions value to set.
      * @return the ServiceSasParameters object itself.
      */
@@ -193,7 +197,7 @@ public final class ServiceSasParameters {
 
     /**
      * Get the ipAddressOrRange property: An IP address or a range of IP addresses from which to accept requests.
-     *
+     * 
      * @return the ipAddressOrRange value.
      */
     public String ipAddressOrRange() {
@@ -202,7 +206,7 @@ public final class ServiceSasParameters {
 
     /**
      * Set the ipAddressOrRange property: An IP address or a range of IP addresses from which to accept requests.
-     *
+     * 
      * @param ipAddressOrRange the ipAddressOrRange value to set.
      * @return the ServiceSasParameters object itself.
      */
@@ -213,7 +217,7 @@ public final class ServiceSasParameters {
 
     /**
      * Get the protocols property: The protocol permitted for a request made with the account SAS.
-     *
+     * 
      * @return the protocols value.
      */
     public HttpProtocol protocols() {
@@ -222,7 +226,7 @@ public final class ServiceSasParameters {
 
     /**
      * Set the protocols property: The protocol permitted for a request made with the account SAS.
-     *
+     * 
      * @param protocols the protocols value to set.
      * @return the ServiceSasParameters object itself.
      */
@@ -233,7 +237,7 @@ public final class ServiceSasParameters {
 
     /**
      * Get the sharedAccessStartTime property: The time at which the SAS becomes valid.
-     *
+     * 
      * @return the sharedAccessStartTime value.
      */
     public OffsetDateTime sharedAccessStartTime() {
@@ -242,7 +246,7 @@ public final class ServiceSasParameters {
 
     /**
      * Set the sharedAccessStartTime property: The time at which the SAS becomes valid.
-     *
+     * 
      * @param sharedAccessStartTime the sharedAccessStartTime value to set.
      * @return the ServiceSasParameters object itself.
      */
@@ -253,7 +257,7 @@ public final class ServiceSasParameters {
 
     /**
      * Get the sharedAccessExpiryTime property: The time at which the shared access signature becomes invalid.
-     *
+     * 
      * @return the sharedAccessExpiryTime value.
      */
     public OffsetDateTime sharedAccessExpiryTime() {
@@ -262,7 +266,7 @@ public final class ServiceSasParameters {
 
     /**
      * Set the sharedAccessExpiryTime property: The time at which the shared access signature becomes invalid.
-     *
+     * 
      * @param sharedAccessExpiryTime the sharedAccessExpiryTime value to set.
      * @return the ServiceSasParameters object itself.
      */
@@ -274,7 +278,7 @@ public final class ServiceSasParameters {
     /**
      * Get the identifier property: A unique value up to 64 characters in length that correlates to an access policy
      * specified for the container, queue, or table.
-     *
+     * 
      * @return the identifier value.
      */
     public String identifier() {
@@ -284,7 +288,7 @@ public final class ServiceSasParameters {
     /**
      * Set the identifier property: A unique value up to 64 characters in length that correlates to an access policy
      * specified for the container, queue, or table.
-     *
+     * 
      * @param identifier the identifier value to set.
      * @return the ServiceSasParameters object itself.
      */
@@ -295,7 +299,7 @@ public final class ServiceSasParameters {
 
     /**
      * Get the partitionKeyStart property: The start of partition key.
-     *
+     * 
      * @return the partitionKeyStart value.
      */
     public String partitionKeyStart() {
@@ -304,7 +308,7 @@ public final class ServiceSasParameters {
 
     /**
      * Set the partitionKeyStart property: The start of partition key.
-     *
+     * 
      * @param partitionKeyStart the partitionKeyStart value to set.
      * @return the ServiceSasParameters object itself.
      */
@@ -315,7 +319,7 @@ public final class ServiceSasParameters {
 
     /**
      * Get the partitionKeyEnd property: The end of partition key.
-     *
+     * 
      * @return the partitionKeyEnd value.
      */
     public String partitionKeyEnd() {
@@ -324,7 +328,7 @@ public final class ServiceSasParameters {
 
     /**
      * Set the partitionKeyEnd property: The end of partition key.
-     *
+     * 
      * @param partitionKeyEnd the partitionKeyEnd value to set.
      * @return the ServiceSasParameters object itself.
      */
@@ -335,7 +339,7 @@ public final class ServiceSasParameters {
 
     /**
      * Get the rowKeyStart property: The start of row key.
-     *
+     * 
      * @return the rowKeyStart value.
      */
     public String rowKeyStart() {
@@ -344,7 +348,7 @@ public final class ServiceSasParameters {
 
     /**
      * Set the rowKeyStart property: The start of row key.
-     *
+     * 
      * @param rowKeyStart the rowKeyStart value to set.
      * @return the ServiceSasParameters object itself.
      */
@@ -355,7 +359,7 @@ public final class ServiceSasParameters {
 
     /**
      * Get the rowKeyEnd property: The end of row key.
-     *
+     * 
      * @return the rowKeyEnd value.
      */
     public String rowKeyEnd() {
@@ -364,7 +368,7 @@ public final class ServiceSasParameters {
 
     /**
      * Set the rowKeyEnd property: The end of row key.
-     *
+     * 
      * @param rowKeyEnd the rowKeyEnd value to set.
      * @return the ServiceSasParameters object itself.
      */
@@ -375,7 +379,7 @@ public final class ServiceSasParameters {
 
     /**
      * Get the keyToSign property: The key to sign the account SAS token with.
-     *
+     * 
      * @return the keyToSign value.
      */
     public String keyToSign() {
@@ -384,7 +388,7 @@ public final class ServiceSasParameters {
 
     /**
      * Set the keyToSign property: The key to sign the account SAS token with.
-     *
+     * 
      * @param keyToSign the keyToSign value to set.
      * @return the ServiceSasParameters object itself.
      */
@@ -395,7 +399,7 @@ public final class ServiceSasParameters {
 
     /**
      * Get the cacheControl property: The response header override for cache control.
-     *
+     * 
      * @return the cacheControl value.
      */
     public String cacheControl() {
@@ -404,7 +408,7 @@ public final class ServiceSasParameters {
 
     /**
      * Set the cacheControl property: The response header override for cache control.
-     *
+     * 
      * @param cacheControl the cacheControl value to set.
      * @return the ServiceSasParameters object itself.
      */
@@ -415,7 +419,7 @@ public final class ServiceSasParameters {
 
     /**
      * Get the contentDisposition property: The response header override for content disposition.
-     *
+     * 
      * @return the contentDisposition value.
      */
     public String contentDisposition() {
@@ -424,7 +428,7 @@ public final class ServiceSasParameters {
 
     /**
      * Set the contentDisposition property: The response header override for content disposition.
-     *
+     * 
      * @param contentDisposition the contentDisposition value to set.
      * @return the ServiceSasParameters object itself.
      */
@@ -435,7 +439,7 @@ public final class ServiceSasParameters {
 
     /**
      * Get the contentEncoding property: The response header override for content encoding.
-     *
+     * 
      * @return the contentEncoding value.
      */
     public String contentEncoding() {
@@ -444,7 +448,7 @@ public final class ServiceSasParameters {
 
     /**
      * Set the contentEncoding property: The response header override for content encoding.
-     *
+     * 
      * @param contentEncoding the contentEncoding value to set.
      * @return the ServiceSasParameters object itself.
      */
@@ -455,7 +459,7 @@ public final class ServiceSasParameters {
 
     /**
      * Get the contentLanguage property: The response header override for content language.
-     *
+     * 
      * @return the contentLanguage value.
      */
     public String contentLanguage() {
@@ -464,7 +468,7 @@ public final class ServiceSasParameters {
 
     /**
      * Set the contentLanguage property: The response header override for content language.
-     *
+     * 
      * @param contentLanguage the contentLanguage value to set.
      * @return the ServiceSasParameters object itself.
      */
@@ -475,7 +479,7 @@ public final class ServiceSasParameters {
 
     /**
      * Get the contentType property: The response header override for content type.
-     *
+     * 
      * @return the contentType value.
      */
     public String contentType() {
@@ -484,7 +488,7 @@ public final class ServiceSasParameters {
 
     /**
      * Set the contentType property: The response header override for content type.
-     *
+     * 
      * @param contentType the contentType value to set.
      * @return the ServiceSasParameters object itself.
      */
@@ -495,15 +499,14 @@ public final class ServiceSasParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (canonicalizedResource() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property canonicalizedResource in model ServiceSasParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property canonicalizedResource in model ServiceSasParameters"));
         }
     }
 

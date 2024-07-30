@@ -26,25 +26,28 @@ public final class ConnectionMonitorEndpoint {
     private EndpointType type;
 
     /*
-     * Resource ID of the connection monitor endpoint.
+     * Resource ID of the connection monitor endpoint are supported for AzureVM, AzureVMSS, AzureVNet, AzureSubnet,
+     * MMAWorkspaceMachine, MMAWorkspaceNetwork, AzureArcVM endpoint type.
      */
     @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
-     * Address of the connection monitor endpoint (IP or domain name).
+     * Address of the connection monitor endpoint. Supported for AzureVM, ExternalAddress, ArcMachine,
+     * MMAWorkspaceMachine endpoint type.
      */
     @JsonProperty(value = "address")
     private String address;
 
     /*
-     * Filter for sub-items within the endpoint.
+     * Filter field is getting deprecated and should not be used. Instead use Include/Exclude scope fields for it.
      */
     @JsonProperty(value = "filter")
     private ConnectionMonitorEndpointFilter filter;
 
     /*
-     * Endpoint scope.
+     * Endpoint scope defines which target resource to monitor in case of compound resource endpoints like VMSS,
+     * AzureSubnet, AzureVNet, MMAWorkspaceNetwork, AzureArcNetwork.
      */
     @JsonProperty(value = "scope")
     private ConnectionMonitorEndpointScope scope;
@@ -54,6 +57,20 @@ public final class ConnectionMonitorEndpoint {
      */
     @JsonProperty(value = "coverageLevel")
     private CoverageLevel coverageLevel;
+
+    /*
+     * Location details is optional and only being used for 'AzureArcNetwork' type endpoints, which contains region
+     * details.
+     */
+    @JsonProperty(value = "locationDetails")
+    private ConnectionMonitorEndpointLocationDetails locationDetails;
+
+    /*
+     * Subscription ID for connection monitor endpoint. It's an optional parameter which is being used for
+     * 'AzureArcNetwork' type endpoint.
+     */
+    @JsonProperty(value = "subscriptionId")
+    private String subscriptionId;
 
     /**
      * Creates an instance of ConnectionMonitorEndpoint class.
@@ -102,7 +119,8 @@ public final class ConnectionMonitorEndpoint {
     }
 
     /**
-     * Get the resourceId property: Resource ID of the connection monitor endpoint.
+     * Get the resourceId property: Resource ID of the connection monitor endpoint are supported for AzureVM, AzureVMSS,
+     * AzureVNet, AzureSubnet, MMAWorkspaceMachine, MMAWorkspaceNetwork, AzureArcVM endpoint type.
      * 
      * @return the resourceId value.
      */
@@ -111,7 +129,8 @@ public final class ConnectionMonitorEndpoint {
     }
 
     /**
-     * Set the resourceId property: Resource ID of the connection monitor endpoint.
+     * Set the resourceId property: Resource ID of the connection monitor endpoint are supported for AzureVM, AzureVMSS,
+     * AzureVNet, AzureSubnet, MMAWorkspaceMachine, MMAWorkspaceNetwork, AzureArcVM endpoint type.
      * 
      * @param resourceId the resourceId value to set.
      * @return the ConnectionMonitorEndpoint object itself.
@@ -122,7 +141,8 @@ public final class ConnectionMonitorEndpoint {
     }
 
     /**
-     * Get the address property: Address of the connection monitor endpoint (IP or domain name).
+     * Get the address property: Address of the connection monitor endpoint. Supported for AzureVM, ExternalAddress,
+     * ArcMachine, MMAWorkspaceMachine endpoint type.
      * 
      * @return the address value.
      */
@@ -131,7 +151,8 @@ public final class ConnectionMonitorEndpoint {
     }
 
     /**
-     * Set the address property: Address of the connection monitor endpoint (IP or domain name).
+     * Set the address property: Address of the connection monitor endpoint. Supported for AzureVM, ExternalAddress,
+     * ArcMachine, MMAWorkspaceMachine endpoint type.
      * 
      * @param address the address value to set.
      * @return the ConnectionMonitorEndpoint object itself.
@@ -142,7 +163,8 @@ public final class ConnectionMonitorEndpoint {
     }
 
     /**
-     * Get the filter property: Filter for sub-items within the endpoint.
+     * Get the filter property: Filter field is getting deprecated and should not be used. Instead use Include/Exclude
+     * scope fields for it.
      * 
      * @return the filter value.
      */
@@ -151,7 +173,8 @@ public final class ConnectionMonitorEndpoint {
     }
 
     /**
-     * Set the filter property: Filter for sub-items within the endpoint.
+     * Set the filter property: Filter field is getting deprecated and should not be used. Instead use Include/Exclude
+     * scope fields for it.
      * 
      * @param filter the filter value to set.
      * @return the ConnectionMonitorEndpoint object itself.
@@ -162,7 +185,8 @@ public final class ConnectionMonitorEndpoint {
     }
 
     /**
-     * Get the scope property: Endpoint scope.
+     * Get the scope property: Endpoint scope defines which target resource to monitor in case of compound resource
+     * endpoints like VMSS, AzureSubnet, AzureVNet, MMAWorkspaceNetwork, AzureArcNetwork.
      * 
      * @return the scope value.
      */
@@ -171,7 +195,8 @@ public final class ConnectionMonitorEndpoint {
     }
 
     /**
-     * Set the scope property: Endpoint scope.
+     * Set the scope property: Endpoint scope defines which target resource to monitor in case of compound resource
+     * endpoints like VMSS, AzureSubnet, AzureVNet, MMAWorkspaceNetwork, AzureArcNetwork.
      * 
      * @param scope the scope value to set.
      * @return the ConnectionMonitorEndpoint object itself.
@@ -202,20 +227,67 @@ public final class ConnectionMonitorEndpoint {
     }
 
     /**
+     * Get the locationDetails property: Location details is optional and only being used for 'AzureArcNetwork' type
+     * endpoints, which contains region details.
+     * 
+     * @return the locationDetails value.
+     */
+    public ConnectionMonitorEndpointLocationDetails locationDetails() {
+        return this.locationDetails;
+    }
+
+    /**
+     * Set the locationDetails property: Location details is optional and only being used for 'AzureArcNetwork' type
+     * endpoints, which contains region details.
+     * 
+     * @param locationDetails the locationDetails value to set.
+     * @return the ConnectionMonitorEndpoint object itself.
+     */
+    public ConnectionMonitorEndpoint withLocationDetails(ConnectionMonitorEndpointLocationDetails locationDetails) {
+        this.locationDetails = locationDetails;
+        return this;
+    }
+
+    /**
+     * Get the subscriptionId property: Subscription ID for connection monitor endpoint. It's an optional parameter
+     * which is being used for 'AzureArcNetwork' type endpoint.
+     * 
+     * @return the subscriptionId value.
+     */
+    public String subscriptionId() {
+        return this.subscriptionId;
+    }
+
+    /**
+     * Set the subscriptionId property: Subscription ID for connection monitor endpoint. It's an optional parameter
+     * which is being used for 'AzureArcNetwork' type endpoint.
+     * 
+     * @param subscriptionId the subscriptionId value to set.
+     * @return the ConnectionMonitorEndpoint object itself.
+     */
+    public ConnectionMonitorEndpoint withSubscriptionId(String subscriptionId) {
+        this.subscriptionId = subscriptionId;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model ConnectionMonitorEndpoint"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model ConnectionMonitorEndpoint"));
         }
         if (filter() != null) {
             filter().validate();
         }
         if (scope() != null) {
             scope().validate();
+        }
+        if (locationDetails() != null) {
+            locationDetails().validate();
         }
     }
 

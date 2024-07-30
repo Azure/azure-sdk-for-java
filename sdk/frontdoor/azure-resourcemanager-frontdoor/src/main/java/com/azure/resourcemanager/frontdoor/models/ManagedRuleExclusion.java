@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Exclude variables from managed rule evaluation. */
+/**
+ * Exclude variables from managed rule evaluation.
+ */
 @Fluent
 public final class ManagedRuleExclusion {
     /*
@@ -18,8 +20,7 @@ public final class ManagedRuleExclusion {
     private ManagedRuleExclusionMatchVariable matchVariable;
 
     /*
-     * Comparison operator to apply to the selector when specifying which elements in the collection this exclusion
-     * applies to.
+     * Comparison operator to apply to the selector when specifying which elements in the collection this exclusion applies to.
      */
     @JsonProperty(value = "selectorMatchOperator", required = true)
     private ManagedRuleExclusionSelectorMatchOperator selectorMatchOperator;
@@ -30,13 +31,15 @@ public final class ManagedRuleExclusion {
     @JsonProperty(value = "selector", required = true)
     private String selector;
 
-    /** Creates an instance of ManagedRuleExclusion class. */
+    /**
+     * Creates an instance of ManagedRuleExclusion class.
+     */
     public ManagedRuleExclusion() {
     }
 
     /**
      * Get the matchVariable property: The variable type to be excluded.
-     *
+     * 
      * @return the matchVariable value.
      */
     public ManagedRuleExclusionMatchVariable matchVariable() {
@@ -45,7 +48,7 @@ public final class ManagedRuleExclusion {
 
     /**
      * Set the matchVariable property: The variable type to be excluded.
-     *
+     * 
      * @param matchVariable the matchVariable value to set.
      * @return the ManagedRuleExclusion object itself.
      */
@@ -57,7 +60,7 @@ public final class ManagedRuleExclusion {
     /**
      * Get the selectorMatchOperator property: Comparison operator to apply to the selector when specifying which
      * elements in the collection this exclusion applies to.
-     *
+     * 
      * @return the selectorMatchOperator value.
      */
     public ManagedRuleExclusionSelectorMatchOperator selectorMatchOperator() {
@@ -67,19 +70,19 @@ public final class ManagedRuleExclusion {
     /**
      * Set the selectorMatchOperator property: Comparison operator to apply to the selector when specifying which
      * elements in the collection this exclusion applies to.
-     *
+     * 
      * @param selectorMatchOperator the selectorMatchOperator value to set.
      * @return the ManagedRuleExclusion object itself.
      */
-    public ManagedRuleExclusion withSelectorMatchOperator(
-        ManagedRuleExclusionSelectorMatchOperator selectorMatchOperator) {
+    public ManagedRuleExclusion
+        withSelectorMatchOperator(ManagedRuleExclusionSelectorMatchOperator selectorMatchOperator) {
         this.selectorMatchOperator = selectorMatchOperator;
         return this;
     }
 
     /**
      * Get the selector property: Selector value for which elements in the collection this exclusion applies to.
-     *
+     * 
      * @return the selector value.
      */
     public String selector() {
@@ -88,7 +91,7 @@ public final class ManagedRuleExclusion {
 
     /**
      * Set the selector property: Selector value for which elements in the collection this exclusion applies to.
-     *
+     * 
      * @param selector the selector value to set.
      * @return the ManagedRuleExclusion object itself.
      */
@@ -99,26 +102,23 @@ public final class ManagedRuleExclusion {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (matchVariable() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property matchVariable in model ManagedRuleExclusion"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property matchVariable in model ManagedRuleExclusion"));
         }
         if (selectorMatchOperator() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property selectorMatchOperator in model ManagedRuleExclusion"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property selectorMatchOperator in model ManagedRuleExclusion"));
         }
         if (selector() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property selector in model ManagedRuleExclusion"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property selector in model ManagedRuleExclusion"));
         }
     }
 

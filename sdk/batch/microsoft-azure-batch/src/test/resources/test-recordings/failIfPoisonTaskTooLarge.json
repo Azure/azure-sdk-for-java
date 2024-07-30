@@ -1,62 +1,62 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/jobs?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 23 May 2023 05:07:41 GMT",
+      "date" : "Sat, 16 Mar 2024 07:31:50 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "dataserviceid" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/job-1",
+      "dataserviceid" : "https://sanjbatch.eastus.batch.azure.com/jobs/job-1",
       "retry-after" : "0",
-      "request-id" : "113edf44-57d6-494b-b258-79fccf01e5f1",
+      "request-id" : "373b6fcd-52d1-46e2-978d-39494db260ac",
       "StatusCode" : "201",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Tue, 23 May 2023 05:07:42 GMT",
+      "last-modified" : "Sat, 16 Mar 2024 07:31:51 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "767fb555-d233-4a26-81d7-e7dfad5fec02",
-      "etag" : "0x8DB5B4BA334FB2D",
-      "location" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/job-1",
+      "client-request-id" : "dc939a55-d961-4333-b63d-b1d98fe4110a",
+      "etag" : "0x8DC458B25C5FAFC",
+      "location" : "https://sanjbatch.eastus.batch.azure.com/jobs/job-1",
       "dataserviceversion" : "3.0",
       "Body" : ""
     }
   }, {
     "Method" : "POST",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/BatchUser-failIfPoisonTaskTooLarge/addtaskcollection?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/jobs/BatchUser-failIfPoisonTaskTooLarge/addtaskcollection?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 23 May 2023 05:07:42 GMT",
-      "content-length" : "460",
+      "date" : "Sat, 16 Mar 2024 07:31:51 GMT",
+      "content-length" : "447",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "f41dca36-89fb-41ce-91e8-278b03749826",
+      "client-request-id" : "037c4690-b3d7-48f6-855a-5bb33786bb79",
       "content-type" : "application/json;odata=minimalmetadata",
       "retry-after" : "0",
-      "request-id" : "29fb046d-4ada-4e0d-9c5b-893576e180d1",
+      "request-id" : "cd819ead-3a0b-41ce-8555-2d77dcd0fb4a",
       "StatusCode" : "413",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element\",\"code\":\"RequestBodyTooLarge\",\"message\":{\r\n    \"lang\":\"en-US\",\"value\":\"The request body is too large and exceeds the maximum permissible limit.\\nRequestId:29fb046d-4ada-4e0d-9c5b-893576e180d1\\nTime:2023-05-23T05:07:42.5999120Z\"\r\n  },\"values\":[\r\n    {\r\n      \"key\":\"MaxLimit\",\"value\":\"1048576\"\r\n    }\r\n  ]\r\n}",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element\",\"code\":\"RequestBodyTooLarge\",\"message\":{\r\n    \"lang\":\"en-US\",\"value\":\"The request body is too large and exceeds the maximum permissible limit.\\nRequestId:cd819ead-3a0b-41ce-8555-2d77dcd0fb4a\\nTime:2024-03-16T07:31:52.2030311Z\"\r\n  },\"values\":[\r\n    {\r\n      \"key\":\"MaxLimit\",\"value\":\"1048576\"\r\n    }\r\n  ]\r\n}",
       "strict-transport-security" : "max-age=31536000; includeSubDomains"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/jobs/BatchUser-failIfPoisonTaskTooLarge?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/jobs/BatchUser-failIfPoisonTaskTooLarge?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 23 May 2023 05:07:43 GMT",
+      "date" : "Sat, 16 Mar 2024 07:31:52 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "9c5b7b7f-67ba-4502-b702-38e9d57e904f",
+      "client-request-id" : "bc99e20b-52f5-4582-b4d1-a20d0e1c85ec",
       "retry-after" : "0",
-      "request-id" : "4cdd1d66-51a8-4f1e-a86f-57dfe6600df7",
+      "request-id" : "2d7c4456-3f76-40a5-a544-0be4e2981234",
       "StatusCode" : "202",
       "dataserviceversion" : "3.0",
       "Body" : "",

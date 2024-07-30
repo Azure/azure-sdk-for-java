@@ -10,60 +10,62 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.fluent.models.DevBoxDefinitionInner;
 import java.util.Map;
 
-/** An immutable client-side representation of DevBoxDefinition. */
+/**
+ * An immutable client-side representation of DevBoxDefinition.
+ */
 public interface DevBoxDefinition {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
 
     /**
      * Gets the imageValidationStatus property: Validation status of the configured image.
-     *
+     * 
      * @return the imageValidationStatus value.
      */
     ImageValidationStatus imageValidationStatus();
@@ -71,14 +73,14 @@ public interface DevBoxDefinition {
     /**
      * Gets the imageValidationErrorDetails property: Details for image validator error. Populated when the image
      * validation is not successful.
-     *
+     * 
      * @return the imageValidationErrorDetails value.
      */
     ImageValidationErrorDetails imageValidationErrorDetails();
 
     /**
      * Gets the validationStatus property: Validation status for the Dev Box Definition.
-     *
+     * 
      * @return the validationStatus value.
      */
     CatalogResourceValidationStatus validationStatus();
@@ -86,21 +88,21 @@ public interface DevBoxDefinition {
     /**
      * Gets the activeImageReference property: Image reference information for the currently active image (only
      * populated during updates).
-     *
+     * 
      * @return the activeImageReference value.
      */
     ImageReference activeImageReference();
 
     /**
      * Gets the imageReference property: Image reference information.
-     *
+     * 
      * @return the imageReference value.
      */
     ImageReference imageReference();
 
     /**
      * Gets the sku property: The SKU for Dev Boxes created using this definition.
-     *
+     * 
      * @return the sku value.
      */
     Sku sku();
@@ -108,7 +110,7 @@ public interface DevBoxDefinition {
     /**
      * Gets the osStorageType property: The storage type used for the Operating System disk of Dev Boxes created using
      * this definition.
-     *
+     * 
      * @return the osStorageType value.
      */
     String osStorageType();
@@ -117,58 +119,63 @@ public interface DevBoxDefinition {
      * Gets the hibernateSupport property: Indicates whether Dev Boxes created with this definition are capable of
      * hibernation. Not all images are capable of supporting hibernation. To find out more see
      * https://aka.ms/devbox/hibernate.
-     *
+     * 
      * @return the hibernateSupport value.
      */
     HibernateSupport hibernateSupport();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.devcenter.fluent.models.DevBoxDefinitionInner object.
-     *
+     * 
      * @return the inner object.
      */
     DevBoxDefinitionInner innerModel();
 
-    /** The entirety of the DevBoxDefinition definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the DevBoxDefinition definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The DevBoxDefinition definition stages. */
+    /**
+     * The DevBoxDefinition definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the DevBoxDefinition definition. */
+        /**
+         * The first stage of the DevBoxDefinition definition.
+         */
         interface Blank extends WithLocation {
         }
 
-        /** The stage of the DevBoxDefinition definition allowing to specify location. */
+        /**
+         * The stage of the DevBoxDefinition definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -176,18 +183,20 @@ public interface DevBoxDefinition {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
             WithParentResource withRegion(String location);
         }
 
-        /** The stage of the DevBoxDefinition definition allowing to specify parent resource. */
+        /**
+         * The stage of the DevBoxDefinition definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, devCenterName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param devCenterName The name of the devcenter.
              * @return the next definition stage.
@@ -199,84 +208,90 @@ public interface DevBoxDefinition {
          * The stage of the DevBoxDefinition definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithImageReference,
-                DefinitionStages.WithSku,
-                DefinitionStages.WithOsStorageType,
-                DefinitionStages.WithHibernateSupport {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithImageReference,
+            DefinitionStages.WithSku, DefinitionStages.WithOsStorageType, DefinitionStages.WithHibernateSupport {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             DevBoxDefinition create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             DevBoxDefinition create(Context context);
         }
 
-        /** The stage of the DevBoxDefinition definition allowing to specify tags. */
+        /**
+         * The stage of the DevBoxDefinition definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
 
-        /** The stage of the DevBoxDefinition definition allowing to specify imageReference. */
+        /**
+         * The stage of the DevBoxDefinition definition allowing to specify imageReference.
+         */
         interface WithImageReference {
             /**
              * Specifies the imageReference property: Image reference information..
-             *
+             * 
              * @param imageReference Image reference information.
              * @return the next definition stage.
              */
             WithCreate withImageReference(ImageReference imageReference);
         }
 
-        /** The stage of the DevBoxDefinition definition allowing to specify sku. */
+        /**
+         * The stage of the DevBoxDefinition definition allowing to specify sku.
+         */
         interface WithSku {
             /**
              * Specifies the sku property: The SKU for Dev Boxes created using this definition..
-             *
+             * 
              * @param sku The SKU for Dev Boxes created using this definition.
              * @return the next definition stage.
              */
             WithCreate withSku(Sku sku);
         }
 
-        /** The stage of the DevBoxDefinition definition allowing to specify osStorageType. */
+        /**
+         * The stage of the DevBoxDefinition definition allowing to specify osStorageType.
+         */
         interface WithOsStorageType {
             /**
              * Specifies the osStorageType property: The storage type used for the Operating System disk of Dev Boxes
              * created using this definition..
-             *
+             * 
              * @param osStorageType The storage type used for the Operating System disk of Dev Boxes created using this
-             *     definition.
+             * definition.
              * @return the next definition stage.
              */
             WithCreate withOsStorageType(String osStorageType);
         }
 
-        /** The stage of the DevBoxDefinition definition allowing to specify hibernateSupport. */
+        /**
+         * The stage of the DevBoxDefinition definition allowing to specify hibernateSupport.
+         */
         interface WithHibernateSupport {
             /**
              * Specifies the hibernateSupport property: Indicates whether Dev Boxes created with this definition are
              * capable of hibernation. Not all images are capable of supporting hibernation. To find out more see
              * https://aka.ms/devbox/hibernate.
-             *
+             * 
              * @param hibernateSupport Indicates whether Dev Boxes created with this definition are capable of
-             *     hibernation. Not all images are capable of supporting hibernation. To find out more see
-             *     https://aka.ms/devbox/hibernate.
+             * hibernation. Not all images are capable of supporting hibernation. To find out more see
+             * https://aka.ms/devbox/hibernate.
              * @return the next definition stage.
              */
             WithCreate withHibernateSupport(HibernateSupport hibernateSupport);
@@ -285,92 +300,102 @@ public interface DevBoxDefinition {
 
     /**
      * Begins update for the DevBoxDefinition resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     DevBoxDefinition.Update update();
 
-    /** The template for DevBoxDefinition update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithImageReference,
-            UpdateStages.WithSku,
-            UpdateStages.WithOsStorageType,
-            UpdateStages.WithHibernateSupport {
+    /**
+     * The template for DevBoxDefinition update.
+     */
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithImageReference, UpdateStages.WithSku,
+        UpdateStages.WithOsStorageType, UpdateStages.WithHibernateSupport {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         DevBoxDefinition apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         DevBoxDefinition apply(Context context);
     }
 
-    /** The DevBoxDefinition update stages. */
+    /**
+     * The DevBoxDefinition update stages.
+     */
     interface UpdateStages {
-        /** The stage of the DevBoxDefinition update allowing to specify tags. */
+        /**
+         * The stage of the DevBoxDefinition update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
         }
 
-        /** The stage of the DevBoxDefinition update allowing to specify imageReference. */
+        /**
+         * The stage of the DevBoxDefinition update allowing to specify imageReference.
+         */
         interface WithImageReference {
             /**
              * Specifies the imageReference property: Image reference information..
-             *
+             * 
              * @param imageReference Image reference information.
              * @return the next definition stage.
              */
             Update withImageReference(ImageReference imageReference);
         }
 
-        /** The stage of the DevBoxDefinition update allowing to specify sku. */
+        /**
+         * The stage of the DevBoxDefinition update allowing to specify sku.
+         */
         interface WithSku {
             /**
              * Specifies the sku property: The SKU for Dev Boxes created using this definition..
-             *
+             * 
              * @param sku The SKU for Dev Boxes created using this definition.
              * @return the next definition stage.
              */
             Update withSku(Sku sku);
         }
 
-        /** The stage of the DevBoxDefinition update allowing to specify osStorageType. */
+        /**
+         * The stage of the DevBoxDefinition update allowing to specify osStorageType.
+         */
         interface WithOsStorageType {
             /**
              * Specifies the osStorageType property: The storage type used for the Operating System disk of Dev Boxes
              * created using this definition..
-             *
+             * 
              * @param osStorageType The storage type used for the Operating System disk of Dev Boxes created using this
-             *     definition.
+             * definition.
              * @return the next definition stage.
              */
             Update withOsStorageType(String osStorageType);
         }
 
-        /** The stage of the DevBoxDefinition update allowing to specify hibernateSupport. */
+        /**
+         * The stage of the DevBoxDefinition update allowing to specify hibernateSupport.
+         */
         interface WithHibernateSupport {
             /**
              * Specifies the hibernateSupport property: Indicates whether Dev Boxes created with this definition are
              * capable of hibernation. Not all images are capable of supporting hibernation. To find out more see
              * https://aka.ms/devbox/hibernate.
-             *
+             * 
              * @param hibernateSupport Indicates whether Dev Boxes created with this definition are capable of
-             *     hibernation. Not all images are capable of supporting hibernation. To find out more see
-             *     https://aka.ms/devbox/hibernate.
+             * hibernation. Not all images are capable of supporting hibernation. To find out more see
+             * https://aka.ms/devbox/hibernate.
              * @return the next definition stage.
              */
             Update withHibernateSupport(HibernateSupport hibernateSupport);
@@ -379,14 +404,14 @@ public interface DevBoxDefinition {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     DevBoxDefinition refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

@@ -14,23 +14,25 @@ public final class IotConnectorPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IotConnectorProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Creating\",\"ingestionEndpointConfiguration\":{\"eventHubName\":\"aejxd\",\"consumerGroup\":\"tskzbbtdzumveek\",\"fullyQualifiedEventHubNamespace\":\"wozuhkf\"},\"deviceMapping\":{\"content\":\"datajyofdxluusdtto\"}}")
+            "{\"provisioningState\":\"Updating\",\"ingestionEndpointConfiguration\":{\"eventHubName\":\"gwb\",\"consumerGroup\":\"beldawkzbaliourq\",\"fullyQualifiedEventHubNamespace\":\"kauhashsfwxo\"},\"deviceMapping\":{\"content\":\"dataz\"}}")
             .toObject(IotConnectorProperties.class);
-        Assertions.assertEquals("aejxd", model.ingestionEndpointConfiguration().eventHubName());
-        Assertions.assertEquals("tskzbbtdzumveek", model.ingestionEndpointConfiguration().consumerGroup());
-        Assertions.assertEquals("wozuhkf", model.ingestionEndpointConfiguration().fullyQualifiedEventHubNamespace());
+        Assertions.assertEquals("gwb", model.ingestionEndpointConfiguration().eventHubName());
+        Assertions.assertEquals("beldawkzbaliourq", model.ingestionEndpointConfiguration().consumerGroup());
+        Assertions.assertEquals("kauhashsfwxo",
+            model.ingestionEndpointConfiguration().fullyQualifiedEventHubNamespace());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IotConnectorProperties model = new IotConnectorProperties()
-            .withIngestionEndpointConfiguration(
-                new IotEventHubIngestionEndpointConfiguration().withEventHubName("aejxd")
-                    .withConsumerGroup("tskzbbtdzumveek").withFullyQualifiedEventHubNamespace("wozuhkf"))
-            .withDeviceMapping(new IotMappingProperties().withContent("datajyofdxluusdtto"));
+            .withIngestionEndpointConfiguration(new IotEventHubIngestionEndpointConfiguration().withEventHubName("gwb")
+                .withConsumerGroup("beldawkzbaliourq")
+                .withFullyQualifiedEventHubNamespace("kauhashsfwxo"))
+            .withDeviceMapping(new IotMappingProperties().withContent("dataz"));
         model = BinaryData.fromObject(model).toObject(IotConnectorProperties.class);
-        Assertions.assertEquals("aejxd", model.ingestionEndpointConfiguration().eventHubName());
-        Assertions.assertEquals("tskzbbtdzumveek", model.ingestionEndpointConfiguration().consumerGroup());
-        Assertions.assertEquals("wozuhkf", model.ingestionEndpointConfiguration().fullyQualifiedEventHubNamespace());
+        Assertions.assertEquals("gwb", model.ingestionEndpointConfiguration().eventHubName());
+        Assertions.assertEquals("beldawkzbaliourq", model.ingestionEndpointConfiguration().consumerGroup());
+        Assertions.assertEquals("kauhashsfwxo",
+            model.ingestionEndpointConfiguration().fullyQualifiedEventHubNamespace());
     }
 }

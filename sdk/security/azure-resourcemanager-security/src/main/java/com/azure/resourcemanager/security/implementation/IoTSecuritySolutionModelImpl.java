@@ -162,14 +162,18 @@ public final class IoTSecuritySolutionModelImpl
     }
 
     public IoTSecuritySolutionModel create() {
-        this.innerObject = serviceManager.serviceClient().getIotSecuritySolutions()
-            .createOrUpdateWithResponse(resourceGroupName, solutionName, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIotSecuritySolutions()
+            .createOrUpdateWithResponse(resourceGroupName, solutionName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public IoTSecuritySolutionModel create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getIotSecuritySolutions()
-            .createOrUpdateWithResponse(resourceGroupName, solutionName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIotSecuritySolutions()
+            .createOrUpdateWithResponse(resourceGroupName, solutionName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -185,14 +189,16 @@ public final class IoTSecuritySolutionModelImpl
     }
 
     public IoTSecuritySolutionModel apply() {
-        this.innerObject = serviceManager.serviceClient().getIotSecuritySolutions()
+        this.innerObject = serviceManager.serviceClient()
+            .getIotSecuritySolutions()
             .updateWithResponse(resourceGroupName, solutionName, updateUpdateIotSecuritySolutionData, Context.NONE)
             .getValue();
         return this;
     }
 
     public IoTSecuritySolutionModel apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getIotSecuritySolutions()
+        this.innerObject = serviceManager.serviceClient()
+            .getIotSecuritySolutions()
             .updateWithResponse(resourceGroupName, solutionName, updateUpdateIotSecuritySolutionData, context)
             .getValue();
         return this;
@@ -207,14 +213,18 @@ public final class IoTSecuritySolutionModelImpl
     }
 
     public IoTSecuritySolutionModel refresh() {
-        this.innerObject = serviceManager.serviceClient().getIotSecuritySolutions()
-            .getByResourceGroupWithResponse(resourceGroupName, solutionName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIotSecuritySolutions()
+            .getByResourceGroupWithResponse(resourceGroupName, solutionName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public IoTSecuritySolutionModel refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getIotSecuritySolutions()
-            .getByResourceGroupWithResponse(resourceGroupName, solutionName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIotSecuritySolutions()
+            .getByResourceGroupWithResponse(resourceGroupName, solutionName, context)
+            .getValue();
         return this;
     }
 

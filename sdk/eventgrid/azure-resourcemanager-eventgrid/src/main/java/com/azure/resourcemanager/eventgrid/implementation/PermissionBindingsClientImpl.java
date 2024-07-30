@@ -456,8 +456,10 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
     public SyncPoller<PollResult<PermissionBindingInner>, PermissionBindingInner> beginCreateOrUpdate(
         String resourceGroupName, String namespaceName, String permissionBindingName,
         PermissionBindingInner permissionBindingInfo, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, namespaceName, permissionBindingName,
-            permissionBindingInfo, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, namespaceName, permissionBindingName, permissionBindingInfo,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -478,7 +480,8 @@ public final class PermissionBindingsClientImpl implements PermissionBindingsCli
     private Mono<PermissionBindingInner> createOrUpdateAsync(String resourceGroupName, String namespaceName,
         String permissionBindingName, PermissionBindingInner permissionBindingInfo) {
         return beginCreateOrUpdateAsync(resourceGroupName, namespaceName, permissionBindingName, permissionBindingInfo)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

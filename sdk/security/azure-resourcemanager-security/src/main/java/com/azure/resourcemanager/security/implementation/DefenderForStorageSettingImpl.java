@@ -84,14 +84,18 @@ public final class DefenderForStorageSettingImpl
     }
 
     public DefenderForStorageSetting create() {
-        this.innerObject = serviceManager.serviceClient().getDefenderForStorages()
-            .createWithResponse(resourceId, settingName, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDefenderForStorages()
+            .createWithResponse(resourceId, settingName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public DefenderForStorageSetting create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDefenderForStorages()
-            .createWithResponse(resourceId, settingName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDefenderForStorages()
+            .createWithResponse(resourceId, settingName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -102,14 +106,18 @@ public final class DefenderForStorageSettingImpl
     }
 
     public DefenderForStorageSetting refresh() {
-        this.innerObject = serviceManager.serviceClient().getDefenderForStorages()
-            .getWithResponse(resourceId, settingName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDefenderForStorages()
+            .getWithResponse(resourceId, settingName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DefenderForStorageSetting refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDefenderForStorages()
-            .getWithResponse(resourceId, settingName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDefenderForStorages()
+            .getWithResponse(resourceId, settingName, context)
+            .getValue();
         return this;
     }
 

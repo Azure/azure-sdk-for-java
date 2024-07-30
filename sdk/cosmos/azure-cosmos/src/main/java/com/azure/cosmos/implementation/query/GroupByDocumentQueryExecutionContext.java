@@ -148,7 +148,7 @@ public final class GroupByDocumentQueryExecutionContext implements
     private void aggregateGroupings(List<Document> superList) {
         for (Document d : superList) {
             RewrittenGroupByProjection rewrittenGroupByProjection =
-                new RewrittenGroupByProjection(ModelBridgeInternal.getPropertyBagFromJsonSerializable(d));
+                new RewrittenGroupByProjection(d.getPropertyBag());
             this.groupingTable.addPayLoad(rewrittenGroupByProjection);
         }
     }

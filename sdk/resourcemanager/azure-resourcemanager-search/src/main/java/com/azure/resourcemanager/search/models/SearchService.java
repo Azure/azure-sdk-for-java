@@ -200,6 +200,13 @@ public interface SearchService extends
      */
     Mono<Void> deleteQueryKeyAsync(String key);
 
+    /**
+     * Whether the search service can be accessed from public network.
+     *
+     * @return whether the search service can be accessed from public network.
+     */
+    PublicNetworkAccess publicNetworkAccess();
+
 
     /**
      * The entirety of the Search service definition.
@@ -208,6 +215,7 @@ public interface SearchService extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
         DefinitionStages.WithSku,
+        DefinitionStages.WithPublicNetworkAccess,
         DefinitionStages.WithPartitionsAndCreate,
         DefinitionStages.WithReplicasAndCreate,
         DefinitionStages.WithCreate {
@@ -265,6 +273,16 @@ public interface SearchService extends
             WithPartitionsAndCreate withStandardSku();
         }
 
+        /** The stage of search service definition allowing to configure network access settings. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Disables public network access for the search service.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate disablePublicNetworkAccess();
+        }
+
         /**
          * The stage of the Search service definition allowing to specify the replica count.
          */
@@ -297,7 +315,8 @@ public interface SearchService extends
          */
         interface WithCreate extends
             Creatable<SearchService>,
-            Resource.DefinitionWithTags<WithCreate> {
+            Resource.DefinitionWithTags<WithCreate>,
+            WithPublicNetworkAccess {
         }
     }
 
@@ -308,7 +327,8 @@ public interface SearchService extends
         Appliable<SearchService>,
         Resource.UpdateWithTags<Update>,
         UpdateStages.WithReplicaCount,
-        UpdateStages.WithPartitionCount {
+        UpdateStages.WithPartitionCount,
+        UpdateStages.WithPublicNetworkAccess {
     }
 
     /**
@@ -342,6 +362,22 @@ public interface SearchService extends
              * @return the next stage of the definition
              */
             Update withPartitionCount(int count);
+        }
+
+        /** The stage of search service update allowing to configure network access settings. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Enables public network access for the search service.
+             *
+             * @return the next stage of the update
+             */
+            Update enablePublicNetworkAccess();
+            /**
+             * Disables public network access for the search service.
+             *
+             * @return the next stage of the update
+             */
+            Update disablePublicNetworkAccess();
         }
     }
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Configuration for sending packet core events to Azure Event Hub. */
+/**
+ * Configuration for sending packet core events to Azure Event Hub.
+ */
 @Fluent
 public final class EventHubConfiguration {
     /*
@@ -23,13 +25,15 @@ public final class EventHubConfiguration {
     @JsonProperty(value = "reportingInterval")
     private Integer reportingInterval;
 
-    /** Creates an instance of EventHubConfiguration class. */
+    /**
+     * Creates an instance of EventHubConfiguration class.
+     */
     public EventHubConfiguration() {
     }
 
     /**
      * Get the id property: Resource ID of Azure Event Hub to send packet core events to.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -38,7 +42,7 @@ public final class EventHubConfiguration {
 
     /**
      * Set the id property: Resource ID of Azure Event Hub to send packet core events to.
-     *
+     * 
      * @param id the id value to set.
      * @return the EventHubConfiguration object itself.
      */
@@ -49,7 +53,7 @@ public final class EventHubConfiguration {
 
     /**
      * Get the reportingInterval property: The duration (in seconds) between UE usage reports.
-     *
+     * 
      * @return the reportingInterval value.
      */
     public Integer reportingInterval() {
@@ -58,7 +62,7 @@ public final class EventHubConfiguration {
 
     /**
      * Set the reportingInterval property: The duration (in seconds) between UE usage reports.
-     *
+     * 
      * @param reportingInterval the reportingInterval value to set.
      * @return the EventHubConfiguration object itself.
      */
@@ -69,14 +73,13 @@ public final class EventHubConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model EventHubConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model EventHubConfiguration"));
         }
     }
 

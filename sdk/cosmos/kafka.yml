@@ -1,0 +1,40 @@
+trigger: none
+
+extends:
+  template: /eng/pipelines/templates/stages/1es-redirect.yml
+  parameters:
+    stages:
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
+        parameters:
+          TestName: 'Kafka_TestContainer_Integration'
+          EnvVars:
+            ACCOUNT_TENANT_ID: '72f988bf-86f1-41af-91ab-2d7cd011db47'
+            ACCOUNT_AAD_CLIENT_ID: $(spark-databricks-cosmos-spn-clientId)
+            ACCOUNT_AAD_CLIENT_SECRET: $(spark-databricks-cosmos-spn-clientSecret)
+            COSMOS.CLIENT_TELEMETRY_ENDPOINT: $(cosmos-client-telemetry-endpoint)
+            COSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT: $(cosmos-client-telemetry-cosmos-account)
+          CloudConfig:
+            Public:
+              SubscriptionConfigurations:
+                - $(sub-config-azure-cloud-test-resources)
+                - $(sub-config-cosmos-azure-cloud-test-resources)
+          MatrixConfigs:
+            - Name: Kafka_TestContainer_Integration_Test
+              Path: sdk/cosmos/kafka-testcontainer-matrix.json
+              Selection: all
+              GenerateVMJobs: true
+          ServiceDirectory: cosmos
+          TestResourceDirectories:
+            - cosmos/test-resources/kafka-testcontainer/
+          Artifacts:
+            - name: azure-cosmos-kafka-connect
+              groupId: com.azure.cosmos.kafka
+              safeName: azurecosmoskafkaconnect
+          TimeoutInMinutes: 120
+          PreSteps:
+            - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
+          TestGoals: 'clean install'
+          TestOptions: '$(ProfileFlag) $(AdditionalArgs)'
+          AdditionalVariables:
+            - name: AdditionalArgs
+              value: ''

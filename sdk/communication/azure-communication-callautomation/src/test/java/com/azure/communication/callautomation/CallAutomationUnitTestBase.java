@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.communication.callautomation;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -28,8 +30,9 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -88,16 +91,16 @@ public class CallAutomationUnitTestBase {
         return serializeObject(result);
     }
 
-    public static String generateGetParticipantResponse(String callerId, boolean isMuted) {
-        CallParticipantInternal callParticipant = ModelGenerator.generateAcsCallParticipantInternal(callerId, isMuted);
+    public static String generateGetParticipantResponse(String callerId, boolean isMuted, boolean isHold) {
+        CallParticipantInternal callParticipant = ModelGenerator.generateAcsCallParticipantInternal(callerId, isMuted, isHold);
         return serializeObject(callParticipant);
     }
 
     public static String generateListParticipantsResponse() {
         GetParticipantsResponseInternal getParticipantsResponseInternal = new GetParticipantsResponseInternal()
             .setValue(new ArrayList<>(Arrays.asList(
-                ModelGenerator.generateAcsCallParticipantInternal(CALL_CALLER_ID, false),
-                ModelGenerator.generateAcsCallParticipantInternal(CALL_TARGET_ID, true))))
+                ModelGenerator.generateAcsCallParticipantInternal(CALL_CALLER_ID, false, false),
+                ModelGenerator.generateAcsCallParticipantInternal(CALL_TARGET_ID, true, true))))
             .setNextLink("");
 
         return serializeObject(getParticipantsResponseInternal);
@@ -106,7 +109,7 @@ public class CallAutomationUnitTestBase {
     public static String generateAddParticipantsResponse() {
         AddParticipantResponseInternal addParticipantsResponseInternal = new AddParticipantResponseInternal()
             .setOperationContext(CALL_OPERATION_CONTEXT)
-            .setParticipant(ModelGenerator.generateAcsCallParticipantInternal(CALL_TARGET_ID, false));
+            .setParticipant(ModelGenerator.generateAcsCallParticipantInternal(CALL_TARGET_ID, false, false));
 
         return serializeObject(addParticipantsResponseInternal);
     }
@@ -196,14 +199,14 @@ public class CallAutomationUnitTestBase {
         };
     }
 
-    static String serializeObject(Object o) {
-        ObjectMapper mapper = new ObjectMapper();
-        String body = null;
-        try {
-            body = mapper.writeValueAsString(o);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+    static String serializeObject(JsonSerializable<?> o) {
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+             JsonWriter writer = JsonProviders.createWriter(outputStream)) {
+            o.toJson(writer);
+            writer.flush();
+            return outputStream.toString();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        return body;
     }
 }

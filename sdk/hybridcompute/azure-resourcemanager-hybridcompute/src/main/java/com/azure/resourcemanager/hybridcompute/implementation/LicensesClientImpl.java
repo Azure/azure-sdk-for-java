@@ -14,7 +14,6 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -35,23 +34,29 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hybridcompute.fluent.LicensesClient;
 import com.azure.resourcemanager.hybridcompute.fluent.models.LicenseInner;
-import com.azure.resourcemanager.hybridcompute.models.LicenseUpdate;
 import com.azure.resourcemanager.hybridcompute.models.LicensesListResult;
+import com.azure.resourcemanager.hybridcompute.models.LicenseUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LicensesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LicensesClient.
+ */
 public final class LicensesClientImpl implements LicensesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final LicensesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final HybridComputeManagementClientImpl client;
 
     /**
      * Initializes an instance of LicensesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     LicensesClientImpl(HybridComputeManagementClientImpl client) {
@@ -66,361 +71,99 @@ public final class LicensesClientImpl implements LicensesClient {
     @Host("{$host}")
     @ServiceInterface(name = "HybridComputeManagem")
     public interface LicensesService {
-        @Headers({"Content-Type: application/json"})
-        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.HybridCompute/validateLicense")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/licenses/{licenseName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> validateLicense(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") LicenseInner parameters,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("licenseName") String licenseName,
+            @BodyParam("application/json") LicenseInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/licenses/{licenseName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/licenses/{licenseName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("licenseName") String licenseName,
-            @BodyParam("application/json") LicenseInner parameters,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("licenseName") String licenseName,
+            @BodyParam("application/json") LicenseUpdate parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/licenses/{licenseName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/licenses/{licenseName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("licenseName") String licenseName,
-            @BodyParam("application/json") LicenseUpdate parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<LicenseInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("licenseName") String licenseName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/licenses/{licenseName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/licenses/{licenseName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LicenseInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("licenseName") String licenseName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("licenseName") String licenseName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/licenses/{licenseName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/licenses")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("licenseName") String licenseName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<LicensesListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/licenses")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LicensesListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.HybridCompute/licenses")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LicensesListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<LicensesListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LicensesListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LicensesListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
-    }
-
-    /**
-     * The operation to validate a license.
-     *
-     * @param parameters Parameters supplied to the license validation operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a license in a hybrid machine along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> validateLicenseWithResponseAsync(LicenseInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .validateLicense(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * The operation to validate a license.
-     *
-     * @param parameters Parameters supplied to the license validation operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a license in a hybrid machine along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> validateLicenseWithResponseAsync(
-        LicenseInner parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .validateLicense(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
-    }
-
-    /**
-     * The operation to validate a license.
-     *
-     * @param parameters Parameters supplied to the license validation operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a license in a hybrid machine.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<LicenseInner>, LicenseInner> beginValidateLicenseAsync(LicenseInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = validateLicenseWithResponseAsync(parameters);
-        return this
-            .client
-            .<LicenseInner, LicenseInner>getLroResult(
-                mono, this.client.getHttpPipeline(), LicenseInner.class, LicenseInner.class, this.client.getContext());
-    }
-
-    /**
-     * The operation to validate a license.
-     *
-     * @param parameters Parameters supplied to the license validation operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a license in a hybrid machine.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<LicenseInner>, LicenseInner> beginValidateLicenseAsync(
-        LicenseInner parameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = validateLicenseWithResponseAsync(parameters, context);
-        return this
-            .client
-            .<LicenseInner, LicenseInner>getLroResult(
-                mono, this.client.getHttpPipeline(), LicenseInner.class, LicenseInner.class, context);
-    }
-
-    /**
-     * The operation to validate a license.
-     *
-     * @param parameters Parameters supplied to the license validation operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a license in a hybrid machine.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<LicenseInner>, LicenseInner> beginValidateLicense(LicenseInner parameters) {
-        return this.beginValidateLicenseAsync(parameters).getSyncPoller();
-    }
-
-    /**
-     * The operation to validate a license.
-     *
-     * @param parameters Parameters supplied to the license validation operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a license in a hybrid machine.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<LicenseInner>, LicenseInner> beginValidateLicense(
-        LicenseInner parameters, Context context) {
-        return this.beginValidateLicenseAsync(parameters, context).getSyncPoller();
-    }
-
-    /**
-     * The operation to validate a license.
-     *
-     * @param parameters Parameters supplied to the license validation operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a license in a hybrid machine on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LicenseInner> validateLicenseAsync(LicenseInner parameters) {
-        return beginValidateLicenseAsync(parameters).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * The operation to validate a license.
-     *
-     * @param parameters Parameters supplied to the license validation operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a license in a hybrid machine on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LicenseInner> validateLicenseAsync(LicenseInner parameters, Context context) {
-        return beginValidateLicenseAsync(parameters, context).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * The operation to validate a license.
-     *
-     * @param parameters Parameters supplied to the license validation operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a license in a hybrid machine.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LicenseInner validateLicense(LicenseInner parameters) {
-        return validateLicenseAsync(parameters).block();
-    }
-
-    /**
-     * The operation to validate a license.
-     *
-     * @param parameters Parameters supplied to the license validation operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a license in a hybrid machine.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LicenseInner validateLicense(LicenseInner parameters, Context context) {
-        return validateLicenseAsync(parameters, context).block();
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * The operation to create or update a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Create license operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a license in a hybrid machine along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return describes a license in a hybrid machine along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String licenseName, LicenseInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String licenseName, LicenseInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -436,24 +179,14 @@ public final class LicensesClientImpl implements LicensesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            licenseName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, licenseName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation to create or update a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Create license operation.
@@ -461,23 +194,19 @@ public final class LicensesClientImpl implements LicensesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a license in a hybrid machine along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return describes a license in a hybrid machine along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String licenseName, LicenseInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String licenseName, LicenseInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -493,21 +222,13 @@ public final class LicensesClientImpl implements LicensesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                licenseName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, licenseName, parameters, accept, context);
     }
 
     /**
      * The operation to create or update a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Create license operation.
@@ -517,19 +238,17 @@ public final class LicensesClientImpl implements LicensesClient {
      * @return the {@link PollerFlux} for polling of describes a license in a hybrid machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<LicenseInner>, LicenseInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String licenseName, LicenseInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, licenseName, parameters);
-        return this
-            .client
-            .<LicenseInner, LicenseInner>getLroResult(
-                mono, this.client.getHttpPipeline(), LicenseInner.class, LicenseInner.class, this.client.getContext());
+    private PollerFlux<PollResult<LicenseInner>, LicenseInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String licenseName, LicenseInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, licenseName, parameters);
+        return this.client.<LicenseInner, LicenseInner>getLroResult(mono, this.client.getHttpPipeline(),
+            LicenseInner.class, LicenseInner.class, this.client.getContext());
     }
 
     /**
      * The operation to create or update a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Create license operation.
@@ -540,20 +259,18 @@ public final class LicensesClientImpl implements LicensesClient {
      * @return the {@link PollerFlux} for polling of describes a license in a hybrid machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<LicenseInner>, LicenseInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String licenseName, LicenseInner parameters, Context context) {
+    private PollerFlux<PollResult<LicenseInner>, LicenseInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String licenseName, LicenseInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, licenseName, parameters, context);
-        return this
-            .client
-            .<LicenseInner, LicenseInner>getLroResult(
-                mono, this.client.getHttpPipeline(), LicenseInner.class, LicenseInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, licenseName, parameters, context);
+        return this.client.<LicenseInner, LicenseInner>getLroResult(mono, this.client.getHttpPipeline(),
+            LicenseInner.class, LicenseInner.class, context);
     }
 
     /**
      * The operation to create or update a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Create license operation.
@@ -563,14 +280,14 @@ public final class LicensesClientImpl implements LicensesClient {
      * @return the {@link SyncPoller} for polling of describes a license in a hybrid machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<LicenseInner>, LicenseInner> beginCreateOrUpdate(
-        String resourceGroupName, String licenseName, LicenseInner parameters) {
+    public SyncPoller<PollResult<LicenseInner>, LicenseInner> beginCreateOrUpdate(String resourceGroupName,
+        String licenseName, LicenseInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, licenseName, parameters).getSyncPoller();
     }
 
     /**
      * The operation to create or update a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Create license operation.
@@ -581,14 +298,14 @@ public final class LicensesClientImpl implements LicensesClient {
      * @return the {@link SyncPoller} for polling of describes a license in a hybrid machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<LicenseInner>, LicenseInner> beginCreateOrUpdate(
-        String resourceGroupName, String licenseName, LicenseInner parameters, Context context) {
+    public SyncPoller<PollResult<LicenseInner>, LicenseInner> beginCreateOrUpdate(String resourceGroupName,
+        String licenseName, LicenseInner parameters, Context context) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, licenseName, parameters, context).getSyncPoller();
     }
 
     /**
      * The operation to create or update a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Create license operation.
@@ -598,16 +315,15 @@ public final class LicensesClientImpl implements LicensesClient {
      * @return describes a license in a hybrid machine on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LicenseInner> createOrUpdateAsync(
-        String resourceGroupName, String licenseName, LicenseInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, licenseName, parameters)
-            .last()
+    private Mono<LicenseInner> createOrUpdateAsync(String resourceGroupName, String licenseName,
+        LicenseInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, licenseName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The operation to create or update a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Create license operation.
@@ -618,16 +334,15 @@ public final class LicensesClientImpl implements LicensesClient {
      * @return describes a license in a hybrid machine on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LicenseInner> createOrUpdateAsync(
-        String resourceGroupName, String licenseName, LicenseInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, licenseName, parameters, context)
-            .last()
+    private Mono<LicenseInner> createOrUpdateAsync(String resourceGroupName, String licenseName,
+        LicenseInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, licenseName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The operation to create or update a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Create license operation.
@@ -643,7 +358,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to create or update a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Create license operation.
@@ -654,37 +369,33 @@ public final class LicensesClientImpl implements LicensesClient {
      * @return describes a license in a hybrid machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LicenseInner createOrUpdate(
-        String resourceGroupName, String licenseName, LicenseInner parameters, Context context) {
+    public LicenseInner createOrUpdate(String resourceGroupName, String licenseName, LicenseInner parameters,
+        Context context) {
         return createOrUpdateAsync(resourceGroupName, licenseName, parameters, context).block();
     }
 
     /**
      * The operation to update a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Update license operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a license in a hybrid machine along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return describes a license in a hybrid machine along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String licenseName, LicenseUpdate parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String licenseName,
+        LicenseUpdate parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -700,24 +411,14 @@ public final class LicensesClientImpl implements LicensesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            licenseName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, licenseName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation to update a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Update license operation.
@@ -725,23 +426,19 @@ public final class LicensesClientImpl implements LicensesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a license in a hybrid machine along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return describes a license in a hybrid machine along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String licenseName, LicenseUpdate parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String licenseName,
+        LicenseUpdate parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -757,21 +454,13 @@ public final class LicensesClientImpl implements LicensesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                licenseName,
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, licenseName, parameters, accept, context);
     }
 
     /**
      * The operation to update a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Update license operation.
@@ -781,18 +470,16 @@ public final class LicensesClientImpl implements LicensesClient {
      * @return the {@link PollerFlux} for polling of describes a license in a hybrid machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<LicenseInner>, LicenseInner> beginUpdateAsync(
-        String resourceGroupName, String licenseName, LicenseUpdate parameters) {
+    private PollerFlux<PollResult<LicenseInner>, LicenseInner> beginUpdateAsync(String resourceGroupName,
+        String licenseName, LicenseUpdate parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, licenseName, parameters);
-        return this
-            .client
-            .<LicenseInner, LicenseInner>getLroResult(
-                mono, this.client.getHttpPipeline(), LicenseInner.class, LicenseInner.class, this.client.getContext());
+        return this.client.<LicenseInner, LicenseInner>getLroResult(mono, this.client.getHttpPipeline(),
+            LicenseInner.class, LicenseInner.class, this.client.getContext());
     }
 
     /**
      * The operation to update a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Update license operation.
@@ -803,20 +490,18 @@ public final class LicensesClientImpl implements LicensesClient {
      * @return the {@link PollerFlux} for polling of describes a license in a hybrid machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<LicenseInner>, LicenseInner> beginUpdateAsync(
-        String resourceGroupName, String licenseName, LicenseUpdate parameters, Context context) {
+    private PollerFlux<PollResult<LicenseInner>, LicenseInner> beginUpdateAsync(String resourceGroupName,
+        String licenseName, LicenseUpdate parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, licenseName, parameters, context);
-        return this
-            .client
-            .<LicenseInner, LicenseInner>getLroResult(
-                mono, this.client.getHttpPipeline(), LicenseInner.class, LicenseInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, licenseName, parameters, context);
+        return this.client.<LicenseInner, LicenseInner>getLroResult(mono, this.client.getHttpPipeline(),
+            LicenseInner.class, LicenseInner.class, context);
     }
 
     /**
      * The operation to update a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Update license operation.
@@ -826,14 +511,14 @@ public final class LicensesClientImpl implements LicensesClient {
      * @return the {@link SyncPoller} for polling of describes a license in a hybrid machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<LicenseInner>, LicenseInner> beginUpdate(
-        String resourceGroupName, String licenseName, LicenseUpdate parameters) {
+    public SyncPoller<PollResult<LicenseInner>, LicenseInner> beginUpdate(String resourceGroupName, String licenseName,
+        LicenseUpdate parameters) {
         return this.beginUpdateAsync(resourceGroupName, licenseName, parameters).getSyncPoller();
     }
 
     /**
      * The operation to update a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Update license operation.
@@ -844,14 +529,14 @@ public final class LicensesClientImpl implements LicensesClient {
      * @return the {@link SyncPoller} for polling of describes a license in a hybrid machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<LicenseInner>, LicenseInner> beginUpdate(
-        String resourceGroupName, String licenseName, LicenseUpdate parameters, Context context) {
+    public SyncPoller<PollResult<LicenseInner>, LicenseInner> beginUpdate(String resourceGroupName, String licenseName,
+        LicenseUpdate parameters, Context context) {
         return this.beginUpdateAsync(resourceGroupName, licenseName, parameters, context).getSyncPoller();
     }
 
     /**
      * The operation to update a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Update license operation.
@@ -862,14 +547,13 @@ public final class LicensesClientImpl implements LicensesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LicenseInner> updateAsync(String resourceGroupName, String licenseName, LicenseUpdate parameters) {
-        return beginUpdateAsync(resourceGroupName, licenseName, parameters)
-            .last()
+        return beginUpdateAsync(resourceGroupName, licenseName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The operation to update a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Update license operation.
@@ -880,16 +564,15 @@ public final class LicensesClientImpl implements LicensesClient {
      * @return describes a license in a hybrid machine on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LicenseInner> updateAsync(
-        String resourceGroupName, String licenseName, LicenseUpdate parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, licenseName, parameters, context)
-            .last()
+    private Mono<LicenseInner> updateAsync(String resourceGroupName, String licenseName, LicenseUpdate parameters,
+        Context context) {
+        return beginUpdateAsync(resourceGroupName, licenseName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The operation to update a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Update license operation.
@@ -905,7 +588,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to update a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param parameters Parameters supplied to the Update license operation.
@@ -916,36 +599,32 @@ public final class LicensesClientImpl implements LicensesClient {
      * @return describes a license in a hybrid machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LicenseInner update(
-        String resourceGroupName, String licenseName, LicenseUpdate parameters, Context context) {
+    public LicenseInner update(String resourceGroupName, String licenseName, LicenseUpdate parameters,
+        Context context) {
         return updateAsync(resourceGroupName, licenseName, parameters, context).block();
     }
 
     /**
      * Retrieves information about the view of a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a license in a hybrid machine along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return describes a license in a hybrid machine along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LicenseInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String licenseName) {
+    private Mono<Response<LicenseInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String licenseName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -956,46 +635,33 @@ public final class LicensesClientImpl implements LicensesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            licenseName,
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, licenseName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves information about the view of a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a license in a hybrid machine along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return describes a license in a hybrid machine along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LicenseInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String licenseName, Context context) {
+    private Mono<Response<LicenseInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String licenseName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1006,20 +672,13 @@ public final class LicensesClientImpl implements LicensesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                licenseName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, licenseName, accept, context);
     }
 
     /**
      * Retrieves information about the view of a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1035,7 +694,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * Retrieves information about the view of a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param context The context to associate with this operation.
@@ -1045,14 +704,14 @@ public final class LicensesClientImpl implements LicensesClient {
      * @return describes a license in a hybrid machine along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LicenseInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String licenseName, Context context) {
+    public Response<LicenseInner> getByResourceGroupWithResponse(String resourceGroupName, String licenseName,
+        Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, licenseName, context).block();
     }
 
     /**
      * Retrieves information about the view of a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1067,7 +726,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to delete a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1078,16 +737,12 @@ public final class LicensesClientImpl implements LicensesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String licenseName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1098,23 +753,14 @@ public final class LicensesClientImpl implements LicensesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            licenseName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, licenseName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation to delete a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param context The context to associate with this operation.
@@ -1124,19 +770,15 @@ public final class LicensesClientImpl implements LicensesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String licenseName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String licenseName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1147,20 +789,13 @@ public final class LicensesClientImpl implements LicensesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                licenseName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, licenseName, accept, context);
     }
 
     /**
      * The operation to delete a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1171,15 +806,13 @@ public final class LicensesClientImpl implements LicensesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String licenseName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, licenseName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * The operation to delete a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param context The context to associate with this operation.
@@ -1189,18 +822,17 @@ public final class LicensesClientImpl implements LicensesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String licenseName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String licenseName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, licenseName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * The operation to delete a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1215,7 +847,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to delete a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param context The context to associate with this operation.
@@ -1225,14 +857,14 @@ public final class LicensesClientImpl implements LicensesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String licenseName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String licenseName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, licenseName, context).getSyncPoller();
     }
 
     /**
      * The operation to delete a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1247,7 +879,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to delete a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param context The context to associate with this operation.
@@ -1258,14 +890,13 @@ public final class LicensesClientImpl implements LicensesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String licenseName, Context context) {
-        return beginDeleteAsync(resourceGroupName, licenseName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, licenseName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The operation to delete a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1279,7 +910,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to delete a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param context The context to associate with this operation.
@@ -1294,110 +925,75 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to get all licenses of a non-Azure machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List license operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the List license operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LicenseInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<LicenseInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<LicenseInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation to get all licenses of a non-Azure machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List license operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the List license operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LicenseInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<LicenseInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * The operation to get all licenses of a non-Azure machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1406,14 +1002,13 @@ public final class LicensesClientImpl implements LicensesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LicenseInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * The operation to get all licenses of a non-Azure machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1423,14 +1018,13 @@ public final class LicensesClientImpl implements LicensesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LicenseInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * The operation to get all licenses of a non-Azure machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1444,7 +1038,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to get all licenses of a non-Azure machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1459,109 +1053,76 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to get all licenses of a non-Azure machine.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List license operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the List license operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LicenseInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<LicenseInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<LicenseInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation to get all licenses of a non-Azure machine.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List license operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the List license operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LicenseInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * The operation to get all licenses of a non-Azure machine.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List license operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LicenseInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * The operation to get all licenses of a non-Azure machine.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1570,13 +1131,13 @@ public final class LicensesClientImpl implements LicensesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LicenseInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * The operation to get all licenses of a non-Azure machine.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List license operation response as paginated response with {@link PagedIterable}.
@@ -1588,7 +1149,7 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * The operation to get all licenses of a non-Azure machine.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1602,14 +1163,13 @@ public final class LicensesClientImpl implements LicensesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List license operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the List license operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LicenseInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1617,38 +1177,28 @@ public final class LicensesClientImpl implements LicensesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<LicenseInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<LicenseInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List license operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the List license operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LicenseInner>> listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
@@ -1656,36 +1206,25 @@ public final class LicensesClientImpl implements LicensesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List license operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the List license operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LicenseInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1693,38 +1232,28 @@ public final class LicensesClientImpl implements LicensesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<LicenseInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<LicenseInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List license operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the List license operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LicenseInner>> listBySubscriptionNextSinglePageAsync(String nextLink, Context context) {
@@ -1732,23 +1261,13 @@ public final class LicensesClientImpl implements LicensesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

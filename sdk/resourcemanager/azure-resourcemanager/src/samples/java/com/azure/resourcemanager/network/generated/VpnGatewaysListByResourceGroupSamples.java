@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class VpnGatewaysListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VpnGatewayListByResourceGroup
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VpnGatewayListByResourceGroup
      * .json
      */
     /**
@@ -19,7 +19,10 @@ public final class VpnGatewaysListByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void vpnGatewayListByResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVpnGateways().listByResourceGroup("rg1",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVpnGateways()
+            .listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
     }
 }

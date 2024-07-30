@@ -27,13 +27,15 @@ public final class WebApplicationFirewallPolicyList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of WebApplicationFirewallPolicyList class. */
+    /**
+     * Creates an instance of WebApplicationFirewallPolicyList class.
+     */
     public WebApplicationFirewallPolicyList() {
     }
 
     /**
      * Get the value property: List of WebApplicationFirewallPolicies within a resource group.
-     *
+     * 
      * @return the value value.
      */
     public List<WebApplicationFirewallPolicyInner> value() {
@@ -42,7 +44,7 @@ public final class WebApplicationFirewallPolicyList {
 
     /**
      * Get the nextLink property: URL to get the next set of WebApplicationFirewallPolicy objects if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -51,7 +53,7 @@ public final class WebApplicationFirewallPolicyList {
 
     /**
      * Set the nextLink property: URL to get the next set of WebApplicationFirewallPolicy objects if there are any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the WebApplicationFirewallPolicyList object itself.
      */
@@ -62,7 +64,7 @@ public final class WebApplicationFirewallPolicyList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

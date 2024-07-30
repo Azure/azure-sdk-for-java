@@ -5,7 +5,6 @@ package com.azure.core.http.vertx.implementation;
 
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.ProgressReporter;
-import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.Unpooled;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClientRequest;
@@ -14,6 +13,7 @@ import org.reactivestreams.Subscription;
 import reactor.core.publisher.MonoSink;
 import reactor.core.publisher.Operators;
 import reactor.util.context.Context;
+import reactor.util.context.ContextView;
 
 import java.nio.ByteBuffer;
 
@@ -22,11 +22,10 @@ import java.nio.ByteBuffer;
  */
 @SuppressWarnings("ReactiveStreamsSubscriberImplementation")
 public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer> {
-    private static final ClientLogger LOGGER = new ClientLogger(VertxRequestWriteSubscriber.class);
-
     private final HttpClientRequest request;
-    private final MonoSink<HttpResponse> emitter;
+    private final io.vertx.core.Promise<HttpResponse> promise;
     private final ProgressReporter progressReporter;
+    private final ContextView contextView;
 
     // This subscriber is effectively synchronous so there is no need for these fields to be volatile.
     private volatile Subscription subscription;
@@ -39,14 +38,16 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
      * {@link HttpClientRequest Vert.x request}.
      *
      * @param request The {@link HttpClientRequest Vert.x request} to write to.
-     * @param emitter The {@link MonoSink} to emit the {@link HttpResponse response} to.
+     * @param promise The {@link MonoSink} to emit the {@link HttpResponse response} to.
      * @param progressReporter The {@link ProgressReporter} to report progress to.
+     * @param contextView The {@link ContextView} to use when dropping errors.
      */
-    public VertxRequestWriteSubscriber(HttpClientRequest request, MonoSink<HttpResponse> emitter,
-        ProgressReporter progressReporter) {
+    public VertxRequestWriteSubscriber(HttpClientRequest request, io.vertx.core.Promise<HttpResponse> promise,
+        ProgressReporter progressReporter, ContextView contextView) {
         this.request = request.exceptionHandler(this::onError).drainHandler(ignored -> requestNext());
-        this.emitter = emitter;
+        this.promise = promise;
         this.progressReporter = progressReporter;
+        this.contextView = contextView;
     }
 
     @Override
@@ -120,7 +121,7 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
         State state = this.state;
         // code 2 and greater are completion states which means the error should be dropped as we already completed.
         if (state.code >= 2) {
-            Operators.onErrorDropped(throwable, Context.of(emitter.contextView()));
+            Operators.onErrorDropped(throwable, Context.of(contextView));
         }
 
         this.state = State.ERROR;
@@ -133,7 +134,7 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
 
     private void resetRequest(Throwable throwable) {
         subscription.cancel();
-        emitter.error(LOGGER.logThrowableAsError(throwable));
+        promise.fail(throwable);
         request.reset(0, throwable);
     }
 
@@ -154,11 +155,7 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
     }
 
     private void endRequest() {
-        request.end(result -> {
-            if (result.failed()) {
-                emitter.error(result.cause());
-            }
-        });
+        request.end().onFailure(promise::fail);
     }
 
     private enum State {

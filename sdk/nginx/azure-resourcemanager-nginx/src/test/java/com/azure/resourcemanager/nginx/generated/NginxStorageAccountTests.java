@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class NginxStorageAccountTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NginxStorageAccount model
-            = BinaryData.fromString("{\"accountName\":\"myzydagfuaxbez\",\"containerName\":\"uokktwhrdxwz\"}")
-                .toObject(NginxStorageAccount.class);
-        Assertions.assertEquals("myzydagfuaxbez", model.accountName());
-        Assertions.assertEquals("uokktwhrdxwz", model.containerName());
+        NginxStorageAccount model = BinaryData.fromString("{\"accountName\":\"qsl\",\"containerName\":\"yvxyqjp\"}")
+            .toObject(NginxStorageAccount.class);
+        Assertions.assertEquals("qsl", model.accountName());
+        Assertions.assertEquals("yvxyqjp", model.containerName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NginxStorageAccount model
-            = new NginxStorageAccount().withAccountName("myzydagfuaxbez").withContainerName("uokktwhrdxwz");
+        NginxStorageAccount model = new NginxStorageAccount().withAccountName("qsl").withContainerName("yvxyqjp");
         model = BinaryData.fromObject(model).toObject(NginxStorageAccount.class);
-        Assertions.assertEquals("myzydagfuaxbez", model.accountName());
-        Assertions.assertEquals("uokktwhrdxwz", model.containerName());
+        Assertions.assertEquals("qsl", model.accountName());
+        Assertions.assertEquals("yvxyqjp", model.containerName());
     }
 }

@@ -13,12 +13,14 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sphere.fluent.models.DeploymentInner;
 
-/** An instance of this class provides access to all the operations defined in DeploymentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DeploymentsClient.
+ */
 public interface DeploymentsClient {
     /**
      * List Deployment resources by DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be
      * used for product or device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -29,13 +31,13 @@ public interface DeploymentsClient {
      * @return the response of a Deployment list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DeploymentInner> listByDeviceGroup(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName);
+    PagedIterable<DeploymentInner> listByDeviceGroup(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName);
 
     /**
      * List Deployment resources by DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be
      * used for product or device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -51,27 +53,19 @@ public interface DeploymentsClient {
      * @return the response of a Deployment list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DeploymentInner> listByDeviceGroup(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Integer maxpagesize,
-        Context context);
+    PagedIterable<DeploymentInner> listByDeviceGroup(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, String filter, Integer top, Integer skip, Integer maxpagesize, Context context);
 
     /**
      * Get a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or device
      * group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -79,47 +73,38 @@ public interface DeploymentsClient {
      * @return a Deployment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DeploymentInner> getWithResponse(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName,
-        Context context);
+    Response<DeploymentInner> getWithResponse(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, String deploymentName, Context context);
 
     /**
      * Get a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or device
      * group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DeploymentInner get(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
+    DeploymentInner get(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
         String deploymentName);
 
     /**
      * Create a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -127,24 +112,20 @@ public interface DeploymentsClient {
      * @return the {@link SyncPoller} for polling of an deployment resource belonging to a device group resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DeploymentInner>, DeploymentInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName,
+    SyncPoller<PollResult<DeploymentInner>, DeploymentInner> beginCreateOrUpdate(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, String deploymentName,
         DeploymentInner resource);
 
     /**
      * Create a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -153,25 +134,20 @@ public interface DeploymentsClient {
      * @return the {@link SyncPoller} for polling of an deployment resource belonging to a device group resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DeploymentInner>, DeploymentInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName,
-        DeploymentInner resource,
+    SyncPoller<PollResult<DeploymentInner>, DeploymentInner> beginCreateOrUpdate(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, String deploymentName, DeploymentInner resource,
         Context context);
 
     /**
      * Create a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -179,24 +155,19 @@ public interface DeploymentsClient {
      * @return an deployment resource belonging to a device group resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DeploymentInner createOrUpdate(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName,
-        DeploymentInner resource);
+    DeploymentInner createOrUpdate(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, String deploymentName, DeploymentInner resource);
 
     /**
      * Create a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -205,48 +176,38 @@ public interface DeploymentsClient {
      * @return an deployment resource belonging to a device group resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DeploymentInner createOrUpdate(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName,
-        DeploymentInner resource,
-        Context context);
+    DeploymentInner createOrUpdate(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, String deploymentName, DeploymentInner resource, Context context);
 
     /**
      * Delete a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, String deploymentName);
 
     /**
      * Delete a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -254,57 +215,43 @@ public interface DeploymentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, String deploymentName, Context context);
 
     /**
      * Delete a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
+    void delete(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
         String deploymentName);
 
     /**
      * Delete a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName,
-        Context context);
+    void delete(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
+        String deploymentName, Context context);
 }

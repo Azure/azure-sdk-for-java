@@ -29,7 +29,7 @@ extends:
               groupId: com.azure
             - name: azure-cosmos-benchmark
               groupId: com.azure
-          TimeoutInMinutes: 120
+          TimeoutInMinutes: 180
           MaxParallel: 20
           PreSteps:
             - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
@@ -79,9 +79,10 @@ extends:
                 - $(sub-config-cosmos-azure-cloud-test-resources)
           MatrixConfigs:
             - Name: Kafka_Cosmos_Integration_Test
-              Path: sdk/cosmos/kafka-integration-matrix.json
+              Path: sdk/cosmos/kafka-cosmos-matrix.json
               Selection: all
               GenerateVMJobs: true
+              TestFromSource: false
           ServiceDirectory: cosmos
           TestResourceDirectories:
             - cosmos/
@@ -92,8 +93,9 @@ extends:
           TimeoutInMinutes: 120
           PreSteps:
             - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-          TestGoals: 'verify'
-          TestOptions: '$(ProfileFlag) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
+          TestGoals: 'clean verify'
+          TestOptions: '$(ProfileFlag) $(AdditionalArgs)'
           AdditionalVariables:
             - name: AdditionalArgs
               value: '-DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$(cosmos-client-telemetry-endpoint) -DCOSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT=$(cosmos-client-telemetry-cosmos-account)'
+

@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.hybridcompute.generated;
 
-/** Samples for PrivateLinkScopes GetValidationDetails. */
+/**
+ * Samples for PrivateLinkScopes GetValidationDetails.
+ */
 public final class PrivateLinkScopesGetValidationDetailsSamples {
     /*
-     * x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-06-20-preview/examples/privateLinkScope/PrivateLinkScopes_GetValidation.json
+     * x-ms-original-file:
+     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-05-20-preview/examples/
+     * privateLinkScope/PrivateLinkScopes_GetValidation.json
      */
     /**
      * Sample code: PrivateLinkScopeGet.
-     *
+     * 
      * @param manager Entry point to HybridComputeManager.
      */
     public static void privateLinkScopeGet(com.azure.resourcemanager.hybridcompute.HybridComputeManager manager) {
-        manager
-            .privateLinkScopes()
-            .getValidationDetailsWithResponse(
-                "wus2", "f5dc51d3-92ed-4d7e-947a-775ea79b4919", com.azure.core.util.Context.NONE);
+        manager.privateLinkScopes()
+            .getValidationDetailsWithResponse("wus2", "f5dc51d3-92ed-4d7e-947a-775ea79b4919",
+                com.azure.core.util.Context.NONE);
     }
 }

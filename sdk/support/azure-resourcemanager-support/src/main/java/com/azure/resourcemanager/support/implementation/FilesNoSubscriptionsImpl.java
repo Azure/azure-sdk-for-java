@@ -22,29 +22,26 @@ public final class FilesNoSubscriptionsImpl implements FilesNoSubscriptions {
 
     private final com.azure.resourcemanager.support.SupportManager serviceManager;
 
-    public FilesNoSubscriptionsImpl(
-        FilesNoSubscriptionsClient innerClient, com.azure.resourcemanager.support.SupportManager serviceManager) {
+    public FilesNoSubscriptionsImpl(FilesNoSubscriptionsClient innerClient,
+        com.azure.resourcemanager.support.SupportManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<FileDetails> list(String fileWorkspaceName) {
         PagedIterable<FileDetailsInner> inner = this.serviceClient().list(fileWorkspaceName);
-        return Utils.mapPage(inner, inner1 -> new FileDetailsImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FileDetailsImpl(inner1, this.manager()));
     }
 
     public PagedIterable<FileDetails> list(String fileWorkspaceName, Context context) {
         PagedIterable<FileDetailsInner> inner = this.serviceClient().list(fileWorkspaceName, context);
-        return Utils.mapPage(inner, inner1 -> new FileDetailsImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FileDetailsImpl(inner1, this.manager()));
     }
 
     public Response<FileDetails> getWithResponse(String fileWorkspaceName, String fileName, Context context) {
         Response<FileDetailsInner> inner = this.serviceClient().getWithResponse(fileWorkspaceName, fileName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new FileDetailsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -60,15 +57,12 @@ public final class FilesNoSubscriptionsImpl implements FilesNoSubscriptions {
         }
     }
 
-    public Response<FileDetails> createWithResponse(
-        String fileWorkspaceName, String fileName, FileDetailsInner createFileParameters, Context context) {
-        Response<FileDetailsInner> inner =
-            this.serviceClient().createWithResponse(fileWorkspaceName, fileName, createFileParameters, context);
+    public Response<FileDetails> createWithResponse(String fileWorkspaceName, String fileName,
+        FileDetailsInner createFileParameters, Context context) {
+        Response<FileDetailsInner> inner
+            = this.serviceClient().createWithResponse(fileWorkspaceName, fileName, createFileParameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new FileDetailsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -84,8 +78,8 @@ public final class FilesNoSubscriptionsImpl implements FilesNoSubscriptions {
         }
     }
 
-    public Response<Void> uploadWithResponse(
-        String fileWorkspaceName, String fileName, UploadFile uploadFile, Context context) {
+    public Response<Void> uploadWithResponse(String fileWorkspaceName, String fileName, UploadFile uploadFile,
+        Context context) {
         return this.serviceClient().uploadWithResponse(fileWorkspaceName, fileName, uploadFile, context);
     }
 

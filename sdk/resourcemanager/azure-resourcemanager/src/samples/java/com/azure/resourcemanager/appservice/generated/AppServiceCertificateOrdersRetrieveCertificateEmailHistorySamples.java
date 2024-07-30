@@ -9,9 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class AppServiceCertificateOrdersRetrieveCertificateEmailHistorySamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-01-01/examples/
-     * RetrieveCertificateEmailHistory.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-12-01/examples/RetrieveCertificateEmailHistory.json
      */
     /**
      * Sample code: Retrieve Certificate Email History.
@@ -19,7 +17,10 @@ public final class AppServiceCertificateOrdersRetrieveCertificateEmailHistorySam
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void retrieveCertificateEmailHistory(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getAppServiceCertificateOrders()
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getAppServiceCertificateOrders()
             .retrieveCertificateEmailHistoryWithResponse("testrg123", "SampleCertOrder",
                 com.azure.core.util.Context.NONE);
     }

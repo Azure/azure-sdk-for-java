@@ -19,6 +19,7 @@ trigger:
       - sdk/cosmos/azure-cosmos-spark_3-2_2-12/
       - sdk/cosmos/azure-cosmos-spark_3-3_2-12/
       - sdk/cosmos/azure-cosmos-spark_3-4_2-12/
+      - sdk/cosmos/azure-cosmos-spark_3-5_2-12/
       - sdk/cosmos/azure-cosmos-test/
       - sdk/cosmos/azure-cosmos-tests/
       - sdk/cosmos/azure-cosmos-kafka-connect/
@@ -35,6 +36,7 @@ trigger:
       - sdk/cosmos/azure-cosmos-spark_3-2_2-12/pom.xml
       - sdk/cosmos/azure-cosmos-spark_3-3_2-12/pom.xml
       - sdk/cosmos/azure-cosmos-spark_3-4_2-12/pom.xml
+      - sdk/cosmos/azure-cosmos-spark_3-5_2-12/pom.xml
       - sdk/cosmos/azure-cosmos-kafka-connect/pom.xml
 
 pr:
@@ -60,6 +62,7 @@ pr:
       - sdk/cosmos/azure-cosmos-spark_3-2_2-12/
       - sdk/cosmos/azure-cosmos-spark_3-3_2-12/
       - sdk/cosmos/azure-cosmos-spark_3-4_2-12/
+      - sdk/cosmos/azure-cosmos-spark_3-5_2-12/
       - sdk/cosmos/faq/
       - sdk/cosmos/azure-cosmos-kafka-connect/
     exclude:
@@ -73,6 +76,7 @@ pr:
       - sdk/cosmos/azure-cosmos-spark_3-2_2-12/pom.xml
       - sdk/cosmos/azure-cosmos-spark_3-3_2-12/pom.xml
       - sdk/cosmos/azure-cosmos-spark_3-4_2-12/pom.xml
+      - sdk/cosmos/azure-cosmos-spark_3-5_2-12/pom.xml
       - sdk/cosmos/azure-cosmos-test/pom.xml
       - sdk/cosmos/azure-cosmos-tests/pom.xml
       - sdk/cosmos/azure-cosmos-kafka-connect/pom.xml
@@ -101,6 +105,10 @@ parameters:
     displayName: 'azure-cosmos-spark_3-4_2-12'
     type: boolean
     default: true
+  - name: release_azurecosmosspark35
+    displayName: 'azure-cosmos-spark_3-5_2-12'
+    type: boolean
+    default: true
   - name: release_azurecosmostest
     displayName: 'azure-cosmos-test'
     type: boolean
@@ -108,13 +116,12 @@ parameters:
   - name: release_azurecosmoskafka
     displayName: 'azure-cosmos-kafka-connect'
     type: boolean
-    default: false
+    default: true
 
 extends:
   template: /eng/pipelines/templates/stages/cosmos-sdk-client.yml #NOTE: Non-standard template.
   parameters:
     ServiceDirectory: cosmos
-    EnableBatchRelease: true
     SDKType: client
     Artifacts:
       - name: azure-cosmos
@@ -153,6 +160,13 @@ extends:
         skipPublishDocGithubIo: true
         skipPublishDocMs: true
         releaseInBatch: ${{ parameters.release_azurecosmosspark34 }}
+      - name: azure-cosmos-spark_3-5_2-12
+        groupId: com.azure.cosmos.spark
+        safeName: azurecosmosspark35
+        uberJar: true
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        releaseInBatch: ${{ parameters.release_azurecosmosspark35 }}
       - name: azure-cosmos-test
         groupId: com.azure
         safeName: azurecosmostest
@@ -160,6 +174,7 @@ extends:
       - name: azure-cosmos-kafka-connect
         groupId: com.azure.cosmos.kafka
         safeName: azurecosmoskafkaconnect
+        uberJar: true
         skipPublishDocGithubIo: true
         skipPublishDocMs: true
         releaseInBatch: ${{ parameters.release_azurecosmoskafka }}
@@ -170,5 +185,3 @@ extends:
         groupId: com.azure
       - name: azure-cosmos-spark_3_2-12
         groupId: com.azure.cosmos.spark
-      - name: azure-spring-data-cosmos
-        groupId: com.azure

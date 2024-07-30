@@ -9,7 +9,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Migration source server type : OnPremises, AWS, GCP, AzureVM or PostgreSQLSingleServer.
+ * Migration source server type : OnPremises, AWS, GCP, AzureVM, PostgreSQLSingleServer, AWS_RDS, AWS_AURORA, AWS_EC2,
+ * GCP_CloudSQL, GCP_AlloyDB, GCP_Compute, or EDB.
  */
 public final class SourceType extends ExpandableStringEnum<SourceType> {
     /**
@@ -36,6 +37,41 @@ public final class SourceType extends ExpandableStringEnum<SourceType> {
      * Static value PostgreSQLSingleServer for SourceType.
      */
     public static final SourceType POSTGRE_SQLSINGLE_SERVER = fromString("PostgreSQLSingleServer");
+
+    /**
+     * Static value AWS_RDS for SourceType.
+     */
+    public static final SourceType AWS_RDS = fromString("AWS_RDS");
+
+    /**
+     * Static value AWS_AURORA for SourceType.
+     */
+    public static final SourceType AWS_AURORA = fromString("AWS_AURORA");
+
+    /**
+     * Static value AWS_EC2 for SourceType.
+     */
+    public static final SourceType AWS_EC2 = fromString("AWS_EC2");
+
+    /**
+     * Static value GCP_CloudSQL for SourceType.
+     */
+    public static final SourceType GCP_CLOUD_SQL = fromString("GCP_CloudSQL");
+
+    /**
+     * Static value GCP_AlloyDB for SourceType.
+     */
+    public static final SourceType GCP_ALLOY_DB = fromString("GCP_AlloyDB");
+
+    /**
+     * Static value GCP_Compute for SourceType.
+     */
+    public static final SourceType GCP_COMPUTE = fromString("GCP_Compute");
+
+    /**
+     * Static value EDB for SourceType.
+     */
+    public static final SourceType EDB = fromString("EDB");
 
     /**
      * Creates a new instance of SourceType value.

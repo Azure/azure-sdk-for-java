@@ -12,7 +12,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.attestation.models.AttestationTokenValidationOptions;
 import com.azure.security.attestation.models.AttestationType;
 import com.nimbusds.jose.util.X509CertUtils;
@@ -27,10 +26,7 @@ import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import org.bouncycastle.asn1.x509.BasicConstraints;
 import org.bouncycastle.asn1.x509.Extension;
 import org.bouncycastle.x509.X509V3CertificateGenerator;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.parallel.Isolated;
 import org.junit.jupiter.params.provider.Arguments;
 
@@ -85,6 +81,9 @@ public class AttestationClientTestBase extends TestProxyTestBase {
     protected void beforeTest() {
         super.beforeTest();
 
+        GlobalOpenTelemetry.resetForTest();
+        tracer = configureLoggingExporter(testContextManager.getTestName());
+
         if (interceptorManager.isPlaybackMode()) {
             interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher()
                 .setHeadersKeyOnlyMatch(Collections.singletonList("Authorization"))));
@@ -122,21 +121,8 @@ public class AttestationClientTestBase extends TestProxyTestBase {
     }
 
     @Override
-    @BeforeEach
-    public void setupTest(TestInfo testInfo) {
+    public void afterTest() {
         GlobalOpenTelemetry.resetForTest();
-        super.setupTest(testInfo);
-        String testMethod = testInfo.getTestMethod().isPresent()
-            ? testInfo.getTestMethod().get().getName()
-            : testInfo.getDisplayName();
-        tracer = configureLoggingExporter(testMethod);
-    }
-
-    @Override
-    @AfterEach
-    public void teardownTest(TestInfo testInfo) {
-        GlobalOpenTelemetry.resetForTest();
-        super.teardownTest(testInfo);
     }
 
     @SuppressWarnings({"deprecation", "resource"})
@@ -183,11 +169,7 @@ public class AttestationClientTestBase extends TestProxyTestBase {
     AttestationClientBuilder getAuthenticatedAttestationBuilder(HttpClient httpClient, String clientUri) {
         AttestationClientBuilder builder = getAttestationBuilder(httpClient, clientUri);
         if (!interceptorManager.isPlaybackMode()) {
-            builder.credential(new ClientSecretCredentialBuilder()
-                .clientSecret(Configuration.getGlobalConfiguration().get("ATTESTATION_CLIENT_SECRET"))
-                .clientId(Configuration.getGlobalConfiguration().get("ATTESTATION_CLIENT_ID"))
-                .tenantId(Configuration.getGlobalConfiguration().get("ATTESTATION_TENANT_ID"))
-                .httpClient(httpClient).build());
+            builder.credential(TestUtil.getIdentityTestCredential(interceptorManager, httpClient));
         } else {
             builder.credential(new MockTokenCredential());
         }
@@ -247,12 +229,7 @@ public class AttestationClientTestBase extends TestProxyTestBase {
             // Add a 10-second slack time to account for clock drift between the client and server.
             builder.tokenValidationOptions(new AttestationTokenValidationOptions()
                     .setValidationSlack(Duration.ofSeconds(10)))
-                .credential(new ClientSecretCredentialBuilder()
-                    .clientSecret(Configuration.getGlobalConfiguration().get("ATTESTATION_CLIENT_SECRET"))
-                    .clientId(Configuration.getGlobalConfiguration().get("ATTESTATION_CLIENT_ID"))
-                    .tenantId(Configuration.getGlobalConfiguration().get("ATTESTATION_TENANT_ID"))
-                    .httpClient(httpClient).build())
-                .httpClient(httpClient);
+                .credential(TestUtil.getIdentityTestCredential(interceptorManager, httpClient));
         } else {
             builder.tokenValidationOptions(new AttestationTokenValidationOptions()
                 .setValidateExpiresOn(false)

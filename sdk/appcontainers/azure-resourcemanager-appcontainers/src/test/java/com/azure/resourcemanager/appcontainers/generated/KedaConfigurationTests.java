@@ -10,8 +10,7 @@ import com.azure.resourcemanager.appcontainers.models.KedaConfiguration;
 public final class KedaConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        KedaConfiguration model =
-            BinaryData.fromString("{\"version\":\"chpqbmfpjba\"}").toObject(KedaConfiguration.class);
+        KedaConfiguration model = BinaryData.fromString("{\"version\":\"knapq\"}").toObject(KedaConfiguration.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -28,8 +28,7 @@ public final class AdaptiveApplicationControlGroupData {
     private EnforcementMode enforcementMode;
 
     /*
-     * The protection mode of the collection/file types. Exe/Msi/Script are used for Windows, Executable is used for
-     * Linux.
+     * The protection mode of the collection/file types. Exe/Msi/Script are used for Windows, Executable is used for Linux.
      */
     @JsonProperty(value = "protectionMode")
     private ProtectionMode protectionMode;

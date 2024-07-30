@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class ServiceEndpointPoliciesGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/ServiceEndpointPolicyGet.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ServiceEndpointPolicyGet.json
      */
     /**
      * Sample code: Get service endPoint Policy.
@@ -18,7 +18,10 @@ public final class ServiceEndpointPoliciesGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getServiceEndPointPolicy(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getServiceEndpointPolicies().getByResourceGroupWithResponse("rg1",
-            "testServiceEndpointPolicy", null, com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getServiceEndpointPolicies()
+            .getByResourceGroupWithResponse("rg1", "testServiceEndpointPolicy", null, com.azure.core.util.Context.NONE);
     }
 }

@@ -21,10 +21,11 @@ public final class ScriptActivityScriptBlock {
     private Object text;
 
     /*
-     * The type of the query. Type: string.
+     * The type of the query. Please refer to the ScriptType for valid options. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "type", required = true)
-    private ScriptType type;
+    private Object type;
 
     /*
      * Array of script parameters. Type: array.
@@ -59,21 +60,23 @@ public final class ScriptActivityScriptBlock {
     }
 
     /**
-     * Get the type property: The type of the query. Type: string.
+     * Get the type property: The type of the query. Please refer to the ScriptType for valid options. Type: string (or
+     * Expression with resultType string).
      * 
      * @return the type value.
      */
-    public ScriptType type() {
+    public Object type() {
         return this.type;
     }
 
     /**
-     * Set the type property: The type of the query. Type: string.
+     * Set the type property: The type of the query. Please refer to the ScriptType for valid options. Type: string (or
+     * Expression with resultType string).
      * 
      * @param type the type value to set.
      * @return the ScriptActivityScriptBlock object itself.
      */
-    public ScriptActivityScriptBlock withType(ScriptType type) {
+    public ScriptActivityScriptBlock withType(Object type) {
         this.type = type;
         return this;
     }
@@ -105,12 +108,12 @@ public final class ScriptActivityScriptBlock {
      */
     public void validate() {
         if (text() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property text in model ScriptActivityScriptBlock"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property text in model ScriptActivityScriptBlock"));
         }
         if (type() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property type in model ScriptActivityScriptBlock"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model ScriptActivityScriptBlock"));
         }
         if (parameters() != null) {
             parameters().forEach(e -> e.validate());

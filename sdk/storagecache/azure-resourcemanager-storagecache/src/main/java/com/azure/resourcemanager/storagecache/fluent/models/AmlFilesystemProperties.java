@@ -39,8 +39,7 @@ public final class AmlFilesystemProperties {
     private AmlFilesystemProvisioningStateType provisioningState;
 
     /*
-     * Subnet used for managing the AML file system and for client-facing operations. This subnet should have at least
-     * a /24 subnet mask within the VNET's address space.
+     * Subnet used for managing the AML file system and for client-facing operations. This subnet should have at least a /24 subnet mask within the VNET's address space.
      */
     @JsonProperty(value = "filesystemSubnet", required = true)
     private String filesystemSubnet;
@@ -126,8 +125,8 @@ public final class AmlFilesystemProperties {
     }
 
     /**
-     * Get the filesystemSubnet property: Subnet used for managing the AML file system and for client-facing
-     * operations. This subnet should have at least a /24 subnet mask within the VNET's address space.
+     * Get the filesystemSubnet property: Subnet used for managing the AML file system and for client-facing operations.
+     * This subnet should have at least a /24 subnet mask within the VNET's address space.
      * 
      * @return the filesystemSubnet value.
      */
@@ -136,8 +135,8 @@ public final class AmlFilesystemProperties {
     }
 
     /**
-     * Set the filesystemSubnet property: Subnet used for managing the AML file system and for client-facing
-     * operations. This subnet should have at least a /24 subnet mask within the VNET's address space.
+     * Set the filesystemSubnet property: Subnet used for managing the AML file system and for client-facing operations.
+     * This subnet should have at least a /24 subnet mask within the VNET's address space.
      * 
      * @param filesystemSubnet the filesystemSubnet value to set.
      * @return the AmlFilesystemProperties object itself.
@@ -256,8 +255,9 @@ public final class AmlFilesystemProperties {
             health().validate();
         }
         if (filesystemSubnet() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property filesystemSubnet in model AmlFilesystemProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property filesystemSubnet in model AmlFilesystemProperties"));
         }
         if (clientInfo() != null) {
             clientInfo().validate();
@@ -266,8 +266,9 @@ public final class AmlFilesystemProperties {
             encryptionSettings().validate();
         }
         if (maintenanceWindow() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property maintenanceWindow in model AmlFilesystemProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property maintenanceWindow in model AmlFilesystemProperties"));
         } else {
             maintenanceWindow().validate();
         }

@@ -10,6 +10,7 @@
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
       <module>azure-ai-documenttranslator</module>
+      <module>azure-ai-translation-document</module>
       <module>azure-ai-translation-text</module>
   </modules>
 </project>

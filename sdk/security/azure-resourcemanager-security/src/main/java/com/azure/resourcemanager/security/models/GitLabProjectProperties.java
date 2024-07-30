@@ -50,8 +50,7 @@ public final class GitLabProjectProperties {
     /*
      * Gets or sets the human readable fully-qualified name of the Project object.
      * 
-     * This contains the entire namespace hierarchy as seen on GitLab UI where entities are separated by the '/'
-     * character.
+     * This contains the entire namespace hierarchy as seen on GitLab UI where entities are separated by the '/' character.
      */
     @JsonProperty(value = "fullyQualifiedFriendlyName", access = JsonProperty.Access.WRITE_ONLY)
     private String fullyQualifiedFriendlyName;
@@ -73,8 +72,7 @@ public final class GitLabProjectProperties {
     /*
      * Details about resource onboarding status across all connectors.
      * 
-     * OnboardedByOtherConnector - this resource has already been onboarded to another connector. This is only
-     * applicable to top-level resources.
+     * OnboardedByOtherConnector - this resource has already been onboarded to another connector. This is only applicable to top-level resources.
      * Onboarded - this resource has already been onboarded by the specified connector.
      * NotOnboarded - this resource has not been onboarded to any connector.
      * NotApplicable - the onboarding state is not applicable to the current endpoint.

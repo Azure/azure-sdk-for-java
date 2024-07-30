@@ -26,22 +26,28 @@ import com.azure.resourcemanager.support.fluent.FileWorkspacesClient;
 import com.azure.resourcemanager.support.fluent.models.FileWorkspaceDetailsInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in FileWorkspacesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FileWorkspacesClient.
+ */
 public final class FileWorkspacesClientImpl implements FileWorkspacesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final FileWorkspacesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MicrosoftSupportImpl client;
 
     /**
      * Initializes an instance of FileWorkspacesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     FileWorkspacesClientImpl(MicrosoftSupportImpl client) {
-        this.service =
-            RestProxy.create(FileWorkspacesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(FileWorkspacesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -52,118 +58,90 @@ public final class FileWorkspacesClientImpl implements FileWorkspacesClient {
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftSupportFile")
     public interface FileWorkspacesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Support/fileWorkspaces/{fileWorkspaceName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FileWorkspaceDetailsInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<FileWorkspaceDetailsInner>> get(@HostParam("$host") String endpoint,
             @PathParam("fileWorkspaceName") String fileWorkspaceName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/providers/Microsoft.Support/fileWorkspaces/{fileWorkspaceName}")
-        @ExpectedResponses({201})
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FileWorkspaceDetailsInner>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<FileWorkspaceDetailsInner>> create(@HostParam("$host") String endpoint,
             @PathParam("fileWorkspaceName") String fileWorkspaceName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets details for a specific file workspace in an Azure subscription.
-     *
+     * 
      * @param fileWorkspaceName File Workspace Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details for a specific file workspace in an Azure subscription along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FileWorkspaceDetailsInner>> getWithResponseAsync(String fileWorkspaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (fileWorkspaceName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter fileWorkspaceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            fileWorkspaceName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), fileWorkspaceName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets details for a specific file workspace in an Azure subscription.
-     *
+     * 
      * @param fileWorkspaceName File Workspace Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details for a specific file workspace in an Azure subscription along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FileWorkspaceDetailsInner>> getWithResponseAsync(String fileWorkspaceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (fileWorkspaceName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter fileWorkspaceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                fileWorkspaceName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), fileWorkspaceName, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets details for a specific file workspace in an Azure subscription.
-     *
+     * 
      * @param fileWorkspaceName File Workspace Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -177,7 +155,7 @@ public final class FileWorkspacesClientImpl implements FileWorkspacesClient {
 
     /**
      * Gets details for a specific file workspace in an Azure subscription.
-     *
+     * 
      * @param fileWorkspaceName File Workspace Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -192,7 +170,7 @@ public final class FileWorkspacesClientImpl implements FileWorkspacesClient {
 
     /**
      * Gets details for a specific file workspace in an Azure subscription.
-     *
+     * 
      * @param fileWorkspaceName File Workspace Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -206,92 +184,70 @@ public final class FileWorkspacesClientImpl implements FileWorkspacesClient {
 
     /**
      * Creates a new file workspace for the specified subscription.
-     *
+     * 
      * @param fileWorkspaceName File workspace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that represents FileWorkspaceDetails resource along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FileWorkspaceDetailsInner>> createWithResponseAsync(String fileWorkspaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (fileWorkspaceName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter fileWorkspaceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            fileWorkspaceName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), fileWorkspaceName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a new file workspace for the specified subscription.
-     *
+     * 
      * @param fileWorkspaceName File workspace name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that represents FileWorkspaceDetails resource along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FileWorkspaceDetailsInner>> createWithResponseAsync(
-        String fileWorkspaceName, Context context) {
+    private Mono<Response<FileWorkspaceDetailsInner>> createWithResponseAsync(String fileWorkspaceName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (fileWorkspaceName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter fileWorkspaceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                fileWorkspaceName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), fileWorkspaceName, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Creates a new file workspace for the specified subscription.
-     *
+     * 
      * @param fileWorkspaceName File workspace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -305,7 +261,7 @@ public final class FileWorkspacesClientImpl implements FileWorkspacesClient {
 
     /**
      * Creates a new file workspace for the specified subscription.
-     *
+     * 
      * @param fileWorkspaceName File workspace name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -320,7 +276,7 @@ public final class FileWorkspacesClientImpl implements FileWorkspacesClient {
 
     /**
      * Creates a new file workspace for the specified subscription.
-     *
+     * 
      * @param fileWorkspaceName File workspace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -15,7 +15,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The policy exemption. */
+/**
+ * The policy exemption.
+ */
 @Fluent
 public final class PolicyExemptionInner extends ProxyResource {
     /*
@@ -30,13 +32,15 @@ public final class PolicyExemptionInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of PolicyExemptionInner class. */
+    /**
+     * Creates an instance of PolicyExemptionInner class.
+     */
     public PolicyExemptionInner() {
     }
 
     /**
      * Get the innerProperties property: Properties for the policy exemption.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PolicyExemptionProperties innerProperties() {
@@ -45,7 +49,7 @@ public final class PolicyExemptionInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -54,7 +58,7 @@ public final class PolicyExemptionInner extends ProxyResource {
 
     /**
      * Get the policyAssignmentId property: The ID of the policy assignment that is being exempted.
-     *
+     * 
      * @return the policyAssignmentId value.
      */
     public String policyAssignmentId() {
@@ -63,7 +67,7 @@ public final class PolicyExemptionInner extends ProxyResource {
 
     /**
      * Set the policyAssignmentId property: The ID of the policy assignment that is being exempted.
-     *
+     * 
      * @param policyAssignmentId the policyAssignmentId value to set.
      * @return the PolicyExemptionInner object itself.
      */
@@ -78,7 +82,7 @@ public final class PolicyExemptionInner extends ProxyResource {
     /**
      * Get the policyDefinitionReferenceIds property: The policy definition reference ID list when the associated policy
      * assignment is an assignment of a policy set definition.
-     *
+     * 
      * @return the policyDefinitionReferenceIds value.
      */
     public List<String> policyDefinitionReferenceIds() {
@@ -88,7 +92,7 @@ public final class PolicyExemptionInner extends ProxyResource {
     /**
      * Set the policyDefinitionReferenceIds property: The policy definition reference ID list when the associated policy
      * assignment is an assignment of a policy set definition.
-     *
+     * 
      * @param policyDefinitionReferenceIds the policyDefinitionReferenceIds value to set.
      * @return the PolicyExemptionInner object itself.
      */
@@ -102,7 +106,7 @@ public final class PolicyExemptionInner extends ProxyResource {
 
     /**
      * Get the exemptionCategory property: The policy exemption category. Possible values are Waiver and Mitigated.
-     *
+     * 
      * @return the exemptionCategory value.
      */
     public ExemptionCategory exemptionCategory() {
@@ -111,7 +115,7 @@ public final class PolicyExemptionInner extends ProxyResource {
 
     /**
      * Set the exemptionCategory property: The policy exemption category. Possible values are Waiver and Mitigated.
-     *
+     * 
      * @param exemptionCategory the exemptionCategory value to set.
      * @return the PolicyExemptionInner object itself.
      */
@@ -126,7 +130,7 @@ public final class PolicyExemptionInner extends ProxyResource {
     /**
      * Get the expiresOn property: The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the
      * policy exemption.
-     *
+     * 
      * @return the expiresOn value.
      */
     public OffsetDateTime expiresOn() {
@@ -136,7 +140,7 @@ public final class PolicyExemptionInner extends ProxyResource {
     /**
      * Set the expiresOn property: The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the
      * policy exemption.
-     *
+     * 
      * @param expiresOn the expiresOn value to set.
      * @return the PolicyExemptionInner object itself.
      */
@@ -150,7 +154,7 @@ public final class PolicyExemptionInner extends ProxyResource {
 
     /**
      * Get the displayName property: The display name of the policy exemption.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -159,7 +163,7 @@ public final class PolicyExemptionInner extends ProxyResource {
 
     /**
      * Set the displayName property: The display name of the policy exemption.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the PolicyExemptionInner object itself.
      */
@@ -173,7 +177,7 @@ public final class PolicyExemptionInner extends ProxyResource {
 
     /**
      * Get the description property: The description of the policy exemption.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -182,7 +186,7 @@ public final class PolicyExemptionInner extends ProxyResource {
 
     /**
      * Set the description property: The description of the policy exemption.
-     *
+     * 
      * @param description the description value to set.
      * @return the PolicyExemptionInner object itself.
      */
@@ -197,7 +201,7 @@ public final class PolicyExemptionInner extends ProxyResource {
     /**
      * Get the metadata property: The policy exemption metadata. Metadata is an open ended object and is typically a
      * collection of key value pairs.
-     *
+     * 
      * @return the metadata value.
      */
     public Object metadata() {
@@ -207,7 +211,7 @@ public final class PolicyExemptionInner extends ProxyResource {
     /**
      * Set the metadata property: The policy exemption metadata. Metadata is an open ended object and is typically a
      * collection of key value pairs.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the PolicyExemptionInner object itself.
      */
@@ -221,7 +225,7 @@ public final class PolicyExemptionInner extends ProxyResource {
 
     /**
      * Get the resourceSelectors property: The resource selector list to filter policies by resource properties.
-     *
+     * 
      * @return the resourceSelectors value.
      */
     public List<ResourceSelector> resourceSelectors() {
@@ -230,7 +234,7 @@ public final class PolicyExemptionInner extends ProxyResource {
 
     /**
      * Set the resourceSelectors property: The resource selector list to filter policies by resource properties.
-     *
+     * 
      * @param resourceSelectors the resourceSelectors value to set.
      * @return the PolicyExemptionInner object itself.
      */
@@ -245,7 +249,7 @@ public final class PolicyExemptionInner extends ProxyResource {
     /**
      * Get the assignmentScopeValidation property: The option whether validate the exemption is at or under the
      * assignment scope.
-     *
+     * 
      * @return the assignmentScopeValidation value.
      */
     public AssignmentScopeValidation assignmentScopeValidation() {
@@ -255,7 +259,7 @@ public final class PolicyExemptionInner extends ProxyResource {
     /**
      * Set the assignmentScopeValidation property: The option whether validate the exemption is at or under the
      * assignment scope.
-     *
+     * 
      * @param assignmentScopeValidation the assignmentScopeValidation value to set.
      * @return the PolicyExemptionInner object itself.
      */
@@ -269,15 +273,14 @@ public final class PolicyExemptionInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model PolicyExemptionInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model PolicyExemptionInner"));
         } else {
             innerProperties().validate();
         }

@@ -11,7 +11,7 @@ public final class SecureScoreControlDefinitionItemPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecureScoreControlDefinitionItemProperties model = BinaryData.fromString(
-            "{\"displayName\":\"d\",\"description\":\"pbqwuntobu\",\"maxScore\":625595670,\"source\":{\"sourceType\":\"Custom\"},\"assessmentDefinitions\":[{\"id\":\"vydjufbnk\"},{\"id\":\"laxp\"},{\"id\":\"jwdabalfd\"}]}")
+            "{\"displayName\":\"chl\",\"description\":\"pwctofl\",\"maxScore\":2128667253,\"source\":{\"sourceType\":\"BuiltIn\"},\"assessmentDefinitions\":[{\"id\":\"xkbrfg\"}]}")
             .toObject(SecureScoreControlDefinitionItemProperties.class);
     }
 

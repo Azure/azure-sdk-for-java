@@ -5,60 +5,65 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.util.Objects;
+import java.util.UUID;
 
-/** The info w.r.t Agent Upgrade. */
+/**
+ * The info w.r.t Agent Upgrade.
+ */
 @Fluent
-public final class AgentUpgrade {
+public final class AgentUpgrade implements JsonSerializable<AgentUpgrade> {
     /*
      * Specifies the version info w.r.t AgentUpgrade for the machine.
      */
-    @JsonProperty(value = "desiredVersion")
     private String desiredVersion;
 
     /*
      * The correlation ID passed in from RSM per upgrade.
      */
-    @JsonProperty(value = "correlationId")
-    private String correlationId;
+    private UUID correlationId;
 
     /*
      * Specifies if RSM should try to upgrade this machine
      */
-    @JsonProperty(value = "enableAutomaticUpgrade")
     private Boolean enableAutomaticUpgrade;
 
     /*
      * Specifies the version of the last attempt
      */
-    @JsonProperty(value = "lastAttemptDesiredVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String lastAttemptDesiredVersion;
 
     /*
      * Timestamp of last upgrade attempt
      */
-    @JsonProperty(value = "lastAttemptTimestamp", access = JsonProperty.Access.WRITE_ONLY)
-    private String lastAttemptTimestamp;
+    private OffsetDateTime lastAttemptTimestamp;
 
     /*
      * Specifies the status of Agent Upgrade.
      */
-    @JsonProperty(value = "lastAttemptStatus", access = JsonProperty.Access.WRITE_ONLY)
     private LastAttemptStatusEnum lastAttemptStatus;
 
     /*
      * Failure message of last upgrade attempt if any.
      */
-    @JsonProperty(value = "lastAttemptMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String lastAttemptMessage;
 
-    /** Creates an instance of AgentUpgrade class. */
+    /**
+     * Creates an instance of AgentUpgrade class.
+     */
     public AgentUpgrade() {
     }
 
     /**
      * Get the desiredVersion property: Specifies the version info w.r.t AgentUpgrade for the machine.
-     *
+     * 
      * @return the desiredVersion value.
      */
     public String desiredVersion() {
@@ -67,7 +72,7 @@ public final class AgentUpgrade {
 
     /**
      * Set the desiredVersion property: Specifies the version info w.r.t AgentUpgrade for the machine.
-     *
+     * 
      * @param desiredVersion the desiredVersion value to set.
      * @return the AgentUpgrade object itself.
      */
@@ -78,27 +83,27 @@ public final class AgentUpgrade {
 
     /**
      * Get the correlationId property: The correlation ID passed in from RSM per upgrade.
-     *
+     * 
      * @return the correlationId value.
      */
-    public String correlationId() {
+    public UUID correlationId() {
         return this.correlationId;
     }
 
     /**
      * Set the correlationId property: The correlation ID passed in from RSM per upgrade.
-     *
+     * 
      * @param correlationId the correlationId value to set.
      * @return the AgentUpgrade object itself.
      */
-    public AgentUpgrade withCorrelationId(String correlationId) {
+    public AgentUpgrade withCorrelationId(UUID correlationId) {
         this.correlationId = correlationId;
         return this;
     }
 
     /**
      * Get the enableAutomaticUpgrade property: Specifies if RSM should try to upgrade this machine.
-     *
+     * 
      * @return the enableAutomaticUpgrade value.
      */
     public Boolean enableAutomaticUpgrade() {
@@ -107,7 +112,7 @@ public final class AgentUpgrade {
 
     /**
      * Set the enableAutomaticUpgrade property: Specifies if RSM should try to upgrade this machine.
-     *
+     * 
      * @param enableAutomaticUpgrade the enableAutomaticUpgrade value to set.
      * @return the AgentUpgrade object itself.
      */
@@ -118,7 +123,7 @@ public final class AgentUpgrade {
 
     /**
      * Get the lastAttemptDesiredVersion property: Specifies the version of the last attempt.
-     *
+     * 
      * @return the lastAttemptDesiredVersion value.
      */
     public String lastAttemptDesiredVersion() {
@@ -127,16 +132,16 @@ public final class AgentUpgrade {
 
     /**
      * Get the lastAttemptTimestamp property: Timestamp of last upgrade attempt.
-     *
+     * 
      * @return the lastAttemptTimestamp value.
      */
-    public String lastAttemptTimestamp() {
+    public OffsetDateTime lastAttemptTimestamp() {
         return this.lastAttemptTimestamp;
     }
 
     /**
      * Get the lastAttemptStatus property: Specifies the status of Agent Upgrade.
-     *
+     * 
      * @return the lastAttemptStatus value.
      */
     public LastAttemptStatusEnum lastAttemptStatus() {
@@ -145,7 +150,7 @@ public final class AgentUpgrade {
 
     /**
      * Get the lastAttemptMessage property: Failure message of last upgrade attempt if any.
-     *
+     * 
      * @return the lastAttemptMessage value.
      */
     public String lastAttemptMessage() {
@@ -154,9 +159,61 @@ public final class AgentUpgrade {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("desiredVersion", this.desiredVersion);
+        jsonWriter.writeStringField("correlationId", Objects.toString(this.correlationId, null));
+        jsonWriter.writeBooleanField("enableAutomaticUpgrade", this.enableAutomaticUpgrade);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AgentUpgrade from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AgentUpgrade if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AgentUpgrade.
+     */
+    public static AgentUpgrade fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AgentUpgrade deserializedAgentUpgrade = new AgentUpgrade();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("desiredVersion".equals(fieldName)) {
+                    deserializedAgentUpgrade.desiredVersion = reader.getString();
+                } else if ("correlationId".equals(fieldName)) {
+                    deserializedAgentUpgrade.correlationId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("enableAutomaticUpgrade".equals(fieldName)) {
+                    deserializedAgentUpgrade.enableAutomaticUpgrade = reader.getNullable(JsonReader::getBoolean);
+                } else if ("lastAttemptDesiredVersion".equals(fieldName)) {
+                    deserializedAgentUpgrade.lastAttemptDesiredVersion = reader.getString();
+                } else if ("lastAttemptTimestamp".equals(fieldName)) {
+                    deserializedAgentUpgrade.lastAttemptTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastAttemptStatus".equals(fieldName)) {
+                    deserializedAgentUpgrade.lastAttemptStatus = LastAttemptStatusEnum.fromString(reader.getString());
+                } else if ("lastAttemptMessage".equals(fieldName)) {
+                    deserializedAgentUpgrade.lastAttemptMessage = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAgentUpgrade;
+        });
     }
 }

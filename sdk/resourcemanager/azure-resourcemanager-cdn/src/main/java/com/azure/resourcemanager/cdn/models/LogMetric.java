@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LogMetric. */
+/**
+ * Defines values for LogMetric.
+ */
 public final class LogMetric extends ExpandableStringEnum<LogMetric> {
-    /** Static value clientRequestCount for LogMetric. */
+    /**
+     * Static value clientRequestCount for LogMetric.
+     */
     public static final LogMetric CLIENT_REQUEST_COUNT = fromString("clientRequestCount");
 
-    /** Static value clientRequestTraffic for LogMetric. */
+    /**
+     * Static value clientRequestTraffic for LogMetric.
+     */
     public static final LogMetric CLIENT_REQUEST_TRAFFIC = fromString("clientRequestTraffic");
 
-    /** Static value clientRequestBandwidth for LogMetric. */
+    /**
+     * Static value clientRequestBandwidth for LogMetric.
+     */
     public static final LogMetric CLIENT_REQUEST_BANDWIDTH = fromString("clientRequestBandwidth");
 
-    /** Static value originRequestTraffic for LogMetric. */
+    /**
+     * Static value originRequestTraffic for LogMetric.
+     */
     public static final LogMetric ORIGIN_REQUEST_TRAFFIC = fromString("originRequestTraffic");
 
-    /** Static value originRequestBandwidth for LogMetric. */
+    /**
+     * Static value originRequestBandwidth for LogMetric.
+     */
     public static final LogMetric ORIGIN_REQUEST_BANDWIDTH = fromString("originRequestBandwidth");
 
-    /** Static value totalLatency for LogMetric. */
+    /**
+     * Static value totalLatency for LogMetric.
+     */
     public static final LogMetric TOTAL_LATENCY = fromString("totalLatency");
 
     /**
      * Creates a new instance of LogMetric value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +53,7 @@ public final class LogMetric extends ExpandableStringEnum<LogMetric> {
 
     /**
      * Creates or finds a LogMetric from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LogMetric.
      */
@@ -50,7 +64,7 @@ public final class LogMetric extends ExpandableStringEnum<LogMetric> {
 
     /**
      * Gets known LogMetric values.
-     *
+     * 
      * @return known LogMetric values.
      */
     public static Collection<LogMetric> values() {

@@ -7,16 +7,28 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Delimited text write settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = DelimitedTextWriteSettings.class,
+    visible = true)
 @JsonTypeName("DelimitedTextWriteSettings")
 @Fluent
 public final class DelimitedTextWriteSettings extends FormatWriteSettings {
+    /*
+     * The write setting type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "DelimitedTextWriteSettings";
+
     /*
      * Indicates whether string values should always be enclosed with quotes. Type: boolean (or Expression with
      * resultType boolean).
@@ -48,6 +60,16 @@ public final class DelimitedTextWriteSettings extends FormatWriteSettings {
      * Creates an instance of DelimitedTextWriteSettings class.
      */
     public DelimitedTextWriteSettings() {
+    }
+
+    /**
+     * Get the type property: The write setting type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -149,8 +171,9 @@ public final class DelimitedTextWriteSettings extends FormatWriteSettings {
     public void validate() {
         super.validate();
         if (fileExtension() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property fileExtension in model DelimitedTextWriteSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property fileExtension in model DelimitedTextWriteSettings"));
         }
     }
 

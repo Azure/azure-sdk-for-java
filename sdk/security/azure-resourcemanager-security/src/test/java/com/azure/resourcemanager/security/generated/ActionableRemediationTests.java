@@ -19,37 +19,35 @@ public final class ActionableRemediationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ActionableRemediation model = BinaryData.fromString(
-            "{\"state\":\"Disabled\",\"categoryConfigurations\":[{\"minimumSeverityLevel\":\"bydpizqaclnapxb\",\"category\":\"Code\"},{\"minimumSeverityLevel\":\"ugjknf\",\"category\":\"IaC\"},{\"minimumSeverityLevel\":\"ttuxuuyilflqoiqu\",\"category\":\"Containers\"},{\"minimumSeverityLevel\":\"mrnjh\",\"category\":\"Code\"}],\"branchConfiguration\":{\"branchNames\":[\"czytqjtwhauunfpr\",\"jletlxsmrpddo\",\"ifamowazi\"],\"annotateDefaultBranch\":\"Enabled\"},\"inheritFromParentState\":\"Enabled\"}")
+            "{\"state\":\"Enabled\",\"categoryConfigurations\":[{\"minimumSeverityLevel\":\"nplfac\",\"category\":\"IaC\"},{\"minimumSeverityLevel\":\"qrqxwetjt\",\"category\":\"Secrets\"},{\"minimumSeverityLevel\":\"tfdoadtx\",\"category\":\"Artifacts\"}],\"branchConfiguration\":{\"branchNames\":[\"adkm\",\"zgssz\",\"vctkbbx\",\"harls\"],\"annotateDefaultBranch\":\"Enabled\"},\"inheritFromParentState\":\"Disabled\"}")
             .toObject(ActionableRemediation.class);
-        Assertions.assertEquals(ActionableRemediationState.DISABLED, model.state());
-        Assertions.assertEquals("bydpizqaclnapxb", model.categoryConfigurations().get(0).minimumSeverityLevel());
-        Assertions.assertEquals(RuleCategory.CODE, model.categoryConfigurations().get(0).category());
-        Assertions.assertEquals("czytqjtwhauunfpr", model.branchConfiguration().branchNames().get(0));
+        Assertions.assertEquals(ActionableRemediationState.ENABLED, model.state());
+        Assertions.assertEquals("nplfac", model.categoryConfigurations().get(0).minimumSeverityLevel());
+        Assertions.assertEquals(RuleCategory.IAC, model.categoryConfigurations().get(0).category());
+        Assertions.assertEquals("adkm", model.branchConfiguration().branchNames().get(0));
         Assertions.assertEquals(AnnotateDefaultBranchState.ENABLED,
             model.branchConfiguration().annotateDefaultBranch());
-        Assertions.assertEquals(InheritFromParentState.ENABLED, model.inheritFromParentState());
+        Assertions.assertEquals(InheritFromParentState.DISABLED, model.inheritFromParentState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ActionableRemediation model = new ActionableRemediation().withState(ActionableRemediationState.DISABLED)
+        ActionableRemediation model = new ActionableRemediation().withState(ActionableRemediationState.ENABLED)
             .withCategoryConfigurations(Arrays.asList(
-                new CategoryConfiguration().withMinimumSeverityLevel("bydpizqaclnapxb").withCategory(RuleCategory.CODE),
-                new CategoryConfiguration().withMinimumSeverityLevel("ugjknf").withCategory(RuleCategory.IAC),
-                new CategoryConfiguration().withMinimumSeverityLevel("ttuxuuyilflqoiqu")
-                    .withCategory(RuleCategory.CONTAINERS),
-                new CategoryConfiguration().withMinimumSeverityLevel("mrnjh").withCategory(RuleCategory.CODE)))
-            .withBranchConfiguration(new TargetBranchConfiguration()
-                .withBranchNames(Arrays.asList("czytqjtwhauunfpr", "jletlxsmrpddo", "ifamowazi"))
-                .withAnnotateDefaultBranch(AnnotateDefaultBranchState.ENABLED))
-            .withInheritFromParentState(InheritFromParentState.ENABLED);
+                new CategoryConfiguration().withMinimumSeverityLevel("nplfac").withCategory(RuleCategory.IAC),
+                new CategoryConfiguration().withMinimumSeverityLevel("qrqxwetjt").withCategory(RuleCategory.SECRETS),
+                new CategoryConfiguration().withMinimumSeverityLevel("tfdoadtx").withCategory(RuleCategory.ARTIFACTS)))
+            .withBranchConfiguration(
+                new TargetBranchConfiguration().withBranchNames(Arrays.asList("adkm", "zgssz", "vctkbbx", "harls"))
+                    .withAnnotateDefaultBranch(AnnotateDefaultBranchState.ENABLED))
+            .withInheritFromParentState(InheritFromParentState.DISABLED);
         model = BinaryData.fromObject(model).toObject(ActionableRemediation.class);
-        Assertions.assertEquals(ActionableRemediationState.DISABLED, model.state());
-        Assertions.assertEquals("bydpizqaclnapxb", model.categoryConfigurations().get(0).minimumSeverityLevel());
-        Assertions.assertEquals(RuleCategory.CODE, model.categoryConfigurations().get(0).category());
-        Assertions.assertEquals("czytqjtwhauunfpr", model.branchConfiguration().branchNames().get(0));
+        Assertions.assertEquals(ActionableRemediationState.ENABLED, model.state());
+        Assertions.assertEquals("nplfac", model.categoryConfigurations().get(0).minimumSeverityLevel());
+        Assertions.assertEquals(RuleCategory.IAC, model.categoryConfigurations().get(0).category());
+        Assertions.assertEquals("adkm", model.branchConfiguration().branchNames().get(0));
         Assertions.assertEquals(AnnotateDefaultBranchState.ENABLED,
             model.branchConfiguration().annotateDefaultBranch());
-        Assertions.assertEquals(InheritFromParentState.ENABLED, model.inheritFromParentState());
+        Assertions.assertEquals(InheritFromParentState.DISABLED, model.inheritFromParentState());
     }
 }

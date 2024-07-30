@@ -45,7 +45,7 @@ public final class BatchAccountsSynchronizeAutoStorageKeysWithResponseMockTests 
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.batchAccounts().synchronizeAutoStorageKeysWithResponse("hvxndzwmkrefajpj", "rwkq",
+        manager.batchAccounts().synchronizeAutoStorageKeysWithResponse("xggicccnxqhuexmk", "tlstvlzywem",
             com.azure.core.util.Context.NONE);
 
     }

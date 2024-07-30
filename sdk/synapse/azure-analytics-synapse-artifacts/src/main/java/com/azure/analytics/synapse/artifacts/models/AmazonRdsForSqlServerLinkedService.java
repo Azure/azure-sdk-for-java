@@ -5,56 +5,63 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Amazon RDS for SQL Server linked service.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AmazonRdsForSqlServer")
-@JsonFlatten
 @Fluent
 public class AmazonRdsForSqlServerLinkedService extends LinkedService {
     /*
+     * Type of linked service.
+     */
+    private String type = "AmazonRdsForSqlServer";
+
+    /*
      * The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "typeProperties.connectionString", required = true)
     private Object connectionString;
 
     /*
      * The on-premises Windows authentication user name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.userName")
     private Object userName;
 
     /*
      * The on-premises Windows authentication password.
      */
-    @JsonProperty(value = "typeProperties.password")
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
     /*
      * Sql always encrypted properties.
      */
-    @JsonProperty(value = "typeProperties.alwaysEncryptedSettings")
     private SqlAlwaysEncryptedProperties alwaysEncryptedSettings;
 
     /**
      * Creates an instance of AmazonRdsForSqlServerLinkedService class.
      */
     public AmazonRdsForSqlServerLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -122,8 +129,8 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
      * 
      * @return the encryptedCredential value.
      */
@@ -132,8 +139,8 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AmazonRdsForSqlServerLinkedService object itself.
@@ -198,5 +205,103 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
     public AmazonRdsForSqlServerLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("connectVia", getConnectVia());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("type", this.type);
+        if (connectionString != null
+            || userName != null
+            || password != null
+            || encryptedCredential != null
+            || alwaysEncryptedSettings != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("connectionString", this.connectionString);
+            jsonWriter.writeUntypedField("userName", this.userName);
+            jsonWriter.writeJsonField("password", this.password);
+            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            jsonWriter.writeJsonField("alwaysEncryptedSettings", this.alwaysEncryptedSettings);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AmazonRdsForSqlServerLinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AmazonRdsForSqlServerLinkedService if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AmazonRdsForSqlServerLinkedService.
+     */
+    public static AmazonRdsForSqlServerLinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AmazonRdsForSqlServerLinkedService deserializedAmazonRdsForSqlServerLinkedService
+                = new AmazonRdsForSqlServerLinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectVia".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerLinkedService
+                        .setConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerLinkedService.setDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedAmazonRdsForSqlServerLinkedService.setParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedAmazonRdsForSqlServerLinkedService.setAnnotations(annotations);
+                } else if ("type".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerLinkedService.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("connectionString".equals(fieldName)) {
+                            deserializedAmazonRdsForSqlServerLinkedService.connectionString = reader.readUntyped();
+                        } else if ("userName".equals(fieldName)) {
+                            deserializedAmazonRdsForSqlServerLinkedService.userName = reader.readUntyped();
+                        } else if ("password".equals(fieldName)) {
+                            deserializedAmazonRdsForSqlServerLinkedService.password = SecretBase.fromJson(reader);
+                        } else if ("encryptedCredential".equals(fieldName)) {
+                            deserializedAmazonRdsForSqlServerLinkedService.encryptedCredential = reader.readUntyped();
+                        } else if ("alwaysEncryptedSettings".equals(fieldName)) {
+                            deserializedAmazonRdsForSqlServerLinkedService.alwaysEncryptedSettings
+                                = SqlAlwaysEncryptedProperties.fromJson(reader);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAmazonRdsForSqlServerLinkedService.setAdditionalProperties(additionalProperties);
+
+            return deserializedAmazonRdsForSqlServerLinkedService;
+        });
     }
 }

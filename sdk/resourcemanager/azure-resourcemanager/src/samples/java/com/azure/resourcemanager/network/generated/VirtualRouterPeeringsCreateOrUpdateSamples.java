@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.fluent.models.VirtualRouterPeeringInner
 public final class VirtualRouterPeeringsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualRouterPeeringPut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualRouterPeeringPut.json
      */
     /**
      * Sample code: Create Virtual Router Peering.
@@ -20,8 +20,12 @@ public final class VirtualRouterPeeringsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createVirtualRouterPeering(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualRouterPeerings().createOrUpdate("rg1", "virtualRouter",
-            "peering1", new VirtualRouterPeeringInner().withPeerAsn(20000L).withPeerIp("192.168.1.5"),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualRouterPeerings()
+            .createOrUpdate("rg1", "virtualRouter", "peering1",
+                new VirtualRouterPeeringInner().withPeerAsn(20000L).withPeerIp("192.168.1.5"),
+                com.azure.core.util.Context.NONE);
     }
 }

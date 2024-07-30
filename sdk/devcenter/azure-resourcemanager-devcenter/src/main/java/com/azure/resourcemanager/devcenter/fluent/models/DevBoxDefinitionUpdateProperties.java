@@ -10,7 +10,9 @@ import com.azure.resourcemanager.devcenter.models.ImageReference;
 import com.azure.resourcemanager.devcenter.models.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of a Dev Box definition. These properties can be updated after the resource has been created. */
+/**
+ * Properties of a Dev Box definition. These properties can be updated after the resource has been created.
+ */
 @Fluent
 public class DevBoxDefinitionUpdateProperties {
     /*
@@ -32,19 +34,20 @@ public class DevBoxDefinitionUpdateProperties {
     private String osStorageType;
 
     /*
-     * Indicates whether Dev Boxes created with this definition are capable of hibernation. Not all images are capable
-     * of supporting hibernation. To find out more see https://aka.ms/devbox/hibernate
+     * Indicates whether Dev Boxes created with this definition are capable of hibernation. Not all images are capable of supporting hibernation. To find out more see https://aka.ms/devbox/hibernate
      */
     @JsonProperty(value = "hibernateSupport")
     private HibernateSupport hibernateSupport;
 
-    /** Creates an instance of DevBoxDefinitionUpdateProperties class. */
+    /**
+     * Creates an instance of DevBoxDefinitionUpdateProperties class.
+     */
     public DevBoxDefinitionUpdateProperties() {
     }
 
     /**
      * Get the imageReference property: Image reference information.
-     *
+     * 
      * @return the imageReference value.
      */
     public ImageReference imageReference() {
@@ -53,7 +56,7 @@ public class DevBoxDefinitionUpdateProperties {
 
     /**
      * Set the imageReference property: Image reference information.
-     *
+     * 
      * @param imageReference the imageReference value to set.
      * @return the DevBoxDefinitionUpdateProperties object itself.
      */
@@ -64,7 +67,7 @@ public class DevBoxDefinitionUpdateProperties {
 
     /**
      * Get the sku property: The SKU for Dev Boxes created using this definition.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -73,7 +76,7 @@ public class DevBoxDefinitionUpdateProperties {
 
     /**
      * Set the sku property: The SKU for Dev Boxes created using this definition.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the DevBoxDefinitionUpdateProperties object itself.
      */
@@ -85,7 +88,7 @@ public class DevBoxDefinitionUpdateProperties {
     /**
      * Get the osStorageType property: The storage type used for the Operating System disk of Dev Boxes created using
      * this definition.
-     *
+     * 
      * @return the osStorageType value.
      */
     public String osStorageType() {
@@ -95,7 +98,7 @@ public class DevBoxDefinitionUpdateProperties {
     /**
      * Set the osStorageType property: The storage type used for the Operating System disk of Dev Boxes created using
      * this definition.
-     *
+     * 
      * @param osStorageType the osStorageType value to set.
      * @return the DevBoxDefinitionUpdateProperties object itself.
      */
@@ -108,7 +111,7 @@ public class DevBoxDefinitionUpdateProperties {
      * Get the hibernateSupport property: Indicates whether Dev Boxes created with this definition are capable of
      * hibernation. Not all images are capable of supporting hibernation. To find out more see
      * https://aka.ms/devbox/hibernate.
-     *
+     * 
      * @return the hibernateSupport value.
      */
     public HibernateSupport hibernateSupport() {
@@ -119,7 +122,7 @@ public class DevBoxDefinitionUpdateProperties {
      * Set the hibernateSupport property: Indicates whether Dev Boxes created with this definition are capable of
      * hibernation. Not all images are capable of supporting hibernation. To find out more see
      * https://aka.ms/devbox/hibernate.
-     *
+     * 
      * @param hibernateSupport the hibernateSupport value to set.
      * @return the DevBoxDefinitionUpdateProperties object itself.
      */
@@ -130,7 +133,7 @@ public class DevBoxDefinitionUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

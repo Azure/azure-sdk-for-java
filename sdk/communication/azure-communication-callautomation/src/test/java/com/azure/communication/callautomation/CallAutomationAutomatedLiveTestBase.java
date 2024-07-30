@@ -8,25 +8,27 @@ import com.azure.communication.callautomation.implementation.models.Communicatio
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.amqp.AmqpTransportType;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusException;
 import com.azure.messaging.servicebus.ServiceBusFailureReason;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
-import com.azure.core.http.HttpClient;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -36,11 +38,15 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(CallAutomationAutomatedLiveTestBase.class);
+
     protected ConcurrentHashMap<String, ServiceBusProcessorClient> processorStore;
     // Key: callerId + receiverId, Value: incomingCallContext
     protected ConcurrentHashMap<String, String> incomingCallContextStore;
@@ -55,8 +61,24 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
             "https://incomingcalldispatcher.azurewebsites.net");
     protected static final String DISPATCHER_CALLBACK = DISPATCHER_ENDPOINT + "/api/servicebuscallback/events";
     protected static final String BOT_APP_ID = Configuration.getGlobalConfiguration()
-        .get("BOT_APP_ID",
-            "REDACTED-bedb-REDACTED-b8c6-REDACTED");
+        .get("BOT_APP_ID", "REDACTED-bedb-REDACTED-b8c6-REDACTED");
+
+    private static final StringJoiner JSON_PROPERTIES_TO_REDACT
+        = new StringJoiner("\":\"|\"", "\"", "\":\"")
+        .add("value")
+        .add("rawId")
+        .add("id")
+        .add("callbackUri")
+        .add("botAppId")
+        .add("ivrContext")
+        .add("incomingCallContext")
+        .add("serverCallId");
+
+    protected static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
+        = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT),
+        Pattern.CASE_INSENSITIVE);
+
+    protected static final String URL_REGEX = "(?<=http:\\/\\/|https:\\/\\/)([^\\/?]+)";
 
     @Override
     protected void beforeTest() {
@@ -75,8 +97,10 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
                 fileInputStream.read(jsonData);
                 fileInputStream.close();
                 String jsonString = new String(jsonData, StandardCharsets.UTF_8);
-                ObjectMapper objectMapper = new ObjectMapper();
-                List<String> persistedEvents = objectMapper.readValue(jsonString, new TypeReference<List<String>>() {});
+                final List<String> persistedEvents = new ArrayList<>();
+                try (JsonReader reader = JsonProviders.createReader(jsonString)) {
+                    reader.readArray(r -> persistedEvents.add(r.getString()));
+                }
                 persistedEvents.forEach(this::messageBodyHandler);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -96,8 +120,15 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
             try {
                 String fileName = "./src/test/resources/session-records/" + testContextManager.getTestName() + ".json";
 
-                ObjectMapper objectMapper = new ObjectMapper();
-                String jsonString = objectMapper.writeValueAsString(eventsToPersist);
+                String jsonString;
+                try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                     JsonWriter writer = JsonProviders.createWriter(outputStream)) {
+                    writer.writeArray(eventsToPersist, JsonWriter::writeString);
+                    writer.flush();
+                    jsonString = outputStream.toString();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 new FileOutputStream(fileName).close();
                 FileOutputStream fileOutputStream = new FileOutputStream(fileName, false);
                 fileOutputStream.write(jsonString.getBytes());
@@ -158,22 +189,36 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
     private void messageBodyHandler(String body) {
         // parse the message
         assert !body.isEmpty();
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        JsonNode eventData;
-        try {
-            eventData = mapper.readTree(body);
-        } catch (Exception e) {
+
+        final AcsIncomingCallEventData eventGridEventData;
+        try (JsonReader jsonReader = JsonProviders.createReader(body)) {
+            eventGridEventData = jsonReader.readObject(reader -> {
+                AcsIncomingCallEventData event = new AcsIncomingCallEventData();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("to".equals(fieldName)) {
+                        event.to = CommunicationIdentifierModel.fromJson(reader);
+                    } else if ("from".equals(fieldName)) {
+                        event.from = CommunicationIdentifierModel.fromJson(reader);
+                    } else if ("incomingCallContext".equals(fieldName)) {
+                        event.incomingCallContext = reader.getString();
+                    } else {
+                        reader.skipChildren();
+                    }
+                }
+                return event;
+            });
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         // check if this is an incomingCallEvent(Event grid event) or normal callAutomation cloud events
-        if (eventData.get("incomingCallContext") != null) {
-            String incomingCallContext = mapper.convertValue(eventData.get("incomingCallContext"), String.class);
-            CommunicationIdentifierModel from = mapper.convertValue(eventData.get("from"), CommunicationIdentifierModel.class);
-            CommunicationIdentifierModel to = mapper.convertValue(eventData.get("to"), CommunicationIdentifierModel.class);
+        if (eventGridEventData.incomingCallContext != null) {
+            String incomingCallContext = eventGridEventData.incomingCallContext;
+            CommunicationIdentifierModel from = eventGridEventData.from;
+            CommunicationIdentifierModel to = eventGridEventData.to;
             String uniqueId = removeAllNonChar(from.getRawId() + to.getRawId());
-
             incomingCallContextStore.put(uniqueId, incomingCallContext);
         } else {
             CallAutomationEventBase event = CallAutomationEventParser.parseEvents(body).get(0);
@@ -187,11 +232,12 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
     }
 
     protected void errorHandler(ServiceBusErrorContext context, CountDownLatch countdownLatch) {
-        System.out.printf("Error when receiving messages from namespace: '%s'. Entity: '%s'%n",
-            context.getFullyQualifiedNamespace(), context.getEntityPath());
+        LOGGER.log(LogLevel.VERBOSE, () -> String.format(
+            "Error when receiving messages from namespace: '%s'. Entity: '%s'%n",
+            context.getFullyQualifiedNamespace(), context.getEntityPath()));
 
         if (!(context.getException() instanceof ServiceBusException)) {
-            System.out.printf("Non-ServiceBusException occurred: %s%n", context.getException());
+            LOGGER.log(LogLevel.VERBOSE, () -> "Non-ServiceBusException occurred: " + context.getException());
             return;
         }
 
@@ -201,22 +247,20 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         if (reason == ServiceBusFailureReason.MESSAGING_ENTITY_DISABLED
             || reason == ServiceBusFailureReason.MESSAGING_ENTITY_NOT_FOUND
             || reason == ServiceBusFailureReason.UNAUTHORIZED) {
-            System.out.printf("An unrecoverable error occurred. Stopping processing with reason %s: %s%n",
-                reason, exception.getMessage());
+            LOGGER.log(LogLevel.VERBOSE, () -> String.format(
+                "An unrecoverable error occurred. Stopping processing with reason %s: %s%n",
+                reason, exception.getMessage()));
 
             countdownLatch.countDown();
         } else if (reason == ServiceBusFailureReason.MESSAGE_LOCK_LOST) {
-            System.out.printf("Message lock lost for message: %s%n", context.getException());
+            LOGGER.log(LogLevel.VERBOSE,
+                () -> String.format("Message lock lost for message: %s%n", context.getException()));
         } else if (reason == ServiceBusFailureReason.SERVICE_BUSY) {
-            try {
-                // Choosing an arbitrary amount of time to wait until trying again.
-                TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                System.err.println("Unable to sleep for period of time");
-            }
+            // Choosing an arbitrary amount of time to wait until trying again.
+            sleepIfRunningAgainstService(1000);
         } else {
-            System.out.printf("Error source %s, reason %s, message: %s%n", context.getErrorSource(),
-                reason, context.getException());
+            LOGGER.log(LogLevel.VERBOSE, () -> String.format("Error source %s, reason %s, message: %s%n",
+                context.getErrorSource(), reason, context.getException()));
         }
     }
 
@@ -241,7 +285,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
             if (incomingCallContext != null) {
                 return incomingCallContext;
             }
-            Thread.sleep(1000);
+            sleepIfRunningAgainstService(1000);
         }
         return null;
     }
@@ -256,8 +300,24 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
                     return event;
                 }
             }
-            Thread.sleep(1000);
+            sleepIfRunningAgainstService(1000);
         }
         return null;
+    }
+
+    protected String redact(String content, Matcher matcher) {
+        while (matcher.find()) {
+            String captureGroup = matcher.group(1);
+            if (!CoreUtils.isNullOrEmpty(captureGroup)) {
+                content = content.replace(matcher.group(1), "REDACTED");
+            }
+        }
+        return content;
+    }
+
+    private static final class AcsIncomingCallEventData {
+        String incomingCallContext;
+        CommunicationIdentifierModel from;
+        CommunicationIdentifierModel to;
     }
 }

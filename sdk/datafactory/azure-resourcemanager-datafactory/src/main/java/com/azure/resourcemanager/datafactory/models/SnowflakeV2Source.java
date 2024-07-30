@@ -7,16 +7,24 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity snowflake source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = SnowflakeV2Source.class, visible = true)
 @JsonTypeName("SnowflakeV2Source")
 @Fluent
 public final class SnowflakeV2Source extends CopySource {
+    /*
+     * Copy source type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "SnowflakeV2Source";
+
     /*
      * Snowflake Sql query. Type: string (or Expression with resultType string).
      */
@@ -33,6 +41,16 @@ public final class SnowflakeV2Source extends CopySource {
      * Creates an instance of SnowflakeV2Source class.
      */
     public SnowflakeV2Source() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -120,8 +138,9 @@ public final class SnowflakeV2Source extends CopySource {
     public void validate() {
         super.validate();
         if (exportSettings() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property exportSettings in model SnowflakeV2Source"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property exportSettings in model SnowflakeV2Source"));
         } else {
             exportSettings().validate();
         }

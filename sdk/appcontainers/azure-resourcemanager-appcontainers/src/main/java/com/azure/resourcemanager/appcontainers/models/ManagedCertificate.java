@@ -10,104 +10,111 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.ManagedCertificateInner;
 import java.util.Map;
 
-/** An immutable client-side representation of ManagedCertificate. */
+/**
+ * An immutable client-side representation of ManagedCertificate.
+ */
 public interface ManagedCertificate {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the properties property: Certificate resource specific properties.
-     *
+     * 
      * @return the properties value.
      */
     ManagedCertificateProperties properties();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.appcontainers.fluent.models.ManagedCertificateInner object.
-     *
+     * 
      * @return the inner object.
      */
     ManagedCertificateInner innerModel();
 
-    /** The entirety of the ManagedCertificate definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the ManagedCertificate definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The ManagedCertificate definition stages. */
+    /**
+     * The ManagedCertificate definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the ManagedCertificate definition. */
+        /**
+         * The first stage of the ManagedCertificate definition.
+         */
         interface Blank extends WithLocation {
         }
 
-        /** The stage of the ManagedCertificate definition allowing to specify location. */
+        /**
+         * The stage of the ManagedCertificate definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -115,18 +122,20 @@ public interface ManagedCertificate {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
             WithParentResource withRegion(String location);
         }
 
-        /** The stage of the ManagedCertificate definition allowing to specify parent resource. */
+        /**
+         * The stage of the ManagedCertificate definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, environmentName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param environmentName Name of the Managed Environment.
              * @return the next definition stage.
@@ -141,36 +150,40 @@ public interface ManagedCertificate {
         interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithProperties {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             ManagedCertificate create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             ManagedCertificate create(Context context);
         }
 
-        /** The stage of the ManagedCertificate definition allowing to specify tags. */
+        /**
+         * The stage of the ManagedCertificate definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
 
-        /** The stage of the ManagedCertificate definition allowing to specify properties. */
+        /**
+         * The stage of the ManagedCertificate definition allowing to specify properties.
+         */
         interface WithProperties {
             /**
              * Specifies the properties property: Certificate resource specific properties.
-             *
+             * 
              * @param properties Certificate resource specific properties.
              * @return the next definition stage.
              */
@@ -180,36 +193,42 @@ public interface ManagedCertificate {
 
     /**
      * Begins update for the ManagedCertificate resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     ManagedCertificate.Update update();
 
-    /** The template for ManagedCertificate update. */
+    /**
+     * The template for ManagedCertificate update.
+     */
     interface Update extends UpdateStages.WithTags {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         ManagedCertificate apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         ManagedCertificate apply(Context context);
     }
 
-    /** The ManagedCertificate update stages. */
+    /**
+     * The ManagedCertificate update stages.
+     */
     interface UpdateStages {
-        /** The stage of the ManagedCertificate update allowing to specify tags. */
+        /**
+         * The stage of the ManagedCertificate update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Application-specific metadata in the form of key-value pairs..
-             *
+             * 
              * @param tags Application-specific metadata in the form of key-value pairs.
              * @return the next definition stage.
              */
@@ -219,14 +238,14 @@ public interface ManagedCertificate {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     ManagedCertificate refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

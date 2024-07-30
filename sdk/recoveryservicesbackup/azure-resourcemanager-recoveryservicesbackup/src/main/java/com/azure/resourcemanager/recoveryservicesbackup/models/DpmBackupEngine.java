@@ -5,20 +5,43 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Data Protection Manager (DPM) specific backup engine.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "backupEngineType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "backupEngineType",
+    defaultImpl = DpmBackupEngine.class,
+    visible = true)
 @JsonTypeName("DpmBackupEngine")
 @Fluent
 public final class DpmBackupEngine extends BackupEngineBase {
+    /*
+     * Type of the backup engine.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "backupEngineType", required = true)
+    private BackupEngineType backupEngineType = BackupEngineType.DPM_BACKUP_ENGINE;
+
     /**
      * Creates an instance of DpmBackupEngine class.
      */
     public DpmBackupEngine() {
+    }
+
+    /**
+     * Get the backupEngineType property: Type of the backup engine.
+     * 
+     * @return the backupEngineType value.
+     */
+    @Override
+    public BackupEngineType backupEngineType() {
+        return this.backupEngineType;
     }
 
     /**

@@ -222,8 +222,12 @@ private object ThroughputControlHelper extends BasicLoggingTrait {
         val cosmosAuthConfig = CosmosAccountConfig.parseCosmosAccountConfig(userConfig).authConfig
         cosmosAuthConfig match {
             case _: CosmosMasterKeyAuthConfig => None
-            case _: CosmosAadAuthConfig =>
+            case _: CosmosServicePrincipalAuthConfig =>
                 Some(cacheItem.sparkCatalogClient.readContainerThroughput(cosmosContainerConfig.database, cosmosContainerConfig.container))
+            case _: CosmosManagedIdentityAuthConfig =>
+              Some(cacheItem.sparkCatalogClient.readContainerThroughput(cosmosContainerConfig.database, cosmosContainerConfig.container))
+            case _: CosmosAccessTokenAuthConfig =>
+              Some(cacheItem.sparkCatalogClient.readContainerThroughput(cosmosContainerConfig.database, cosmosContainerConfig.container))
         }
     }
 }

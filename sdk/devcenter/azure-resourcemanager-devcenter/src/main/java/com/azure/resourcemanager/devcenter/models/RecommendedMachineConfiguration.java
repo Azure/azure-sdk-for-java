@@ -7,7 +7,9 @@ package com.azure.resourcemanager.devcenter.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties for a recommended machine configuration. */
+/**
+ * Properties for a recommended machine configuration.
+ */
 @Immutable
 public final class RecommendedMachineConfiguration {
     /*
@@ -22,13 +24,15 @@ public final class RecommendedMachineConfiguration {
     @JsonProperty(value = "vCPUs", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceRange vCPUs;
 
-    /** Creates an instance of RecommendedMachineConfiguration class. */
+    /**
+     * Creates an instance of RecommendedMachineConfiguration class.
+     */
     public RecommendedMachineConfiguration() {
     }
 
     /**
      * Get the memory property: Recommended memory range.
-     *
+     * 
      * @return the memory value.
      */
     public ResourceRange memory() {
@@ -37,7 +41,7 @@ public final class RecommendedMachineConfiguration {
 
     /**
      * Get the vCPUs property: Recommended vCPU range.
-     *
+     * 
      * @return the vCPUs value.
      */
     public ResourceRange vCPUs() {
@@ -46,7 +50,7 @@ public final class RecommendedMachineConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -6,73 +6,42 @@ package com.azure.resourcemanager.maintenance.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.maintenance.MaintenanceManager;
 import com.azure.resourcemanager.maintenance.models.ImpactType;
 import com.azure.resourcemanager.maintenance.models.MaintenanceScope;
 import com.azure.resourcemanager.maintenance.models.Update;
 import com.azure.resourcemanager.maintenance.models.UpdateStatus;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class UpdatesListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"maintenanceScope\":\"Extension\",\"impactType\":\"None\",\"status\":\"Cancel\",\"impactDurationInSec\":1094064824,\"notBefore\":\"2021-06-12T21:48:36Z\",\"properties\":{\"resourceId\":\"awx\"}}]}";
 
-        String responseStr =
-            "{\"value\":[{\"maintenanceScope\":\"InGuestPatch\",\"impactType\":\"None\",\"status\":\"Completed\",\"impactDurationInSec\":744779451,\"notBefore\":\"2021-11-07T02:39:13Z\",\"properties\":{\"resourceId\":\"glka\"}}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MaintenanceManager manager = MaintenanceManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<Update> response
+            = manager.updates().list("juj", "ickpz", "cpopmxel", "wcltyjede", com.azure.core.util.Context.NONE);
 
-        MaintenanceManager manager =
-            MaintenanceManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<Update> response =
-            manager
-                .updates()
-                .list("opxlhslnelxieixy", "llxecwc", "ojphslhc", "wjutifdwfmv", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals(MaintenanceScope.IN_GUEST_PATCH, response.iterator().next().maintenanceScope());
+        Assertions.assertEquals(MaintenanceScope.EXTENSION, response.iterator().next().maintenanceScope());
         Assertions.assertEquals(ImpactType.NONE, response.iterator().next().impactType());
-        Assertions.assertEquals(UpdateStatus.COMPLETED, response.iterator().next().status());
-        Assertions.assertEquals(744779451, response.iterator().next().impactDurationInSec());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-07T02:39:13Z"), response.iterator().next().notBefore());
-        Assertions.assertEquals("glka", response.iterator().next().resourceId());
+        Assertions.assertEquals(UpdateStatus.CANCEL, response.iterator().next().status());
+        Assertions.assertEquals(1094064824, response.iterator().next().impactDurationInSec());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-12T21:48:36Z"), response.iterator().next().notBefore());
+        Assertions.assertEquals("awx", response.iterator().next().resourceId());
     }
 }

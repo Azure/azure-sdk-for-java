@@ -24,8 +24,8 @@ public final class DWCopyCommandSettings {
     private List<DWCopyCommandDefaultValue> defaultValues;
 
     /*
-     * Additional options directly passed to SQL DW in Copy Command. Type: key value pairs (value should be string
-     * type) (or Expression with resultType object). Example: "additionalOptions": { "MAXERRORS": "1000", "DATEFORMAT":
+     * Additional options directly passed to SQL DW in Copy Command. Type: key value pairs (value should be string type)
+     * (or Expression with resultType object). Example: "additionalOptions": { "MAXERRORS": "1000", "DATEFORMAT":
      * "'ymd'" }
      */
     @JsonProperty(value = "additionalOptions")
@@ -39,9 +39,9 @@ public final class DWCopyCommandSettings {
     }
 
     /**
-     * Get the defaultValues property: Specifies the default values for each target column in SQL DW. The default
-     * values in the property overwrite the DEFAULT constraint set in the DB, and identity column cannot have a default
-     * value. Type: array of objects (or Expression with resultType array of objects).
+     * Get the defaultValues property: Specifies the default values for each target column in SQL DW. The default values
+     * in the property overwrite the DEFAULT constraint set in the DB, and identity column cannot have a default value.
+     * Type: array of objects (or Expression with resultType array of objects).
      * 
      * @return the defaultValues value.
      */
@@ -50,9 +50,9 @@ public final class DWCopyCommandSettings {
     }
 
     /**
-     * Set the defaultValues property: Specifies the default values for each target column in SQL DW. The default
-     * values in the property overwrite the DEFAULT constraint set in the DB, and identity column cannot have a default
-     * value. Type: array of objects (or Expression with resultType array of objects).
+     * Set the defaultValues property: Specifies the default values for each target column in SQL DW. The default values
+     * in the property overwrite the DEFAULT constraint set in the DB, and identity column cannot have a default value.
+     * Type: array of objects (or Expression with resultType array of objects).
      * 
      * @param defaultValues the defaultValues value to set.
      * @return the DWCopyCommandSettings object itself.
@@ -63,9 +63,9 @@ public final class DWCopyCommandSettings {
     }
 
     /**
-     * Get the additionalOptions property: Additional options directly passed to SQL DW in Copy Command. Type: key
-     * value pairs (value should be string type) (or Expression with resultType object). Example: "additionalOptions":
-     * { "MAXERRORS": "1000", "DATEFORMAT": "'ymd'" }.
+     * Get the additionalOptions property: Additional options directly passed to SQL DW in Copy Command. Type: key value
+     * pairs (value should be string type) (or Expression with resultType object). Example: "additionalOptions": {
+     * "MAXERRORS": "1000", "DATEFORMAT": "'ymd'" }.
      * 
      * @return the additionalOptions value.
      */
@@ -74,9 +74,9 @@ public final class DWCopyCommandSettings {
     }
 
     /**
-     * Set the additionalOptions property: Additional options directly passed to SQL DW in Copy Command. Type: key
-     * value pairs (value should be string type) (or Expression with resultType object). Example: "additionalOptions":
-     * { "MAXERRORS": "1000", "DATEFORMAT": "'ymd'" }.
+     * Set the additionalOptions property: Additional options directly passed to SQL DW in Copy Command. Type: key value
+     * pairs (value should be string type) (or Expression with resultType object). Example: "additionalOptions": {
+     * "MAXERRORS": "1000", "DATEFORMAT": "'ymd'" }.
      * 
      * @param additionalOptions the additionalOptions value to set.
      * @return the DWCopyCommandSettings object itself.

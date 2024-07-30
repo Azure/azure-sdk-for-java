@@ -86,12 +86,14 @@ public final class FailActivityTypeProperties {
      */
     public void validate() {
         if (message() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property message in model FailActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property message in model FailActivityTypeProperties"));
         }
         if (errorCode() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property errorCode in model FailActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property errorCode in model FailActivityTypeProperties"));
         }
     }
 

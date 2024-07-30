@@ -13,16 +13,29 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * blobs storage account type.
  */
 public enum AccessTier {
-    /** Enum value Hot. */
+    /**
+     * Enum value Hot.
+     */
     HOT("Hot"),
 
-    /** Enum value Cool. */
+    /**
+     * Enum value Cool.
+     */
     COOL("Cool"),
 
-    /** Enum value Premium. */
-    PREMIUM("Premium");
+    /**
+     * Enum value Premium.
+     */
+    PREMIUM("Premium"),
 
-    /** The actual serialized value for a AccessTier instance. */
+    /**
+     * Enum value Cold.
+     */
+    COLD("Cold");
+
+    /**
+     * The actual serialized value for a AccessTier instance.
+     */
     private final String value;
 
     AccessTier(String value) {
@@ -31,7 +44,7 @@ public enum AccessTier {
 
     /**
      * Parses a serialized value to a AccessTier instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed AccessTier object, or null if unable to parse.
      */
@@ -49,7 +62,9 @@ public enum AccessTier {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

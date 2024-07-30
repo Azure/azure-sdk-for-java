@@ -6,14 +6,20 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
 
-/** Web connectivity endpoint details. */
+/**
+ * Web connectivity endpoint details.
+ */
 @Fluent
 public final class ConnectivityProfileWeb extends WebConnectivityEndpoint {
-    /** Creates an instance of ConnectivityProfileWeb class. */
+    /**
+     * Creates an instance of ConnectivityProfileWeb class.
+     */
     public ConnectivityProfileWeb() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConnectivityProfileWeb withFqdn(String fqdn) {
         super.withFqdn(fqdn);
@@ -21,8 +27,17 @@ public final class ConnectivityProfileWeb extends WebConnectivityEndpoint {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ConnectivityProfileWeb withPrivateFqdn(String privateFqdn) {
+        super.withPrivateFqdn(privateFqdn);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

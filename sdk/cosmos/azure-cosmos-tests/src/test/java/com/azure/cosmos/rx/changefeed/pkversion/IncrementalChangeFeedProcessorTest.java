@@ -86,9 +86,9 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
     private final int FEED_COLLECTION_THROUGHPUT = 400;
     private final int FEED_COLLECTION_THROUGHPUT_FOR_SPLIT = 10100;
     private final int LEASE_COLLECTION_THROUGHPUT = 400;
-    private final String MULTI_WRITE_DATABASE_NAME = "multi-write-test-database";
-    private final String MULTI_WRITE_MONITORED_COLLECTION_NAME = "multi-write-test-monitored-container";
-    private final String MULTI_WRITE_LEASE_COLLECTION_NAME = "multi-write-test-lease-container";
+    private final String MULTI_WRITE_DATABASE_NAME = "multi-write-test-database"+ UUID.randomUUID();
+    private final String MULTI_WRITE_MONITORED_COLLECTION_NAME = "multi-write-test-monitored-container"+ UUID.randomUUID();
+    private final String MULTI_WRITE_LEASE_COLLECTION_NAME = "multi-write-test-lease-container"+ UUID.randomUUID();
 
     private CosmosAsyncClient client;
 
@@ -108,7 +108,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "emulator" }, timeOut = 2 * TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = 4 * TIMEOUT)
     public void readFeedDocumentsStartFromBeginning() throws InterruptedException {
         CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
@@ -155,6 +155,31 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                 assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
             }
 
+            // Wait for the feed processor to shutdown.
+            Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+            // restart the change feed processor and verify it can start successfully
+            try {
+                changeFeedProcessor
+                    .start()
+                    .subscribeOn(Schedulers.boundedElastic())
+                    .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                    .subscribe();
+            } catch (Exception ex) {
+                log.error("Change feed processor did not start in the expected time", ex);
+                throw ex;
+            }
+
+            // Wait for the feed processor to start
+            Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+            assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
+
+            changeFeedProcessor
+                .stop()
+                .subscribeOn(Schedulers.boundedElastic())
+                .timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT))
+                .subscribe();
             // Wait for the feed processor to shutdown.
             Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
         } finally {

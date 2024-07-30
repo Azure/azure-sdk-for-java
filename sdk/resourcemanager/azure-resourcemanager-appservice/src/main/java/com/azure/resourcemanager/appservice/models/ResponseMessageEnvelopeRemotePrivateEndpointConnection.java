@@ -7,6 +7,7 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 import java.util.Map;
 
@@ -17,11 +18,9 @@ import java.util.Map;
 @Fluent
 public final class ResponseMessageEnvelopeRemotePrivateEndpointConnection {
     /*
-     * Resource Id. Typically ID is populated only for responses to GET requests. Caller is responsible for passing in
-     * this
+     * Resource Id. Typically ID is populated only for responses to GET requests. Caller is responsible for passing in this
      * value for GET requests only.
-     * For example:
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupId}/providers/Microsoft.Web/sites/{sitename}
+     * For example: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupId}/providers/Microsoft.Web/sites/{sitename}
      */
     @JsonProperty(value = "id")
     private String id;
@@ -105,7 +104,7 @@ public final class ResponseMessageEnvelopeRemotePrivateEndpointConnection {
      * value for GET requests only.
      * For example:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupId}/providers/Microsoft.Web/sites/{sitename}.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -118,7 +117,7 @@ public final class ResponseMessageEnvelopeRemotePrivateEndpointConnection {
      * value for GET requests only.
      * For example:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupId}/providers/Microsoft.Web/sites/{sitename}.
-     * 
+     *
      * @param id the id value to set.
      * @return the ResponseMessageEnvelopeRemotePrivateEndpointConnection object itself.
      */
@@ -129,7 +128,7 @@ public final class ResponseMessageEnvelopeRemotePrivateEndpointConnection {
 
     /**
      * Get the name property: Name of resource.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -138,7 +137,7 @@ public final class ResponseMessageEnvelopeRemotePrivateEndpointConnection {
 
     /**
      * Set the name property: Name of resource.
-     * 
+     *
      * @param name the name value to set.
      * @return the ResponseMessageEnvelopeRemotePrivateEndpointConnection object itself.
      */
@@ -149,7 +148,7 @@ public final class ResponseMessageEnvelopeRemotePrivateEndpointConnection {
 
     /**
      * Get the type property: Type of resource e.g "Microsoft.Web/sites".
-     * 
+     *
      * @return the type value.
      */
     public String type() {
@@ -158,7 +157,7 @@ public final class ResponseMessageEnvelopeRemotePrivateEndpointConnection {
 
     /**
      * Set the type property: Type of resource e.g "Microsoft.Web/sites".
-     * 
+     *
      * @param type the type value to set.
      * @return the ResponseMessageEnvelopeRemotePrivateEndpointConnection object itself.
      */
@@ -169,7 +168,7 @@ public final class ResponseMessageEnvelopeRemotePrivateEndpointConnection {
 
     /**
      * Get the location property: Geographical region resource belongs to e.g. SouthCentralUS, SouthEastAsia.
-     * 
+     *
      * @return the location value.
      */
     public String location() {
@@ -178,7 +177,7 @@ public final class ResponseMessageEnvelopeRemotePrivateEndpointConnection {
 
     /**
      * Set the location property: Geographical region resource belongs to e.g. SouthCentralUS, SouthEastAsia.
-     * 
+     *
      * @param location the location value to set.
      * @return the ResponseMessageEnvelopeRemotePrivateEndpointConnection object itself.
      */
@@ -189,7 +188,7 @@ public final class ResponseMessageEnvelopeRemotePrivateEndpointConnection {
 
     /**
      * Get the tags property: Tags associated with resource.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -198,7 +197,7 @@ public final class ResponseMessageEnvelopeRemotePrivateEndpointConnection {
 
     /**
      * Set the tags property: Tags associated with resource.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the ResponseMessageEnvelopeRemotePrivateEndpointConnection object itself.
      */
@@ -209,7 +208,7 @@ public final class ResponseMessageEnvelopeRemotePrivateEndpointConnection {
 
     /**
      * Get the plan property: Azure resource manager plan.
-     * 
+     *
      * @return the plan value.
      */
     public ArmPlan plan() {
@@ -218,7 +217,7 @@ public final class ResponseMessageEnvelopeRemotePrivateEndpointConnection {
 
     /**
      * Set the plan property: Azure resource manager plan.
-     * 
+     *
      * @param plan the plan value to set.
      * @return the ResponseMessageEnvelopeRemotePrivateEndpointConnection object itself.
      */
@@ -229,7 +228,7 @@ public final class ResponseMessageEnvelopeRemotePrivateEndpointConnection {
 
     /**
      * Get the properties property: Resource specific properties.
-     * 
+     *
      * @return the properties value.
      */
     public RemotePrivateEndpointConnection properties() {
@@ -238,7 +237,7 @@ public final class ResponseMessageEnvelopeRemotePrivateEndpointConnection {
 
     /**
      * Set the properties property: Resource specific properties.
-     * 
+     *
      * @param properties the properties value to set.
      * @return the ResponseMessageEnvelopeRemotePrivateEndpointConnection object itself.
      */
@@ -250,7 +249,7 @@ public final class ResponseMessageEnvelopeRemotePrivateEndpointConnection {
 
     /**
      * Get the sku property: SKU description of the resource.
-     * 
+     *
      * @return the sku value.
      */
     public SkuDescription sku() {
@@ -259,7 +258,7 @@ public final class ResponseMessageEnvelopeRemotePrivateEndpointConnection {
 
     /**
      * Set the sku property: SKU description of the resource.
-     * 
+     *
      * @param sku the sku value to set.
      * @return the ResponseMessageEnvelopeRemotePrivateEndpointConnection object itself.
      */
@@ -270,7 +269,7 @@ public final class ResponseMessageEnvelopeRemotePrivateEndpointConnection {
 
     /**
      * Get the status property: Azure-AsyncOperation Status info.
-     * 
+     *
      * @return the status value.
      */
     public String status() {
@@ -279,7 +278,7 @@ public final class ResponseMessageEnvelopeRemotePrivateEndpointConnection {
 
     /**
      * Set the status property: Azure-AsyncOperation Status info.
-     * 
+     *
      * @param status the status value to set.
      * @return the ResponseMessageEnvelopeRemotePrivateEndpointConnection object itself.
      */
@@ -290,7 +289,7 @@ public final class ResponseMessageEnvelopeRemotePrivateEndpointConnection {
 
     /**
      * Get the error property: Azure-AsyncOperation Error info.
-     * 
+     *
      * @return the error value.
      */
     public ErrorEntity error() {
@@ -299,7 +298,7 @@ public final class ResponseMessageEnvelopeRemotePrivateEndpointConnection {
 
     /**
      * Set the error property: Azure-AsyncOperation Error info.
-     * 
+     *
      * @param error the error value to set.
      * @return the ResponseMessageEnvelopeRemotePrivateEndpointConnection object itself.
      */
@@ -310,7 +309,7 @@ public final class ResponseMessageEnvelopeRemotePrivateEndpointConnection {
 
     /**
      * Get the identity property: MSI resource.
-     * 
+     *
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -319,7 +318,7 @@ public final class ResponseMessageEnvelopeRemotePrivateEndpointConnection {
 
     /**
      * Set the identity property: MSI resource.
-     * 
+     *
      * @param identity the identity value to set.
      * @return the ResponseMessageEnvelopeRemotePrivateEndpointConnection object itself.
      */
@@ -330,7 +329,7 @@ public final class ResponseMessageEnvelopeRemotePrivateEndpointConnection {
 
     /**
      * Get the zones property: Logical Availability Zones the service is hosted in.
-     * 
+     *
      * @return the zones value.
      */
     public List<String> zones() {
@@ -339,7 +338,7 @@ public final class ResponseMessageEnvelopeRemotePrivateEndpointConnection {
 
     /**
      * Set the zones property: Logical Availability Zones the service is hosted in.
-     * 
+     *
      * @param zones the zones value to set.
      * @return the ResponseMessageEnvelopeRemotePrivateEndpointConnection object itself.
      */
@@ -350,7 +349,7 @@ public final class ResponseMessageEnvelopeRemotePrivateEndpointConnection {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

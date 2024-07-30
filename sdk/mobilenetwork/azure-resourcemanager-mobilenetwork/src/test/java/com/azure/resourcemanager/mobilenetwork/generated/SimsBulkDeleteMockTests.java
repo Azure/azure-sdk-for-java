@@ -6,76 +6,42 @@ package com.azure.resourcemanager.mobilenetwork.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mobilenetwork.MobileNetworkManager;
 import com.azure.resourcemanager.mobilenetwork.models.AsyncOperationStatus;
 import com.azure.resourcemanager.mobilenetwork.models.SimDeleteList;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class SimsBulkDeleteMockTests {
     @Test
     public void testBulkDelete() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"id\":\"anc\",\"name\":\"xxqcwgaxf\",\"status\":\"vaknokzwjj\",\"resourceId\":\"ltixldzyyfytpq\",\"startTime\":\"2021-04-28T14:44Z\",\"endTime\":\"2021-11-09T20:29:56Z\",\"percentComplete\":14.258834353690963,\"properties\":\"dataivyqlkjuvsmbmsl\"}";
 
-        String responseStr =
-            "{\"id\":\"hwtbbaedorvvm\",\"name\":\"loyg\",\"status\":\"dgwumgxdgdhp\",\"resourceId\":\"gdexjd\",\"startTime\":\"2021-02-07T21:21:29Z\",\"endTime\":\"2020-12-20T10:31:54Z\",\"percentComplete\":95.73648016931433,\"properties\":\"datammwllc\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MobileNetworkManager manager = MobileNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        AsyncOperationStatus response = manager.sims()
+            .bulkDelete("bqbnaomhjrmkuh", "axljal", new SimDeleteList().withSims(Arrays.asList("hcjmo")),
+                com.azure.core.util.Context.NONE);
 
-        MobileNetworkManager manager =
-            MobileNetworkManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        AsyncOperationStatus response =
-            manager
-                .sims()
-                .bulkDelete(
-                    "atvfuzkaftj",
-                    "vru",
-                    new SimDeleteList().withSims(Arrays.asList("igsyeipqdsmjt", "rqgdgkkil", "plkcsm")),
-                    com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("hwtbbaedorvvm", response.id());
-        Assertions.assertEquals("loyg", response.name());
-        Assertions.assertEquals("dgwumgxdgdhp", response.status());
-        Assertions.assertEquals("gdexjd", response.resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-07T21:21:29Z"), response.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-20T10:31:54Z"), response.endTime());
-        Assertions.assertEquals(95.73648016931433D, response.percentComplete());
+        Assertions.assertEquals("anc", response.id());
+        Assertions.assertEquals("xxqcwgaxf", response.name());
+        Assertions.assertEquals("vaknokzwjj", response.status());
+        Assertions.assertEquals("ltixldzyyfytpq", response.resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-28T14:44Z"), response.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-09T20:29:56Z"), response.endTime());
+        Assertions.assertEquals(14.258834353690963D, response.percentComplete());
     }
 }

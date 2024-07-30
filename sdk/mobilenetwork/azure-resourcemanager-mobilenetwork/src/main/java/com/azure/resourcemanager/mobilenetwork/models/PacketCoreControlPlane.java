@@ -11,67 +11,69 @@ import com.azure.resourcemanager.mobilenetwork.fluent.models.PacketCoreControlPl
 import java.util.List;
 import java.util.Map;
 
-/** An immutable client-side representation of PacketCoreControlPlane. */
+/**
+ * An immutable client-side representation of PacketCoreControlPlane.
+ */
 public interface PacketCoreControlPlane {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the identity property: The identity used to retrieve the ingress certificate from Azure key vault.
-     *
+     * 
      * @return the identity value.
      */
     ManagedServiceIdentity identity();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the provisioningState property: The provisioning state of the packet core control plane resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
 
     /**
      * Gets the installation property: The installation state of the packet core control plane resource.
-     *
+     * 
      * @return the installation value.
      */
     Installation installation();
@@ -79,35 +81,35 @@ public interface PacketCoreControlPlane {
     /**
      * Gets the sites property: Site(s) under which this packet core control plane should be deployed. The sites must be
      * in the same location as the packet core control plane.
-     *
+     * 
      * @return the sites value.
      */
     List<SiteResourceId> sites();
 
     /**
      * Gets the platform property: The platform where the packet core is deployed.
-     *
+     * 
      * @return the platform value.
      */
     PlatformConfiguration platform();
 
     /**
      * Gets the coreNetworkTechnology property: The core network technology generation (5G core or EPC / 4G core).
-     *
+     * 
      * @return the coreNetworkTechnology value.
      */
     CoreNetworkType coreNetworkTechnology();
 
     /**
      * Gets the version property: The desired version of the packet core software.
-     *
+     * 
      * @return the version value.
      */
     String version();
 
     /**
      * Gets the installedVersion property: The currently installed version of the packet core software.
-     *
+     * 
      * @return the installedVersion value.
      */
     String installedVersion();
@@ -115,7 +117,7 @@ public interface PacketCoreControlPlane {
     /**
      * Gets the rollbackVersion property: The previous version of the packet core software that was deployed. Used when
      * performing the rollback action.
-     *
+     * 
      * @return the rollbackVersion value.
      */
     String rollbackVersion();
@@ -123,7 +125,7 @@ public interface PacketCoreControlPlane {
     /**
      * Gets the controlPlaneAccessInterface property: The control plane interface on the access network. For 5G
      * networks, this is the N2 interface. For 4G networks, this is the S1-MME interface.
-     *
+     * 
      * @return the controlPlaneAccessInterface value.
      */
     InterfaceProperties controlPlaneAccessInterface();
@@ -133,7 +135,7 @@ public interface PacketCoreControlPlane {
      * access network in a High Availability (HA) system. In an HA deployment the access network router should be
      * configured to anycast traffic for this address to the control plane access interfaces on the active and standby
      * nodes. In non-HA system this list should be omitted or empty.
-     *
+     * 
      * @return the controlPlaneAccessVirtualIpv4Addresses value.
      */
     List<String> controlPlaneAccessVirtualIpv4Addresses();
@@ -141,7 +143,7 @@ public interface PacketCoreControlPlane {
     /**
      * Gets the sku property: The SKU defining the throughput and SIM allowances for this packet core control plane
      * deployment.
-     *
+     * 
      * @return the sku value.
      */
     BillingSku sku();
@@ -150,7 +152,7 @@ public interface PacketCoreControlPlane {
      * Gets the ueMtu property: The MTU (in bytes) signaled to the UE. The same MTU is set on the user plane data links
      * for all data networks. The MTU set on the user plane access link is calculated to be 60 bytes greater than this
      * value to allow for GTP encapsulation.
-     *
+     * 
      * @return the ueMtu value.
      */
     Integer ueMtu();
@@ -158,28 +160,28 @@ public interface PacketCoreControlPlane {
     /**
      * Gets the localDiagnosticsAccess property: The kubernetes ingress configuration to control access to packet core
      * diagnostics over local APIs.
-     *
+     * 
      * @return the localDiagnosticsAccess value.
      */
     LocalDiagnosticsAccessConfiguration localDiagnosticsAccess();
 
     /**
      * Gets the diagnosticsUpload property: Configuration for uploading packet core diagnostics.
-     *
+     * 
      * @return the diagnosticsUpload value.
      */
     DiagnosticsUploadConfiguration diagnosticsUpload();
 
     /**
      * Gets the eventHub property: Configuration for sending packet core events to an Azure Event Hub.
-     *
+     * 
      * @return the eventHub value.
      */
     EventHubConfiguration eventHub();
 
     /**
      * Gets the signaling property: Signaling configuration for the packet core.
-     *
+     * 
      * @return the signaling value.
      */
     SignalingConfiguration signaling();
@@ -187,63 +189,80 @@ public interface PacketCoreControlPlane {
     /**
      * Gets the interopSettings property: Settings to allow interoperability with third party components e.g. RANs and
      * UEs.
-     *
+     * 
      * @return the interopSettings value.
      */
     Object interopSettings();
 
     /**
+     * Gets the homeNetworkPrivateKeysProvisioning property: The provisioning state of the secret containing private
+     * keys and keyIds for SUPI concealment.
+     * 
+     * @return the homeNetworkPrivateKeysProvisioning value.
+     */
+    HomeNetworkPrivateKeysProvisioning homeNetworkPrivateKeysProvisioning();
+
+    /**
+     * Gets the userConsent property: The user consent configuration for the packet core.
+     * 
+     * @return the userConsent value.
+     */
+    UserConsentConfiguration userConsent();
+
+    /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.mobilenetwork.fluent.models.PacketCoreControlPlaneInner object.
-     *
+     * 
      * @return the inner object.
      */
     PacketCoreControlPlaneInner innerModel();
 
-    /** The entirety of the PacketCoreControlPlane definition. */
+    /**
+     * The entirety of the PacketCoreControlPlane definition.
+     */
     interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithSites,
-            DefinitionStages.WithPlatform,
-            DefinitionStages.WithControlPlaneAccessInterface,
-            DefinitionStages.WithSku,
-            DefinitionStages.WithLocalDiagnosticsAccess,
-            DefinitionStages.WithCreate {
+        extends DefinitionStages.Blank, DefinitionStages.WithLocation, DefinitionStages.WithResourceGroup,
+        DefinitionStages.WithSites, DefinitionStages.WithPlatform, DefinitionStages.WithControlPlaneAccessInterface,
+        DefinitionStages.WithSku, DefinitionStages.WithLocalDiagnosticsAccess, DefinitionStages.WithCreate {
     }
 
-    /** The PacketCoreControlPlane definition stages. */
+    /**
+     * The PacketCoreControlPlane definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the PacketCoreControlPlane definition. */
+        /**
+         * The first stage of the PacketCoreControlPlane definition.
+         */
         interface Blank extends WithLocation {
         }
 
-        /** The stage of the PacketCoreControlPlane definition allowing to specify location. */
+        /**
+         * The stage of the PacketCoreControlPlane definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -251,82 +270,94 @@ public interface PacketCoreControlPlane {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
             WithResourceGroup withRegion(String location);
         }
 
-        /** The stage of the PacketCoreControlPlane definition allowing to specify parent resource. */
+        /**
+         * The stage of the PacketCoreControlPlane definition allowing to specify parent resource.
+         */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
             WithSites withExistingResourceGroup(String resourceGroupName);
         }
 
-        /** The stage of the PacketCoreControlPlane definition allowing to specify sites. */
+        /**
+         * The stage of the PacketCoreControlPlane definition allowing to specify sites.
+         */
         interface WithSites {
             /**
              * Specifies the sites property: Site(s) under which this packet core control plane should be deployed. The
              * sites must be in the same location as the packet core control plane..
-             *
+             * 
              * @param sites Site(s) under which this packet core control plane should be deployed. The sites must be in
-             *     the same location as the packet core control plane.
+             * the same location as the packet core control plane.
              * @return the next definition stage.
              */
             WithPlatform withSites(List<SiteResourceId> sites);
         }
 
-        /** The stage of the PacketCoreControlPlane definition allowing to specify platform. */
+        /**
+         * The stage of the PacketCoreControlPlane definition allowing to specify platform.
+         */
         interface WithPlatform {
             /**
              * Specifies the platform property: The platform where the packet core is deployed..
-             *
+             * 
              * @param platform The platform where the packet core is deployed.
              * @return the next definition stage.
              */
             WithControlPlaneAccessInterface withPlatform(PlatformConfiguration platform);
         }
 
-        /** The stage of the PacketCoreControlPlane definition allowing to specify controlPlaneAccessInterface. */
+        /**
+         * The stage of the PacketCoreControlPlane definition allowing to specify controlPlaneAccessInterface.
+         */
         interface WithControlPlaneAccessInterface {
             /**
              * Specifies the controlPlaneAccessInterface property: The control plane interface on the access network.
              * For 5G networks, this is the N2 interface. For 4G networks, this is the S1-MME interface..
-             *
+             * 
              * @param controlPlaneAccessInterface The control plane interface on the access network. For 5G networks,
-             *     this is the N2 interface. For 4G networks, this is the S1-MME interface.
+             * this is the N2 interface. For 4G networks, this is the S1-MME interface.
              * @return the next definition stage.
              */
             WithSku withControlPlaneAccessInterface(InterfaceProperties controlPlaneAccessInterface);
         }
 
-        /** The stage of the PacketCoreControlPlane definition allowing to specify sku. */
+        /**
+         * The stage of the PacketCoreControlPlane definition allowing to specify sku.
+         */
         interface WithSku {
             /**
              * Specifies the sku property: The SKU defining the throughput and SIM allowances for this packet core
              * control plane deployment..
-             *
+             * 
              * @param sku The SKU defining the throughput and SIM allowances for this packet core control plane
-             *     deployment.
+             * deployment.
              * @return the next definition stage.
              */
             WithLocalDiagnosticsAccess withSku(BillingSku sku);
         }
 
-        /** The stage of the PacketCoreControlPlane definition allowing to specify localDiagnosticsAccess. */
+        /**
+         * The stage of the PacketCoreControlPlane definition allowing to specify localDiagnosticsAccess.
+         */
         interface WithLocalDiagnosticsAccess {
             /**
              * Specifies the localDiagnosticsAccess property: The kubernetes ingress configuration to control access to
              * packet core diagnostics over local APIs..
-             *
+             * 
              * @param localDiagnosticsAccess The kubernetes ingress configuration to control access to packet core
-             *     diagnostics over local APIs.
+             * diagnostics over local APIs.
              * @return the next definition stage.
              */
             WithCreate withLocalDiagnosticsAccess(LocalDiagnosticsAccessConfiguration localDiagnosticsAccess);
@@ -336,85 +367,88 @@ public interface PacketCoreControlPlane {
          * The stage of the PacketCoreControlPlane definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithInstallation,
-                DefinitionStages.WithCoreNetworkTechnology,
-                DefinitionStages.WithVersion,
-                DefinitionStages.WithControlPlaneAccessVirtualIpv4Addresses,
-                DefinitionStages.WithUeMtu,
-                DefinitionStages.WithDiagnosticsUpload,
-                DefinitionStages.WithEventHub,
-                DefinitionStages.WithSignaling,
-                DefinitionStages.WithInteropSettings {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
+            DefinitionStages.WithInstallation, DefinitionStages.WithCoreNetworkTechnology, DefinitionStages.WithVersion,
+            DefinitionStages.WithControlPlaneAccessVirtualIpv4Addresses, DefinitionStages.WithUeMtu,
+            DefinitionStages.WithDiagnosticsUpload, DefinitionStages.WithEventHub, DefinitionStages.WithSignaling,
+            DefinitionStages.WithInteropSettings, DefinitionStages.WithUserConsent {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             PacketCoreControlPlane create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             PacketCoreControlPlane create(Context context);
         }
 
-        /** The stage of the PacketCoreControlPlane definition allowing to specify tags. */
+        /**
+         * The stage of the PacketCoreControlPlane definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
 
-        /** The stage of the PacketCoreControlPlane definition allowing to specify identity. */
+        /**
+         * The stage of the PacketCoreControlPlane definition allowing to specify identity.
+         */
         interface WithIdentity {
             /**
              * Specifies the identity property: The identity used to retrieve the ingress certificate from Azure key
              * vault..
-             *
+             * 
              * @param identity The identity used to retrieve the ingress certificate from Azure key vault.
              * @return the next definition stage.
              */
             WithCreate withIdentity(ManagedServiceIdentity identity);
         }
 
-        /** The stage of the PacketCoreControlPlane definition allowing to specify installation. */
+        /**
+         * The stage of the PacketCoreControlPlane definition allowing to specify installation.
+         */
         interface WithInstallation {
             /**
              * Specifies the installation property: The installation state of the packet core control plane resource..
-             *
+             * 
              * @param installation The installation state of the packet core control plane resource.
              * @return the next definition stage.
              */
             WithCreate withInstallation(Installation installation);
         }
 
-        /** The stage of the PacketCoreControlPlane definition allowing to specify coreNetworkTechnology. */
+        /**
+         * The stage of the PacketCoreControlPlane definition allowing to specify coreNetworkTechnology.
+         */
         interface WithCoreNetworkTechnology {
             /**
              * Specifies the coreNetworkTechnology property: The core network technology generation (5G core or EPC / 4G
              * core)..
-             *
+             * 
              * @param coreNetworkTechnology The core network technology generation (5G core or EPC / 4G core).
              * @return the next definition stage.
              */
             WithCreate withCoreNetworkTechnology(CoreNetworkType coreNetworkTechnology);
         }
 
-        /** The stage of the PacketCoreControlPlane definition allowing to specify version. */
+        /**
+         * The stage of the PacketCoreControlPlane definition allowing to specify version.
+         */
         interface WithVersion {
             /**
              * Specifies the version property: The desired version of the packet core software..
-             *
+             * 
              * @param version The desired version of the packet core software.
              * @return the next definition stage.
              */
@@ -431,120 +465,151 @@ public interface PacketCoreControlPlane {
              * plane on the access network in a High Availability (HA) system. In an HA deployment the access network
              * router should be configured to anycast traffic for this address to the control plane access interfaces on
              * the active and standby nodes. In non-HA system this list should be omitted or empty..
-             *
+             * 
              * @param controlPlaneAccessVirtualIpv4Addresses The virtual IP address(es) for the control plane on the
-             *     access network in a High Availability (HA) system. In an HA deployment the access network router
-             *     should be configured to anycast traffic for this address to the control plane access interfaces on
-             *     the active and standby nodes. In non-HA system this list should be omitted or empty.
+             * access network in a High Availability (HA) system. In an HA deployment the access network router should
+             * be configured to anycast traffic for this address to the control plane access interfaces on the active
+             * and standby nodes. In non-HA system this list should be omitted or empty.
              * @return the next definition stage.
              */
             WithCreate withControlPlaneAccessVirtualIpv4Addresses(List<String> controlPlaneAccessVirtualIpv4Addresses);
         }
 
-        /** The stage of the PacketCoreControlPlane definition allowing to specify ueMtu. */
+        /**
+         * The stage of the PacketCoreControlPlane definition allowing to specify ueMtu.
+         */
         interface WithUeMtu {
             /**
              * Specifies the ueMtu property: The MTU (in bytes) signaled to the UE. The same MTU is set on the user
              * plane data links for all data networks. The MTU set on the user plane access link is calculated to be 60
              * bytes greater than this value to allow for GTP encapsulation..
-             *
+             * 
              * @param ueMtu The MTU (in bytes) signaled to the UE. The same MTU is set on the user plane data links for
-             *     all data networks. The MTU set on the user plane access link is calculated to be 60 bytes greater
-             *     than this value to allow for GTP encapsulation.
+             * all data networks. The MTU set on the user plane access link is calculated to be 60 bytes greater than
+             * this value to allow for GTP encapsulation.
              * @return the next definition stage.
              */
             WithCreate withUeMtu(Integer ueMtu);
         }
 
-        /** The stage of the PacketCoreControlPlane definition allowing to specify diagnosticsUpload. */
+        /**
+         * The stage of the PacketCoreControlPlane definition allowing to specify diagnosticsUpload.
+         */
         interface WithDiagnosticsUpload {
             /**
              * Specifies the diagnosticsUpload property: Configuration for uploading packet core diagnostics.
-             *
+             * 
              * @param diagnosticsUpload Configuration for uploading packet core diagnostics.
              * @return the next definition stage.
              */
             WithCreate withDiagnosticsUpload(DiagnosticsUploadConfiguration diagnosticsUpload);
         }
 
-        /** The stage of the PacketCoreControlPlane definition allowing to specify eventHub. */
+        /**
+         * The stage of the PacketCoreControlPlane definition allowing to specify eventHub.
+         */
         interface WithEventHub {
             /**
              * Specifies the eventHub property: Configuration for sending packet core events to an Azure Event Hub..
-             *
+             * 
              * @param eventHub Configuration for sending packet core events to an Azure Event Hub.
              * @return the next definition stage.
              */
             WithCreate withEventHub(EventHubConfiguration eventHub);
         }
 
-        /** The stage of the PacketCoreControlPlane definition allowing to specify signaling. */
+        /**
+         * The stage of the PacketCoreControlPlane definition allowing to specify signaling.
+         */
         interface WithSignaling {
             /**
              * Specifies the signaling property: Signaling configuration for the packet core..
-             *
+             * 
              * @param signaling Signaling configuration for the packet core.
              * @return the next definition stage.
              */
             WithCreate withSignaling(SignalingConfiguration signaling);
         }
 
-        /** The stage of the PacketCoreControlPlane definition allowing to specify interopSettings. */
+        /**
+         * The stage of the PacketCoreControlPlane definition allowing to specify interopSettings.
+         */
         interface WithInteropSettings {
             /**
              * Specifies the interopSettings property: Settings to allow interoperability with third party components
              * e.g. RANs and UEs..
-             *
+             * 
              * @param interopSettings Settings to allow interoperability with third party components e.g. RANs and UEs.
              * @return the next definition stage.
              */
             WithCreate withInteropSettings(Object interopSettings);
         }
+
+        /**
+         * The stage of the PacketCoreControlPlane definition allowing to specify userConsent.
+         */
+        interface WithUserConsent {
+            /**
+             * Specifies the userConsent property: The user consent configuration for the packet core..
+             * 
+             * @param userConsent The user consent configuration for the packet core.
+             * @return the next definition stage.
+             */
+            WithCreate withUserConsent(UserConsentConfiguration userConsent);
+        }
     }
 
     /**
      * Begins update for the PacketCoreControlPlane resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     PacketCoreControlPlane.Update update();
 
-    /** The template for PacketCoreControlPlane update. */
+    /**
+     * The template for PacketCoreControlPlane update.
+     */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         PacketCoreControlPlane apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         PacketCoreControlPlane apply(Context context);
     }
 
-    /** The PacketCoreControlPlane update stages. */
+    /**
+     * The PacketCoreControlPlane update stages.
+     */
     interface UpdateStages {
-        /** The stage of the PacketCoreControlPlane update allowing to specify tags. */
+        /**
+         * The stage of the PacketCoreControlPlane update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
         }
 
-        /** The stage of the PacketCoreControlPlane update allowing to specify identity. */
+        /**
+         * The stage of the PacketCoreControlPlane update allowing to specify identity.
+         */
         interface WithIdentity {
             /**
              * Specifies the identity property: The managed service identity associated with this resource..
-             *
+             * 
              * @param identity The managed service identity associated with this resource.
              * @return the next definition stage.
              */
@@ -554,14 +619,14 @@ public interface PacketCoreControlPlane {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     PacketCoreControlPlane refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
@@ -570,7 +635,7 @@ public interface PacketCoreControlPlane {
     /**
      * Roll back the specified packet core control plane to the previous version, "rollbackVersion". Multiple
      * consecutive rollbacks are not possible. This action may cause a service outage.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
@@ -580,7 +645,7 @@ public interface PacketCoreControlPlane {
     /**
      * Roll back the specified packet core control plane to the previous version, "rollbackVersion". Multiple
      * consecutive rollbacks are not possible. This action may cause a service outage.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -590,9 +655,9 @@ public interface PacketCoreControlPlane {
     AsyncOperationStatus rollback(Context context);
 
     /**
-     * Reinstall the specified packet core control plane. This action will remove any transaction state from the packet
-     * core to return it to a known state. This action will cause a service outage.
-     *
+     * Reinstall the specified packet core control plane. This action will try to restore the packet core to the
+     * installed state that was disrupted by a transient failure. This action will cause a service outage.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
@@ -600,9 +665,9 @@ public interface PacketCoreControlPlane {
     AsyncOperationStatus reinstall();
 
     /**
-     * Reinstall the specified packet core control plane. This action will remove any transaction state from the packet
-     * core to return it to a known state. This action will cause a service outage.
-     *
+     * Reinstall the specified packet core control plane. This action will try to restore the packet core to the
+     * installed state that was disrupted by a transient failure. This action will cause a service outage.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -614,7 +679,7 @@ public interface PacketCoreControlPlane {
     /**
      * Collect a diagnostics package for the specified packet core control plane. This action will upload the
      * diagnostics to a storage account.
-     *
+     * 
      * @param parameters Parameters supplied to the packet core control plane collect diagnostics package operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -626,7 +691,7 @@ public interface PacketCoreControlPlane {
     /**
      * Collect a diagnostics package for the specified packet core control plane. This action will upload the
      * diagnostics to a storage account.
-     *
+     * 
      * @param parameters Parameters supplied to the packet core control plane collect diagnostics package operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -634,6 +699,6 @@ public interface PacketCoreControlPlane {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    AsyncOperationStatus collectDiagnosticsPackage(
-        PacketCoreControlPlaneCollectDiagnosticsPackage parameters, Context context);
+    AsyncOperationStatus collectDiagnosticsPackage(PacketCoreControlPlaneCollectDiagnosticsPackage parameters,
+        Context context);
 }

@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class GetPrivateDnsZoneSuffixResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GetPrivateDnsZoneSuffixResponseInner model =
-            BinaryData
-                .fromString("{\"privateDnsZoneSuffix\":\"yp\"}")
-                .toObject(GetPrivateDnsZoneSuffixResponseInner.class);
-        Assertions.assertEquals("yp", model.privateDnsZoneSuffix());
+        GetPrivateDnsZoneSuffixResponseInner model = BinaryData.fromString("{\"privateDnsZoneSuffix\":\"fbn\"}")
+            .toObject(GetPrivateDnsZoneSuffixResponseInner.class);
+        Assertions.assertEquals("fbn", model.privateDnsZoneSuffix());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GetPrivateDnsZoneSuffixResponseInner model =
-            new GetPrivateDnsZoneSuffixResponseInner().withPrivateDnsZoneSuffix("yp");
+        GetPrivateDnsZoneSuffixResponseInner model
+            = new GetPrivateDnsZoneSuffixResponseInner().withPrivateDnsZoneSuffix("fbn");
         model = BinaryData.fromObject(model).toObject(GetPrivateDnsZoneSuffixResponseInner.class);
-        Assertions.assertEquals("yp", model.privateDnsZoneSuffix());
+        Assertions.assertEquals("fbn", model.privateDnsZoneSuffix());
     }
 }

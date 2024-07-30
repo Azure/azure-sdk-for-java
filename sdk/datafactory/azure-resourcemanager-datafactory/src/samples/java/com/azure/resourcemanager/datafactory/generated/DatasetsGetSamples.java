@@ -18,7 +18,8 @@ public final class DatasetsGetSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void datasetsGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.datasets().getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleDataset", null,
-            com.azure.core.util.Context.NONE);
+        manager.datasets()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleDataset", null,
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -107,7 +107,7 @@ public final class ActivityDependency {
     @JsonAnySetter
     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }
@@ -119,12 +119,13 @@ public final class ActivityDependency {
      */
     public void validate() {
         if (activity() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property activity in model ActivityDependency"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property activity in model ActivityDependency"));
         }
         if (dependencyConditions() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property dependencyConditions in model ActivityDependency"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dependencyConditions in model ActivityDependency"));
         }
     }
 

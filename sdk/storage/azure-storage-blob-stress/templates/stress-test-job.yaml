@@ -1,0 +1,56 @@
+{{- include "stress-test-addons.deploy-job-template.from-pod" (list . "stress.deploy-example") -}}
+  {{- define "stress.deploy-example" -}}
+metadata:
+  labels:
+    chaos: "{{ default false .Stress.chaos }}"
+    testInstance: "{{.Stress.Scenario}}-{{ .Stress.BaseName }}-{{ .Release.Revision }}"
+spec:
+  nodeSelector:
+    sku: default
+  shareProcessNamespace: true
+  containers:
+    - name: fault-injector
+      image: azsdkengsys.azurecr.io/stress/httpfaultinjector
+      imagePullPolicy: Always
+      resources:
+        limits:
+          memory: 1Gi
+          cpu: "1.0"
+    - name: main
+      image:  {{ .Stress.imageTag }}
+      command: ['sh', '-c']
+      args:
+        - |
+          set -exa;
+          mkdir -p "$DEBUG_SHARE";
+          . /mnt/outputs/.env;
+          java \
+          -Dotel.service.name={{ .Release.Name }}-{{ .Stress.BaseName }} \
+          -Dotel.traces.sampler=traceidratio \
+          -Dotel.traces.sampler.arg=0.001 \
+          -XX:InitialRAMPercentage=50 \
+          -XX:MaxRAMPercentage=50 \
+          -XX:+HeapDumpOnOutOfMemoryError \
+          -XX:HeapDumpPath="${DEBUG_SHARE}" \
+          -Dreactor.schedulers.defaultBoundedElasticSize={{ .Stress.parallel }} \
+          -jar /app/azure-storage-blob-stress-1.0.0-beta.1-jar-with-dependencies.jar \
+          {{ .Stress.testScenario }} \
+          --parallel {{ .Stress.parallel }} \
+          --duration {{ mul 60 .Stress.durationMin }} \
+          --size {{ .Stress.sizeBytes }} \
+          {{ ternary "--sync" "" .Stress.sync }} \
+          {{ ternary "--downloadFaults" "" (default false .Stress.downloadFaults) }} \
+          {{ ternary "--uploadFaults" "" (default false .Stress.uploadFaults) }} \
+          --warmup 0 \
+          2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.testScenario }}-`date +%s`.log"; \
+          code=$?; \
+          kill `pidof http-fault-injector`; \
+          exit $code;
+      imagePullPolicy: Always
+      resources:
+        limits:
+          memory: {{ default "1Gi" .Stress.memory }}
+          cpu: {{ default 1 .Stress.cores }}
+      {{- include "stress-test-addons.container-env" . | nindent 6 }}
+
+{{- end -}}

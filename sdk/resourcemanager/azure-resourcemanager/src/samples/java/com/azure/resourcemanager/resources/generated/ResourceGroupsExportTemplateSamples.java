@@ -4,55 +4,66 @@
 
 package com.azure.resourcemanager.resources.generated;
 
+import com.azure.resourcemanager.resources.models.ExportTemplateOutputFormat;
 import com.azure.resourcemanager.resources.models.ExportTemplateRequest;
 import java.util.Arrays;
 
-/** Samples for ResourceGroups ExportTemplate. */
+/**
+ * Samples for ResourceGroups ExportTemplate.
+ */
 public final class ResourceGroupsExportTemplateSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/ExportResourceGroup.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/ExportResourceGroupAsBicep.json
      */
     /**
-     * Sample code: Export a resource group.
-     *
+     * Sample code: Export a resource group as Bicep.
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void exportAResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .genericResources()
+    public static void exportAResourceGroupAsBicep(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.genericResources()
             .manager()
             .serviceClient()
             .getResourceGroups()
-            .exportTemplate(
-                "my-resource-group",
-                new ExportTemplateRequest()
-                    .withResources(Arrays.asList("*"))
-                    .withOptions("IncludeParameterDefaultValue,IncludeComments"),
+            .exportTemplate("my-resource-group",
+                new ExportTemplateRequest().withResources(Arrays.asList("*"))
+                    .withOptions("IncludeParameterDefaultValue,IncludeComments")
+                    .withOutputFormat(ExportTemplateOutputFormat.BICEP),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/ExportResourceGroupWithFiltering.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/ExportResourceGroup.json
      */
     /**
-     * Sample code: Export a resource group with filtering.
-     *
+     * Sample code: Export a resource group.
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void exportAResourceGroupWithFiltering(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .genericResources()
+    public static void exportAResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.genericResources()
             .manager()
             .serviceClient()
             .getResourceGroups()
-            .exportTemplate(
-                "my-resource-group",
-                new ExportTemplateRequest()
-                    .withResources(
-                        Arrays
-                            .asList(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-resource-group/providers/My.RP/myResourceType/myFirstResource"))
-                    .withOptions("SkipResourceNameParameterization"),
-                com.azure.core.util.Context.NONE);
+            .exportTemplate("my-resource-group", new ExportTemplateRequest().withResources(Arrays.asList("*"))
+                .withOptions("IncludeParameterDefaultValue,IncludeComments"), com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/ExportResourceGroupWithFiltering.json
+     */
+    /**
+     * Sample code: Export a resource group with filtering.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void exportAResourceGroupWithFiltering(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.genericResources()
+            .manager()
+            .serviceClient()
+            .getResourceGroups()
+            .exportTemplate("my-resource-group", new ExportTemplateRequest().withResources(Arrays.asList(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-resource-group/providers/My.RP/myResourceType/myFirstResource"))
+                .withOptions("SkipResourceNameParameterization"), com.azure.core.util.Context.NONE);
     }
 }

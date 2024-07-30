@@ -13,18 +13,18 @@ public final class ConnectionToIpNotAllowedTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectionToIpNotAllowed model = BinaryData.fromString(
-            "{\"ruleType\":\"ConnectionToIpNotAllowed\",\"allowlistValues\":[\"s\",\"vrqoemwsi\"],\"valueType\":\"String\",\"displayName\":\"lwdqmqfydeot\",\"description\":\"xlkdlgwgnamkuuy\",\"isEnabled\":true}")
+            "{\"ruleType\":\"ConnectionToIpNotAllowed\",\"allowlistValues\":[\"wl\"],\"valueType\":\"String\",\"displayName\":\"jk\",\"description\":\"xxr\",\"isEnabled\":true}")
             .toObject(ConnectionToIpNotAllowed.class);
         Assertions.assertEquals(true, model.isEnabled());
-        Assertions.assertEquals("s", model.allowlistValues().get(0));
+        Assertions.assertEquals("wl", model.allowlistValues().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ConnectionToIpNotAllowed model
-            = new ConnectionToIpNotAllowed().withIsEnabled(true).withAllowlistValues(Arrays.asList("s", "vrqoemwsi"));
+            = new ConnectionToIpNotAllowed().withIsEnabled(true).withAllowlistValues(Arrays.asList("wl"));
         model = BinaryData.fromObject(model).toObject(ConnectionToIpNotAllowed.class);
         Assertions.assertEquals(true, model.isEnabled());
-        Assertions.assertEquals("s", model.allowlistValues().get(0));
+        Assertions.assertEquals("wl", model.allowlistValues().get(0));
     }
 }

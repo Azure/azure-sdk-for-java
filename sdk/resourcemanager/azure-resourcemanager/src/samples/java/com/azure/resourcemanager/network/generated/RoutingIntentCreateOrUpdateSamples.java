@@ -14,7 +14,7 @@ import java.util.Arrays;
 public final class RoutingIntentCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/RoutingIntentPut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/RoutingIntentPut.json
      */
     /**
      * Sample code: RouteTablePut.
@@ -22,13 +22,19 @@ public final class RoutingIntentCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void routeTablePut(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getRoutingIntents().createOrUpdate("rg1", "virtualHub1", "Intent1",
-            new RoutingIntentInner().withRoutingPolicies(Arrays.asList(
-                new RoutingPolicy().withName("InternetTraffic").withDestinations(Arrays.asList("Internet")).withNextHop(
-                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azfw1"),
-                new RoutingPolicy().withName("PrivateTrafficPolicy").withDestinations(Arrays.asList("PrivateTraffic"))
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getRoutingIntents()
+            .createOrUpdate("rg1", "virtualHub1", "Intent1", new RoutingIntentInner().withRoutingPolicies(Arrays.asList(
+                new RoutingPolicy().withName("InternetTraffic")
+                    .withDestinations(Arrays.asList("Internet"))
+                    .withNextHop(
+                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azfw1"),
+                new RoutingPolicy().withName("PrivateTrafficPolicy")
+                    .withDestinations(Arrays.asList("PrivateTraffic"))
                     .withNextHop(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azfw1"))),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

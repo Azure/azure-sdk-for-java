@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class RouteMapsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/RouteMapDelete.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/RouteMapDelete.json
      */
     /**
      * Sample code: RouteMapDelete.
@@ -18,7 +18,10 @@ public final class RouteMapsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void routeMapDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getRouteMaps().delete("rg1", "virtualHub1", "routeMap1",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getRouteMaps()
+            .delete("rg1", "virtualHub1", "routeMap1", com.azure.core.util.Context.NONE);
     }
 }

@@ -229,12 +229,14 @@ public final class DataLakeAnalyticsUsqlActivityTypeProperties {
      */
     public void validate() {
         if (scriptPath() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property scriptPath in model DataLakeAnalyticsUsqlActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property scriptPath in model DataLakeAnalyticsUsqlActivityTypeProperties"));
         }
         if (scriptLinkedService() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property scriptLinkedService in model DataLakeAnalyticsUsqlActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property scriptLinkedService in model DataLakeAnalyticsUsqlActivityTypeProperties"));
         } else {
             scriptLinkedService().validate();
         }

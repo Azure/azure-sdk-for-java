@@ -19,7 +19,8 @@ public final class IntegrationRuntimesListOutboundNetworkDependenciesEndpointsSa
      */
     public static void integrationRuntimesOutboundNetworkDependenciesEndpoints(
         com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimes().listOutboundNetworkDependenciesEndpointsWithResponse("exampleResourceGroup",
-            "exampleFactoryName", "exampleIntegrationRuntime", com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes()
+            .listOutboundNetworkDependenciesEndpointsWithResponse("exampleResourceGroup", "exampleFactoryName",
+                "exampleIntegrationRuntime", com.azure.core.util.Context.NONE);
     }
 }

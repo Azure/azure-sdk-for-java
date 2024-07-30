@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.sphere.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.sphere.fluent.models.DeviceGroupUpdateProperties;
 import com.azure.resourcemanager.sphere.models.AllowCrashDumpCollection;
+import com.azure.resourcemanager.sphere.models.DeviceGroupUpdateProperties;
 import com.azure.resourcemanager.sphere.models.OSFeedType;
 import com.azure.resourcemanager.sphere.models.RegionalDataBoundary;
 import com.azure.resourcemanager.sphere.models.UpdatePolicy;
@@ -15,32 +15,27 @@ import org.junit.jupiter.api.Assertions;
 public final class DeviceGroupUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeviceGroupUpdateProperties model =
-            BinaryData
-                .fromString(
-                    "{\"description\":\"cocmnyyaztt\",\"osFeedType\":\"Retail\",\"updatePolicy\":\"UpdateAll\",\"allowCrashDumpsCollection\":\"Disabled\",\"regionalDataBoundary\":\"EU\"}")
-                .toObject(DeviceGroupUpdateProperties.class);
-        Assertions.assertEquals("cocmnyyaztt", model.description());
+        DeviceGroupUpdateProperties model = BinaryData.fromString(
+            "{\"description\":\"kjz\",\"osFeedType\":\"Retail\",\"updatePolicy\":\"UpdateAll\",\"allowCrashDumpsCollection\":\"Disabled\",\"regionalDataBoundary\":\"None\"}")
+            .toObject(DeviceGroupUpdateProperties.class);
+        Assertions.assertEquals("kjz", model.description());
         Assertions.assertEquals(OSFeedType.RETAIL, model.osFeedType());
         Assertions.assertEquals(UpdatePolicy.UPDATE_ALL, model.updatePolicy());
         Assertions.assertEquals(AllowCrashDumpCollection.DISABLED, model.allowCrashDumpsCollection());
-        Assertions.assertEquals(RegionalDataBoundary.EU, model.regionalDataBoundary());
+        Assertions.assertEquals(RegionalDataBoundary.NONE, model.regionalDataBoundary());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeviceGroupUpdateProperties model =
-            new DeviceGroupUpdateProperties()
-                .withDescription("cocmnyyaztt")
-                .withOsFeedType(OSFeedType.RETAIL)
-                .withUpdatePolicy(UpdatePolicy.UPDATE_ALL)
-                .withAllowCrashDumpsCollection(AllowCrashDumpCollection.DISABLED)
-                .withRegionalDataBoundary(RegionalDataBoundary.EU);
+        DeviceGroupUpdateProperties model = new DeviceGroupUpdateProperties().withDescription("kjz")
+            .withOsFeedType(OSFeedType.RETAIL).withUpdatePolicy(UpdatePolicy.UPDATE_ALL)
+            .withAllowCrashDumpsCollection(AllowCrashDumpCollection.DISABLED)
+            .withRegionalDataBoundary(RegionalDataBoundary.NONE);
         model = BinaryData.fromObject(model).toObject(DeviceGroupUpdateProperties.class);
-        Assertions.assertEquals("cocmnyyaztt", model.description());
+        Assertions.assertEquals("kjz", model.description());
         Assertions.assertEquals(OSFeedType.RETAIL, model.osFeedType());
         Assertions.assertEquals(UpdatePolicy.UPDATE_ALL, model.updatePolicy());
         Assertions.assertEquals(AllowCrashDumpCollection.DISABLED, model.allowCrashDumpsCollection());
-        Assertions.assertEquals(RegionalDataBoundary.EU, model.regionalDataBoundary());
+        Assertions.assertEquals(RegionalDataBoundary.NONE, model.regionalDataBoundary());
     }
 }

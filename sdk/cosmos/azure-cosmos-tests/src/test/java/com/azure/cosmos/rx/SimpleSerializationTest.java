@@ -31,7 +31,7 @@ public class SimpleSerializationTest extends TestSuiteBase {
         public static class BadSerializer extends JsonSerializer<String> {
             @Override
             public void serialize(String value, JsonGenerator gen, SerializerProvider serializers) {
-                throw new NotImplementedException("bad");
+                throw new NotImplementedException("BadSerializer: bad");
             }
         }
 
@@ -62,7 +62,7 @@ public class SimpleSerializationTest extends TestSuiteBase {
             createdCollection.createItem(testObject).block();
             Assert.fail();
         } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage()).contains("Failed to serialize the object into json");
+            assertThat(e.getMessage()).startsWith("BadSerializer");
             assertThat(e.getCause()).isInstanceOf(JsonMappingException.class);
             assertThat(e.getCause().getMessage()).contains("bad");
         }

@@ -13,7 +13,7 @@ import com.azure.resourcemanager.network.models.RouteNextHopType;
 public final class RoutesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/RouteTableRouteCreate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/RouteTableRouteCreate.json
      */
     /**
      * Sample code: Create route.
@@ -21,8 +21,11 @@ public final class RoutesCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createRoute(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getRoutes().createOrUpdate("rg1", "testrt", "route1",
-            new RouteInner().withAddressPrefix("10.0.3.0/24").withNextHopType(RouteNextHopType.VIRTUAL_NETWORK_GATEWAY),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getRoutes()
+            .createOrUpdate("rg1", "testrt", "route1", new RouteInner().withAddressPrefix("10.0.3.0/24")
+                .withNextHopType(RouteNextHopType.VIRTUAL_NETWORK_GATEWAY), com.azure.core.util.Context.NONE);
     }
 }

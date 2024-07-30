@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.appcontainers.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appcontainers.fluent.models.ReplicaInner;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppReplicaRunningState;
 import com.azure.resourcemanager.appcontainers.models.Replica;
@@ -17,8 +18,8 @@ public final class ReplicaImpl implements Replica {
 
     private final com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager;
 
-    ReplicaImpl(
-        ReplicaInner innerObject, com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
+    ReplicaImpl(ReplicaInner innerObject,
+        com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -33,6 +34,10 @@ public final class ReplicaImpl implements Replica {
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public OffsetDateTime createdTime() {

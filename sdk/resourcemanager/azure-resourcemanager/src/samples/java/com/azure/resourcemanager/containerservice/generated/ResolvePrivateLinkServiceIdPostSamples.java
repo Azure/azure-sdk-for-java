@@ -12,7 +12,7 @@ import com.azure.resourcemanager.containerservice.fluent.models.PrivateLinkResou
 public final class ResolvePrivateLinkServiceIdPostSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-01-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
      * ResolvePrivateLinkServiceId.json
      */
     /**
@@ -22,7 +22,11 @@ public final class ResolvePrivateLinkServiceIdPostSamples {
      */
     public static void
         resolveThePrivateLinkServiceIDForManagedCluster(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.kubernetesClusters().manager().serviceClient().getResolvePrivateLinkServiceIds().postWithResponse("rg1",
-            "clustername1", new PrivateLinkResourceInner().withName("management"), com.azure.core.util.Context.NONE);
+        azure.kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getResolvePrivateLinkServiceIds()
+            .postWithResponse("rg1", "clustername1", new PrivateLinkResourceInner().withName("management"),
+                com.azure.core.util.Context.NONE);
     }
 }

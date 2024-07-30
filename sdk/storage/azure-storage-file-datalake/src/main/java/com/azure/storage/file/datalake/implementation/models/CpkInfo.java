@@ -6,42 +6,38 @@ package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.file.datalake.models.EncryptionAlgorithmType;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/** Parameter group. */
-@JacksonXmlRootElement(localName = "CpkInfo")
+/**
+ * Parameter group.
+ */
 @Fluent
 public final class CpkInfo {
     /*
-     * Optional. Specifies the encryption key to use to encrypt the data provided in the request. If not specified,
-     * encryption is performed with the root account encryption key.  For more information, see Encryption at Rest for
-     * Azure Storage Services.
+     * Optional. Specifies the encryption key to use to encrypt the data provided in the request. If not specified, encryption is performed with the root account encryption key.  For more information, see Encryption at Rest for Azure Storage Services.
      */
-    @JsonProperty(value = "encryptionKey")
     private String encryptionKey;
 
     /*
      * The SHA-256 hash of the provided encryption key. Must be provided if the x-ms-encryption-key header is provided.
      */
-    @JsonProperty(value = "encryptionKeySha256")
     private String encryptionKeySha256;
 
     /*
-     * The algorithm used to produce the encryption key hash. Currently, the only accepted value is "AES256". Must be
-     * provided if the x-ms-encryption-key header is provided.
+     * The algorithm used to produce the encryption key hash. Currently, the only accepted value is "AES256". Must be provided if the x-ms-encryption-key header is provided.
      */
-    @JsonProperty(value = "encryptionAlgorithm")
     private EncryptionAlgorithmType encryptionAlgorithm;
 
-    /** Creates an instance of CpkInfo class. */
-    public CpkInfo() {}
+    /**
+     * Creates an instance of CpkInfo class.
+     */
+    public CpkInfo() {
+    }
 
     /**
      * Get the encryptionKey property: Optional. Specifies the encryption key to use to encrypt the data provided in the
      * request. If not specified, encryption is performed with the root account encryption key. For more information,
      * see Encryption at Rest for Azure Storage Services.
-     *
+     * 
      * @return the encryptionKey value.
      */
     public String getEncryptionKey() {
@@ -52,7 +48,7 @@ public final class CpkInfo {
      * Set the encryptionKey property: Optional. Specifies the encryption key to use to encrypt the data provided in the
      * request. If not specified, encryption is performed with the root account encryption key. For more information,
      * see Encryption at Rest for Azure Storage Services.
-     *
+     * 
      * @param encryptionKey the encryptionKey value to set.
      * @return the CpkInfo object itself.
      */
@@ -64,7 +60,7 @@ public final class CpkInfo {
     /**
      * Get the encryptionKeySha256 property: The SHA-256 hash of the provided encryption key. Must be provided if the
      * x-ms-encryption-key header is provided.
-     *
+     * 
      * @return the encryptionKeySha256 value.
      */
     public String getEncryptionKeySha256() {
@@ -74,7 +70,7 @@ public final class CpkInfo {
     /**
      * Set the encryptionKeySha256 property: The SHA-256 hash of the provided encryption key. Must be provided if the
      * x-ms-encryption-key header is provided.
-     *
+     * 
      * @param encryptionKeySha256 the encryptionKeySha256 value to set.
      * @return the CpkInfo object itself.
      */
@@ -86,7 +82,7 @@ public final class CpkInfo {
     /**
      * Get the encryptionAlgorithm property: The algorithm used to produce the encryption key hash. Currently, the only
      * accepted value is "AES256". Must be provided if the x-ms-encryption-key header is provided.
-     *
+     * 
      * @return the encryptionAlgorithm value.
      */
     public EncryptionAlgorithmType getEncryptionAlgorithm() {
@@ -96,7 +92,7 @@ public final class CpkInfo {
     /**
      * Set the encryptionAlgorithm property: The algorithm used to produce the encryption key hash. Currently, the only
      * accepted value is "AES256". Must be provided if the x-ms-encryption-key header is provided.
-     *
+     * 
      * @param encryptionAlgorithm the encryptionAlgorithm value to set.
      * @return the CpkInfo object itself.
      */

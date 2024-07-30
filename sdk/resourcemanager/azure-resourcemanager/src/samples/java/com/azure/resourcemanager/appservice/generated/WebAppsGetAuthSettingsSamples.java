@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class WebAppsGetAuthSettingsSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/ListAuthSettings.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListAuthSettings.json
      */
     /**
      * Sample code: List Auth Settings.
@@ -18,7 +17,10 @@ public final class WebAppsGetAuthSettingsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listAuthSettings(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getWebApps().getAuthSettingsWithResponse("testrg123", "sitef6141",
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getWebApps()
+            .getAuthSettingsWithResponse("testrg123", "sitef6141", com.azure.core.util.Context.NONE);
     }
 }

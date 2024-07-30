@@ -16,71 +16,41 @@ import org.junit.jupiter.api.Assertions;
 public final class SliceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SliceListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"snssai\":{\"sst\":1098245078,\"sd\":\"lvidizozs\"},\"description\":\"ccxjm\"},\"location\":\"fdgnwncypuuwwlt\",\"tags\":{\"zzhmkd\":\"jctzenkei\",\"gsrboldforobw\":\"svflyhbxcudch\",\"hfovvacqpbtu\":\"lvizb\"},\"id\":\"dxe\",\"name\":\"zab\",\"type\":\"elawumu\"},{\"properties\":{\"provisioningState\":\"Failed\",\"snssai\":{\"sst\":46527363,\"sd\":\"wrrwoycqucw\"},\"description\":\"ahnomdrkywu\"},\"location\":\"svfuurutlwexxwl\",\"tags\":{\"q\":\"iexzsrzpge\",\"wwpgdakchzyvlixq\":\"yb\",\"bn\":\"rkcxkj\",\"swqrntvlwijp\":\"mysu\"},\"id\":\"ttexoqqpwcyyufmh\",\"name\":\"uncuw\",\"type\":\"qspkcdqzhlctd\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"snssai\":{\"sst\":302400307,\"sd\":\"dyfpchrqbnj\"},\"description\":\"cgegydcwbo\"},\"location\":\"umvq\",\"tags\":{\"jtlo\":\"ihrraiouaub\",\"iflrzpasccbiu\":\"xfuojrn\",\"ufdvruz\":\"mzdlyjdfqwmkyo\",\"hpc\":\"lzo\"},\"id\":\"fnmdxotn\",\"name\":\"fdgugeyzi\",\"type\":\"grkyuizabsnmfpph\"}],\"nextLink\":\"eevy\"}")
-                .toObject(SliceListResult.class);
-        Assertions.assertEquals("fdgnwncypuuwwlt", model.value().get(0).location());
-        Assertions.assertEquals("jctzenkei", model.value().get(0).tags().get("zzhmkd"));
-        Assertions.assertEquals(1098245078, model.value().get(0).snssai().sst());
-        Assertions.assertEquals("lvidizozs", model.value().get(0).snssai().sd());
-        Assertions.assertEquals("ccxjm", model.value().get(0).description());
+        SliceListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"snssai\":{\"sst\":822408153,\"sd\":\"nwm\"},\"description\":\"mvpdvjdhttzaef\"},\"location\":\"x\",\"tags\":{\"dfzpbgtgkylkdg\":\"hrphkmcrjdqn\"},\"id\":\"rjeuut\",\"name\":\"wxezwzhok\",\"type\":\"bwnhhtql\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"snssai\":{\"sst\":2037950734,\"sd\":\"pipifh\"},\"description\":\"e\"},\"location\":\"jvgcxtx\",\"tags\":{\"gsresmkssj\":\"heafidlt\",\"tillucbiqtg\":\"oiftxfkfwegprh\"},\"id\":\"q\",\"name\":\"hm\",\"type\":\"wsldrizetpwbr\"},{\"properties\":{\"provisioningState\":\"Unknown\",\"snssai\":{\"sst\":1155046174,\"sd\":\"bphbqzmizakakank\"},\"description\":\"dnjzh\"},\"location\":\"oylhjlmuoyxprimr\",\"tags\":{\"asylwx\":\"teecjmeislst\",\"eoohguufuzboyj\":\"zaum\"},\"id\":\"thwtzol\",\"name\":\"a\",\"type\":\"mwmdxmebwjscjpa\"},{\"properties\":{\"provisioningState\":\"Unknown\",\"snssai\":{\"sst\":1860405842,\"sd\":\"a\"},\"description\":\"qxnmwmqt\"},\"location\":\"xyi\",\"tags\":{\"mrsieekp\":\"tvqcttadijaeu\"},\"id\":\"dzaapmudqme\",\"name\":\"wig\",\"type\":\"ibudqwy\"}],\"nextLink\":\"beybpmzznrtffyaq\"}")
+            .toObject(SliceListResult.class);
+        Assertions.assertEquals("x", model.value().get(0).location());
+        Assertions.assertEquals("hrphkmcrjdqn", model.value().get(0).tags().get("dfzpbgtgkylkdg"));
+        Assertions.assertEquals(822408153, model.value().get(0).snssai().sst());
+        Assertions.assertEquals("nwm", model.value().get(0).snssai().sd());
+        Assertions.assertEquals("mvpdvjdhttzaef", model.value().get(0).description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SliceListResult model =
-            new SliceListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new SliceInner()
-                                .withLocation("fdgnwncypuuwwlt")
-                                .withTags(
-                                    mapOf(
-                                        "zzhmkd",
-                                        "jctzenkei",
-                                        "gsrboldforobw",
-                                        "svflyhbxcudch",
-                                        "hfovvacqpbtu",
-                                        "lvizb"))
-                                .withSnssai(new Snssai().withSst(1098245078).withSd("lvidizozs"))
-                                .withDescription("ccxjm"),
-                            new SliceInner()
-                                .withLocation("svfuurutlwexxwl")
-                                .withTags(
-                                    mapOf(
-                                        "q",
-                                        "iexzsrzpge",
-                                        "wwpgdakchzyvlixq",
-                                        "yb",
-                                        "bn",
-                                        "rkcxkj",
-                                        "swqrntvlwijp",
-                                        "mysu"))
-                                .withSnssai(new Snssai().withSst(46527363).withSd("wrrwoycqucw"))
-                                .withDescription("ahnomdrkywu"),
-                            new SliceInner()
-                                .withLocation("umvq")
-                                .withTags(
-                                    mapOf(
-                                        "jtlo",
-                                        "ihrraiouaub",
-                                        "iflrzpasccbiu",
-                                        "xfuojrn",
-                                        "ufdvruz",
-                                        "mzdlyjdfqwmkyo",
-                                        "hpc",
-                                        "lzo"))
-                                .withSnssai(new Snssai().withSst(302400307).withSd("dyfpchrqbnj"))
-                                .withDescription("cgegydcwbo")));
+        SliceListResult model = new SliceListResult().withValue(Arrays.asList(
+            new SliceInner().withLocation("x")
+                .withTags(mapOf("dfzpbgtgkylkdg", "hrphkmcrjdqn"))
+                .withSnssai(new Snssai().withSst(822408153).withSd("nwm"))
+                .withDescription("mvpdvjdhttzaef"),
+            new SliceInner().withLocation("jvgcxtx")
+                .withTags(mapOf("gsresmkssj", "heafidlt", "tillucbiqtg", "oiftxfkfwegprh"))
+                .withSnssai(new Snssai().withSst(2037950734).withSd("pipifh"))
+                .withDescription("e"),
+            new SliceInner().withLocation("oylhjlmuoyxprimr")
+                .withTags(mapOf("asylwx", "teecjmeislst", "eoohguufuzboyj", "zaum"))
+                .withSnssai(new Snssai().withSst(1155046174).withSd("bphbqzmizakakank"))
+                .withDescription("dnjzh"),
+            new SliceInner().withLocation("xyi")
+                .withTags(mapOf("mrsieekp", "tvqcttadijaeu"))
+                .withSnssai(new Snssai().withSst(1860405842).withSd("a"))
+                .withDescription("qxnmwmqt")));
         model = BinaryData.fromObject(model).toObject(SliceListResult.class);
-        Assertions.assertEquals("fdgnwncypuuwwlt", model.value().get(0).location());
-        Assertions.assertEquals("jctzenkei", model.value().get(0).tags().get("zzhmkd"));
-        Assertions.assertEquals(1098245078, model.value().get(0).snssai().sst());
-        Assertions.assertEquals("lvidizozs", model.value().get(0).snssai().sd());
-        Assertions.assertEquals("ccxjm", model.value().get(0).description());
+        Assertions.assertEquals("x", model.value().get(0).location());
+        Assertions.assertEquals("hrphkmcrjdqn", model.value().get(0).tags().get("dfzpbgtgkylkdg"));
+        Assertions.assertEquals(822408153, model.value().get(0).snssai().sst());
+        Assertions.assertEquals("nwm", model.value().get(0).snssai().sd());
+        Assertions.assertEquals("mvpdvjdhttzaef", model.value().get(0).description());
     }
 
     // Use "Map.of" if available

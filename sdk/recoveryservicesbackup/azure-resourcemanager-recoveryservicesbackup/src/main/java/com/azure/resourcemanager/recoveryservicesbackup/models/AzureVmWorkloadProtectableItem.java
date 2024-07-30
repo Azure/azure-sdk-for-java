@@ -7,6 +7,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -15,9 +16,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "protectableItemType",
-    defaultImpl = AzureVmWorkloadProtectableItem.class)
+    defaultImpl = AzureVmWorkloadProtectableItem.class,
+    visible = true)
 @JsonTypeName("AzureVmWorkloadProtectableItem")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "SAPAseSystem", value = AzureVmWorkloadSapAseSystemProtectableItem.class),
@@ -32,6 +33,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "SQLInstance", value = AzureVmWorkloadSqlInstanceProtectableItem.class) })
 @Fluent
 public class AzureVmWorkloadProtectableItem extends WorkloadProtectableItem {
+    /*
+     * Type of the backup item.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "protectableItemType", required = true)
+    private String protectableItemType = "AzureVmWorkloadProtectableItem";
+
     /*
      * Name for instance or AG
      */
@@ -91,6 +99,16 @@ public class AzureVmWorkloadProtectableItem extends WorkloadProtectableItem {
      * Creates an instance of AzureVmWorkloadProtectableItem class.
      */
     public AzureVmWorkloadProtectableItem() {
+    }
+
+    /**
+     * Get the protectableItemType property: Type of the backup item.
+     * 
+     * @return the protectableItemType value.
+     */
+    @Override
+    public String protectableItemType() {
+        return this.protectableItemType;
     }
 
     /**

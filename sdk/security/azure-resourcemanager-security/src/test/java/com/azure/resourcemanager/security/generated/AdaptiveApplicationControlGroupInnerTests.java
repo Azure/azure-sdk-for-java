@@ -24,30 +24,31 @@ public final class AdaptiveApplicationControlGroupInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AdaptiveApplicationControlGroupInner model = BinaryData.fromString(
-            "{\"properties\":{\"enforcementMode\":\"Enforce\",\"protectionMode\":{\"exe\":\"None\",\"msi\":\"None\",\"script\":\"Enforce\",\"executable\":\"Enforce\"},\"configurationStatus\":\"Failed\",\"recommendationStatus\":\"NotRecommended\",\"issues\":[{\"issue\":\"ExecutableViolationsAudited\",\"numberOfVms\":22.709728},{\"issue\":\"RulesViolatedManually\",\"numberOfVms\":30.78652},{\"issue\":\"MsiAndScriptViolationsAudited\",\"numberOfVms\":35.691994}],\"sourceSystem\":\"None\",\"vmRecommendations\":[{\"configurationStatus\":\"Failed\",\"recommendationAction\":\"Remove\",\"resourceId\":\"stkfvvdshxcdeds\",\"enforcementSupport\":\"Supported\"}],\"pathRecommendations\":[{\"path\":\"xcgjtf\",\"action\":\"Add\",\"type\":\"IoT_Baseline\",\"publisherInfo\":{\"publisherName\":\"fnslnlrxsmy\",\"productName\":\"rwntfm\",\"binaryName\":\"g\",\"version\":\"dxwnazkurrd\"},\"common\":true,\"userSids\":[\"whsetwwjwzzqs\"],\"usernames\":[{\"username\":\"ukykcyqh\",\"recommendationAction\":\"Add\"},{\"username\":\"zdcykeystew\",\"recommendationAction\":\"Remove\"},{\"username\":\"z\",\"recommendationAction\":\"Add\"},{\"username\":\"bs\",\"recommendationAction\":\"Add\"}],\"fileType\":\"Exe\",\"configurationStatus\":\"InProgress\"},{\"path\":\"utmdpvozg\",\"action\":\"Remove\",\"type\":\"IoT_AgentSendsUnutilizedMessages\",\"publisherInfo\":{\"publisherName\":\"zcl\",\"productName\":\"zeyowmndcovdwzqa\",\"binaryName\":\"zanhmkvfru\",\"version\":\"udrbcpftxudqyem\"},\"common\":false,\"userSids\":[\"ucmci\",\"tneemmjauwcgxef\",\"ohaitranizerwgud\"],\"usernames\":[{\"username\":\"ubvf\",\"recommendationAction\":\"Remove\"},{\"username\":\"coce\",\"recommendationAction\":\"Recommended\"},{\"username\":\"iylfmpztrau\",\"recommendationAction\":\"Add\"},{\"username\":\"lcdculregpq\",\"recommendationAction\":\"Remove\"}],\"fileType\":\"Dll\",\"configurationStatus\":\"Configured\"},{\"path\":\"tnvgyshqrdgrt\",\"action\":\"Recommended\",\"type\":\"IoT_AgentSendsUnutilizedMessages\",\"publisherInfo\":{\"publisherName\":\"py\",\"productName\":\"fa\",\"binaryName\":\"wjcayerzrr\",\"version\":\"syb\"},\"common\":true,\"userSids\":[\"wzrghsrlein\",\"fscjfn\"],\"usernames\":[{\"username\":\"uagfqwtltngv\",\"recommendationAction\":\"Add\"},{\"username\":\"ptrklzmija\",\"recommendationAction\":\"Recommended\"},{\"username\":\"xfsv\",\"recommendationAction\":\"Recommended\"}],\"fileType\":\"Msi\",\"configurationStatus\":\"Failed\"},{\"path\":\"lslrcigtzjc\",\"action\":\"Recommended\",\"type\":\"IoT_IPFilter_DenyAll\",\"publisherInfo\":{\"publisherName\":\"snsso\",\"productName\":\"xpavid\",\"binaryName\":\"ev\",\"version\":\"fcvvy\"},\"common\":true,\"userSids\":[\"uxgcbdsvalpnp\",\"wtrkx\",\"pazwug\",\"yqvnjobfe\"],\"usernames\":[{\"username\":\"iuhzzgqlmfa\",\"recommendationAction\":\"Recommended\"},{\"username\":\"iudjp\",\"recommendationAction\":\"Add\"},{\"username\":\"ttqhnmhkrezsds\",\"recommendationAction\":\"Remove\"}],\"fileType\":\"Exe\",\"configurationStatus\":\"InProgress\"}]},\"location\":\"ruxspinymmqgwok\",\"id\":\"ikpazf\",\"name\":\"mjxuvjipfdvhaxd\",\"type\":\"w\"}")
+            "{\"properties\":{\"enforcementMode\":\"Audit\",\"protectionMode\":{\"exe\":\"Enforce\",\"msi\":\"None\",\"script\":\"Audit\",\"executable\":\"None\"},\"configurationStatus\":\"NoStatus\",\"recommendationStatus\":\"NotAvailable\",\"issues\":[{\"issue\":\"MsiAndScriptViolationsBlocked\",\"numberOfVms\":75.991745},{\"issue\":\"ViolationsBlocked\",\"numberOfVms\":14.712143},{\"issue\":\"ExecutableViolationsAudited\",\"numberOfVms\":86.28077},{\"issue\":\"ViolationsBlocked\",\"numberOfVms\":17.508417}],\"sourceSystem\":\"None\",\"vmRecommendations\":[{\"configurationStatus\":\"Failed\",\"recommendationAction\":\"Add\",\"resourceId\":\"bqamteuliyslpk\",\"enforcementSupport\":\"Supported\"}],\"pathRecommendations\":[{\"path\":\"uxx\",\"action\":\"Add\",\"type\":\"IoT_IPFilter_PermissiveRule\",\"publisherInfo\":{\"publisherName\":\"rmcqmiciijqpkz\",\"productName\":\"ojxjmcsmyqwix\",\"binaryName\":\"pwnkwywzwo\",\"version\":\"lickduoi\"},\"common\":false,\"userSids\":[\"yvsk\"],\"usernames\":[{\"username\":\"zawnvsbcfhzag\",\"recommendationAction\":\"Recommended\"},{\"username\":\"ycvdimw\",\"recommendationAction\":\"Remove\"}],\"fileType\":\"Msi\",\"configurationStatus\":\"InProgress\"}]},\"location\":\"ufutrwpw\",\"id\":\"ryekzkd\",\"name\":\"meottawj\",\"type\":\"osxw\"}")
             .toObject(AdaptiveApplicationControlGroupInner.class);
-        Assertions.assertEquals(EnforcementMode.ENFORCE, model.enforcementMode());
-        Assertions.assertEquals(EnforcementMode.NONE, model.protectionMode().exe());
+        Assertions.assertEquals(EnforcementMode.AUDIT, model.enforcementMode());
+        Assertions.assertEquals(EnforcementMode.ENFORCE, model.protectionMode().exe());
         Assertions.assertEquals(EnforcementMode.NONE, model.protectionMode().msi());
-        Assertions.assertEquals(EnforcementMode.ENFORCE, model.protectionMode().script());
-        Assertions.assertEquals(EnforcementMode.ENFORCE, model.protectionMode().executable());
+        Assertions.assertEquals(EnforcementMode.AUDIT, model.protectionMode().script());
+        Assertions.assertEquals(EnforcementMode.NONE, model.protectionMode().executable());
         Assertions.assertEquals(ConfigurationStatus.FAILED, model.vmRecommendations().get(0).configurationStatus());
-        Assertions.assertEquals(RecommendationAction.REMOVE, model.vmRecommendations().get(0).recommendationAction());
-        Assertions.assertEquals("stkfvvdshxcdeds", model.vmRecommendations().get(0).resourceId());
+        Assertions.assertEquals(RecommendationAction.ADD, model.vmRecommendations().get(0).recommendationAction());
+        Assertions.assertEquals("bqamteuliyslpk", model.vmRecommendations().get(0).resourceId());
         Assertions.assertEquals(EnforcementSupport.SUPPORTED, model.vmRecommendations().get(0).enforcementSupport());
-        Assertions.assertEquals("xcgjtf", model.pathRecommendations().get(0).path());
+        Assertions.assertEquals("uxx", model.pathRecommendations().get(0).path());
         Assertions.assertEquals(RecommendationAction.ADD, model.pathRecommendations().get(0).action());
-        Assertions.assertEquals(RecommendationType.IO_T_BASELINE, model.pathRecommendations().get(0).type());
-        Assertions.assertEquals("fnslnlrxsmy", model.pathRecommendations().get(0).publisherInfo().publisherName());
-        Assertions.assertEquals("rwntfm", model.pathRecommendations().get(0).publisherInfo().productName());
-        Assertions.assertEquals("g", model.pathRecommendations().get(0).publisherInfo().binaryName());
-        Assertions.assertEquals("dxwnazkurrd", model.pathRecommendations().get(0).publisherInfo().version());
-        Assertions.assertEquals(true, model.pathRecommendations().get(0).common());
-        Assertions.assertEquals("whsetwwjwzzqs", model.pathRecommendations().get(0).userSids().get(0));
-        Assertions.assertEquals("ukykcyqh", model.pathRecommendations().get(0).usernames().get(0).username());
-        Assertions.assertEquals(RecommendationAction.ADD,
+        Assertions.assertEquals(RecommendationType.IO_T_IPFILTER_PERMISSIVE_RULE,
+            model.pathRecommendations().get(0).type());
+        Assertions.assertEquals("rmcqmiciijqpkz", model.pathRecommendations().get(0).publisherInfo().publisherName());
+        Assertions.assertEquals("ojxjmcsmyqwix", model.pathRecommendations().get(0).publisherInfo().productName());
+        Assertions.assertEquals("pwnkwywzwo", model.pathRecommendations().get(0).publisherInfo().binaryName());
+        Assertions.assertEquals("lickduoi", model.pathRecommendations().get(0).publisherInfo().version());
+        Assertions.assertEquals(false, model.pathRecommendations().get(0).common());
+        Assertions.assertEquals("yvsk", model.pathRecommendations().get(0).userSids().get(0));
+        Assertions.assertEquals("zawnvsbcfhzag", model.pathRecommendations().get(0).usernames().get(0).username());
+        Assertions.assertEquals(RecommendationAction.RECOMMENDED,
             model.pathRecommendations().get(0).usernames().get(0).recommendationAction());
-        Assertions.assertEquals(FileType.EXE, model.pathRecommendations().get(0).fileType());
+        Assertions.assertEquals(FileType.MSI, model.pathRecommendations().get(0).fileType());
         Assertions.assertEquals(ConfigurationStatus.IN_PROGRESS,
             model.pathRecommendations().get(0).configurationStatus());
     }
@@ -55,99 +56,56 @@ public final class AdaptiveApplicationControlGroupInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AdaptiveApplicationControlGroupInner model
-            = new AdaptiveApplicationControlGroupInner()
-                .withEnforcementMode(
-                    EnforcementMode.ENFORCE)
-                .withProtectionMode(
-                    new ProtectionMode()
-                        .withExe(EnforcementMode.NONE).withMsi(
-                            EnforcementMode.NONE)
-                        .withScript(EnforcementMode.ENFORCE).withExecutable(EnforcementMode.ENFORCE))
+            = new AdaptiveApplicationControlGroupInner().withEnforcementMode(EnforcementMode.AUDIT)
+                .withProtectionMode(new ProtectionMode().withExe(EnforcementMode.ENFORCE)
+                    .withMsi(EnforcementMode.NONE)
+                    .withScript(EnforcementMode.AUDIT)
+                    .withExecutable(EnforcementMode.NONE))
                 .withVmRecommendations(
                     Arrays.asList(new VmRecommendation().withConfigurationStatus(ConfigurationStatus.FAILED)
-                        .withRecommendationAction(RecommendationAction.REMOVE).withResourceId("stkfvvdshxcdeds")
+                        .withRecommendationAction(RecommendationAction.ADD)
+                        .withResourceId("bqamteuliyslpk")
                         .withEnforcementSupport(EnforcementSupport.SUPPORTED)))
-                .withPathRecommendations(Arrays.asList(
-                    new PathRecommendation().withPath("xcgjtf").withAction(RecommendationAction.ADD)
-                        .withType(RecommendationType.IO_T_BASELINE)
-                        .withPublisherInfo(new PublisherInfo().withPublisherName("fnslnlrxsmy")
-                            .withProductName("rwntfm").withBinaryName("g").withVersion("dxwnazkurrd"))
-                        .withCommon(true).withUserSids(Arrays.asList("whsetwwjwzzqs"))
-                        .withUsernames(Arrays.asList(
-                            new UserRecommendation().withUsername("ukykcyqh")
-                                .withRecommendationAction(RecommendationAction.ADD),
-                            new UserRecommendation().withUsername("zdcykeystew")
-                                .withRecommendationAction(RecommendationAction.REMOVE),
-                            new UserRecommendation().withUsername("z")
-                                .withRecommendationAction(RecommendationAction.ADD),
-                            new UserRecommendation().withUsername("bs")
-                                .withRecommendationAction(RecommendationAction.ADD)))
-                        .withFileType(FileType.EXE).withConfigurationStatus(ConfigurationStatus.IN_PROGRESS),
-                    new PathRecommendation().withPath("utmdpvozg").withAction(RecommendationAction.REMOVE)
-                        .withType(RecommendationType.IO_T_AGENT_SENDS_UNUTILIZED_MESSAGES)
-                        .withPublisherInfo(
-                            new PublisherInfo().withPublisherName("zcl").withProductName("zeyowmndcovdwzqa")
-                                .withBinaryName("zanhmkvfru").withVersion("udrbcpftxudqyem"))
-                        .withCommon(false).withUserSids(Arrays.asList("ucmci", "tneemmjauwcgxef", "ohaitranizerwgud"))
-                        .withUsernames(Arrays.asList(
-                            new UserRecommendation().withUsername("ubvf")
-                                .withRecommendationAction(RecommendationAction.REMOVE),
-                            new UserRecommendation().withUsername("coce")
-                                .withRecommendationAction(RecommendationAction.RECOMMENDED),
-                            new UserRecommendation().withUsername("iylfmpztrau")
-                                .withRecommendationAction(RecommendationAction.ADD),
-                            new UserRecommendation().withUsername("lcdculregpq")
-                                .withRecommendationAction(RecommendationAction.REMOVE)))
-                        .withFileType(FileType.DLL).withConfigurationStatus(ConfigurationStatus.CONFIGURED),
-                    new PathRecommendation().withPath("tnvgyshqrdgrt").withAction(RecommendationAction.RECOMMENDED)
-                        .withType(RecommendationType.IO_T_AGENT_SENDS_UNUTILIZED_MESSAGES)
-                        .withPublisherInfo(new PublisherInfo().withPublisherName("py").withProductName("fa")
-                            .withBinaryName("wjcayerzrr").withVersion("syb"))
-                        .withCommon(true).withUserSids(Arrays.asList("wzrghsrlein", "fscjfn"))
-                        .withUsernames(Arrays.asList(
-                            new UserRecommendation().withUsername("uagfqwtltngv")
-                                .withRecommendationAction(RecommendationAction.ADD),
-                            new UserRecommendation().withUsername("ptrklzmija")
-                                .withRecommendationAction(RecommendationAction.RECOMMENDED),
-                            new UserRecommendation().withUsername("xfsv")
-                                .withRecommendationAction(RecommendationAction.RECOMMENDED)))
-                        .withFileType(FileType.MSI).withConfigurationStatus(ConfigurationStatus.FAILED),
-                    new PathRecommendation().withPath("lslrcigtzjc").withAction(RecommendationAction.RECOMMENDED)
-                        .withType(RecommendationType.IO_T_IPFILTER_DENY_ALL)
-                        .withPublisherInfo(new PublisherInfo().withPublisherName("snsso").withProductName("xpavid")
-                            .withBinaryName("ev").withVersion("fcvvy"))
-                        .withCommon(true).withUserSids(Arrays.asList("uxgcbdsvalpnp", "wtrkx", "pazwug", "yqvnjobfe"))
-                        .withUsernames(Arrays.asList(
-                            new UserRecommendation().withUsername("iuhzzgqlmfa")
-                                .withRecommendationAction(RecommendationAction.RECOMMENDED),
-                            new UserRecommendation().withUsername("iudjp")
-                                .withRecommendationAction(RecommendationAction.ADD),
-                            new UserRecommendation().withUsername("ttqhnmhkrezsds")
-                                .withRecommendationAction(RecommendationAction.REMOVE)))
-                        .withFileType(FileType.EXE).withConfigurationStatus(ConfigurationStatus.IN_PROGRESS)));
+                .withPathRecommendations(Arrays.asList(new PathRecommendation().withPath("uxx")
+                    .withAction(RecommendationAction.ADD)
+                    .withType(RecommendationType.IO_T_IPFILTER_PERMISSIVE_RULE)
+                    .withPublisherInfo(new PublisherInfo().withPublisherName("rmcqmiciijqpkz")
+                        .withProductName("ojxjmcsmyqwix")
+                        .withBinaryName("pwnkwywzwo")
+                        .withVersion("lickduoi"))
+                    .withCommon(false)
+                    .withUserSids(Arrays.asList("yvsk"))
+                    .withUsernames(Arrays.asList(
+                        new UserRecommendation().withUsername("zawnvsbcfhzag")
+                            .withRecommendationAction(RecommendationAction.RECOMMENDED),
+                        new UserRecommendation().withUsername("ycvdimw")
+                            .withRecommendationAction(RecommendationAction.REMOVE)))
+                    .withFileType(FileType.MSI)
+                    .withConfigurationStatus(ConfigurationStatus.IN_PROGRESS)));
         model = BinaryData.fromObject(model).toObject(AdaptiveApplicationControlGroupInner.class);
-        Assertions.assertEquals(EnforcementMode.ENFORCE, model.enforcementMode());
-        Assertions.assertEquals(EnforcementMode.NONE, model.protectionMode().exe());
+        Assertions.assertEquals(EnforcementMode.AUDIT, model.enforcementMode());
+        Assertions.assertEquals(EnforcementMode.ENFORCE, model.protectionMode().exe());
         Assertions.assertEquals(EnforcementMode.NONE, model.protectionMode().msi());
-        Assertions.assertEquals(EnforcementMode.ENFORCE, model.protectionMode().script());
-        Assertions.assertEquals(EnforcementMode.ENFORCE, model.protectionMode().executable());
+        Assertions.assertEquals(EnforcementMode.AUDIT, model.protectionMode().script());
+        Assertions.assertEquals(EnforcementMode.NONE, model.protectionMode().executable());
         Assertions.assertEquals(ConfigurationStatus.FAILED, model.vmRecommendations().get(0).configurationStatus());
-        Assertions.assertEquals(RecommendationAction.REMOVE, model.vmRecommendations().get(0).recommendationAction());
-        Assertions.assertEquals("stkfvvdshxcdeds", model.vmRecommendations().get(0).resourceId());
+        Assertions.assertEquals(RecommendationAction.ADD, model.vmRecommendations().get(0).recommendationAction());
+        Assertions.assertEquals("bqamteuliyslpk", model.vmRecommendations().get(0).resourceId());
         Assertions.assertEquals(EnforcementSupport.SUPPORTED, model.vmRecommendations().get(0).enforcementSupport());
-        Assertions.assertEquals("xcgjtf", model.pathRecommendations().get(0).path());
+        Assertions.assertEquals("uxx", model.pathRecommendations().get(0).path());
         Assertions.assertEquals(RecommendationAction.ADD, model.pathRecommendations().get(0).action());
-        Assertions.assertEquals(RecommendationType.IO_T_BASELINE, model.pathRecommendations().get(0).type());
-        Assertions.assertEquals("fnslnlrxsmy", model.pathRecommendations().get(0).publisherInfo().publisherName());
-        Assertions.assertEquals("rwntfm", model.pathRecommendations().get(0).publisherInfo().productName());
-        Assertions.assertEquals("g", model.pathRecommendations().get(0).publisherInfo().binaryName());
-        Assertions.assertEquals("dxwnazkurrd", model.pathRecommendations().get(0).publisherInfo().version());
-        Assertions.assertEquals(true, model.pathRecommendations().get(0).common());
-        Assertions.assertEquals("whsetwwjwzzqs", model.pathRecommendations().get(0).userSids().get(0));
-        Assertions.assertEquals("ukykcyqh", model.pathRecommendations().get(0).usernames().get(0).username());
-        Assertions.assertEquals(RecommendationAction.ADD,
+        Assertions.assertEquals(RecommendationType.IO_T_IPFILTER_PERMISSIVE_RULE,
+            model.pathRecommendations().get(0).type());
+        Assertions.assertEquals("rmcqmiciijqpkz", model.pathRecommendations().get(0).publisherInfo().publisherName());
+        Assertions.assertEquals("ojxjmcsmyqwix", model.pathRecommendations().get(0).publisherInfo().productName());
+        Assertions.assertEquals("pwnkwywzwo", model.pathRecommendations().get(0).publisherInfo().binaryName());
+        Assertions.assertEquals("lickduoi", model.pathRecommendations().get(0).publisherInfo().version());
+        Assertions.assertEquals(false, model.pathRecommendations().get(0).common());
+        Assertions.assertEquals("yvsk", model.pathRecommendations().get(0).userSids().get(0));
+        Assertions.assertEquals("zawnvsbcfhzag", model.pathRecommendations().get(0).usernames().get(0).username());
+        Assertions.assertEquals(RecommendationAction.RECOMMENDED,
             model.pathRecommendations().get(0).usernames().get(0).recommendationAction());
-        Assertions.assertEquals(FileType.EXE, model.pathRecommendations().get(0).fileType());
+        Assertions.assertEquals(FileType.MSI, model.pathRecommendations().get(0).fileType());
         Assertions.assertEquals(ConfigurationStatus.IN_PROGRESS,
             model.pathRecommendations().get(0).configurationStatus());
     }

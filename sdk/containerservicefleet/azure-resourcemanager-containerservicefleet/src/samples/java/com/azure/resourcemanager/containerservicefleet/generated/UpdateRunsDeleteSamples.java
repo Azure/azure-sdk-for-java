@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.containerservicefleet.generated;
 
-/** Samples for UpdateRuns Delete. */
+/**
+ * Samples for UpdateRuns Delete.
+ */
 public final class UpdateRunsDeleteSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/stable/2023-10-15/examples/UpdateRuns_Delete.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/stable/2024-04-01/examples/UpdateRuns_Delete.json
      */
     /**
      * Sample code: Delete an updateRun resource.
-     *
+     * 
      * @param manager Entry point to ContainerServiceFleetManager.
      */
     public static void deleteAnUpdateRunResource(

@@ -8,18 +8,24 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Standard_Verizon = The SKU name for a Standard Verizon CDN profile. Premium_Verizon = The SKU name for a Premium
- * Verizon CDN profile. Custom_Verizon = The SKU name for a Custom Verizon CDN profile. Standard_Akamai = The SKU name
- * for an Akamai CDN profile. Standard_ChinaCdn = The SKU name for a China CDN profile for VOD, Web and download
- * scenarios using GB based billing model. Standard_Microsoft = The SKU name for a Standard Microsoft CDN profile.
- * Standard_AzureFrontDoor = The SKU name for an Azure Front Door Standard profile. Premium_AzureFrontDoor = The SKU
- * name for an Azure Front Door Premium profile. Standard_955BandWidth_ChinaCdn = The SKU name for a China CDN profile
- * for VOD, Web and download scenarios using 95-5 peak bandwidth billing model. Standard_AvgBandWidth_ChinaCdn = The SKU
- * name for a China CDN profile for VOD, Web and download scenarios using monthly average peak bandwidth billing model.
+ * Standard_Verizon = The SKU name for a Standard Verizon CDN profile.
+ * Premium_Verizon = The SKU name for a Premium Verizon CDN profile.
+ * Custom_Verizon = The SKU name for a Custom Verizon CDN profile.
+ * Standard_Akamai = The SKU name for an Akamai CDN profile.
+ * Standard_ChinaCdn = The SKU name for a China CDN profile for VOD, Web and download scenarios using GB based billing
+ * model.
+ * Standard_Microsoft = The SKU name for a Standard Microsoft CDN profile.
+ * Standard_AzureFrontDoor = The SKU name for an Azure Front Door Standard profile.
+ * Premium_AzureFrontDoor = The SKU name for an Azure Front Door Premium profile.
+ * Standard_955BandWidth_ChinaCdn = The SKU name for a China CDN profile for VOD, Web and download scenarios using 95-5
+ * peak bandwidth billing model.
+ * Standard_AvgBandWidth_ChinaCdn = The SKU name for a China CDN profile for VOD, Web and download scenarios using
+ * monthly average peak bandwidth billing model.
  * StandardPlus_ChinaCdn = The SKU name for a China CDN profile for live-streaming using GB based billing model.
  * StandardPlus_955BandWidth_ChinaCdn = The SKU name for a China CDN live-streaming profile using 95-5 peak bandwidth
- * billing model. StandardPlus_AvgBandWidth_ChinaCdn = The SKU name for a China CDN live-streaming profile using monthly
- * average peak bandwidth billing model.
+ * billing model.
+ * StandardPlus_AvgBandWidth_ChinaCdn = The SKU name for a China CDN live-streaming profile using monthly average peak
+ * bandwidth billing model.
  */
 @Fluent
 public final class Sku {
@@ -29,13 +35,15 @@ public final class Sku {
     @JsonProperty(value = "name")
     private SkuName name;
 
-    /** Creates an instance of Sku class. */
+    /**
+     * Creates an instance of Sku class.
+     */
     public Sku() {
     }
 
     /**
      * Get the name property: Name of the pricing tier.
-     *
+     * 
      * @return the name value.
      */
     public SkuName name() {
@@ -44,7 +52,7 @@ public final class Sku {
 
     /**
      * Set the name property: Name of the pricing tier.
-     *
+     * 
      * @param name the name value to set.
      * @return the Sku object itself.
      */
@@ -55,7 +63,7 @@ public final class Sku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

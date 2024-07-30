@@ -13,18 +13,20 @@ public final class WebhookUpdatePartnerDestinationInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WebhookUpdatePartnerDestinationInfo model = BinaryData.fromString(
-            "{\"endpointType\":\"WebHook\",\"properties\":{\"endpointUrl\":\"ejsxt\",\"endpointBaseUrl\":\"flwfgziiuci\",\"clientAuthentication\":{\"clientAuthenticationType\":\"PartnerClientAuthentication\"}}}")
+            "{\"endpointType\":\"WebHook\",\"properties\":{\"endpointUrl\":\"srhkhgsnxuwwkpph\",\"endpointBaseUrl\":\"sbzxl\",\"clientAuthentication\":{\"clientAuthenticationType\":\"PartnerClientAuthentication\"}}}")
             .toObject(WebhookUpdatePartnerDestinationInfo.class);
-        Assertions.assertEquals("ejsxt", model.endpointUrl());
-        Assertions.assertEquals("flwfgziiuci", model.endpointBaseUrl());
+        Assertions.assertEquals("srhkhgsnxuwwkpph", model.endpointUrl());
+        Assertions.assertEquals("sbzxl", model.endpointBaseUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WebhookUpdatePartnerDestinationInfo model = new WebhookUpdatePartnerDestinationInfo().withEndpointUrl("ejsxt")
-            .withEndpointBaseUrl("flwfgziiuci").withClientAuthentication(new PartnerClientAuthentication());
+        WebhookUpdatePartnerDestinationInfo model
+            = new WebhookUpdatePartnerDestinationInfo().withEndpointUrl("srhkhgsnxuwwkpph")
+                .withEndpointBaseUrl("sbzxl")
+                .withClientAuthentication(new PartnerClientAuthentication());
         model = BinaryData.fromObject(model).toObject(WebhookUpdatePartnerDestinationInfo.class);
-        Assertions.assertEquals("ejsxt", model.endpointUrl());
-        Assertions.assertEquals("flwfgziiuci", model.endpointBaseUrl());
+        Assertions.assertEquals("srhkhgsnxuwwkpph", model.endpointUrl());
+        Assertions.assertEquals("sbzxl", model.endpointBaseUrl());
     }
 }

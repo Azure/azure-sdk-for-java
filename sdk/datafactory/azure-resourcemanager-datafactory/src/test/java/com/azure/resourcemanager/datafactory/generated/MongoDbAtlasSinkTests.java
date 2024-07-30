@@ -11,16 +11,19 @@ public final class MongoDbAtlasSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MongoDbAtlasSink model = BinaryData.fromString(
-            "{\"type\":\"MongoDbAtlasSink\",\"writeBehavior\":\"datakhgdzrcq\",\"writeBatchSize\":\"dataapohemine\",\"writeBatchTimeout\":\"datajrdxhlovmxhztdca\",\"sinkRetryCount\":\"datamvqgqmi\",\"sinkRetryWait\":\"datapa\",\"maxConcurrentConnections\":\"datah\",\"disableMetricsCollection\":\"datacyasz\",\"\":{\"ni\":\"datamtcihupoelj\",\"awbsdeqqbdcbnrg\":\"datayoxajit\",\"mtgtnb\":\"datapnor\",\"rwldeinhnsd\":\"datasopuwesmxodyto\"}}")
+            "{\"type\":\"MongoDbAtlasSink\",\"writeBehavior\":\"datapmathiydmkyvsx\",\"writeBatchSize\":\"dataivghajpddgfozn\",\"writeBatchTimeout\":\"datamkpjoesozcuhunm\",\"sinkRetryCount\":\"databmwptdrrruy\",\"sinkRetryWait\":\"dataoiumuxna\",\"maxConcurrentConnections\":\"datavgmckxh\",\"disableMetricsCollection\":\"datazsmpoiu\",\"\":{\"vo\":\"datatvpbiojncgjog\"}}")
             .toObject(MongoDbAtlasSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MongoDbAtlasSink model
-            = new MongoDbAtlasSink().withWriteBatchSize("dataapohemine").withWriteBatchTimeout("datajrdxhlovmxhztdca")
-                .withSinkRetryCount("datamvqgqmi").withSinkRetryWait("datapa").withMaxConcurrentConnections("datah")
-                .withDisableMetricsCollection("datacyasz").withWriteBehavior("datakhgdzrcq");
+        MongoDbAtlasSink model = new MongoDbAtlasSink().withWriteBatchSize("dataivghajpddgfozn")
+            .withWriteBatchTimeout("datamkpjoesozcuhunm")
+            .withSinkRetryCount("databmwptdrrruy")
+            .withSinkRetryWait("dataoiumuxna")
+            .withMaxConcurrentConnections("datavgmckxh")
+            .withDisableMetricsCollection("datazsmpoiu")
+            .withWriteBehavior("datapmathiydmkyvsx");
         model = BinaryData.fromObject(model).toObject(MongoDbAtlasSink.class);
     }
 }

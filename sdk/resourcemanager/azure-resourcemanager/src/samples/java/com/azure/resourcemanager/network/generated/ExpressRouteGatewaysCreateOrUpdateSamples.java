@@ -15,7 +15,7 @@ import com.azure.resourcemanager.network.models.VirtualHubId;
 public final class ExpressRouteGatewaysCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/ExpressRouteGatewayCreate.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ExpressRouteGatewayCreate.
      * json
      */
     /**
@@ -24,7 +24,10 @@ public final class ExpressRouteGatewaysCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void expressRouteGatewayCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getExpressRouteGateways()
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getExpressRouteGateways()
             .createOrUpdate("resourceGroupName", "gateway-2", new ExpressRouteGatewayInner().withLocation("westus")
                 .withAutoScaleConfiguration(new ExpressRouteGatewayPropertiesAutoScaleConfiguration()
                     .withBounds(new ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds().withMin(3)))

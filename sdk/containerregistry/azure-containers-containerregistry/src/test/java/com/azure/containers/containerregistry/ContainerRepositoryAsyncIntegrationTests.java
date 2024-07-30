@@ -13,6 +13,8 @@ import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -27,11 +29,14 @@ import static com.azure.containers.containerregistry.TestUtils.LATEST_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.PAGESIZE_2;
 import static com.azure.containers.containerregistry.TestUtils.REGISTRY_ENDPOINT;
 import static com.azure.containers.containerregistry.TestUtils.REGISTRY_ENDPOINT_PLAYBACK;
+import static com.azure.containers.containerregistry.TestUtils.REGISTRY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.TAG_UNKNOWN;
+import static com.azure.containers.containerregistry.TestUtils.importImage;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@Execution(ExecutionMode.SAME_THREAD)
 public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryClientsTestBase {
 
     private ContainerRepositoryAsync asyncClient;
@@ -39,8 +44,13 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
     private ContainerRepositoryProperties contentProperties;
 
     @BeforeEach
-    void beforeEach() {
-        TestUtils.importImage(getTestMode(), HELLO_WORLD_REPOSITORY_NAME, Arrays.asList("latest", "v1", "v2", "v3", "v4"));
+    void beforeEach() throws InterruptedException {
+        importImage(
+            getTestMode(),
+            REGISTRY_NAME,
+            HELLO_WORLD_REPOSITORY_NAME,
+            Arrays.asList("latest", "v1", "v2", "v3", "v4"),
+            REGISTRY_ENDPOINT);
     }
 
     @AfterEach

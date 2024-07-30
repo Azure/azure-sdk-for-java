@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** High availability mode for a server. */
+/**
+ * High availability mode for a server.
+ */
 public final class HighAvailabilityMode extends ExpandableStringEnum<HighAvailabilityMode> {
-    /** Static value Disabled for HighAvailabilityMode. */
+    /**
+     * Static value Disabled for HighAvailabilityMode.
+     */
     public static final HighAvailabilityMode DISABLED = fromString("Disabled");
 
-    /** Static value ZoneRedundant for HighAvailabilityMode. */
+    /**
+     * Static value ZoneRedundant for HighAvailabilityMode.
+     */
     public static final HighAvailabilityMode ZONE_REDUNDANT = fromString("ZoneRedundant");
 
-    /** Static value SameZone for HighAvailabilityMode. */
+    /**
+     * Static value SameZone for HighAvailabilityMode.
+     */
     public static final HighAvailabilityMode SAME_ZONE = fromString("SameZone");
 
     /**
      * Creates a new instance of HighAvailabilityMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class HighAvailabilityMode extends ExpandableStringEnum<HighAvailab
 
     /**
      * Creates or finds a HighAvailabilityMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HighAvailabilityMode.
      */
@@ -41,7 +49,7 @@ public final class HighAvailabilityMode extends ExpandableStringEnum<HighAvailab
 
     /**
      * Gets known HighAvailabilityMode values.
-     *
+     * 
      * @return known HighAvailabilityMode values.
      */
     public static Collection<HighAvailabilityMode> values() {

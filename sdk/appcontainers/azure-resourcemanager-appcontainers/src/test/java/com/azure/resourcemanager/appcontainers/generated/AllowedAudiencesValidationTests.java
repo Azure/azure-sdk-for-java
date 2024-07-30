@@ -12,18 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class AllowedAudiencesValidationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AllowedAudiencesValidation model =
-            BinaryData
-                .fromString("{\"allowedAudiences\":[\"wzrlovmclwhij\",\"oejctbzaqsqsy\"]}")
+        AllowedAudiencesValidation model
+            = BinaryData.fromString("{\"allowedAudiences\":[\"igdtopbob\",\"og\",\"m\",\"w\"]}")
                 .toObject(AllowedAudiencesValidation.class);
-        Assertions.assertEquals("wzrlovmclwhij", model.allowedAudiences().get(0));
+        Assertions.assertEquals("igdtopbob", model.allowedAudiences().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AllowedAudiencesValidation model =
-            new AllowedAudiencesValidation().withAllowedAudiences(Arrays.asList("wzrlovmclwhij", "oejctbzaqsqsy"));
+        AllowedAudiencesValidation model
+            = new AllowedAudiencesValidation().withAllowedAudiences(Arrays.asList("igdtopbob", "og", "m", "w"));
         model = BinaryData.fromObject(model).toObject(AllowedAudiencesValidation.class);
-        Assertions.assertEquals("wzrlovmclwhij", model.allowedAudiences().get(0));
+        Assertions.assertEquals("igdtopbob", model.allowedAudiences().get(0));
     }
 }

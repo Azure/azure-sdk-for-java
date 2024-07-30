@@ -6,11 +6,13 @@ package com.azure.resourcemanager.resources;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.resources.fluent.ChangesManagementClient;
+import com.azure.resourcemanager.resources.fluent.DeploymentStacksManagementClient;
 import com.azure.resourcemanager.resources.fluent.FeatureClient;
 import com.azure.resourcemanager.resources.fluent.ManagementLockClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.resourcemanager.resources.implementation.ChangesManagementClientBuilder;
+import com.azure.resourcemanager.resources.implementation.DeploymentStacksManagementClientBuilder;
 import com.azure.resourcemanager.resources.implementation.FeatureClientBuilder;
 import com.azure.resourcemanager.resources.fluent.PolicyClient;
 import com.azure.resourcemanager.resources.implementation.ManagementLockClientBuilder;
@@ -59,6 +61,7 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
     private final PolicyClient policyClient;
     private final ManagementLockClient managementLockClient;
     private final ChangesManagementClient resourceChangeClient;
+    private final DeploymentStacksManagementClient deploymentStackClient;
     // The collections
     private ResourceGroups resourceGroups;
     private GenericResources genericResources;
@@ -255,6 +258,12 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
             .subscriptionId(profile.getSubscriptionId())
             .buildClient();
 
+        this.deploymentStackClient = new DeploymentStacksManagementClientBuilder()
+            .pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .buildClient();
+
         for (int i = 0; i < httpPipeline.getPolicyCount(); ++i) {
             if (httpPipeline.getPolicy(i) instanceof ProviderRegistrationPolicy) {
                 ProviderRegistrationPolicy policy = (ProviderRegistrationPolicy) httpPipeline.getPolicy(i);
@@ -303,6 +312,16 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
      */
     public ChangesManagementClient resourceChangeClient() {
         return resourceChangeClient;
+    }
+
+    /**
+     * Wrapped inner deployment stack client providing direct access to auto-generated API implementation,
+     * based on Azure REST API.
+     *
+     * @return wrapped inner deployment stack client.
+     */
+    public DeploymentStacksManagementClient deploymentStackClient() {
+        return deploymentStackClient;
     }
 
     /**

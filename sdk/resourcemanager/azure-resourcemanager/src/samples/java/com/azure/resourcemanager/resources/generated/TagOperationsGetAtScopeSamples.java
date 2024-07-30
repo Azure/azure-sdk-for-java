@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-/** Samples for TagOperations GetAtScope. */
+/**
+ * Samples for TagOperations GetAtScope.
+ */
 public final class TagOperationsGetAtScopeSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/GetTagsResource.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/GetTagsResource.json
      */
     /**
      * Sample code: Get tags on a resource.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getTagsOnAResource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .genericResources()
+        azure.genericResources()
             .manager()
             .serviceClient()
             .getTagOperations()
@@ -26,20 +27,19 @@ public final class TagOperationsGetAtScopeSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/GetTagsSubscription.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/GetTagsSubscription.json
      */
     /**
      * Sample code: Get tags on a subscription.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getTagsOnASubscription(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .genericResources()
+        azure.genericResources()
             .manager()
             .serviceClient()
             .getTagOperations()
-            .getAtScopeWithResponse(
-                "subscriptions/00000000-0000-0000-0000-000000000000", com.azure.core.util.Context.NONE);
+            .getAtScopeWithResponse("subscriptions/00000000-0000-0000-0000-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }

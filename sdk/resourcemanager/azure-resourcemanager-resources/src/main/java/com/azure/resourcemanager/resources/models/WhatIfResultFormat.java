@@ -7,15 +7,23 @@ package com.azure.resourcemanager.resources.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** The format of the What-If results. */
+/**
+ * The format of the What-If results.
+ */
 public enum WhatIfResultFormat {
-    /** Enum value ResourceIdOnly. */
+    /**
+     * Enum value ResourceIdOnly.
+     */
     RESOURCE_ID_ONLY("ResourceIdOnly"),
 
-    /** Enum value FullResourcePayloads. */
+    /**
+     * Enum value FullResourcePayloads.
+     */
     FULL_RESOURCE_PAYLOADS("FullResourcePayloads");
 
-    /** The actual serialized value for a WhatIfResultFormat instance. */
+    /**
+     * The actual serialized value for a WhatIfResultFormat instance.
+     */
     private final String value;
 
     WhatIfResultFormat(String value) {
@@ -24,7 +32,7 @@ public enum WhatIfResultFormat {
 
     /**
      * Parses a serialized value to a WhatIfResultFormat instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed WhatIfResultFormat object, or null if unable to parse.
      */
@@ -42,7 +50,9 @@ public enum WhatIfResultFormat {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

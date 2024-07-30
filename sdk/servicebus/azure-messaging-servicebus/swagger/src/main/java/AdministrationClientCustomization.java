@@ -54,10 +54,6 @@ public class AdministrationClientCustomization extends Customization {
         // Change getCreatedTime modifier on NamespaceProperties.
         changeNamespaceModifier(customization, logger);
 
-        // Clean up unused parts of CoreToCodegenBridgeUtils
-        cleanupCoreToCodegenBridgeUtils(customization.getPackage("implementation")
-            .getClass("CoreToCodegenBridgeUtils"));
-
         // Add additional namespace to KeyValueImpl's Value element.
         customizeKeyValueImpl(implementationModels.getClass("KeyValueImpl"));
     }

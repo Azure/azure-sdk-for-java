@@ -7,7 +7,9 @@ package com.azure.resourcemanager.support.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** This property indicates whether secondary consent is present for problem classification. */
+/**
+ * This property indicates whether secondary consent is present for problem classification.
+ */
 @Fluent
 public final class SecondaryConsentEnabled {
     /*
@@ -22,13 +24,15 @@ public final class SecondaryConsentEnabled {
     @JsonProperty(value = "type")
     private String type;
 
-    /** Creates an instance of SecondaryConsentEnabled class. */
+    /**
+     * Creates an instance of SecondaryConsentEnabled class.
+     */
     public SecondaryConsentEnabled() {
     }
 
     /**
      * Get the description property: User consent description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -37,7 +41,7 @@ public final class SecondaryConsentEnabled {
 
     /**
      * Set the description property: User consent description.
-     *
+     * 
      * @param description the description value to set.
      * @return the SecondaryConsentEnabled object itself.
      */
@@ -48,7 +52,7 @@ public final class SecondaryConsentEnabled {
 
     /**
      * Get the type property: The Azure service for which secondary consent is needed for case creation.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -57,7 +61,7 @@ public final class SecondaryConsentEnabled {
 
     /**
      * Set the type property: The Azure service for which secondary consent is needed for case creation.
-     *
+     * 
      * @param type the type value to set.
      * @return the SecondaryConsentEnabled object itself.
      */
@@ -68,7 +72,7 @@ public final class SecondaryConsentEnabled {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.frontdoor.fluent.models.BackendPoolProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A backend pool is a collection of backends that can be routed to. */
+/**
+ * A backend pool is a collection of backends that can be routed to.
+ */
 @Fluent
 public final class BackendPool extends SubResource {
     /*
@@ -31,13 +33,15 @@ public final class BackendPool extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of BackendPool class. */
+    /**
+     * Creates an instance of BackendPool class.
+     */
     public BackendPool() {
     }
 
     /**
      * Get the innerProperties property: Properties of the Front Door Backend Pool.
-     *
+     * 
      * @return the innerProperties value.
      */
     private BackendPoolProperties innerProperties() {
@@ -46,7 +50,7 @@ public final class BackendPool extends SubResource {
 
     /**
      * Get the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -55,7 +59,7 @@ public final class BackendPool extends SubResource {
 
     /**
      * Set the name property: Resource name.
-     *
+     * 
      * @param name the name value to set.
      * @return the BackendPool object itself.
      */
@@ -66,14 +70,16 @@ public final class BackendPool extends SubResource {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackendPool withId(String id) {
         super.withId(id);
@@ -82,9 +88,9 @@ public final class BackendPool extends SubResource {
 
     /**
      * Get the resourceState property: Resource status of the Front Door or Front Door SubResource.
-     *
-     * <p>Resource status.
-     *
+     * 
+     * Resource status.
+     * 
      * @return the resourceState value.
      */
     public FrontDoorResourceState resourceState() {
@@ -93,7 +99,7 @@ public final class BackendPool extends SubResource {
 
     /**
      * Get the backends property: The set of backends for this pool.
-     *
+     * 
      * @return the backends value.
      */
     public List<Backend> backends() {
@@ -102,7 +108,7 @@ public final class BackendPool extends SubResource {
 
     /**
      * Set the backends property: The set of backends for this pool.
-     *
+     * 
      * @param backends the backends value to set.
      * @return the BackendPool object itself.
      */
@@ -116,7 +122,7 @@ public final class BackendPool extends SubResource {
 
     /**
      * Get the loadBalancingSettings property: Load balancing settings for a backend pool.
-     *
+     * 
      * @return the loadBalancingSettings value.
      */
     public SubResource loadBalancingSettings() {
@@ -125,7 +131,7 @@ public final class BackendPool extends SubResource {
 
     /**
      * Set the loadBalancingSettings property: Load balancing settings for a backend pool.
-     *
+     * 
      * @param loadBalancingSettings the loadBalancingSettings value to set.
      * @return the BackendPool object itself.
      */
@@ -139,7 +145,7 @@ public final class BackendPool extends SubResource {
 
     /**
      * Get the healthProbeSettings property: L7 health probe settings for a backend pool.
-     *
+     * 
      * @return the healthProbeSettings value.
      */
     public SubResource healthProbeSettings() {
@@ -148,7 +154,7 @@ public final class BackendPool extends SubResource {
 
     /**
      * Set the healthProbeSettings property: L7 health probe settings for a backend pool.
-     *
+     * 
      * @param healthProbeSettings the healthProbeSettings value to set.
      * @return the BackendPool object itself.
      */
@@ -162,7 +168,7 @@ public final class BackendPool extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

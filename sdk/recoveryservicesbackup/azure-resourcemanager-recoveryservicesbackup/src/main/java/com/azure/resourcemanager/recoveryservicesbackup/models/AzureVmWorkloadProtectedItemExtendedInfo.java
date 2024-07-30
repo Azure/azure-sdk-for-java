@@ -82,8 +82,7 @@ public final class AzureVmWorkloadProtectedItemExtendedInfo {
     }
 
     /**
-     * Get the oldestRecoveryPointInVault property: The oldest backup copy available for this backup item in vault
-     * tier.
+     * Get the oldestRecoveryPointInVault property: The oldest backup copy available for this backup item in vault tier.
      * 
      * @return the oldestRecoveryPointInVault value.
      */
@@ -92,8 +91,7 @@ public final class AzureVmWorkloadProtectedItemExtendedInfo {
     }
 
     /**
-     * Set the oldestRecoveryPointInVault property: The oldest backup copy available for this backup item in vault
-     * tier.
+     * Set the oldestRecoveryPointInVault property: The oldest backup copy available for this backup item in vault tier.
      * 
      * @param oldestRecoveryPointInVault the oldestRecoveryPointInVault value to set.
      * @return the AzureVmWorkloadProtectedItemExtendedInfo object itself.

@@ -6,11 +6,9 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.Dataset;
 import com.azure.resourcemanager.datafactory.models.DatasetFolder;
@@ -18,7 +16,6 @@ import com.azure.resourcemanager.datafactory.models.DatasetResource;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceReference;
 import com.azure.resourcemanager.datafactory.models.ParameterSpecification;
 import com.azure.resourcemanager.datafactory.models.ParameterType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -26,58 +23,48 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DatasetsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"type\":\"Dataset\",\"description\":\"kvqqtf\",\"structure\":\"dataxoxweuoklwt\",\"schema\":\"datacxndheocjcjocun\",\"linkedServiceName\":{\"referenceName\":\"nwutverplh\",\"parameters\":{\"bhltr\":\"datadvdqcohjwzy\",\"wpudvuphizztklk\":\"databhlhyqgfimllrad\",\"mdefkp\":\"datahdeeht\"}},\"parameters\":{\"opcnnpjulpw\":{\"type\":\"String\",\"defaultValue\":\"datavya\"},\"zjazepbjukikd\":{\"type\":\"Array\",\"defaultValue\":\"datawlwcurkf\"}},\"annotations\":[\"datauxmpnugujiw\",\"dataduns\"],\"folder\":{\"name\":\"obanxshltfghy\"},\"\":{\"vjbfgkqudx\":\"dataruqrobknenpybus\",\"kgawnaeoe\":\"datajrndbinqqr\",\"pvaxyi\":\"dataid\"}},\"name\":\"zpfdoetetis\",\"type\":\"xeclwl\",\"etag\":\"drdnfmxomup\",\"id\":\"pcxiv\"}";
+            = "{\"properties\":{\"type\":\"Dataset\",\"description\":\"vlzeadqopw\",\"structure\":\"datarz\",\"schema\":\"datadezlhsdcpdbolczh\",\"linkedServiceName\":{\"referenceName\":\"qdvxqoajfoscdemf\",\"parameters\":{\"wljfdcyq\":\"datatzxtrjr\",\"flydywbnerygs\":\"dataqq\"}},\"parameters\":{\"svajnsuuxbyrv\":{\"type\":\"Int\",\"defaultValue\":\"datakc\"},\"usb\":{\"type\":\"SecureString\",\"defaultValue\":\"datajkysolmzrfhlynk\"},\"x\":{\"type\":\"SecureString\",\"defaultValue\":\"databjtsqfhnqxqtemvq\"}},\"annotations\":[\"dataatuiqc\"],\"folder\":{\"name\":\"kd\"},\"\":{\"gimt\":\"databxjkmavppo\",\"bjzhhjgvuvjsnb\":\"dataucls\",\"g\":\"datanuujkjkqyewtlom\"}},\"name\":\"qvrazt\",\"type\":\"uactizzhlnhg\",\"etag\":\"qciiopoam\",\"id\":\"e\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DataFactoryManager manager = DataFactoryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DataFactoryManager manager = DataFactoryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        DatasetResource response = manager.datasets().define("jweelkvikig")
-            .withExistingFactory("zapuunuyokftd", "wezplnzvrh")
-            .withProperties(new Dataset().withDescription("rkwgsq").withStructure("datarpcxwthkljktujfc")
-                .withSchema("dataqfryketwrzx")
-                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("miy")
-                    .withParameters(mapOf("yqnjfjyppix", "datag", "lwyet", "dataubkfjt")))
-                .withParameters(mapOf("civanlypspnj",
-                    new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datasp"),
-                    "aixrbwbkrsmkeiun",
-                    new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("dataoangrl"),
-                    "tzzmcrmhhfcai",
-                    new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datamedzfox")))
-                .withAnnotations(Arrays.asList("dataiyuzufd", "datasbvygnfljvraqko", "datacozfauhn", "dataxdy"))
-                .withFolder(new DatasetFolder().withName("grzcjpkzmhaxtwji"))
+        DatasetResource response = manager.datasets()
+            .define("rjdpzvh")
+            .withExistingFactory("wvqif", "tvfs")
+            .withProperties(new Dataset().withDescription("snq")
+                .withStructure("datavvpvuy")
+                .withSchema("datan")
+                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("dinnisuuak")
+                    .withParameters(mapOf("vkcufwse", "databwhsvx", "neahowvjup", "dataqkale", "abilybmfaxep",
+                        "dataibupgtrnjzbvb")))
+                .withParameters(mapOf("jpbhcgesbt",
+                    new ParameterSpecification().withType(ParameterType.OBJECT)
+                        .withDefaultValue("datafnlksyqpkskbidmz"),
+                    "sfln", new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("dataenhlitcydg"),
+                    "rdhxamjhpqfj",
+                    new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datagu"), "cillfq",
+                    new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datairjkinofw")))
+                .withAnnotations(Arrays.asList("dataifdrbkprblw", "databjse", "dataqqts", "dataupogtrwkuwn"))
+                .withFolder(new DatasetFolder().withName("jeo"))
                 .withAdditionalProperties(mapOf("type", "Dataset")))
-            .withIfMatch("vvagvqrwrchwd").create();
+            .withIfMatch("jbifixd")
+            .create();
 
-        Assertions.assertEquals("pcxiv", response.id());
-        Assertions.assertEquals("kvqqtf", response.properties().description());
-        Assertions.assertEquals("nwutverplh", response.properties().linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.STRING, response.properties().parameters().get("opcnnpjulpw").type());
-        Assertions.assertEquals("obanxshltfghy", response.properties().folder().name());
+        Assertions.assertEquals("e", response.id());
+        Assertions.assertEquals("vlzeadqopw", response.properties().description());
+        Assertions.assertEquals("qdvxqoajfoscdemf", response.properties().linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.INT, response.properties().parameters().get("svajnsuuxbyrv").type());
+        Assertions.assertEquals("kd", response.properties().folder().name());
     }
 
     // Use "Map.of" if available

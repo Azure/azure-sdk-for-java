@@ -5,41 +5,43 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * Export command settings.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = ExportSettings.class)
-@JsonTypeName("ExportSettings")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "SnowflakeExportCopyCommand", value = SnowflakeExportCopyCommand.class),
-    @JsonSubTypes.Type(
-        name = "AzureDatabricksDeltaLakeExportCommand",
-        value = AzureDatabricksDeltaLakeExportCommand.class) })
 @Fluent
-public class ExportSettings {
+public class ExportSettings implements JsonSerializable<ExportSettings> {
+    /*
+     * The export setting type.
+     */
+    private String type;
+
     /*
      * Export command settings.
      */
-    @JsonIgnore
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of ExportSettings class.
      */
     public ExportSettings() {
+        this.type = "ExportSettings";
+    }
+
+    /**
+     * Get the type property: The export setting type.
+     * 
+     * @return the type value.
+     */
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -47,7 +49,6 @@ public class ExportSettings {
      * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -63,11 +64,77 @@ public class ExportSettings {
         return this;
     }
 
-    @JsonAnySetter
-    void setAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
         }
-        additionalProperties.put(key, value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExportSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExportSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExportSettings.
+     */
+    public static ExportSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("SnowflakeExportCopyCommand".equals(discriminatorValue)) {
+                    return SnowflakeExportCopyCommand.fromJson(readerToUse.reset());
+                } else if ("AzureDatabricksDeltaLakeExportCommand".equals(discriminatorValue)) {
+                    return AzureDatabricksDeltaLakeExportCommand.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ExportSettings fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExportSettings deserializedExportSettings = new ExportSettings();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedExportSettings.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedExportSettings.additionalProperties = additionalProperties;
+
+            return deserializedExportSettings;
+        });
     }
 }

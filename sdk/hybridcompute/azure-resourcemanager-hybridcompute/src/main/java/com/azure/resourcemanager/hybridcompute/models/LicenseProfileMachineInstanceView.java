@@ -4,21 +4,104 @@
 
 package com.azure.resourcemanager.hybridcompute.models;
 
+import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.hybridcompute.fluent.models.LicenseProfileMachineInstanceViewInner;
+import java.time.OffsetDateTime;
+import java.util.List;
 
-/** An immutable client-side representation of LicenseProfileMachineInstanceView. */
+/**
+ * An immutable client-side representation of LicenseProfileMachineInstanceView.
+ */
 public interface LicenseProfileMachineInstanceView {
     /**
+     * Gets the licenseStatus property: Indicates the license status of the OS.
+     * 
+     * @return the licenseStatus value.
+     */
+    LicenseStatus licenseStatus();
+
+    /**
+     * Gets the licenseChannel property: Indicates the license channel.
+     * 
+     * @return the licenseChannel value.
+     */
+    String licenseChannel();
+
+    /**
      * Gets the esuProfile property: Properties for the Machine ESU profile.
-     *
+     * 
      * @return the esuProfile value.
      */
     LicenseProfileMachineInstanceViewEsuProperties esuProfile();
 
     /**
+     * Gets the softwareAssuranceCustomer property: Specifies if this machine is licensed as part of a Software
+     * Assurance agreement.
+     * 
+     * @return the softwareAssuranceCustomer value.
+     */
+    Boolean softwareAssuranceCustomer();
+
+    /**
+     * Gets the subscriptionStatus property: Indicates the subscription status of the product.
+     * 
+     * @return the subscriptionStatus value.
+     */
+    LicenseProfileSubscriptionStatus subscriptionStatus();
+
+    /**
+     * Gets the productType property: Indicates the product type of the license.
+     * 
+     * @return the productType value.
+     */
+    LicenseProfileProductType productType();
+
+    /**
+     * Gets the enrollmentDate property: The timestamp in UTC when the user enrolls the feature.
+     * 
+     * @return the enrollmentDate value.
+     */
+    OffsetDateTime enrollmentDate();
+
+    /**
+     * Gets the billingStartDate property: The timestamp in UTC when the billing starts.
+     * 
+     * @return the billingStartDate value.
+     */
+    OffsetDateTime billingStartDate();
+
+    /**
+     * Gets the disenrollmentDate property: The timestamp in UTC when the user disenrolled the feature.
+     * 
+     * @return the disenrollmentDate value.
+     */
+    OffsetDateTime disenrollmentDate();
+
+    /**
+     * Gets the billingEndDate property: The timestamp in UTC when the billing ends.
+     * 
+     * @return the billingEndDate value.
+     */
+    OffsetDateTime billingEndDate();
+
+    /**
+     * Gets the error property: The errors that were encountered during the feature enrollment or disenrollment.
+     * 
+     * @return the error value.
+     */
+    ManagementError error();
+
+    /**
+     * Gets the productFeatures property: The list of product features.
+     * 
+     * @return the productFeatures value.
+     */
+    List<ProductFeature> productFeatures();
+
+    /**
      * Gets the inner com.azure.resourcemanager.hybridcompute.fluent.models.LicenseProfileMachineInstanceViewInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     LicenseProfileMachineInstanceViewInner innerModel();

@@ -11,15 +11,16 @@ public final class AmazonRedshiftTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AmazonRedshiftTableDatasetTypeProperties model = BinaryData
-            .fromString(
-                "{\"tableName\":\"datahvqiiasbtwskkf\",\"table\":\"datayikmxhhqsxjbjk\",\"schema\":\"datariglb\"}")
+            .fromString("{\"tableName\":\"datajihvfjcqrttjfuq\",\"table\":\"datafjewfeqbavdo\",\"schema\":\"datawy\"}")
             .toObject(AmazonRedshiftTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AmazonRedshiftTableDatasetTypeProperties model = new AmazonRedshiftTableDatasetTypeProperties()
-            .withTableName("datahvqiiasbtwskkf").withTable("datayikmxhhqsxjbjk").withSchema("datariglb");
+        AmazonRedshiftTableDatasetTypeProperties model
+            = new AmazonRedshiftTableDatasetTypeProperties().withTableName("datajihvfjcqrttjfuq")
+                .withTable("datafjewfeqbavdo")
+                .withSchema("datawy");
         model = BinaryData.fromObject(model).toObject(AmazonRedshiftTableDatasetTypeProperties.class);
     }
 }

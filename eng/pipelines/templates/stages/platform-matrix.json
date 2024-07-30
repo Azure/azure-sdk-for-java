@@ -6,7 +6,7 @@
     "Agent": {
       "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" },
       "windows-2022": { "OSVmImage": "env:WINDOWSVMIMAGE", "Pool": "env:WINDOWSPOOL" },
-      "macos-11": { "OSVmImage": "env:MACVMIMAGE", "Pool": "env:MACPOOL" }
+      "macos-latest": { "OSVmImage": "env:MACVMIMAGE", "Pool": "env:MACPOOL" }
     },
     "JavaTestVersion": [ "1.8", "1.21" ],
     "AZURE_TEST_HTTP_CLIENTS": [ "okhttp", "netty" ],
@@ -67,13 +67,17 @@
       "TestOptions": ""
     },
     {
-      "Agent": { "ubuntu-20.04": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" } },
+      "Agent": {
+        "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+      },
       "JavaTestVersion": "1.17",
       "AZURE_TEST_HTTP_CLIENTS": "JdkHttpClientProvider",
       "TestFromSource": false
     },
     {
-      "Agent": { "ubuntu-20.04": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" } },
+      "Agent": {
+        "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+      },
       "JavaTestVersion": "1.17",
       "AZURE_TEST_HTTP_CLIENTS": "VertxAsyncHttpClientProvider",
       "TestFromSource": false

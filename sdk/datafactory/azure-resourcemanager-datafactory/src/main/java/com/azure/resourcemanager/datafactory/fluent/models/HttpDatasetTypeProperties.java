@@ -82,8 +82,8 @@ public final class HttpDatasetTypeProperties {
     }
 
     /**
-     * Get the requestMethod property: The HTTP method for the HTTP request. Type: string (or Expression with
-     * resultType string).
+     * Get the requestMethod property: The HTTP method for the HTTP request. Type: string (or Expression with resultType
+     * string).
      * 
      * @return the requestMethod value.
      */
@@ -92,8 +92,8 @@ public final class HttpDatasetTypeProperties {
     }
 
     /**
-     * Set the requestMethod property: The HTTP method for the HTTP request. Type: string (or Expression with
-     * resultType string).
+     * Set the requestMethod property: The HTTP method for the HTTP request. Type: string (or Expression with resultType
+     * string).
      * 
      * @param requestMethod the requestMethod value to set.
      * @return the HttpDatasetTypeProperties object itself.
@@ -104,8 +104,7 @@ public final class HttpDatasetTypeProperties {
     }
 
     /**
-     * Get the requestBody property: The body for the HTTP request. Type: string (or Expression with resultType
-     * string).
+     * Get the requestBody property: The body for the HTTP request. Type: string (or Expression with resultType string).
      * 
      * @return the requestBody value.
      */
@@ -114,8 +113,7 @@ public final class HttpDatasetTypeProperties {
     }
 
     /**
-     * Set the requestBody property: The body for the HTTP request. Type: string (or Expression with resultType
-     * string).
+     * Set the requestBody property: The body for the HTTP request. Type: string (or Expression with resultType string).
      * 
      * @param requestBody the requestBody value to set.
      * @return the HttpDatasetTypeProperties object itself.

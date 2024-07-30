@@ -39,27 +39,32 @@ public final class PipelinesCreateOrUpdateSamples {
      */
     public static void pipelinesCreate(com.azure.resourcemanager.datafactory.DataFactoryManager manager)
         throws IOException {
-        manager.pipelines().define("examplePipeline").withExistingFactory("exampleResourceGroup", "exampleFactoryName")
+        manager.pipelines()
+            .define("examplePipeline")
+            .withExistingFactory("exampleResourceGroup", "exampleFactoryName")
             .withActivities(Arrays.asList(new ForEachActivity().withName("ExampleForeachActivity")
                 .withIsSequential(true)
                 .withItems(new Expression().withValue("@pipeline().parameters.OutputBlobNameList"))
                 .withActivities(Arrays.asList(new CopyActivity().withName("ExampleCopyActivity")
-                    .withInputs(Arrays.asList(new DatasetReference().withReferenceName("exampleDataset").withParameters(
-                        mapOf("MyFileName", "examplecontainer.csv", "MyFolderPath", "examplecontainer"))))
+                    .withInputs(Arrays.asList(new DatasetReference().withReferenceName("exampleDataset")
+                        .withParameters(
+                            mapOf("MyFileName", "examplecontainer.csv", "MyFolderPath", "examplecontainer"))))
                     .withOutputs(Arrays.asList(new DatasetReference().withReferenceName("exampleDataset")
                         .withParameters(mapOf("MyFileName",
-                            SerializerFactory.createDefaultManagementSerializerAdapter().deserialize(
-                                "{\"type\":\"Expression\",\"value\":\"@item()\"}", Object.class,
-                                SerializerEncoding.JSON),
+                            SerializerFactory.createDefaultManagementSerializerAdapter()
+                                .deserialize("{\"type\":\"Expression\",\"value\":\"@item()\"}", Object.class,
+                                    SerializerEncoding.JSON),
                             "MyFolderPath", "examplecontainer"))))
-                    .withSource(new BlobSource()).withSink(new BlobSink()).withDataIntegrationUnits(32)))))
+                    .withSource(new BlobSource())
+                    .withSink(new BlobSink())
+                    .withDataIntegrationUnits(32)))))
             .withParameters(mapOf("JobId", new ParameterSpecification().withType(ParameterType.STRING),
                 "OutputBlobNameList", new ParameterSpecification().withType(ParameterType.ARRAY)))
             .withVariables(mapOf("TestVariableArray", new VariableSpecification().withType(VariableType.ARRAY)))
             .withRunDimensions(mapOf("JobId",
-                SerializerFactory.createDefaultManagementSerializerAdapter().deserialize(
-                    "{\"type\":\"Expression\",\"value\":\"@pipeline().parameters.JobId\"}", Object.class,
-                    SerializerEncoding.JSON)))
+                SerializerFactory.createDefaultManagementSerializerAdapter()
+                    .deserialize("{\"type\":\"Expression\",\"value\":\"@pipeline().parameters.JobId\"}", Object.class,
+                        SerializerEncoding.JSON)))
             .withPolicy(new PipelinePolicy()
                 .withElapsedTimeMetric(new PipelineElapsedTimeMetricPolicy().withDuration("0.00:10:00")))
             .create();
@@ -76,20 +81,28 @@ public final class PipelinesCreateOrUpdateSamples {
      */
     public static void pipelinesUpdate(com.azure.resourcemanager.datafactory.DataFactoryManager manager)
         throws IOException {
-        PipelineResource resource = manager.pipelines().getWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "examplePipeline", null, com.azure.core.util.Context.NONE).getValue();
-        resource.update().withDescription("Example description").withActivities(Arrays.asList(new ForEachActivity()
-            .withName("ExampleForeachActivity").withIsSequential(true)
-            .withItems(new Expression().withValue("@pipeline().parameters.OutputBlobNameList"))
-            .withActivities(Arrays.asList(new CopyActivity().withName("ExampleCopyActivity")
-                .withInputs(Arrays.asList(new DatasetReference().withReferenceName("exampleDataset")
-                    .withParameters(mapOf("MyFileName", "examplecontainer.csv", "MyFolderPath", "examplecontainer"))))
-                .withOutputs(Arrays.asList(new DatasetReference().withReferenceName("exampleDataset")
-                    .withParameters(mapOf("MyFileName",
-                        SerializerFactory.createDefaultManagementSerializerAdapter().deserialize(
-                            "{\"type\":\"Expression\",\"value\":\"@item()\"}", Object.class, SerializerEncoding.JSON),
-                        "MyFolderPath", "examplecontainer"))))
-                .withSource(new BlobSource()).withSink(new BlobSink()).withDataIntegrationUnits(32)))))
+        PipelineResource resource = manager.pipelines()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "examplePipeline", null,
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withDescription("Example description")
+            .withActivities(Arrays.asList(new ForEachActivity().withName("ExampleForeachActivity")
+                .withIsSequential(true)
+                .withItems(new Expression().withValue("@pipeline().parameters.OutputBlobNameList"))
+                .withActivities(Arrays.asList(new CopyActivity().withName("ExampleCopyActivity")
+                    .withInputs(Arrays.asList(new DatasetReference().withReferenceName("exampleDataset")
+                        .withParameters(
+                            mapOf("MyFileName", "examplecontainer.csv", "MyFolderPath", "examplecontainer"))))
+                    .withOutputs(Arrays.asList(new DatasetReference().withReferenceName("exampleDataset")
+                        .withParameters(mapOf("MyFileName",
+                            SerializerFactory.createDefaultManagementSerializerAdapter()
+                                .deserialize("{\"type\":\"Expression\",\"value\":\"@item()\"}", Object.class,
+                                    SerializerEncoding.JSON),
+                            "MyFolderPath", "examplecontainer"))))
+                    .withSource(new BlobSource())
+                    .withSink(new BlobSink())
+                    .withDataIntegrationUnits(32)))))
             .withParameters(mapOf("OutputBlobNameList", new ParameterSpecification().withType(ParameterType.ARRAY)))
             .withPolicy(new PipelinePolicy()
                 .withElapsedTimeMetric(new PipelineElapsedTimeMetricPolicy().withDuration("0.00:10:00")))

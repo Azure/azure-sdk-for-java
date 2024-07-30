@@ -28,6 +28,7 @@ public final class VersionGenerator {
         sdkVersionString =
             "java"
                 + getJavaVersion()
+                + getJavaRuntime()
                 + ":"
                 + "otel"
                 + getOpenTelemetryApiVersion()
@@ -66,6 +67,18 @@ public final class VersionGenerator {
 
     private static String getJavaVersion() {
         return System.getProperty("java.version");
+    }
+
+    private static String getJavaRuntime() {
+        if(isGraalVmNative()) {
+            return "!native";
+        }
+        return "";
+    }
+
+    private static boolean isGraalVmNative() {
+        String imageCode = System.getProperty("org.graalvm.nativeimage.imagecode");
+        return imageCode != null;
     }
 
     private static String getOpenTelemetryApiVersion() {

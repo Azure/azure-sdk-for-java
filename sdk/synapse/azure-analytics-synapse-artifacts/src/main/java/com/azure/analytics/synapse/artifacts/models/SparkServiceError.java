@@ -5,29 +5,30 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The SparkServiceError model.
  */
 @Fluent
-public final class SparkServiceError {
+public final class SparkServiceError implements JsonSerializable<SparkServiceError> {
     /*
      * The message property.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * The errorCode property.
      */
-    @JsonProperty(value = "errorCode")
     private String errorCode;
 
     /*
      * The source property.
      */
-    @JsonProperty(value = "source")
     private SparkErrorSource source;
 
     /**
@@ -94,5 +95,47 @@ public final class SparkServiceError {
     public SparkServiceError setSource(SparkErrorSource source) {
         this.source = source;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("errorCode", this.errorCode);
+        jsonWriter.writeStringField("source", this.source == null ? null : this.source.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SparkServiceError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SparkServiceError if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SparkServiceError.
+     */
+    public static SparkServiceError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SparkServiceError deserializedSparkServiceError = new SparkServiceError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("message".equals(fieldName)) {
+                    deserializedSparkServiceError.message = reader.getString();
+                } else if ("errorCode".equals(fieldName)) {
+                    deserializedSparkServiceError.errorCode = reader.getString();
+                } else if ("source".equals(fieldName)) {
+                    deserializedSparkServiceError.source = SparkErrorSource.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSparkServiceError;
+        });
     }
 }

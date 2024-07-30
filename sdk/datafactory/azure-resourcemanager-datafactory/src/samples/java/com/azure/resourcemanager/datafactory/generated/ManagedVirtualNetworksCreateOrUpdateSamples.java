@@ -22,9 +22,11 @@ public final class ManagedVirtualNetworksCreateOrUpdateSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void managedVirtualNetworksCreate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.managedVirtualNetworks().define("exampleManagedVirtualNetworkName")
+        manager.managedVirtualNetworks()
+            .define("exampleManagedVirtualNetworkName")
             .withExistingFactory("exampleResourceGroup", "exampleFactoryName")
-            .withProperties(new ManagedVirtualNetwork().withAdditionalProperties(mapOf())).create();
+            .withProperties(new ManagedVirtualNetwork().withAdditionalProperties(mapOf()))
+            .create();
     }
 
     // Use "Map.of" if available

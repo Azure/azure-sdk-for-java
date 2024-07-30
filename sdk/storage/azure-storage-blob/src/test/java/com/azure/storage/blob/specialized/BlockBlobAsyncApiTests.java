@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
@@ -430,6 +429,22 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .assertNext(r -> assertEquals(DATA.getDefaultData(), r))
             .verifyComplete();
     }
+
+    /*@RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @Test
+    public void stageBlockFromUrlSourceErrorAndStatusCode() {
+        BlockBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+
+        String blockID = getBlockID();
+
+        StepVerifier.create(destBlob.stageBlockFromUrl(blockID, blockBlobAsyncClient.getBlobUrl(), new BlobRange(0, (long) PageBlobClient.PAGE_BYTES)))
+            .verifyErrorSatisfies(r -> {
+                BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
+                assertTrue(e.getStatusCode() == 409);
+                assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
+                assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
+            });
+    }*/
 
     @Test
     public void stageBlockFromUrlMin() {
@@ -2459,6 +2474,20 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .verifyComplete();
     }
 
+    /*@RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @Test
+    public void uploadFromUrlSourceErrorAndStatusCode() {
+        BlockBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+
+        StepVerifier.create(destBlob.uploadFromUrl(blockBlobAsyncClient.getBlobUrl()))
+            .verifyErrorSatisfies(r -> {
+                BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
+                assertTrue(e.getStatusCode() == 409);
+                assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
+                assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
+            });
+    }*/
+
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-04-08")
     @Test
     public void uploadFromUrlOverwrite() {
@@ -2742,19 +2771,20 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .verifyComplete();
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @LiveOnly
     @Test
-    public void audienceError() {
-        BlockBlobAsyncClient aadBlob = instrument(new SpecializedBlobClientBuilder()
-            .endpoint(blockBlobAsyncClient.getBlobUrl())
-            .credential(new MockTokenCredential())
-            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience")))
+    /* This test tests if the bearer challenge is working properly. A bad audience is passed in, the service returns
+    the default audience, and the request gets retried with this default audience, making the call function as expected.
+     */
+    public void audienceErrorBearerChallengeRetry() {
+        BlockBlobAsyncClient aadBlob = getSpecializedBuilderWithTokenCredential(blockBlobAsyncClient.getBlobUrl())
+            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience"))
             .buildBlockBlobAsyncClient();
 
-        StepVerifier.create(aadBlob.exists())
-            .verifyErrorSatisfies(r -> {
-                BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
-                assertTrue(e.getErrorCode() == BlobErrorCode.INVALID_AUTHENTICATION_INFO);
-            });
+        StepVerifier.create(aadBlob.getProperties())
+            .assertNext(r -> assertNotNull(r))
+            .verifyComplete();
     }
 
     @Test

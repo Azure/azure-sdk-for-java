@@ -6,7 +6,11 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -16,40 +20,35 @@ import java.util.List;
  * &#064;search.highlights.
  */
 @Immutable
-public final class SearchHighlights {
+public final class SearchHighlights implements JsonSerializable<SearchHighlights> {
     /*
      * Id
      */
     @Generated
-    @JsonProperty(value = "id")
     private List<String> id;
 
     /*
      * Qualified name
      */
     @Generated
-    @JsonProperty(value = "qualifiedName")
     private List<String> qualifiedName;
 
     /*
      * Name
      */
     @Generated
-    @JsonProperty(value = "name")
     private List<String> name;
 
     /*
      * Description
      */
     @Generated
-    @JsonProperty(value = "description")
     private List<String> description;
 
     /*
      * Entity type
      */
     @Generated
-    @JsonProperty(value = "entityType")
     private List<String> entityType;
 
     /**
@@ -107,5 +106,61 @@ public final class SearchHighlights {
     @Generated
     public List<String> getEntityType() {
         return this.entityType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("id", this.id, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("qualifiedName", this.qualifiedName,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("name", this.name, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("description", this.description, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("entityType", this.entityType, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SearchHighlights from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchHighlights if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SearchHighlights.
+     */
+    @Generated
+    public static SearchHighlights fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SearchHighlights deserializedSearchHighlights = new SearchHighlights();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    List<String> id = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSearchHighlights.id = id;
+                } else if ("qualifiedName".equals(fieldName)) {
+                    List<String> qualifiedName = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSearchHighlights.qualifiedName = qualifiedName;
+                } else if ("name".equals(fieldName)) {
+                    List<String> name = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSearchHighlights.name = name;
+                } else if ("description".equals(fieldName)) {
+                    List<String> description = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSearchHighlights.description = description;
+                } else if ("entityType".equals(fieldName)) {
+                    List<String> entityType = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSearchHighlights.entityType = entityType;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSearchHighlights;
+        });
     }
 }

@@ -6,65 +6,47 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.GovernanceAssignment;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class GovernanceAssignmentsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"owner\":\"nycntr\",\"remediationDueDate\":\"2021-01-17T18:40:28Z\",\"remediationEta\":{\"eta\":\"2021-11-12T22:57:09Z\",\"justification\":\"tdmbqjtsuhq\"},\"isGracePeriod\":true,\"governanceEmailNotification\":{\"disableManagerEmailNotification\":true,\"disableOwnerEmailNotification\":true},\"additionalData\":{\"ticketNumber\":640040198,\"ticketLink\":\"bqmzxsyaksinp\",\"ticketStatus\":\"m\"}},\"id\":\"hwbghvwtgp\",\"name\":\"gch\",\"type\":\"gsf\"}]}";
+            = "{\"value\":[{\"properties\":{\"owner\":\"qhvmmniiqy\",\"remediationDueDate\":\"2021-11-26T22:25:37Z\",\"remediationEta\":{\"eta\":\"2021-07-02T10:11:03Z\",\"justification\":\"jn\"},\"isGracePeriod\":true,\"governanceEmailNotification\":{\"disableManagerEmailNotification\":false,\"disableOwnerEmailNotification\":false},\"additionalData\":{\"ticketNumber\":688930781,\"ticketLink\":\"tmwpblxk\",\"ticketStatus\":\"qgvxrktjcjigcw\"}},\"id\":\"sp\",\"name\":\"nbqx\",\"type\":\"sevchefpg\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<GovernanceAssignment> response
-            = manager.governanceAssignments().list("iqbgpasrvrm", "istyikjhorlxkpyp", com.azure.core.util.Context.NONE);
+            = manager.governanceAssignments().list("zgfragjh", "erxlobk", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nycntr", response.iterator().next().owner());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-17T18:40:28Z"),
+        Assertions.assertEquals("qhvmmniiqy", response.iterator().next().owner());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-26T22:25:37Z"),
             response.iterator().next().remediationDueDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-12T22:57:09Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-02T10:11:03Z"),
             response.iterator().next().remediationEta().eta());
-        Assertions.assertEquals("tdmbqjtsuhq", response.iterator().next().remediationEta().justification());
+        Assertions.assertEquals("jn", response.iterator().next().remediationEta().justification());
         Assertions.assertEquals(true, response.iterator().next().isGracePeriod());
-        Assertions.assertEquals(true,
+        Assertions.assertEquals(false,
             response.iterator().next().governanceEmailNotification().disableManagerEmailNotification());
-        Assertions.assertEquals(true,
+        Assertions.assertEquals(false,
             response.iterator().next().governanceEmailNotification().disableOwnerEmailNotification());
-        Assertions.assertEquals(640040198, response.iterator().next().additionalData().ticketNumber());
-        Assertions.assertEquals("bqmzxsyaksinp", response.iterator().next().additionalData().ticketLink());
-        Assertions.assertEquals("m", response.iterator().next().additionalData().ticketStatus());
+        Assertions.assertEquals(688930781, response.iterator().next().additionalData().ticketNumber());
+        Assertions.assertEquals("tmwpblxk", response.iterator().next().additionalData().ticketLink());
+        Assertions.assertEquals("qgvxrktjcjigcw", response.iterator().next().additionalData().ticketStatus());
     }
 }

@@ -6,16 +6,28 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The object representing periodic mode backup policy.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = PeriodicModeBackupPolicy.class,
+    visible = true)
 @JsonTypeName("Periodic")
 @Fluent
 public final class PeriodicModeBackupPolicy extends BackupPolicy {
+    /*
+     * Describes the mode of backups.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private BackupPolicyType type = BackupPolicyType.PERIODIC;
+
     /*
      * Configuration values for periodic mode backup
      */
@@ -26,6 +38,16 @@ public final class PeriodicModeBackupPolicy extends BackupPolicy {
      * Creates an instance of PeriodicModeBackupPolicy class.
      */
     public PeriodicModeBackupPolicy() {
+    }
+
+    /**
+     * Get the type property: Describes the mode of backups.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public BackupPolicyType type() {
+        return this.type;
     }
 
     /**

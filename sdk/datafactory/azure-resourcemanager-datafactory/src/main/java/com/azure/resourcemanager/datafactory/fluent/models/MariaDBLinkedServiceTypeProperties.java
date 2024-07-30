@@ -14,8 +14,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class MariaDBLinkedServiceTypeProperties {
     /*
-     * The version of the MariaDB driver. Type: string. V1 or empty for legacy driver, V2 for new driver. V1 can
-     * support connection string and property bag, V2 can only support connection string.
+     * The version of the MariaDB driver. Type: string. V1 or empty for legacy driver, V2 for new driver. V1 can support
+     * connection string and property bag, V2 can only support connection string.
      */
     @JsonProperty(value = "driverVersion")
     private Object driverVersion;
@@ -214,8 +214,8 @@ public final class MariaDBLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -224,8 +224,8 @@ public final class MariaDBLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the MariaDBLinkedServiceTypeProperties object itself.

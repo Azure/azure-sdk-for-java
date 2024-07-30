@@ -10,10 +10,11 @@ import java.util.Collection;
 
 /**
  * Specifies the ephemeral disk placement for operating system disk. This property can be used by user in the request to
- * choose the location i.e, cache disk or resource disk space for Ephemeral OS disk provisioning. For more information
- * on Ephemeral OS disk size requirements, please refer Ephemeral OS disk size requirements for Windows VM at
- * https://docs.microsoft.com/azure/virtual-machines/windows/ephemeral-os-disks#size-requirements and Linux VM at
- * https://docs.microsoft.com/azure/virtual-machines/linux/ephemeral-os-disks#size-requirements.
+ * choose the location i.e, cache disk, resource disk or nvme disk space for Ephemeral OS disk provisioning. For more
+ * information on Ephemeral OS disk size requirements, please refer Ephemeral OS disk size requirements for Windows VM
+ * at https://docs.microsoft.com/azure/virtual-machines/windows/ephemeral-os-disks#size-requirements and Linux VM at
+ * https://docs.microsoft.com/azure/virtual-machines/linux/ephemeral-os-disks#size-requirements. Minimum api-version for
+ * NvmeDisk: 2024-03-01.
  */
 public final class DiffDiskPlacement extends ExpandableStringEnum<DiffDiskPlacement> {
     /**
@@ -25,6 +26,11 @@ public final class DiffDiskPlacement extends ExpandableStringEnum<DiffDiskPlacem
      * Static value ResourceDisk for DiffDiskPlacement.
      */
     public static final DiffDiskPlacement RESOURCE_DISK = fromString("ResourceDisk");
+
+    /**
+     * Static value NvmeDisk for DiffDiskPlacement.
+     */
+    public static final DiffDiskPlacement NVME_DISK = fromString("NvmeDisk");
 
     /**
      * Creates a new instance of DiffDiskPlacement value.

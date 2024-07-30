@@ -58,330 +58,388 @@ import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the CdnManagementClientImpl type. */
+/**
+ * Initializes a new instance of the CdnManagementClientImpl type.
+ */
 @ServiceClient(builder = CdnManagementClientBuilder.class)
 public final class CdnManagementClientImpl extends AzureServiceClient implements CdnManagementClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CdnManagementClientService service;
 
-    /** Azure Subscription ID. */
+    /**
+     * Azure Subscription ID.
+     */
     private final String subscriptionId;
 
     /**
      * Gets Azure Subscription ID.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The AfdProfilesClient object to access its operations. */
+    /**
+     * The AfdProfilesClient object to access its operations.
+     */
     private final AfdProfilesClient afdProfiles;
 
     /**
      * Gets the AfdProfilesClient object to access its operations.
-     *
+     * 
      * @return the AfdProfilesClient object.
      */
     public AfdProfilesClient getAfdProfiles() {
         return this.afdProfiles;
     }
 
-    /** The AfdCustomDomainsClient object to access its operations. */
+    /**
+     * The AfdCustomDomainsClient object to access its operations.
+     */
     private final AfdCustomDomainsClient afdCustomDomains;
 
     /**
      * Gets the AfdCustomDomainsClient object to access its operations.
-     *
+     * 
      * @return the AfdCustomDomainsClient object.
      */
     public AfdCustomDomainsClient getAfdCustomDomains() {
         return this.afdCustomDomains;
     }
 
-    /** The AfdEndpointsClient object to access its operations. */
+    /**
+     * The AfdEndpointsClient object to access its operations.
+     */
     private final AfdEndpointsClient afdEndpoints;
 
     /**
      * Gets the AfdEndpointsClient object to access its operations.
-     *
+     * 
      * @return the AfdEndpointsClient object.
      */
     public AfdEndpointsClient getAfdEndpoints() {
         return this.afdEndpoints;
     }
 
-    /** The AfdOriginGroupsClient object to access its operations. */
+    /**
+     * The AfdOriginGroupsClient object to access its operations.
+     */
     private final AfdOriginGroupsClient afdOriginGroups;
 
     /**
      * Gets the AfdOriginGroupsClient object to access its operations.
-     *
+     * 
      * @return the AfdOriginGroupsClient object.
      */
     public AfdOriginGroupsClient getAfdOriginGroups() {
         return this.afdOriginGroups;
     }
 
-    /** The AfdOriginsClient object to access its operations. */
+    /**
+     * The AfdOriginsClient object to access its operations.
+     */
     private final AfdOriginsClient afdOrigins;
 
     /**
      * Gets the AfdOriginsClient object to access its operations.
-     *
+     * 
      * @return the AfdOriginsClient object.
      */
     public AfdOriginsClient getAfdOrigins() {
         return this.afdOrigins;
     }
 
-    /** The RoutesClient object to access its operations. */
+    /**
+     * The RoutesClient object to access its operations.
+     */
     private final RoutesClient routes;
 
     /**
      * Gets the RoutesClient object to access its operations.
-     *
+     * 
      * @return the RoutesClient object.
      */
     public RoutesClient getRoutes() {
         return this.routes;
     }
 
-    /** The RuleSetsClient object to access its operations. */
+    /**
+     * The RuleSetsClient object to access its operations.
+     */
     private final RuleSetsClient ruleSets;
 
     /**
      * Gets the RuleSetsClient object to access its operations.
-     *
+     * 
      * @return the RuleSetsClient object.
      */
     public RuleSetsClient getRuleSets() {
         return this.ruleSets;
     }
 
-    /** The RulesClient object to access its operations. */
+    /**
+     * The RulesClient object to access its operations.
+     */
     private final RulesClient rules;
 
     /**
      * Gets the RulesClient object to access its operations.
-     *
+     * 
      * @return the RulesClient object.
      */
     public RulesClient getRules() {
         return this.rules;
     }
 
-    /** The SecurityPoliciesClient object to access its operations. */
+    /**
+     * The SecurityPoliciesClient object to access its operations.
+     */
     private final SecurityPoliciesClient securityPolicies;
 
     /**
      * Gets the SecurityPoliciesClient object to access its operations.
-     *
+     * 
      * @return the SecurityPoliciesClient object.
      */
     public SecurityPoliciesClient getSecurityPolicies() {
         return this.securityPolicies;
     }
 
-    /** The SecretsClient object to access its operations. */
+    /**
+     * The SecretsClient object to access its operations.
+     */
     private final SecretsClient secrets;
 
     /**
      * Gets the SecretsClient object to access its operations.
-     *
+     * 
      * @return the SecretsClient object.
      */
     public SecretsClient getSecrets() {
         return this.secrets;
     }
 
-    /** The LogAnalyticsClient object to access its operations. */
+    /**
+     * The LogAnalyticsClient object to access its operations.
+     */
     private final LogAnalyticsClient logAnalytics;
 
     /**
      * Gets the LogAnalyticsClient object to access its operations.
-     *
+     * 
      * @return the LogAnalyticsClient object.
      */
     public LogAnalyticsClient getLogAnalytics() {
         return this.logAnalytics;
     }
 
-    /** The ProfilesClient object to access its operations. */
+    /**
+     * The ProfilesClient object to access its operations.
+     */
     private final ProfilesClient profiles;
 
     /**
      * Gets the ProfilesClient object to access its operations.
-     *
+     * 
      * @return the ProfilesClient object.
      */
     public ProfilesClient getProfiles() {
         return this.profiles;
     }
 
-    /** The EndpointsClient object to access its operations. */
+    /**
+     * The EndpointsClient object to access its operations.
+     */
     private final EndpointsClient endpoints;
 
     /**
      * Gets the EndpointsClient object to access its operations.
-     *
+     * 
      * @return the EndpointsClient object.
      */
     public EndpointsClient getEndpoints() {
         return this.endpoints;
     }
 
-    /** The OriginsClient object to access its operations. */
+    /**
+     * The OriginsClient object to access its operations.
+     */
     private final OriginsClient origins;
 
     /**
      * Gets the OriginsClient object to access its operations.
-     *
+     * 
      * @return the OriginsClient object.
      */
     public OriginsClient getOrigins() {
         return this.origins;
     }
 
-    /** The OriginGroupsClient object to access its operations. */
+    /**
+     * The OriginGroupsClient object to access its operations.
+     */
     private final OriginGroupsClient originGroups;
 
     /**
      * Gets the OriginGroupsClient object to access its operations.
-     *
+     * 
      * @return the OriginGroupsClient object.
      */
     public OriginGroupsClient getOriginGroups() {
         return this.originGroups;
     }
 
-    /** The CustomDomainsClient object to access its operations. */
+    /**
+     * The CustomDomainsClient object to access its operations.
+     */
     private final CustomDomainsClient customDomains;
 
     /**
      * Gets the CustomDomainsClient object to access its operations.
-     *
+     * 
      * @return the CustomDomainsClient object.
      */
     public CustomDomainsClient getCustomDomains() {
         return this.customDomains;
     }
 
-    /** The ResourceUsagesClient object to access its operations. */
+    /**
+     * The ResourceUsagesClient object to access its operations.
+     */
     private final ResourceUsagesClient resourceUsages;
 
     /**
      * Gets the ResourceUsagesClient object to access its operations.
-     *
+     * 
      * @return the ResourceUsagesClient object.
      */
     public ResourceUsagesClient getResourceUsages() {
         return this.resourceUsages;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The EdgeNodesClient object to access its operations. */
+    /**
+     * The EdgeNodesClient object to access its operations.
+     */
     private final EdgeNodesClient edgeNodes;
 
     /**
      * Gets the EdgeNodesClient object to access its operations.
-     *
+     * 
      * @return the EdgeNodesClient object.
      */
     public EdgeNodesClient getEdgeNodes() {
         return this.edgeNodes;
     }
 
-    /** The PoliciesClient object to access its operations. */
+    /**
+     * The PoliciesClient object to access its operations.
+     */
     private final PoliciesClient policies;
 
     /**
      * Gets the PoliciesClient object to access its operations.
-     *
+     * 
      * @return the PoliciesClient object.
      */
     public PoliciesClient getPolicies() {
         return this.policies;
     }
 
-    /** The ManagedRuleSetsClient object to access its operations. */
+    /**
+     * The ManagedRuleSetsClient object to access its operations.
+     */
     private final ManagedRuleSetsClient managedRuleSets;
 
     /**
      * Gets the ManagedRuleSetsClient object to access its operations.
-     *
+     * 
      * @return the ManagedRuleSetsClient object.
      */
     public ManagedRuleSetsClient getManagedRuleSets() {
@@ -390,7 +448,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
 
     /**
      * Initializes an instance of CdnManagementClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -398,20 +456,15 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
      * @param subscriptionId Azure Subscription ID.
      * @param endpoint server parameter.
      */
-    CdnManagementClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    CdnManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         super(httpPipeline, serializerAdapter, environment);
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-05-01";
+        this.apiVersion = "2024-02-01";
         this.afdProfiles = new AfdProfilesClientImpl(this);
         this.afdCustomDomains = new AfdCustomDomainsClientImpl(this);
         this.afdEndpoints = new AfdEndpointsClientImpl(this);
@@ -433,8 +486,8 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
         this.edgeNodes = new EdgeNodesClientImpl(this);
         this.policies = new PoliciesClientImpl(this);
         this.managedRuleSets = new ManagedRuleSetsClientImpl(this);
-        this.service =
-            RestProxy.create(CdnManagementClientService.class, this.httpPipeline, this.getSerializerAdapter());
+        this.service
+            = RestProxy.create(CdnManagementClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
 
     /**
@@ -444,67 +497,56 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
     @Host("{$host}")
     @ServiceInterface(name = "CdnManagementClient")
     public interface CdnManagementClientService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/checkEndpointNameAvailability")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/checkEndpointNameAvailability")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CheckEndpointNameAvailabilityOutputInner>> checkEndpointNameAvailability(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.Cdn/checkNameAvailability")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CheckNameAvailabilityOutputInner>> checkNameAvailability(
-            @HostParam("$host") String endpoint,
+        Mono<Response<CheckNameAvailabilityOutputInner>> checkNameAvailability(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CheckNameAvailabilityInput checkNameAvailabilityInput,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/checkNameAvailability")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CheckNameAvailabilityOutputInner>> checkNameAvailabilityWithSubscription(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CheckNameAvailabilityInput checkNameAvailabilityInput,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/validateProbe")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ValidateProbeOutputInner>> validateProbe(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ValidateProbeInput validateProbeInput,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<ValidateProbeOutputInner>> validateProbe(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ValidateProbeInput validateProbeInput, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
      * afdx endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param checkEndpointNameAvailabilityInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return output of check name availability API along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CheckEndpointNameAvailabilityOutputInner>> checkEndpointNameAvailabilityWithResponseAsync(
@@ -514,94 +556,71 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
                 .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
         }
         if (this.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (checkEndpointNameAvailabilityInput == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter checkEndpointNameAvailabilityInput is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter checkEndpointNameAvailabilityInput is required and cannot be null."));
         } else {
             checkEndpointNameAvailabilityInput.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkEndpointNameAvailability(
-                            this.getEndpoint(),
-                            this.getSubscriptionId(),
-                            resourceGroupName,
-                            this.getApiVersion(),
-                            checkEndpointNameAvailabilityInput,
-                            accept,
-                            context))
+            .withContext(context -> service.checkEndpointNameAvailability(this.getEndpoint(), this.getSubscriptionId(),
+                resourceGroupName, this.getApiVersion(), checkEndpointNameAvailabilityInput, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
      * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
      * afdx endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param checkEndpointNameAvailabilityInput Input to check.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return output of check name availability API along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckEndpointNameAvailabilityOutputInner>> checkEndpointNameAvailabilityWithResponseAsync(
-        String resourceGroupName,
-        CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput,
+        String resourceGroupName, CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput,
         Context context) {
         if (this.getEndpoint() == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
         }
         if (this.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (checkEndpointNameAvailabilityInput == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter checkEndpointNameAvailabilityInput is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter checkEndpointNameAvailabilityInput is required and cannot be null."));
         } else {
             checkEndpointNameAvailabilityInput.validate();
         }
         final String accept = "application/json";
         context = this.mergeContext(context);
-        return service
-            .checkEndpointNameAvailability(
-                this.getEndpoint(),
-                this.getSubscriptionId(),
-                resourceGroupName,
-                this.getApiVersion(),
-                checkEndpointNameAvailabilityInput,
-                accept,
-                context);
+        return service.checkEndpointNameAvailability(this.getEndpoint(), this.getSubscriptionId(), resourceGroupName,
+            this.getApiVersion(), checkEndpointNameAvailabilityInput, accept, context);
     }
 
     /**
      * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
      * afdx endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param checkEndpointNameAvailabilityInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -610,8 +629,8 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
      * @return output of check name availability API on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CheckEndpointNameAvailabilityOutputInner> checkEndpointNameAvailabilityAsync(
-        String resourceGroupName, CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput) {
+    public Mono<CheckEndpointNameAvailabilityOutputInner> checkEndpointNameAvailabilityAsync(String resourceGroupName,
+        CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput) {
         return checkEndpointNameAvailabilityWithResponseAsync(resourceGroupName, checkEndpointNameAvailabilityInput)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -619,7 +638,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
     /**
      * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
      * afdx endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param checkEndpointNameAvailabilityInput Input to check.
      * @param context The context to associate with this operation.
@@ -630,18 +649,16 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckEndpointNameAvailabilityOutputInner> checkEndpointNameAvailabilityWithResponse(
-        String resourceGroupName,
-        CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput,
+        String resourceGroupName, CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput,
         Context context) {
-        return checkEndpointNameAvailabilityWithResponseAsync(
-                resourceGroupName, checkEndpointNameAvailabilityInput, context)
-            .block();
+        return checkEndpointNameAvailabilityWithResponseAsync(resourceGroupName, checkEndpointNameAvailabilityInput,
+            context).block();
     }
 
     /**
      * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
      * afdx endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param checkEndpointNameAvailabilityInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -650,87 +667,78 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
      * @return output of check name availability API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckEndpointNameAvailabilityOutputInner checkEndpointNameAvailability(
-        String resourceGroupName, CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput) {
-        return checkEndpointNameAvailabilityWithResponse(
-                resourceGroupName, checkEndpointNameAvailabilityInput, Context.NONE)
-            .getValue();
+    public CheckEndpointNameAvailabilityOutputInner checkEndpointNameAvailability(String resourceGroupName,
+        CheckEndpointNameAvailabilityInput checkEndpointNameAvailabilityInput) {
+        return checkEndpointNameAvailabilityWithResponse(resourceGroupName, checkEndpointNameAvailabilityInput,
+            Context.NONE).getValue();
     }
 
     /**
      * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
      * CDN endpoint.
-     *
+     * 
      * @param checkNameAvailabilityInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return output of check name availability API along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CheckNameAvailabilityOutputInner>> checkNameAvailabilityWithResponseAsync(
-        CheckNameAvailabilityInput checkNameAvailabilityInput) {
+    public Mono<Response<CheckNameAvailabilityOutputInner>>
+        checkNameAvailabilityWithResponseAsync(CheckNameAvailabilityInput checkNameAvailabilityInput) {
         if (this.getEndpoint() == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
         }
         if (checkNameAvailabilityInput == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter checkNameAvailabilityInput is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter checkNameAvailabilityInput is required and cannot be null."));
         } else {
             checkNameAvailabilityInput.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkNameAvailability(
-                            this.getEndpoint(), this.getApiVersion(), checkNameAvailabilityInput, accept, context))
+            .withContext(context -> service.checkNameAvailability(this.getEndpoint(), this.getApiVersion(),
+                checkNameAvailabilityInput, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
      * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
      * CDN endpoint.
-     *
+     * 
      * @param checkNameAvailabilityInput Input to check.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return output of check name availability API along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameAvailabilityOutputInner>> checkNameAvailabilityWithResponseAsync(
-        CheckNameAvailabilityInput checkNameAvailabilityInput, Context context) {
+    private Mono<Response<CheckNameAvailabilityOutputInner>>
+        checkNameAvailabilityWithResponseAsync(CheckNameAvailabilityInput checkNameAvailabilityInput, Context context) {
         if (this.getEndpoint() == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
         }
         if (checkNameAvailabilityInput == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter checkNameAvailabilityInput is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter checkNameAvailabilityInput is required and cannot be null."));
         } else {
             checkNameAvailabilityInput.validate();
         }
         final String accept = "application/json";
         context = this.mergeContext(context);
-        return service
-            .checkNameAvailability(
-                this.getEndpoint(), this.getApiVersion(), checkNameAvailabilityInput, accept, context);
+        return service.checkNameAvailability(this.getEndpoint(), this.getApiVersion(), checkNameAvailabilityInput,
+            accept, context);
     }
 
     /**
      * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
      * CDN endpoint.
-     *
+     * 
      * @param checkNameAvailabilityInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -738,8 +746,8 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
      * @return output of check name availability API on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CheckNameAvailabilityOutputInner> checkNameAvailabilityAsync(
-        CheckNameAvailabilityInput checkNameAvailabilityInput) {
+    public Mono<CheckNameAvailabilityOutputInner>
+        checkNameAvailabilityAsync(CheckNameAvailabilityInput checkNameAvailabilityInput) {
         return checkNameAvailabilityWithResponseAsync(checkNameAvailabilityInput)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -747,7 +755,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
     /**
      * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
      * CDN endpoint.
-     *
+     * 
      * @param checkNameAvailabilityInput Input to check.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -756,15 +764,15 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
      * @return output of check name availability API along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameAvailabilityOutputInner> checkNameAvailabilityWithResponse(
-        CheckNameAvailabilityInput checkNameAvailabilityInput, Context context) {
+    public Response<CheckNameAvailabilityOutputInner>
+        checkNameAvailabilityWithResponse(CheckNameAvailabilityInput checkNameAvailabilityInput, Context context) {
         return checkNameAvailabilityWithResponseAsync(checkNameAvailabilityInput, context).block();
     }
 
     /**
      * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
      * CDN endpoint.
-     *
+     * 
      * @param checkNameAvailabilityInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -772,68 +780,57 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
      * @return output of check name availability API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameAvailabilityOutputInner checkNameAvailability(
-        CheckNameAvailabilityInput checkNameAvailabilityInput) {
+    public CheckNameAvailabilityOutputInner
+        checkNameAvailability(CheckNameAvailabilityInput checkNameAvailabilityInput) {
         return checkNameAvailabilityWithResponse(checkNameAvailabilityInput, Context.NONE).getValue();
     }
 
     /**
      * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
      * CDN endpoint.
-     *
+     * 
      * @param checkNameAvailabilityInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return output of check name availability API along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CheckNameAvailabilityOutputInner>> checkNameAvailabilityWithSubscriptionWithResponseAsync(
-        CheckNameAvailabilityInput checkNameAvailabilityInput) {
+    public Mono<Response<CheckNameAvailabilityOutputInner>>
+        checkNameAvailabilityWithSubscriptionWithResponseAsync(CheckNameAvailabilityInput checkNameAvailabilityInput) {
         if (this.getEndpoint() == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
         }
         if (this.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
         if (checkNameAvailabilityInput == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter checkNameAvailabilityInput is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter checkNameAvailabilityInput is required and cannot be null."));
         } else {
             checkNameAvailabilityInput.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkNameAvailabilityWithSubscription(
-                            this.getEndpoint(),
-                            this.getSubscriptionId(),
-                            this.getApiVersion(),
-                            checkNameAvailabilityInput,
-                            accept,
-                            context))
+            .withContext(context -> service.checkNameAvailabilityWithSubscription(this.getEndpoint(),
+                this.getSubscriptionId(), this.getApiVersion(), checkNameAvailabilityInput, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
      * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
      * CDN endpoint.
-     *
+     * 
      * @param checkNameAvailabilityInput Input to check.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return output of check name availability API along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameAvailabilityOutputInner>> checkNameAvailabilityWithSubscriptionWithResponseAsync(
@@ -843,34 +840,25 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
                 .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
         }
         if (this.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
         if (checkNameAvailabilityInput == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter checkNameAvailabilityInput is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter checkNameAvailabilityInput is required and cannot be null."));
         } else {
             checkNameAvailabilityInput.validate();
         }
         final String accept = "application/json";
         context = this.mergeContext(context);
-        return service
-            .checkNameAvailabilityWithSubscription(
-                this.getEndpoint(),
-                this.getSubscriptionId(),
-                this.getApiVersion(),
-                checkNameAvailabilityInput,
-                accept,
-                context);
+        return service.checkNameAvailabilityWithSubscription(this.getEndpoint(), this.getSubscriptionId(),
+            this.getApiVersion(), checkNameAvailabilityInput, accept, context);
     }
 
     /**
      * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
      * CDN endpoint.
-     *
+     * 
      * @param checkNameAvailabilityInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -878,8 +866,8 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
      * @return output of check name availability API on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CheckNameAvailabilityOutputInner> checkNameAvailabilityWithSubscriptionAsync(
-        CheckNameAvailabilityInput checkNameAvailabilityInput) {
+    public Mono<CheckNameAvailabilityOutputInner>
+        checkNameAvailabilityWithSubscriptionAsync(CheckNameAvailabilityInput checkNameAvailabilityInput) {
         return checkNameAvailabilityWithSubscriptionWithResponseAsync(checkNameAvailabilityInput)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -887,7 +875,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
     /**
      * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
      * CDN endpoint.
-     *
+     * 
      * @param checkNameAvailabilityInput Input to check.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -904,7 +892,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
     /**
      * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a
      * CDN endpoint.
-     *
+     * 
      * @param checkNameAvailabilityInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -912,8 +900,8 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
      * @return output of check name availability API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameAvailabilityOutputInner checkNameAvailabilityWithSubscription(
-        CheckNameAvailabilityInput checkNameAvailabilityInput) {
+    public CheckNameAvailabilityOutputInner
+        checkNameAvailabilityWithSubscription(CheckNameAvailabilityInput checkNameAvailabilityInput) {
         return checkNameAvailabilityWithSubscriptionWithResponse(checkNameAvailabilityInput, Context.NONE).getValue();
     }
 
@@ -921,7 +909,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
      * Check if the probe path is a valid path and the file can be accessed. Probe path is the path to a file hosted on
      * the origin server to help accelerate the delivery of dynamic content via the CDN endpoint. This path is relative
      * to the origin path specified in the endpoint configuration.
-     *
+     * 
      * @param validateProbeInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -929,16 +917,15 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
      * @return output of the validate probe API along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ValidateProbeOutputInner>> validateProbeWithResponseAsync(
-        ValidateProbeInput validateProbeInput) {
+    public Mono<Response<ValidateProbeOutputInner>>
+        validateProbeWithResponseAsync(ValidateProbeInput validateProbeInput) {
         if (this.getEndpoint() == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
         }
         if (this.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
         if (validateProbeInput == null) {
             return Mono
@@ -948,16 +935,8 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .validateProbe(
-                            this.getEndpoint(),
-                            this.getSubscriptionId(),
-                            this.getApiVersion(),
-                            validateProbeInput,
-                            accept,
-                            context))
+            .withContext(context -> service.validateProbe(this.getEndpoint(), this.getSubscriptionId(),
+                this.getApiVersion(), validateProbeInput, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
@@ -965,7 +944,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
      * Check if the probe path is a valid path and the file can be accessed. Probe path is the path to a file hosted on
      * the origin server to help accelerate the delivery of dynamic content via the CDN endpoint. This path is relative
      * to the origin path specified in the endpoint configuration.
-     *
+     * 
      * @param validateProbeInput Input to check.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -974,16 +953,15 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
      * @return output of the validate probe API along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ValidateProbeOutputInner>> validateProbeWithResponseAsync(
-        ValidateProbeInput validateProbeInput, Context context) {
+    private Mono<Response<ValidateProbeOutputInner>>
+        validateProbeWithResponseAsync(ValidateProbeInput validateProbeInput, Context context) {
         if (this.getEndpoint() == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
         }
         if (this.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
         if (validateProbeInput == null) {
             return Mono
@@ -993,21 +971,15 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
         }
         final String accept = "application/json";
         context = this.mergeContext(context);
-        return service
-            .validateProbe(
-                this.getEndpoint(),
-                this.getSubscriptionId(),
-                this.getApiVersion(),
-                validateProbeInput,
-                accept,
-                context);
+        return service.validateProbe(this.getEndpoint(), this.getSubscriptionId(), this.getApiVersion(),
+            validateProbeInput, accept, context);
     }
 
     /**
      * Check if the probe path is a valid path and the file can be accessed. Probe path is the path to a file hosted on
      * the origin server to help accelerate the delivery of dynamic content via the CDN endpoint. This path is relative
      * to the origin path specified in the endpoint configuration.
-     *
+     * 
      * @param validateProbeInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1023,7 +995,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
      * Check if the probe path is a valid path and the file can be accessed. Probe path is the path to a file hosted on
      * the origin server to help accelerate the delivery of dynamic content via the CDN endpoint. This path is relative
      * to the origin path specified in the endpoint configuration.
-     *
+     * 
      * @param validateProbeInput Input to check.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1032,8 +1004,8 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
      * @return output of the validate probe API along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ValidateProbeOutputInner> validateProbeWithResponse(
-        ValidateProbeInput validateProbeInput, Context context) {
+    public Response<ValidateProbeOutputInner> validateProbeWithResponse(ValidateProbeInput validateProbeInput,
+        Context context) {
         return validateProbeWithResponseAsync(validateProbeInput, context).block();
     }
 
@@ -1041,7 +1013,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
      * Check if the probe path is a valid path and the file can be accessed. Probe path is the path to a file hosted on
      * the origin server to help accelerate the delivery of dynamic content via the CDN endpoint. This path is relative
      * to the origin path specified in the endpoint configuration.
-     *
+     * 
      * @param validateProbeInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

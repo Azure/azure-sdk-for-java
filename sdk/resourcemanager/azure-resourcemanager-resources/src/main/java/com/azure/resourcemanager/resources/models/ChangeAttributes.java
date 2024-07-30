@@ -7,7 +7,9 @@ package com.azure.resourcemanager.resources.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Details about the change resource. */
+/**
+ * Details about the change resource.
+ */
 @Immutable
 public final class ChangeAttributes {
     /*
@@ -40,13 +42,15 @@ public final class ChangeAttributes {
     @JsonProperty(value = "newResourceSnapshotId", access = JsonProperty.Access.WRITE_ONLY)
     private String newResourceSnapshotId;
 
-    /** Creates an instance of ChangeAttributes class. */
+    /**
+     * Creates an instance of ChangeAttributes class.
+     */
     public ChangeAttributes() {
     }
 
     /**
      * Get the correlationId property: The ARM correlation ID of the change resource.
-     *
+     * 
      * @return the correlationId value.
      */
     public String correlationId() {
@@ -55,7 +59,7 @@ public final class ChangeAttributes {
 
     /**
      * Get the timestamp property: The time the change(s) on the target resource ocurred.
-     *
+     * 
      * @return the timestamp value.
      */
     public String timestamp() {
@@ -64,7 +68,7 @@ public final class ChangeAttributes {
 
     /**
      * Get the changesCount property: The number of changes this resource captures.
-     *
+     * 
      * @return the changesCount value.
      */
     public Long changesCount() {
@@ -73,7 +77,7 @@ public final class ChangeAttributes {
 
     /**
      * Get the previousResourceSnapshotId property: The GUID of the previous snapshot.
-     *
+     * 
      * @return the previousResourceSnapshotId value.
      */
     public String previousResourceSnapshotId() {
@@ -82,7 +86,7 @@ public final class ChangeAttributes {
 
     /**
      * Get the newResourceSnapshotId property: The GUID of the new snapshot.
-     *
+     * 
      * @return the newResourceSnapshotId value.
      */
     public String newResourceSnapshotId() {
@@ -91,7 +95,7 @@ public final class ChangeAttributes {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

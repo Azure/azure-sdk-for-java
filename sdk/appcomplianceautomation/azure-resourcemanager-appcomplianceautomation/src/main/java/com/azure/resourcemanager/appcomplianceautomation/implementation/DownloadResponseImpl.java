@@ -18,8 +18,7 @@ public final class DownloadResponseImpl implements DownloadResponse {
 
     private final com.azure.resourcemanager.appcomplianceautomation.AppComplianceAutomationManager serviceManager;
 
-    DownloadResponseImpl(
-        DownloadResponseInner innerObject,
+    DownloadResponseImpl(DownloadResponseInner innerObject,
         com.azure.resourcemanager.appcomplianceautomation.AppComplianceAutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

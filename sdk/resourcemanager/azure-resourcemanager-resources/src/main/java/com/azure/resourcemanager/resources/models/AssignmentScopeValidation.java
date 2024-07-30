@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The option whether validate the exemption is at or under the assignment scope. */
+/**
+ * The option whether validate the exemption is at or under the assignment scope.
+ */
 public final class AssignmentScopeValidation extends ExpandableStringEnum<AssignmentScopeValidation> {
-    /** Static value Default for AssignmentScopeValidation. */
+    /**
+     * Static value Default for AssignmentScopeValidation.
+     */
     public static final AssignmentScopeValidation DEFAULT = fromString("Default");
 
-    /** Static value DoNotValidate for AssignmentScopeValidation. */
+    /**
+     * Static value DoNotValidate for AssignmentScopeValidation.
+     */
     public static final AssignmentScopeValidation DO_NOT_VALIDATE = fromString("DoNotValidate");
 
     /**
      * Creates a new instance of AssignmentScopeValidation value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class AssignmentScopeValidation extends ExpandableStringEnum<Assign
 
     /**
      * Creates or finds a AssignmentScopeValidation from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AssignmentScopeValidation.
      */
@@ -38,7 +44,7 @@ public final class AssignmentScopeValidation extends ExpandableStringEnum<Assign
 
     /**
      * Gets known AssignmentScopeValidation values.
-     *
+     * 
      * @return known AssignmentScopeValidation values.
      */
     public static Collection<AssignmentScopeValidation> values() {

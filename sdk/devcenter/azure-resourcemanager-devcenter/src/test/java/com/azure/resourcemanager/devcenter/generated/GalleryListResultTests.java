@@ -10,11 +10,9 @@ import com.azure.resourcemanager.devcenter.models.GalleryListResult;
 public final class GalleryListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GalleryListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"galleryResourceId\":\"uvfqawrlyxwj\"},\"id\":\"prbnwbxgjvtbv\",\"name\":\"ysszdnrujqguh\",\"type\":\"uouq\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"galleryResourceId\":\"zw\"},\"id\":\"g\",\"name\":\"itnwuizgazxufi\",\"type\":\"uckyf\"},{\"properties\":{\"provisioningState\":\"Updated\",\"galleryResourceId\":\"idf\"},\"id\":\"wdzuhtymwisd\",\"name\":\"fthwxmnteiwa\",\"type\":\"pvkmijcmmxdcuf\"}],\"nextLink\":\"srp\"}")
-                .toObject(GalleryListResult.class);
+        GalleryListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updated\",\"galleryResourceId\":\"uxwgipwho\"},\"id\":\"wkgshwa\",\"name\":\"kix\",\"type\":\"bin\"},{\"properties\":{\"provisioningState\":\"TransientFailure\",\"galleryResourceId\":\"ttmrywnuzoqf\"},\"id\":\"yqzrnkcqvyxlw\",\"name\":\"zlsico\",\"type\":\"oqqnwvlryav\"},{\"properties\":{\"provisioningState\":\"Running\",\"galleryResourceId\":\"unmmq\"},\"id\":\"yxzk\",\"name\":\"noc\",\"type\":\"koklya\"},{\"properties\":{\"provisioningState\":\"Creating\",\"galleryResourceId\":\"nuqszfkbey\"},\"id\":\"wrmjmwvvjektc\",\"name\":\"senhwlrs\",\"type\":\"frzpwvlqdqgb\"}],\"nextLink\":\"ylihkaetckt\"}")
+            .toObject(GalleryListResult.class);
     }
 
     @org.junit.jupiter.api.Test

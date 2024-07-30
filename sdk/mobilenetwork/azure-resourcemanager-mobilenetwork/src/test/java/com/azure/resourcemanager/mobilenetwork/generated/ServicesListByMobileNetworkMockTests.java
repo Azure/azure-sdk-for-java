@@ -6,123 +6,73 @@ package com.azure.resourcemanager.mobilenetwork.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mobilenetwork.MobileNetworkManager;
 import com.azure.resourcemanager.mobilenetwork.models.PreemptionCapability;
 import com.azure.resourcemanager.mobilenetwork.models.PreemptionVulnerability;
 import com.azure.resourcemanager.mobilenetwork.models.SdfDirection;
 import com.azure.resourcemanager.mobilenetwork.models.Service;
 import com.azure.resourcemanager.mobilenetwork.models.TrafficControlPermission;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ServicesListByMobileNetworkMockTests {
     @Test
     public void testListByMobileNetwork() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"servicePrecedence\":987694871,\"serviceQosPolicy\":{\"5qi\":1310726234,\"allocationAndRetentionPriorityLevel\":415972757,\"preemptionCapability\":\"MayPreempt\",\"preemptionVulnerability\":\"NotPreemptable\",\"maximumBitRate\":{\"uplink\":\"uquowtljvfwhr\",\"downlink\":\"agk\"}},\"pccRules\":[{\"ruleName\":\"xv\",\"rulePrecedence\":2024179491,\"ruleQosPolicy\":{\"guaranteedBitRate\":{\"uplink\":\"bczsulmdgglmepjp\",\"downlink\":\"s\"},\"5qi\":557010764,\"allocationAndRetentionPriorityLevel\":300751164,\"preemptionCapability\":\"MayPreempt\",\"preemptionVulnerability\":\"NotPreemptable\",\"maximumBitRate\":{\"uplink\":\"szngafpgyl\",\"downlink\":\"vecjujcn\"}},\"trafficControl\":\"Blocked\",\"serviceDataFlowTemplates\":[{\"templateName\":\"yedmzrgj\",\"direction\":\"Uplink\",\"protocol\":[],\"remoteIpList\":[]},{\"templateName\":\"knubnoitp\",\"direction\":\"Uplink\",\"protocol\":[],\"remoteIpList\":[]},{\"templateName\":\"ztrgdgxvcoq\",\"direction\":\"Bidirectional\",\"protocol\":[],\"remoteIpList\":[]}]},{\"ruleName\":\"sw\",\"rulePrecedence\":1697160077,\"ruleQosPolicy\":{\"guaranteedBitRate\":{\"uplink\":\"pqitwe\",\"downlink\":\"alwvskbu\"},\"5qi\":1185268682,\"allocationAndRetentionPriorityLevel\":449026973,\"preemptionCapability\":\"NotPreempt\",\"preemptionVulnerability\":\"NotPreemptable\",\"maximumBitRate\":{\"uplink\":\"tco\",\"downlink\":\"cujp\"}},\"trafficControl\":\"Enabled\",\"serviceDataFlowTemplates\":[{\"templateName\":\"akuejk\",\"direction\":\"Uplink\",\"protocol\":[],\"remoteIpList\":[]},{\"templateName\":\"bizt\",\"direction\":\"Bidirectional\",\"protocol\":[],\"remoteIpList\":[]}]},{\"ruleName\":\"fqcvovj\",\"rulePrecedence\":215833997,\"ruleQosPolicy\":{\"guaranteedBitRate\":{\"uplink\":\"sj\",\"downlink\":\"lbemyej\"},\"5qi\":1797904663,\"allocationAndRetentionPriorityLevel\":544161528,\"preemptionCapability\":\"MayPreempt\",\"preemptionVulnerability\":\"NotPreemptable\",\"maximumBitRate\":{\"uplink\":\"ortudawlpjfel\",\"downlink\":\"erppt\"}},\"trafficControl\":\"Enabled\",\"serviceDataFlowTemplates\":[{\"templateName\":\"nzmnhiilia\",\"direction\":\"Downlink\",\"protocol\":[],\"remoteIpList\":[]},{\"templateName\":\"cjgckbbcccgzpra\",\"direction\":\"Downlink\",\"protocol\":[],\"remoteIpList\":[]},{\"templateName\":\"nyuffat\",\"direction\":\"Uplink\",\"protocol\":[],\"remoteIpList\":[]}]},{\"ruleName\":\"ftipwcxbyubhiq\",\"rulePrecedence\":1021175122,\"ruleQosPolicy\":{\"guaranteedBitRate\":{\"uplink\":\"rnpnuhzafccnuh\",\"downlink\":\"i\"},\"5qi\":336660638,\"allocationAndRetentionPriorityLevel\":567543311,\"preemptionCapability\":\"MayPreempt\",\"preemptionVulnerability\":\"NotPreemptable\",\"maximumBitRate\":{\"uplink\":\"xvatvcr\",\"downlink\":\"dlbnbqxvhcsy\"}},\"trafficControl\":\"Blocked\",\"serviceDataFlowTemplates\":[{\"templateName\":\"xaeaovurexdnds\",\"direction\":\"Uplink\",\"protocol\":[],\"remoteIpList\":[]},{\"templateName\":\"weaderzm\",\"direction\":\"Bidirectional\",\"protocol\":[],\"remoteIpList\":[]},{\"templateName\":\"t\",\"direction\":\"Downlink\",\"protocol\":[],\"remoteIpList\":[]}]}]},\"location\":\"gttmvmmagoaqyl\",\"tags\":{\"gmxitpfi\":\"tjiuazj\"},\"id\":\"zc\",\"name\":\"dltkrlg\",\"type\":\"mtbdrvcqgu\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"servicePrecedence\":1307344323,\"serviceQosPolicy\":{\"5qi\":909885231,\"allocationAndRetentionPriorityLevel\":1517914791,\"preemptionCapability\":\"NotPreempt\",\"preemptionVulnerability\":\"NotPreemptable\",\"maximumBitRate\":{\"uplink\":\"ttxpnrupza\",\"downlink\":\"mrdixtreki\"}},\"pccRules\":[{\"ruleName\":\"wyskbruffgll\",\"rulePrecedence\":190739056,\"ruleQosPolicy\":{\"guaranteedBitRate\":{\"uplink\":\"tvlxhrpqh\",\"downlink\":\"mblcouqehbhbcds\"},\"5qi\":1639777013,\"allocationAndRetentionPriorityLevel\":23531273,\"preemptionCapability\":\"NotPreempt\",\"preemptionVulnerability\":\"Preemptable\",\"maximumBitRate\":{\"uplink\":\"ypmbltoormkfq\",\"downlink\":\"wxldykalsygaoln\"}},\"trafficControl\":\"Blocked\",\"serviceDataFlowTemplates\":[{\"templateName\":\"bmjk\",\"direction\":\"Downlink\",\"protocol\":[],\"remoteIpList\":[]},{\"templateName\":\"bjgsjjxxahmrn\",\"direction\":\"Bidirectional\",\"protocol\":[],\"remoteIpList\":[]},{\"templateName\":\"zyqegxyiv\",\"direction\":\"Bidirectional\",\"protocol\":[],\"remoteIpList\":[]},{\"templateName\":\"nbm\",\"direction\":\"Downlink\",\"protocol\":[],\"remoteIpList\":[]}]},{\"ruleName\":\"bjijkgqxnh\",\"rulePrecedence\":1269742784,\"ruleQosPolicy\":{\"guaranteedBitRate\":{\"uplink\":\"znj\",\"downlink\":\"ujvaannggi\"},\"5qi\":280719484,\"allocationAndRetentionPriorityLevel\":2110011560,\"preemptionCapability\":\"MayPreempt\",\"preemptionVulnerability\":\"Preemptable\",\"maximumBitRate\":{\"uplink\":\"xw\",\"downlink\":\"ekaum\"}},\"trafficControl\":\"Enabled\",\"serviceDataFlowTemplates\":[{\"templateName\":\"bzmqkratbn\",\"direction\":\"Bidirectional\",\"protocol\":[],\"remoteIpList\":[]},{\"templateName\":\"bjsidb\",\"direction\":\"Uplink\",\"protocol\":[],\"remoteIpList\":[]}]},{\"ruleName\":\"kfpksokdgo\",\"rulePrecedence\":998196669,\"ruleQosPolicy\":{\"guaranteedBitRate\":{\"uplink\":\"jymrhbg\",\"downlink\":\"zozk\"},\"5qi\":617785229,\"allocationAndRetentionPriorityLevel\":254711315,\"preemptionCapability\":\"NotPreempt\",\"preemptionVulnerability\":\"Preemptable\",\"maximumBitRate\":{\"uplink\":\"hqosmf\",\"downlink\":\"jkutycyarnr\"}},\"trafficControl\":\"Blocked\",\"serviceDataFlowTemplates\":[{\"templateName\":\"uabzoghkt\",\"direction\":\"Bidirectional\",\"protocol\":[],\"remoteIpList\":[]}]}]},\"location\":\"czhcoeocnh\",\"tags\":{\"jzcfyjzptwr\":\"ot\",\"yglqdhmrjzral\":\"ohapqinfsz\",\"ypsjoq\":\"xpjb\",\"qzvs\":\"jenkyh\"},\"id\":\"xfxjelgcmpzqj\",\"name\":\"hhqxuwyvcacoyviv\",\"type\":\"s\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MobileNetworkManager manager = MobileNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<Service> response
+            = manager.services().listByMobileNetwork("uqwqulsutrjbhxyk", "hyqezvqq", com.azure.core.util.Context.NONE);
 
-        MobileNetworkManager manager =
-            MobileNetworkManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<Service> response =
-            manager.services().listByMobileNetwork("oyzbamwineofvf", "akpoldtvevbo", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("czhcoeocnh", response.iterator().next().location());
-        Assertions.assertEquals("ot", response.iterator().next().tags().get("jzcfyjzptwr"));
-        Assertions.assertEquals(1307344323, response.iterator().next().servicePrecedence());
-        Assertions.assertEquals(909885231, response.iterator().next().serviceQosPolicy().fiveQi());
-        Assertions
-            .assertEquals(
-                1517914791, response.iterator().next().serviceQosPolicy().allocationAndRetentionPriorityLevel());
-        Assertions
-            .assertEquals(
-                PreemptionCapability.NOT_PREEMPT, response.iterator().next().serviceQosPolicy().preemptionCapability());
-        Assertions
-            .assertEquals(
-                PreemptionVulnerability.NOT_PREEMPTABLE,
-                response.iterator().next().serviceQosPolicy().preemptionVulnerability());
-        Assertions.assertEquals("ttxpnrupza", response.iterator().next().serviceQosPolicy().maximumBitRate().uplink());
-        Assertions
-            .assertEquals("mrdixtreki", response.iterator().next().serviceQosPolicy().maximumBitRate().downlink());
-        Assertions.assertEquals("wyskbruffgll", response.iterator().next().pccRules().get(0).ruleName());
-        Assertions.assertEquals(190739056, response.iterator().next().pccRules().get(0).rulePrecedence());
-        Assertions.assertEquals(1639777013, response.iterator().next().pccRules().get(0).ruleQosPolicy().fiveQi());
-        Assertions
-            .assertEquals(
-                23531273,
-                response.iterator().next().pccRules().get(0).ruleQosPolicy().allocationAndRetentionPriorityLevel());
-        Assertions
-            .assertEquals(
-                PreemptionCapability.NOT_PREEMPT,
-                response.iterator().next().pccRules().get(0).ruleQosPolicy().preemptionCapability());
-        Assertions
-            .assertEquals(
-                PreemptionVulnerability.PREEMPTABLE,
-                response.iterator().next().pccRules().get(0).ruleQosPolicy().preemptionVulnerability());
-        Assertions
-            .assertEquals(
-                "ypmbltoormkfq",
-                response.iterator().next().pccRules().get(0).ruleQosPolicy().maximumBitRate().uplink());
-        Assertions
-            .assertEquals(
-                "wxldykalsygaoln",
-                response.iterator().next().pccRules().get(0).ruleQosPolicy().maximumBitRate().downlink());
-        Assertions
-            .assertEquals(
-                "tvlxhrpqh", response.iterator().next().pccRules().get(0).ruleQosPolicy().guaranteedBitRate().uplink());
-        Assertions
-            .assertEquals(
-                "mblcouqehbhbcds",
-                response.iterator().next().pccRules().get(0).ruleQosPolicy().guaranteedBitRate().downlink());
-        Assertions
-            .assertEquals(
-                TrafficControlPermission.BLOCKED, response.iterator().next().pccRules().get(0).trafficControl());
-        Assertions
-            .assertEquals(
-                "bmjk", response.iterator().next().pccRules().get(0).serviceDataFlowTemplates().get(0).templateName());
-        Assertions
-            .assertEquals(
-                SdfDirection.DOWNLINK,
-                response.iterator().next().pccRules().get(0).serviceDataFlowTemplates().get(0).direction());
+        Assertions.assertEquals("gttmvmmagoaqyl", response.iterator().next().location());
+        Assertions.assertEquals("tjiuazj", response.iterator().next().tags().get("gmxitpfi"));
+        Assertions.assertEquals(987694871, response.iterator().next().servicePrecedence());
+        Assertions.assertEquals(1310726234, response.iterator().next().serviceQosPolicy().fiveQi());
+        Assertions.assertEquals(415972757,
+            response.iterator().next().serviceQosPolicy().allocationAndRetentionPriorityLevel());
+        Assertions.assertEquals(PreemptionCapability.MAY_PREEMPT,
+            response.iterator().next().serviceQosPolicy().preemptionCapability());
+        Assertions.assertEquals(PreemptionVulnerability.NOT_PREEMPTABLE,
+            response.iterator().next().serviceQosPolicy().preemptionVulnerability());
+        Assertions.assertEquals("uquowtljvfwhr",
+            response.iterator().next().serviceQosPolicy().maximumBitRate().uplink());
+        Assertions.assertEquals("agk", response.iterator().next().serviceQosPolicy().maximumBitRate().downlink());
+        Assertions.assertEquals("xv", response.iterator().next().pccRules().get(0).ruleName());
+        Assertions.assertEquals(2024179491, response.iterator().next().pccRules().get(0).rulePrecedence());
+        Assertions.assertEquals(557010764, response.iterator().next().pccRules().get(0).ruleQosPolicy().fiveQi());
+        Assertions.assertEquals(300751164,
+            response.iterator().next().pccRules().get(0).ruleQosPolicy().allocationAndRetentionPriorityLevel());
+        Assertions.assertEquals(PreemptionCapability.MAY_PREEMPT,
+            response.iterator().next().pccRules().get(0).ruleQosPolicy().preemptionCapability());
+        Assertions.assertEquals(PreemptionVulnerability.NOT_PREEMPTABLE,
+            response.iterator().next().pccRules().get(0).ruleQosPolicy().preemptionVulnerability());
+        Assertions.assertEquals("szngafpgyl",
+            response.iterator().next().pccRules().get(0).ruleQosPolicy().maximumBitRate().uplink());
+        Assertions.assertEquals("vecjujcn",
+            response.iterator().next().pccRules().get(0).ruleQosPolicy().maximumBitRate().downlink());
+        Assertions.assertEquals("bczsulmdgglmepjp",
+            response.iterator().next().pccRules().get(0).ruleQosPolicy().guaranteedBitRate().uplink());
+        Assertions.assertEquals("s",
+            response.iterator().next().pccRules().get(0).ruleQosPolicy().guaranteedBitRate().downlink());
+        Assertions.assertEquals(TrafficControlPermission.BLOCKED,
+            response.iterator().next().pccRules().get(0).trafficControl());
+        Assertions.assertEquals("yedmzrgj",
+            response.iterator().next().pccRules().get(0).serviceDataFlowTemplates().get(0).templateName());
+        Assertions.assertEquals(SdfDirection.UPLINK,
+            response.iterator().next().pccRules().get(0).serviceDataFlowTemplates().get(0).direction());
     }
 }

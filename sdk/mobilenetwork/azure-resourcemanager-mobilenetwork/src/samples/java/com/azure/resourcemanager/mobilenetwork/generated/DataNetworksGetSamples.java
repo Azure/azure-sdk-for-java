@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-/** Samples for DataNetworks Get. */
+/**
+ * Samples for DataNetworks Get.
+ */
 public final class DataNetworksGetSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/DataNetworkGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/DataNetworkGet.json
      */
     /**
      * Sample code: Get data network.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void getDataNetwork(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .dataNetworks()
+        manager.dataNetworks()
             .getWithResponse("rg1", "testMobileNetwork", "testDataNetwork", com.azure.core.util.Context.NONE);
     }
 }

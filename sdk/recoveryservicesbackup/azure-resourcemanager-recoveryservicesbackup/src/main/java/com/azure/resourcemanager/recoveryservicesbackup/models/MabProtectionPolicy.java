@@ -6,6 +6,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -13,10 +14,21 @@ import java.util.List;
 /**
  * Mab container-specific backup policy.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "backupManagementType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "backupManagementType",
+    defaultImpl = MabProtectionPolicy.class,
+    visible = true)
 @JsonTypeName("MAB")
 @Fluent
 public final class MabProtectionPolicy extends ProtectionPolicy {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "backupManagementType", required = true)
+    private String backupManagementType = "MAB";
+
     /*
      * Backup schedule of backup policy.
      */
@@ -33,6 +45,17 @@ public final class MabProtectionPolicy extends ProtectionPolicy {
      * Creates an instance of MabProtectionPolicy class.
      */
     public MabProtectionPolicy() {
+    }
+
+    /**
+     * Get the backupManagementType property: This property will be used as the discriminator for deciding the specific
+     * types in the polymorphic chain of types.
+     * 
+     * @return the backupManagementType value.
+     */
+    @Override
+    public String backupManagementType() {
+        return this.backupManagementType;
     }
 
     /**

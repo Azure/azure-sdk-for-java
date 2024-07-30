@@ -10,11 +10,10 @@ import com.azure.resourcemanager.mobilenetwork.fluent.models.SitePropertiesForma
 public final class SitePropertiesFormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SitePropertiesFormat model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Unknown\",\"networkFunctions\":[{\"id\":\"ycy\"},{\"id\":\"c\"},{\"id\":\"gc\"},{\"id\":\"nfnw\"}]}")
-                .toObject(SitePropertiesFormat.class);
+        SitePropertiesFormat model = BinaryData
+            .fromString(
+                "{\"provisioningState\":\"Accepted\",\"networkFunctions\":[{\"id\":\"iv\"},{\"id\":\"oyzunbixxr\"}]}")
+            .toObject(SitePropertiesFormat.class);
     }
 
     @org.junit.jupiter.api.Test

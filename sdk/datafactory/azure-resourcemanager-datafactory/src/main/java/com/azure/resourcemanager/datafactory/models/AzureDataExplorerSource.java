@@ -7,16 +7,28 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity Azure Data Explorer (Kusto) source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = AzureDataExplorerSource.class,
+    visible = true)
 @JsonTypeName("AzureDataExplorerSource")
 @Fluent
 public final class AzureDataExplorerSource extends CopySource {
+    /*
+     * Copy source type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "AzureDataExplorerSource";
+
     /*
      * Database query. Should be a Kusto Query Language (KQL) query. Type: string (or Expression with resultType
      * string).
@@ -52,8 +64,18 @@ public final class AzureDataExplorerSource extends CopySource {
     }
 
     /**
-     * Get the query property: Database query. Should be a Kusto Query Language (KQL) query. Type: string (or
-     * Expression with resultType string).
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the query property: Database query. Should be a Kusto Query Language (KQL) query. Type: string (or Expression
+     * with resultType string).
      * 
      * @return the query value.
      */
@@ -62,8 +84,8 @@ public final class AzureDataExplorerSource extends CopySource {
     }
 
     /**
-     * Set the query property: Database query. Should be a Kusto Query Language (KQL) query. Type: string (or
-     * Expression with resultType string).
+     * Set the query property: Database query. Should be a Kusto Query Language (KQL) query. Type: string (or Expression
+     * with resultType string).
      * 
      * @param query the query value to set.
      * @return the AzureDataExplorerSource object itself.
@@ -184,8 +206,8 @@ public final class AzureDataExplorerSource extends CopySource {
     public void validate() {
         super.validate();
         if (query() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property query in model AzureDataExplorerSource"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property query in model AzureDataExplorerSource"));
         }
     }
 

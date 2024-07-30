@@ -10,6 +10,7 @@ package com.microsoft.azure.batch.protocol.models;
 
 import org.joda.time.Period;
 import java.util.List;
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -232,6 +233,23 @@ public class PoolSpecification {
      */
     @JsonProperty(value = "targetNodeCommunicationMode")
     private NodeCommunicationMode targetNodeCommunicationMode;
+
+    /**
+     * The upgrade policy for the pool.
+     */
+    @JsonProperty(value = "upgradePolicy")
+    private UpgradePolicy upgradePolicy;
+
+    /**
+     * The user-specified tags associated with the pool.
+     * The user-defined tags to be associated with the Azure Batch Pool. When
+     * specified, these tags are propagated to the backing Azure resources
+     * associated with the pool. This property can only be specified when the
+     * Batch account was created with the poolAllocationMode property set to
+     * 'UserSubscription'.
+     */
+    @JsonProperty(value = "resourceTags")
+    private Map<String, String> resourceTags;
 
     /**
      * Get the display name need not be unique and can contain any Unicode characters up to a maximum length of 1024.
@@ -672,6 +690,46 @@ public class PoolSpecification {
      */
     public PoolSpecification withTargetNodeCommunicationMode(NodeCommunicationMode targetNodeCommunicationMode) {
         this.targetNodeCommunicationMode = targetNodeCommunicationMode;
+        return this;
+    }
+
+    /**
+     * Get the upgradePolicy value.
+     *
+     * @return the upgradePolicy value
+     */
+    public UpgradePolicy upgradePolicy() {
+        return this.upgradePolicy;
+    }
+
+    /**
+     * Set the upgradePolicy value.
+     *
+     * @param upgradePolicy the upgradePolicy value to set
+     * @return the PoolSpecification object itself.
+     */
+    public PoolSpecification withUpgradePolicy(UpgradePolicy upgradePolicy) {
+        this.upgradePolicy = upgradePolicy;
+        return this;
+    }
+
+    /**
+     * Get the user-defined tags to be associated with the Azure Batch Pool. When specified, these tags are propagated to the backing Azure resources associated with the pool. This property can only be specified when the Batch account was created with the poolAllocationMode property set to 'UserSubscription'.
+     *
+     * @return the resourceTags value
+     */
+    public Map<String, String> resourceTags() {
+        return this.resourceTags;
+    }
+
+    /**
+     * Set the user-defined tags to be associated with the Azure Batch Pool. When specified, these tags are propagated to the backing Azure resources associated with the pool. This property can only be specified when the Batch account was created with the poolAllocationMode property set to 'UserSubscription'.
+     *
+     * @param resourceTags the resourceTags value to set
+     * @return the PoolSpecification object itself.
+     */
+    public PoolSpecification withResourceTags(Map<String, String> resourceTags) {
+        this.resourceTags = resourceTags;
         return this;
     }
 

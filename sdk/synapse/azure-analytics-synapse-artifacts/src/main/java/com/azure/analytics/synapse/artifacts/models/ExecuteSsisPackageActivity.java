@@ -5,98 +5,98 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Execute SSIS package activity.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("ExecuteSSISPackage")
-@JsonFlatten
 @Fluent
 public class ExecuteSsisPackageActivity extends ExecutionActivity {
     /*
+     * Type of activity.
+     */
+    private String type = "ExecuteSSISPackage";
+
+    /*
      * SSIS package location.
      */
-    @JsonProperty(value = "typeProperties.packageLocation", required = true)
     private SsisPackageLocation packageLocation;
 
     /*
-     * Specifies the runtime to execute SSIS package. The value should be "x86" or "x64". Type: string (or Expression
-     * with resultType string).
+     * Specifies the runtime to execute SSIS package. The value should be "x86" or "x64". Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.runtime")
     private Object runtime;
 
     /*
      * The logging level of SSIS package execution. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.loggingLevel")
     private Object loggingLevel;
 
     /*
      * The environment path to execute the SSIS package. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.environmentPath")
     private Object environmentPath;
 
     /*
      * The package execution credential.
      */
-    @JsonProperty(value = "typeProperties.executionCredential")
     private SsisExecutionCredential executionCredential;
 
     /*
      * The integration runtime reference.
      */
-    @JsonProperty(value = "typeProperties.connectVia", required = true)
     private IntegrationRuntimeReference connectVia;
 
     /*
      * The project level parameters to execute the SSIS package.
      */
-    @JsonProperty(value = "typeProperties.projectParameters")
     private Map<String, SsisExecutionParameter> projectParameters;
 
     /*
      * The package level parameters to execute the SSIS package.
      */
-    @JsonProperty(value = "typeProperties.packageParameters")
     private Map<String, SsisExecutionParameter> packageParameters;
 
     /*
      * The project level connection managers to execute the SSIS package.
      */
-    @JsonProperty(value = "typeProperties.projectConnectionManagers")
     private Map<String, Map<String, SsisExecutionParameter>> projectConnectionManagers;
 
     /*
      * The package level connection managers to execute the SSIS package.
      */
-    @JsonProperty(value = "typeProperties.packageConnectionManagers")
     private Map<String, Map<String, SsisExecutionParameter>> packageConnectionManagers;
 
     /*
      * The property overrides to execute the SSIS package.
      */
-    @JsonProperty(value = "typeProperties.propertyOverrides")
     private Map<String, SsisPropertyOverride> propertyOverrides;
 
     /*
      * SSIS package execution log location.
      */
-    @JsonProperty(value = "typeProperties.logLocation")
     private SsisLogLocation logLocation;
 
     /**
      * Creates an instance of ExecuteSsisPackageActivity class.
      */
     public ExecuteSsisPackageActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -417,5 +417,164 @@ public class ExecuteSsisPackageActivity extends ExecutionActivity {
     public ExecuteSsisPackageActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeStringField("state", getState() == null ? null : getState().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            getOnInactiveMarkAs() == null ? null : getOnInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", getDependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", getUserProperties(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
+        jsonWriter.writeJsonField("policy", getPolicy());
+        jsonWriter.writeStringField("type", this.type);
+        if (packageLocation != null
+            || runtime != null
+            || loggingLevel != null
+            || environmentPath != null
+            || executionCredential != null
+            || connectVia != null
+            || projectParameters != null
+            || packageParameters != null
+            || projectConnectionManagers != null
+            || packageConnectionManagers != null
+            || propertyOverrides != null
+            || logLocation != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeJsonField("packageLocation", this.packageLocation);
+            jsonWriter.writeUntypedField("runtime", this.runtime);
+            jsonWriter.writeUntypedField("loggingLevel", this.loggingLevel);
+            jsonWriter.writeUntypedField("environmentPath", this.environmentPath);
+            jsonWriter.writeJsonField("executionCredential", this.executionCredential);
+            jsonWriter.writeJsonField("connectVia", this.connectVia);
+            jsonWriter.writeMapField("projectParameters", this.projectParameters,
+                (writer, element) -> writer.writeJson(element));
+            jsonWriter.writeMapField("packageParameters", this.packageParameters,
+                (writer, element) -> writer.writeJson(element));
+            jsonWriter.writeMapField("projectConnectionManagers", this.projectConnectionManagers,
+                (writer, element) -> writer.writeMap(element, (writer1, element1) -> writer1.writeJson(element1)));
+            jsonWriter.writeMapField("packageConnectionManagers", this.packageConnectionManagers,
+                (writer, element) -> writer.writeMap(element, (writer1, element1) -> writer1.writeJson(element1)));
+            jsonWriter.writeMapField("propertyOverrides", this.propertyOverrides,
+                (writer, element) -> writer.writeJson(element));
+            jsonWriter.writeJsonField("logLocation", this.logLocation);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExecuteSsisPackageActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExecuteSsisPackageActivity if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExecuteSsisPackageActivity.
+     */
+    public static ExecuteSsisPackageActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExecuteSsisPackageActivity deserializedExecuteSsisPackageActivity = new ExecuteSsisPackageActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedExecuteSsisPackageActivity.setName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedExecuteSsisPackageActivity.setDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedExecuteSsisPackageActivity.setState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedExecuteSsisPackageActivity
+                        .setOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedExecuteSsisPackageActivity.setDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedExecuteSsisPackageActivity.setUserProperties(userProperties);
+                } else if ("linkedServiceName".equals(fieldName)) {
+                    deserializedExecuteSsisPackageActivity
+                        .setLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("policy".equals(fieldName)) {
+                    deserializedExecuteSsisPackageActivity.setPolicy(ActivityPolicy.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedExecuteSsisPackageActivity.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("packageLocation".equals(fieldName)) {
+                            deserializedExecuteSsisPackageActivity.packageLocation
+                                = SsisPackageLocation.fromJson(reader);
+                        } else if ("runtime".equals(fieldName)) {
+                            deserializedExecuteSsisPackageActivity.runtime = reader.readUntyped();
+                        } else if ("loggingLevel".equals(fieldName)) {
+                            deserializedExecuteSsisPackageActivity.loggingLevel = reader.readUntyped();
+                        } else if ("environmentPath".equals(fieldName)) {
+                            deserializedExecuteSsisPackageActivity.environmentPath = reader.readUntyped();
+                        } else if ("executionCredential".equals(fieldName)) {
+                            deserializedExecuteSsisPackageActivity.executionCredential
+                                = SsisExecutionCredential.fromJson(reader);
+                        } else if ("connectVia".equals(fieldName)) {
+                            deserializedExecuteSsisPackageActivity.connectVia
+                                = IntegrationRuntimeReference.fromJson(reader);
+                        } else if ("projectParameters".equals(fieldName)) {
+                            Map<String, SsisExecutionParameter> projectParameters
+                                = reader.readMap(reader1 -> SsisExecutionParameter.fromJson(reader1));
+                            deserializedExecuteSsisPackageActivity.projectParameters = projectParameters;
+                        } else if ("packageParameters".equals(fieldName)) {
+                            Map<String, SsisExecutionParameter> packageParameters
+                                = reader.readMap(reader1 -> SsisExecutionParameter.fromJson(reader1));
+                            deserializedExecuteSsisPackageActivity.packageParameters = packageParameters;
+                        } else if ("projectConnectionManagers".equals(fieldName)) {
+                            Map<String, Map<String, SsisExecutionParameter>> projectConnectionManagers = reader.readMap(
+                                reader1 -> reader1.readMap(reader2 -> SsisExecutionParameter.fromJson(reader2)));
+                            deserializedExecuteSsisPackageActivity.projectConnectionManagers
+                                = projectConnectionManagers;
+                        } else if ("packageConnectionManagers".equals(fieldName)) {
+                            Map<String, Map<String, SsisExecutionParameter>> packageConnectionManagers = reader.readMap(
+                                reader1 -> reader1.readMap(reader2 -> SsisExecutionParameter.fromJson(reader2)));
+                            deserializedExecuteSsisPackageActivity.packageConnectionManagers
+                                = packageConnectionManagers;
+                        } else if ("propertyOverrides".equals(fieldName)) {
+                            Map<String, SsisPropertyOverride> propertyOverrides
+                                = reader.readMap(reader1 -> SsisPropertyOverride.fromJson(reader1));
+                            deserializedExecuteSsisPackageActivity.propertyOverrides = propertyOverrides;
+                        } else if ("logLocation".equals(fieldName)) {
+                            deserializedExecuteSsisPackageActivity.logLocation = SsisLogLocation.fromJson(reader);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedExecuteSsisPackageActivity.setAdditionalProperties(additionalProperties);
+
+            return deserializedExecuteSsisPackageActivity;
+        });
     }
 }

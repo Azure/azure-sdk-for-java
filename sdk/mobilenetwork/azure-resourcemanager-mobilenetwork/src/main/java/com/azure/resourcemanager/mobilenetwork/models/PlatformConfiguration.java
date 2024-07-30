@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The platform where the packet core is deployed. */
+/**
+ * The platform where the packet core is deployed.
+ */
 @Fluent
 public final class PlatformConfiguration {
     /*
@@ -19,15 +21,13 @@ public final class PlatformConfiguration {
     private PlatformType type;
 
     /*
-     * The Azure Stack Edge device where the packet core is deployed. If the device is part of a fault tolerant pair,
-     * either device in the pair can be specified.
+     * The Azure Stack Edge device where the packet core is deployed. If the device is part of a fault tolerant pair, either device in the pair can be specified.
      */
     @JsonProperty(value = "azureStackEdgeDevice")
     private AzureStackEdgeDeviceResourceId azureStackEdgeDevice;
 
     /*
-     * The Azure Stack Edge devices where the packet core is deployed. If the packet core is deployed across multiple
-     * devices, all devices will appear in this list.
+     * The Azure Stack Edge devices where the packet core is deployed. If the packet core is deployed across multiple devices, all devices will appear in this list.
      */
     @JsonProperty(value = "azureStackEdgeDevices", access = JsonProperty.Access.WRITE_ONLY)
     private List<AzureStackEdgeDeviceResourceId> azureStackEdgeDevices;
@@ -50,13 +50,15 @@ public final class PlatformConfiguration {
     @JsonProperty(value = "customLocation")
     private CustomLocationResourceId customLocation;
 
-    /** Creates an instance of PlatformConfiguration class. */
+    /**
+     * Creates an instance of PlatformConfiguration class.
+     */
     public PlatformConfiguration() {
     }
 
     /**
      * Get the type property: The platform type where packet core is deployed.
-     *
+     * 
      * @return the type value.
      */
     public PlatformType type() {
@@ -65,7 +67,7 @@ public final class PlatformConfiguration {
 
     /**
      * Set the type property: The platform type where packet core is deployed.
-     *
+     * 
      * @param type the type value to set.
      * @return the PlatformConfiguration object itself.
      */
@@ -77,7 +79,7 @@ public final class PlatformConfiguration {
     /**
      * Get the azureStackEdgeDevice property: The Azure Stack Edge device where the packet core is deployed. If the
      * device is part of a fault tolerant pair, either device in the pair can be specified.
-     *
+     * 
      * @return the azureStackEdgeDevice value.
      */
     public AzureStackEdgeDeviceResourceId azureStackEdgeDevice() {
@@ -87,7 +89,7 @@ public final class PlatformConfiguration {
     /**
      * Set the azureStackEdgeDevice property: The Azure Stack Edge device where the packet core is deployed. If the
      * device is part of a fault tolerant pair, either device in the pair can be specified.
-     *
+     * 
      * @param azureStackEdgeDevice the azureStackEdgeDevice value to set.
      * @return the PlatformConfiguration object itself.
      */
@@ -99,7 +101,7 @@ public final class PlatformConfiguration {
     /**
      * Get the azureStackEdgeDevices property: The Azure Stack Edge devices where the packet core is deployed. If the
      * packet core is deployed across multiple devices, all devices will appear in this list.
-     *
+     * 
      * @return the azureStackEdgeDevices value.
      */
     public List<AzureStackEdgeDeviceResourceId> azureStackEdgeDevices() {
@@ -108,7 +110,7 @@ public final class PlatformConfiguration {
 
     /**
      * Get the azureStackHciCluster property: The Azure Stack HCI cluster where the packet core is deployed.
-     *
+     * 
      * @return the azureStackHciCluster value.
      */
     public AzureStackHciClusterResourceId azureStackHciCluster() {
@@ -117,7 +119,7 @@ public final class PlatformConfiguration {
 
     /**
      * Set the azureStackHciCluster property: The Azure Stack HCI cluster where the packet core is deployed.
-     *
+     * 
      * @param azureStackHciCluster the azureStackHciCluster value to set.
      * @return the PlatformConfiguration object itself.
      */
@@ -128,7 +130,7 @@ public final class PlatformConfiguration {
 
     /**
      * Get the connectedCluster property: Azure Arc connected cluster where the packet core is deployed.
-     *
+     * 
      * @return the connectedCluster value.
      */
     public ConnectedClusterResourceId connectedCluster() {
@@ -137,7 +139,7 @@ public final class PlatformConfiguration {
 
     /**
      * Set the connectedCluster property: Azure Arc connected cluster where the packet core is deployed.
-     *
+     * 
      * @param connectedCluster the connectedCluster value to set.
      * @return the PlatformConfiguration object itself.
      */
@@ -148,7 +150,7 @@ public final class PlatformConfiguration {
 
     /**
      * Get the customLocation property: Azure Arc custom location where the packet core is deployed.
-     *
+     * 
      * @return the customLocation value.
      */
     public CustomLocationResourceId customLocation() {
@@ -157,7 +159,7 @@ public final class PlatformConfiguration {
 
     /**
      * Set the customLocation property: Azure Arc custom location where the packet core is deployed.
-     *
+     * 
      * @param customLocation the customLocation value to set.
      * @return the PlatformConfiguration object itself.
      */
@@ -168,14 +170,13 @@ public final class PlatformConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model PlatformConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model PlatformConfiguration"));
         }
         if (azureStackEdgeDevice() != null) {
             azureStackEdgeDevice().validate();

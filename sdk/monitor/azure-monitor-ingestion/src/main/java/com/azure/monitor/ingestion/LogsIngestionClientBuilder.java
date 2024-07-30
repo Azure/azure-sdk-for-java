@@ -20,6 +20,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.ingestion.implementation.IngestionUsingDataCollectionRulesClientBuilder;
 import com.azure.monitor.ingestion.implementation.IngestionUsingDataCollectionRulesServiceVersion;
+import com.azure.monitor.ingestion.models.LogsIngestionAudience;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -34,7 +35,8 @@ import java.net.URL;
  * See {@link LogsIngestionClientBuilder#endpoint(String) endpoint} method for more details.</li>
  * <li>{@code credential} - The AAD authentication credential that has the "Monitoring Metrics Publisher" role assigned to it.
  * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">Azure Identity</a>
- * provides a variety of AAD credential types that can be used. See {@link LogsIngestionClientBuilder#credential(TokenCredential) credential } method for more details.</li>
+ * provides a variety of AAD credential types that can be used. See
+ * {@link LogsIngestionClientBuilder#credential(TokenCredential) credential} method for more details.</li>
  * </ol>
  *
  * <p><strong>Instantiating an asynchronous Logs ingestion client</strong></p>
@@ -57,15 +59,15 @@ import java.net.URL;
  * </pre>
  * <!-- end com.azure.monitor.ingestion.LogsIngestionClient.instantiation -->
  */
-@ServiceClientBuilder(serviceClients = {LogsIngestionClient.class, LogsIngestionAsyncClient.class})
-public final class LogsIngestionClientBuilder implements ConfigurationTrait<LogsIngestionClientBuilder>,
-        HttpTrait<LogsIngestionClientBuilder>, EndpointTrait<LogsIngestionClientBuilder>, TokenCredentialTrait<LogsIngestionClientBuilder> {
+@ServiceClientBuilder(serviceClients = { LogsIngestionClient.class, LogsIngestionAsyncClient.class })
+public final class LogsIngestionClientBuilder
+    implements ConfigurationTrait<LogsIngestionClientBuilder>, HttpTrait<LogsIngestionClientBuilder>,
+    EndpointTrait<LogsIngestionClientBuilder>, TokenCredentialTrait<LogsIngestionClientBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(LogsIngestionClientBuilder.class);
-    private final IngestionUsingDataCollectionRulesClientBuilder innerLogBuilder =
-            new IngestionUsingDataCollectionRulesClientBuilder();
+    private final IngestionUsingDataCollectionRulesClientBuilder innerLogBuilder
+        = new IngestionUsingDataCollectionRulesClientBuilder();
     private String endpoint;
     private TokenCredential tokenCredential;
-
 
     /**
      * Creates a new instance of {@link LogsIngestionClientBuilder}.
@@ -74,9 +76,9 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
 
     }
 
-
     /**
      * Sets the <a href="https://learn.microsoft.com/azure/azure-monitor/essentials/data-collection-endpoint-overview?tabs=portal#create-a-data-collection-endpoint">data collection endpoint</a>.
+     *
      * @param endpoint the data collection endpoint.
      * @return the updated {@link LogsIngestionClientBuilder}.
      */
@@ -88,7 +90,8 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
             this.endpoint = endpoint;
             return this;
         } catch (MalformedURLException exception) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'endpoint' must be a valid URL.", exception));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("'endpoint' must be a valid URL.", exception));
         }
     }
 
@@ -130,6 +133,7 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
+     *
      * @param retryPolicy the retryPolicy value.
      * @return the updated {@link LogsIngestionClientBuilder}.
      */
@@ -172,6 +176,18 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
     }
 
     /**
+     * Sets the audience for the authorization scope of log ingestion clients. If this value is not set, the default
+     * audience will be the azure public cloud.
+     *
+     * @param audience the audience value.
+     * @return the updated {@link LogsIngestionClientBuilder}.
+     */
+    public LogsIngestionClientBuilder audience(LogsIngestionAudience audience) {
+        innerLogBuilder.audience(audience);
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -188,12 +204,14 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
      * @return the updated {@link LogsIngestionClientBuilder}.
      */
     public LogsIngestionClientBuilder serviceVersion(LogsIngestionServiceVersion serviceVersion) {
-        innerLogBuilder.serviceVersion(IngestionUsingDataCollectionRulesServiceVersion.valueOf(serviceVersion.getVersion()));
+        innerLogBuilder.serviceVersion(
+            IngestionUsingDataCollectionRulesServiceVersion.valueOf(serviceVersion.getVersion()));
         return this;
     }
 
     /**
      * Creates a synchronous client with the configured options in this builder.
+     *
      * @return A synchronous {@link LogsIngestionClient}.
      */
     public LogsIngestionClient buildClient() {
@@ -208,6 +226,7 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
 
     /**
      * Creates an asynchronous client with the configured options in this builder.
+     *
      * @return An asynchronous {@link LogsIngestionAsyncClient}.
      */
     public LogsIngestionAsyncClient buildAsyncClient() {

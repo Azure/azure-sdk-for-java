@@ -6,40 +6,56 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.fluent.models.ScheduleInner;
-import com.azure.resourcemanager.devcenter.models.ScheduleEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ScheduledFrequency;
 import com.azure.resourcemanager.devcenter.models.ScheduledType;
+import com.azure.resourcemanager.devcenter.models.ScheduleEnableStatus;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class ScheduleInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScheduleInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Succeeded\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"nrpxehuw\",\"timeZone\":\"k\",\"state\":\"Enabled\"},\"id\":\"fmviklby\",\"name\":\"vkhbejdznx\",\"type\":\"vdsrhnjiv\"}")
-                .toObject(ScheduleInner.class);
+        ScheduleInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Creating\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"lves\",\"timeZone\":\"jlxr\",\"state\":\"Disabled\",\"tags\":{\"kuziycsle\":\"apeewchpxlkt\",\"dcgzul\":\"ufuztcktyhjtq\",\"rr\":\"mmrqz\"},\"location\":\"pglydz\"},\"id\":\"rvqeevtoepryutn\",\"name\":\"ytp\",\"type\":\"dmovzvfva\"}")
+            .toObject(ScheduleInner.class);
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, model.typePropertiesType());
         Assertions.assertEquals(ScheduledFrequency.DAILY, model.frequency());
-        Assertions.assertEquals("nrpxehuw", model.time());
-        Assertions.assertEquals("k", model.timeZone());
-        Assertions.assertEquals(ScheduleEnableStatus.ENABLED, model.state());
+        Assertions.assertEquals("lves", model.time());
+        Assertions.assertEquals("jlxr", model.timeZone());
+        Assertions.assertEquals(ScheduleEnableStatus.DISABLED, model.state());
+        Assertions.assertEquals("apeewchpxlkt", model.tags().get("kuziycsle"));
+        Assertions.assertEquals("pglydz", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScheduleInner model =
-            new ScheduleInner()
-                .withTypePropertiesType(ScheduledType.STOP_DEV_BOX)
-                .withFrequency(ScheduledFrequency.DAILY)
-                .withTime("nrpxehuw")
-                .withTimeZone("k")
-                .withState(ScheduleEnableStatus.ENABLED);
+        ScheduleInner model = new ScheduleInner().withTypePropertiesType(ScheduledType.STOP_DEV_BOX)
+            .withFrequency(ScheduledFrequency.DAILY)
+            .withTime("lves")
+            .withTimeZone("jlxr")
+            .withState(ScheduleEnableStatus.DISABLED)
+            .withTags(mapOf("kuziycsle", "apeewchpxlkt", "dcgzul", "ufuztcktyhjtq", "rr", "mmrqz"))
+            .withLocation("pglydz");
         model = BinaryData.fromObject(model).toObject(ScheduleInner.class);
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, model.typePropertiesType());
         Assertions.assertEquals(ScheduledFrequency.DAILY, model.frequency());
-        Assertions.assertEquals("nrpxehuw", model.time());
-        Assertions.assertEquals("k", model.timeZone());
-        Assertions.assertEquals(ScheduleEnableStatus.ENABLED, model.state());
+        Assertions.assertEquals("lves", model.time());
+        Assertions.assertEquals("jlxr", model.timeZone());
+        Assertions.assertEquals(ScheduleEnableStatus.DISABLED, model.state());
+        Assertions.assertEquals("apeewchpxlkt", model.tags().get("kuziycsle"));
+        Assertions.assertEquals("pglydz", model.location());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

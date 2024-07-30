@@ -32,14 +32,18 @@ public final class QueryDataFlowDebugSessionsResponseTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QueryDataFlowDebugSessionsResponse model
-            = new QueryDataFlowDebugSessionsResponse()
-                .withValue(
-                    Arrays.asList(new DataFlowDebugSessionInfoInner().withDataFlowName("noda").withComputeType("pqhe")
-                        .withCoreCount(1635095275).withNodeCount(1244000330).withIntegrationRuntimeName("gsbos")
-                        .withSessionId("eln").withStartTime("atutmzlbiojlvfhr").withTimeToLiveInMinutes(438246123)
-                        .withLastActivityTime("eqvcwwyyurmoch").withAdditionalProperties(mapOf())))
-                .withNextLink("olewjwi");
+        QueryDataFlowDebugSessionsResponse model = new QueryDataFlowDebugSessionsResponse()
+            .withValue(Arrays.asList(new DataFlowDebugSessionInfoInner().withDataFlowName("noda")
+                .withComputeType("pqhe")
+                .withCoreCount(1635095275)
+                .withNodeCount(1244000330)
+                .withIntegrationRuntimeName("gsbos")
+                .withSessionId("eln")
+                .withStartTime("atutmzlbiojlvfhr")
+                .withTimeToLiveInMinutes(438246123)
+                .withLastActivityTime("eqvcwwyyurmoch")
+                .withAdditionalProperties(mapOf())))
+            .withNextLink("olewjwi");
         model = BinaryData.fromObject(model).toObject(QueryDataFlowDebugSessionsResponse.class);
         Assertions.assertEquals("noda", model.value().get(0).dataFlowName());
         Assertions.assertEquals("pqhe", model.value().get(0).computeType());

@@ -31,9 +31,9 @@ public final class FhirR4Meta {
     private String lastUpdated;
 
     /*
-     * A uri that identifies the source system of the resource. This provides a minimal amount of Provenance
-     * information that can be used to track or differentiate the source of information in the resource. The source may
-     * identify another FHIR server, document, message, database, etc.
+     * A uri that identifies the source system of the resource. This provides a minimal amount of Provenance information
+     * that can be used to track or differentiate the source of information in the resource. The source may identify
+     * another FHIR server, document, message, database, etc.
      */
     @Generated
     @JsonProperty(value = "source")
@@ -172,8 +172,8 @@ public final class FhirR4Meta {
     }
 
     /**
-     * Get the security property: Security labels applied to this resource. These tags connect specific resources to
-     * the overall security policy and infrastructure.
+     * Get the security property: Security labels applied to this resource. These tags connect specific resources to the
+     * overall security policy and infrastructure.
      *
      * @return the security value.
      */
@@ -183,8 +183,8 @@ public final class FhirR4Meta {
     }
 
     /**
-     * Set the security property: Security labels applied to this resource. These tags connect specific resources to
-     * the overall security policy and infrastructure.
+     * Set the security property: Security labels applied to this resource. These tags connect specific resources to the
+     * overall security policy and infrastructure.
      *
      * @param security the security value to set.
      * @return the FhirR4Meta object itself.

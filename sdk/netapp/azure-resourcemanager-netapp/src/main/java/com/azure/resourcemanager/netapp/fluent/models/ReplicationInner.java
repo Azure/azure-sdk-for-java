@@ -6,37 +6,37 @@ package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.EndpointType;
 import com.azure.resourcemanager.netapp.models.ReplicationSchedule;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Replication properties.
  */
 @Fluent
-public final class ReplicationInner {
+public final class ReplicationInner implements JsonSerializable<ReplicationInner> {
     /*
      * Indicates whether the local volume is the source or destination for the Volume Replication
      */
-    @JsonProperty(value = "endpointType")
     private EndpointType endpointType;
 
     /*
      * Schedule
      */
-    @JsonProperty(value = "replicationSchedule")
     private ReplicationSchedule replicationSchedule;
 
     /*
      * The resource ID of the remote volume.
      */
-    @JsonProperty(value = "remoteVolumeResourceId", required = true)
     private String remoteVolumeResourceId;
 
     /*
      * The remote region for the other end of the Volume Replication.
      */
-    @JsonProperty(value = "remoteVolumeRegion")
     private String remoteVolumeRegion;
 
     /**
@@ -134,10 +134,59 @@ public final class ReplicationInner {
      */
     public void validate() {
         if (remoteVolumeResourceId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property remoteVolumeResourceId in model ReplicationInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property remoteVolumeResourceId in model ReplicationInner"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ReplicationInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("remoteVolumeResourceId", this.remoteVolumeResourceId);
+        jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
+        jsonWriter.writeStringField("replicationSchedule",
+            this.replicationSchedule == null ? null : this.replicationSchedule.toString());
+        jsonWriter.writeStringField("remoteVolumeRegion", this.remoteVolumeRegion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReplicationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReplicationInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ReplicationInner.
+     */
+    public static ReplicationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReplicationInner deserializedReplicationInner = new ReplicationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("remoteVolumeResourceId".equals(fieldName)) {
+                    deserializedReplicationInner.remoteVolumeResourceId = reader.getString();
+                } else if ("endpointType".equals(fieldName)) {
+                    deserializedReplicationInner.endpointType = EndpointType.fromString(reader.getString());
+                } else if ("replicationSchedule".equals(fieldName)) {
+                    deserializedReplicationInner.replicationSchedule
+                        = ReplicationSchedule.fromString(reader.getString());
+                } else if ("remoteVolumeRegion".equals(fieldName)) {
+                    deserializedReplicationInner.remoteVolumeRegion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReplicationInner;
+        });
+    }
 }

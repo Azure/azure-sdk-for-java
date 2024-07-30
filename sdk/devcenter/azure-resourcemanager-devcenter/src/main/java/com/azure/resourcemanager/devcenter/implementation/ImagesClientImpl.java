@@ -30,17 +30,23 @@ import com.azure.resourcemanager.devcenter.fluent.models.ImageInner;
 import com.azure.resourcemanager.devcenter.models.ImageListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ImagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ImagesClient.
+ */
 public final class ImagesClientImpl implements ImagesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ImagesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DevCenterManagementClientImpl client;
 
     /**
      * Initializes an instance of ImagesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ImagesClientImpl(DevCenterManagementClientImpl client) {
@@ -55,100 +61,74 @@ public final class ImagesClientImpl implements ImagesClient {
     @Host("{$host}")
     @ServiceInterface(name = "DevCenterManagementC")
     public interface ImagesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/images")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/images")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ImageListResult>> listByDevCenter(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("devCenterName") String devCenterName,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ImageListResult>> listByDevCenter(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("devCenterName") String devCenterName,
+            @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/galleries/{galleryName}/images")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/galleries/{galleryName}/images")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ImageListResult>> listByGallery(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("devCenterName") String devCenterName,
-            @PathParam("galleryName") String galleryName,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ImageListResult>> listByGallery(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("devCenterName") String devCenterName,
+            @PathParam("galleryName") String galleryName, @QueryParam("$top") Integer top,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/galleries/{galleryName}/images/{imageName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/galleries/{galleryName}/images/{imageName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ImageInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("devCenterName") String devCenterName,
-            @PathParam("galleryName") String galleryName,
-            @PathParam("imageName") String imageName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ImageInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("devCenterName") String devCenterName,
+            @PathParam("galleryName") String galleryName, @PathParam("imageName") String imageName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ImageListResult>> listByDevCenterNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ImageListResult>> listByGalleryNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists images for a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of the image list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return results of the image list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ImageInner>> listByDevCenterSinglePageAsync(
-        String resourceGroupName, String devCenterName, Integer top) {
+    private Mono<PagedResponse<ImageInner>> listByDevCenterSinglePageAsync(String resourceGroupName,
+        String devCenterName, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -159,33 +139,16 @@ public final class ImagesClientImpl implements ImagesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByDevCenter(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            devCenterName,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<ImageInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByDevCenter(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, devCenterName, top, accept, context))
+            .<PagedResponse<ImageInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists images for a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -193,23 +156,19 @@ public final class ImagesClientImpl implements ImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of the image list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return results of the image list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ImageInner>> listByDevCenterSinglePageAsync(
-        String resourceGroupName, String devCenterName, Integer top, Context context) {
+    private Mono<PagedResponse<ImageInner>> listByDevCenterSinglePageAsync(String resourceGroupName,
+        String devCenterName, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -221,29 +180,15 @@ public final class ImagesClientImpl implements ImagesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByDevCenter(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                devCenterName,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByDevCenter(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, devCenterName, top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists images for a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -254,14 +199,13 @@ public final class ImagesClientImpl implements ImagesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ImageInner> listByDevCenterAsync(String resourceGroupName, String devCenterName, Integer top) {
-        return new PagedFlux<>(
-            () -> listByDevCenterSinglePageAsync(resourceGroupName, devCenterName, top),
+        return new PagedFlux<>(() -> listByDevCenterSinglePageAsync(resourceGroupName, devCenterName, top),
             nextLink -> listByDevCenterNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists images for a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -272,14 +216,13 @@ public final class ImagesClientImpl implements ImagesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ImageInner> listByDevCenterAsync(String resourceGroupName, String devCenterName) {
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listByDevCenterSinglePageAsync(resourceGroupName, devCenterName, top),
+        return new PagedFlux<>(() -> listByDevCenterSinglePageAsync(resourceGroupName, devCenterName, top),
             nextLink -> listByDevCenterNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists images for a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -290,16 +233,15 @@ public final class ImagesClientImpl implements ImagesClient {
      * @return results of the image list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ImageInner> listByDevCenterAsync(
-        String resourceGroupName, String devCenterName, Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listByDevCenterSinglePageAsync(resourceGroupName, devCenterName, top, context),
+    private PagedFlux<ImageInner> listByDevCenterAsync(String resourceGroupName, String devCenterName, Integer top,
+        Context context) {
+        return new PagedFlux<>(() -> listByDevCenterSinglePageAsync(resourceGroupName, devCenterName, top, context),
             nextLink -> listByDevCenterNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists images for a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -315,7 +257,7 @@ public final class ImagesClientImpl implements ImagesClient {
 
     /**
      * Lists images for a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -326,14 +268,14 @@ public final class ImagesClientImpl implements ImagesClient {
      * @return results of the image list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ImageInner> listByDevCenter(
-        String resourceGroupName, String devCenterName, Integer top, Context context) {
+    public PagedIterable<ImageInner> listByDevCenter(String resourceGroupName, String devCenterName, Integer top,
+        Context context) {
         return new PagedIterable<>(listByDevCenterAsync(resourceGroupName, devCenterName, top, context));
     }
 
     /**
      * Lists images for a gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
@@ -341,23 +283,19 @@ public final class ImagesClientImpl implements ImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of the image list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return results of the image list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ImageInner>> listByGallerySinglePageAsync(
-        String resourceGroupName, String devCenterName, String galleryName, Integer top) {
+    private Mono<PagedResponse<ImageInner>> listByGallerySinglePageAsync(String resourceGroupName, String devCenterName,
+        String galleryName, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -371,34 +309,16 @@ public final class ImagesClientImpl implements ImagesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByGallery(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            devCenterName,
-                            galleryName,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<ImageInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByGallery(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, devCenterName, galleryName, top, accept, context))
+            .<PagedResponse<ImageInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists images for a gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
@@ -407,23 +327,19 @@ public final class ImagesClientImpl implements ImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of the image list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return results of the image list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ImageInner>> listByGallerySinglePageAsync(
-        String resourceGroupName, String devCenterName, String galleryName, Integer top, Context context) {
+    private Mono<PagedResponse<ImageInner>> listByGallerySinglePageAsync(String resourceGroupName, String devCenterName,
+        String galleryName, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -438,30 +354,15 @@ public final class ImagesClientImpl implements ImagesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByGallery(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                devCenterName,
-                galleryName,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByGallery(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, devCenterName, galleryName, top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists images for a gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
@@ -472,16 +373,15 @@ public final class ImagesClientImpl implements ImagesClient {
      * @return results of the image list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ImageInner> listByGalleryAsync(
-        String resourceGroupName, String devCenterName, String galleryName, Integer top) {
-        return new PagedFlux<>(
-            () -> listByGallerySinglePageAsync(resourceGroupName, devCenterName, galleryName, top),
+    private PagedFlux<ImageInner> listByGalleryAsync(String resourceGroupName, String devCenterName, String galleryName,
+        Integer top) {
+        return new PagedFlux<>(() -> listByGallerySinglePageAsync(resourceGroupName, devCenterName, galleryName, top),
             nextLink -> listByGalleryNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists images for a gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
@@ -491,17 +391,16 @@ public final class ImagesClientImpl implements ImagesClient {
      * @return results of the image list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ImageInner> listByGalleryAsync(
-        String resourceGroupName, String devCenterName, String galleryName) {
+    private PagedFlux<ImageInner> listByGalleryAsync(String resourceGroupName, String devCenterName,
+        String galleryName) {
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listByGallerySinglePageAsync(resourceGroupName, devCenterName, galleryName, top),
+        return new PagedFlux<>(() -> listByGallerySinglePageAsync(resourceGroupName, devCenterName, galleryName, top),
             nextLink -> listByGalleryNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists images for a gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
@@ -513,8 +412,8 @@ public final class ImagesClientImpl implements ImagesClient {
      * @return results of the image list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ImageInner> listByGalleryAsync(
-        String resourceGroupName, String devCenterName, String galleryName, Integer top, Context context) {
+    private PagedFlux<ImageInner> listByGalleryAsync(String resourceGroupName, String devCenterName, String galleryName,
+        Integer top, Context context) {
         return new PagedFlux<>(
             () -> listByGallerySinglePageAsync(resourceGroupName, devCenterName, galleryName, top, context),
             nextLink -> listByGalleryNextSinglePageAsync(nextLink, context));
@@ -522,7 +421,7 @@ public final class ImagesClientImpl implements ImagesClient {
 
     /**
      * Lists images for a gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
@@ -539,7 +438,7 @@ public final class ImagesClientImpl implements ImagesClient {
 
     /**
      * Lists images for a gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
@@ -551,14 +450,14 @@ public final class ImagesClientImpl implements ImagesClient {
      * @return results of the image list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ImageInner> listByGallery(
-        String resourceGroupName, String devCenterName, String galleryName, Integer top, Context context) {
+    public PagedIterable<ImageInner> listByGallery(String resourceGroupName, String devCenterName, String galleryName,
+        Integer top, Context context) {
         return new PagedIterable<>(listByGalleryAsync(resourceGroupName, devCenterName, galleryName, top, context));
     }
 
     /**
      * Gets a gallery image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
@@ -569,19 +468,15 @@ public final class ImagesClientImpl implements ImagesClient {
      * @return a gallery image along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ImageInner>> getWithResponseAsync(
-        String resourceGroupName, String devCenterName, String galleryName, String imageName) {
+    private Mono<Response<ImageInner>> getWithResponseAsync(String resourceGroupName, String devCenterName,
+        String galleryName, String imageName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -597,26 +492,14 @@ public final class ImagesClientImpl implements ImagesClient {
             return Mono.error(new IllegalArgumentException("Parameter imageName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            devCenterName,
-                            galleryName,
-                            imageName,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, devCenterName, galleryName, imageName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a gallery image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
@@ -628,19 +511,15 @@ public final class ImagesClientImpl implements ImagesClient {
      * @return a gallery image along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ImageInner>> getWithResponseAsync(
-        String resourceGroupName, String devCenterName, String galleryName, String imageName, Context context) {
+    private Mono<Response<ImageInner>> getWithResponseAsync(String resourceGroupName, String devCenterName,
+        String galleryName, String imageName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -657,22 +536,13 @@ public final class ImagesClientImpl implements ImagesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                devCenterName,
-                galleryName,
-                imageName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, devCenterName, galleryName, imageName, accept, context);
     }
 
     /**
      * Gets a gallery image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
@@ -683,15 +553,15 @@ public final class ImagesClientImpl implements ImagesClient {
      * @return a gallery image on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ImageInner> getAsync(
-        String resourceGroupName, String devCenterName, String galleryName, String imageName) {
+    private Mono<ImageInner> getAsync(String resourceGroupName, String devCenterName, String galleryName,
+        String imageName) {
         return getWithResponseAsync(resourceGroupName, devCenterName, galleryName, imageName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a gallery image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
@@ -703,14 +573,14 @@ public final class ImagesClientImpl implements ImagesClient {
      * @return a gallery image along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ImageInner> getWithResponse(
-        String resourceGroupName, String devCenterName, String galleryName, String imageName, Context context) {
+    public Response<ImageInner> getWithResponse(String resourceGroupName, String devCenterName, String galleryName,
+        String imageName, Context context) {
         return getWithResponseAsync(resourceGroupName, devCenterName, galleryName, imageName, context).block();
     }
 
     /**
      * Gets a gallery image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param galleryName The name of the gallery.
@@ -727,14 +597,15 @@ public final class ImagesClientImpl implements ImagesClient {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of the image list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return results of the image list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ImageInner>> listByDevCenterNextSinglePageAsync(String nextLink) {
@@ -742,37 +613,29 @@ public final class ImagesClientImpl implements ImagesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByDevCenterNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ImageInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ImageInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of the image list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return results of the image list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ImageInner>> listByDevCenterNextSinglePageAsync(String nextLink, Context context) {
@@ -780,36 +643,27 @@ public final class ImagesClientImpl implements ImagesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByDevCenterNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByDevCenterNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of the image list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return results of the image list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ImageInner>> listByGalleryNextSinglePageAsync(String nextLink) {
@@ -817,37 +671,29 @@ public final class ImagesClientImpl implements ImagesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByGalleryNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ImageInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ImageInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of the image list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return results of the image list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ImageInner>> listByGalleryNextSinglePageAsync(String nextLink, Context context) {
@@ -855,23 +701,13 @@ public final class ImagesClientImpl implements ImagesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByGalleryNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByGalleryNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

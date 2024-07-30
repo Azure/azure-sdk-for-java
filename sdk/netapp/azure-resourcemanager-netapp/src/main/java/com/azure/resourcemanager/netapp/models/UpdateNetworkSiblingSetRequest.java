@@ -6,7 +6,11 @@ package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * UpdateNetworkSiblingSetRequest
@@ -14,39 +18,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Network sibling set update.
  */
 @Fluent
-public final class UpdateNetworkSiblingSetRequest {
+public final class UpdateNetworkSiblingSetRequest implements JsonSerializable<UpdateNetworkSiblingSetRequest> {
     /*
-     * Network Sibling Set ID
-     * 
      * Network Sibling Set ID for a group of volumes sharing networking resources in a subnet.
      */
-    @JsonProperty(value = "networkSiblingSetId", required = true)
     private String networkSiblingSetId;
 
     /*
-     * Subnet resource Id
-     * 
      * The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes. Example
      * /subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/testVnet/
      * subnets/{mySubnet}
      */
-    @JsonProperty(value = "subnetId", required = true)
     private String subnetId;
 
     /*
-     * Network sibling set state Id
-     * 
      * Network sibling set state Id identifying the current state of the sibling set.
      */
-    @JsonProperty(value = "networkSiblingSetStateId", required = true)
     private String networkSiblingSetStateId;
 
     /*
-     * Network features
-     * 
-     * Network features available to the volume
+     * Network features available to the volume.
      */
-    @JsonProperty(value = "networkFeatures", required = true)
     private NetworkFeatures networkFeatures;
 
     /**
@@ -56,9 +48,8 @@ public final class UpdateNetworkSiblingSetRequest {
     }
 
     /**
-     * Get the networkSiblingSetId property: Network Sibling Set ID
-     * 
-     * Network Sibling Set ID for a group of volumes sharing networking resources in a subnet.
+     * Get the networkSiblingSetId property: Network Sibling Set ID for a group of volumes sharing networking resources
+     * in a subnet.
      * 
      * @return the networkSiblingSetId value.
      */
@@ -67,9 +58,8 @@ public final class UpdateNetworkSiblingSetRequest {
     }
 
     /**
-     * Set the networkSiblingSetId property: Network Sibling Set ID
-     * 
-     * Network Sibling Set ID for a group of volumes sharing networking resources in a subnet.
+     * Set the networkSiblingSetId property: Network Sibling Set ID for a group of volumes sharing networking resources
+     * in a subnet.
      * 
      * @param networkSiblingSetId the networkSiblingSetId value to set.
      * @return the UpdateNetworkSiblingSetRequest object itself.
@@ -80,9 +70,8 @@ public final class UpdateNetworkSiblingSetRequest {
     }
 
     /**
-     * Get the subnetId property: Subnet resource Id
-     * 
-     * The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes. Example
+     * Get the subnetId property: The Azure Resource URI for a delegated subnet. Must have the delegation
+     * Microsoft.NetApp/volumes. Example
      * /subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/{mySubnet}.
      * 
      * @return the subnetId value.
@@ -92,9 +81,8 @@ public final class UpdateNetworkSiblingSetRequest {
     }
 
     /**
-     * Set the subnetId property: Subnet resource Id
-     * 
-     * The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes. Example
+     * Set the subnetId property: The Azure Resource URI for a delegated subnet. Must have the delegation
+     * Microsoft.NetApp/volumes. Example
      * /subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/{mySubnet}.
      * 
      * @param subnetId the subnetId value to set.
@@ -106,9 +94,8 @@ public final class UpdateNetworkSiblingSetRequest {
     }
 
     /**
-     * Get the networkSiblingSetStateId property: Network sibling set state Id
-     * 
-     * Network sibling set state Id identifying the current state of the sibling set.
+     * Get the networkSiblingSetStateId property: Network sibling set state Id identifying the current state of the
+     * sibling set.
      * 
      * @return the networkSiblingSetStateId value.
      */
@@ -117,9 +104,8 @@ public final class UpdateNetworkSiblingSetRequest {
     }
 
     /**
-     * Set the networkSiblingSetStateId property: Network sibling set state Id
-     * 
-     * Network sibling set state Id identifying the current state of the sibling set.
+     * Set the networkSiblingSetStateId property: Network sibling set state Id identifying the current state of the
+     * sibling set.
      * 
      * @param networkSiblingSetStateId the networkSiblingSetStateId value to set.
      * @return the UpdateNetworkSiblingSetRequest object itself.
@@ -130,9 +116,7 @@ public final class UpdateNetworkSiblingSetRequest {
     }
 
     /**
-     * Get the networkFeatures property: Network features
-     * 
-     * Network features available to the volume.
+     * Get the networkFeatures property: Network features available to the volume.
      * 
      * @return the networkFeatures value.
      */
@@ -141,9 +125,7 @@ public final class UpdateNetworkSiblingSetRequest {
     }
 
     /**
-     * Set the networkFeatures property: Network features
-     * 
-     * Network features available to the volume.
+     * Set the networkFeatures property: Network features available to the volume.
      * 
      * @param networkFeatures the networkFeatures value to set.
      * @return the UpdateNetworkSiblingSetRequest object itself.
@@ -160,22 +142,75 @@ public final class UpdateNetworkSiblingSetRequest {
      */
     public void validate() {
         if (networkSiblingSetId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property networkSiblingSetId in model UpdateNetworkSiblingSetRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property networkSiblingSetId in model UpdateNetworkSiblingSetRequest"));
         }
         if (subnetId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property subnetId in model UpdateNetworkSiblingSetRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property subnetId in model UpdateNetworkSiblingSetRequest"));
         }
         if (networkSiblingSetStateId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property networkSiblingSetStateId in model UpdateNetworkSiblingSetRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property networkSiblingSetStateId in model UpdateNetworkSiblingSetRequest"));
         }
         if (networkFeatures() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property networkFeatures in model UpdateNetworkSiblingSetRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property networkFeatures in model UpdateNetworkSiblingSetRequest"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UpdateNetworkSiblingSetRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("networkSiblingSetId", this.networkSiblingSetId);
+        jsonWriter.writeStringField("subnetId", this.subnetId);
+        jsonWriter.writeStringField("networkSiblingSetStateId", this.networkSiblingSetStateId);
+        jsonWriter.writeStringField("networkFeatures",
+            this.networkFeatures == null ? null : this.networkFeatures.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateNetworkSiblingSetRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateNetworkSiblingSetRequest if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UpdateNetworkSiblingSetRequest.
+     */
+    public static UpdateNetworkSiblingSetRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateNetworkSiblingSetRequest deserializedUpdateNetworkSiblingSetRequest
+                = new UpdateNetworkSiblingSetRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("networkSiblingSetId".equals(fieldName)) {
+                    deserializedUpdateNetworkSiblingSetRequest.networkSiblingSetId = reader.getString();
+                } else if ("subnetId".equals(fieldName)) {
+                    deserializedUpdateNetworkSiblingSetRequest.subnetId = reader.getString();
+                } else if ("networkSiblingSetStateId".equals(fieldName)) {
+                    deserializedUpdateNetworkSiblingSetRequest.networkSiblingSetStateId = reader.getString();
+                } else if ("networkFeatures".equals(fieldName)) {
+                    deserializedUpdateNetworkSiblingSetRequest.networkFeatures
+                        = NetworkFeatures.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateNetworkSiblingSetRequest;
+        });
+    }
 }

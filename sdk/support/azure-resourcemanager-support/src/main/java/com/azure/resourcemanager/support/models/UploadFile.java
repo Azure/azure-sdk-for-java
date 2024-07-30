@@ -7,7 +7,9 @@ package com.azure.resourcemanager.support.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** File content associated with the file under a workspace. */
+/**
+ * File content associated with the file under a workspace.
+ */
 @Fluent
 public final class UploadFile {
     /*
@@ -20,15 +22,17 @@ public final class UploadFile {
      * Index of the uploaded chunk (Index starts at 0)
      */
     @JsonProperty(value = "chunkIndex")
-    private Float chunkIndex;
+    private Integer chunkIndex;
 
-    /** Creates an instance of UploadFile class. */
+    /**
+     * Creates an instance of UploadFile class.
+     */
     public UploadFile() {
     }
 
     /**
      * Get the content property: File Content in base64 encoded format.
-     *
+     * 
      * @return the content value.
      */
     public String content() {
@@ -37,7 +41,7 @@ public final class UploadFile {
 
     /**
      * Set the content property: File Content in base64 encoded format.
-     *
+     * 
      * @param content the content value to set.
      * @return the UploadFile object itself.
      */
@@ -48,27 +52,27 @@ public final class UploadFile {
 
     /**
      * Get the chunkIndex property: Index of the uploaded chunk (Index starts at 0).
-     *
+     * 
      * @return the chunkIndex value.
      */
-    public Float chunkIndex() {
+    public Integer chunkIndex() {
         return this.chunkIndex;
     }
 
     /**
      * Set the chunkIndex property: Index of the uploaded chunk (Index starts at 0).
-     *
+     * 
      * @param chunkIndex the chunkIndex value to set.
      * @return the UploadFile object itself.
      */
-    public UploadFile withChunkIndex(Float chunkIndex) {
+    public UploadFile withChunkIndex(Integer chunkIndex) {
         this.chunkIndex = chunkIndex;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

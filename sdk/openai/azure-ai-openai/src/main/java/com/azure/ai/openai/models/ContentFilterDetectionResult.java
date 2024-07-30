@@ -5,28 +5,29 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Represents the outcome of a detection operation performed by content filtering.
  */
 @Immutable
-public final class ContentFilterDetectionResult {
+public final class ContentFilterDetectionResult implements JsonSerializable<ContentFilterDetectionResult> {
 
     /*
      * A value indicating whether or not the content has been filtered.
      */
     @Generated
-    @JsonProperty(value = "filtered")
-    private boolean filtered;
+    private final boolean filtered;
 
     /*
      * A value indicating whether detection occurred, irrespective of severity or whether the content was filtered.
      */
     @Generated
-    @JsonProperty(value = "detected")
-    private boolean detected;
+    private final boolean detected;
 
     /**
      * Creates an instance of ContentFilterDetectionResult class.
@@ -35,9 +36,7 @@ public final class ContentFilterDetectionResult {
      * @param detected the detected value to set.
      */
     @Generated
-    @JsonCreator
-    private ContentFilterDetectionResult(@JsonProperty(value = "filtered") boolean filtered,
-        @JsonProperty(value = "detected") boolean detected) {
+    private ContentFilterDetectionResult(boolean filtered, boolean detected) {
         this.filtered = filtered;
         this.detected = detected;
     }
@@ -53,13 +52,54 @@ public final class ContentFilterDetectionResult {
     }
 
     /**
-     * Get the detected property: A value indicating whether detection occurred, irrespective of severity or whether
-     * the content was filtered.
+     * Get the detected property: A value indicating whether detection occurred, irrespective of severity or whether the
+     * content was filtered.
      *
      * @return the detected value.
      */
     @Generated
     public boolean isDetected() {
         return this.detected;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("filtered", this.filtered);
+        jsonWriter.writeBooleanField("detected", this.detected);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContentFilterDetectionResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContentFilterDetectionResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ContentFilterDetectionResult.
+     */
+    @Generated
+    public static ContentFilterDetectionResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean filtered = false;
+            boolean detected = false;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("filtered".equals(fieldName)) {
+                    filtered = reader.getBoolean();
+                } else if ("detected".equals(fieldName)) {
+                    detected = reader.getBoolean();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new ContentFilterDetectionResult(filtered, detected);
+        });
     }
 }

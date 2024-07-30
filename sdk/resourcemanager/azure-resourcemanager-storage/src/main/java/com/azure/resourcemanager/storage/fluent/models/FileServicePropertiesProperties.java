@@ -10,13 +10,15 @@ import com.azure.resourcemanager.storage.models.DeleteRetentionPolicy;
 import com.azure.resourcemanager.storage.models.ProtocolSettings;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of File services in storage account. */
+/**
+ * The properties of File services in storage account.
+ */
 @Fluent
 public final class FileServicePropertiesProperties {
     /*
      * Specifies CORS rules for the File service. You can include up to five CorsRule elements in the request. If no
-     * CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled
-     * for the File service.
+     * CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled for
+     * the File service.
      */
     @JsonProperty(value = "cors")
     private CorsRules cors;
@@ -33,7 +35,9 @@ public final class FileServicePropertiesProperties {
     @JsonProperty(value = "protocolSettings")
     private ProtocolSettings protocolSettings;
 
-    /** Creates an instance of FileServicePropertiesProperties class. */
+    /**
+     * Creates an instance of FileServicePropertiesProperties class.
+     */
     public FileServicePropertiesProperties() {
     }
 
@@ -41,7 +45,7 @@ public final class FileServicePropertiesProperties {
      * Get the cors property: Specifies CORS rules for the File service. You can include up to five CorsRule elements in
      * the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
      * will be disabled for the File service.
-     *
+     * 
      * @return the cors value.
      */
     public CorsRules cors() {
@@ -52,7 +56,7 @@ public final class FileServicePropertiesProperties {
      * Set the cors property: Specifies CORS rules for the File service. You can include up to five CorsRule elements in
      * the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
      * will be disabled for the File service.
-     *
+     * 
      * @param cors the cors value to set.
      * @return the FileServicePropertiesProperties object itself.
      */
@@ -63,7 +67,7 @@ public final class FileServicePropertiesProperties {
 
     /**
      * Get the shareDeleteRetentionPolicy property: The file service properties for share soft delete.
-     *
+     * 
      * @return the shareDeleteRetentionPolicy value.
      */
     public DeleteRetentionPolicy shareDeleteRetentionPolicy() {
@@ -72,19 +76,19 @@ public final class FileServicePropertiesProperties {
 
     /**
      * Set the shareDeleteRetentionPolicy property: The file service properties for share soft delete.
-     *
+     * 
      * @param shareDeleteRetentionPolicy the shareDeleteRetentionPolicy value to set.
      * @return the FileServicePropertiesProperties object itself.
      */
-    public FileServicePropertiesProperties withShareDeleteRetentionPolicy(
-        DeleteRetentionPolicy shareDeleteRetentionPolicy) {
+    public FileServicePropertiesProperties
+        withShareDeleteRetentionPolicy(DeleteRetentionPolicy shareDeleteRetentionPolicy) {
         this.shareDeleteRetentionPolicy = shareDeleteRetentionPolicy;
         return this;
     }
 
     /**
      * Get the protocolSettings property: Protocol settings for file service.
-     *
+     * 
      * @return the protocolSettings value.
      */
     public ProtocolSettings protocolSettings() {
@@ -93,7 +97,7 @@ public final class FileServicePropertiesProperties {
 
     /**
      * Set the protocolSettings property: Protocol settings for file service.
-     *
+     * 
      * @param protocolSettings the protocolSettings value to set.
      * @return the FileServicePropertiesProperties object itself.
      */
@@ -104,7 +108,7 @@ public final class FileServicePropertiesProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

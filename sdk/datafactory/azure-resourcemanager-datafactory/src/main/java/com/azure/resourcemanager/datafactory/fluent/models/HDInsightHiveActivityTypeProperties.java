@@ -62,8 +62,7 @@ public final class HDInsightHiveActivityTypeProperties {
     private Map<String, Object> variables;
 
     /*
-     * Query timeout value (in minutes). Effective when the HDInsight cluster is with ESP (Enterprise Security
-     * Package)
+     * Query timeout value (in minutes). Effective when the HDInsight cluster is with ESP (Enterprise Security Package)
      */
     @JsonProperty(value = "queryTimeout")
     private Integer queryTimeout;
@@ -216,8 +215,8 @@ public final class HDInsightHiveActivityTypeProperties {
     }
 
     /**
-     * Get the queryTimeout property: Query timeout value (in minutes). Effective when the HDInsight cluster is with
-     * ESP (Enterprise Security Package).
+     * Get the queryTimeout property: Query timeout value (in minutes). Effective when the HDInsight cluster is with ESP
+     * (Enterprise Security Package).
      * 
      * @return the queryTimeout value.
      */
@@ -226,8 +225,8 @@ public final class HDInsightHiveActivityTypeProperties {
     }
 
     /**
-     * Set the queryTimeout property: Query timeout value (in minutes). Effective when the HDInsight cluster is with
-     * ESP (Enterprise Security Package).
+     * Set the queryTimeout property: Query timeout value (in minutes). Effective when the HDInsight cluster is with ESP
+     * (Enterprise Security Package).
      * 
      * @param queryTimeout the queryTimeout value to set.
      * @return the HDInsightHiveActivityTypeProperties object itself.

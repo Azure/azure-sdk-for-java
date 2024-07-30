@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.SendOptions;
@@ -59,7 +60,7 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
             for (Map.Entry<String, IntegrationTestEventData> entry : integrationTestData.entrySet()) {
                 testData = entry.getValue();
 
-                System.out.printf("Getting entry for: %s%n", testData.getPartitionId());
+                logger.log(LogLevel.VERBOSE, () -> "Getting entry for: " + testData.getPartitionId());
                 break;
             }
 

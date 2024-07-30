@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CancelEnum;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.DbServerMetadata;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.LogicalReplicationOnSourceDbEnum;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrateRolesEnum;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationOption;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationSecretParameters;
@@ -102,6 +103,29 @@ public final class MigrationResourceInner extends Resource {
     }
 
     /**
+     * Get the migrationInstanceResourceId property: ResourceId of the private endpoint migration instance.
+     * 
+     * @return the migrationInstanceResourceId value.
+     */
+    public String migrationInstanceResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().migrationInstanceResourceId();
+    }
+
+    /**
+     * Set the migrationInstanceResourceId property: ResourceId of the private endpoint migration instance.
+     * 
+     * @param migrationInstanceResourceId the migrationInstanceResourceId value to set.
+     * @return the MigrationResourceInner object itself.
+     */
+    public MigrationResourceInner withMigrationInstanceResourceId(String migrationInstanceResourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MigrationResourceProperties();
+        }
+        this.innerProperties().withMigrationInstanceResourceId(migrationInstanceResourceId);
+        return this;
+    }
+
+    /**
      * Get the migrationMode property: There are two types of migration modes Online and Offline.
      * 
      * @return the migrationMode value.
@@ -148,8 +172,8 @@ public final class MigrationResourceInner extends Resource {
     }
 
     /**
-     * Get the sourceType property: migration source server type : OnPremises, AWS, GCP, AzureVM or
-     * PostgreSQLSingleServer.
+     * Get the sourceType property: migration source server type : OnPremises, AWS, GCP, AzureVM,
+     * PostgreSQLSingleServer, AWS_RDS, AWS_AURORA, AWS_EC2, GCP_CloudSQL, GCP_AlloyDB, GCP_Compute, or EDB.
      * 
      * @return the sourceType value.
      */
@@ -158,8 +182,8 @@ public final class MigrationResourceInner extends Resource {
     }
 
     /**
-     * Set the sourceType property: migration source server type : OnPremises, AWS, GCP, AzureVM or
-     * PostgreSQLSingleServer.
+     * Set the sourceType property: migration source server type : OnPremises, AWS, GCP, AzureVM,
+     * PostgreSQLSingleServer, AWS_RDS, AWS_AURORA, AWS_EC2, GCP_CloudSQL, GCP_AlloyDB, GCP_Compute, or EDB.
      * 
      * @param sourceType the sourceType value to set.
      * @return the MigrationResourceInner object itself.
@@ -217,7 +241,8 @@ public final class MigrationResourceInner extends Resource {
 
     /**
      * Get the sourceDbServerResourceId property: ResourceId of the source database server in case the sourceType is
-     * PostgreSQLSingleServer. For other source types this should be ipaddress:port@username or hostname:port@username.
+     * PostgreSQLSingleServer. For other source types this should be ipaddress:port&#064;username or
+     * hostname:port&#064;username.
      * 
      * @return the sourceDbServerResourceId value.
      */
@@ -227,7 +252,8 @@ public final class MigrationResourceInner extends Resource {
 
     /**
      * Set the sourceDbServerResourceId property: ResourceId of the source database server in case the sourceType is
-     * PostgreSQLSingleServer. For other source types this should be ipaddress:port@username or hostname:port@username.
+     * PostgreSQLSingleServer. For other source types this should be ipaddress:port&#064;username or
+     * hostname:port&#064;username.
      * 
      * @param sourceDbServerResourceId the sourceDbServerResourceId value to set.
      * @return the MigrationResourceInner object itself.
@@ -241,8 +267,8 @@ public final class MigrationResourceInner extends Resource {
     }
 
     /**
-     * Get the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name or ip. It is
-     * a optional value, if customer provide it, dms will always use it for connection.
+     * Get the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name or ip. It is a
+     * optional value, if customer provide it, dms will always use it for connection.
      * 
      * @return the sourceDbServerFullyQualifiedDomainName value.
      */
@@ -251,8 +277,8 @@ public final class MigrationResourceInner extends Resource {
     }
 
     /**
-     * Set the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name or ip. It is
-     * a optional value, if customer provide it, dms will always use it for connection.
+     * Set the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name or ip. It is a
+     * optional value, if customer provide it, dms will always use it for connection.
      * 
      * @param sourceDbServerFullyQualifiedDomainName the sourceDbServerFullyQualifiedDomainName value to set.
      * @return the MigrationResourceInner object itself.
@@ -276,8 +302,8 @@ public final class MigrationResourceInner extends Resource {
     }
 
     /**
-     * Get the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name or ip. It is
-     * a optional value, if customer provide it, dms will always use it for connection.
+     * Get the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name or ip. It is a
+     * optional value, if customer provide it, dms will always use it for connection.
      * 
      * @return the targetDbServerFullyQualifiedDomainName value.
      */
@@ -286,8 +312,8 @@ public final class MigrationResourceInner extends Resource {
     }
 
     /**
-     * Set the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name or ip. It is
-     * a optional value, if customer provide it, dms will always use it for connection.
+     * Set the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name or ip. It is a
+     * optional value, if customer provide it, dms will always use it for connection.
      * 
      * @param targetDbServerFullyQualifiedDomainName the targetDbServerFullyQualifiedDomainName value to set.
      * @return the MigrationResourceInner object itself.
@@ -354,7 +380,8 @@ public final class MigrationResourceInner extends Resource {
      * @return the setupLogicalReplicationOnSourceDbIfNeeded value.
      */
     public LogicalReplicationOnSourceDbEnum setupLogicalReplicationOnSourceDbIfNeeded() {
-        return this.innerProperties() == null ? null
+        return this.innerProperties() == null
+            ? null
             : this.innerProperties().setupLogicalReplicationOnSourceDbIfNeeded();
     }
 
@@ -444,6 +471,29 @@ public final class MigrationResourceInner extends Resource {
             this.innerProperties = new MigrationResourceProperties();
         }
         this.innerProperties().withMigrationWindowEndTimeInUtc(migrationWindowEndTimeInUtc);
+        return this;
+    }
+
+    /**
+     * Get the migrateRoles property: To migrate roles and permissions we need to send this flag as True.
+     * 
+     * @return the migrateRoles value.
+     */
+    public MigrateRolesEnum migrateRoles() {
+        return this.innerProperties() == null ? null : this.innerProperties().migrateRoles();
+    }
+
+    /**
+     * Set the migrateRoles property: To migrate roles and permissions we need to send this flag as True.
+     * 
+     * @param migrateRoles the migrateRoles value to set.
+     * @return the MigrationResourceInner object itself.
+     */
+    public MigrationResourceInner withMigrateRoles(MigrateRolesEnum migrateRoles) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MigrationResourceProperties();
+        }
+        this.innerProperties().withMigrateRoles(migrateRoles);
         return this;
     }
 

@@ -27,8 +27,7 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
     private GeoReplicationStatusType status;
 
     /*
-     * A GMT date/time value, to the second. All primary writes preceding this value are guaranteed to be available for
-     * read operations at the secondary. Primary writes after this point in time may or may not be available for reads.
+     * A GMT date/time value, to the second. All primary writes preceding this value are guaranteed to be available for read operations at the secondary. Primary writes after this point in time may or may not be available for reads.
      */
     private DateTimeRfc1123 lastSyncTime;
 

@@ -24,6 +24,7 @@ import com.azure.resourcemanager.batch.models.ResizeOperationStatus;
 import com.azure.resourcemanager.batch.models.ScaleSettings;
 import com.azure.resourcemanager.batch.models.StartTask;
 import com.azure.resourcemanager.batch.models.TaskSchedulingPolicy;
+import com.azure.resourcemanager.batch.models.UpgradePolicy;
 import com.azure.resourcemanager.batch.models.UserAccount;
 import java.time.OffsetDateTime;
 import java.util.Collections;
@@ -193,6 +194,10 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
         return this.innerModel().currentNodeCommunicationMode();
     }
 
+    public UpgradePolicy upgradePolicy() {
+        return this.innerModel().upgradePolicy();
+    }
+
     public Map<String, String> resourceTags() {
         Map<String, String> inner = this.innerModel().resourceTags();
         if (inner != null) {
@@ -273,9 +278,9 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
     PoolImpl(PoolInner innerObject, com.azure.resourcemanager.batch.BatchManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "batchAccounts");
-        this.poolName = Utils.getValueFromIdByName(innerObject.id(), "pools");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "batchAccounts");
+        this.poolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "pools");
     }
 
     public Pool refresh() {
@@ -388,6 +393,11 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
 
     public PoolImpl withTargetNodeCommunicationMode(NodeCommunicationMode targetNodeCommunicationMode) {
         this.innerModel().withTargetNodeCommunicationMode(targetNodeCommunicationMode);
+        return this;
+    }
+
+    public PoolImpl withUpgradePolicy(UpgradePolicy upgradePolicy) {
+        this.innerModel().withUpgradePolicy(upgradePolicy);
         return this;
     }
 

@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.hybridcompute.generated;
 
-/** Samples for Licenses Delete. */
+/**
+ * Samples for Licenses Delete.
+ */
 public final class LicensesDeleteSamples {
     /*
-     * x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-06-20-preview/examples/license/License_Delete.json
+     * x-ms-original-file:
+     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-05-20-preview/examples/license/
+     * License_Delete.json
      */
     /**
      * Sample code: Delete a License.
-     *
+     * 
      * @param manager Entry point to HybridComputeManager.
      */
     public static void deleteALicense(com.azure.resourcemanager.hybridcompute.HybridComputeManager manager) {

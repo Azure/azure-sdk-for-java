@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An object that defines the Lifecycle rule. Each definition is made up with a filters set and an actions set. */
+/**
+ * An object that defines the Lifecycle rule. Each definition is made up with a filters set and an actions set.
+ */
 @Fluent
 public final class ManagementPolicyDefinition {
     /*
@@ -23,13 +25,15 @@ public final class ManagementPolicyDefinition {
     @JsonProperty(value = "filters")
     private ManagementPolicyFilter filters;
 
-    /** Creates an instance of ManagementPolicyDefinition class. */
+    /**
+     * Creates an instance of ManagementPolicyDefinition class.
+     */
     public ManagementPolicyDefinition() {
     }
 
     /**
      * Get the actions property: An object that defines the action set.
-     *
+     * 
      * @return the actions value.
      */
     public ManagementPolicyAction actions() {
@@ -38,7 +42,7 @@ public final class ManagementPolicyDefinition {
 
     /**
      * Set the actions property: An object that defines the action set.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the ManagementPolicyDefinition object itself.
      */
@@ -49,7 +53,7 @@ public final class ManagementPolicyDefinition {
 
     /**
      * Get the filters property: An object that defines the filter set.
-     *
+     * 
      * @return the filters value.
      */
     public ManagementPolicyFilter filters() {
@@ -58,7 +62,7 @@ public final class ManagementPolicyDefinition {
 
     /**
      * Set the filters property: An object that defines the filter set.
-     *
+     * 
      * @param filters the filters value to set.
      * @return the ManagementPolicyDefinition object itself.
      */
@@ -69,15 +73,14 @@ public final class ManagementPolicyDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (actions() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property actions in model ManagementPolicyDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property actions in model ManagementPolicyDefinition"));
         } else {
             actions().validate();
         }

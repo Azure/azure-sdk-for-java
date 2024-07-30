@@ -36,7 +36,7 @@ import java.util.Map;
 public final class FirewallPoliciesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/FirewallPolicyPut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/FirewallPolicyPut.json
      */
     /**
      * Sample code: Create FirewallPolicy.
@@ -44,47 +44,58 @@ public final class FirewallPoliciesCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createFirewallPolicy(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getFirewallPolicies().createOrUpdate("rg1", "firewallPolicy",
-            new FirewallPolicyInner().withLocation("West US").withTags(mapOf("key1", "fakeTokenPlaceholder"))
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getFirewallPolicies()
+            .createOrUpdate("rg1", "firewallPolicy", new FirewallPolicyInner().withLocation("West US")
+                .withTags(mapOf("key1", "fakeTokenPlaceholder"))
                 .withThreatIntelMode(AzureFirewallThreatIntelMode.ALERT)
-                .withThreatIntelWhitelist(new FirewallPolicyThreatIntelWhitelist()
-                    .withIpAddresses(Arrays.asList("20.3.4.5")).withFqdns(Arrays.asList("*.microsoft.com")))
-                .withInsights(new FirewallPolicyInsights().withIsEnabled(true).withRetentionDays(100)
-                    .withLogAnalyticsResources(new FirewallPolicyLogAnalyticsResources()
-                        .withWorkspaces(Arrays.asList(new FirewallPolicyLogAnalyticsWorkspace().withRegion("westus")
+                .withThreatIntelWhitelist(
+                    new FirewallPolicyThreatIntelWhitelist().withIpAddresses(Arrays.asList("20.3.4.5"))
+                        .withFqdns(Arrays.asList("*.microsoft.com")))
+                .withInsights(new FirewallPolicyInsights().withIsEnabled(true)
+                    .withRetentionDays(100)
+                    .withLogAnalyticsResources(new FirewallPolicyLogAnalyticsResources().withWorkspaces(Arrays.asList(
+                        new FirewallPolicyLogAnalyticsWorkspace().withRegion("westus")
                             .withWorkspaceId(new SubResource().withId(
                                 "/subscriptions/subid/resourcegroups/rg1/providers/microsoft.operationalinsights/workspaces/workspace1")),
-                            new FirewallPolicyLogAnalyticsWorkspace().withRegion("eastus")
-                                .withWorkspaceId(new SubResource().withId(
-                                    "/subscriptions/subid/resourcegroups/rg1/providers/microsoft.operationalinsights/workspaces/workspace2"))))
+                        new FirewallPolicyLogAnalyticsWorkspace().withRegion("eastus")
+                            .withWorkspaceId(new SubResource().withId(
+                                "/subscriptions/subid/resourcegroups/rg1/providers/microsoft.operationalinsights/workspaces/workspace2"))))
                         .withDefaultWorkspaceId(new SubResource().withId(
                             "/subscriptions/subid/resourcegroups/rg1/providers/microsoft.operationalinsights/workspaces/defaultWorkspace"))))
                 .withSnat(new FirewallPolicySnat().withPrivateRanges(Arrays.asList("IANAPrivateRanges")))
                 .withSql(new FirewallPolicySql().withAllowSqlRedirect(true))
-                .withDnsSettings(new DnsSettings().withServers(Arrays.asList("30.3.4.5")).withEnableProxy(true)
+                .withDnsSettings(new DnsSettings().withServers(Arrays.asList("30.3.4.5"))
+                    .withEnableProxy(true)
                     .withRequireProxyForNetworkRules(false))
-                .withExplicitProxy(new ExplicitProxy().withEnableExplicitProxy(true).withHttpPort(8087)
-                    .withHttpsPort(8087).withEnablePacFile(true).withPacFilePort(8087).withPacFile(
+                .withExplicitProxy(new ExplicitProxy().withEnableExplicitProxy(true)
+                    .withHttpPort(8087)
+                    .withHttpsPort(8087)
+                    .withEnablePacFile(true)
+                    .withPacFilePort(8087)
+                    .withPacFile(
                         "https://tinawstorage.file.core.windows.net/?sv=2020-02-10&ss=bfqt&srt=sco&sp=rwdlacuptfx&se=2021-06-04T07:01:12Z&st=2021-06-03T23:01:12Z&sip=68.65.171.11&spr=https&sig=Plsa0RRVpGbY0IETZZOT6znOHcSro71LLTTbzquYPgs%3D"))
-                .withIntrusionDetection(
-                    new FirewallPolicyIntrusionDetection().withMode(FirewallPolicyIntrusionDetectionStateType.ALERT)
-                        .withProfile(FirewallPolicyIntrusionDetectionProfileType.fromString("Balanced"))
-                        .withConfiguration(new FirewallPolicyIntrusionDetectionConfiguration()
-                            .withSignatureOverrides(
-                                Arrays.asList(new FirewallPolicyIntrusionDetectionSignatureSpecification()
-                                    .withId("2525004").withMode(FirewallPolicyIntrusionDetectionStateType.DENY)))
-                            .withBypassTrafficSettings(
-                                Arrays.asList(new FirewallPolicyIntrusionDetectionBypassTrafficSpecifications()
-                                    .withName("bypassRule1").withDescription("Rule 1")
-                                    .withProtocol(FirewallPolicyIntrusionDetectionProtocol.TCP)
-                                    .withSourceAddresses(Arrays.asList("1.2.3.4"))
-                                    .withDestinationAddresses(Arrays.asList("5.6.7.8"))
-                                    .withDestinationPorts(Arrays.asList("*"))))))
-                .withTransportSecurity(new FirewallPolicyTransportSecurity()
-                    .withCertificateAuthority(new FirewallPolicyCertificateAuthority()
-                        .withKeyVaultSecretId("fakeTokenPlaceholder").withName("clientcert")))
+                .withIntrusionDetection(new FirewallPolicyIntrusionDetection()
+                    .withMode(FirewallPolicyIntrusionDetectionStateType.ALERT)
+                    .withProfile(FirewallPolicyIntrusionDetectionProfileType.fromString("Balanced"))
+                    .withConfiguration(new FirewallPolicyIntrusionDetectionConfiguration()
+                        .withSignatureOverrides(
+                            Arrays.asList(new FirewallPolicyIntrusionDetectionSignatureSpecification().withId("2525004")
+                                .withMode(FirewallPolicyIntrusionDetectionStateType.DENY)))
+                        .withBypassTrafficSettings(Arrays.asList(
+                            new FirewallPolicyIntrusionDetectionBypassTrafficSpecifications().withName("bypassRule1")
+                                .withDescription("Rule 1")
+                                .withProtocol(FirewallPolicyIntrusionDetectionProtocol.TCP)
+                                .withSourceAddresses(Arrays.asList("1.2.3.4"))
+                                .withDestinationAddresses(Arrays.asList("5.6.7.8"))
+                                .withDestinationPorts(Arrays.asList("*"))))))
+                .withTransportSecurity(new FirewallPolicyTransportSecurity().withCertificateAuthority(
+                    new FirewallPolicyCertificateAuthority().withKeyVaultSecretId("fakeTokenPlaceholder")
+                        .withName("clientcert")))
                 .withSku(new FirewallPolicySku().withTier(FirewallPolicySkuTier.PREMIUM)),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

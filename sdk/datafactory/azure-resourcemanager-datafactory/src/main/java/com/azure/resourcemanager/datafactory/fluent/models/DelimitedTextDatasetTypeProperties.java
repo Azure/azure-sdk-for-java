@@ -66,9 +66,8 @@ public final class DelimitedTextDatasetTypeProperties {
     private Object escapeChar;
 
     /*
-     * When used as input, treat the first row of data as headers. When used as output,write the headers into the
-     * output as the first row of data. The default value is false. Type: boolean (or Expression with resultType
-     * boolean).
+     * When used as input, treat the first row of data as headers. When used as output,write the headers into the output
+     * as the first row of data. The default value is false. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "firstRowAsHeader")
     private Object firstRowAsHeader;
@@ -146,10 +145,10 @@ public final class DelimitedTextDatasetTypeProperties {
     }
 
     /**
-     * Get the encodingName property: The code page name of the preferred encoding. If miss, the default value is
-     * UTF-8, unless BOM denotes another Unicode encoding. Refer to the name column of the table in the following link
-     * to set supported values: https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or
-     * Expression with resultType string).
+     * Get the encodingName property: The code page name of the preferred encoding. If miss, the default value is UTF-8,
+     * unless BOM denotes another Unicode encoding. Refer to the name column of the table in the following link to set
+     * supported values: https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or Expression with
+     * resultType string).
      * 
      * @return the encodingName value.
      */
@@ -158,10 +157,10 @@ public final class DelimitedTextDatasetTypeProperties {
     }
 
     /**
-     * Set the encodingName property: The code page name of the preferred encoding. If miss, the default value is
-     * UTF-8, unless BOM denotes another Unicode encoding. Refer to the name column of the table in the following link
-     * to set supported values: https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or
-     * Expression with resultType string).
+     * Set the encodingName property: The code page name of the preferred encoding. If miss, the default value is UTF-8,
+     * unless BOM denotes another Unicode encoding. Refer to the name column of the table in the following link to set
+     * supported values: https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or Expression with
+     * resultType string).
      * 
      * @param encodingName the encodingName value to set.
      * @return the DelimitedTextDatasetTypeProperties object itself.
@@ -304,8 +303,9 @@ public final class DelimitedTextDatasetTypeProperties {
      */
     public void validate() {
         if (location() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property location in model DelimitedTextDatasetTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model DelimitedTextDatasetTypeProperties"));
         } else {
             location().validate();
         }

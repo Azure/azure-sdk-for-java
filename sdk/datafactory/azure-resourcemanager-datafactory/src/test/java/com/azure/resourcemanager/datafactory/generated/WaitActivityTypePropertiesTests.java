@@ -10,13 +10,13 @@ import com.azure.resourcemanager.datafactory.fluent.models.WaitActivityTypePrope
 public final class WaitActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WaitActivityTypeProperties model
-            = BinaryData.fromString("{\"waitTimeInSeconds\":\"datan\"}").toObject(WaitActivityTypeProperties.class);
+        WaitActivityTypeProperties model = BinaryData.fromString("{\"waitTimeInSeconds\":\"dataiprjahgqzb\"}")
+            .toObject(WaitActivityTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WaitActivityTypeProperties model = new WaitActivityTypeProperties().withWaitTimeInSeconds("datan");
+        WaitActivityTypeProperties model = new WaitActivityTypeProperties().withWaitTimeInSeconds("dataiprjahgqzb");
         model = BinaryData.fromObject(model).toObject(WaitActivityTypeProperties.class);
     }
 }

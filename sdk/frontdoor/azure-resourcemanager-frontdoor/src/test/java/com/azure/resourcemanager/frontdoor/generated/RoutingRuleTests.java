@@ -17,48 +17,40 @@ import org.junit.jupiter.api.Assertions;
 public final class RoutingRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RoutingRule model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"resourceState\":\"Disabling\",\"frontendEndpoints\":[{\"id\":\"cnapkteoell\"},{\"id\":\"tfdygpfqb\"},{\"id\":\"ceopzfqrhhuaopp\"}],\"acceptedProtocols\":[\"Http\",\"Https\"],\"patternsToMatch\":[\"lzdahzxctobgbkdm\"],\"enabledState\":\"Disabled\",\"routeConfiguration\":{\"@odata.type\":\"RouteConfiguration\"},\"rulesEngine\":{\"id\":\"tmgrcfbun\"},\"webApplicationFirewallPolicyLink\":{\"id\":\"qjhhkxbpv\"}},\"name\":\"mjh\",\"type\":\"j\",\"id\":\"gudivkrtswbxqz\"}")
-                .toObject(RoutingRule.class);
-        Assertions.assertEquals("gudivkrtswbxqz", model.id());
-        Assertions.assertEquals("mjh", model.name());
-        Assertions.assertEquals("cnapkteoell", model.frontendEndpoints().get(0).id());
-        Assertions.assertEquals(FrontDoorProtocol.HTTP, model.acceptedProtocols().get(0));
-        Assertions.assertEquals("lzdahzxctobgbkdm", model.patternsToMatch().get(0));
+        RoutingRule model = BinaryData.fromString(
+            "{\"properties\":{\"resourceState\":\"Deleting\",\"frontendEndpoints\":[{\"id\":\"ilqu\"},{\"id\":\"ydxtqm\"},{\"id\":\"ox\"},{\"id\":\"ggufhyaomtb\"}],\"acceptedProtocols\":[\"Https\",\"Http\"],\"patternsToMatch\":[\"vkffovjzhpjb\"],\"enabledState\":\"Disabled\",\"routeConfiguration\":{\"@odata.type\":\"fxumv\"},\"rulesEngine\":{\"id\":\"uyovw\"},\"webApplicationFirewallPolicyLink\":{\"id\":\"kfezzxscyhwz\"}},\"name\":\"irujbz\",\"type\":\"mvzzbtdcqvp\",\"id\":\"yujviylwdshfssn\"}")
+            .toObject(RoutingRule.class);
+        Assertions.assertEquals("yujviylwdshfssn", model.id());
+        Assertions.assertEquals("irujbz", model.name());
+        Assertions.assertEquals("ilqu", model.frontendEndpoints().get(0).id());
+        Assertions.assertEquals(FrontDoorProtocol.HTTPS, model.acceptedProtocols().get(0));
+        Assertions.assertEquals("vkffovjzhpjb", model.patternsToMatch().get(0));
         Assertions.assertEquals(RoutingRuleEnabledState.DISABLED, model.enabledState());
-        Assertions.assertEquals("tmgrcfbun", model.rulesEngine().id());
-        Assertions.assertEquals("qjhhkxbpv", model.webApplicationFirewallPolicyLink().id());
+        Assertions.assertEquals("uyovw", model.rulesEngine().id());
+        Assertions.assertEquals("kfezzxscyhwz", model.webApplicationFirewallPolicyLink().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RoutingRule model =
-            new RoutingRule()
-                .withId("gudivkrtswbxqz")
-                .withName("mjh")
-                .withFrontendEndpoints(
-                    Arrays
-                        .asList(
-                            new SubResource().withId("cnapkteoell"),
-                            new SubResource().withId("tfdygpfqb"),
-                            new SubResource().withId("ceopzfqrhhuaopp")))
-                .withAcceptedProtocols(Arrays.asList(FrontDoorProtocol.HTTP, FrontDoorProtocol.HTTPS))
-                .withPatternsToMatch(Arrays.asList("lzdahzxctobgbkdm"))
-                .withEnabledState(RoutingRuleEnabledState.DISABLED)
-                .withRouteConfiguration(new RouteConfiguration())
-                .withRulesEngine(new SubResource().withId("tmgrcfbun"))
-                .withWebApplicationFirewallPolicyLink(
-                    new RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink().withId("qjhhkxbpv"));
+        RoutingRule model = new RoutingRule().withId("yujviylwdshfssn")
+            .withName("irujbz")
+            .withFrontendEndpoints(Arrays.asList(new SubResource().withId("ilqu"), new SubResource().withId("ydxtqm"),
+                new SubResource().withId("ox"), new SubResource().withId("ggufhyaomtb")))
+            .withAcceptedProtocols(Arrays.asList(FrontDoorProtocol.HTTPS, FrontDoorProtocol.HTTP))
+            .withPatternsToMatch(Arrays.asList("vkffovjzhpjb"))
+            .withEnabledState(RoutingRuleEnabledState.DISABLED)
+            .withRouteConfiguration(new RouteConfiguration())
+            .withRulesEngine(new SubResource().withId("uyovw"))
+            .withWebApplicationFirewallPolicyLink(
+                new RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink().withId("kfezzxscyhwz"));
         model = BinaryData.fromObject(model).toObject(RoutingRule.class);
-        Assertions.assertEquals("gudivkrtswbxqz", model.id());
-        Assertions.assertEquals("mjh", model.name());
-        Assertions.assertEquals("cnapkteoell", model.frontendEndpoints().get(0).id());
-        Assertions.assertEquals(FrontDoorProtocol.HTTP, model.acceptedProtocols().get(0));
-        Assertions.assertEquals("lzdahzxctobgbkdm", model.patternsToMatch().get(0));
+        Assertions.assertEquals("yujviylwdshfssn", model.id());
+        Assertions.assertEquals("irujbz", model.name());
+        Assertions.assertEquals("ilqu", model.frontendEndpoints().get(0).id());
+        Assertions.assertEquals(FrontDoorProtocol.HTTPS, model.acceptedProtocols().get(0));
+        Assertions.assertEquals("vkffovjzhpjb", model.patternsToMatch().get(0));
         Assertions.assertEquals(RoutingRuleEnabledState.DISABLED, model.enabledState());
-        Assertions.assertEquals("tmgrcfbun", model.rulesEngine().id());
-        Assertions.assertEquals("qjhhkxbpv", model.webApplicationFirewallPolicyLink().id());
+        Assertions.assertEquals("uyovw", model.rulesEngine().id());
+        Assertions.assertEquals("kfezzxscyhwz", model.webApplicationFirewallPolicyLink().id());
     }
 }

@@ -9,29 +9,26 @@ import com.azure.resourcemanager.hybridcompute.models.MachineExtensionUpgrade;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ResourceProvider UpgradeExtensions. */
+/**
+ * Samples for ResourceProvider UpgradeExtensions.
+ */
 public final class ResourceProviderUpgradeExtensionsSamples {
     /*
-     * x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-06-20-preview/examples/extension/Extensions_Upgrade.json
+     * x-ms-original-file:
+     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-05-20-preview/examples/
+     * extension/Extensions_Upgrade.json
      */
     /**
      * Sample code: Upgrade Machine Extensions.
-     *
+     * 
      * @param manager Entry point to HybridComputeManager.
      */
     public static void upgradeMachineExtensions(com.azure.resourcemanager.hybridcompute.HybridComputeManager manager) {
-        manager
-            .resourceProviders()
-            .upgradeExtensions(
-                "myResourceGroup",
-                "myMachine",
-                new MachineExtensionUpgrade()
-                    .withExtensionTargets(
-                        mapOf(
-                            "Microsoft.Azure.Monitoring",
-                            new ExtensionTargetProperties().withTargetVersion("2.0"),
-                            "Microsoft.Compute.CustomScriptExtension",
-                            new ExtensionTargetProperties().withTargetVersion("1.10"))),
+        manager.resourceProviders()
+            .upgradeExtensions("myResourceGroup", "myMachine",
+                new MachineExtensionUpgrade().withExtensionTargets(mapOf("Microsoft.Azure.Monitoring",
+                    new ExtensionTargetProperties().withTargetVersion("2.0"), "Microsoft.Compute.CustomScriptExtension",
+                    new ExtensionTargetProperties().withTargetVersion("1.10"))),
                 com.azure.core.util.Context.NONE);
     }
 

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.frontdoor.fluent.models.ProfileInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Defines a list of Profiles. It contains a list of Profile objects and a URL link to get the next set of results. */
+/**
+ * Defines a list of Profiles. It contains a list of Profile objects and a URL link to get the next set of results.
+ */
 @Fluent
 public final class ProfileList {
     /*
@@ -24,13 +26,15 @@ public final class ProfileList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ProfileList class. */
+    /**
+     * Creates an instance of ProfileList class.
+     */
     public ProfileList() {
     }
 
     /**
      * Get the value property: List of Profiles within a resource group.
-     *
+     * 
      * @return the value value.
      */
     public List<ProfileInner> value() {
@@ -39,7 +43,7 @@ public final class ProfileList {
 
     /**
      * Get the nextLink property: URL to get the next set of Profile objects if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class ProfileList {
 
     /**
      * Set the nextLink property: URL to get the next set of Profile objects if there are any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ProfileList object itself.
      */
@@ -59,7 +63,7 @@ public final class ProfileList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

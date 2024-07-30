@@ -44,7 +44,7 @@ public final class DateTimeRfc1123 {
     }
 
     /**
-     * JSON creator for DateTimeRfc1123.
+     * XML creator for DateTimeRfc1123.
      * <p>
      * If {@code date} is null or an empty string null will be returned.
      *

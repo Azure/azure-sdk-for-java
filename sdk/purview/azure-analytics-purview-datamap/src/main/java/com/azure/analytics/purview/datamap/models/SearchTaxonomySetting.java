@@ -6,26 +6,28 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Taxonomy setting for search request.
  */
 @Fluent
-public final class SearchTaxonomySetting {
+public final class SearchTaxonomySetting implements JsonSerializable<SearchTaxonomySetting> {
     /*
      * Asset types
      */
     @Generated
-    @JsonProperty(value = "assetTypes")
     private List<String> assetTypes;
 
     /*
      * The content of a search facet result item.
      */
     @Generated
-    @JsonProperty(value = "facet")
     private SearchFacetItem facet;
 
     /**
@@ -77,5 +79,47 @@ public final class SearchTaxonomySetting {
     public SearchTaxonomySetting setFacet(SearchFacetItem facet) {
         this.facet = facet;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("assetTypes", this.assetTypes, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("facet", this.facet);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SearchTaxonomySetting from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchTaxonomySetting if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SearchTaxonomySetting.
+     */
+    @Generated
+    public static SearchTaxonomySetting fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SearchTaxonomySetting deserializedSearchTaxonomySetting = new SearchTaxonomySetting();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("assetTypes".equals(fieldName)) {
+                    List<String> assetTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSearchTaxonomySetting.assetTypes = assetTypes;
+                } else if ("facet".equals(fieldName)) {
+                    deserializedSearchTaxonomySetting.facet = SearchFacetItem.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSearchTaxonomySetting;
+        });
     }
 }

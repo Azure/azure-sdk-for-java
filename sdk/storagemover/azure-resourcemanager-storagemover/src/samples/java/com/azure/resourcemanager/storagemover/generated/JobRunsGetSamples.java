@@ -4,25 +4,22 @@
 
 package com.azure.resourcemanager.storagemover.generated;
 
-/** Samples for JobRuns Get. */
+/**
+ * Samples for JobRuns Get.
+ */
 public final class JobRunsGetSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-10-01/examples/JobRuns_Get.json
+     * x-ms-original-file:
+     * specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2024-07-01/examples/JobRuns_Get.json
      */
     /**
      * Sample code: JobRuns_Get.
-     *
+     * 
      * @param manager Entry point to StorageMoverManager.
      */
     public static void jobRunsGet(com.azure.resourcemanager.storagemover.StorageMoverManager manager) {
-        manager
-            .jobRuns()
-            .getWithResponse(
-                "examples-rg",
-                "examples-storageMoverName",
-                "examples-projectName",
-                "examples-jobDefinitionName",
-                "examples-jobRunName",
-                com.azure.core.util.Context.NONE);
+        manager.jobRuns()
+            .getWithResponse("examples-rg", "examples-storageMoverName", "examples-projectName",
+                "examples-jobDefinitionName", "examples-jobRunName", com.azure.core.util.Context.NONE);
     }
 }

@@ -60,14 +60,16 @@ public final class AzureDevOpsOrgImpl implements AzureDevOpsOrg, AzureDevOpsOrg.
     }
 
     public AzureDevOpsOrg create() {
-        this.innerObject = serviceManager.serviceClient().getAzureDevOpsOrgs().createOrUpdate(resourceGroupName,
-            securityConnectorName, orgName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureDevOpsOrgs()
+            .createOrUpdate(resourceGroupName, securityConnectorName, orgName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public AzureDevOpsOrg create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAzureDevOpsOrgs().createOrUpdate(resourceGroupName,
-            securityConnectorName, orgName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureDevOpsOrgs()
+            .createOrUpdate(resourceGroupName, securityConnectorName, orgName, this.innerModel(), context);
         return this;
     }
 
@@ -82,14 +84,16 @@ public final class AzureDevOpsOrgImpl implements AzureDevOpsOrg, AzureDevOpsOrg.
     }
 
     public AzureDevOpsOrg apply() {
-        this.innerObject = serviceManager.serviceClient().getAzureDevOpsOrgs().update(resourceGroupName,
-            securityConnectorName, orgName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureDevOpsOrgs()
+            .update(resourceGroupName, securityConnectorName, orgName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public AzureDevOpsOrg apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAzureDevOpsOrgs().update(resourceGroupName,
-            securityConnectorName, orgName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureDevOpsOrgs()
+            .update(resourceGroupName, securityConnectorName, orgName, this.innerModel(), context);
         return this;
     }
 
@@ -103,14 +107,18 @@ public final class AzureDevOpsOrgImpl implements AzureDevOpsOrg, AzureDevOpsOrg.
     }
 
     public AzureDevOpsOrg refresh() {
-        this.innerObject = serviceManager.serviceClient().getAzureDevOpsOrgs()
-            .getWithResponse(resourceGroupName, securityConnectorName, orgName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureDevOpsOrgs()
+            .getWithResponse(resourceGroupName, securityConnectorName, orgName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AzureDevOpsOrg refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAzureDevOpsOrgs()
-            .getWithResponse(resourceGroupName, securityConnectorName, orgName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureDevOpsOrgs()
+            .getWithResponse(resourceGroupName, securityConnectorName, orgName, context)
+            .getValue();
         return this;
     }
 

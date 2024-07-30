@@ -7,8 +7,10 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.ListSharesOptions;
 import com.azure.storage.file.share.models.ShareAccessTier;
 import com.azure.storage.file.share.models.ShareCorsRule;
@@ -17,6 +19,7 @@ import com.azure.storage.file.share.models.ShareItem;
 import com.azure.storage.file.share.models.ShareMetrics;
 import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareProtocolSettings;
+import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareRetentionPolicy;
 import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ShareSmbSettings;
@@ -414,5 +417,26 @@ public class FileServiceApiTests extends FileShareTestBase {
             primaryFileServiceClient.getFileServiceUrl(), getPerCallVersionPolicy()).buildClient();
         Response<ShareServiceProperties> response = serviceClient.getPropertiesWithResponse(null, null);
         assertEquals(response.getHeaders().getValue(X_MS_VERSION), "2017-11-09");
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @Test
+    public void listSharesEnableSnapshotVirtualDirectoryAccess() {
+        ShareCreateOptions options = new ShareCreateOptions();
+        ShareProtocols protocols = ModelHelper.parseShareProtocols(Constants.HeaderConstants.NFS_PROTOCOL);
+        options.setProtocols(protocols);
+        options.setSnapshotVirtualDirectoryAccessEnabled(true);
+
+        String shareName = generateShareName();
+
+        ShareClient shareClient = premiumFileServiceClient.getShareClient(shareName);
+        shareClient.createWithResponse(options, null, null);
+
+        Stream<ShareItem> shares = premiumFileServiceClient.listShares().stream();
+
+        ShareItem share = shares.filter(r -> r.getName().equals(shareName)).findFirst().get();
+
+        assertEquals(protocols.toString(), share.getProperties().getProtocols().toString());
+        assertTrue(share.getProperties().isSnapshotVirtualDirectoryAccessEnabled());
     }
 }

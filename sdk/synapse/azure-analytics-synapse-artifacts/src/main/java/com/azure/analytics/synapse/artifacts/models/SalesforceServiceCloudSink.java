@@ -5,44 +5,52 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * A copy activity Salesforce Service Cloud sink.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("SalesforceServiceCloudSink")
 @Fluent
 public final class SalesforceServiceCloudSink extends CopySink {
     /*
+     * Copy sink type.
+     */
+    private String type = "SalesforceServiceCloudSink";
+
+    /*
      * The write behavior for the operation. Default is Insert.
      */
-    @JsonProperty(value = "writeBehavior")
     private SalesforceSinkWriteBehavior writeBehavior;
 
     /*
-     * The name of the external ID field for upsert operation. Default value is 'Id' column. Type: string (or
-     * Expression with resultType string).
+     * The name of the external ID field for upsert operation. Default value is 'Id' column. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "externalIdFieldName")
     private Object externalIdFieldName;
 
     /*
-     * The flag indicating whether or not to ignore null values from input dataset (except key fields) during write
-     * operation. Default value is false. If set it to true, it means ADF will leave the data in the destination object
-     * unchanged when doing upsert/update operation and insert defined default value when doing insert operation,
-     * versus ADF will update the data in the destination object to NULL when doing upsert/update operation and insert
-     * NULL value when doing insert operation. Type: boolean (or Expression with resultType boolean).
+     * The flag indicating whether or not to ignore null values from input dataset (except key fields) during write operation. Default value is false. If set it to true, it means ADF will leave the data in the destination object unchanged when doing upsert/update operation and insert defined default value when doing insert operation, versus ADF will update the data in the destination object to NULL when doing upsert/update operation and insert NULL value when doing insert operation. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "ignoreNullValues")
     private Object ignoreNullValues;
 
     /**
      * Creates an instance of SalesforceServiceCloudSink class.
      */
     public SalesforceServiceCloudSink() {
+    }
+
+    /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -160,5 +168,77 @@ public final class SalesforceServiceCloudSink extends CopySink {
     public SalesforceServiceCloudSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
+        jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
+        jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
+        jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("writeBehavior", this.writeBehavior == null ? null : this.writeBehavior.toString());
+        jsonWriter.writeUntypedField("externalIdFieldName", this.externalIdFieldName);
+        jsonWriter.writeUntypedField("ignoreNullValues", this.ignoreNullValues);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SalesforceServiceCloudSink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SalesforceServiceCloudSink if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SalesforceServiceCloudSink.
+     */
+    public static SalesforceServiceCloudSink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SalesforceServiceCloudSink deserializedSalesforceServiceCloudSink = new SalesforceServiceCloudSink();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("writeBatchSize".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudSink.setWriteBatchSize(reader.readUntyped());
+                } else if ("writeBatchTimeout".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudSink.setWriteBatchTimeout(reader.readUntyped());
+                } else if ("sinkRetryCount".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudSink.setSinkRetryCount(reader.readUntyped());
+                } else if ("sinkRetryWait".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudSink.setSinkRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudSink.setMaxConcurrentConnections(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudSink.type = reader.getString();
+                } else if ("writeBehavior".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudSink.writeBehavior
+                        = SalesforceSinkWriteBehavior.fromString(reader.getString());
+                } else if ("externalIdFieldName".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudSink.externalIdFieldName = reader.readUntyped();
+                } else if ("ignoreNullValues".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudSink.ignoreNullValues = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSalesforceServiceCloudSink.setAdditionalProperties(additionalProperties);
+
+            return deserializedSalesforceServiceCloudSink;
+        });
     }
 }

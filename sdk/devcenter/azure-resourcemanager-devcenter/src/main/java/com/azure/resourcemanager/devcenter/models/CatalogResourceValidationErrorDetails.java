@@ -7,11 +7,13 @@ package com.azure.resourcemanager.devcenter.models;
 import com.azure.resourcemanager.devcenter.fluent.models.CatalogResourceValidationErrorDetailsInner;
 import java.util.List;
 
-/** An immutable client-side representation of CatalogResourceValidationErrorDetails. */
+/**
+ * An immutable client-side representation of CatalogResourceValidationErrorDetails.
+ */
 public interface CatalogResourceValidationErrorDetails {
     /**
      * Gets the errors property: Errors associated with resources synchronized from the catalog.
-     *
+     * 
      * @return the errors value.
      */
     List<CatalogErrorDetails> errors();
@@ -19,7 +21,7 @@ public interface CatalogResourceValidationErrorDetails {
     /**
      * Gets the inner com.azure.resourcemanager.devcenter.fluent.models.CatalogResourceValidationErrorDetailsInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     CatalogResourceValidationErrorDetailsInner innerModel();

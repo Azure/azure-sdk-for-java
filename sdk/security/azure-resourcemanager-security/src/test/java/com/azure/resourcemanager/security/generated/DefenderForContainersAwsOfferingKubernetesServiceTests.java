@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class DefenderForContainersAwsOfferingKubernetesServiceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefenderForContainersAwsOfferingKubernetesService model
-            = BinaryData.fromString("{\"cloudRoleArn\":\"dmhweqjfyxydgto\"}")
-                .toObject(DefenderForContainersAwsOfferingKubernetesService.class);
-        Assertions.assertEquals("dmhweqjfyxydgto", model.cloudRoleArn());
+        DefenderForContainersAwsOfferingKubernetesService model = BinaryData.fromString("{\"cloudRoleArn\":\"dvcdq\"}")
+            .toObject(DefenderForContainersAwsOfferingKubernetesService.class);
+        Assertions.assertEquals("dvcdq", model.cloudRoleArn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderForContainersAwsOfferingKubernetesService model
-            = new DefenderForContainersAwsOfferingKubernetesService().withCloudRoleArn("dmhweqjfyxydgto");
+            = new DefenderForContainersAwsOfferingKubernetesService().withCloudRoleArn("dvcdq");
         model = BinaryData.fromObject(model).toObject(DefenderForContainersAwsOfferingKubernetesService.class);
-        Assertions.assertEquals("dmhweqjfyxydgto", model.cloudRoleArn());
+        Assertions.assertEquals("dvcdq", model.cloudRoleArn());
     }
 }

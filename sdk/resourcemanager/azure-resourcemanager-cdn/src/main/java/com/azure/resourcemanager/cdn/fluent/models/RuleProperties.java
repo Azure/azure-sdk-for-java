@@ -13,7 +13,9 @@ import com.azure.resourcemanager.cdn.models.MatchProcessingBehavior;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The JSON object that contains the properties of the Rules to create. */
+/**
+ * The JSON object that contains the properties of the Rules to create.
+ */
 @Fluent
 public final class RuleProperties extends RuleUpdatePropertiesParameters {
     /*
@@ -28,13 +30,15 @@ public final class RuleProperties extends RuleUpdatePropertiesParameters {
     @JsonProperty(value = "deploymentStatus", access = JsonProperty.Access.WRITE_ONLY)
     private DeploymentStatus deploymentStatus;
 
-    /** Creates an instance of RuleProperties class. */
+    /**
+     * Creates an instance of RuleProperties class.
+     */
     public RuleProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning status.
-     *
+     * 
      * @return the provisioningState value.
      */
     public AfdProvisioningState provisioningState() {
@@ -43,35 +47,43 @@ public final class RuleProperties extends RuleUpdatePropertiesParameters {
 
     /**
      * Get the deploymentStatus property: The deploymentStatus property.
-     *
+     * 
      * @return the deploymentStatus value.
      */
     public DeploymentStatus deploymentStatus() {
         return this.deploymentStatus;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RuleProperties withOrder(Integer order) {
         super.withOrder(order);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RuleProperties withConditions(List<DeliveryRuleCondition> conditions) {
         super.withConditions(conditions);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RuleProperties withActions(List<DeliveryRuleAction> actions) {
         super.withActions(actions);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RuleProperties withMatchProcessingBehavior(MatchProcessingBehavior matchProcessingBehavior) {
         super.withMatchProcessingBehavior(matchProcessingBehavior);
@@ -80,7 +92,7 @@ public final class RuleProperties extends RuleUpdatePropertiesParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

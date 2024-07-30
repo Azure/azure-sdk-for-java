@@ -9,77 +9,66 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 import java.util.Base64;
 
-/** The FilesUploadRangeHeaders model. */
-@JacksonXmlRootElement(localName = "null")
+/**
+ * The FilesUploadRangeHeaders model.
+ */
 @Fluent
 public final class FilesUploadRangeHeaders {
     /*
      * The x-ms-version property.
      */
-    @JsonProperty(value = "x-ms-version")
     private String xMsVersion;
 
     /*
      * The ETag property.
      */
-    @JsonProperty(value = "ETag")
     private String eTag;
 
     /*
      * The Last-Modified property.
      */
-    @JsonProperty(value = "Last-Modified")
     private DateTimeRfc1123 lastModified;
 
     /*
      * The x-ms-request-id property.
      */
-    @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
 
     /*
      * The x-ms-request-server-encrypted property.
      */
-    @JsonProperty(value = "x-ms-request-server-encrypted")
     private Boolean xMsRequestServerEncrypted;
 
     /*
      * The Date property.
      */
-    @JsonProperty(value = "Date")
     private DateTimeRfc1123 date;
 
     /*
      * The x-ms-file-last-write-time property.
      */
-    @JsonProperty(value = "x-ms-file-last-write-time")
     private OffsetDateTime xMsFileLastWriteTime;
 
     /*
      * The Content-MD5 property.
      */
-    @JsonProperty(value = "Content-MD5")
     private byte[] contentMD5;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
-    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+    private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED
+        = HttpHeaderName.fromString("x-ms-request-server-encrypted");
 
-    private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED =
-            HttpHeaderName.fromString("x-ms-request-server-encrypted");
-
-    private static final HttpHeaderName X_MS_FILE_LAST_WRITE_TIME =
-            HttpHeaderName.fromString("x-ms-file-last-write-time");
+    private static final HttpHeaderName X_MS_FILE_LAST_WRITE_TIME
+        = HttpHeaderName.fromString("x-ms-file-last-write-time");
 
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of FilesUploadRangeHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public FilesUploadRangeHeaders(HttpHeaders rawHeaders) {
@@ -89,7 +78,7 @@ public final class FilesUploadRangeHeaders {
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
-        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         String xMsRequestServerEncrypted = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);
         if (xMsRequestServerEncrypted != null) {
             this.xMsRequestServerEncrypted = Boolean.parseBoolean(xMsRequestServerEncrypted);
@@ -110,7 +99,7 @@ public final class FilesUploadRangeHeaders {
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @return the xMsVersion value.
      */
     public String getXMsVersion() {
@@ -119,7 +108,7 @@ public final class FilesUploadRangeHeaders {
 
     /**
      * Set the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @param xMsVersion the xMsVersion value to set.
      * @return the FilesUploadRangeHeaders object itself.
      */
@@ -130,7 +119,7 @@ public final class FilesUploadRangeHeaders {
 
     /**
      * Get the eTag property: The ETag property.
-     *
+     * 
      * @return the eTag value.
      */
     public String getETag() {
@@ -139,7 +128,7 @@ public final class FilesUploadRangeHeaders {
 
     /**
      * Set the eTag property: The ETag property.
-     *
+     * 
      * @param eTag the eTag value to set.
      * @return the FilesUploadRangeHeaders object itself.
      */
@@ -150,7 +139,7 @@ public final class FilesUploadRangeHeaders {
 
     /**
      * Get the lastModified property: The Last-Modified property.
-     *
+     * 
      * @return the lastModified value.
      */
     public OffsetDateTime getLastModified() {
@@ -162,7 +151,7 @@ public final class FilesUploadRangeHeaders {
 
     /**
      * Set the lastModified property: The Last-Modified property.
-     *
+     * 
      * @param lastModified the lastModified value to set.
      * @return the FilesUploadRangeHeaders object itself.
      */
@@ -177,7 +166,7 @@ public final class FilesUploadRangeHeaders {
 
     /**
      * Get the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @return the xMsRequestId value.
      */
     public String getXMsRequestId() {
@@ -186,7 +175,7 @@ public final class FilesUploadRangeHeaders {
 
     /**
      * Set the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the FilesUploadRangeHeaders object itself.
      */
@@ -197,7 +186,7 @@ public final class FilesUploadRangeHeaders {
 
     /**
      * Get the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
-     *
+     * 
      * @return the xMsRequestServerEncrypted value.
      */
     public Boolean isXMsRequestServerEncrypted() {
@@ -206,7 +195,7 @@ public final class FilesUploadRangeHeaders {
 
     /**
      * Set the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
-     *
+     * 
      * @param xMsRequestServerEncrypted the xMsRequestServerEncrypted value to set.
      * @return the FilesUploadRangeHeaders object itself.
      */
@@ -217,7 +206,7 @@ public final class FilesUploadRangeHeaders {
 
     /**
      * Get the date property: The Date property.
-     *
+     * 
      * @return the date value.
      */
     public OffsetDateTime getDate() {
@@ -229,7 +218,7 @@ public final class FilesUploadRangeHeaders {
 
     /**
      * Set the date property: The Date property.
-     *
+     * 
      * @param date the date value to set.
      * @return the FilesUploadRangeHeaders object itself.
      */
@@ -244,7 +233,7 @@ public final class FilesUploadRangeHeaders {
 
     /**
      * Get the xMsFileLastWriteTime property: The x-ms-file-last-write-time property.
-     *
+     * 
      * @return the xMsFileLastWriteTime value.
      */
     public OffsetDateTime getXMsFileLastWriteTime() {
@@ -253,7 +242,7 @@ public final class FilesUploadRangeHeaders {
 
     /**
      * Set the xMsFileLastWriteTime property: The x-ms-file-last-write-time property.
-     *
+     * 
      * @param xMsFileLastWriteTime the xMsFileLastWriteTime value to set.
      * @return the FilesUploadRangeHeaders object itself.
      */
@@ -264,7 +253,7 @@ public final class FilesUploadRangeHeaders {
 
     /**
      * Get the contentMD5 property: The Content-MD5 property.
-     *
+     * 
      * @return the contentMD5 value.
      */
     public byte[] getContentMD5() {
@@ -273,7 +262,7 @@ public final class FilesUploadRangeHeaders {
 
     /**
      * Set the contentMD5 property: The Content-MD5 property.
-     *
+     * 
      * @param contentMD5 the contentMD5 value to set.
      * @return the FilesUploadRangeHeaders object itself.
      */

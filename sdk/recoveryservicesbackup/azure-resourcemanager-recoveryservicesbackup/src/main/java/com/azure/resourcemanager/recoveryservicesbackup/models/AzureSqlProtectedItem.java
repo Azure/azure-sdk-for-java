@@ -6,6 +6,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
@@ -14,10 +15,21 @@ import java.util.List;
 /**
  * Azure SQL workload-specific backup item.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectedItemType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "protectedItemType",
+    defaultImpl = AzureSqlProtectedItem.class,
+    visible = true)
 @JsonTypeName("Microsoft.Sql/servers/databases")
 @Fluent
 public final class AzureSqlProtectedItem extends ProtectedItem {
+    /*
+     * backup item type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "protectedItemType", required = true)
+    private String protectedItemType = "Microsoft.Sql/servers/databases";
+
     /*
      * Internal ID of a backup item. Used by Azure SQL Backup engine to contact Recovery Services.
      */
@@ -40,6 +52,16 @@ public final class AzureSqlProtectedItem extends ProtectedItem {
      * Creates an instance of AzureSqlProtectedItem class.
      */
     public AzureSqlProtectedItem() {
+    }
+
+    /**
+     * Get the protectedItemType property: backup item type.
+     * 
+     * @return the protectedItemType value.
+     */
+    @Override
+    public String protectedItemType() {
+        return this.protectedItemType;
     }
 
     /**

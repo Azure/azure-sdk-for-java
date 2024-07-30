@@ -34,15 +34,14 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMRunCommandsClient;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineRunCommandInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
-import com.azure.resourcemanager.compute.models.VirtualMachineRunCommandUpdate;
 import com.azure.resourcemanager.compute.models.VirtualMachineRunCommandsListResult;
+import com.azure.resourcemanager.compute.models.VirtualMachineRunCommandUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in
- * VirtualMachineScaleSetVMRunCommandsClient.
+ * An instance of this class provides access to all the operations defined in VirtualMachineScaleSetVMRunCommandsClient.
  */
 public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements VirtualMachineScaleSetVMRunCommandsClient {
     /**
@@ -67,8 +66,8 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
     }
 
     /**
-     * The interface defining all the services for ComputeManagementClientVirtualMachineScaleSetVMRunCommands to be
-     * used by the proxy service to perform REST calls.
+     * The interface defining all the services for ComputeManagementClientVirtualMachineScaleSetVMRunCommands to be used
+     * by the proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
@@ -180,7 +179,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -233,7 +232,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId,
@@ -329,8 +328,10 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
     public SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginCreateOrUpdate(
         String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName,
         VirtualMachineRunCommandInner runCommand, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand,
-            context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -350,7 +351,8 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
     public Mono<VirtualMachineRunCommandInner> createOrUpdateAsync(String resourceGroupName, String vmScaleSetName,
         String instanceId, String runCommandName, VirtualMachineRunCommandInner runCommand) {
         return beginCreateOrUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -457,7 +459,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -509,7 +511,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, runCommandName,
@@ -647,7 +649,8 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
     private Mono<VirtualMachineRunCommandInner> updateAsync(String resourceGroupName, String vmScaleSetName,
         String instanceId, String runCommandName, VirtualMachineRunCommandUpdate runCommand, Context context) {
         return beginUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -725,7 +728,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -770,7 +773,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, runCommandName,
@@ -970,7 +973,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -1017,7 +1020,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, runCommandName,
@@ -1119,7 +1122,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, vmScaleSetName,
@@ -1164,7 +1167,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
@@ -1273,9 +1276,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1301,9 +1302,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.

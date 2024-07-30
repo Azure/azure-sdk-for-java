@@ -13,20 +13,20 @@ public final class CertificateBasePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CertificateBaseProperties model = BinaryData
-            .fromString("{\"thumbprintAlgorithm\":\"tki\",\"thumbprint\":\"xhqyudxorrqnb\",\"format\":\"Pfx\"}")
+            .fromString("{\"thumbprintAlgorithm\":\"mdectehfiqscjey\",\"thumbprint\":\"hezrkgq\",\"format\":\"Cer\"}")
             .toObject(CertificateBaseProperties.class);
-        Assertions.assertEquals("tki", model.thumbprintAlgorithm());
-        Assertions.assertEquals("xhqyudxorrqnb", model.thumbprint());
-        Assertions.assertEquals(CertificateFormat.PFX, model.format());
+        Assertions.assertEquals("mdectehfiqscjey", model.thumbprintAlgorithm());
+        Assertions.assertEquals("hezrkgq", model.thumbprint());
+        Assertions.assertEquals(CertificateFormat.CER, model.format());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CertificateBaseProperties model = new CertificateBaseProperties().withThumbprintAlgorithm("tki")
-            .withThumbprint("xhqyudxorrqnb").withFormat(CertificateFormat.PFX);
+        CertificateBaseProperties model = new CertificateBaseProperties().withThumbprintAlgorithm("mdectehfiqscjey")
+            .withThumbprint("hezrkgq").withFormat(CertificateFormat.CER);
         model = BinaryData.fromObject(model).toObject(CertificateBaseProperties.class);
-        Assertions.assertEquals("tki", model.thumbprintAlgorithm());
-        Assertions.assertEquals("xhqyudxorrqnb", model.thumbprint());
-        Assertions.assertEquals(CertificateFormat.PFX, model.format());
+        Assertions.assertEquals("mdectehfiqscjey", model.thumbprintAlgorithm());
+        Assertions.assertEquals("hezrkgq", model.thumbprint());
+        Assertions.assertEquals(CertificateFormat.CER, model.format());
     }
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Request body for CanMigrate operation. */
+/**
+ * Request body for CanMigrate operation.
+ */
 @Fluent
 public final class CanMigrateParameters {
     /*
@@ -17,14 +19,16 @@ public final class CanMigrateParameters {
     @JsonProperty(value = "classicResourceReference", required = true)
     private ResourceReference classicResourceReference;
 
-    /** Creates an instance of CanMigrateParameters class. */
+    /**
+     * Creates an instance of CanMigrateParameters class.
+     */
     public CanMigrateParameters() {
     }
 
     /**
      * Get the classicResourceReference property: Resource reference of the classic cdn profile or classic frontdoor
      * that need to be migrated.
-     *
+     * 
      * @return the classicResourceReference value.
      */
     public ResourceReference classicResourceReference() {
@@ -34,7 +38,7 @@ public final class CanMigrateParameters {
     /**
      * Set the classicResourceReference property: Resource reference of the classic cdn profile or classic frontdoor
      * that need to be migrated.
-     *
+     * 
      * @param classicResourceReference the classicResourceReference value to set.
      * @return the CanMigrateParameters object itself.
      */
@@ -45,15 +49,13 @@ public final class CanMigrateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (classicResourceReference() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property classicResourceReference in model CanMigrateParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property classicResourceReference in model CanMigrateParameters"));
         } else {
             classicResourceReference().validate();
         }

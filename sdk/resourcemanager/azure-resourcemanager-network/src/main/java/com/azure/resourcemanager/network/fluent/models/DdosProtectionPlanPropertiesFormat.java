@@ -16,8 +16,8 @@ import java.util.List;
 @Immutable
 public final class DdosProtectionPlanPropertiesFormat {
     /*
-     * The resource GUID property of the DDoS protection plan resource. It uniquely identifies the resource, even if
-     * the user changes its name or migrate the resource across subscriptions or resource groups.
+     * The resource GUID property of the DDoS protection plan resource. It uniquely identifies the resource, even if the
+     * user changes its name or migrate the resource across subscriptions or resource groups.
      */
     @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
@@ -77,8 +77,8 @@ public final class DdosProtectionPlanPropertiesFormat {
     }
 
     /**
-     * Get the virtualNetworks property: The list of virtual networks associated with the DDoS protection plan
-     * resource. This list is read-only.
+     * Get the virtualNetworks property: The list of virtual networks associated with the DDoS protection plan resource.
+     * This list is read-only.
      * 
      * @return the virtualNetworks value.
      */

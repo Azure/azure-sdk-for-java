@@ -12,18 +12,18 @@ public final class EnvironmentVariableSetupTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EnvironmentVariableSetup model = BinaryData.fromString(
-            "{\"type\":\"EnvironmentVariableSetup\",\"typeProperties\":{\"variableName\":\"cz\",\"variableValue\":\"tniwfcu\"}}")
+            "{\"type\":\"EnvironmentVariableSetup\",\"typeProperties\":{\"variableName\":\"ekbirhyvsyuv\",\"variableValue\":\"iemorszffiukltr\"}}")
             .toObject(EnvironmentVariableSetup.class);
-        Assertions.assertEquals("cz", model.variableName());
-        Assertions.assertEquals("tniwfcu", model.variableValue());
+        Assertions.assertEquals("ekbirhyvsyuv", model.variableName());
+        Assertions.assertEquals("iemorszffiukltr", model.variableValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EnvironmentVariableSetup model
-            = new EnvironmentVariableSetup().withVariableName("cz").withVariableValue("tniwfcu");
+            = new EnvironmentVariableSetup().withVariableName("ekbirhyvsyuv").withVariableValue("iemorszffiukltr");
         model = BinaryData.fromObject(model).toObject(EnvironmentVariableSetup.class);
-        Assertions.assertEquals("cz", model.variableName());
-        Assertions.assertEquals("tniwfcu", model.variableValue());
+        Assertions.assertEquals("ekbirhyvsyuv", model.variableName());
+        Assertions.assertEquals("iemorszffiukltr", model.variableValue());
     }
 }

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class DdosProtectionPlansGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/DdosProtectionPlanGet.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/DdosProtectionPlanGet.json
      */
     /**
      * Sample code: Get DDoS protection plan.
@@ -18,7 +18,10 @@ public final class DdosProtectionPlansGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getDDoSProtectionPlan(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getDdosProtectionPlans().getByResourceGroupWithResponse("rg1",
-            "test-plan", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getDdosProtectionPlans()
+            .getByResourceGroupWithResponse("rg1", "test-plan", com.azure.core.util.Context.NONE);
     }
 }

@@ -137,16 +137,19 @@ public final class RerunTumblingWindowTriggerTypeProperties {
      */
     public void validate() {
         if (parentTrigger() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property parentTrigger in model RerunTumblingWindowTriggerTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property parentTrigger in model RerunTumblingWindowTriggerTypeProperties"));
         }
         if (requestedStartTime() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property requestedStartTime in model RerunTumblingWindowTriggerTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property requestedStartTime in model RerunTumblingWindowTriggerTypeProperties"));
         }
         if (requestedEndTime() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property requestedEndTime in model RerunTumblingWindowTriggerTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property requestedEndTime in model RerunTumblingWindowTriggerTypeProperties"));
         }
     }
 

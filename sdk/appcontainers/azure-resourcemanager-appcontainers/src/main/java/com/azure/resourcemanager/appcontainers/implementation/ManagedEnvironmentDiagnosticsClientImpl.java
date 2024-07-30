@@ -26,26 +26,28 @@ import com.azure.resourcemanager.appcontainers.fluent.models.DiagnosticsInner;
 import com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ManagedEnvironmentDiagnosticsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ManagedEnvironmentDiagnosticsClient.
+ */
 public final class ManagedEnvironmentDiagnosticsClientImpl implements ManagedEnvironmentDiagnosticsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ManagedEnvironmentDiagnosticsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ContainerAppsApiClientImpl client;
 
     /**
      * Initializes an instance of ManagedEnvironmentDiagnosticsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ManagedEnvironmentDiagnosticsClientImpl(ContainerAppsApiClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    ManagedEnvironmentDiagnosticsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(ManagedEnvironmentDiagnosticsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,63 +58,50 @@ public final class ManagedEnvironmentDiagnosticsClientImpl implements ManagedEnv
     @Host("{$host}")
     @ServiceInterface(name = "ContainerAppsApiClie")
     public interface ManagedEnvironmentDiagnosticsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/detectors")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/detectors")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<DiagnosticsCollectionInner>> listDetectors(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DiagnosticsCollectionInner>> listDetectors(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("environmentName") String environmentName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("environmentName") String environmentName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/detectors/{detectorName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/detectors/{detectorName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<DiagnosticsInner>> getDetector(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DiagnosticsInner>> getDetector(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("environmentName") String environmentName,
-            @PathParam("detectorName") String detectorName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("environmentName") String environmentName, @PathParam("detectorName") String detectorName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get the list of diagnostics for a given Managed Environment.
-     *
-     * <p>Get the list of diagnostics for a Managed Environment used to host container apps.
-     *
+     * 
+     * Get the list of diagnostics for a Managed Environment used to host container apps.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of diagnostics for a Managed Environment used to host container apps along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DiagnosticsCollectionInner>> listDetectorsWithResponseAsync(
-        String resourceGroupName, String environmentName) {
+    private Mono<Response<DiagnosticsCollectionInner>> listDetectorsWithResponseAsync(String resourceGroupName,
+        String environmentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -124,25 +113,16 @@ public final class ManagedEnvironmentDiagnosticsClientImpl implements ManagedEnv
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listDetectors(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            environmentName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.listDetectors(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, environmentName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the list of diagnostics for a given Managed Environment.
-     *
-     * <p>Get the list of diagnostics for a Managed Environment used to host container apps.
-     *
+     * 
+     * Get the list of diagnostics for a Managed Environment used to host container apps.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Environment.
      * @param context The context to associate with this operation.
@@ -150,22 +130,18 @@ public final class ManagedEnvironmentDiagnosticsClientImpl implements ManagedEnv
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of diagnostics for a Managed Environment used to host container apps along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DiagnosticsCollectionInner>> listDetectorsWithResponseAsync(
-        String resourceGroupName, String environmentName, Context context) {
+    private Mono<Response<DiagnosticsCollectionInner>> listDetectorsWithResponseAsync(String resourceGroupName,
+        String environmentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -177,29 +153,22 @@ public final class ManagedEnvironmentDiagnosticsClientImpl implements ManagedEnv
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listDetectors(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                environmentName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.listDetectors(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get the list of diagnostics for a given Managed Environment.
-     *
-     * <p>Get the list of diagnostics for a Managed Environment used to host container apps.
-     *
+     * 
+     * Get the list of diagnostics for a Managed Environment used to host container apps.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of diagnostics for a Managed Environment used to host container apps on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DiagnosticsCollectionInner> listDetectorsAsync(String resourceGroupName, String environmentName) {
@@ -209,29 +178,29 @@ public final class ManagedEnvironmentDiagnosticsClientImpl implements ManagedEnv
 
     /**
      * Get the list of diagnostics for a given Managed Environment.
-     *
-     * <p>Get the list of diagnostics for a Managed Environment used to host container apps.
-     *
+     * 
+     * Get the list of diagnostics for a Managed Environment used to host container apps.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of diagnostics for a Managed Environment used to host container apps along with {@link
-     *     Response}.
+     * @return the list of diagnostics for a Managed Environment used to host container apps along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DiagnosticsCollectionInner> listDetectorsWithResponse(
-        String resourceGroupName, String environmentName, Context context) {
+    public Response<DiagnosticsCollectionInner> listDetectorsWithResponse(String resourceGroupName,
+        String environmentName, Context context) {
         return listDetectorsWithResponseAsync(resourceGroupName, environmentName, context).block();
     }
 
     /**
      * Get the list of diagnostics for a given Managed Environment.
-     *
-     * <p>Get the list of diagnostics for a Managed Environment used to host container apps.
-     *
+     * 
+     * Get the list of diagnostics for a Managed Environment used to host container apps.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -246,9 +215,9 @@ public final class ManagedEnvironmentDiagnosticsClientImpl implements ManagedEnv
 
     /**
      * Get the diagnostics data for a given Managed Environment.
-     *
-     * <p>Get the diagnostics data for a Managed Environment used to host container apps.
-     *
+     * 
+     * Get the diagnostics data for a Managed Environment used to host container apps.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Environment.
      * @param detectorName Name of the Managed Environment detector.
@@ -256,22 +225,18 @@ public final class ManagedEnvironmentDiagnosticsClientImpl implements ManagedEnv
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the diagnostics data for a Managed Environment used to host container apps along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DiagnosticsInner>> getDetectorWithResponseAsync(
-        String resourceGroupName, String environmentName, String detectorName) {
+    private Mono<Response<DiagnosticsInner>> getDetectorWithResponseAsync(String resourceGroupName,
+        String environmentName, String detectorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -286,26 +251,16 @@ public final class ManagedEnvironmentDiagnosticsClientImpl implements ManagedEnv
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getDetector(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            environmentName,
-                            detectorName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.getDetector(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, environmentName, detectorName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the diagnostics data for a given Managed Environment.
-     *
-     * <p>Get the diagnostics data for a Managed Environment used to host container apps.
-     *
+     * 
+     * Get the diagnostics data for a Managed Environment used to host container apps.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Environment.
      * @param detectorName Name of the Managed Environment detector.
@@ -314,22 +269,18 @@ public final class ManagedEnvironmentDiagnosticsClientImpl implements ManagedEnv
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the diagnostics data for a Managed Environment used to host container apps along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DiagnosticsInner>> getDetectorWithResponseAsync(
-        String resourceGroupName, String environmentName, String detectorName, Context context) {
+    private Mono<Response<DiagnosticsInner>> getDetectorWithResponseAsync(String resourceGroupName,
+        String environmentName, String detectorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -344,23 +295,15 @@ public final class ManagedEnvironmentDiagnosticsClientImpl implements ManagedEnv
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getDetector(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                environmentName,
-                detectorName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getDetector(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, detectorName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get the diagnostics data for a given Managed Environment.
-     *
-     * <p>Get the diagnostics data for a Managed Environment used to host container apps.
-     *
+     * 
+     * Get the diagnostics data for a Managed Environment used to host container apps.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Environment.
      * @param detectorName Name of the Managed Environment detector.
@@ -368,20 +311,20 @@ public final class ManagedEnvironmentDiagnosticsClientImpl implements ManagedEnv
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the diagnostics data for a Managed Environment used to host container apps on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DiagnosticsInner> getDetectorAsync(
-        String resourceGroupName, String environmentName, String detectorName) {
+    private Mono<DiagnosticsInner> getDetectorAsync(String resourceGroupName, String environmentName,
+        String detectorName) {
         return getDetectorWithResponseAsync(resourceGroupName, environmentName, detectorName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the diagnostics data for a given Managed Environment.
-     *
-     * <p>Get the diagnostics data for a Managed Environment used to host container apps.
-     *
+     * 
+     * Get the diagnostics data for a Managed Environment used to host container apps.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Environment.
      * @param detectorName Name of the Managed Environment detector.
@@ -392,16 +335,16 @@ public final class ManagedEnvironmentDiagnosticsClientImpl implements ManagedEnv
      * @return the diagnostics data for a Managed Environment used to host container apps along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DiagnosticsInner> getDetectorWithResponse(
-        String resourceGroupName, String environmentName, String detectorName, Context context) {
+    public Response<DiagnosticsInner> getDetectorWithResponse(String resourceGroupName, String environmentName,
+        String detectorName, Context context) {
         return getDetectorWithResponseAsync(resourceGroupName, environmentName, detectorName, context).block();
     }
 
     /**
      * Get the diagnostics data for a given Managed Environment.
-     *
-     * <p>Get the diagnostics data for a Managed Environment used to host container apps.
-     *
+     * 
+     * Get the diagnostics data for a Managed Environment used to host container apps.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Environment.
      * @param detectorName Name of the Managed Environment detector.

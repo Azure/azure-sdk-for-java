@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
@@ -23,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * Utility methods which can be used across different test classes
  */
 public final class TestUtils {
+    private static final ClientLogger LOGGER = new ClientLogger(TestUtils.class);
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -45,12 +48,19 @@ public final class TestUtils {
     }
 
     static FeatureFlagConfigurationSetting createItemFeatureFlag(String prefix, String key, String value, String label,
-        String contentType) {
+         String contentType) {
+        return createItemFeatureFlag(prefix, key, value, label, contentType, null);
+    }
+
+    static FeatureFlagConfigurationSetting createItemFeatureFlag(String prefix, String key, String value, String label,
+        String contentType, String eTag) {
         FeatureFlagConfigurationSetting item = new FeatureFlagConfigurationSetting(key, true);
+        item.setValue(value);
         item.setClientFilters(new ArrayList<>());
         item.setKey(prefix + key);
         item.setLabel(label);
         item.setContentType(contentType);
+        item.setETag(eTag);
 
         try {
             JsonNode node = MAPPER.readTree(value).get("conditions").get("client_filters");
@@ -75,7 +85,7 @@ public final class TestUtils {
                 item.addClientFilter(filter);
             }
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            LOGGER.log(LogLevel.VERBOSE, () -> "Failed to create FeatureFlagConfigurationSetting.", e);
         }
         return item;
     }
@@ -92,7 +102,7 @@ public final class TestUtils {
 
     static void addStore(AppConfigurationProperties properties, String storeEndpoint, String connectionString,
         String keyFilter) {
-        addStore(properties, storeEndpoint, connectionString, keyFilter, "\0");
+        addStore(properties, storeEndpoint, connectionString, keyFilter, null);
     }
 
     static void addStore(AppConfigurationProperties properties, String storeEndpoint, String connectionString,

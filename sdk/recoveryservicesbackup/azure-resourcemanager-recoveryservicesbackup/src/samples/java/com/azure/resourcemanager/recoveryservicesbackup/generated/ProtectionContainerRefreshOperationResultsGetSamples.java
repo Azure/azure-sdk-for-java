@@ -9,9 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class ProtectionContainerRefreshOperationResultsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * Common/RefreshContainers_OperationResults.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/Common/RefreshContainers_OperationResults.json
      */
     /**
      * Sample code: Azure Vm Discovery Operation Result.
@@ -20,7 +18,8 @@ public final class ProtectionContainerRefreshOperationResultsGetSamples {
      */
     public static void azureVmDiscoveryOperationResult(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.protectionContainerRefreshOperationResults().getWithResponse("NetSDKTestRsVault", "SwaggerTestRg",
-            "Azure", "00000000-0000-0000-0000-000000000000", com.azure.core.util.Context.NONE);
+        manager.protectionContainerRefreshOperationResults()
+            .getWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "Azure", "00000000-0000-0000-0000-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }

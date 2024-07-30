@@ -11,14 +11,14 @@ public final class DocumentDbCollectionDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DocumentDbCollectionDatasetTypeProperties model
-            = BinaryData.fromString("{\"collectionName\":\"datakplobzgottaksadz\"}")
+            = BinaryData.fromString("{\"collectionName\":\"datanazgbjbhrpgiq\"}")
                 .toObject(DocumentDbCollectionDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DocumentDbCollectionDatasetTypeProperties model
-            = new DocumentDbCollectionDatasetTypeProperties().withCollectionName("datakplobzgottaksadz");
+            = new DocumentDbCollectionDatasetTypeProperties().withCollectionName("datanazgbjbhrpgiq");
         model = BinaryData.fromObject(model).toObject(DocumentDbCollectionDatasetTypeProperties.class);
     }
 }

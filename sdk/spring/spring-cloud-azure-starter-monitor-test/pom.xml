@@ -23,23 +23,14 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <spotbugs.skip>true</spotbugs.skip>
     <codesnippet.skip>true</codesnippet.skip>
-    <opentelemetry.version>1.32.0</opentelemetry.version> <!-- Only required with Spring Boot 3 to override the OTel version used in the Spring Boot BOM-->
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-monitor</artifactId>
-      <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-monitor;current} -->
+      <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-monitor;current} -->
     </dependency>
-
-    <!-- OTel dependencies -->
-    <dependency>
-      <groupId>io.opentelemetry.instrumentation</groupId>
-      <artifactId>opentelemetry-jdbc</artifactId>
-      <version>2.1.0-alpha</version><!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-jdbc;external_dependency} -->
-    </dependency>
-    <!-- End of OTel dependencies -->
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -60,7 +51,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.24.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.26.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -105,7 +96,7 @@
       <plugin>
         <groupId>com.azure.tools</groupId>
         <artifactId>codesnippet-maven-plugin</artifactId>
-        <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+        <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
         <configuration>
           <codesnippetRootDirectory>${project.basedir}/azure-resourcemanager/src/samples/java</codesnippetRootDirectory>
           <includeSource>false</includeSource>
@@ -129,7 +120,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.11</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <version>0.8.12</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <configuration>
           <skip>true</skip>
         </configuration>
@@ -149,7 +140,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.12.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <skipMain>true</skipMain>
               <skip>true</skip>
@@ -166,7 +157,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.6.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration>
               <skip>true</skip>
             </configuration>
@@ -174,7 +165,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-jar-plugin</artifactId>
-            <version>3.2.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+            <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
             <configuration>
               <skip>true</skip>
             </configuration>

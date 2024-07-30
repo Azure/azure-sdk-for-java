@@ -6,9 +6,14 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -16,61 +21,53 @@ import java.util.Map;
  * Document classifier info.
  */
 @Immutable
-public final class DocumentClassifierDetails {
+public final class DocumentClassifierDetails implements JsonSerializable<DocumentClassifierDetails> {
     /*
      * Unique document classifier name.
      */
     @Generated
-    @JsonProperty(value = "classifierId", access = JsonProperty.Access.WRITE_ONLY)
     private String classifierId;
 
     /*
      * Document classifier description.
      */
     @Generated
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Date and time (UTC) when the document classifier was created.
      */
     @Generated
-    @JsonProperty(value = "createdDateTime")
-    private OffsetDateTime createdDateTime;
+    private final OffsetDateTime createdDateTime;
 
     /*
      * Date and time (UTC) when the document classifier will expire.
      */
     @Generated
-    @JsonProperty(value = "expirationDateTime")
     private OffsetDateTime expirationDateTime;
 
     /*
      * API version used to create this document classifier.
      */
     @Generated
-    @JsonProperty(value = "apiVersion")
-    private String apiVersion;
+    private final String apiVersion;
 
     /*
      * Base classifierId on top of which the classifier was trained.
      */
     @Generated
-    @JsonProperty(value = "baseClassifierId")
     private String baseClassifierId;
 
     /*
      * List of document types to classify against.
      */
     @Generated
-    @JsonProperty(value = "docTypes")
-    private Map<String, ClassifierDocumentTypeDetails> docTypes;
+    private final Map<String, ClassifierDocumentTypeDetails> docTypes;
 
     /*
      * List of warnings encountered while building the classifier.
      */
     @Generated
-    @JsonProperty(value = "warnings")
     private List<Warning> warnings;
 
     /**
@@ -81,10 +78,8 @@ public final class DocumentClassifierDetails {
      * @param docTypes the docTypes value to set.
      */
     @Generated
-    @JsonCreator
-    private DocumentClassifierDetails(@JsonProperty(value = "createdDateTime") OffsetDateTime createdDateTime,
-        @JsonProperty(value = "apiVersion") String apiVersion,
-        @JsonProperty(value = "docTypes") Map<String, ClassifierDocumentTypeDetails> docTypes) {
+    private DocumentClassifierDetails(OffsetDateTime createdDateTime, String apiVersion,
+        Map<String, ClassifierDocumentTypeDetails> docTypes) {
         this.createdDateTime = createdDateTime;
         this.apiVersion = apiVersion;
         this.docTypes = docTypes;
@@ -168,5 +163,84 @@ public final class DocumentClassifierDetails {
     @Generated
     public List<Warning> getWarnings() {
         return this.warnings;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("createdDateTime",
+            this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
+        jsonWriter.writeStringField("apiVersion", this.apiVersion);
+        jsonWriter.writeMapField("docTypes", this.docTypes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("expirationDateTime",
+            this.expirationDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationDateTime));
+        jsonWriter.writeStringField("baseClassifierId", this.baseClassifierId);
+        jsonWriter.writeArrayField("warnings", this.warnings, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DocumentClassifierDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DocumentClassifierDetails if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DocumentClassifierDetails.
+     */
+    @Generated
+    public static DocumentClassifierDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String classifierId = null;
+            OffsetDateTime createdDateTime = null;
+            String apiVersion = null;
+            Map<String, ClassifierDocumentTypeDetails> docTypes = null;
+            String description = null;
+            OffsetDateTime expirationDateTime = null;
+            String baseClassifierId = null;
+            List<Warning> warnings = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("classifierId".equals(fieldName)) {
+                    classifierId = reader.getString();
+                } else if ("createdDateTime".equals(fieldName)) {
+                    createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("apiVersion".equals(fieldName)) {
+                    apiVersion = reader.getString();
+                } else if ("docTypes".equals(fieldName)) {
+                    docTypes = reader.readMap(reader1 -> ClassifierDocumentTypeDetails.fromJson(reader1));
+                } else if ("description".equals(fieldName)) {
+                    description = reader.getString();
+                } else if ("expirationDateTime".equals(fieldName)) {
+                    expirationDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("baseClassifierId".equals(fieldName)) {
+                    baseClassifierId = reader.getString();
+                } else if ("warnings".equals(fieldName)) {
+                    warnings = reader.readArray(reader1 -> Warning.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            DocumentClassifierDetails deserializedDocumentClassifierDetails
+                = new DocumentClassifierDetails(createdDateTime, apiVersion, docTypes);
+            deserializedDocumentClassifierDetails.classifierId = classifierId;
+            deserializedDocumentClassifierDetails.description = description;
+            deserializedDocumentClassifierDetails.expirationDateTime = expirationDateTime;
+            deserializedDocumentClassifierDetails.baseClassifierId = baseClassifierId;
+            deserializedDocumentClassifierDetails.warnings = warnings;
+
+            return deserializedDocumentClassifierDetails;
+        });
     }
 }

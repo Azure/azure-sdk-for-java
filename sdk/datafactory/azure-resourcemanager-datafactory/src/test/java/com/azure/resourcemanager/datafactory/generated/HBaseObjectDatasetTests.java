@@ -19,33 +19,34 @@ public final class HBaseObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HBaseObjectDataset model = BinaryData.fromString(
-            "{\"type\":\"HBaseObject\",\"typeProperties\":{\"tableName\":\"datadjvzmxyrazzstjvc\"},\"description\":\"bdbrl\",\"structure\":\"datazlty\",\"schema\":\"dataacbibtk\",\"linkedServiceName\":{\"referenceName\":\"iecup\",\"parameters\":{\"krlnrpeylfiiul\":\"datads\",\"hcxwwwvun\":\"datadgiql\",\"atrtcqyfjvifbmo\":\"datansgvxhxrm\",\"bhukdfpknv\":\"datatehqyoytrcoufkq\"}},\"parameters\":{\"hzjlrknckkfxm\":{\"type\":\"Float\",\"defaultValue\":\"datajezchmeo\"},\"fts\":{\"type\":\"Float\",\"defaultValue\":\"dataqkwqphfv\"},\"zgfctuuzow\":{\"type\":\"Bool\",\"defaultValue\":\"datalpxcachdt\"}},\"annotations\":[\"datavuxnx\",\"datauohshzultdbvm\"],\"folder\":{\"name\":\"ypngocbd\"},\"\":{\"zsuzgrzu\":\"dataivptb\",\"aatvogpyceinha\":\"dataekytkzvtv\",\"khwfjudapbq\":\"datahbdxsbypl\"}}")
+            "{\"type\":\"HBaseObject\",\"typeProperties\":{\"tableName\":\"datazcxxvzjoyxjgahx\"},\"description\":\"rr\",\"structure\":\"datakt\",\"schema\":\"datatkbcer\",\"linkedServiceName\":{\"referenceName\":\"cvcp\",\"parameters\":{\"kmpwyvlhnh\":\"dataj\"}},\"parameters\":{\"lrcygotohzwto\":{\"type\":\"Int\",\"defaultValue\":\"datalebgjgylsacagi\"},\"jzelsriemvupmea\":{\"type\":\"Float\",\"defaultValue\":\"databxitrapwzhlutj\"},\"vldeehcbsaip\":{\"type\":\"Float\",\"defaultValue\":\"dataysy\"}},\"annotations\":[\"dataofkegbvbbdledffl\",\"datavsluazzxfjv\"],\"folder\":{\"name\":\"pxzee\"},\"\":{\"qdczmrjgobekx\":\"datapbscboxr\",\"rzzbs\":\"dataheowsecaf\",\"rjsbdbm\":\"datai\",\"vmrfaptndrmmn\":\"dataeesacuicnvqiqsu\"}}")
             .toObject(HBaseObjectDataset.class);
-        Assertions.assertEquals("bdbrl", model.description());
-        Assertions.assertEquals("iecup", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("hzjlrknckkfxm").type());
-        Assertions.assertEquals("ypngocbd", model.folder().name());
+        Assertions.assertEquals("rr", model.description());
+        Assertions.assertEquals("cvcp", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("lrcygotohzwto").type());
+        Assertions.assertEquals("pxzee", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HBaseObjectDataset model
-            = new HBaseObjectDataset().withDescription("bdbrl").withStructure("datazlty").withSchema("dataacbibtk")
-                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("iecup")
-                    .withParameters(mapOf("krlnrpeylfiiul", "datads", "hcxwwwvun", "datadgiql", "atrtcqyfjvifbmo",
-                        "datansgvxhxrm", "bhukdfpknv", "datatehqyoytrcoufkq")))
-                .withParameters(mapOf("hzjlrknckkfxm",
-                    new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datajezchmeo"), "fts",
-                    new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataqkwqphfv"),
-                    "zgfctuuzow",
-                    new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datalpxcachdt")))
-                .withAnnotations(Arrays.asList("datavuxnx", "datauohshzultdbvm"))
-                .withFolder(new DatasetFolder().withName("ypngocbd")).withTableName("datadjvzmxyrazzstjvc");
+        HBaseObjectDataset model = new HBaseObjectDataset().withDescription("rr")
+            .withStructure("datakt")
+            .withSchema("datatkbcer")
+            .withLinkedServiceName(
+                new LinkedServiceReference().withReferenceName("cvcp").withParameters(mapOf("kmpwyvlhnh", "dataj")))
+            .withParameters(mapOf("lrcygotohzwto",
+                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datalebgjgylsacagi"),
+                "jzelsriemvupmea",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("databxitrapwzhlutj"),
+                "vldeehcbsaip", new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataysy")))
+            .withAnnotations(Arrays.asList("dataofkegbvbbdledffl", "datavsluazzxfjv"))
+            .withFolder(new DatasetFolder().withName("pxzee"))
+            .withTableName("datazcxxvzjoyxjgahx");
         model = BinaryData.fromObject(model).toObject(HBaseObjectDataset.class);
-        Assertions.assertEquals("bdbrl", model.description());
-        Assertions.assertEquals("iecup", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("hzjlrknckkfxm").type());
-        Assertions.assertEquals("ypngocbd", model.folder().name());
+        Assertions.assertEquals("rr", model.description());
+        Assertions.assertEquals("cvcp", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("lrcygotohzwto").type());
+        Assertions.assertEquals("pxzee", model.folder().name());
     }
 
     // Use "Map.of" if available

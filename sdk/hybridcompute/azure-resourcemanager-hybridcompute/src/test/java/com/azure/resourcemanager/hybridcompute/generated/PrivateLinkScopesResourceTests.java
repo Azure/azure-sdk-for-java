@@ -13,33 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateLinkScopesResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkScopesResource model =
-            BinaryData
-                .fromString(
-                    "{\"location\":\"lfltka\",\"tags\":{\"akggkfpag\":\"efkdlf\",\"lyls\":\"owpulpq\",\"agxsdszuemps\":\"xkqjnsjervt\",\"nqicvinvkjjxdxrb\":\"zkfzbeyv\"},\"id\":\"ukzclewyhmlwpaz\",\"name\":\"zpof\",\"type\":\"cckwyfzqwhxxbu\"}")
-                .toObject(PrivateLinkScopesResource.class);
-        Assertions.assertEquals("lfltka", model.location());
-        Assertions.assertEquals("efkdlf", model.tags().get("akggkfpag"));
+        PrivateLinkScopesResource model = BinaryData.fromString(
+            "{\"location\":\"yhgfipnsx\",\"tags\":{\"hjglikk\":\"waekrrjreafxtsgu\",\"uzlm\":\"wslolbqp\",\"lcrpw\":\"felfktg\"},\"id\":\"xeznoi\",\"name\":\"brnjwmw\",\"type\":\"pn\"}")
+            .toObject(PrivateLinkScopesResource.class);
+        Assertions.assertEquals("yhgfipnsx", model.location());
+        Assertions.assertEquals("waekrrjreafxtsgu", model.tags().get("hjglikk"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkScopesResource model =
-            new PrivateLinkScopesResource()
-                .withLocation("lfltka")
-                .withTags(
-                    mapOf(
-                        "akggkfpag",
-                        "efkdlf",
-                        "lyls",
-                        "owpulpq",
-                        "agxsdszuemps",
-                        "xkqjnsjervt",
-                        "nqicvinvkjjxdxrb",
-                        "zkfzbeyv"));
+        PrivateLinkScopesResource model = new PrivateLinkScopesResource().withLocation("yhgfipnsx")
+            .withTags(mapOf("hjglikk", "waekrrjreafxtsgu", "uzlm", "wslolbqp", "lcrpw", "felfktg"));
         model = BinaryData.fromObject(model).toObject(PrivateLinkScopesResource.class);
-        Assertions.assertEquals("lfltka", model.location());
-        Assertions.assertEquals("efkdlf", model.tags().get("akggkfpag"));
+        Assertions.assertEquals("yhgfipnsx", model.location());
+        Assertions.assertEquals("waekrrjreafxtsgu", model.tags().get("hjglikk"));
     }
 
     // Use "Map.of" if available

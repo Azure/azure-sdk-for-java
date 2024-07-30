@@ -7,138 +7,196 @@ package com.azure.resourcemanager.mysqlflexibleserver.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for MySqlManagementClient class. */
+/**
+ * The interface for MySqlManagementClient class.
+ */
 public interface MySqlManagementClient {
     /**
-     * Gets The ID of the target subscription.
-     *
+     * Gets The ID of the target subscription. The value must be an UUID.
+     * 
      * @return the subscriptionId value.
      */
     String getSubscriptionId();
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     String getEndpoint();
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
 
     /**
      * Gets the AzureADAdministratorsClient object to access its operations.
-     *
+     * 
      * @return the AzureADAdministratorsClient object.
      */
     AzureADAdministratorsClient getAzureADAdministrators();
 
     /**
      * Gets the BackupsClient object to access its operations.
-     *
+     * 
      * @return the BackupsClient object.
      */
     BackupsClient getBackups();
 
     /**
      * Gets the BackupAndExportsClient object to access its operations.
-     *
+     * 
      * @return the BackupAndExportsClient object.
      */
     BackupAndExportsClient getBackupAndExports();
 
     /**
+     * Gets the LongRunningBackupsClient object to access its operations.
+     * 
+     * @return the LongRunningBackupsClient object.
+     */
+    LongRunningBackupsClient getLongRunningBackups();
+
+    /**
+     * Gets the LongRunningBackupsOperationsClient object to access its operations.
+     * 
+     * @return the LongRunningBackupsOperationsClient object.
+     */
+    LongRunningBackupsOperationsClient getLongRunningBackupsOperations();
+
+    /**
      * Gets the ConfigurationsClient object to access its operations.
-     *
+     * 
      * @return the ConfigurationsClient object.
      */
     ConfigurationsClient getConfigurations();
 
     /**
      * Gets the DatabasesClient object to access its operations.
-     *
+     * 
      * @return the DatabasesClient object.
      */
     DatabasesClient getDatabases();
 
     /**
      * Gets the FirewallRulesClient object to access its operations.
-     *
+     * 
      * @return the FirewallRulesClient object.
      */
     FirewallRulesClient getFirewallRules();
 
     /**
      * Gets the ServersClient object to access its operations.
-     *
+     * 
      * @return the ServersClient object.
      */
     ServersClient getServers();
 
     /**
      * Gets the ReplicasClient object to access its operations.
-     *
+     * 
      * @return the ReplicasClient object.
      */
     ReplicasClient getReplicas();
 
     /**
+     * Gets the ServersMigrationsClient object to access its operations.
+     * 
+     * @return the ServersMigrationsClient object.
+     */
+    ServersMigrationsClient getServersMigrations();
+
+    /**
+     * Gets the AdvancedThreatProtectionSettingsClient object to access its operations.
+     * 
+     * @return the AdvancedThreatProtectionSettingsClient object.
+     */
+    AdvancedThreatProtectionSettingsClient getAdvancedThreatProtectionSettings();
+
+    /**
      * Gets the LogFilesClient object to access its operations.
-     *
+     * 
      * @return the LogFilesClient object.
      */
     LogFilesClient getLogFiles();
 
     /**
      * Gets the LocationBasedCapabilitiesClient object to access its operations.
-     *
+     * 
      * @return the LocationBasedCapabilitiesClient object.
      */
     LocationBasedCapabilitiesClient getLocationBasedCapabilities();
 
     /**
+     * Gets the LocationBasedCapabilitySetsClient object to access its operations.
+     * 
+     * @return the LocationBasedCapabilitySetsClient object.
+     */
+    LocationBasedCapabilitySetsClient getLocationBasedCapabilitySets();
+
+    /**
      * Gets the CheckVirtualNetworkSubnetUsagesClient object to access its operations.
-     *
+     * 
      * @return the CheckVirtualNetworkSubnetUsagesClient object.
      */
     CheckVirtualNetworkSubnetUsagesClient getCheckVirtualNetworkSubnetUsages();
 
     /**
      * Gets the CheckNameAvailabilitiesClient object to access its operations.
-     *
+     * 
      * @return the CheckNameAvailabilitiesClient object.
      */
     CheckNameAvailabilitiesClient getCheckNameAvailabilities();
 
     /**
      * Gets the CheckNameAvailabilityWithoutLocationsClient object to access its operations.
-     *
+     * 
      * @return the CheckNameAvailabilityWithoutLocationsClient object.
      */
     CheckNameAvailabilityWithoutLocationsClient getCheckNameAvailabilityWithoutLocations();
 
     /**
+     * Gets the OperationResultsClient object to access its operations.
+     * 
+     * @return the OperationResultsClient object.
+     */
+    OperationResultsClient getOperationResults();
+
+    /**
+     * Gets the OperationProgressClient object to access its operations.
+     * 
+     * @return the OperationProgressClient object.
+     */
+    OperationProgressClient getOperationProgress();
+
+    /**
      * Gets the GetPrivateDnsZoneSuffixesClient object to access its operations.
-     *
+     * 
      * @return the GetPrivateDnsZoneSuffixesClient object.
      */
     GetPrivateDnsZoneSuffixesClient getGetPrivateDnsZoneSuffixes();
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
+
+    /**
+     * Gets the MaintenancesClient object to access its operations.
+     * 
+     * @return the MaintenancesClient object.
+     */
+    MaintenancesClient getMaintenances();
 }

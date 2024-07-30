@@ -22,8 +22,8 @@ public final class MicrosoftAccessLinkedServiceTypeProperties {
     private Object connectionString;
 
     /*
-     * Type of authentication used to connect to the Microsoft Access as ODBC data store. Possible values are:
-     * Anonymous and Basic. Type: string (or Expression with resultType string).
+     * Type of authentication used to connect to the Microsoft Access as ODBC data store. Possible values are: Anonymous
+     * and Basic. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "authenticationType")
     private Object authenticationType;
@@ -61,8 +61,8 @@ public final class MicrosoftAccessLinkedServiceTypeProperties {
 
     /**
      * Get the connectionString property: The non-access credential portion of the connection string as well as an
-     * optional encrypted credential. Type: string, or SecureString, or AzureKeyVaultSecretReference, or Expression
-     * with resultType string.
+     * optional encrypted credential. Type: string, or SecureString, or AzureKeyVaultSecretReference, or Expression with
+     * resultType string.
      * 
      * @return the connectionString value.
      */
@@ -72,8 +72,8 @@ public final class MicrosoftAccessLinkedServiceTypeProperties {
 
     /**
      * Set the connectionString property: The non-access credential portion of the connection string as well as an
-     * optional encrypted credential. Type: string, or SecureString, or AzureKeyVaultSecretReference, or Expression
-     * with resultType string.
+     * optional encrypted credential. Type: string, or SecureString, or AzureKeyVaultSecretReference, or Expression with
+     * resultType string.
      * 
      * @param connectionString the connectionString value to set.
      * @return the MicrosoftAccessLinkedServiceTypeProperties object itself.
@@ -170,8 +170,8 @@ public final class MicrosoftAccessLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -180,8 +180,8 @@ public final class MicrosoftAccessLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the MicrosoftAccessLinkedServiceTypeProperties object itself.
@@ -198,8 +198,9 @@ public final class MicrosoftAccessLinkedServiceTypeProperties {
      */
     public void validate() {
         if (connectionString() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property connectionString in model MicrosoftAccessLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property connectionString in model MicrosoftAccessLinkedServiceTypeProperties"));
         }
         if (credential() != null) {
             credential().validate();

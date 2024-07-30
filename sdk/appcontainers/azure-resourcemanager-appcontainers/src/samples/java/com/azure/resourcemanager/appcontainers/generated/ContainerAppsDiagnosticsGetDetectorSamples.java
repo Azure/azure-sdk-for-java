@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-/** Samples for ContainerAppsDiagnostics GetDetector. */
+/**
+ * Samples for ContainerAppsDiagnostics GetDetector.
+ */
 public final class ContainerAppsDiagnosticsGetDetectorSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/ContainerAppsDiagnostics_Get.json
+     * x-ms-original-file:
+     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/ContainerAppsDiagnostics_Get
+     * .json
      */
     /**
      * Sample code: Get Container App's diagnostics info.
-     *
+     * 
      * @param manager Entry point to ContainerAppsApiManager.
      */
-    public static void getContainerAppSDiagnosticsInfo(
-        com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager
-            .containerAppsDiagnostics()
-            .getDetectorWithResponse(
-                "mikono-workerapp-test-rg",
-                "mikono-capp-stage1",
-                "cappcontainerappnetworkIO",
+    public static void
+        getContainerAppSDiagnosticsInfo(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
+        manager.containerAppsDiagnostics()
+            .getDetectorWithResponse("mikono-workerapp-test-rg", "mikono-capp-stage1", "cappcontainerappnetworkIO",
                 com.azure.core.util.Context.NONE);
     }
 }

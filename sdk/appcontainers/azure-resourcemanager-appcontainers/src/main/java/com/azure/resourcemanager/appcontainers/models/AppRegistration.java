@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The configuration settings of the app registration for providers that have app ids and app secrets. */
+/**
+ * The configuration settings of the app registration for providers that have app ids and app secrets.
+ */
 @Fluent
-public final class AppRegistration {
+public final class AppRegistration implements JsonSerializable<AppRegistration> {
     /*
      * The App ID of the app used for login.
      */
-    @JsonProperty(value = "appId")
     private String appId;
 
     /*
      * The app setting name that contains the app secret.
      */
-    @JsonProperty(value = "appSecretSettingName")
     private String appSecretSettingName;
 
-    /** Creates an instance of AppRegistration class. */
+    /**
+     * Creates an instance of AppRegistration class.
+     */
     public AppRegistration() {
     }
 
     /**
      * Get the appId property: The App ID of the app used for login.
-     *
+     * 
      * @return the appId value.
      */
     public String appId() {
@@ -37,7 +43,7 @@ public final class AppRegistration {
 
     /**
      * Set the appId property: The App ID of the app used for login.
-     *
+     * 
      * @param appId the appId value to set.
      * @return the AppRegistration object itself.
      */
@@ -48,7 +54,7 @@ public final class AppRegistration {
 
     /**
      * Get the appSecretSettingName property: The app setting name that contains the app secret.
-     *
+     * 
      * @return the appSecretSettingName value.
      */
     public String appSecretSettingName() {
@@ -57,7 +63,7 @@ public final class AppRegistration {
 
     /**
      * Set the appSecretSettingName property: The app setting name that contains the app secret.
-     *
+     * 
      * @param appSecretSettingName the appSecretSettingName value to set.
      * @return the AppRegistration object itself.
      */
@@ -68,9 +74,48 @@ public final class AppRegistration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("appId", this.appId);
+        jsonWriter.writeStringField("appSecretSettingName", this.appSecretSettingName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AppRegistration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AppRegistration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AppRegistration.
+     */
+    public static AppRegistration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AppRegistration deserializedAppRegistration = new AppRegistration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("appId".equals(fieldName)) {
+                    deserializedAppRegistration.appId = reader.getString();
+                } else if ("appSecretSettingName".equals(fieldName)) {
+                    deserializedAppRegistration.appSecretSettingName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAppRegistration;
+        });
     }
 }

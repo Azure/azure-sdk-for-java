@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class RoutingIdentityInfo {
     /*
-     * The type property.
+     * Routing identity type for topic spaces configuration.
      */
     @JsonProperty(value = "type")
     private RoutingIdentityType type;
@@ -31,7 +31,7 @@ public final class RoutingIdentityInfo {
     }
 
     /**
-     * Get the type property: The type property.
+     * Get the type property: Routing identity type for topic spaces configuration.
      * 
      * @return the type value.
      */
@@ -40,7 +40,7 @@ public final class RoutingIdentityInfo {
     }
 
     /**
-     * Set the type property: The type property.
+     * Set the type property: Routing identity type for topic spaces configuration.
      * 
      * @param type the type value to set.
      * @return the RoutingIdentityInfo object itself.

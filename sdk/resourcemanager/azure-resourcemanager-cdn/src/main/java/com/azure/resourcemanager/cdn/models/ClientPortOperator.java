@@ -8,41 +8,63 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Describes operator to be matched. */
+/**
+ * Describes operator to be matched.
+ */
 public final class ClientPortOperator extends ExpandableStringEnum<ClientPortOperator> {
-    /** Static value Any for ClientPortOperator. */
+    /**
+     * Static value Any for ClientPortOperator.
+     */
     public static final ClientPortOperator ANY = fromString("Any");
 
-    /** Static value Equal for ClientPortOperator. */
+    /**
+     * Static value Equal for ClientPortOperator.
+     */
     public static final ClientPortOperator EQUAL = fromString("Equal");
 
-    /** Static value Contains for ClientPortOperator. */
+    /**
+     * Static value Contains for ClientPortOperator.
+     */
     public static final ClientPortOperator CONTAINS = fromString("Contains");
 
-    /** Static value BeginsWith for ClientPortOperator. */
+    /**
+     * Static value BeginsWith for ClientPortOperator.
+     */
     public static final ClientPortOperator BEGINS_WITH = fromString("BeginsWith");
 
-    /** Static value EndsWith for ClientPortOperator. */
+    /**
+     * Static value EndsWith for ClientPortOperator.
+     */
     public static final ClientPortOperator ENDS_WITH = fromString("EndsWith");
 
-    /** Static value LessThan for ClientPortOperator. */
+    /**
+     * Static value LessThan for ClientPortOperator.
+     */
     public static final ClientPortOperator LESS_THAN = fromString("LessThan");
 
-    /** Static value LessThanOrEqual for ClientPortOperator. */
+    /**
+     * Static value LessThanOrEqual for ClientPortOperator.
+     */
     public static final ClientPortOperator LESS_THAN_OR_EQUAL = fromString("LessThanOrEqual");
 
-    /** Static value GreaterThan for ClientPortOperator. */
+    /**
+     * Static value GreaterThan for ClientPortOperator.
+     */
     public static final ClientPortOperator GREATER_THAN = fromString("GreaterThan");
 
-    /** Static value GreaterThanOrEqual for ClientPortOperator. */
+    /**
+     * Static value GreaterThanOrEqual for ClientPortOperator.
+     */
     public static final ClientPortOperator GREATER_THAN_OR_EQUAL = fromString("GreaterThanOrEqual");
 
-    /** Static value RegEx for ClientPortOperator. */
+    /**
+     * Static value RegEx for ClientPortOperator.
+     */
     public static final ClientPortOperator REG_EX = fromString("RegEx");
 
     /**
      * Creates a new instance of ClientPortOperator value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -51,7 +73,7 @@ public final class ClientPortOperator extends ExpandableStringEnum<ClientPortOpe
 
     /**
      * Creates or finds a ClientPortOperator from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ClientPortOperator.
      */
@@ -62,7 +84,7 @@ public final class ClientPortOperator extends ExpandableStringEnum<ClientPortOpe
 
     /**
      * Gets known ClientPortOperator values.
-     *
+     * 
      * @return known ClientPortOperator values.
      */
     public static Collection<ClientPortOperator> values() {

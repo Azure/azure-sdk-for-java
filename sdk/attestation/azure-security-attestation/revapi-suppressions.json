@@ -1,0 +1,16 @@
+[
+  {
+    "extension": "revapi.differences",
+    "configuration": {
+      "ignore": true,
+      "differences": [
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "old": ".*? com\\.azure\\.security\\.attestation\\.models.*",
+          "justification": "Removing Jackson annotations from Attestation in transition to stream-style."
+        }
+      ]
+    }
+  }
+]

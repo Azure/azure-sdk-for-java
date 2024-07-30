@@ -12,20 +12,21 @@ public final class ThresholdCustomAlertRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ThresholdCustomAlertRule model = BinaryData.fromString(
-            "{\"ruleType\":\"ThresholdCustomAlertRule\",\"minThreshold\":415126829,\"maxThreshold\":593960415,\"displayName\":\"bxsjybvitvqkj\",\"description\":\"znumtggmuwdchoz\",\"isEnabled\":false}")
+            "{\"ruleType\":\"ThresholdCustomAlertRule\",\"minThreshold\":1321099955,\"maxThreshold\":1526323783,\"displayName\":\"lxsmrpddouifamow\",\"description\":\"iynknlq\",\"isEnabled\":false}")
             .toObject(ThresholdCustomAlertRule.class);
         Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals(415126829, model.minThreshold());
-        Assertions.assertEquals(593960415, model.maxThreshold());
+        Assertions.assertEquals(1321099955, model.minThreshold());
+        Assertions.assertEquals(1526323783, model.maxThreshold());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ThresholdCustomAlertRule model = new ThresholdCustomAlertRule().withIsEnabled(false).withMinThreshold(415126829)
-            .withMaxThreshold(593960415);
+        ThresholdCustomAlertRule model = new ThresholdCustomAlertRule().withIsEnabled(false)
+            .withMinThreshold(1321099955)
+            .withMaxThreshold(1526323783);
         model = BinaryData.fromObject(model).toObject(ThresholdCustomAlertRule.class);
         Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals(415126829, model.minThreshold());
-        Assertions.assertEquals(593960415, model.maxThreshold());
+        Assertions.assertEquals(1321099955, model.minThreshold());
+        Assertions.assertEquals(1526323783, model.maxThreshold());
     }
 }

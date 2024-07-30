@@ -31,15 +31,22 @@ public final class BackupManagementUsageListTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BackupManagementUsageList model = new BackupManagementUsageList().withValue(Arrays.asList(
-            new BackupManagementUsageInner().withUnit(UsagesUnit.PERCENT).withQuotaPeriod("ouskcqvkocrc")
-                .withNextResetTime(OffsetDateTime.parse("2021-02-11T18:18:15Z")).withCurrentValue(5768373522529510794L)
-                .withLimit(104740040232311726L).withName(new NameInfo().withValue("biksq").withLocalizedValue("lssai")),
-            new BackupManagementUsageInner().withUnit(UsagesUnit.COUNT_PER_SECOND).withQuotaPeriod("wnzlljfmppeeb")
-                .withNextResetTime(OffsetDateTime.parse("2021-11-23T16:03:48Z")).withCurrentValue(8457329254467091392L)
+            new BackupManagementUsageInner().withUnit(UsagesUnit.PERCENT)
+                .withQuotaPeriod("ouskcqvkocrc")
+                .withNextResetTime(OffsetDateTime.parse("2021-02-11T18:18:15Z"))
+                .withCurrentValue(5768373522529510794L)
+                .withLimit(104740040232311726L)
+                .withName(new NameInfo().withValue("biksq").withLocalizedValue("lssai")),
+            new BackupManagementUsageInner().withUnit(UsagesUnit.COUNT_PER_SECOND)
+                .withQuotaPeriod("wnzlljfmppeeb")
+                .withNextResetTime(OffsetDateTime.parse("2021-11-23T16:03:48Z"))
+                .withCurrentValue(8457329254467091392L)
                 .withLimit(1088287690642884629L)
                 .withName(new NameInfo().withValue("uujitcjc").withLocalizedValue("zevndhkrwpdappds")),
-            new BackupManagementUsageInner().withUnit(UsagesUnit.PERCENT).withQuotaPeriod("wrwjfeu")
-                .withNextResetTime(OffsetDateTime.parse("2021-11-14T12:39:29Z")).withCurrentValue(5558562364469410639L)
+            new BackupManagementUsageInner().withUnit(UsagesUnit.PERCENT)
+                .withQuotaPeriod("wrwjfeu")
+                .withNextResetTime(OffsetDateTime.parse("2021-11-14T12:39:29Z"))
+                .withCurrentValue(5558562364469410639L)
                 .withLimit(7488631932267615574L)
                 .withName(new NameInfo().withValue("ldhugjzzdatqxh").withLocalizedValue("dgeablgphu"))));
         model = BinaryData.fromObject(model).toObject(BackupManagementUsageList.class);

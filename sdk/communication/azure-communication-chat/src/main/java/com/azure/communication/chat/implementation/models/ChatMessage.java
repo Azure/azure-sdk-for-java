@@ -6,89 +6,91 @@ package com.azure.communication.chat.implementation.models;
 
 import com.azure.communication.chat.models.ChatMessageType;
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
-/** Chat message. */
+/**
+ * Chat message.
+ */
 @Fluent
-public final class ChatMessage {
+public final class ChatMessage implements JsonSerializable<ChatMessage> {
     /*
      * The id of the chat message. This id is server generated.
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * The chat message type.
      */
-    @JsonProperty(value = "type", required = true)
     private ChatMessageType type;
 
     /*
      * Sequence of the chat message in the conversation.
      */
-    @JsonProperty(value = "sequenceId", required = true)
     private String sequenceId;
 
     /*
      * Version of the chat message.
      */
-    @JsonProperty(value = "version", required = true)
     private String version;
 
     /*
      * Content of a chat message.
      */
-    @JsonProperty(value = "content")
     private ChatMessageContent content;
 
     /*
-     * The display name of the chat message sender. This property is used to
-     * populate sender name for push notifications.
+     * The display name of the chat message sender. This property is used to populate sender name for push
+     * notifications.
      */
-    @JsonProperty(value = "senderDisplayName")
     private String senderDisplayName;
 
     /*
-     * The timestamp when the chat message arrived at the server. The timestamp
-     * is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * The timestamp when the chat message arrived at the server. The timestamp is in RFC3339 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`.
      */
-    @JsonProperty(value = "createdOn", required = true)
     private OffsetDateTime createdOn;
 
     /*
-     * Identifies a participant in Azure Communication services. A participant
-     * is, for example, a phone number or an Azure communication user. This
-     * model is polymorphic: Apart from kind and rawId, at most one further
-     * property may be set which must match the kind enum value.
+     * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an
+     * Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may
+     * be set which must match the kind enum value.
      */
-    @JsonProperty(value = "senderCommunicationIdentifier")
     private CommunicationIdentifierModel senderCommunicationIdentifier;
 
     /*
-     * The timestamp (if applicable) when the message was deleted. The
-     * timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * The timestamp (if applicable) when the message was deleted. The timestamp is in RFC3339 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`.
      */
-    @JsonProperty(value = "deletedOn")
     private OffsetDateTime deletedOn;
 
     /*
-     * The last timestamp (if applicable) when the message was edited. The
-     * timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * The last timestamp (if applicable) when the message was edited. The timestamp is in RFC3339 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`.
      */
-    @JsonProperty(value = "editedOn")
     private OffsetDateTime editedOn;
 
     /*
      * Message metadata.
      */
-    @JsonProperty(value = "metadata")
     private Map<String, String> metadata;
 
     /**
+     * Creates an instance of ChatMessage class.
+     */
+    public ChatMessage() {
+    }
+
+    /**
      * Get the id property: The id of the chat message. This id is server generated.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -97,7 +99,7 @@ public final class ChatMessage {
 
     /**
      * Set the id property: The id of the chat message. This id is server generated.
-     *
+     * 
      * @param id the id value to set.
      * @return the ChatMessage object itself.
      */
@@ -108,7 +110,7 @@ public final class ChatMessage {
 
     /**
      * Get the type property: The chat message type.
-     *
+     * 
      * @return the type value.
      */
     public ChatMessageType getType() {
@@ -117,7 +119,7 @@ public final class ChatMessage {
 
     /**
      * Set the type property: The chat message type.
-     *
+     * 
      * @param type the type value to set.
      * @return the ChatMessage object itself.
      */
@@ -128,7 +130,7 @@ public final class ChatMessage {
 
     /**
      * Get the sequenceId property: Sequence of the chat message in the conversation.
-     *
+     * 
      * @return the sequenceId value.
      */
     public String getSequenceId() {
@@ -137,7 +139,7 @@ public final class ChatMessage {
 
     /**
      * Set the sequenceId property: Sequence of the chat message in the conversation.
-     *
+     * 
      * @param sequenceId the sequenceId value to set.
      * @return the ChatMessage object itself.
      */
@@ -148,7 +150,7 @@ public final class ChatMessage {
 
     /**
      * Get the version property: Version of the chat message.
-     *
+     * 
      * @return the version value.
      */
     public String getVersion() {
@@ -157,7 +159,7 @@ public final class ChatMessage {
 
     /**
      * Set the version property: Version of the chat message.
-     *
+     * 
      * @param version the version value to set.
      * @return the ChatMessage object itself.
      */
@@ -168,7 +170,7 @@ public final class ChatMessage {
 
     /**
      * Get the content property: Content of a chat message.
-     *
+     * 
      * @return the content value.
      */
     public ChatMessageContent getContent() {
@@ -177,7 +179,7 @@ public final class ChatMessage {
 
     /**
      * Set the content property: Content of a chat message.
-     *
+     * 
      * @param content the content value to set.
      * @return the ChatMessage object itself.
      */
@@ -189,7 +191,7 @@ public final class ChatMessage {
     /**
      * Get the senderDisplayName property: The display name of the chat message sender. This property is used to
      * populate sender name for push notifications.
-     *
+     * 
      * @return the senderDisplayName value.
      */
     public String getSenderDisplayName() {
@@ -199,7 +201,7 @@ public final class ChatMessage {
     /**
      * Set the senderDisplayName property: The display name of the chat message sender. This property is used to
      * populate sender name for push notifications.
-     *
+     * 
      * @param senderDisplayName the senderDisplayName value to set.
      * @return the ChatMessage object itself.
      */
@@ -211,7 +213,7 @@ public final class ChatMessage {
     /**
      * Get the createdOn property: The timestamp when the chat message arrived at the server. The timestamp is in
      * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
-     *
+     * 
      * @return the createdOn value.
      */
     public OffsetDateTime getCreatedOn() {
@@ -221,7 +223,7 @@ public final class ChatMessage {
     /**
      * Set the createdOn property: The timestamp when the chat message arrived at the server. The timestamp is in
      * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
-     *
+     * 
      * @param createdOn the createdOn value to set.
      * @return the ChatMessage object itself.
      */
@@ -234,7 +236,7 @@ public final class ChatMessage {
      * Get the senderCommunicationIdentifier property: Identifies a participant in Azure Communication services. A
      * participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart from
      * kind and rawId, at most one further property may be set which must match the kind enum value.
-     *
+     * 
      * @return the senderCommunicationIdentifier value.
      */
     public CommunicationIdentifierModel getSenderCommunicationIdentifier() {
@@ -245,7 +247,7 @@ public final class ChatMessage {
      * Set the senderCommunicationIdentifier property: Identifies a participant in Azure Communication services. A
      * participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart from
      * kind and rawId, at most one further property may be set which must match the kind enum value.
-     *
+     * 
      * @param senderCommunicationIdentifier the senderCommunicationIdentifier value to set.
      * @return the ChatMessage object itself.
      */
@@ -257,7 +259,7 @@ public final class ChatMessage {
     /**
      * Get the deletedOn property: The timestamp (if applicable) when the message was deleted. The timestamp is in
      * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
-     *
+     * 
      * @return the deletedOn value.
      */
     public OffsetDateTime getDeletedOn() {
@@ -267,7 +269,7 @@ public final class ChatMessage {
     /**
      * Set the deletedOn property: The timestamp (if applicable) when the message was deleted. The timestamp is in
      * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
-     *
+     * 
      * @param deletedOn the deletedOn value to set.
      * @return the ChatMessage object itself.
      */
@@ -279,7 +281,7 @@ public final class ChatMessage {
     /**
      * Get the editedOn property: The last timestamp (if applicable) when the message was edited. The timestamp is in
      * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
-     *
+     * 
      * @return the editedOn value.
      */
     public OffsetDateTime getEditedOn() {
@@ -289,7 +291,7 @@ public final class ChatMessage {
     /**
      * Set the editedOn property: The last timestamp (if applicable) when the message was edited. The timestamp is in
      * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
-     *
+     * 
      * @param editedOn the editedOn value to set.
      * @return the ChatMessage object itself.
      */
@@ -300,7 +302,7 @@ public final class ChatMessage {
 
     /**
      * Get the metadata property: Message metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public Map<String, String> getMetadata() {
@@ -309,12 +311,87 @@ public final class ChatMessage {
 
     /**
      * Set the metadata property: Message metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the ChatMessage object itself.
      */
     public ChatMessage setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("sequenceId", this.sequenceId);
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeStringField("createdOn",
+            this.createdOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdOn));
+        jsonWriter.writeJsonField("content", this.content);
+        jsonWriter.writeStringField("senderDisplayName", this.senderDisplayName);
+        jsonWriter.writeJsonField("senderCommunicationIdentifier", this.senderCommunicationIdentifier);
+        jsonWriter.writeStringField("deletedOn",
+            this.deletedOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.deletedOn));
+        jsonWriter.writeStringField("editedOn",
+            this.editedOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.editedOn));
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChatMessage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChatMessage if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ChatMessage.
+     */
+    public static ChatMessage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChatMessage deserializedChatMessage = new ChatMessage();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedChatMessage.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedChatMessage.type = ChatMessageType.fromString(reader.getString());
+                } else if ("sequenceId".equals(fieldName)) {
+                    deserializedChatMessage.sequenceId = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedChatMessage.version = reader.getString();
+                } else if ("createdOn".equals(fieldName)) {
+                    deserializedChatMessage.createdOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("content".equals(fieldName)) {
+                    deserializedChatMessage.content = ChatMessageContent.fromJson(reader);
+                } else if ("senderDisplayName".equals(fieldName)) {
+                    deserializedChatMessage.senderDisplayName = reader.getString();
+                } else if ("senderCommunicationIdentifier".equals(fieldName)) {
+                    deserializedChatMessage.senderCommunicationIdentifier
+                        = CommunicationIdentifierModel.fromJson(reader);
+                } else if ("deletedOn".equals(fieldName)) {
+                    deserializedChatMessage.deletedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("editedOn".equals(fieldName)) {
+                    deserializedChatMessage.editedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    deserializedChatMessage.metadata = metadata;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedChatMessage;
+        });
     }
 }

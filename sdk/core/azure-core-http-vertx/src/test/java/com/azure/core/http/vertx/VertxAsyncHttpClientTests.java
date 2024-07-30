@@ -10,11 +10,10 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.implementation.util.HttpUtils;
 import com.azure.core.util.Context;
-import io.vertx.core.http.HttpClosedException;
+import com.azure.core.util.FluxUtil;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.ParallelFlux;
@@ -22,6 +21,7 @@ import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 import reactor.test.StepVerifierOptions;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -36,16 +36,20 @@ import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.LONG_BODY;
 import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.RETURN_HEADERS_AS_IS_PATH;
 import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.SHORT_BODY;
+import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.TIMEOUT;
+import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Execution(ExecutionMode.SAME_THREAD)
 public class VertxAsyncHttpClientTests {
     private static final String SERVER_HTTP_URI = VertxHttpClientLocalTestServer.getServer().getHttpUri();
 
@@ -129,7 +133,7 @@ public class VertxAsyncHttpClientTests {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url("/connectionClose"));
 
         StepVerifier.create(client.send(request).flatMap(HttpResponse::getBodyAsByteArray))
-            .verifyError(HttpClosedException.class);
+            .verifyError(IOException.class);
     }
 
     @Test
@@ -234,6 +238,46 @@ public class VertxAsyncHttpClientTests {
             .expectNextCount(0)
             .thenRequest(1)
             .verifyComplete();
+    }
+
+    @Test
+    public void perCallTimeout() {
+        HttpClient client = new VertxAsyncHttpClientBuilder().responseTimeout(Duration.ofSeconds(10)).build();
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(TIMEOUT));
+
+        // Verify a smaller timeout sent through Context times out the request.
+        StepVerifier.create(client.send(request, new Context(HttpUtils.AZURE_RESPONSE_TIMEOUT, Duration.ofSeconds(1))))
+            .expectErrorMatches(e -> e instanceof TimeoutException)
+            .verify();
+
+        // Then verify not setting a timeout through Context does not time out the request.
+        StepVerifier.create(client.send(request)
+            .flatMap(response -> Mono.zip(FluxUtil.collectBytesInByteBufferStream(response.getBody()),
+                Mono.just(response.getStatusCode()))))
+            .assertNext(tuple -> {
+                assertArraysEqual(SHORT_BODY, tuple.getT1());
+                assertEquals(200, tuple.getT2());
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void perCallTimeoutSync() {
+        HttpClient client = new VertxAsyncHttpClientBuilder().responseTimeout(Duration.ofSeconds(10)).build();
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(TIMEOUT));
+
+        // Verify a smaller timeout sent through Context times out the request.
+        RuntimeException ex = assertThrows(RuntimeException.class,
+            () -> client.sendSync(request, new Context(HttpUtils.AZURE_RESPONSE_TIMEOUT, Duration.ofSeconds(1))));
+        assertInstanceOf(TimeoutException.class, ex.getCause());
+
+        // Then verify not setting a timeout through Context does not time out the request.
+        try (HttpResponse response = client.sendSync(request, Context.NONE)) {
+            assertEquals(200, response.getStatusCode());
+            assertArraysEqual(SHORT_BODY, response.getBodyAsByteArray().block());
+        }
     }
 
     private static Mono<HttpResponse> getResponse(String path) {

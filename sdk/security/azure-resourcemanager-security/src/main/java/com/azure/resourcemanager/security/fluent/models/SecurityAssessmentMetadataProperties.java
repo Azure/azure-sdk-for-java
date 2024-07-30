@@ -82,8 +82,7 @@ public class SecurityAssessmentMetadataProperties {
     private Boolean preview;
 
     /*
-     * BuiltIn if the assessment based on built-in Azure Policy definition, Custom if the assessment based on custom
-     * Azure Policy definition
+     * BuiltIn if the assessment based on built-in Azure Policy definition, Custom if the assessment based on custom Azure Policy definition
      */
     @JsonProperty(value = "assessmentType", required = true)
     private AssessmentType assessmentType;
@@ -341,16 +340,19 @@ public class SecurityAssessmentMetadataProperties {
      */
     public void validate() {
         if (displayName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property displayName in model SecurityAssessmentMetadataProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property displayName in model SecurityAssessmentMetadataProperties"));
         }
         if (severity() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property severity in model SecurityAssessmentMetadataProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property severity in model SecurityAssessmentMetadataProperties"));
         }
         if (assessmentType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property assessmentType in model SecurityAssessmentMetadataProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property assessmentType in model SecurityAssessmentMetadataProperties"));
         }
         if (partnerData() != null) {
             partnerData().validate();

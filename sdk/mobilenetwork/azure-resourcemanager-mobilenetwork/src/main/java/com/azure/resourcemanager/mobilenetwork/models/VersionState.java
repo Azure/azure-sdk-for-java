@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The state of this packet core control plane version. */
+/**
+ * The state of this packet core control plane version.
+ */
 public final class VersionState extends ExpandableStringEnum<VersionState> {
-    /** Static value Unknown for VersionState. */
+    /**
+     * Static value Unknown for VersionState.
+     */
     public static final VersionState UNKNOWN = fromString("Unknown");
 
-    /** Static value Preview for VersionState. */
+    /**
+     * Static value Preview for VersionState.
+     */
     public static final VersionState PREVIEW = fromString("Preview");
 
-    /** Static value Validating for VersionState. */
+    /**
+     * Static value Validating for VersionState.
+     */
     public static final VersionState VALIDATING = fromString("Validating");
 
-    /** Static value ValidationFailed for VersionState. */
+    /**
+     * Static value ValidationFailed for VersionState.
+     */
     public static final VersionState VALIDATION_FAILED = fromString("ValidationFailed");
 
-    /** Static value Active for VersionState. */
+    /**
+     * Static value Active for VersionState.
+     */
     public static final VersionState ACTIVE = fromString("Active");
 
-    /** Static value Deprecated for VersionState. */
+    /**
+     * Static value Deprecated for VersionState.
+     */
     public static final VersionState DEPRECATED = fromString("Deprecated");
 
     /**
      * Creates a new instance of VersionState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +53,7 @@ public final class VersionState extends ExpandableStringEnum<VersionState> {
 
     /**
      * Creates or finds a VersionState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VersionState.
      */
@@ -50,7 +64,7 @@ public final class VersionState extends ExpandableStringEnum<VersionState> {
 
     /**
      * Gets known VersionState values.
-     *
+     * 
      * @return known VersionState values.
      */
     public static Collection<VersionState> values() {

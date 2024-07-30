@@ -1,0 +1,64 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+#TODO
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/clientcore/
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/clientcore/
+
+parameters:
+  - name: release_core
+    displayName: 'core'
+    type: boolean
+    default: true
+  - name: release_clientcorehttpjdkhttpclient
+    displayName: 'http-jdk-httpclient'
+    type: boolean
+    default: false
+  - name: release_clientcorehttpokhttp3
+    displayName: 'http-okhttp3'
+    type: boolean
+    default: false
+  - name: release_corejson
+    displayName: 'core-json'
+    type: boolean
+    default: false
+
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: clientcore
+    Artifacts:
+      - name: core
+        groupId: io.clientcore
+        safeName: core
+        releaseInBatch: ${{ parameters.release_core }}
+      - name: http-jdk-httpclient
+        groupId: io.clientcore
+        safeName: httpjdkhttpclient
+        releaseInBatch: ${{ parameters.release_clientcorehttpjdkhttpclient }}
+      - name: http-okhttp3
+        groupId: io.clientcore
+        safeName: httpokhttp3
+        releaseInBatch: ${{ parameters.release_clientcorehttpokhttp3 }}
+      - name: core-json
+        groupId: io.clientcore
+        safeName: corejson
+        releaseInBatch: ${{ parameters.release_corejson }}
+    MatrixReplace:
+      - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify

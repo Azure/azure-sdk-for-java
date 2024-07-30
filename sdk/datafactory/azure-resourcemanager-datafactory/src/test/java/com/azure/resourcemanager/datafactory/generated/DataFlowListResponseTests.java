@@ -28,7 +28,8 @@ public final class DataFlowListResponseTests {
     public void testSerialize() throws Exception {
         DataFlowListResponse model = new DataFlowListResponse().withValue(Arrays.asList(
             new DataFlowResourceInner().withId("aj")
-                .withProperties(new DataFlow().withDescription("eevy").withAnnotations(Arrays.asList("datasgzfczbg"))
+                .withProperties(new DataFlow().withDescription("eevy")
+                    .withAnnotations(Arrays.asList("datasgzfczbg"))
                     .withFolder(new DataFlowFolder().withName("gbeglqgleo"))),
             new DataFlowResourceInner().withId("nnust")
                 .withProperties(new DataFlow().withDescription("wxacevehj")

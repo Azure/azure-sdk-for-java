@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ValidateBackupResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ValidateBackupResponseInner model =
-            BinaryData
-                .fromString("{\"properties\":{\"numberOfContainers\":148902907}}")
-                .toObject(ValidateBackupResponseInner.class);
+        ValidateBackupResponseInner model = BinaryData.fromString("{\"properties\":{\"numberOfContainers\":148902907}}")
+            .toObject(ValidateBackupResponseInner.class);
         Assertions.assertEquals(148902907, model.numberOfContainers());
     }
 

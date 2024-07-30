@@ -13,8 +13,7 @@ public final class CapabilitiesResponseImpl implements CapabilitiesResponse {
 
     private final com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager;
 
-    CapabilitiesResponseImpl(
-        CapabilitiesResponseInner innerObject,
+    CapabilitiesResponseImpl(CapabilitiesResponseInner innerObject,
         com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.mobilenetwork.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -12,8 +13,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -25,19 +26,22 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.mobilenetwork.fluent.AttachedDataNetworksClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.DataNetworksClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.DiagnosticsPackagesClient;
+import com.azure.resourcemanager.mobilenetwork.fluent.ExtendedUeInformationsClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.MobileNetworkManagementClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.MobileNetworksClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.OperationsClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.PacketCapturesClient;
-import com.azure.resourcemanager.mobilenetwork.fluent.PacketCoreControlPlaneVersionsClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.PacketCoreControlPlanesClient;
+import com.azure.resourcemanager.mobilenetwork.fluent.PacketCoreControlPlaneVersionsClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.PacketCoreDataPlanesClient;
+import com.azure.resourcemanager.mobilenetwork.fluent.RoutingInfoesClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.ServicesClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.SimGroupsClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.SimPoliciesClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.SimsClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.SitesClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.SlicesClient;
+import com.azure.resourcemanager.mobilenetwork.fluent.UeInformationsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -47,255 +51,313 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the MobileNetworkManagementClientImpl type. */
+/**
+ * Initializes a new instance of the MobileNetworkManagementClientImpl type.
+ */
 @ServiceClient(builder = MobileNetworkManagementClientBuilder.class)
 public final class MobileNetworkManagementClientImpl implements MobileNetworkManagementClient {
-    /** The ID of the target subscription. The value must be an UUID. */
+    /**
+     * The ID of the target subscription. The value must be an UUID.
+     */
     private final String subscriptionId;
 
     /**
      * Gets The ID of the target subscription. The value must be an UUID.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The AttachedDataNetworksClient object to access its operations. */
+    /**
+     * The AttachedDataNetworksClient object to access its operations.
+     */
     private final AttachedDataNetworksClient attachedDataNetworks;
 
     /**
      * Gets the AttachedDataNetworksClient object to access its operations.
-     *
+     * 
      * @return the AttachedDataNetworksClient object.
      */
     public AttachedDataNetworksClient getAttachedDataNetworks() {
         return this.attachedDataNetworks;
     }
 
-    /** The DataNetworksClient object to access its operations. */
+    /**
+     * The DataNetworksClient object to access its operations.
+     */
     private final DataNetworksClient dataNetworks;
 
     /**
      * Gets the DataNetworksClient object to access its operations.
-     *
+     * 
      * @return the DataNetworksClient object.
      */
     public DataNetworksClient getDataNetworks() {
         return this.dataNetworks;
     }
 
-    /** The DiagnosticsPackagesClient object to access its operations. */
+    /**
+     * The DiagnosticsPackagesClient object to access its operations.
+     */
     private final DiagnosticsPackagesClient diagnosticsPackages;
 
     /**
      * Gets the DiagnosticsPackagesClient object to access its operations.
-     *
+     * 
      * @return the DiagnosticsPackagesClient object.
      */
     public DiagnosticsPackagesClient getDiagnosticsPackages() {
         return this.diagnosticsPackages;
     }
 
-    /** The MobileNetworksClient object to access its operations. */
+    /**
+     * The MobileNetworksClient object to access its operations.
+     */
     private final MobileNetworksClient mobileNetworks;
 
     /**
      * Gets the MobileNetworksClient object to access its operations.
-     *
+     * 
      * @return the MobileNetworksClient object.
      */
     public MobileNetworksClient getMobileNetworks() {
         return this.mobileNetworks;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The PacketCapturesClient object to access its operations. */
+    /**
+     * The PacketCapturesClient object to access its operations.
+     */
     private final PacketCapturesClient packetCaptures;
 
     /**
      * Gets the PacketCapturesClient object to access its operations.
-     *
+     * 
      * @return the PacketCapturesClient object.
      */
     public PacketCapturesClient getPacketCaptures() {
         return this.packetCaptures;
     }
 
-    /** The PacketCoreControlPlanesClient object to access its operations. */
+    /**
+     * The PacketCoreControlPlanesClient object to access its operations.
+     */
     private final PacketCoreControlPlanesClient packetCoreControlPlanes;
 
     /**
      * Gets the PacketCoreControlPlanesClient object to access its operations.
-     *
+     * 
      * @return the PacketCoreControlPlanesClient object.
      */
     public PacketCoreControlPlanesClient getPacketCoreControlPlanes() {
         return this.packetCoreControlPlanes;
     }
 
-    /** The PacketCoreControlPlaneVersionsClient object to access its operations. */
+    /**
+     * The RoutingInfoesClient object to access its operations.
+     */
+    private final RoutingInfoesClient routingInfoes;
+
+    /**
+     * Gets the RoutingInfoesClient object to access its operations.
+     * 
+     * @return the RoutingInfoesClient object.
+     */
+    public RoutingInfoesClient getRoutingInfoes() {
+        return this.routingInfoes;
+    }
+
+    /**
+     * The PacketCoreControlPlaneVersionsClient object to access its operations.
+     */
     private final PacketCoreControlPlaneVersionsClient packetCoreControlPlaneVersions;
 
     /**
      * Gets the PacketCoreControlPlaneVersionsClient object to access its operations.
-     *
+     * 
      * @return the PacketCoreControlPlaneVersionsClient object.
      */
     public PacketCoreControlPlaneVersionsClient getPacketCoreControlPlaneVersions() {
         return this.packetCoreControlPlaneVersions;
     }
 
-    /** The PacketCoreDataPlanesClient object to access its operations. */
+    /**
+     * The PacketCoreDataPlanesClient object to access its operations.
+     */
     private final PacketCoreDataPlanesClient packetCoreDataPlanes;
 
     /**
      * Gets the PacketCoreDataPlanesClient object to access its operations.
-     *
+     * 
      * @return the PacketCoreDataPlanesClient object.
      */
     public PacketCoreDataPlanesClient getPacketCoreDataPlanes() {
         return this.packetCoreDataPlanes;
     }
 
-    /** The ServicesClient object to access its operations. */
+    /**
+     * The ServicesClient object to access its operations.
+     */
     private final ServicesClient services;
 
     /**
      * Gets the ServicesClient object to access its operations.
-     *
+     * 
      * @return the ServicesClient object.
      */
     public ServicesClient getServices() {
         return this.services;
     }
 
-    /** The SimsClient object to access its operations. */
+    /**
+     * The SimsClient object to access its operations.
+     */
     private final SimsClient sims;
 
     /**
      * Gets the SimsClient object to access its operations.
-     *
+     * 
      * @return the SimsClient object.
      */
     public SimsClient getSims() {
         return this.sims;
     }
 
-    /** The SimGroupsClient object to access its operations. */
+    /**
+     * The SimGroupsClient object to access its operations.
+     */
     private final SimGroupsClient simGroups;
 
     /**
      * Gets the SimGroupsClient object to access its operations.
-     *
+     * 
      * @return the SimGroupsClient object.
      */
     public SimGroupsClient getSimGroups() {
         return this.simGroups;
     }
 
-    /** The SimPoliciesClient object to access its operations. */
+    /**
+     * The SimPoliciesClient object to access its operations.
+     */
     private final SimPoliciesClient simPolicies;
 
     /**
      * Gets the SimPoliciesClient object to access its operations.
-     *
+     * 
      * @return the SimPoliciesClient object.
      */
     public SimPoliciesClient getSimPolicies() {
         return this.simPolicies;
     }
 
-    /** The SitesClient object to access its operations. */
+    /**
+     * The SitesClient object to access its operations.
+     */
     private final SitesClient sites;
 
     /**
      * Gets the SitesClient object to access its operations.
-     *
+     * 
      * @return the SitesClient object.
      */
     public SitesClient getSites() {
         return this.sites;
     }
 
-    /** The SlicesClient object to access its operations. */
+    /**
+     * The SlicesClient object to access its operations.
+     */
     private final SlicesClient slices;
 
     /**
      * Gets the SlicesClient object to access its operations.
-     *
+     * 
      * @return the SlicesClient object.
      */
     public SlicesClient getSlices() {
@@ -303,8 +365,36 @@ public final class MobileNetworkManagementClientImpl implements MobileNetworkMan
     }
 
     /**
+     * The ExtendedUeInformationsClient object to access its operations.
+     */
+    private final ExtendedUeInformationsClient extendedUeInformations;
+
+    /**
+     * Gets the ExtendedUeInformationsClient object to access its operations.
+     * 
+     * @return the ExtendedUeInformationsClient object.
+     */
+    public ExtendedUeInformationsClient getExtendedUeInformations() {
+        return this.extendedUeInformations;
+    }
+
+    /**
+     * The UeInformationsClient object to access its operations.
+     */
+    private final UeInformationsClient ueInformations;
+
+    /**
+     * Gets the UeInformationsClient object to access its operations.
+     * 
+     * @return the UeInformationsClient object.
+     */
+    public UeInformationsClient getUeInformations() {
+        return this.ueInformations;
+    }
+
+    /**
      * Initializes an instance of MobileNetworkManagementClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -312,19 +402,14 @@ public final class MobileNetworkManagementClientImpl implements MobileNetworkMan
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
-    MobileNetworkManagementClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    MobileNetworkManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-09-01";
+        this.apiVersion = "2024-04-01";
         this.attachedDataNetworks = new AttachedDataNetworksClientImpl(this);
         this.dataNetworks = new DataNetworksClientImpl(this);
         this.diagnosticsPackages = new DiagnosticsPackagesClientImpl(this);
@@ -332,6 +417,7 @@ public final class MobileNetworkManagementClientImpl implements MobileNetworkMan
         this.operations = new OperationsClientImpl(this);
         this.packetCaptures = new PacketCapturesClientImpl(this);
         this.packetCoreControlPlanes = new PacketCoreControlPlanesClientImpl(this);
+        this.routingInfoes = new RoutingInfoesClientImpl(this);
         this.packetCoreControlPlaneVersions = new PacketCoreControlPlaneVersionsClientImpl(this);
         this.packetCoreDataPlanes = new PacketCoreDataPlanesClientImpl(this);
         this.services = new ServicesClientImpl(this);
@@ -340,11 +426,13 @@ public final class MobileNetworkManagementClientImpl implements MobileNetworkMan
         this.simPolicies = new SimPoliciesClientImpl(this);
         this.sites = new SitesClientImpl(this);
         this.slices = new SlicesClientImpl(this);
+        this.extendedUeInformations = new ExtendedUeInformationsClientImpl(this);
+        this.ueInformations = new UeInformationsClientImpl(this);
     }
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -353,7 +441,7 @@ public final class MobileNetworkManagementClientImpl implements MobileNetworkMan
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -363,7 +451,7 @@ public final class MobileNetworkManagementClientImpl implements MobileNetworkMan
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -373,26 +461,15 @@ public final class MobileNetworkManagementClientImpl implements MobileNetworkMan
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -405,19 +482,16 @@ public final class MobileNetworkManagementClientImpl implements MobileNetworkMan
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -458,7 +532,7 @@ public final class MobileNetworkManagementClientImpl implements MobileNetworkMan
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

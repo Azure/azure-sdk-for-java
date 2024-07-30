@@ -31,47 +31,27 @@ public final class CatalogsListDevicesMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"deviceId\":\"ellwptfdy\",\"chipSku\":\"fqbuaceopzf\",\"lastAvailableOsVersion\":\"hhuao\",\"lastInstalledOsVersion\":\"pcqeqx\",\"lastOsUpdateUtc\":\"2021-02-19T08:33:13Z\",\"lastUpdateRequestUtc\":\"2021-12-05T23:59:55Z\",\"provisioningState\":\"Failed\"},\"id\":\"xcto\",\"name\":\"gbkdmoizpos\",\"type\":\"mgrcfbu\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"deviceId\":\"joya\",\"chipSku\":\"slyjpkiid\",\"lastAvailableOsVersion\":\"exznelixhnr\",\"lastInstalledOsVersion\":\"folhbnxknal\",\"lastOsUpdateUtc\":\"2021-06-16T03:28:56Z\",\"lastUpdateRequestUtc\":\"2021-05-05T13:18:41Z\",\"provisioningState\":\"Deleting\"},\"id\":\"tpnapnyiropuhpig\",\"name\":\"pgylg\",\"type\":\"git\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        AzureSphereManager manager =
-            AzureSphereManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureSphereManager manager = AzureSphereManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Device> response =
-            manager
-                .catalogs()
-                .listDevices(
-                    "edjvcslynqw",
-                    "ncw",
-                    "zhxgktrmgucn",
-                    1295716293,
-                    994320059,
-                    47772472,
-                    com.azure.core.util.Context.NONE);
+        PagedIterable<Device> response = manager.catalogs().listDevices("touwaboekqv", "elnsmvbxw", "jsflhhcaalnjix",
+            923639125, 1143509001, 589324262, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ellwptfdy", response.iterator().next().deviceId());
+        Assertions.assertEquals("joya", response.iterator().next().properties().deviceId());
     }
 }

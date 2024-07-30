@@ -7,6 +7,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,9 +17,9 @@ import java.util.List;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "backupManagementType",
-    defaultImpl = ProtectionPolicy.class)
+    defaultImpl = ProtectionPolicy.class,
+    visible = true)
 @JsonTypeName("ProtectionPolicy")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AzureWorkload", value = AzureVmWorkloadProtectionPolicy.class),
@@ -29,6 +30,13 @@ import java.util.List;
     @JsonSubTypes.Type(name = "MAB", value = MabProtectionPolicy.class) })
 @Fluent
 public class ProtectionPolicy {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "backupManagementType", required = true)
+    private String backupManagementType;
+
     /*
      * Number of items associated with this policy.
      */
@@ -45,6 +53,17 @@ public class ProtectionPolicy {
      * Creates an instance of ProtectionPolicy class.
      */
     public ProtectionPolicy() {
+        this.backupManagementType = "ProtectionPolicy";
+    }
+
+    /**
+     * Get the backupManagementType property: This property will be used as the discriminator for deciding the specific
+     * types in the polymorphic chain of types.
+     * 
+     * @return the backupManagementType value.
+     */
+    public String backupManagementType() {
+        return this.backupManagementType;
     }
 
     /**

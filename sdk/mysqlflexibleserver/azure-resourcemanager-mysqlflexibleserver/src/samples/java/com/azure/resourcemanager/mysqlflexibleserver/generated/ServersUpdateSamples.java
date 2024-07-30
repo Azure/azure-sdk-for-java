@@ -9,106 +9,92 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.mysqlflexibleserver.models.DataEncryption;
 import com.azure.resourcemanager.mysqlflexibleserver.models.DataEncryptionType;
 import com.azure.resourcemanager.mysqlflexibleserver.models.EnableStatusEnum;
-import com.azure.resourcemanager.mysqlflexibleserver.models.Identity;
 import com.azure.resourcemanager.mysqlflexibleserver.models.MaintenanceWindow;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.mysqlflexibleserver.models.MySqlServerIdentity;
+import com.azure.resourcemanager.mysqlflexibleserver.models.Network;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Server;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Storage;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Servers Update. */
+/**
+ * Samples for Servers Update.
+ */
 public final class ServersUpdateSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerUpdateWithCustomerMaintenanceWindow.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/ServerUpdateWithCustomerMaintenanceWindow.json
      */
     /**
      * Sample code: Update server customer maintenance window.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
-    public static void updateServerCustomerMaintenanceWindow(
-        com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        Server resource =
-            manager
-                .servers()
-                .getByResourceGroupWithResponse("testrg", "mysqltestserver", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
-            .withMaintenanceWindow(
-                new MaintenanceWindow()
-                    .withCustomWindow("Enabled")
-                    .withStartHour(8)
-                    .withStartMinute(0)
-                    .withDayOfWeek(1))
+    public static void
+        updateServerCustomerMaintenanceWindow(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
+        Server resource = manager.servers()
+            .getByResourceGroupWithResponse("testrg", "mysqltestserver", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withMaintenanceWindow(new MaintenanceWindow().withCustomWindow("Enabled")
+                .withStartHour(8)
+                .withStartMinute(0)
+                .withDayOfWeek(1))
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerUpdateWithBYOK.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/ServerUpdateWithBYOK.json
      */
     /**
      * Sample code: Update server with byok.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void updateServerWithByok(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager)
         throws IOException {
-        Server resource =
-            manager
-                .servers()
-                .getByResourceGroupWithResponse("testrg", "mysqltestserver", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
-            .withIdentity(
-                new Identity()
-                    .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf(
-                            "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-identity",
-                            SerializerFactory
-                                .createDefaultManagementSerializerAdapter()
-                                .deserialize("{}", Object.class, SerializerEncoding.JSON))))
-            .withDataEncryption(
-                new DataEncryption()
-                    .withPrimaryUserAssignedIdentityId(
-                        "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-identity")
-                    .withPrimaryKeyUri("fakeTokenPlaceholder")
-                    .withGeoBackupUserAssignedIdentityId(
-                        "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-geo-identity")
-                    .withGeoBackupKeyUri("fakeTokenPlaceholder")
-                    .withType(DataEncryptionType.AZURE_KEY_VAULT))
+        Server resource = manager.servers()
+            .getByResourceGroupWithResponse("testrg", "mysqltestserver", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withIdentity(new MySqlServerIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-identity",
+                    SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize("{}", Object.class, SerializerEncoding.JSON))))
+            .withDataEncryption(new DataEncryption().withPrimaryUserAssignedIdentityId(
+                "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-identity")
+                .withPrimaryKeyUri("fakeTokenPlaceholder")
+                .withGeoBackupUserAssignedIdentityId(
+                    "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-geo-identity")
+                .withGeoBackupKeyUri("fakeTokenPlaceholder")
+                .withType(DataEncryptionType.AZURE_KEY_VAULT))
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerUpdate.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/ServerUpdate.json
      */
     /**
      * Sample code: Update a server.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void updateAServer(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        Server resource =
-            manager
-                .servers()
-                .getByResourceGroupWithResponse("testrg", "mysqltestserver", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
-            .withStorage(
-                new Storage()
-                    .withStorageSizeGB(30)
-                    .withIops(200)
-                    .withAutoGrow(EnableStatusEnum.DISABLED)
-                    .withAutoIoScaling(EnableStatusEnum.DISABLED))
+        Server resource = manager.servers()
+            .getByResourceGroupWithResponse("testrg", "mysqltestserver", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withStorage(new Storage().withStorageSizeGB(30)
+                .withIops(200)
+                .withAutoGrow(EnableStatusEnum.DISABLED)
+                .withAutoIoScaling(EnableStatusEnum.DISABLED))
+            .withNetwork(new Network().withPublicNetworkAccess(EnableStatusEnum.DISABLED))
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

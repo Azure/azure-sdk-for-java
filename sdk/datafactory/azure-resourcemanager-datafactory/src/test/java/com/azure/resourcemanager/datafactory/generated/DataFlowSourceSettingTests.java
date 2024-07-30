@@ -22,7 +22,8 @@ public final class DataFlowSourceSettingTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataFlowSourceSetting model = new DataFlowSourceSetting().withSourceName("oxgjiuqhibt").withRowLimit(645359051)
+        DataFlowSourceSetting model = new DataFlowSourceSetting().withSourceName("oxgjiuqhibt")
+            .withRowLimit(645359051)
             .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(DataFlowSourceSetting.class);
         Assertions.assertEquals("oxgjiuqhibt", model.sourceName());

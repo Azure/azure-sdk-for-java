@@ -6,16 +6,24 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity tabular translator.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = TabularTranslator.class, visible = true)
 @JsonTypeName("TabularTranslator")
 @Fluent
 public final class TabularTranslator extends CopyTranslator {
+    /*
+     * Copy translator type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "TabularTranslator";
+
     /*
      * Column mappings. Example: "UserId: MyUserId, Group: MyGroup, Name: MyName" Type: string (or Expression with
      * resultType string). This property will be retired. Please use mappings property.
@@ -51,8 +59,8 @@ public final class TabularTranslator extends CopyTranslator {
      * "name":"CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}].
      * Hierarchical->tabular example:
      * [{"source":{"path":"$.CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}},{"source":{
-     * "path":"$.CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}].
-     * Type: object (or Expression with resultType object).
+     * "path":"$.CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}]. Type: object (or
+     * Expression with resultType object).
      */
     @JsonProperty(value = "mappings")
     private Object mappings;
@@ -77,9 +85,18 @@ public final class TabularTranslator extends CopyTranslator {
     }
 
     /**
-     * Get the columnMappings property: Column mappings. Example: "UserId: MyUserId, Group: MyGroup, Name: MyName"
-     * Type: string (or Expression with resultType string). This property will be retired. Please use mappings
-     * property.
+     * Get the type property: Copy translator type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the columnMappings property: Column mappings. Example: "UserId: MyUserId, Group: MyGroup, Name: MyName" Type:
+     * string (or Expression with resultType string). This property will be retired. Please use mappings property.
      * 
      * @return the columnMappings value.
      */
@@ -88,9 +105,8 @@ public final class TabularTranslator extends CopyTranslator {
     }
 
     /**
-     * Set the columnMappings property: Column mappings. Example: "UserId: MyUserId, Group: MyGroup, Name: MyName"
-     * Type: string (or Expression with resultType string). This property will be retired. Please use mappings
-     * property.
+     * Set the columnMappings property: Column mappings. Example: "UserId: MyUserId, Group: MyGroup, Name: MyName" Type:
+     * string (or Expression with resultType string). This property will be retired. Please use mappings property.
      * 
      * @param columnMappings the columnMappings value to set.
      * @return the TabularTranslator object itself.

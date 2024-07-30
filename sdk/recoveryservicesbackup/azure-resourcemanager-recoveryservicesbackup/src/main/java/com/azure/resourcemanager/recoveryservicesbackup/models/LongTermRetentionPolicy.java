@@ -6,16 +6,28 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Long term retention policy.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "retentionPolicyType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "retentionPolicyType",
+    defaultImpl = LongTermRetentionPolicy.class,
+    visible = true)
 @JsonTypeName("LongTermRetentionPolicy")
 @Fluent
 public final class LongTermRetentionPolicy extends RetentionPolicy {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "retentionPolicyType", required = true)
+    private String retentionPolicyType = "LongTermRetentionPolicy";
+
     /*
      * Daily retention schedule of the protection policy.
      */
@@ -44,6 +56,17 @@ public final class LongTermRetentionPolicy extends RetentionPolicy {
      * Creates an instance of LongTermRetentionPolicy class.
      */
     public LongTermRetentionPolicy() {
+    }
+
+    /**
+     * Get the retentionPolicyType property: This property will be used as the discriminator for deciding the specific
+     * types in the polymorphic chain of types.
+     * 
+     * @return the retentionPolicyType value.
+     */
+    @Override
+    public String retentionPolicyType() {
+        return this.retentionPolicyType;
     }
 
     /**

@@ -159,7 +159,7 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
  * <!-- src_embed com.azure.data.tables.tableClient.updateEntity#TableEntity-TableEntityUpdateMode -->
  * <pre>
  *
- * TableEntity myTableEntity = new TableEntity&#40;&quot;paritionKey&quot;, &quot;rowKey&quot;&#41;
+ * TableEntity myTableEntity = new TableEntity&#40;&quot;partitionKey&quot;, &quot;rowKey&quot;&#41;
  *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
  *
  * tableClient.updateEntity&#40;myTableEntity, TableEntityUpdateMode.REPLACE&#41;;
@@ -772,7 +772,7 @@ public final class TableClient {
      * <!-- src_embed com.azure.data.tables.tableClient.updateEntity#TableEntity-TableEntityUpdateMode -->
      * <pre>
      *
-     * TableEntity myTableEntity = new TableEntity&#40;&quot;paritionKey&quot;, &quot;rowKey&quot;&#41;
+     * TableEntity myTableEntity = new TableEntity&#40;&quot;partitionKey&quot;, &quot;rowKey&quot;&#41;
      *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
      *
      * tableClient.updateEntity&#40;myTableEntity, TableEntityUpdateMode.REPLACE&#41;;
@@ -1100,6 +1100,7 @@ public final class TableClient {
             .setTop(options.getTop())
             .setSelect(select)
             .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
+
 
         final ResponseBase<TablesQueryEntitiesHeaders, TableEntityQueryResponse> response =
             tablesImplementation.getTables().queryEntitiesWithResponse(tableName, null, null,
@@ -1445,7 +1446,7 @@ public final class TableClient {
      * Executes all {@link TableTransactionAction actions} within the list inside a transaction. When the call
      * completes, either all {@link TableTransactionAction actions} in the transaction will succeed, or if a failure
      * occurs, all {@link TableTransactionAction actions} in the transaction will be rolled back.
-     * {@link TableTransactionAction Actions} are executed sequantially. Each {@link TableTransactionAction action}
+     * {@link TableTransactionAction Actions} are executed sequentially. Each {@link TableTransactionAction action}
      * must operate on a distinct row key. Attempting to pass multiple {@link TableTransactionAction actions} that
      * share the same row key will cause an error.
      *
@@ -1533,7 +1534,7 @@ public final class TableClient {
      * Executes all {@link TableTransactionAction actions} within the list inside a transaction. When the call
      * completes, either all {@link TableTransactionAction actions} in the transaction will succeed, or if a failure
      * occurs, all {@link TableTransactionAction actions} in the transaction will be rolled back.
-     * {@link TableTransactionAction Actions} are executed sequantially. Each {@link TableTransactionAction action}
+     * {@link TableTransactionAction Actions} are executed sequentially. Each {@link TableTransactionAction action}
      * must operate on a distinct row key. Attempting to pass multiple {@link TableTransactionAction actions} that
      * share the same row key will cause an error.
      *

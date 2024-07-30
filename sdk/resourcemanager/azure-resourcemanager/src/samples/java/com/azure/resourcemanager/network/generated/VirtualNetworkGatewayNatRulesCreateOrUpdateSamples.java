@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class VirtualNetworkGatewayNatRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
      * VirtualNetworkGatewayNatRulePut.json
      */
     /**
@@ -24,9 +24,13 @@ public final class VirtualNetworkGatewayNatRulesCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualNetworkGatewayNatRulePut(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualNetworkGatewayNatRules()
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworkGatewayNatRules()
             .createOrUpdate("rg1", "gateway1", "natRule1", new VirtualNetworkGatewayNatRuleInner()
-                .withTypePropertiesType(VpnNatRuleType.STATIC).withMode(VpnNatRuleMode.EGRESS_SNAT)
+                .withTypePropertiesType(VpnNatRuleType.STATIC)
+                .withMode(VpnNatRuleMode.EGRESS_SNAT)
                 .withInternalMappings(
                     Arrays.asList(new VpnNatRuleMapping().withAddressSpace("10.4.0.0/24").withPortRange("200-300")))
                 .withExternalMappings(

@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Site resource. Must be created in the same location as its parent mobile network. */
+/**
+ * Site resource. Must be created in the same location as its parent mobile network.
+ */
 @Fluent
 public final class SiteInner extends Resource {
     /*
@@ -28,13 +30,15 @@ public final class SiteInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of SiteInner class. */
+    /**
+     * Creates an instance of SiteInner class.
+     */
     public SiteInner() {
     }
 
     /**
      * Get the innerProperties property: Site properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SitePropertiesFormat innerProperties() {
@@ -43,21 +47,25 @@ public final class SiteInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SiteInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SiteInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -66,7 +74,7 @@ public final class SiteInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the site resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -76,7 +84,7 @@ public final class SiteInner extends Resource {
     /**
      * Get the networkFunctions property: An array of IDs of the network functions deployed in the site. Deleting the
      * site will delete any network functions that are deployed in the site.
-     *
+     * 
      * @return the networkFunctions value.
      */
     public List<SubResource> networkFunctions() {
@@ -85,7 +93,7 @@ public final class SiteInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

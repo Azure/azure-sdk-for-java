@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The provisioning state of the last accepted operation. */
+/**
+ * The provisioning state of the last accepted operation.
+ */
 public final class FleetProvisioningState extends ExpandableStringEnum<FleetProvisioningState> {
-    /** Static value Succeeded for FleetProvisioningState. */
+    /**
+     * Static value Succeeded for FleetProvisioningState.
+     */
     public static final FleetProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for FleetProvisioningState. */
+    /**
+     * Static value Failed for FleetProvisioningState.
+     */
     public static final FleetProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Canceled for FleetProvisioningState. */
+    /**
+     * Static value Canceled for FleetProvisioningState.
+     */
     public static final FleetProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value Creating for FleetProvisioningState. */
+    /**
+     * Static value Creating for FleetProvisioningState.
+     */
     public static final FleetProvisioningState CREATING = fromString("Creating");
 
-    /** Static value Updating for FleetProvisioningState. */
+    /**
+     * Static value Updating for FleetProvisioningState.
+     */
     public static final FleetProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Deleting for FleetProvisioningState. */
+    /**
+     * Static value Deleting for FleetProvisioningState.
+     */
     public static final FleetProvisioningState DELETING = fromString("Deleting");
 
     /**
      * Creates a new instance of FleetProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +53,7 @@ public final class FleetProvisioningState extends ExpandableStringEnum<FleetProv
 
     /**
      * Creates or finds a FleetProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FleetProvisioningState.
      */
@@ -50,7 +64,7 @@ public final class FleetProvisioningState extends ExpandableStringEnum<FleetProv
 
     /**
      * Gets known FleetProvisioningState values.
-     *
+     * 
      * @return known FleetProvisioningState values.
      */
     public static Collection<FleetProvisioningState> values() {

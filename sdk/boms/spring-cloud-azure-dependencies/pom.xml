@@ -6,7 +6,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-dependencies</artifactId>
-  <version>4.17.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-dependencies;current} -->
+  <version>5.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-dependencies;current} -->
   <packaging>pom</packaging>
 
   <name>Spring Cloud Azure Dependencies</name>
@@ -40,6 +40,8 @@
   </issueManagement>
 
   <properties>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
@@ -51,19 +53,14 @@
       <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-sdk-bom</artifactId>
-        <version>1.2.21</version>   <!-- NOTE: This should be updated manually. -->
+        <version>1.2.24</version>   <!-- NOTE: This should be updated manually. -->
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-spring-data-cosmos</artifactId>
-        <version>3.44.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
-      </dependency>
-      <dependency>
         <groupId>com.azure.resourcemanager</groupId>
         <artifactId>azure-resourcemanager</artifactId>
-        <version>2.36.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;dependency} -->
+        <version>2.40.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;dependency} -->
       </dependency>
 
       <!-- Spring Cloud Azure -->
@@ -153,8 +150,18 @@
         <version>${project.version}</version>
       </dependency>
       <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-spring-data-cosmos</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-data-cosmos</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>spring-cloud-azure-starter-data-redis-lettuce</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -260,14 +267,6 @@
         <version>${project.version}</version>
       </dependency>
 
-      <!-- Tracing -->
-      <dependency>
-        <groupId>com.azure.spring</groupId>
-        <artifactId>spring-cloud-azure-trace-sleuth</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-
-
       <!-- Spring Integration Azure-->
       <dependency>
         <groupId>com.azure.spring</groupId>
@@ -324,7 +323,7 @@
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
-        <artifactId>spring-cloud-azure-starter-redis</artifactId>
+        <artifactId>spring-cloud-azure-testcontainers</artifactId>
         <version>${project.version}</version>
       </dependency>
     </dependencies>
@@ -336,7 +335,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
-        <version>3.0.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+        <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>copy</id>

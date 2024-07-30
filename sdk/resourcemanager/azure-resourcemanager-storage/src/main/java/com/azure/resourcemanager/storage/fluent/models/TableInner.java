@@ -10,7 +10,9 @@ import com.azure.resourcemanager.storage.models.TableSignedIdentifier;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of the table, including Id, resource name, resource type. */
+/**
+ * Properties of the table, including Id, resource name, resource type.
+ */
 @Fluent
 public final class TableInner extends ProxyResource {
     /*
@@ -19,13 +21,15 @@ public final class TableInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private TableProperties innerTableProperties;
 
-    /** Creates an instance of TableInner class. */
+    /**
+     * Creates an instance of TableInner class.
+     */
     public TableInner() {
     }
 
     /**
      * Get the innerTableProperties property: Table resource properties.
-     *
+     * 
      * @return the innerTableProperties value.
      */
     private TableProperties innerTableProperties() {
@@ -34,7 +38,7 @@ public final class TableInner extends ProxyResource {
 
     /**
      * Get the tableName property: Table name under the specified account.
-     *
+     * 
      * @return the tableName value.
      */
     public String tableName() {
@@ -43,7 +47,7 @@ public final class TableInner extends ProxyResource {
 
     /**
      * Get the signedIdentifiers property: List of stored access policies specified on the table.
-     *
+     * 
      * @return the signedIdentifiers value.
      */
     public List<TableSignedIdentifier> signedIdentifiers() {
@@ -52,7 +56,7 @@ public final class TableInner extends ProxyResource {
 
     /**
      * Set the signedIdentifiers property: List of stored access policies specified on the table.
-     *
+     * 
      * @param signedIdentifiers the signedIdentifiers value to set.
      * @return the TableInner object itself.
      */
@@ -66,7 +70,7 @@ public final class TableInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

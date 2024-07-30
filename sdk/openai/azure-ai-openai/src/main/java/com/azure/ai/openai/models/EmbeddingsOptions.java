@@ -5,8 +5,11 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -15,14 +18,13 @@ import java.util.List;
  * recommendations, and other similar scenarios.
  */
 @Fluent
-public final class EmbeddingsOptions {
+public final class EmbeddingsOptions implements JsonSerializable<EmbeddingsOptions> {
 
     /*
      * An identifier for the caller or end user of the operation. This may be used for tracking
      * or rate-limiting purposes.
      */
     @Generated
-    @JsonProperty(value = "user")
     private String user;
 
     /*
@@ -31,7 +33,6 @@ public final class EmbeddingsOptions {
      * resource URI that's connected to.
      */
     @Generated
-    @JsonProperty(value = "model")
     private String model;
 
     /*
@@ -42,8 +43,7 @@ public final class EmbeddingsOptions {
      * as we have observed inferior results when newlines are present.
      */
     @Generated
-    @JsonProperty(value = "input")
-    private List<String> input;
+    private final List<String> input;
 
     /**
      * Creates an instance of EmbeddingsOptions class.
@@ -51,8 +51,7 @@ public final class EmbeddingsOptions {
      * @param input the input value to set.
      */
     @Generated
-    @JsonCreator
-    public EmbeddingsOptions(@JsonProperty(value = "input") List<String> input) {
+    public EmbeddingsOptions(List<String> input) {
         this.input = input;
     }
 
@@ -124,7 +123,6 @@ public final class EmbeddingsOptions {
      * When using Azure OpenAI, specifies the input type to use for embedding search.
      */
     @Generated
-    @JsonProperty(value = "input_type")
     private String inputType;
 
     /**
@@ -147,5 +145,128 @@ public final class EmbeddingsOptions {
     public EmbeddingsOptions setInputType(String inputType) {
         this.inputType = inputType;
         return this;
+    }
+
+    /*
+     * The number of dimensions the resulting output embeddings should have. Only supported in `text-embedding-3` and
+     * later models.
+     */
+    @Generated
+    private Integer dimensions;
+
+    /**
+     * Get the dimensions property: The number of dimensions the resulting output embeddings should have. Only supported
+     * in `text-embedding-3` and later models.
+     *
+     * @return the dimensions value.
+     */
+    @Generated
+    public Integer getDimensions() {
+        return this.dimensions;
+    }
+
+    /**
+     * Set the dimensions property: The number of dimensions the resulting output embeddings should have. Only supported
+     * in `text-embedding-3` and later models.
+     *
+     * @param dimensions the dimensions value to set.
+     * @return the EmbeddingsOptions object itself.
+     */
+    @Generated
+    public EmbeddingsOptions setDimensions(Integer dimensions) {
+        this.dimensions = dimensions;
+        return this;
+    }
+
+    /*
+     * The response encoding format to use for embedding data.
+     */
+    @Generated
+    private EmbeddingEncodingFormat encodingFormat;
+
+    /**
+     * Get the encodingFormat property: The response encoding format to use for embedding data.
+     *
+     * @return the encodingFormat value.
+     */
+    @Generated
+    EmbeddingEncodingFormat getEncodingFormat() {
+        return this.encodingFormat;
+    }
+
+    /**
+     * Set the encodingFormat property: The response encoding format to use for embedding data.
+     *
+     * @param encodingFormat the encodingFormat value to set.
+     * @return the EmbeddingsOptions object itself.
+     */
+    @Generated
+    EmbeddingsOptions setEncodingFormat(EmbeddingEncodingFormat encodingFormat) {
+        this.encodingFormat = encodingFormat;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("input", this.input, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("user", this.user);
+        jsonWriter.writeStringField("model", this.model);
+        jsonWriter.writeStringField("encoding_format",
+            this.encodingFormat == null ? null : this.encodingFormat.toString());
+        jsonWriter.writeNumberField("dimensions", this.dimensions);
+        jsonWriter.writeStringField("input_type", this.inputType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EmbeddingsOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EmbeddingsOptions if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EmbeddingsOptions.
+     */
+    @Generated
+    public static EmbeddingsOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            List<String> input = null;
+            String user = null;
+            String model = null;
+            EmbeddingEncodingFormat encodingFormat = null;
+            Integer dimensions = null;
+            String inputType = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("input".equals(fieldName)) {
+                    input = reader.readArray(reader1 -> reader1.getString());
+                } else if ("user".equals(fieldName)) {
+                    user = reader.getString();
+                } else if ("model".equals(fieldName)) {
+                    model = reader.getString();
+                } else if ("encoding_format".equals(fieldName)) {
+                    encodingFormat = EmbeddingEncodingFormat.fromString(reader.getString());
+                } else if ("dimensions".equals(fieldName)) {
+                    dimensions = reader.getNullable(JsonReader::getInt);
+                } else if ("input_type".equals(fieldName)) {
+                    inputType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            EmbeddingsOptions deserializedEmbeddingsOptions = new EmbeddingsOptions(input);
+            deserializedEmbeddingsOptions.user = user;
+            deserializedEmbeddingsOptions.model = model;
+            deserializedEmbeddingsOptions.encodingFormat = encodingFormat;
+            deserializedEmbeddingsOptions.dimensions = dimensions;
+            deserializedEmbeddingsOptions.inputType = inputType;
+            return deserializedEmbeddingsOptions;
+        });
     }
 }

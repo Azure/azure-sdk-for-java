@@ -5,7 +5,6 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class SybaseAuthenticationType extends ExpandableStringEnum<SybaseA
      * @param name a name to look for.
      * @return the corresponding SybaseAuthenticationType.
      */
-    @JsonCreator
     public static SybaseAuthenticationType fromString(String name) {
         return fromString(name, SybaseAuthenticationType.class);
     }

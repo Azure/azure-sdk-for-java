@@ -19,11 +19,13 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in OriginsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OriginsClient.
+ */
 public interface OriginsClient {
     /**
      * Lists all of the existing origins within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -37,7 +39,7 @@ public interface OriginsClient {
 
     /**
      * Lists all of the existing origins within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -51,7 +53,7 @@ public interface OriginsClient {
 
     /**
      * Lists all of the existing origins within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -62,12 +64,12 @@ public interface OriginsClient {
      * @return result of the request to list origins as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OriginInner> listByEndpoint(
-        String resourceGroupName, String profileName, String endpointName, Context context);
+    PagedIterable<OriginInner> listByEndpoint(String resourceGroupName, String profileName, String endpointName,
+        Context context);
 
     /**
      * Gets an existing origin within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -75,16 +77,16 @@ public interface OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing origin within an endpoint along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an existing origin within an endpoint along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<OriginInner>> getWithResponseAsync(
-        String resourceGroupName, String profileName, String endpointName, String originName);
+    Mono<Response<OriginInner>> getWithResponseAsync(String resourceGroupName, String profileName, String endpointName,
+        String originName);
 
     /**
      * Gets an existing origin within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -99,7 +101,7 @@ public interface OriginsClient {
 
     /**
      * Gets an existing origin within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -111,12 +113,12 @@ public interface OriginsClient {
      * @return an existing origin within an endpoint along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OriginInner> getWithResponse(
-        String resourceGroupName, String profileName, String endpointName, String originName, Context context);
+    Response<OriginInner> getWithResponse(String resourceGroupName, String profileName, String endpointName,
+        String originName, Context context);
 
     /**
      * Gets an existing origin within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -131,7 +133,7 @@ public interface OriginsClient {
 
     /**
      * Creates a new origin within the specified endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -141,15 +143,15 @@ public interface OriginsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cDN origin is the source of the content being delivered via CDN along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String profileName, String endpointName, String originName, OriginInner origin);
+    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String profileName,
+        String endpointName, String originName, OriginInner origin);
 
     /**
      * Creates a new origin within the specified endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -161,12 +163,12 @@ public interface OriginsClient {
      * @return the {@link PollerFlux} for polling of cDN origin is the source of the content being delivered via CDN.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<OriginInner>, OriginInner> beginCreateAsync(
-        String resourceGroupName, String profileName, String endpointName, String originName, OriginInner origin);
+    PollerFlux<PollResult<OriginInner>, OriginInner> beginCreateAsync(String resourceGroupName, String profileName,
+        String endpointName, String originName, OriginInner origin);
 
     /**
      * Creates a new origin within the specified endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -178,12 +180,12 @@ public interface OriginsClient {
      * @return the {@link SyncPoller} for polling of cDN origin is the source of the content being delivered via CDN.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OriginInner>, OriginInner> beginCreate(
-        String resourceGroupName, String profileName, String endpointName, String originName, OriginInner origin);
+    SyncPoller<PollResult<OriginInner>, OriginInner> beginCreate(String resourceGroupName, String profileName,
+        String endpointName, String originName, OriginInner origin);
 
     /**
      * Creates a new origin within the specified endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -196,17 +198,12 @@ public interface OriginsClient {
      * @return the {@link SyncPoller} for polling of cDN origin is the source of the content being delivered via CDN.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OriginInner>, OriginInner> beginCreate(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String originName,
-        OriginInner origin,
-        Context context);
+    SyncPoller<PollResult<OriginInner>, OriginInner> beginCreate(String resourceGroupName, String profileName,
+        String endpointName, String originName, OriginInner origin, Context context);
 
     /**
      * Creates a new origin within the specified endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -218,12 +215,12 @@ public interface OriginsClient {
      * @return cDN origin is the source of the content being delivered via CDN on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<OriginInner> createAsync(
-        String resourceGroupName, String profileName, String endpointName, String originName, OriginInner origin);
+    Mono<OriginInner> createAsync(String resourceGroupName, String profileName, String endpointName, String originName,
+        OriginInner origin);
 
     /**
      * Creates a new origin within the specified endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -235,12 +232,12 @@ public interface OriginsClient {
      * @return cDN origin is the source of the content being delivered via CDN.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OriginInner create(
-        String resourceGroupName, String profileName, String endpointName, String originName, OriginInner origin);
+    OriginInner create(String resourceGroupName, String profileName, String endpointName, String originName,
+        OriginInner origin);
 
     /**
      * Creates a new origin within the specified endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -253,17 +250,12 @@ public interface OriginsClient {
      * @return cDN origin is the source of the content being delivered via CDN.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OriginInner create(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String originName,
-        OriginInner origin,
-        Context context);
+    OriginInner create(String resourceGroupName, String profileName, String endpointName, String originName,
+        OriginInner origin, Context context);
 
     /**
      * Updates an existing origin within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -273,19 +265,15 @@ public interface OriginsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cDN origin is the source of the content being delivered via CDN along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String originName,
-        OriginUpdateParameters originUpdateProperties);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String profileName,
+        String endpointName, String originName, OriginUpdateParameters originUpdateProperties);
 
     /**
      * Updates an existing origin within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -297,16 +285,12 @@ public interface OriginsClient {
      * @return the {@link PollerFlux} for polling of cDN origin is the source of the content being delivered via CDN.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<OriginInner>, OriginInner> beginUpdateAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String originName,
-        OriginUpdateParameters originUpdateProperties);
+    PollerFlux<PollResult<OriginInner>, OriginInner> beginUpdateAsync(String resourceGroupName, String profileName,
+        String endpointName, String originName, OriginUpdateParameters originUpdateProperties);
 
     /**
      * Updates an existing origin within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -318,16 +302,12 @@ public interface OriginsClient {
      * @return the {@link SyncPoller} for polling of cDN origin is the source of the content being delivered via CDN.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OriginInner>, OriginInner> beginUpdate(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String originName,
-        OriginUpdateParameters originUpdateProperties);
+    SyncPoller<PollResult<OriginInner>, OriginInner> beginUpdate(String resourceGroupName, String profileName,
+        String endpointName, String originName, OriginUpdateParameters originUpdateProperties);
 
     /**
      * Updates an existing origin within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -340,17 +320,12 @@ public interface OriginsClient {
      * @return the {@link SyncPoller} for polling of cDN origin is the source of the content being delivered via CDN.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OriginInner>, OriginInner> beginUpdate(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String originName,
-        OriginUpdateParameters originUpdateProperties,
-        Context context);
+    SyncPoller<PollResult<OriginInner>, OriginInner> beginUpdate(String resourceGroupName, String profileName,
+        String endpointName, String originName, OriginUpdateParameters originUpdateProperties, Context context);
 
     /**
      * Updates an existing origin within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -362,16 +337,12 @@ public interface OriginsClient {
      * @return cDN origin is the source of the content being delivered via CDN on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<OriginInner> updateAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String originName,
+    Mono<OriginInner> updateAsync(String resourceGroupName, String profileName, String endpointName, String originName,
         OriginUpdateParameters originUpdateProperties);
 
     /**
      * Updates an existing origin within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -383,16 +354,12 @@ public interface OriginsClient {
      * @return cDN origin is the source of the content being delivered via CDN.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OriginInner update(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String originName,
+    OriginInner update(String resourceGroupName, String profileName, String endpointName, String originName,
         OriginUpdateParameters originUpdateProperties);
 
     /**
      * Updates an existing origin within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -405,17 +372,12 @@ public interface OriginsClient {
      * @return cDN origin is the source of the content being delivered via CDN.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OriginInner update(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        String originName,
-        OriginUpdateParameters originUpdateProperties,
-        Context context);
+    OriginInner update(String resourceGroupName, String profileName, String endpointName, String originName,
+        OriginUpdateParameters originUpdateProperties, Context context);
 
     /**
      * Deletes an existing origin within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -426,12 +388,12 @@ public interface OriginsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String profileName, String endpointName, String originName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String profileName,
+        String endpointName, String originName);
 
     /**
      * Deletes an existing origin within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -442,12 +404,12 @@ public interface OriginsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String profileName, String endpointName, String originName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String profileName,
+        String endpointName, String originName);
 
     /**
      * Deletes an existing origin within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -458,12 +420,12 @@ public interface OriginsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String profileName, String endpointName, String originName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName, String endpointName,
+        String originName);
 
     /**
      * Deletes an existing origin within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -475,12 +437,12 @@ public interface OriginsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String profileName, String endpointName, String originName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName, String endpointName,
+        String originName, Context context);
 
     /**
      * Deletes an existing origin within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -495,7 +457,7 @@ public interface OriginsClient {
 
     /**
      * Deletes an existing origin within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
@@ -509,7 +471,7 @@ public interface OriginsClient {
 
     /**
      * Deletes an existing origin within an endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.

@@ -106,16 +106,16 @@ public final class SsisAccessCredential {
      */
     public void validate() {
         if (domain() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property domain in model SsisAccessCredential"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property domain in model SsisAccessCredential"));
         }
         if (username() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property username in model SsisAccessCredential"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property username in model SsisAccessCredential"));
         }
         if (password() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property password in model SsisAccessCredential"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property password in model SsisAccessCredential"));
         } else {
             password().validate();
         }

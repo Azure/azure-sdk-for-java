@@ -17,7 +17,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** SIM policy resource. */
+/**
+ * SIM policy resource.
+ */
 @Fluent
 public final class SimPolicyInner extends Resource {
     /*
@@ -32,13 +34,15 @@ public final class SimPolicyInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of SimPolicyInner class. */
+    /**
+     * Creates an instance of SimPolicyInner class.
+     */
     public SimPolicyInner() {
     }
 
     /**
      * Get the innerProperties property: SIM policy Properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SimPolicyPropertiesFormat innerProperties() {
@@ -47,21 +51,25 @@ public final class SimPolicyInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SimPolicyInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SimPolicyInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -70,7 +78,7 @@ public final class SimPolicyInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the SIM policy resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -80,7 +88,7 @@ public final class SimPolicyInner extends Resource {
     /**
      * Get the siteProvisioningState property: A dictionary of sites to the provisioning state of this SIM policy on
      * that site.
-     *
+     * 
      * @return the siteProvisioningState value.
      */
     public Map<String, SiteProvisioningState> siteProvisioningState() {
@@ -90,7 +98,7 @@ public final class SimPolicyInner extends Resource {
     /**
      * Get the ueAmbr property: Aggregate maximum bit rate across all non-GBR QoS flows of all PDU sessions of a given
      * UE. See 3GPP TS23.501 section 5.7.2.6 for a full description of the UE-AMBR.
-     *
+     * 
      * @return the ueAmbr value.
      */
     public Ambr ueAmbr() {
@@ -100,7 +108,7 @@ public final class SimPolicyInner extends Resource {
     /**
      * Set the ueAmbr property: Aggregate maximum bit rate across all non-GBR QoS flows of all PDU sessions of a given
      * UE. See 3GPP TS23.501 section 5.7.2.6 for a full description of the UE-AMBR.
-     *
+     * 
      * @param ueAmbr the ueAmbr value to set.
      * @return the SimPolicyInner object itself.
      */
@@ -115,7 +123,7 @@ public final class SimPolicyInner extends Resource {
     /**
      * Get the defaultSlice property: The default slice to use if the UE does not explicitly specify it. This slice must
      * exist in the `sliceConfigurations` map. The slice must be in the same location as the SIM policy.
-     *
+     * 
      * @return the defaultSlice value.
      */
     public SliceResourceId defaultSlice() {
@@ -125,7 +133,7 @@ public final class SimPolicyInner extends Resource {
     /**
      * Set the defaultSlice property: The default slice to use if the UE does not explicitly specify it. This slice must
      * exist in the `sliceConfigurations` map. The slice must be in the same location as the SIM policy.
-     *
+     * 
      * @param defaultSlice the defaultSlice value to set.
      * @return the SimPolicyInner object itself.
      */
@@ -140,7 +148,7 @@ public final class SimPolicyInner extends Resource {
     /**
      * Get the rfspIndex property: RAT/Frequency Selection Priority Index, defined in 3GPP TS 36.413. This is an
      * optional setting and by default is unspecified.
-     *
+     * 
      * @return the rfspIndex value.
      */
     public Integer rfspIndex() {
@@ -150,7 +158,7 @@ public final class SimPolicyInner extends Resource {
     /**
      * Set the rfspIndex property: RAT/Frequency Selection Priority Index, defined in 3GPP TS 36.413. This is an
      * optional setting and by default is unspecified.
-     *
+     * 
      * @param rfspIndex the rfspIndex value to set.
      * @return the SimPolicyInner object itself.
      */
@@ -165,7 +173,7 @@ public final class SimPolicyInner extends Resource {
     /**
      * Get the registrationTimer property: UE periodic registration update timer (5G) or UE periodic tracking area
      * update timer (4G), in seconds.
-     *
+     * 
      * @return the registrationTimer value.
      */
     public Integer registrationTimer() {
@@ -175,7 +183,7 @@ public final class SimPolicyInner extends Resource {
     /**
      * Set the registrationTimer property: UE periodic registration update timer (5G) or UE periodic tracking area
      * update timer (4G), in seconds.
-     *
+     * 
      * @param registrationTimer the registrationTimer value to set.
      * @return the SimPolicyInner object itself.
      */
@@ -190,7 +198,7 @@ public final class SimPolicyInner extends Resource {
     /**
      * Get the sliceConfigurations property: The allowed slices and the settings to use for them. The list must not
      * contain duplicate items and must contain at least one item.
-     *
+     * 
      * @return the sliceConfigurations value.
      */
     public List<SliceConfiguration> sliceConfigurations() {
@@ -200,7 +208,7 @@ public final class SimPolicyInner extends Resource {
     /**
      * Set the sliceConfigurations property: The allowed slices and the settings to use for them. The list must not
      * contain duplicate items and must contain at least one item.
-     *
+     * 
      * @param sliceConfigurations the sliceConfigurations value to set.
      * @return the SimPolicyInner object itself.
      */
@@ -214,14 +222,13 @@ public final class SimPolicyInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model SimPolicyInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property innerProperties in model SimPolicyInner"));
         } else {
             innerProperties().validate();
         }

@@ -8,38 +8,58 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The name of the action for the delivery rule. */
+/**
+ * The name of the action for the delivery rule.
+ */
 public final class DeliveryRuleActionValue extends ExpandableStringEnum<DeliveryRuleActionValue> {
-    /** Static value CacheExpiration for DeliveryRuleActionValue. */
+    /**
+     * Static value CacheExpiration for DeliveryRuleActionValue.
+     */
     public static final DeliveryRuleActionValue CACHE_EXPIRATION = fromString("CacheExpiration");
 
-    /** Static value CacheKeyQueryString for DeliveryRuleActionValue. */
+    /**
+     * Static value CacheKeyQueryString for DeliveryRuleActionValue.
+     */
     public static final DeliveryRuleActionValue CACHE_KEY_QUERY_STRING = fromString("CacheKeyQueryString");
 
-    /** Static value ModifyRequestHeader for DeliveryRuleActionValue. */
+    /**
+     * Static value ModifyRequestHeader for DeliveryRuleActionValue.
+     */
     public static final DeliveryRuleActionValue MODIFY_REQUEST_HEADER = fromString("ModifyRequestHeader");
 
-    /** Static value ModifyResponseHeader for DeliveryRuleActionValue. */
+    /**
+     * Static value ModifyResponseHeader for DeliveryRuleActionValue.
+     */
     public static final DeliveryRuleActionValue MODIFY_RESPONSE_HEADER = fromString("ModifyResponseHeader");
 
-    /** Static value UrlRedirect for DeliveryRuleActionValue. */
+    /**
+     * Static value UrlRedirect for DeliveryRuleActionValue.
+     */
     public static final DeliveryRuleActionValue URL_REDIRECT = fromString("UrlRedirect");
 
-    /** Static value UrlRewrite for DeliveryRuleActionValue. */
+    /**
+     * Static value UrlRewrite for DeliveryRuleActionValue.
+     */
     public static final DeliveryRuleActionValue URL_REWRITE = fromString("UrlRewrite");
 
-    /** Static value UrlSigning for DeliveryRuleActionValue. */
+    /**
+     * Static value UrlSigning for DeliveryRuleActionValue.
+     */
     public static final DeliveryRuleActionValue URL_SIGNING = fromString("UrlSigning");
 
-    /** Static value OriginGroupOverride for DeliveryRuleActionValue. */
+    /**
+     * Static value OriginGroupOverride for DeliveryRuleActionValue.
+     */
     public static final DeliveryRuleActionValue ORIGIN_GROUP_OVERRIDE = fromString("OriginGroupOverride");
 
-    /** Static value RouteConfigurationOverride for DeliveryRuleActionValue. */
+    /**
+     * Static value RouteConfigurationOverride for DeliveryRuleActionValue.
+     */
     public static final DeliveryRuleActionValue ROUTE_CONFIGURATION_OVERRIDE = fromString("RouteConfigurationOverride");
 
     /**
      * Creates a new instance of DeliveryRuleActionValue value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -48,7 +68,7 @@ public final class DeliveryRuleActionValue extends ExpandableStringEnum<Delivery
 
     /**
      * Creates or finds a DeliveryRuleActionValue from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DeliveryRuleActionValue.
      */
@@ -59,7 +79,7 @@ public final class DeliveryRuleActionValue extends ExpandableStringEnum<Delivery
 
     /**
      * Gets known DeliveryRuleActionValue values.
-     *
+     * 
      * @return known DeliveryRuleActionValue values.
      */
     public static Collection<DeliveryRuleActionValue> values() {

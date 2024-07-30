@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.models.GetOutboundRoutesParameters;
 public final class VirtualHubsGetOutboundRoutesSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/GetOutboundRoutes.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/GetOutboundRoutes.json
      */
     /**
      * Sample code: Outbound Routes for the Virtual Hub on a Particular Connection.
@@ -21,10 +21,12 @@ public final class VirtualHubsGetOutboundRoutesSamples {
      */
     public static void
         outboundRoutesForTheVirtualHubOnAParticularConnection(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualHubs().getOutboundRoutes("rg1", "virtualHub1",
-            new GetOutboundRoutesParameters().withResourceUri(
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualHubs()
+            .getOutboundRoutes("rg1", "virtualHub1", new GetOutboundRoutesParameters().withResourceUri(
                 "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/expressRouteGateways/exrGw1/expressRouteConnections/exrConn1")
-                .withConnectionType("ExpressRouteConnection"),
-            com.azure.core.util.Context.NONE);
+                .withConnectionType("ExpressRouteConnection"), com.azure.core.util.Context.NONE);
     }
 }

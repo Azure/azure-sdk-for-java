@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class VpnLinkConnectionsResetConnectionSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VpnSiteLinkConnectionReset.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VpnSiteLinkConnectionReset.
      * json
      */
     /**
@@ -19,7 +19,10 @@ public final class VpnLinkConnectionsResetConnectionSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void resetVpnLinkConnection(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVpnLinkConnections().resetConnection("rg1", "gateway1",
-            "vpnConnection1", "Connection-Link1", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVpnLinkConnections()
+            .resetConnection("rg1", "gateway1", "vpnConnection1", "Connection-Link1", com.azure.core.util.Context.NONE);
     }
 }

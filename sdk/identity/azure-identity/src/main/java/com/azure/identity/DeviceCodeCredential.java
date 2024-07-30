@@ -22,7 +22,7 @@ import java.util.function.Consumer;
 
 /**
  * <p>Device code authentication is a type of authentication flow offered by
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a> that
+ * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a> that
  * allows users to sign in to applications on devices that don't have a web browser or a keyboard.
  * This authentication method is particularly useful for devices such as smart TVs, gaming consoles, and
  * Internet of Things (IoT) devices that may not have the capability to enter a username and password.
@@ -187,7 +187,7 @@ public class DeviceCodeCredential implements TokenCredential {
      *
      * <p> The credential acquires a verification URL and code from the Microsoft Entra ID. The user must
      * browse to the URL, enter the code, and authenticate with Microsoft Entra ID. If the user authenticates
-     * successfully, the credential receives an access token. </p>
+     * successfully, the credential receives an access token. This method will always generate a challenge to the user.</p>
      *
      * @param request The details of the authentication request.
      *
@@ -207,7 +207,7 @@ public class DeviceCodeCredential implements TokenCredential {
      *
      * <p> The credential acquires a verification URL and code from the Microsoft Entra ID. The user must
      * browse to the URL, enter the code, and authenticate with Microsoft Entra ID. If the user authenticates
-     * successfully, the credential receives an access token. </p>
+     * successfully, the credential receives an access token. This method will always generate a challenge to the user.</p>
      *
      * @return The {@link AuthenticationRecord} which can be used to silently authenticate the account
      * on future execution if persistent caching was configured via

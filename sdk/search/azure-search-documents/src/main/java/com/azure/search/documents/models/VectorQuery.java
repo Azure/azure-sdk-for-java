@@ -19,6 +19,11 @@ import java.io.IOException;
 public class VectorQuery implements JsonSerializable<VectorQuery> {
 
     /*
+     * The kind of vector query being performed.
+     */
+    private VectorQueryKind kind = VectorQueryKind.fromString("VectorQuery");
+
+    /*
      * Number of nearest neighbors to return as top hits.
      */
     private Integer kNearestNeighborsCount;
@@ -35,16 +40,34 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
     private Boolean exhaustive;
 
     /*
-     * Oversampling factor. Minimum value is 1. It overrides the 'defaultOversampling' parameter configured in the
-     * index definition. It can be set only when 'rerankWithOriginalVectors' is true. This parameter is only permitted
-     * when a compression method is used on the underlying vector field.
+     * Oversampling factor. Minimum value is 1. It overrides the 'defaultOversampling' parameter configured in the index
+     * definition. It can be set only when 'rerankWithOriginalVectors' is true. This parameter is only permitted when a
+     * compression method is used on the underlying vector field.
      */
     private Double oversampling;
+
+    /*
+     * Relative weight of the vector query when compared to other vector query and/or the text query within the same
+     * search request. This value is used when combining the results of multiple ranking lists produced by the different
+     * vector queries and/or the results retrieved through the text query. The higher the weight, the higher the
+     * documents that matched that query will be in the final ranking. Default is 1.0 and the value needs to be a
+     * positive number larger than zero.
+     */
+    private Float weight;
 
     /**
      * Creates an instance of VectorQuery class.
      */
     public VectorQuery() {
+    }
+
+    /**
+     * Get the kind property: The kind of vector query being performed.
+     *
+     * @return the kind value.
+     */
+    public VectorQueryKind getKind() {
+        return this.kind;
     }
 
     /**
@@ -135,13 +158,46 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
         return this;
     }
 
+    /**
+     * Get the weight property: Relative weight of the vector query when compared to other vector query and/or the text
+     * query within the same search request. This value is used when combining the results of multiple ranking lists
+     * produced by the different vector queries and/or the results retrieved through the text query. The higher the
+     * weight, the higher the documents that matched that query will be in the final ranking. Default is 1.0 and the
+     * value needs to be a positive number larger than zero.
+     *
+     * @return the weight value.
+     */
+    public Float getWeight() {
+        return this.weight;
+    }
+
+    /**
+     * Set the weight property: Relative weight of the vector query when compared to other vector query and/or the text
+     * query within the same search request. This value is used when combining the results of multiple ranking lists
+     * produced by the different vector queries and/or the results retrieved through the text query. The higher the
+     * weight, the higher the documents that matched that query will be in the final ranking. Default is 1.0 and the
+     * value needs to be a positive number larger than zero.
+     *
+     * @param weight the weight value to set.
+     * @return the VectorQuery object itself.
+     */
+    public VectorQuery setWeight(Float weight) {
+        this.weight = weight;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeNumberField("k", this.kNearestNeighborsCount);
         jsonWriter.writeStringField("fields", this.fields);
         jsonWriter.writeBooleanField("exhaustive", this.exhaustive);
         jsonWriter.writeNumberField("oversampling", this.oversampling);
+        jsonWriter.writeNumberField("weight", this.weight);
         return jsonWriter.writeEndObject();
     }
 
@@ -151,32 +207,32 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      * @param jsonReader The JsonReader being read.
      * @return An instance of VectorQuery if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
      * @throws IOException If an error occurs while reading the VectorQuery.
      */
     public static VectorQuery fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
-            JsonReader readerToUse = reader.bufferObject();
-            // Prepare for reading
-            readerToUse.nextToken();
-            while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = readerToUse.getFieldName();
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                // Prepare for reading
                 readerToUse.nextToken();
-                if ("kind".equals(fieldName)) {
-                    discriminatorValue = readerToUse.getString();
-                    break;
-                } else {
-                    readerToUse.skipChildren();
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("kind".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
                 }
-            }
-            // Use the discriminator value to determine which subtype should be deserialized.
-            if ("text".equals(discriminatorValue)) {
-                return VectorizableTextQuery.fromJson(readerToUse.reset());
-            } else if ("vector".equals(discriminatorValue)) {
-                return VectorizedQuery.fromJson(readerToUse.reset());
-            } else {
-                return fromJsonKnownDiscriminator(readerToUse.reset());
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("text".equals(discriminatorValue)) {
+                    return VectorizableTextQuery.fromJson(readerToUse.reset());
+                } else if ("vector".equals(discriminatorValue)) {
+                    return VectorizedQuery.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
             }
         });
     }
@@ -187,7 +243,9 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("k".equals(fieldName)) {
+                if ("kind".equals(fieldName)) {
+                    deserializedVectorQuery.kind = VectorQueryKind.fromString(reader.getString());
+                } else if ("k".equals(fieldName)) {
                     deserializedVectorQuery.kNearestNeighborsCount = reader.getNullable(JsonReader::getInt);
                 } else if ("fields".equals(fieldName)) {
                     deserializedVectorQuery.fields = reader.getString();
@@ -195,6 +253,8 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
                     deserializedVectorQuery.exhaustive = reader.getNullable(JsonReader::getBoolean);
                 } else if ("oversampling".equals(fieldName)) {
                     deserializedVectorQuery.oversampling = reader.getNullable(JsonReader::getDouble);
+                } else if ("weight".equals(fieldName)) {
+                    deserializedVectorQuery.weight = reader.getNullable(JsonReader::getFloat);
                 } else {
                     reader.skipChildren();
                 }

@@ -18,7 +18,8 @@ public final class TriggersSubscribeToEventsSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void triggersSubscribeToEvents(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.triggers().subscribeToEvents("exampleResourceGroup", "exampleFactoryName", "exampleTrigger",
-            com.azure.core.util.Context.NONE);
+        manager.triggers()
+            .subscribeToEvents("exampleResourceGroup", "exampleFactoryName", "exampleTrigger",
+                com.azure.core.util.Context.NONE);
     }
 }

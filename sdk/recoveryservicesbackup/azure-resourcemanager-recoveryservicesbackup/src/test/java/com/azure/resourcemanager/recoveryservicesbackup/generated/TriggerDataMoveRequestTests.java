@@ -27,8 +27,11 @@ public final class TriggerDataMoveRequestTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TriggerDataMoveRequest model = new TriggerDataMoveRequest().withSourceResourceId("amdecte")
-            .withSourceRegion("f").withDataMoveLevel(DataMoveLevel.CONTAINER).withCorrelationId("scjeypv")
-            .withSourceContainerArmIds(Arrays.asList("rkgqhcjrefo", "gm", "qsl", "yyvxyqjpkcattpn")).withPauseGC(false);
+            .withSourceRegion("f")
+            .withDataMoveLevel(DataMoveLevel.CONTAINER)
+            .withCorrelationId("scjeypv")
+            .withSourceContainerArmIds(Arrays.asList("rkgqhcjrefo", "gm", "qsl", "yyvxyqjpkcattpn"))
+            .withPauseGC(false);
         model = BinaryData.fromObject(model).toObject(TriggerDataMoveRequest.class);
         Assertions.assertEquals("amdecte", model.sourceResourceId());
         Assertions.assertEquals("f", model.sourceRegion());

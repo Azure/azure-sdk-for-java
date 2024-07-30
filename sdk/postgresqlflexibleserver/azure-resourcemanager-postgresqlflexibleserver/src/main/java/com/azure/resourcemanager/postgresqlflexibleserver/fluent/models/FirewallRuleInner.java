@@ -104,8 +104,9 @@ public final class FirewallRuleInner extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property innerProperties in model FirewallRuleInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model FirewallRuleInner"));
         } else {
             innerProperties().validate();
         }

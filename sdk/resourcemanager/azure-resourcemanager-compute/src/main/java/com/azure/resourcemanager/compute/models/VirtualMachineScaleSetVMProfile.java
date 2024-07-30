@@ -51,9 +51,9 @@ public final class VirtualMachineScaleSetVMProfile {
 
     /*
      * Specifies that the image or disk that is being used was licensed on-premises. <br><br> Possible values for
-     * Windows Server operating system are: <br><br> Windows_Client <br><br> Windows_Server <br><br> Possible values
-     * for Linux Server operating system are: <br><br> RHEL_BYOS (for RHEL) <br><br> SLES_BYOS (for SUSE) <br><br> For
-     * more information, see [Azure Hybrid Use Benefit for Windows
+     * Windows Server operating system are: <br><br> Windows_Client <br><br> Windows_Server <br><br> Possible values for
+     * Linux Server operating system are: <br><br> RHEL_BYOS (for RHEL) <br><br> SLES_BYOS (for SUSE) <br><br> For more
+     * information, see [Azure Hybrid Use Benefit for Windows
      * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing) <br><br> [Azure
      * Hybrid Use Benefit for Linux
      * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) <br><br> Minimum
@@ -69,10 +69,9 @@ public final class VirtualMachineScaleSetVMProfile {
     private VirtualMachinePriorityTypes priority;
 
     /*
-     * Specifies the eviction policy for the Azure Spot virtual machine and Azure Spot scale set. For Azure Spot
-     * virtual machines, both 'Deallocate' and 'Delete' are supported and the minimum api-version is 2019-03-01. For
-     * Azure Spot scale sets, both 'Deallocate' and 'Delete' are supported and the minimum api-version is
-     * 2017-10-30-preview.
+     * Specifies the eviction policy for the Azure Spot virtual machine and Azure Spot scale set. For Azure Spot virtual
+     * machines, both 'Deallocate' and 'Delete' are supported and the minimum api-version is 2019-03-01. For Azure Spot
+     * scale sets, both 'Deallocate' and 'Delete' are supported and the minimum api-version is 2017-10-30-preview.
      */
     @JsonProperty(value = "evictionPolicy")
     private VirtualMachineEvictionPolicyTypes evictionPolicy;
@@ -122,16 +121,15 @@ public final class VirtualMachineScaleSetVMProfile {
     private ServiceArtifactReference serviceArtifactReference;
 
     /*
-     * Specifies the security posture to be used for all virtual machines in the scale set. Minimum api-version:
-     * 2023-03-01
+     * Specifies the security posture to be used in the scale set. Minimum api-version: 2023-03-01
      */
     @JsonProperty(value = "securityPostureReference")
     private SecurityPostureReference securityPostureReference;
 
     /*
      * Specifies the time in which this VM profile for the Virtual Machine Scale Set was created. Minimum API version
-     * for this property is 2023-09-01. This value will be added to VMSS Flex VM tags when creating/updating the VMSS
-     * VM Profile with minimum api-version 2023-09-01.
+     * for this property is 2024-03-01. This value will be added to VMSS Flex VM tags when creating/updating the VMSS VM
+     * Profile with minimum api-version 2024-03-01.
      */
     @JsonProperty(value = "timeCreated", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeCreated;
@@ -205,8 +203,8 @@ public final class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Get the securityProfile property: Specifies the Security related profile settings for the virtual machines in
-     * the scale set.
+     * Get the securityProfile property: Specifies the Security related profile settings for the virtual machines in the
+     * scale set.
      * 
      * @return the securityProfile value.
      */
@@ -215,8 +213,8 @@ public final class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Set the securityProfile property: Specifies the Security related profile settings for the virtual machines in
-     * the scale set.
+     * Set the securityProfile property: Specifies the Security related profile settings for the virtual machines in the
+     * scale set.
      * 
      * @param securityProfile the securityProfile value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.
@@ -273,10 +271,10 @@ public final class VirtualMachineScaleSetVMProfile {
 
     /**
      * Get the licenseType property: Specifies that the image or disk that is being used was licensed on-premises.
-     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt;
-     * Windows_Client &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server
-     * operating system are: &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE)
-     * &lt;br&gt;&lt;br&gt; For more information, see [Azure Hybrid Use Benefit for Windows
+     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt; Windows_Client
+     * &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server operating system are:
+     * &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE) &lt;br&gt;&lt;br&gt; For more
+     * information, see [Azure Hybrid Use Benefit for Windows
      * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
      * &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux
      * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) &lt;br&gt;&lt;br&gt;
@@ -290,10 +288,10 @@ public final class VirtualMachineScaleSetVMProfile {
 
     /**
      * Set the licenseType property: Specifies that the image or disk that is being used was licensed on-premises.
-     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt;
-     * Windows_Client &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server
-     * operating system are: &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE)
-     * &lt;br&gt;&lt;br&gt; For more information, see [Azure Hybrid Use Benefit for Windows
+     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt; Windows_Client
+     * &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server operating system are:
+     * &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE) &lt;br&gt;&lt;br&gt; For more
+     * information, see [Azure Hybrid Use Benefit for Windows
      * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
      * &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux
      * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) &lt;br&gt;&lt;br&gt;
@@ -308,8 +306,8 @@ public final class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Get the priority property: Specifies the priority for the virtual machines in the scale set. Minimum
-     * api-version: 2017-10-30-preview.
+     * Get the priority property: Specifies the priority for the virtual machines in the scale set. Minimum api-version:
+     * 2017-10-30-preview.
      * 
      * @return the priority value.
      */
@@ -318,8 +316,8 @@ public final class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Set the priority property: Specifies the priority for the virtual machines in the scale set. Minimum
-     * api-version: 2017-10-30-preview.
+     * Set the priority property: Specifies the priority for the virtual machines in the scale set. Minimum api-version:
+     * 2017-10-30-preview.
      * 
      * @param priority the priority value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.
@@ -356,8 +354,8 @@ public final class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Get the billingProfile property: Specifies the billing related details of a Azure Spot VMSS. Minimum
-     * api-version: 2019-03-01.
+     * Get the billingProfile property: Specifies the billing related details of a Azure Spot VMSS. Minimum api-version:
+     * 2019-03-01.
      * 
      * @return the billingProfile value.
      */
@@ -366,8 +364,8 @@ public final class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Set the billingProfile property: Specifies the billing related details of a Azure Spot VMSS. Minimum
-     * api-version: 2019-03-01.
+     * Set the billingProfile property: Specifies the billing related details of a Azure Spot VMSS. Minimum api-version:
+     * 2019-03-01.
      * 
      * @param billingProfile the billingProfile value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.
@@ -511,8 +509,8 @@ public final class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Get the securityPostureReference property: Specifies the security posture to be used for all virtual machines in
-     * the scale set. Minimum api-version: 2023-03-01.
+     * Get the securityPostureReference property: Specifies the security posture to be used in the scale set. Minimum
+     * api-version: 2023-03-01.
      * 
      * @return the securityPostureReference value.
      */
@@ -521,8 +519,8 @@ public final class VirtualMachineScaleSetVMProfile {
     }
 
     /**
-     * Set the securityPostureReference property: Specifies the security posture to be used for all virtual machines in
-     * the scale set. Minimum api-version: 2023-03-01.
+     * Set the securityPostureReference property: Specifies the security posture to be used in the scale set. Minimum
+     * api-version: 2023-03-01.
      * 
      * @param securityPostureReference the securityPostureReference value to set.
      * @return the VirtualMachineScaleSetVMProfile object itself.
@@ -535,8 +533,8 @@ public final class VirtualMachineScaleSetVMProfile {
 
     /**
      * Get the timeCreated property: Specifies the time in which this VM profile for the Virtual Machine Scale Set was
-     * created. Minimum API version for this property is 2023-09-01. This value will be added to VMSS Flex VM tags when
-     * creating/updating the VMSS VM Profile with minimum api-version 2023-09-01.
+     * created. Minimum API version for this property is 2024-03-01. This value will be added to VMSS Flex VM tags when
+     * creating/updating the VMSS VM Profile with minimum api-version 2024-03-01.
      * 
      * @return the timeCreated value.
      */

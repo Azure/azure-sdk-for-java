@@ -8,41 +8,63 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Describes operator to be matched. */
+/**
+ * Describes operator to be matched.
+ */
 public final class PostArgsOperator extends ExpandableStringEnum<PostArgsOperator> {
-    /** Static value Any for PostArgsOperator. */
+    /**
+     * Static value Any for PostArgsOperator.
+     */
     public static final PostArgsOperator ANY = fromString("Any");
 
-    /** Static value Equal for PostArgsOperator. */
+    /**
+     * Static value Equal for PostArgsOperator.
+     */
     public static final PostArgsOperator EQUAL = fromString("Equal");
 
-    /** Static value Contains for PostArgsOperator. */
+    /**
+     * Static value Contains for PostArgsOperator.
+     */
     public static final PostArgsOperator CONTAINS = fromString("Contains");
 
-    /** Static value BeginsWith for PostArgsOperator. */
+    /**
+     * Static value BeginsWith for PostArgsOperator.
+     */
     public static final PostArgsOperator BEGINS_WITH = fromString("BeginsWith");
 
-    /** Static value EndsWith for PostArgsOperator. */
+    /**
+     * Static value EndsWith for PostArgsOperator.
+     */
     public static final PostArgsOperator ENDS_WITH = fromString("EndsWith");
 
-    /** Static value LessThan for PostArgsOperator. */
+    /**
+     * Static value LessThan for PostArgsOperator.
+     */
     public static final PostArgsOperator LESS_THAN = fromString("LessThan");
 
-    /** Static value LessThanOrEqual for PostArgsOperator. */
+    /**
+     * Static value LessThanOrEqual for PostArgsOperator.
+     */
     public static final PostArgsOperator LESS_THAN_OR_EQUAL = fromString("LessThanOrEqual");
 
-    /** Static value GreaterThan for PostArgsOperator. */
+    /**
+     * Static value GreaterThan for PostArgsOperator.
+     */
     public static final PostArgsOperator GREATER_THAN = fromString("GreaterThan");
 
-    /** Static value GreaterThanOrEqual for PostArgsOperator. */
+    /**
+     * Static value GreaterThanOrEqual for PostArgsOperator.
+     */
     public static final PostArgsOperator GREATER_THAN_OR_EQUAL = fromString("GreaterThanOrEqual");
 
-    /** Static value RegEx for PostArgsOperator. */
+    /**
+     * Static value RegEx for PostArgsOperator.
+     */
     public static final PostArgsOperator REG_EX = fromString("RegEx");
 
     /**
      * Creates a new instance of PostArgsOperator value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -51,7 +73,7 @@ public final class PostArgsOperator extends ExpandableStringEnum<PostArgsOperato
 
     /**
      * Creates or finds a PostArgsOperator from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PostArgsOperator.
      */
@@ -62,7 +84,7 @@ public final class PostArgsOperator extends ExpandableStringEnum<PostArgsOperato
 
     /**
      * Gets known PostArgsOperator values.
-     *
+     * 
      * @return known PostArgsOperator values.
      */
     public static Collection<PostArgsOperator> values() {

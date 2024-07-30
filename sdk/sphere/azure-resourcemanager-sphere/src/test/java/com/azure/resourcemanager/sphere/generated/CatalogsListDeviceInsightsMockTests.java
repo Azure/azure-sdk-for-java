@@ -31,56 +31,36 @@ public final class CatalogsListDeviceInsightsMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"deviceId\":\"ztfolhbnxk\",\"description\":\"alaulppggdtpnapn\",\"startTimestampUtc\":\"2021-01-27T00:10:34Z\",\"endTimestampUtc\":\"2021-04-06T21:45:28Z\",\"eventCategory\":\"opuhpig\",\"eventClass\":\"pgylg\",\"eventType\":\"git\",\"eventCount\":1973221194}]}";
+        String responseStr
+            = "{\"value\":[{\"deviceId\":\"skzbb\",\"description\":\"dzumveekg\",\"startTimestampUtc\":\"2021-02-08T12:29:03Z\",\"endTimestampUtc\":\"2021-07-01T08:04:50Z\",\"eventCategory\":\"zuhkfpbsjyof\",\"eventClass\":\"xl\",\"eventType\":\"us\",\"eventCount\":1856979158}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        AzureSphereManager manager =
-            AzureSphereManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureSphereManager manager = AzureSphereManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<DeviceInsight> response =
-            manager
-                .catalogs()
-                .listDeviceInsights(
-                    "sxyawjoyaqcs",
-                    "yjpkiidzyexz",
-                    "eli",
-                    1911330715,
-                    462425094,
-                    705550222,
-                    com.azure.core.util.Context.NONE);
+        PagedIterable<DeviceInsight> response = manager.catalogs().listDeviceInsights("vawjvzunlu", "hnnpr",
+            "xipeilpjzuaejx", 677451354, 122222845, 1732418843, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ztfolhbnxk", response.iterator().next().deviceId());
-        Assertions.assertEquals("alaulppggdtpnapn", response.iterator().next().description());
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2021-01-27T00:10:34Z"), response.iterator().next().startTimestampUtc());
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2021-04-06T21:45:28Z"), response.iterator().next().endTimestampUtc());
-        Assertions.assertEquals("opuhpig", response.iterator().next().eventCategory());
-        Assertions.assertEquals("pgylg", response.iterator().next().eventClass());
-        Assertions.assertEquals("git", response.iterator().next().eventType());
-        Assertions.assertEquals(1973221194, response.iterator().next().eventCount());
+        Assertions.assertEquals("skzbb", response.iterator().next().deviceId());
+        Assertions.assertEquals("dzumveekg", response.iterator().next().description());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-08T12:29:03Z"),
+            response.iterator().next().startTimestampUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-01T08:04:50Z"),
+            response.iterator().next().endTimestampUtc());
+        Assertions.assertEquals("zuhkfpbsjyof", response.iterator().next().eventCategory());
+        Assertions.assertEquals("xl", response.iterator().next().eventClass());
+        Assertions.assertEquals("us", response.iterator().next().eventType());
+        Assertions.assertEquals(1856979158, response.iterator().next().eventCount());
     }
 }

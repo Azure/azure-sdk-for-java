@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class VirtualMachineImagesListPublishersSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineImageExamples/VirtualMachineImage_ListPublishers_MinimumSet_Gen.json
      */
     /**
@@ -20,13 +20,16 @@ public final class VirtualMachineImagesListPublishersSamples {
      */
     public static void
         virtualMachineImageListPublishersMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineImages()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineImages()
             .listPublishersWithResponse("aaaaaaaaaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineImageExamples/VirtualMachineImage_ListPublishers_MaximumSet_Gen.json
      */
     /**
@@ -36,7 +39,10 @@ public final class VirtualMachineImagesListPublishersSamples {
      */
     public static void
         virtualMachineImageListPublishersMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineImages().listPublishersWithResponse("aaaaa",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineImages()
+            .listPublishersWithResponse("aaaaa", com.azure.core.util.Context.NONE);
     }
 }

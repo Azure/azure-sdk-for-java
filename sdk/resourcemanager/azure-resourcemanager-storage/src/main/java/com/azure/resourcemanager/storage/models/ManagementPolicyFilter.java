@@ -34,13 +34,15 @@ public final class ManagementPolicyFilter {
     @JsonProperty(value = "blobIndexMatch")
     private List<TagFilter> blobIndexMatch;
 
-    /** Creates an instance of ManagementPolicyFilter class. */
+    /**
+     * Creates an instance of ManagementPolicyFilter class.
+     */
     public ManagementPolicyFilter() {
     }
 
     /**
      * Get the prefixMatch property: An array of strings for prefixes to be match.
-     *
+     * 
      * @return the prefixMatch value.
      */
     public List<String> prefixMatch() {
@@ -49,7 +51,7 @@ public final class ManagementPolicyFilter {
 
     /**
      * Set the prefixMatch property: An array of strings for prefixes to be match.
-     *
+     * 
      * @param prefixMatch the prefixMatch value to set.
      * @return the ManagementPolicyFilter object itself.
      */
@@ -61,7 +63,7 @@ public final class ManagementPolicyFilter {
     /**
      * Get the blobTypes property: An array of predefined enum values. Currently blockBlob supports all tiering and
      * delete actions. Only delete actions are supported for appendBlob.
-     *
+     * 
      * @return the blobTypes value.
      */
     public List<String> blobTypes() {
@@ -71,7 +73,7 @@ public final class ManagementPolicyFilter {
     /**
      * Set the blobTypes property: An array of predefined enum values. Currently blockBlob supports all tiering and
      * delete actions. Only delete actions are supported for appendBlob.
-     *
+     * 
      * @param blobTypes the blobTypes value to set.
      * @return the ManagementPolicyFilter object itself.
      */
@@ -82,7 +84,7 @@ public final class ManagementPolicyFilter {
 
     /**
      * Get the blobIndexMatch property: An array of blob index tag based filters, there can be at most 10 tag filters.
-     *
+     * 
      * @return the blobIndexMatch value.
      */
     public List<TagFilter> blobIndexMatch() {
@@ -91,7 +93,7 @@ public final class ManagementPolicyFilter {
 
     /**
      * Set the blobIndexMatch property: An array of blob index tag based filters, there can be at most 10 tag filters.
-     *
+     * 
      * @param blobIndexMatch the blobIndexMatch value to set.
      * @return the ManagementPolicyFilter object itself.
      */
@@ -102,15 +104,14 @@ public final class ManagementPolicyFilter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (blobTypes() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property blobTypes in model ManagementPolicyFilter"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property blobTypes in model ManagementPolicyFilter"));
         }
         if (blobIndexMatch() != null) {
             blobIndexMatch().forEach(e -> e.validate());

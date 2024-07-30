@@ -8,17 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of upgrade to perform when targeting ManagedClusters. */
+/**
+ * The type of upgrade to perform when targeting ManagedClusters.
+ */
 public final class ManagedClusterUpgradeType extends ExpandableStringEnum<ManagedClusterUpgradeType> {
-    /** Static value Full for ManagedClusterUpgradeType. */
+    /**
+     * Static value Full for ManagedClusterUpgradeType.
+     */
     public static final ManagedClusterUpgradeType FULL = fromString("Full");
 
-    /** Static value NodeImageOnly for ManagedClusterUpgradeType. */
+    /**
+     * Static value NodeImageOnly for ManagedClusterUpgradeType.
+     */
     public static final ManagedClusterUpgradeType NODE_IMAGE_ONLY = fromString("NodeImageOnly");
 
     /**
+     * Static value ControlPlaneOnly for ManagedClusterUpgradeType.
+     */
+    public static final ManagedClusterUpgradeType CONTROL_PLANE_ONLY = fromString("ControlPlaneOnly");
+
+    /**
      * Creates a new instance of ManagedClusterUpgradeType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +38,7 @@ public final class ManagedClusterUpgradeType extends ExpandableStringEnum<Manage
 
     /**
      * Creates or finds a ManagedClusterUpgradeType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ManagedClusterUpgradeType.
      */
@@ -38,7 +49,7 @@ public final class ManagedClusterUpgradeType extends ExpandableStringEnum<Manage
 
     /**
      * Gets known ManagedClusterUpgradeType values.
-     *
+     * 
      * @return known ManagedClusterUpgradeType values.
      */
     public static Collection<ManagedClusterUpgradeType> values() {

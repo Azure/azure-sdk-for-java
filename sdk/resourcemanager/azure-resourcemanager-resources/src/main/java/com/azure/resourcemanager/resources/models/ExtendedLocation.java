@@ -7,7 +7,9 @@ package com.azure.resourcemanager.resources.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Resource extended location. */
+/**
+ * Resource extended location.
+ */
 @Fluent
 public final class ExtendedLocation {
     /*
@@ -22,13 +24,15 @@ public final class ExtendedLocation {
     @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of ExtendedLocation class. */
+    /**
+     * Creates an instance of ExtendedLocation class.
+     */
     public ExtendedLocation() {
     }
 
     /**
      * Get the type property: The extended location type.
-     *
+     * 
      * @return the type value.
      */
     public ExtendedLocationType type() {
@@ -37,7 +41,7 @@ public final class ExtendedLocation {
 
     /**
      * Set the type property: The extended location type.
-     *
+     * 
      * @param type the type value to set.
      * @return the ExtendedLocation object itself.
      */
@@ -48,7 +52,7 @@ public final class ExtendedLocation {
 
     /**
      * Get the name property: The extended location name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -57,7 +61,7 @@ public final class ExtendedLocation {
 
     /**
      * Set the name property: The extended location name.
-     *
+     * 
      * @param name the name value to set.
      * @return the ExtendedLocation object itself.
      */
@@ -68,7 +72,7 @@ public final class ExtendedLocation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

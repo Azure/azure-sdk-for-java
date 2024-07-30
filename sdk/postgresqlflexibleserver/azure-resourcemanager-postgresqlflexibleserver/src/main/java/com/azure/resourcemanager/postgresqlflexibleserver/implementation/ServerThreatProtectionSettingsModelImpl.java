@@ -68,13 +68,15 @@ public final class ServerThreatProtectionSettingsModelImpl implements ServerThre
     }
 
     public ServerThreatProtectionSettingsModel create() {
-        this.innerObject = serviceManager.serviceClient().getServerThreatProtectionSettings()
+        this.innerObject = serviceManager.serviceClient()
+            .getServerThreatProtectionSettings()
             .createOrUpdate(resourceGroupName, serverName, threatProtectionName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ServerThreatProtectionSettingsModel create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getServerThreatProtectionSettings()
+        this.innerObject = serviceManager.serviceClient()
+            .getServerThreatProtectionSettings()
             .createOrUpdate(resourceGroupName, serverName, threatProtectionName, this.innerModel(), context);
         return this;
     }
@@ -91,13 +93,15 @@ public final class ServerThreatProtectionSettingsModelImpl implements ServerThre
     }
 
     public ServerThreatProtectionSettingsModel apply() {
-        this.innerObject = serviceManager.serviceClient().getServerThreatProtectionSettings()
+        this.innerObject = serviceManager.serviceClient()
+            .getServerThreatProtectionSettings()
             .createOrUpdate(resourceGroupName, serverName, threatProtectionName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ServerThreatProtectionSettingsModel apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getServerThreatProtectionSettings()
+        this.innerObject = serviceManager.serviceClient()
+            .getServerThreatProtectionSettings()
             .createOrUpdate(resourceGroupName, serverName, threatProtectionName, this.innerModel(), context);
         return this;
     }
@@ -113,14 +117,18 @@ public final class ServerThreatProtectionSettingsModelImpl implements ServerThre
     }
 
     public ServerThreatProtectionSettingsModel refresh() {
-        this.innerObject = serviceManager.serviceClient().getServerThreatProtectionSettings()
-            .getWithResponse(resourceGroupName, serverName, threatProtectionName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServerThreatProtectionSettings()
+            .getWithResponse(resourceGroupName, serverName, threatProtectionName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ServerThreatProtectionSettingsModel refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getServerThreatProtectionSettings()
-            .getWithResponse(resourceGroupName, serverName, threatProtectionName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServerThreatProtectionSettings()
+            .getWithResponse(resourceGroupName, serverName, threatProtectionName, context)
+            .getValue();
         return this;
     }
 

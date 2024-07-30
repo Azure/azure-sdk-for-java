@@ -42,8 +42,8 @@ public final class AzureMLLinkedServiceTypeProperties {
     private Object servicePrincipalId;
 
     /*
-     * The key of the service principal used to authenticate against the ARM-based updateResourceEndpoint of an Azure
-     * ML Studio web service.
+     * The key of the service principal used to authenticate against the ARM-based updateResourceEndpoint of an Azure ML
+     * Studio web service.
      */
     @JsonProperty(value = "servicePrincipalKey")
     private SecretBase servicePrincipalKey;
@@ -162,8 +162,8 @@ public final class AzureMLLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the servicePrincipalKey property: The key of the service principal used to authenticate against the
-     * ARM-based updateResourceEndpoint of an Azure ML Studio web service.
+     * Get the servicePrincipalKey property: The key of the service principal used to authenticate against the ARM-based
+     * updateResourceEndpoint of an Azure ML Studio web service.
      * 
      * @return the servicePrincipalKey value.
      */
@@ -172,8 +172,8 @@ public final class AzureMLLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the servicePrincipalKey property: The key of the service principal used to authenticate against the
-     * ARM-based updateResourceEndpoint of an Azure ML Studio web service.
+     * Set the servicePrincipalKey property: The key of the service principal used to authenticate against the ARM-based
+     * updateResourceEndpoint of an Azure ML Studio web service.
      * 
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the AzureMLLinkedServiceTypeProperties object itself.
@@ -206,8 +206,8 @@ public final class AzureMLLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -216,8 +216,8 @@ public final class AzureMLLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureMLLinkedServiceTypeProperties object itself.
@@ -256,12 +256,14 @@ public final class AzureMLLinkedServiceTypeProperties {
      */
     public void validate() {
         if (mlEndpoint() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property mlEndpoint in model AzureMLLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property mlEndpoint in model AzureMLLinkedServiceTypeProperties"));
         }
         if (apiKey() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property apiKey in model AzureMLLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property apiKey in model AzureMLLinkedServiceTypeProperties"));
         } else {
             apiKey().validate();
         }

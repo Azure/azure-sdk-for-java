@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The connection state of the catalog. */
+/**
+ * The connection state of the catalog.
+ */
 public final class CatalogConnectionState extends ExpandableStringEnum<CatalogConnectionState> {
-    /** Static value Connected for CatalogConnectionState. */
+    /**
+     * Static value Connected for CatalogConnectionState.
+     */
     public static final CatalogConnectionState CONNECTED = fromString("Connected");
 
-    /** Static value Disconnected for CatalogConnectionState. */
+    /**
+     * Static value Disconnected for CatalogConnectionState.
+     */
     public static final CatalogConnectionState DISCONNECTED = fromString("Disconnected");
 
     /**
      * Creates a new instance of CatalogConnectionState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class CatalogConnectionState extends ExpandableStringEnum<CatalogCo
 
     /**
      * Creates or finds a CatalogConnectionState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CatalogConnectionState.
      */
@@ -38,7 +44,7 @@ public final class CatalogConnectionState extends ExpandableStringEnum<CatalogCo
 
     /**
      * Gets known CatalogConnectionState values.
-     *
+     * 
      * @return known CatalogConnectionState values.
      */
     public static Collection<CatalogConnectionState> values() {

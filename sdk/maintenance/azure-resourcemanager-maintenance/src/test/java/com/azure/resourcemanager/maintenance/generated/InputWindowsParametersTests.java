@@ -12,29 +12,26 @@ import org.junit.jupiter.api.Assertions;
 public final class InputWindowsParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InputWindowsParameters model =
-            BinaryData
-                .fromString(
-                    "{\"kbNumbersToExclude\":[\"jumasx\"],\"kbNumbersToInclude\":[\"pqyegualhbxxh\",\"jj\"],\"classificationsToInclude\":[\"dudgwdslfhot\"],\"excludeKbsRequiringReboot\":true}")
-                .toObject(InputWindowsParameters.class);
-        Assertions.assertEquals("jumasx", model.kbNumbersToExclude().get(0));
-        Assertions.assertEquals("pqyegualhbxxh", model.kbNumbersToInclude().get(0));
-        Assertions.assertEquals("dudgwdslfhot", model.classificationsToInclude().get(0));
+        InputWindowsParameters model = BinaryData.fromString(
+            "{\"kbNumbersToExclude\":[\"puozmyzydag\",\"uaxbezyiuokkt\"],\"kbNumbersToInclude\":[\"dxwzywqsmbsurexi\",\"o\",\"yocf\"],\"classificationsToInclude\":[\"s\",\"mddystkiiux\"],\"excludeKbsRequiringReboot\":true}")
+            .toObject(InputWindowsParameters.class);
+        Assertions.assertEquals("puozmyzydag", model.kbNumbersToExclude().get(0));
+        Assertions.assertEquals("dxwzywqsmbsurexi", model.kbNumbersToInclude().get(0));
+        Assertions.assertEquals("s", model.classificationsToInclude().get(0));
         Assertions.assertEquals(true, model.excludeKbsRequiringReboot());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InputWindowsParameters model =
-            new InputWindowsParameters()
-                .withKbNumbersToExclude(Arrays.asList("jumasx"))
-                .withKbNumbersToInclude(Arrays.asList("pqyegualhbxxh", "jj"))
-                .withClassificationsToInclude(Arrays.asList("dudgwdslfhot"))
+        InputWindowsParameters model
+            = new InputWindowsParameters().withKbNumbersToExclude(Arrays.asList("puozmyzydag", "uaxbezyiuokkt"))
+                .withKbNumbersToInclude(Arrays.asList("dxwzywqsmbsurexi", "o", "yocf"))
+                .withClassificationsToInclude(Arrays.asList("s", "mddystkiiux"))
                 .withExcludeKbsRequiringReboot(true);
         model = BinaryData.fromObject(model).toObject(InputWindowsParameters.class);
-        Assertions.assertEquals("jumasx", model.kbNumbersToExclude().get(0));
-        Assertions.assertEquals("pqyegualhbxxh", model.kbNumbersToInclude().get(0));
-        Assertions.assertEquals("dudgwdslfhot", model.classificationsToInclude().get(0));
+        Assertions.assertEquals("puozmyzydag", model.kbNumbersToExclude().get(0));
+        Assertions.assertEquals("dxwzywqsmbsurexi", model.kbNumbersToInclude().get(0));
+        Assertions.assertEquals("s", model.classificationsToInclude().get(0));
         Assertions.assertEquals(true, model.excludeKbsRequiringReboot());
     }
 }

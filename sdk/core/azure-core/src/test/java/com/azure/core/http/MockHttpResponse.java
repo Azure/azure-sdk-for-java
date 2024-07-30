@@ -53,6 +53,27 @@ public class MockHttpResponse extends HttpResponse {
         this(request, statusCode, new HttpHeaders(), serialize(serializable));
     }
 
+    public MockHttpResponse(HttpRequest request, int statusCode, InputStream stream) {
+        this(request, statusCode, new HttpHeaders(), readAllBytes(stream));
+    }
+
+    public static byte[] readAllBytes(InputStream stream) {
+        try {
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+
+            int count;
+            byte[] data = new byte[1024];
+
+            while ((count = stream.read(data, 0, data.length)) != -1) {
+                buffer.write(data, 0, count);
+            }
+
+            return buffer.toByteArray();
+        } catch (Exception exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+
     private static byte[] serialize(Object serializable) {
         try {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();

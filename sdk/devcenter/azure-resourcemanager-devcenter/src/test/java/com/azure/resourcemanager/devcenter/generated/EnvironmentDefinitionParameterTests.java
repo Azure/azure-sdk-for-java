@@ -10,11 +10,9 @@ import com.azure.resourcemanager.devcenter.models.EnvironmentDefinitionParameter
 public final class EnvironmentDefinitionParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EnvironmentDefinitionParameter model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"on\",\"name\":\"yhgfipnsx\",\"description\":\"cwaekrrjre\",\"type\":\"boolean\",\"readOnly\":true,\"required\":false}")
-                .toObject(EnvironmentDefinitionParameter.class);
+        EnvironmentDefinitionParameter model = BinaryData.fromString(
+            "{\"id\":\"mzsb\",\"name\":\"oggigrxwburv\",\"description\":\"xjnspy\",\"type\":\"boolean\",\"readOnly\":true,\"required\":false}")
+            .toObject(EnvironmentDefinitionParameter.class);
     }
 
     @org.junit.jupiter.api.Test

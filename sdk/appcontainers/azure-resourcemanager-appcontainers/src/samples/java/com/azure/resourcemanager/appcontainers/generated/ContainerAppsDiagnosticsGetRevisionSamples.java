@@ -4,21 +4,23 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-/** Samples for ContainerAppsDiagnostics GetRevision. */
+/**
+ * Samples for ContainerAppsDiagnostics GetRevision.
+ */
 public final class ContainerAppsDiagnosticsGetRevisionSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/Revisions_Get.json
+     * x-ms-original-file:
+     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/Revisions_Get.json
      */
     /**
      * Sample code: Get Container App's revision.
-     *
+     * 
      * @param manager Entry point to ContainerAppsApiManager.
      */
-    public static void getContainerAppSRevision(
-        com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager
-            .containerAppsDiagnostics()
-            .getRevisionWithResponse(
-                "rg", "testcontainerApp0", "testcontainerApp0-pjxhsye", com.azure.core.util.Context.NONE);
+    public static void
+        getContainerAppSRevision(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
+        manager.containerAppsDiagnostics()
+            .getRevisionWithResponse("rg", "testcontainerApp0", "testcontainerApp0-pjxhsye",
+                com.azure.core.util.Context.NONE);
     }
 }

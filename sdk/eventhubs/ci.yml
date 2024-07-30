@@ -72,7 +72,6 @@ extends:
   parameters:
     ServiceDirectory: eventhubs
     JavadocSafeJavaBuildVersion: '1.21'
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-messaging-eventhubs
         groupId: com.azure

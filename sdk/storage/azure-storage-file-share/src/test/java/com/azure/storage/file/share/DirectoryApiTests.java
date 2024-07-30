@@ -1647,11 +1647,7 @@ public class DirectoryApiTests extends FileShareTestBase {
                 return;
             } catch (Exception e) {
                 // Test failed; wait before retrying
-                try {
-                    Thread.sleep(retryDelayMillis);
-                } catch (InterruptedException ex) {
-                    Thread.currentThread().interrupt();
-                }
+                sleepIfRunningAgainstService(retryDelayMillis);
             }
         }
     }
@@ -1696,7 +1692,7 @@ public class DirectoryApiTests extends FileShareTestBase {
 
         ShareDirectoryClient aadDirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(dirName);
         ShareStorageException e = assertThrows(ShareStorageException.class, aadDirClient::exists);
-        assertEquals(ShareErrorCode.AUTHENTICATION_FAILED, e.getErrorCode());
+        assertEquals(ShareErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
     }
 
     @Test

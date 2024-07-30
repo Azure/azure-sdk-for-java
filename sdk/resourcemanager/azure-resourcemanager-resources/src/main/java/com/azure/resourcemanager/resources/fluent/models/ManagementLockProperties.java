@@ -11,13 +11,13 @@ import com.azure.resourcemanager.resources.models.ManagementLockOwner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The lock properties. */
+/**
+ * The lock properties.
+ */
 @Fluent
 public final class ManagementLockProperties {
     /*
-     * The level of the lock. Possible values are: NotSpecified, CanNotDelete, ReadOnly. CanNotDelete means authorized
-     * users are able to read and modify the resources, but not delete. ReadOnly means authorized users can only read
-     * from a resource, but they can't modify or delete it.
+     * The level of the lock. Possible values are: NotSpecified, CanNotDelete, ReadOnly. CanNotDelete means authorized users are able to read and modify the resources, but not delete. ReadOnly means authorized users can only read from a resource, but they can't modify or delete it.
      */
     @JsonProperty(value = "level", required = true)
     private LockLevel level;
@@ -34,7 +34,9 @@ public final class ManagementLockProperties {
     @JsonProperty(value = "owners")
     private List<ManagementLockOwner> owners;
 
-    /** Creates an instance of ManagementLockProperties class. */
+    /**
+     * Creates an instance of ManagementLockProperties class.
+     */
     public ManagementLockProperties() {
     }
 
@@ -42,7 +44,7 @@ public final class ManagementLockProperties {
      * Get the level property: The level of the lock. Possible values are: NotSpecified, CanNotDelete, ReadOnly.
      * CanNotDelete means authorized users are able to read and modify the resources, but not delete. ReadOnly means
      * authorized users can only read from a resource, but they can't modify or delete it.
-     *
+     * 
      * @return the level value.
      */
     public LockLevel level() {
@@ -53,7 +55,7 @@ public final class ManagementLockProperties {
      * Set the level property: The level of the lock. Possible values are: NotSpecified, CanNotDelete, ReadOnly.
      * CanNotDelete means authorized users are able to read and modify the resources, but not delete. ReadOnly means
      * authorized users can only read from a resource, but they can't modify or delete it.
-     *
+     * 
      * @param level the level value to set.
      * @return the ManagementLockProperties object itself.
      */
@@ -64,7 +66,7 @@ public final class ManagementLockProperties {
 
     /**
      * Get the notes property: Notes about the lock. Maximum of 512 characters.
-     *
+     * 
      * @return the notes value.
      */
     public String notes() {
@@ -73,7 +75,7 @@ public final class ManagementLockProperties {
 
     /**
      * Set the notes property: Notes about the lock. Maximum of 512 characters.
-     *
+     * 
      * @param notes the notes value to set.
      * @return the ManagementLockProperties object itself.
      */
@@ -84,7 +86,7 @@ public final class ManagementLockProperties {
 
     /**
      * Get the owners property: The owners of the lock.
-     *
+     * 
      * @return the owners value.
      */
     public List<ManagementLockOwner> owners() {
@@ -93,7 +95,7 @@ public final class ManagementLockProperties {
 
     /**
      * Set the owners property: The owners of the lock.
-     *
+     * 
      * @param owners the owners value to set.
      * @return the ManagementLockProperties object itself.
      */
@@ -104,14 +106,13 @@ public final class ManagementLockProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (level() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property level in model ManagementLockProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property level in model ManagementLockProperties"));
         }
         if (owners() != null) {
             owners().forEach(e -> e.validate());

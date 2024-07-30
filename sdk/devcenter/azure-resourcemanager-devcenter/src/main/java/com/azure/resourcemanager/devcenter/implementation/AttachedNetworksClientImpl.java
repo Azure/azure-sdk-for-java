@@ -38,22 +38,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AttachedNetworksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AttachedNetworksClient.
+ */
 public final class AttachedNetworksClientImpl implements AttachedNetworksClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AttachedNetworksService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DevCenterManagementClientImpl client;
 
     /**
      * Initializes an instance of AttachedNetworksClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AttachedNetworksClientImpl(DevCenterManagementClientImpl client) {
-        this.service =
-            RestProxy.create(AttachedNetworksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(AttachedNetworksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -64,121 +70,85 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     @Host("{$host}")
     @ServiceInterface(name = "DevCenterManagementC")
     public interface AttachedNetworksService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/attachednetworks")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/attachednetworks")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AttachedNetworkListResult>> listByProject(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("projectName") String projectName,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<AttachedNetworkListResult>> listByProject(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("projectName") String projectName,
+            @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/attachednetworks/{attachedNetworkConnectionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/attachednetworks/{attachedNetworkConnectionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AttachedNetworkConnectionInner>> getByProject(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("projectName") String projectName,
+        Mono<Response<AttachedNetworkConnectionInner>> getByProject(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("projectName") String projectName,
             @PathParam("attachedNetworkConnectionName") String attachedNetworkConnectionName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/attachednetworks")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/attachednetworks")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AttachedNetworkListResult>> listByDevCenter(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("devCenterName") String devCenterName,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<AttachedNetworkListResult>> listByDevCenter(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("devCenterName") String devCenterName,
+            @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/attachednetworks/{attachedNetworkConnectionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/attachednetworks/{attachedNetworkConnectionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AttachedNetworkConnectionInner>> getByDevCenter(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("devCenterName") String devCenterName,
+        Mono<Response<AttachedNetworkConnectionInner>> getByDevCenter(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("devCenterName") String devCenterName,
             @PathParam("attachedNetworkConnectionName") String attachedNetworkConnectionName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/attachednetworks/{attachedNetworkConnectionName}")
-        @ExpectedResponses({201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/attachednetworks/{attachedNetworkConnectionName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("devCenterName") String devCenterName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("devCenterName") String devCenterName,
             @PathParam("attachedNetworkConnectionName") String attachedNetworkConnectionName,
-            @BodyParam("application/json") AttachedNetworkConnectionInner body,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") AttachedNetworkConnectionInner body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/attachednetworks/{attachedNetworkConnectionName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/attachednetworks/{attachedNetworkConnectionName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("devCenterName") String devCenterName,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("devCenterName") String devCenterName,
             @PathParam("attachedNetworkConnectionName") String attachedNetworkConnectionName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AttachedNetworkListResult>> listByProjectNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AttachedNetworkListResult>> listByDevCenterNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists the attached NetworkConnections for a Project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -186,22 +156,18 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of the Attached Networks list operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AttachedNetworkConnectionInner>> listByProjectSinglePageAsync(
-        String resourceGroupName, String projectName, Integer top) {
+    private Mono<PagedResponse<AttachedNetworkConnectionInner>> listByProjectSinglePageAsync(String resourceGroupName,
+        String projectName, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -212,33 +178,16 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByProject(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            projectName,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<AttachedNetworkConnectionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByProject(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, projectName, top, accept, context))
+            .<PagedResponse<AttachedNetworkConnectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists the attached NetworkConnections for a Project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -247,22 +196,18 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of the Attached Networks list operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AttachedNetworkConnectionInner>> listByProjectSinglePageAsync(
-        String resourceGroupName, String projectName, Integer top, Context context) {
+    private Mono<PagedResponse<AttachedNetworkConnectionInner>> listByProjectSinglePageAsync(String resourceGroupName,
+        String projectName, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -274,29 +219,15 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByProject(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                projectName,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByProject(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, projectName, top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists the attached NetworkConnections for a Project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -306,16 +237,15 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @return results of the Attached Networks list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AttachedNetworkConnectionInner> listByProjectAsync(
-        String resourceGroupName, String projectName, Integer top) {
-        return new PagedFlux<>(
-            () -> listByProjectSinglePageAsync(resourceGroupName, projectName, top),
+    private PagedFlux<AttachedNetworkConnectionInner> listByProjectAsync(String resourceGroupName, String projectName,
+        Integer top) {
+        return new PagedFlux<>(() -> listByProjectSinglePageAsync(resourceGroupName, projectName, top),
             nextLink -> listByProjectNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the attached NetworkConnections for a Project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -326,14 +256,13 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AttachedNetworkConnectionInner> listByProjectAsync(String resourceGroupName, String projectName) {
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listByProjectSinglePageAsync(resourceGroupName, projectName, top),
+        return new PagedFlux<>(() -> listByProjectSinglePageAsync(resourceGroupName, projectName, top),
             nextLink -> listByProjectNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the attached NetworkConnections for a Project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -344,16 +273,15 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @return results of the Attached Networks list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AttachedNetworkConnectionInner> listByProjectAsync(
-        String resourceGroupName, String projectName, Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listByProjectSinglePageAsync(resourceGroupName, projectName, top, context),
+    private PagedFlux<AttachedNetworkConnectionInner> listByProjectAsync(String resourceGroupName, String projectName,
+        Integer top, Context context) {
+        return new PagedFlux<>(() -> listByProjectSinglePageAsync(resourceGroupName, projectName, top, context),
             nextLink -> listByProjectNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists the attached NetworkConnections for a Project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -369,7 +297,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
 
     /**
      * Lists the attached NetworkConnections for a Project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -380,14 +308,14 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @return results of the Attached Networks list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AttachedNetworkConnectionInner> listByProject(
-        String resourceGroupName, String projectName, Integer top, Context context) {
+    public PagedIterable<AttachedNetworkConnectionInner> listByProject(String resourceGroupName, String projectName,
+        Integer top, Context context) {
         return new PagedIterable<>(listByProjectAsync(resourceGroupName, projectName, top, context));
     }
 
     /**
      * Gets an attached NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -397,19 +325,15 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @return an attached NetworkConnection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AttachedNetworkConnectionInner>> getByProjectWithResponseAsync(
-        String resourceGroupName, String projectName, String attachedNetworkConnectionName) {
+    private Mono<Response<AttachedNetworkConnectionInner>> getByProjectWithResponseAsync(String resourceGroupName,
+        String projectName, String attachedNetworkConnectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -419,31 +343,20 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
             return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
         }
         if (attachedNetworkConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter attachedNetworkConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter attachedNetworkConnectionName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByProject(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            projectName,
-                            attachedNetworkConnectionName,
-                            accept,
-                            context))
+            .withContext(context -> service.getByProject(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, projectName, attachedNetworkConnectionName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets an attached NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -454,19 +367,15 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @return an attached NetworkConnection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AttachedNetworkConnectionInner>> getByProjectWithResponseAsync(
-        String resourceGroupName, String projectName, String attachedNetworkConnectionName, Context context) {
+    private Mono<Response<AttachedNetworkConnectionInner>> getByProjectWithResponseAsync(String resourceGroupName,
+        String projectName, String attachedNetworkConnectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -476,28 +385,19 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
             return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
         }
         if (attachedNetworkConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter attachedNetworkConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter attachedNetworkConnectionName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByProject(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                projectName,
-                attachedNetworkConnectionName,
-                accept,
-                context);
+        return service.getByProject(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, projectName, attachedNetworkConnectionName, accept,
+            context);
     }
 
     /**
      * Gets an attached NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -507,15 +407,15 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @return an attached NetworkConnection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AttachedNetworkConnectionInner> getByProjectAsync(
-        String resourceGroupName, String projectName, String attachedNetworkConnectionName) {
+    private Mono<AttachedNetworkConnectionInner> getByProjectAsync(String resourceGroupName, String projectName,
+        String attachedNetworkConnectionName) {
         return getByProjectWithResponseAsync(resourceGroupName, projectName, attachedNetworkConnectionName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets an attached NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -526,15 +426,15 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @return an attached NetworkConnection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AttachedNetworkConnectionInner> getByProjectWithResponse(
-        String resourceGroupName, String projectName, String attachedNetworkConnectionName, Context context) {
+    public Response<AttachedNetworkConnectionInner> getByProjectWithResponse(String resourceGroupName,
+        String projectName, String attachedNetworkConnectionName, Context context) {
         return getByProjectWithResponseAsync(resourceGroupName, projectName, attachedNetworkConnectionName, context)
             .block();
     }
 
     /**
      * Gets an attached NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -544,15 +444,15 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @return an attached NetworkConnection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttachedNetworkConnectionInner getByProject(
-        String resourceGroupName, String projectName, String attachedNetworkConnectionName) {
+    public AttachedNetworkConnectionInner getByProject(String resourceGroupName, String projectName,
+        String attachedNetworkConnectionName) {
         return getByProjectWithResponse(resourceGroupName, projectName, attachedNetworkConnectionName, Context.NONE)
             .getValue();
     }
 
     /**
      * Lists the attached NetworkConnections for a DevCenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -560,22 +460,18 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of the Attached Networks list operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AttachedNetworkConnectionInner>> listByDevCenterSinglePageAsync(
-        String resourceGroupName, String devCenterName, Integer top) {
+    private Mono<PagedResponse<AttachedNetworkConnectionInner>> listByDevCenterSinglePageAsync(String resourceGroupName,
+        String devCenterName, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -586,33 +482,16 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByDevCenter(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            devCenterName,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<AttachedNetworkConnectionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByDevCenter(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, devCenterName, top, accept, context))
+            .<PagedResponse<AttachedNetworkConnectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists the attached NetworkConnections for a DevCenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -621,22 +500,18 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of the Attached Networks list operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AttachedNetworkConnectionInner>> listByDevCenterSinglePageAsync(
-        String resourceGroupName, String devCenterName, Integer top, Context context) {
+    private Mono<PagedResponse<AttachedNetworkConnectionInner>> listByDevCenterSinglePageAsync(String resourceGroupName,
+        String devCenterName, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -648,29 +523,15 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByDevCenter(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                devCenterName,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByDevCenter(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, devCenterName, top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists the attached NetworkConnections for a DevCenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -680,16 +541,15 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @return results of the Attached Networks list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AttachedNetworkConnectionInner> listByDevCenterAsync(
-        String resourceGroupName, String devCenterName, Integer top) {
-        return new PagedFlux<>(
-            () -> listByDevCenterSinglePageAsync(resourceGroupName, devCenterName, top),
+    private PagedFlux<AttachedNetworkConnectionInner> listByDevCenterAsync(String resourceGroupName,
+        String devCenterName, Integer top) {
+        return new PagedFlux<>(() -> listByDevCenterSinglePageAsync(resourceGroupName, devCenterName, top),
             nextLink -> listByDevCenterNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the attached NetworkConnections for a DevCenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -698,17 +558,16 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @return results of the Attached Networks list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AttachedNetworkConnectionInner> listByDevCenterAsync(
-        String resourceGroupName, String devCenterName) {
+    private PagedFlux<AttachedNetworkConnectionInner> listByDevCenterAsync(String resourceGroupName,
+        String devCenterName) {
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listByDevCenterSinglePageAsync(resourceGroupName, devCenterName, top),
+        return new PagedFlux<>(() -> listByDevCenterSinglePageAsync(resourceGroupName, devCenterName, top),
             nextLink -> listByDevCenterNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the attached NetworkConnections for a DevCenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -719,16 +578,15 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @return results of the Attached Networks list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AttachedNetworkConnectionInner> listByDevCenterAsync(
-        String resourceGroupName, String devCenterName, Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listByDevCenterSinglePageAsync(resourceGroupName, devCenterName, top, context),
+    private PagedFlux<AttachedNetworkConnectionInner> listByDevCenterAsync(String resourceGroupName,
+        String devCenterName, Integer top, Context context) {
+        return new PagedFlux<>(() -> listByDevCenterSinglePageAsync(resourceGroupName, devCenterName, top, context),
             nextLink -> listByDevCenterNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists the attached NetworkConnections for a DevCenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -737,15 +595,15 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @return results of the Attached Networks list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AttachedNetworkConnectionInner> listByDevCenter(
-        String resourceGroupName, String devCenterName) {
+    public PagedIterable<AttachedNetworkConnectionInner> listByDevCenter(String resourceGroupName,
+        String devCenterName) {
         final Integer top = null;
         return new PagedIterable<>(listByDevCenterAsync(resourceGroupName, devCenterName, top));
     }
 
     /**
      * Lists the attached NetworkConnections for a DevCenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -756,14 +614,14 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @return results of the Attached Networks list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AttachedNetworkConnectionInner> listByDevCenter(
-        String resourceGroupName, String devCenterName, Integer top, Context context) {
+    public PagedIterable<AttachedNetworkConnectionInner> listByDevCenter(String resourceGroupName, String devCenterName,
+        Integer top, Context context) {
         return new PagedIterable<>(listByDevCenterAsync(resourceGroupName, devCenterName, top, context));
     }
 
     /**
      * Gets an attached NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -773,19 +631,15 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @return an attached NetworkConnection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AttachedNetworkConnectionInner>> getByDevCenterWithResponseAsync(
-        String resourceGroupName, String devCenterName, String attachedNetworkConnectionName) {
+    private Mono<Response<AttachedNetworkConnectionInner>> getByDevCenterWithResponseAsync(String resourceGroupName,
+        String devCenterName, String attachedNetworkConnectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -795,31 +649,20 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
             return Mono.error(new IllegalArgumentException("Parameter devCenterName is required and cannot be null."));
         }
         if (attachedNetworkConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter attachedNetworkConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter attachedNetworkConnectionName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByDevCenter(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            devCenterName,
-                            attachedNetworkConnectionName,
-                            accept,
-                            context))
+            .withContext(context -> service.getByDevCenter(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, devCenterName, attachedNetworkConnectionName,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets an attached NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -830,19 +673,15 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @return an attached NetworkConnection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AttachedNetworkConnectionInner>> getByDevCenterWithResponseAsync(
-        String resourceGroupName, String devCenterName, String attachedNetworkConnectionName, Context context) {
+    private Mono<Response<AttachedNetworkConnectionInner>> getByDevCenterWithResponseAsync(String resourceGroupName,
+        String devCenterName, String attachedNetworkConnectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -852,28 +691,19 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
             return Mono.error(new IllegalArgumentException("Parameter devCenterName is required and cannot be null."));
         }
         if (attachedNetworkConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter attachedNetworkConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter attachedNetworkConnectionName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByDevCenter(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                devCenterName,
-                attachedNetworkConnectionName,
-                accept,
-                context);
+        return service.getByDevCenter(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, devCenterName, attachedNetworkConnectionName, accept,
+            context);
     }
 
     /**
      * Gets an attached NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -883,15 +713,15 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @return an attached NetworkConnection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AttachedNetworkConnectionInner> getByDevCenterAsync(
-        String resourceGroupName, String devCenterName, String attachedNetworkConnectionName) {
+    private Mono<AttachedNetworkConnectionInner> getByDevCenterAsync(String resourceGroupName, String devCenterName,
+        String attachedNetworkConnectionName) {
         return getByDevCenterWithResponseAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets an attached NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -902,15 +732,15 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @return an attached NetworkConnection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AttachedNetworkConnectionInner> getByDevCenterWithResponse(
-        String resourceGroupName, String devCenterName, String attachedNetworkConnectionName, Context context) {
+    public Response<AttachedNetworkConnectionInner> getByDevCenterWithResponse(String resourceGroupName,
+        String devCenterName, String attachedNetworkConnectionName, Context context) {
         return getByDevCenterWithResponseAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName, context)
             .block();
     }
 
     /**
      * Gets an attached NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -920,15 +750,15 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @return an attached NetworkConnection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttachedNetworkConnectionInner getByDevCenter(
-        String resourceGroupName, String devCenterName, String attachedNetworkConnectionName) {
+    public AttachedNetworkConnectionInner getByDevCenter(String resourceGroupName, String devCenterName,
+        String attachedNetworkConnectionName) {
         return getByDevCenterWithResponse(resourceGroupName, devCenterName, attachedNetworkConnectionName, Context.NONE)
             .getValue();
     }
 
     /**
      * Creates or updates an attached NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -936,26 +766,19 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an attached NetworkConnection along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return represents an attached NetworkConnection along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String devCenterName,
-        String attachedNetworkConnectionName,
-        AttachedNetworkConnectionInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String devCenterName, String attachedNetworkConnectionName, AttachedNetworkConnectionInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -965,10 +788,8 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
             return Mono.error(new IllegalArgumentException("Parameter devCenterName is required and cannot be null."));
         }
         if (attachedNetworkConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter attachedNetworkConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter attachedNetworkConnectionName is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -977,25 +798,15 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            devCenterName,
-                            attachedNetworkConnectionName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, devCenterName, attachedNetworkConnectionName, body,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates an attached NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -1004,27 +815,20 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an attached NetworkConnection along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return represents an attached NetworkConnection along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String devCenterName,
-        String attachedNetworkConnectionName,
-        AttachedNetworkConnectionInner body,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String devCenterName, String attachedNetworkConnectionName, AttachedNetworkConnectionInner body,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1034,10 +838,8 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
             return Mono.error(new IllegalArgumentException("Parameter devCenterName is required and cannot be null."));
         }
         if (attachedNetworkConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter attachedNetworkConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter attachedNetworkConnectionName is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -1046,22 +848,14 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                devCenterName,
-                attachedNetworkConnectionName,
-                body,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, devCenterName, attachedNetworkConnectionName, body,
+            accept, context);
     }
 
     /**
      * Creates or updates an attached NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -1073,26 +867,18 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AttachedNetworkConnectionInner>, AttachedNetworkConnectionInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String devCenterName,
-            String attachedNetworkConnectionName,
+        beginCreateOrUpdateAsync(String resourceGroupName, String devCenterName, String attachedNetworkConnectionName,
             AttachedNetworkConnectionInner body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName, body);
-        return this
-            .client
-            .<AttachedNetworkConnectionInner, AttachedNetworkConnectionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AttachedNetworkConnectionInner.class,
-                AttachedNetworkConnectionInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName, body);
+        return this.client.<AttachedNetworkConnectionInner, AttachedNetworkConnectionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AttachedNetworkConnectionInner.class, AttachedNetworkConnectionInner.class,
+            this.client.getContext());
     }
 
     /**
      * Creates or updates an attached NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -1105,29 +891,19 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AttachedNetworkConnectionInner>, AttachedNetworkConnectionInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String devCenterName,
-            String attachedNetworkConnectionName,
-            AttachedNetworkConnectionInner body,
-            Context context) {
+        beginCreateOrUpdateAsync(String resourceGroupName, String devCenterName, String attachedNetworkConnectionName,
+            AttachedNetworkConnectionInner body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, devCenterName, attachedNetworkConnectionName, body, context);
-        return this
-            .client
-            .<AttachedNetworkConnectionInner, AttachedNetworkConnectionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AttachedNetworkConnectionInner.class,
-                AttachedNetworkConnectionInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, devCenterName,
+            attachedNetworkConnectionName, body, context);
+        return this.client.<AttachedNetworkConnectionInner, AttachedNetworkConnectionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AttachedNetworkConnectionInner.class, AttachedNetworkConnectionInner.class,
+            context);
     }
 
     /**
      * Creates or updates an attached NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -1139,18 +915,15 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AttachedNetworkConnectionInner>, AttachedNetworkConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String devCenterName,
-        String attachedNetworkConnectionName,
+        String resourceGroupName, String devCenterName, String attachedNetworkConnectionName,
         AttachedNetworkConnectionInner body) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName, body)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName, body)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates an attached NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -1163,11 +936,8 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AttachedNetworkConnectionInner>, AttachedNetworkConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String devCenterName,
-        String attachedNetworkConnectionName,
-        AttachedNetworkConnectionInner body,
-        Context context) {
+        String resourceGroupName, String devCenterName, String attachedNetworkConnectionName,
+        AttachedNetworkConnectionInner body, Context context) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName, body, context)
             .getSyncPoller();
@@ -1175,7 +945,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
 
     /**
      * Creates or updates an attached NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -1186,19 +956,15 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @return represents an attached NetworkConnection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AttachedNetworkConnectionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String devCenterName,
-        String attachedNetworkConnectionName,
-        AttachedNetworkConnectionInner body) {
-        return beginCreateOrUpdateAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName, body)
-            .last()
+    private Mono<AttachedNetworkConnectionInner> createOrUpdateAsync(String resourceGroupName, String devCenterName,
+        String attachedNetworkConnectionName, AttachedNetworkConnectionInner body) {
+        return beginCreateOrUpdateAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates an attached NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -1210,12 +976,8 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @return represents an attached NetworkConnection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AttachedNetworkConnectionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String devCenterName,
-        String attachedNetworkConnectionName,
-        AttachedNetworkConnectionInner body,
-        Context context) {
+    private Mono<AttachedNetworkConnectionInner> createOrUpdateAsync(String resourceGroupName, String devCenterName,
+        String attachedNetworkConnectionName, AttachedNetworkConnectionInner body, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName, body, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1223,7 +985,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
 
     /**
      * Creates or updates an attached NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -1234,17 +996,14 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @return represents an attached NetworkConnection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttachedNetworkConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String devCenterName,
-        String attachedNetworkConnectionName,
-        AttachedNetworkConnectionInner body) {
+    public AttachedNetworkConnectionInner createOrUpdate(String resourceGroupName, String devCenterName,
+        String attachedNetworkConnectionName, AttachedNetworkConnectionInner body) {
         return createOrUpdateAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName, body).block();
     }
 
     /**
      * Creates or updates an attached NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -1256,19 +1015,15 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @return represents an attached NetworkConnection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttachedNetworkConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String devCenterName,
-        String attachedNetworkConnectionName,
-        AttachedNetworkConnectionInner body,
-        Context context) {
+    public AttachedNetworkConnectionInner createOrUpdate(String resourceGroupName, String devCenterName,
+        String attachedNetworkConnectionName, AttachedNetworkConnectionInner body, Context context) {
         return createOrUpdateAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName, body, context)
             .block();
     }
 
     /**
      * Un-attach a NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -1278,19 +1033,15 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String devCenterName, String attachedNetworkConnectionName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String devCenterName,
+        String attachedNetworkConnectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1300,31 +1051,20 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
             return Mono.error(new IllegalArgumentException("Parameter devCenterName is required and cannot be null."));
         }
         if (attachedNetworkConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter attachedNetworkConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter attachedNetworkConnectionName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            devCenterName,
-                            attachedNetworkConnectionName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, devCenterName, attachedNetworkConnectionName,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Un-attach a NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -1335,19 +1075,15 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String devCenterName, String attachedNetworkConnectionName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String devCenterName,
+        String attachedNetworkConnectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1357,28 +1093,18 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
             return Mono.error(new IllegalArgumentException("Parameter devCenterName is required and cannot be null."));
         }
         if (attachedNetworkConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter attachedNetworkConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter attachedNetworkConnectionName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                devCenterName,
-                attachedNetworkConnectionName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, devCenterName, attachedNetworkConnectionName, accept, context);
     }
 
     /**
      * Un-attach a NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -1388,19 +1114,17 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String devCenterName, String attachedNetworkConnectionName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String devCenterName,
+        String attachedNetworkConnectionName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Un-attach a NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -1411,19 +1135,18 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String devCenterName, String attachedNetworkConnectionName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String devCenterName,
+        String attachedNetworkConnectionName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Un-attach a NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -1433,14 +1156,14 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String devCenterName, String attachedNetworkConnectionName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String devCenterName,
+        String attachedNetworkConnectionName) {
         return this.beginDeleteAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName).getSyncPoller();
     }
 
     /**
      * Un-attach a NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -1451,16 +1174,15 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String devCenterName, String attachedNetworkConnectionName, Context context) {
-        return this
-            .beginDeleteAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String devCenterName,
+        String attachedNetworkConnectionName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName, context)
             .getSyncPoller();
     }
 
     /**
      * Un-attach a NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -1470,16 +1192,15 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String devCenterName, String attachedNetworkConnectionName) {
-        return beginDeleteAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String devCenterName,
+        String attachedNetworkConnectionName) {
+        return beginDeleteAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Un-attach a NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -1490,16 +1211,15 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String devCenterName, String attachedNetworkConnectionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String devCenterName, String attachedNetworkConnectionName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Un-attach a NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -1514,7 +1234,7 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
 
     /**
      * Un-attach a NetworkConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param attachedNetworkConnectionName The name of the attached NetworkConnection.
@@ -1524,21 +1244,22 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String devCenterName, String attachedNetworkConnectionName, Context context) {
+    public void delete(String resourceGroupName, String devCenterName, String attachedNetworkConnectionName,
+        Context context) {
         deleteAsync(resourceGroupName, devCenterName, attachedNetworkConnectionName, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of the Attached Networks list operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AttachedNetworkConnectionInner>> listByProjectNextSinglePageAsync(String nextLink) {
@@ -1546,75 +1267,58 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByProjectNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AttachedNetworkConnectionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<AttachedNetworkConnectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of the Attached Networks list operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AttachedNetworkConnectionInner>> listByProjectNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<AttachedNetworkConnectionInner>> listByProjectNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByProjectNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByProjectNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of the Attached Networks list operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AttachedNetworkConnectionInner>> listByDevCenterNextSinglePageAsync(String nextLink) {
@@ -1622,62 +1326,44 @@ public final class AttachedNetworksClientImpl implements AttachedNetworksClient 
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByDevCenterNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AttachedNetworkConnectionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<AttachedNetworkConnectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of the Attached Networks list operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AttachedNetworkConnectionInner>> listByDevCenterNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<AttachedNetworkConnectionInner>> listByDevCenterNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByDevCenterNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByDevCenterNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

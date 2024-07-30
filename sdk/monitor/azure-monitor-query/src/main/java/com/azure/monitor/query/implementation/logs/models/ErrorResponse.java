@@ -5,8 +5,11 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Error details.
@@ -14,22 +17,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Contains details when the response code indicates an error.
  */
 @Immutable
-public final class ErrorResponse {
+public final class ErrorResponse implements JsonSerializable<ErrorResponse> {
     /*
      * The code and message for an error.
      * 
      * The error details.
      */
-    @JsonProperty(value = "error", required = true)
-    private ErrorInfo error;
+    private final ErrorInfo error;
 
     /**
      * Creates an instance of ErrorResponse class.
      * 
      * @param error the error value to set.
      */
-    @JsonCreator
-    public ErrorResponse(@JsonProperty(value = "error", required = true) ErrorInfo error) {
+    public ErrorResponse(ErrorInfo error) {
         this.error = error;
     }
 
@@ -42,5 +43,43 @@ public final class ErrorResponse {
      */
     public ErrorInfo getError() {
         return this.error;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ErrorResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ErrorResponse if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ErrorResponse.
+     */
+    public static ErrorResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean errorFound = false;
+            ErrorInfo error = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("error".equals(fieldName)) {
+                    error = ErrorInfo.fromJson(reader);
+                    errorFound = true;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (errorFound) {
+                return new ErrorResponse(error);
+            }
+            throw new IllegalStateException("Missing required property: error");
+        });
     }
 }

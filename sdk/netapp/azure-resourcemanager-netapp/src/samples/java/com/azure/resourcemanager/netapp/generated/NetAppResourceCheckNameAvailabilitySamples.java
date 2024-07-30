@@ -13,8 +13,7 @@ import com.azure.resourcemanager.netapp.models.ResourceNameAvailabilityRequest;
 public final class NetAppResourceCheckNameAvailabilitySamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/CheckNameAvailability.
-     * json
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/CheckNameAvailability.json
      */
     /**
      * Sample code: CheckNameAvailability.
@@ -22,9 +21,11 @@ public final class NetAppResourceCheckNameAvailabilitySamples {
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void checkNameAvailability(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.netAppResources().checkNameAvailabilityWithResponse("eastus",
-            new ResourceNameAvailabilityRequest().withName("accName")
-                .withType(CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS).withResourceGroup("myRG"),
-            com.azure.core.util.Context.NONE);
+        manager.netAppResources()
+            .checkNameAvailabilityWithResponse("eastus",
+                new ResourceNameAvailabilityRequest().withName("accName")
+                    .withType(CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS)
+                    .withResourceGroup("myRG"),
+                com.azure.core.util.Context.NONE);
     }
 }

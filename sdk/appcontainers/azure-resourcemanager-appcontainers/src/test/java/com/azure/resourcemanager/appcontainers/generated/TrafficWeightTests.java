@@ -11,29 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class TrafficWeightTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TrafficWeight model =
-            BinaryData
-                .fromString(
-                    "{\"revisionName\":\"trmgucnapkte\",\"weight\":1950925712,\"latestRevision\":false,\"label\":\"tfdygpfqb\"}")
-                .toObject(TrafficWeight.class);
-        Assertions.assertEquals("trmgucnapkte", model.revisionName());
-        Assertions.assertEquals(1950925712, model.weight());
-        Assertions.assertEquals(false, model.latestRevision());
-        Assertions.assertEquals("tfdygpfqb", model.label());
+        TrafficWeight model = BinaryData.fromString(
+            "{\"revisionName\":\"wspughftqsxhqx\",\"weight\":318834407,\"latestRevision\":true,\"label\":\"dxdigr\"}")
+            .toObject(TrafficWeight.class);
+        Assertions.assertEquals("wspughftqsxhqx", model.revisionName());
+        Assertions.assertEquals(318834407, model.weight());
+        Assertions.assertEquals(true, model.latestRevision());
+        Assertions.assertEquals("dxdigr", model.label());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrafficWeight model =
-            new TrafficWeight()
-                .withRevisionName("trmgucnapkte")
-                .withWeight(1950925712)
-                .withLatestRevision(false)
-                .withLabel("tfdygpfqb");
+        TrafficWeight model = new TrafficWeight().withRevisionName("wspughftqsxhqx")
+            .withWeight(318834407)
+            .withLatestRevision(true)
+            .withLabel("dxdigr");
         model = BinaryData.fromObject(model).toObject(TrafficWeight.class);
-        Assertions.assertEquals("trmgucnapkte", model.revisionName());
-        Assertions.assertEquals(1950925712, model.weight());
-        Assertions.assertEquals(false, model.latestRevision());
-        Assertions.assertEquals("tfdygpfqb", model.label());
+        Assertions.assertEquals("wspughftqsxhqx", model.revisionName());
+        Assertions.assertEquals(318834407, model.weight());
+        Assertions.assertEquals(true, model.latestRevision());
+        Assertions.assertEquals("dxdigr", model.label());
     }
 }

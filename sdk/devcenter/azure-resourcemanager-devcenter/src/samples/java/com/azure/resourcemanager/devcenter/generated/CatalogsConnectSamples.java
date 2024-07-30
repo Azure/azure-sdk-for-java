@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-/** Samples for Catalogs Connect. */
+/**
+ * Samples for Catalogs Connect.
+ */
 public final class CatalogsConnectSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2023-10-01-preview/examples/Catalogs_Connect.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Catalogs_Connect.json
      */
     /**
      * Sample code: Catalogs_Connect.
-     *
+     * 
      * @param manager Entry point to DevCenterManager.
      */
     public static void catalogsConnect(com.azure.resourcemanager.devcenter.DevCenterManager manager) {

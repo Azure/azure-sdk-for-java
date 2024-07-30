@@ -110,20 +110,6 @@ public interface NetAppManagementClient {
     SnapshotPoliciesClient getSnapshotPolicies();
 
     /**
-     * Gets the BackupsClient object to access its operations.
-     * 
-     * @return the BackupsClient object.
-     */
-    BackupsClient getBackups();
-
-    /**
-     * Gets the AccountBackupsClient object to access its operations.
-     * 
-     * @return the AccountBackupsClient object.
-     */
-    AccountBackupsClient getAccountBackups();
-
-    /**
      * Gets the BackupPoliciesClient object to access its operations.
      * 
      * @return the BackupPoliciesClient object.
@@ -150,6 +136,13 @@ public interface NetAppManagementClient {
      * @return the SubvolumesClient object.
      */
     SubvolumesClient getSubvolumes();
+
+    /**
+     * Gets the BackupsClient object to access its operations.
+     * 
+     * @return the BackupsClient object.
+     */
+    BackupsClient getBackups();
 
     /**
      * Gets the BackupVaultsClient object to access its operations.

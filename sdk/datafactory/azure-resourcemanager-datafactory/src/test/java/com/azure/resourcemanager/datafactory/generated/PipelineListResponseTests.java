@@ -50,29 +50,39 @@ public final class PipelineListResponseTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PipelineListResponse model = new PipelineListResponse()
-            .withValue(Arrays.asList(new PipelineResourceInner().withId("shfwpracstwity").withDescription("xrbuukzclew")
+            .withValue(Arrays.asList(new PipelineResourceInner().withId("shfwpracstwity")
+                .withDescription("xrbuukzclew")
                 .withActivities(Arrays.asList(
-                    new Activity().withName("lw").withDescription("ztzp").withState(ActivityState.ACTIVE)
+                    new Activity().withName("lw")
+                        .withDescription("ztzp")
+                        .withState(ActivityState.ACTIVE)
                         .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SKIPPED)
                         .withDependsOn(Arrays.asList(
                             new ActivityDependency().withActivity("yfzqwhxxbu")
-                                .withDependencyConditions(Arrays.asList()).withAdditionalProperties(mapOf()),
-                            new ActivityDependency().withActivity("qa").withDependencyConditions(Arrays.asList())
+                                .withDependencyConditions(Arrays.asList())
+                                .withAdditionalProperties(mapOf()),
+                            new ActivityDependency().withActivity("qa")
+                                .withDependencyConditions(Arrays.asList())
                                 .withAdditionalProperties(mapOf()),
                             new ActivityDependency().withActivity("zfeqztppri")
-                                .withDependencyConditions(Arrays.asList()).withAdditionalProperties(mapOf()),
+                                .withDependencyConditions(Arrays.asList())
+                                .withAdditionalProperties(mapOf()),
                             new ActivityDependency().withActivity("lxorjaltolmncws")
-                                .withDependencyConditions(Arrays.asList()).withAdditionalProperties(mapOf())))
+                                .withDependencyConditions(Arrays.asList())
+                                .withAdditionalProperties(mapOf())))
                         .withUserProperties(
                             Arrays.asList(new UserProperty().withName("wcsdbnwdcfhucq").withValue("datapfuvglsbjjca"),
                                 new UserProperty().withName("vxb").withValue("datat"),
                                 new UserProperty().withName("udutnco").withValue("datamr"),
                                 new UserProperty().withName("xqtvcofu").withValue("dataf")))
                         .withAdditionalProperties(mapOf("type", "Activity")),
-                    new Activity().withName("gkfbtndoaong").withDescription("cn").withState(ActivityState.INACTIVE)
+                    new Activity().withName("gkfbtndoaong")
+                        .withDescription("cn")
+                        .withState(ActivityState.INACTIVE)
                         .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.FAILED)
                         .withDependsOn(Arrays.asList(new ActivityDependency().withActivity("ed")
-                            .withDependencyConditions(Arrays.asList()).withAdditionalProperties(mapOf())))
+                            .withDependencyConditions(Arrays.asList())
+                            .withAdditionalProperties(mapOf())))
                         .withUserProperties(
                             Arrays.asList(new UserProperty().withName("waezkojvd").withValue("datapzfoqoui")))
                         .withAdditionalProperties(mapOf("type", "Activity"))))

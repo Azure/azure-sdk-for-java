@@ -6,42 +6,41 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Request body to build a new custom document model.
  */
 @Fluent
-public final class BuildDocumentModelRequest {
+public final class BuildDocumentModelRequest implements JsonSerializable<BuildDocumentModelRequest> {
     /*
      * Unique document model name.
      */
     @Generated
-    @JsonProperty(value = "modelId")
-    private String modelId;
+    private final String modelId;
 
     /*
      * Document model description.
      */
     @Generated
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Custom document model build mode.
      */
     @Generated
-    @JsonProperty(value = "buildMode")
-    private DocumentBuildMode buildMode;
+    private final DocumentBuildMode buildMode;
 
     /*
      * Azure Blob Storage location containing the training data. Either
      * azureBlobSource or azureBlobFileListSource must be specified.
      */
     @Generated
-    @JsonProperty(value = "azureBlobSource")
     private AzureBlobContentSource azureBlobSource;
 
     /*
@@ -49,14 +48,12 @@ public final class BuildDocumentModelRequest {
      * azureBlobSource or azureBlobFileListSource must be specified.
      */
     @Generated
-    @JsonProperty(value = "azureBlobFileListSource")
     private AzureBlobFileListContentSource azureBlobFileListSource;
 
     /*
      * List of key-value tag attributes associated with the document model.
      */
     @Generated
-    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /**
@@ -66,9 +63,7 @@ public final class BuildDocumentModelRequest {
      * @param buildMode the buildMode value to set.
      */
     @Generated
-    @JsonCreator
-    public BuildDocumentModelRequest(@JsonProperty(value = "modelId") String modelId,
-        @JsonProperty(value = "buildMode") DocumentBuildMode buildMode) {
+    public BuildDocumentModelRequest(String modelId, DocumentBuildMode buildMode) {
         this.modelId = modelId;
         this.buildMode = buildMode;
     }
@@ -184,5 +179,70 @@ public final class BuildDocumentModelRequest {
     public BuildDocumentModelRequest setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("modelId", this.modelId);
+        jsonWriter.writeStringField("buildMode", this.buildMode == null ? null : this.buildMode.toString());
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeJsonField("azureBlobSource", this.azureBlobSource);
+        jsonWriter.writeJsonField("azureBlobFileListSource", this.azureBlobFileListSource);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BuildDocumentModelRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BuildDocumentModelRequest if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BuildDocumentModelRequest.
+     */
+    @Generated
+    public static BuildDocumentModelRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String modelId = null;
+            DocumentBuildMode buildMode = null;
+            String description = null;
+            AzureBlobContentSource azureBlobSource = null;
+            AzureBlobFileListContentSource azureBlobFileListSource = null;
+            Map<String, String> tags = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("modelId".equals(fieldName)) {
+                    modelId = reader.getString();
+                } else if ("buildMode".equals(fieldName)) {
+                    buildMode = DocumentBuildMode.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    description = reader.getString();
+                } else if ("azureBlobSource".equals(fieldName)) {
+                    azureBlobSource = AzureBlobContentSource.fromJson(reader);
+                } else if ("azureBlobFileListSource".equals(fieldName)) {
+                    azureBlobFileListSource = AzureBlobFileListContentSource.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    tags = reader.readMap(reader1 -> reader1.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            BuildDocumentModelRequest deserializedBuildDocumentModelRequest
+                = new BuildDocumentModelRequest(modelId, buildMode);
+            deserializedBuildDocumentModelRequest.description = description;
+            deserializedBuildDocumentModelRequest.azureBlobSource = azureBlobSource;
+            deserializedBuildDocumentModelRequest.azureBlobFileListSource = azureBlobFileListSource;
+            deserializedBuildDocumentModelRequest.tags = tags;
+
+            return deserializedBuildDocumentModelRequest;
+        });
     }
 }

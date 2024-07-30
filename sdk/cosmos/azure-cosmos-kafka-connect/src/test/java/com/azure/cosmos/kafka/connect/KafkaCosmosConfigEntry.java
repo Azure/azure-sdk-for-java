@@ -7,11 +7,17 @@ public class KafkaCosmosConfigEntry<T> {
     private final String name;
     private final T defaultValue;
     private final boolean isOptional;
+    private final boolean isPassword;
 
     public KafkaCosmosConfigEntry(String name, T defaultValue, boolean isOptional) {
+       this(name, defaultValue, isOptional, false);
+    }
+
+    public KafkaCosmosConfigEntry(String name, T defaultValue, boolean isOptional, boolean isPassword) {
         this.name = name;
         this.defaultValue = defaultValue;
         this.isOptional = isOptional;
+        this.isPassword = isPassword;
     }
 
     public String getName() {
@@ -26,4 +32,7 @@ public class KafkaCosmosConfigEntry<T> {
         return isOptional;
     }
 
+    public boolean isPassword() {
+        return isPassword;
+    }
 }
